@@ -1,0 +1,5 @@
+{
+  "_note": "Authored tunable overrides. Only keys that deliberately differ from the schema defaults in js/tunables.js belong here — the schema stays the source of truth for what exists, its type, range and doc. Written by the M5 dashboard's Export button; hand-editable. Unknown keys are ignored with a console warning.",
+  "_schema": "js/tunables.js",
+  "values": {}
+}

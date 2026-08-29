@@ -181,18 +181,17 @@ const Actions = (function () {
   /* ================================================================= */
   /* TRADE                                                             */
   /* ================================================================= */
-  const TRADE_GAIN = 0.10; // each side's GDP gain as a share of traded value
+  // All trade constants live in TUNE (js/tunables.js). Read at call time, not at
+  // module load, so a dashboard slider takes effect without a page reload.
+  const TRADE_GAIN = () => TUNE.get('trade.gain');
   // transit routing: a landlocked nation reaches the market through a neighbor
   // that has export access; the transit nation takes a toll, discounted by the
   // corridor it controls (rail beats highway).
-  const TRANSIT_TOLL = 0.35;    // transit nation's cut of the trade benefit
-  const RAIL_DISCOUNT = 0.5;    // a rail corridor halves the toll (bigger bonus)
-  const HIGHWAY_DISCOUNT = 0.2; // an interstate link shaves 20% off the toll
-  const linkDiscount = (link) => (link === 'rail' ? RAIL_DISCOUNT : link === 'highway' ? HIGHWAY_DISCOUNT : 0);
+  const TRANSIT_TOLL = () => TUNE.get('trade.transitToll');
+  const linkDiscount = (link) =>
+    (link === 'rail' ? TUNE.get('trade.railDiscount')
+      : link === 'highway' ? TUNE.get('trade.highwayDiscount') : 0);
   const linkLabel = (link) => (link === 'rail' ? '🚂 rail corridor' : link === 'highway' ? '🛣 highway' : '🚚 overland');
-  // negotiation weights: how the transit nation judges a proposed toll
-  const NEED_SCALE = 40;      // toll income vs the transit nation's GDP -> "need"
-  const COUNTER_FLOOR = 0.55; // offers below this fraction of their ask get declined
 
   function startTrade(nid) {
     const eligible = new Set(Game.adjacentNations(nid));
@@ -252,7 +251,7 @@ const Actions = (function () {
       <div class="label" style="margin-top:12px">Transit routes &middot; reach the market via a neighbor</div>
       ${routes.map((r) => `<button class="btn ghost transit-btn" data-t="${r.t}">
           <span>${escapeHtml(Game.getNation(r.t).name)}</span>
-          <span class="transit-meta">${linkLabel(r.link)} &middot; toll ${Math.round(TRANSIT_TOLL * (1 - linkDiscount(r.link)) * 100)}%</span>
+          <span class="transit-meta">${linkLabel(r.link)} &middot; toll ${Math.round(TRANSIT_TOLL() * (1 - linkDiscount(r.link)) * 100)}%</span>
         </button>`).join('')}` : '';
     setPanel(`
       ${actionHead('🚛 Trade with nation', n)}
@@ -281,8 +280,8 @@ const Actions = (function () {
     const sizeMult = 0.75 + 0.5 * relSize;             // bigger T holds out for more
     const rel = Math.max(-1, Math.min(1, 1 - Math.abs((dS.dem || 0) - (dT.dem || 0)) / 25)); // political alignment
     const relMult = 1 - 0.2 * rel;                     // warm relations -> asks less
-    const incomeToT = total * TRADE_GAIN * base;       // ballpark toll income ($M)
-    const need = Math.max(0, Math.min(1, (incomeToT / (dT.gdp / 1e6)) * NEED_SCALE));
+    const incomeToT = total * TRADE_GAIN() * base;       // ballpark toll income ($M)
+    const need = Math.max(0, Math.min(1, (incomeToT / (dT.gdp / 1e6)) * TUNE.get('trade.needScale')));
     const needMult = 1 - 0.25 * need;                  // the needier, the more it settles
     const ask = Math.max(0.05, Math.min(0.6, base * sizeMult * relMult * needMult));
     return { ask, relSize, rel, need };
@@ -303,7 +302,7 @@ const Actions = (function () {
     const S = A.nid, T = throughNid;
     const tName = Game.getNation(T).name;
     const link = transitLink(S, T);
-    const base = TRANSIT_TOLL * (1 - linkDiscount(link)); // the "fair" corridor rate
+    const base = TRANSIT_TOLL() * (1 - linkDiscount(link)); // the "fair" corridor rate
     const ms = Market.nationSurplus(S);
     const prices = Market.getPrices();
     const e = MapModes.getEconomy();
@@ -312,7 +311,7 @@ const Actions = (function () {
       .filter((f) => f.vol > 1)
       .map((f) => ({ ...f, value: f.vol * (prices[f.i] / 100) }));
     const total = flows.reduce((s, f) => s + f.value, 0);
-    const benefit = total * TRADE_GAIN;
+    const benefit = total * TRADE_GAIN();
     const start = Math.round(base * 100);
     const rows = flows.sort((a, b) => b.value - a.value)
       .map((f) => `<div class="geo-row"><span><i class="econ-dot" style="background:${MapModes.ECON_COLORS[f.i]}"></i>${f.s} &rarr; export</span>
@@ -365,7 +364,7 @@ const Actions = (function () {
         box.innerHTML = `<div class="deal-verdict accept">✅ ${escapeHtml(tName)} accepts your ${Math.round(p * 100)}% offer.${why}</div>
           <button class="btn go" id="a-sign">Sign at ${Math.round(p * 100)}%</button>`;
         document.getElementById('a-sign').onclick = () => finalize(p);
-      } else if (p >= v.ask * COUNTER_FLOOR) {
+      } else if (p >= v.ask * TUNE.get('trade.counterFloor')) {
         const cp = Math.round(v.ask * 100);
         box.innerHTML = `<div class="deal-verdict counter">↔️ ${escapeHtml(tName)} counters at <strong>${cp}%</strong>.${why}</div>
           <button class="btn go" id="a-sign">Accept ${cp}% counter</button>`;
@@ -386,7 +385,7 @@ const Actions = (function () {
       .filter((f) => f.vol > 1)
       .map((f) => ({ ...f, value: f.vol * (prices[f.i] / 100) }));
     const total = flows.reduce((s, f) => s + f.value, 0);
-    const gain = total * TRADE_GAIN;
+    const gain = total * TRADE_GAIN();
     const rows = flows.sort((a, b) => b.value - a.value)
       .map((f) => `<div class="geo-row"><span><i class="econ-dot" style="background:${MapModes.ECON_COLORS[f.i]}"></i>${f.s} &rarr; export</span>
         <strong>${fmtGdp(f.value * 1e6)}</strong></div>`)
@@ -419,7 +418,7 @@ const Actions = (function () {
     const tName = Game.getNation(tid).name;
     const flows = tradeFlows(A.nid, tid);
     const total = flows.reduce((s, f) => s + f.value, 0);
-    const gain = total * TRADE_GAIN;
+    const gain = total * TRADE_GAIN();
     const rows = flows
       .sort((a, b) => b.value - a.value)
       .map((f) => `<div class="geo-row"><span><i class="econ-dot" style="background:${MapModes.ECON_COLORS[f.i]}"></i>${f.s}

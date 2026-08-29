@@ -41,7 +41,7 @@ const store = {
 /* ------------------------------------------------------------------ */
 async function init() {
   try {
-    const [topo, data, ctGeo, adjacency, neighbors, partyDefs, trade, areas, geoMode, economy, transport, cultureMode] = await Promise.all([
+    const [topo, data, ctGeo, adjacency, neighbors, partyDefs, trade, areas, geoMode, economy, transport, cultureMode, tunables] = await Promise.all([
       fetch('data/counties-10m.json').then((r) => r.json()),
       fetch('data/game-data.json').then((r) => r.json()),
       fetch('data/ct-planning-regions.geojson').then((r) => r.json()),
@@ -54,7 +54,13 @@ async function init() {
       fetch('data/economy.json').then((r) => r.json()).catch(() => null),
       fetch('data/transport.json').then((r) => r.json()).catch(() => null),
       fetch('data/cultural.mapmode.json').then((r) => r.json()).catch(() => null),
+      fetch('content/tunables.json').then((r) => (r.ok ? r.json() : null)).catch(() => null),
     ]);
+    // Authored tunable overrides, applied over the schema defaults in js/tunables.js.
+    if (tunables) {
+      const unknown = TUNE.load(tunables.values || tunables);
+      if (unknown.length) console.warn('content/tunables.json: unknown keys ignored:', unknown);
+    }
     // Seeded RNG, created before anything draws. Everything downstream takes it
     // explicitly; nothing reads it off a module global.
     store.seed = RNG.newSeed();
@@ -72,7 +78,7 @@ async function init() {
     if (geoMode && geoMode.type === 'ns-mapmode') MapModes.setRegion(geoMode); // published in the editor
     if (cultureMode && cultureMode.type === 'ns-mapmode') MapModes.setCulture(cultureMode);
     if (economy) MapModes.setEconomy(economy); // baked six-sector production values
-    if (economy) Market.update(); // opening market prices
+    if (economy) Market.update(TUNE); // opening market prices
     TurnSystem.begin([...Game.nations.keys()], store.rng);
     if (emerged.length) {
       setTimeout(() => flash(`\u{1F5F3} Regional parties emerged: <strong>${emerged.map(escapeHtml).join('</strong>, <strong>')}</strong>.`, 'warn'), 300);
@@ -507,7 +513,7 @@ function renderTurnBanner() {
     <button class="tb-pass" id="tb-advance" style="margin-left:0">Advance world &#9193;</button>
     <button class="tb-pass" id="tb-pass">Pass turn &#9197;</button>`;
   document.getElementById('tb-jump').onclick = () => { if (!Actions.isActive()) { setMode('nations'); select('nation', TurnSystem.currentId()); } };
-  document.getElementById('tb-advance').onclick = () => { World.advanceTurn(); onGameChange(); };
+  document.getElementById('tb-advance').onclick = () => { World.advanceTurn(TUNE); onGameChange(); };
   document.getElementById('tb-pass').onclick = passTurn;
 }
 
@@ -633,12 +639,14 @@ function renderTreasury(nid) {
 
 /* nation economy: sum of Area production minus internal consumption. Each Area
    demands resources in a fixed mix (share of its gross output); a nation's
-   per-resource surplus/deficit is production minus that demand. Display-only. */
-const DEMAND_SHARE = [0.08, 0.10, 0.22, 0.15, 0.15, 0.10]; // Ag, Ex, Mfg, Trade, Fin, IT
-
+   per-resource surplus/deficit is production minus that demand. Display-only.
+   The mix itself is TUNE 'market.demandShare' — it used to be a const declared
+   HERE, in the renderer, and read by market.js, which worked only because of
+   script order. */
 function renderNationEconomy(nid) {
   const e = MapModes.getEconomy();
   if (!e) return '';
+  const DEMAND_SHARE = TUNE.get('market.demandShare');
   const prod = [0, 0, 0, 0, 0, 0];
   for (const aid of Game.getNation(nid).counties) {
     const a = e.areas[aid];

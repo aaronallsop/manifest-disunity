@@ -12,10 +12,13 @@
  * High demand + low supply -> price above 100; oversupply -> crash below 100.
  */
 const Market = (function () {
-  const BASE = 100, ELASTICITY = 1.3, MIN_P = 20, MAX_P = 400;
   let prices = null, prev = null, perCap = null;
 
-  function update() {
+  function update(tune) {
+    const T = tune || window.TUNE;
+    const BASE = T.get('market.base'), ELASTICITY = T.get('market.elasticity');
+    const MIN_P = T.get('market.minPrice'), MAX_P = T.get('market.maxPrice');
+    const DEMAND_SHARE = T.get('market.demandShare');
     const e = MapModes.getEconomy();
     if (!e) return;
     const supply = [0, 0, 0, 0, 0, 0];
@@ -55,7 +58,8 @@ const Market = (function () {
 
   // a nation's per-resource production and surplus/deficit ($M), same model
   // the nation panel shows: surplus_i = production_i - DEMAND_SHARE[i] x gross
-  function nationSurplus(nid) {
+  function nationSurplus(nid, tune) {
+    const DEMAND_SHARE = (tune || window.TUNE).get('market.demandShare');
     const e = MapModes.getEconomy();
     const n = Game.getNation(nid);
     if (!e || !n) return null;
@@ -68,5 +72,12 @@ const Market = (function () {
     return { prod, gross, surplus: prod.map((p, i) => p - DEMAND_SHARE[i] * gross) };
   }
 
-  return { update, html, getPrices: () => prices, nationSurplus };
+  const serialize = () => ({ prices: prices ? prices.slice() : null, prev: prev ? prev.slice() : null, perCap });
+  function loadState(snap) {
+    prices = snap && snap.prices ? snap.prices.slice() : null;
+    prev = snap && snap.prev ? snap.prev.slice() : null;
+    perCap = snap ? snap.perCap : null;
+  }
+
+  return { update, html, getPrices: () => prices, nationSurplus, serialize, loadState };
 })();

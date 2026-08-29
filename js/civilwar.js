@@ -34,8 +34,9 @@ const CivilWar = (function () {
     return Math.max(1, Math.ceil(50 - oldMajorityShareAfter)); // how far past 50 into the other party
   }
 
-  function points(added) {
-    return Math.round(added.pop / 1e6) + Math.round(added.gdp / 1e10);
+  function points(added, tune) {
+    return Math.round(added.pop / tune.get('war.popPerPoint'))
+         + Math.round(added.gdp / tune.get('war.gdpPerPoint'));
   }
 
   // Full resolution. `before`/`after`/`added` are demographics objects.
@@ -43,34 +44,40 @@ const CivilWar = (function () {
   // opts.rng is REQUIRED: every die comes from the caller's 'combat' stream.
   function resolve(before, added, after, opts = {}) {
     const dieStream = opts.rng.stream('combat');
+    const tune = opts.tune || window.TUNE;
     const mult = opts.scoreMult || 1;
     const { flip, reasons, triggered } = assess(before, added, after);
     const dc = Math.max(triggered ? 1 : 0, diceCount(before, after));
     const dice = [];
     let product = 1;
-    for (let i = 0; i < dc; i++) { const d = roll(dieStream, 6); dice.push(d); product *= d; }
-    const pts = points(added);
-    const score = dc ? Math.round(pts * product * mult) : 0;
-    const outcome = score <= 33 ? 'victory' : score <= 66 ? 'partial' : 'fall_apart';
+    const sides = tune.get('war.diceSides');
+    for (let i = 0; i < dc; i++) { const d = roll(dieStream, sides); dice.push(d); product *= d; }
+    const pts = points(added, tune);
+    const score = dc ? Math.round(pts * product * mult * tune.get('war.pointsScale')) : 0;
+    const outcome = score <= tune.get('war.victoryBand') ? 'victory'
+      : score <= tune.get('war.partialBand') ? 'partial' : 'fall_apart';
     return { flip, reasons, triggered, diceCount: dc, dice, points: pts, product, score, outcome, scoreMult: mult };
   }
 
   // Probability a union is peaceful (vs. sparking a splinter civil war). Driven by
   // combined-population share, GDP share, and political similarity, clamped so there
   // is always a chance either way. A blue-shell penalty (0..1) lowers it.
-  function unitePeaceChance(S, T, shell = 0) {
+  function unitePeaceChance(S, T, shell = 0, tune) {
+    const tn = tune || window.TUNE;
     const popShare = S.pop + T.pop > 0 ? S.pop / (S.pop + T.pop) : 0.5;
     const gdpShare = S.gdp + T.gdp > 0 ? S.gdp / (S.gdp + T.gdp) : 0.5;
-    const sizeScore = 0.6 * popShare + 0.4 * gdpShare;
+    const wPop = tn.get('war.unitePopWeight');
+    const sizeScore = wPop * popShare + (1 - wPop) * gdpShare;
     const marginDiff = Math.abs((S.dem - S.gop) - (T.dem - T.gop)); // 0..200
-    const politSim = Math.max(0, 1 - marginDiff / 100);
-    let p = sizeScore * (0.6 + 0.4 * politSim);
-    p *= 1 - 0.5 * shell;
-    return Math.max(0.03, Math.min(0.97, p));
+    const politSim = Math.max(0, 1 - marginDiff / tn.get('war.unitePolitScale'));
+    const floor = tn.get('war.uniteSizeFloor');
+    let p = sizeScore * (floor + (1 - floor) * politSim);
+    p *= 1 - tn.get('war.uniteShellPenalty') * shell;
+    return Math.max(tn.get('war.unitePeaceMin'), Math.min(tn.get('war.unitePeaceMax'), p));
   }
 
   // Severity score for a failed union (used for population/GDP fallout).
-  const uniteSeverity = (p) => Math.round((1 - p) * 200);
+  const uniteSeverity = (p, tune) => Math.round((1 - p) * (tune || window.TUNE).get('war.uniteSeverityScale'));
 
   return { assess, diceCount, points, resolve, unitePeaceChance, uniteSeverity };
 })();

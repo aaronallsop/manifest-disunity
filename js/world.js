@@ -9,15 +9,14 @@
  * No phase ever reads a value it has already updated this turn, so feedback loops
  * can't compound within a single turn.
  *
- * The phases are stubs for now, to be filled in next.
+ * Each phase takes `tune` explicitly so the M5 simulator can run a phase against
+ * a modified tunable set without touching the live game.
  */
 const World = (function () {
   let turn = 0;
 
-  /* ---- tunables ---- */
-  const PARTY_CEILING = 0.35; // max share an emergent party grows toward per county
-  const PARTY_STEP = 0.03;    // closes this fraction of the gap to the ceiling per turn
-  const PARTY_FLOOR = 0.01;   // emergent parties below this share are cleaned up
+  // Tunables come in per call; the live game passes the session TUNE.
+  const T = (tune) => tune || window.TUNE;
 
   // Compute and cache each nation's lean (% d/g/o) from the start-of-turn snapshot;
   // drift reads this cache, never leans influenced by already-drifted counties.
@@ -41,8 +40,8 @@ const World = (function () {
   // new% = old% + step * (target% - old%), renormalized (default closes 2% of the
   // gap per turn -- self-limiting). Moves people BETWEEN parties; population is
   // unchanged by this phase.
-  function phasePoliticalDrift(snap, nxt, leans, step) {
-    const s = step == null ? 0.02 : step;
+  function phasePoliticalDrift(snap, nxt, leans, tune) {
+    const s = T(tune).get('world.driftStep');
     for (const f in nxt) {
       const own = Game.getOwner(f);
       const tgt = own && leans[own];
@@ -63,8 +62,8 @@ const World = (function () {
   // residents arrive in the party mix of the county's OWNER NATION, not the county's
   // own -- so an annexed county gradually drifts toward its nation's alignment while
   // nation-level ratios stay put. (Per-nation rates come later.)
-  function phasePopulationGrowth(snap, nxt, rate) {
-    const r = rate == null ? 0.01 : rate;
+  function phasePopulationGrowth(snap, nxt, tune) {
+    const r = T(tune).get('world.popGrowth');
     const natTotals = {}; // owner -> {d,g,o}, from this turn's snapshot
     for (const f in snap) {
       const o = Game.getOwner(f);
@@ -91,7 +90,9 @@ const World = (function () {
   // PARTY_STEP of the gap (computed from the SNAPSHOT share, so it eases in and
   // never exceeds the ceiling); the gained share is taken proportionally from
   // all OTHER parties, then everything is renormalized.
-  function phasePartyGrowth(snap, nxt) {
+  function phasePartyGrowth(snap, nxt, tune) {
+    const ceiling = T(tune).get('world.partyCeiling');
+    const stepFrac = T(tune).get('world.partyStep');
     for (const f in nxt) {
       const s = snap[f];
       const names = Object.keys(s.ext);
@@ -104,7 +105,7 @@ const World = (function () {
       for (const p in c.ext) sh[p] = c.ext[p] / pop;
       for (const name of names) {
         const cur = s.ext[name] / spop;              // snapshot share (0..1)
-        const gain = PARTY_STEP * (PARTY_CEILING - cur);
+        const gain = stepFrac * (ceiling - cur);
         for (const q in sh) if (q !== name) sh[q] *= 1 - gain;
         sh[name] = cur + gain;
       }
@@ -121,14 +122,15 @@ const World = (function () {
   // End-of-turn cleanup: emergent parties below PARTY_FLOOR are removed and their
   // share redistributed proportionally to the remaining parties (D/R/Other are
   // structural and never removed). Stops counties splintering into tiny parties.
-  function phaseCleanup(snap, nxt) {
+  function phaseCleanup(snap, nxt, tune) {
+    const floor = T(tune).get('world.partyFloor');
     for (const f in nxt) {
       const c = nxt[f];
       const pop = c.demPop + c.gopPop + c.othPop + Object.values(c.ext).reduce((a, b) => a + b, 0);
       if (!pop) continue;
       let removed = 0;
       for (const p in c.ext) {
-        if (c.ext[p] / pop < PARTY_FLOOR) { removed += c.ext[p]; delete c.ext[p]; }
+        if (c.ext[p] / pop < floor) { removed += c.ext[p]; delete c.ext[p]; }
       }
       if (!removed) continue;
       const k = pop / (pop - removed);
@@ -137,7 +139,8 @@ const World = (function () {
     }
   }
 
-  function advanceTurn() {
+  function advanceTurn(tune) {
+    const tn = T(tune);
     const snap = {}, nxt = {};
     for (const f in Game.county) {
       const c = Game.county[f];
@@ -145,16 +148,16 @@ const World = (function () {
       nxt[f] = { demPop: c.demPop, gopPop: c.gopPop, othPop: c.othPop, ext: { ...c.ext }, gdp: c.gdp };
     }
     const leans = phaseRecomputeLeans(snap, nxt); // start-of-turn lean cache
-    phasePoliticalDrift(snap, nxt, leans);
-    phasePartyGrowth(snap, nxt);
-    phasePopulationGrowth(snap, nxt);
-    phaseCleanup(snap, nxt);
+    phasePoliticalDrift(snap, nxt, leans, tn);
+    phasePartyGrowth(snap, nxt, tn);
+    phasePopulationGrowth(snap, nxt, tn);
+    phaseCleanup(snap, nxt, tn);
     for (const f in nxt) {
       const c = Game.county[f], v = nxt[f];
       c.demPop = v.demPop; c.gopPop = v.gopPop; c.othPop = v.othPop; c.ext = v.ext; c.gdp = v.gdp;
     }
     Game.tickTreasuries(); // income minus maintenance, on this turn's updated GDP
-    Market.update();       // reprice every resource from live supply vs demand
+    Market.update(tn);     // reprice every resource from live supply vs demand
     turn += 1;
     return turn;
   }
@@ -162,6 +165,7 @@ const World = (function () {
   return {
     advanceTurn,
     getTurn: () => turn,
+    setTurn: (t) => { turn = t | 0; },
     phaseRecomputeLeans,
     phasePoliticalDrift,
     phasePartyGrowth,

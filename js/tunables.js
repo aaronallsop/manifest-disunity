@@ -123,9 +123,9 @@ export const SCHEMA = {
     doc: 'Upper clamp on any sector price.',
   },
   'market.demandShare': {
-    v: [0.14, 0.13, 0.24, 0.17, 0.19, 0.13], kind: 'array', group: 'Market',
+    v: [0.08, 0.10, 0.22, 0.15, 0.15, 0.10], kind: 'array', group: 'Market',
     label: 'Demand share by sector',
-    doc: 'Ag, Extraction, Manufacturing, Trade, Finance, IT. MUST sum to 1.0 or the "100 = balanced" label is a lie (see M1.8).',
+    doc: 'Ag, Extraction, Manufacturing, Trade, Finance, IT. Sums to 0.80 today, which is why the "100 = balanced" label is wrong (balanced is 75). M1.8 fixes the sum or relabels the index. Lives here, not in the renderer, which is where it used to be (app.js:630) — a live load-order hazard.',
   },
 
   /* ---------------- trade ---------------- */
@@ -191,20 +191,20 @@ export const SCHEMA = {
   },
 
   /* ---------------- civil war ---------------- */
-  'war.pointsPerMillion': {
-    v: 1.0, min: 0, max: 10, step: 0.1, group: 'Civil war',
-    label: 'Points per million people',
-    doc: 'Continuous — NOT rounded. Rounding is what made the median Area worth 0 points (M1.3).',
+  'war.popPerPoint': {
+    v: 1e6, min: 1e4, max: 1e8, step: 1e4, group: 'Civil war',
+    label: 'People per war point',
+    doc: 'Annexed population divided by this gives the population half of the war points.',
   },
-  'war.pointsPer10B': {
-    v: 1.0, min: 0, max: 10, step: 0.1, group: 'Civil war',
-    label: 'Points per $10B GDP',
-    doc: 'Continuous point value of annexed GDP.',
+  'war.gdpPerPoint': {
+    v: 1e10, min: 1e8, max: 1e12, step: 1e8, group: 'Civil war',
+    label: 'GDP per war point ($)',
+    doc: 'Annexed GDP divided by this gives the GDP half of the war points.',
   },
   'war.pointsScale': {
-    v: 12, min: 0.1, max: 100, step: 0.5, group: 'Civil war',
+    v: 1, min: 0.1, max: 100, step: 0.5, group: 'Civil war',
     label: 'Points scale',
-    doc: 'Multiplier turning raw points into the score band. Set so a median Area annexation lands near the victory/partial boundary.',
+    doc: 'Multiplier turning raw points into the score band. M1.3 raises it once the rounding is removed, so a median Area annexation lands near the victory/partial boundary.',
   },
   'war.maxDice': {
     v: 6, min: 1, max: 20, step: 1, group: 'Civil war',
@@ -260,6 +260,31 @@ export const SCHEMA = {
     v: 0.2, min: 0, max: 1, step: 0.01, group: 'Civil war',
     label: 'GDP transfer cap',
     doc: 'Upper clamp on the GDP share transferred.',
+  },
+  'war.unitePopWeight': {
+    v: 0.6, min: 0, max: 1, step: 0.05, group: 'Civil war',
+    label: 'Union size score: population weight',
+    doc: 'Weight on the proposer\'s population share; the remainder weights its GDP share.',
+  },
+  'war.uniteSizeFloor': {
+    v: 0.6, min: 0, max: 1, step: 0.05, group: 'Civil war',
+    label: 'Union: size score floor',
+    doc: 'Share of the peace chance that comes from size alone, before political similarity is applied.',
+  },
+  'war.unitePolitScale': {
+    v: 100, min: 10, max: 200, step: 5, group: 'Civil war',
+    label: 'Union: political-difference scale',
+    doc: 'Margin difference (0..200 points) at which political similarity hits zero.',
+  },
+  'war.uniteShellPenalty': {
+    v: 0.5, min: 0, max: 1, step: 0.05, group: 'Civil war',
+    label: 'Union: leader penalty',
+    doc: 'How much a full blue-shell severity cuts the peace chance.',
+  },
+  'war.uniteSeverityScale': {
+    v: 200, min: 10, max: 1000, step: 10, group: 'Civil war',
+    label: 'Failed-union severity scale',
+    doc: 'Turns (1 - peace chance) into a war score for the fallout calculation.',
   },
   'war.unitePeaceMin': {
     v: 0.03, min: 0, max: 0.5, step: 0.01, group: 'Civil war',

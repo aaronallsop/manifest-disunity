@@ -20,12 +20,12 @@ const Game = (function () {
   let seq = 0;
   const listeners = [];
 
-  const TURNOUT = 0.5; // proxy ballots -> population weighting for units without a real total
-
-  /* ---- treasury tunables ---- */
-  const TAX_RATE = 0.02;                    // income per turn as a share of GDP
-  const GOV_TYPES = { Republic: 0.015 };    // maintenance rate baseline by government type (placeholder)
-  const AREA_UPKEEP = 40e6;                 // flat upkeep per Area per turn ($)
+  // Every constant this module uses lives in TUNE (js/tunables.js). Reading it
+  // off the global bridge is an M0/M1 interim: game.js is a singleton IIFE that
+  // already reads Colors and Market as globals, so threading one argument
+  // through would be theatre. M2.5 promotes the closure into an explicit state
+  // document and every engine function then takes (state, tune, rng).
+  const T = (k) => TUNE.get(k);
 
   function init(data, adj, areasDef) {
     adjacency = adj;
@@ -198,7 +198,7 @@ const Game = (function () {
   // returns severity 0..1 (0 = not in the top tier, 1 = the #1 nation)
   function blueShell(nid) {
     const ranked = [...nations.keys()].map((id) => ({ id, pop: nationDemographics(id).pop })).sort((a, b) => b.pop - a.pop);
-    const topCount = Math.max(1, Math.round(0.1 * ranked.length)); // ~top 10% (5 of 51)
+    const topCount = Math.max(1, Math.round(T('shell.topShare') * ranked.length)); // ~top 10% (5 of 51)
     const idx = ranked.findIndex((x) => x.id === nid);
     if (idx < 0 || idx >= topCount) return 0;
     return (topCount - idx) / topCount;
@@ -237,17 +237,16 @@ const Game = (function () {
     for (const [id, n] of nations) if (n.counties.size === 0) nations.delete(id);
   }
 
-  const MIN_NATION = 10; // a new nation from a breakup needs at least this many counties
-
-  // Break a set of counties into new nations. Contiguous chunks of >=10 counties
-  // become nations; smaller chunks join their nearest nation (unless a chunk is
-  // the only thing there is, in which case it becomes a small nation anyway).
+  // Break a set of counties into new nations. Contiguous chunks of at least
+  // TUNE nation.minAreas Areas become nations; smaller chunks join their nearest
+  // nation (unless a chunk is the only thing there is, in which case it becomes
+  // a small nation anyway).
   function breakApart(countyIds, opts = {}) {
     const exclude = opts.exclude || null; // a nation new fragments must not join (e.g. a failed aggressor)
     const comps = components(new Set(countyIds), null).sort((a, b) => b.length - a.length);
     const created = [], small = [];
     for (const comp of comps) {
-      if (comp.length >= MIN_NATION) created.push(createNation(nameForCounty(largestCounty(comp)), comp, { silent: true }));
+      if (comp.length >= T('nation.minAreas')) created.push(createNation(nameForCounty(largestCounty(comp)), comp, { silent: true }));
       else small.push(comp);
     }
     // small fragments join their nearest nation; only truly isolated ones become nations
@@ -268,7 +267,7 @@ const Game = (function () {
       let d = 0, g = 0;
       for (const f of loser.counties) { d += county[f].demPop; g += county[f].gopPop; }
       const rulingDem = d >= g;
-      const lossPct = clamp(0.02 + score / 2500, 0.02, 0.4); // 2%..40% of ruling party
+      const lossPct = clamp(T('war.popLossBase') + score * T('war.popLossPerScore'), T('war.popLossBase'), T('war.popLossMax'));
       const per = (lossPct * (rulingDem ? d : g)) / loser.counties.size; // spread evenly by county
       for (const f of loser.counties) {
         const c = county[f];
@@ -279,7 +278,7 @@ const Game = (function () {
     if (winnerId && nations.has(winnerId) && loser && loser.counties.size) {
       let gdp = 0;
       for (const f of loser.counties) gdp += county[f].gdp;
-      const gPct = clamp(0.02 + score / 5000, 0.02, 0.2); // 2%..20% of GDP
+      const gPct = clamp(T('war.gdpLossBase') + score * T('war.gdpLossPerScore'), T('war.gdpLossBase'), T('war.gdpLossMax'));
       let moved = 0; // each loser county gives up the same fraction; winner gets it all
       for (const f of loser.counties) { const take = county[f].gdp * gPct; county[f].gdp -= take; moved += take; }
       const winner = nations.get(winnerId);
@@ -317,8 +316,9 @@ const Game = (function () {
     const n = nations.get(nid);
     if (!n) return null;
     const gdp = demographics(n.counties).gdp;
-    const income = gdp * TAX_RATE;
-    const maintenance = gdp * (GOV_TYPES[n.gov] ?? GOV_TYPES.Republic) + n.counties.size * AREA_UPKEEP;
+    const gov = T('econ.govMaintenance');
+    const income = gdp * T('econ.taxRate');
+    const maintenance = gdp * (gov[n.gov] ?? gov.Republic) + n.counties.size * T('econ.areaUpkeep');
     return { income, maintenance, delta: income - maintenance };
   }
   function tickTreasuries() {
