@@ -1,0 +1,23 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "nation-states",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8000"],
+      "port": 8000
+    },
+    {
+      "name": "resume-engine-ui",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["C:\\Users\\aaron\\resume-engine\\scripts\\serve.py"],
+      "port": 8020
+    },
+    {
+      "name": "archive-log-preview",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8765", "--directory", "C:\\Users\\aaron\\AppData\\Local\\Temp\\claude\\C--Users-aaron-Nation-States\\27c1f570-0c62-4479-b824-308f6ee4d609\\scratchpad"],
+      "port": 8765
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+# Regenerable raw download caches (~376 MB). The README documents each artifact,
+# its source URL and its size, and is the one file here that IS committed.
+build/raw/*
+!build/raw/README.md
+
+# Python bytecode
+__pycache__/
+*.pyc
+
+# Tooling scratch
+.claude/scheduled_tasks.lock
+
+# Live game state — written by server.py, never committed. Authored content
+# lives in content/*.json and IS committed.
+data/state.json
+data/state.json.tmp

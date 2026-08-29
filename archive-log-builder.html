@@ -1,0 +1,807 @@
+<meta charset="utf-8">
+<title>Archive Log Builder</title>
+<style>
+  :root {
+    --paper: #F7F8F7;
+    --panel: #FFFFFF;
+    --panel-2: #EFF1F0;
+    --ink: #1B1E24;
+    --ink-2: #5A6068;
+    --ink-3: #8B9199;
+    --line: #DDE0DF;
+    --accent: #3E7BFA;
+    --accent-ink: #FFFFFF;
+    --accent-soft: #E8EFFE;
+    --warn: #9A6A1B;
+    --warn-soft: #F6ECD8;
+    --row-hover: #F0F4FE;
+    --shadow: 0 1px 2px rgba(20, 24, 32, .06), 0 4px 16px rgba(20, 24, 32, .05);
+    --mono: ui-monospace, "Cascadia Mono", "Cascadia Code", Consolas, "SF Mono", Menlo, monospace;
+    --sans: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #101216;
+      --panel: #16181D;
+      --panel-2: #1D2026;
+      --ink: #E8EAED;
+      --ink-2: #A3A9B3;
+      --ink-3: #6E747E;
+      --line: #2A2E36;
+      --accent: #7DA4FF;
+      --accent-ink: #0E1320;
+      --accent-soft: #1D2740;
+      --warn: #D9A94E;
+      --warn-soft: #2E2716;
+      --row-hover: #1B2233;
+      --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 4px 16px rgba(0, 0, 0, .3);
+    }
+  }
+  :root[data-theme="light"] {
+    --paper: #F7F8F7; --panel: #FFFFFF; --panel-2: #EFF1F0;
+    --ink: #1B1E24; --ink-2: #5A6068; --ink-3: #8B9199; --line: #DDE0DF;
+    --accent: #3E7BFA; --accent-ink: #FFFFFF; --accent-soft: #E8EFFE;
+    --warn: #9A6A1B; --warn-soft: #F6ECD8; --row-hover: #F0F4FE;
+    --shadow: 0 1px 2px rgba(20, 24, 32, .06), 0 4px 16px rgba(20, 24, 32, .05);
+  }
+  :root[data-theme="dark"] {
+    --paper: #101216; --panel: #16181D; --panel-2: #1D2026;
+    --ink: #E8EAED; --ink-2: #A3A9B3; --ink-3: #6E747E; --line: #2A2E36;
+    --accent: #7DA4FF; --accent-ink: #0E1320; --accent-soft: #1D2740;
+    --warn: #D9A94E; --warn-soft: #2E2716; --row-hover: #1B2233;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 4px 16px rgba(0, 0, 0, .3);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .wrap { max-width: 1060px; margin: 0 auto; padding: 40px 24px 96px; }
+
+  header.masthead { margin-bottom: 36px; }
+  .masthead h1 {
+    font-size: 26px; font-weight: 650; letter-spacing: -.015em;
+    margin: 0 0 6px; text-wrap: balance;
+  }
+  .masthead h1 .tc {
+    font-family: var(--mono); font-weight: 500; font-size: 20px;
+    color: var(--accent); letter-spacing: 0; vertical-align: 1px;
+    background: var(--accent-soft); border-radius: 4px; padding: 2px 8px; margin-left: 10px;
+    font-variant-numeric: tabular-nums;
+  }
+  .masthead p { margin: 0; color: var(--ink-2); max-width: 62ch; }
+
+  .step {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .step[hidden] { display: none; }
+  .step-head {
+    display: flex; align-items: baseline; gap: 12px;
+    padding: 16px 20px 0;
+  }
+  .step-num {
+    font-family: var(--mono); font-size: 12px; font-weight: 600;
+    color: var(--accent); letter-spacing: .08em;
+  }
+  .step-head h2 { font-size: 16px; font-weight: 650; margin: 0; letter-spacing: -.01em; }
+  .step-head .hint { color: var(--ink-3); font-size: 13px; margin-left: auto; }
+  .step-body { padding: 14px 20px 20px; }
+
+  /* Step 1: dropzone */
+  .dropzone {
+    border: 1.5px dashed var(--line);
+    border-radius: 6px;
+    padding: 44px 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color .15s, background-color .15s;
+    color: var(--ink-2);
+  }
+  .dropzone:hover, .dropzone:focus-visible, .dropzone.dragover {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    outline: none;
+  }
+  .dropzone strong { color: var(--ink); font-weight: 600; }
+  .dropzone .sub { font-size: 13px; color: var(--ink-3); margin-top: 6px; }
+  .file-error {
+    margin-top: 12px; padding: 10px 14px; border-radius: 6px;
+    background: var(--warn-soft); color: var(--warn); font-size: 14px;
+  }
+  .file-error[hidden] { display: none; }
+
+  /* Loaded-file summary */
+  .loaded {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 10px 22px;
+    font-size: 14px;
+  }
+  .loaded .stat { display: flex; align-items: baseline; gap: 7px; }
+  .loaded .stat b { font-weight: 600; }
+  .loaded .stat .k { color: var(--ink-3); font-size: 12px; text-transform: uppercase; letter-spacing: .07em; }
+  .loaded .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  .btn-reset {
+    margin-left: auto; background: none; border: 1px solid var(--line);
+    color: var(--ink-2); border-radius: 6px; padding: 6px 14px;
+    font: 600 13px var(--sans); cursor: pointer;
+  }
+  .btn-reset:hover { border-color: var(--ink-3); color: var(--ink); }
+
+  /* Step 2: options + columns */
+  .opts {
+    display: flex; flex-wrap: wrap; gap: 8px 24px;
+    padding: 10px 12px; border-radius: 6px; background: var(--panel-2);
+    margin-bottom: 18px; font-size: 14px;
+  }
+  .opts label { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
+
+  .col-group { margin-bottom: 16px; }
+  .col-group:last-child { margin-bottom: 0; }
+  .col-group .g-label {
+    font-size: 11px; font-weight: 650; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--ink-3); margin-bottom: 8px;
+  }
+  .col-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+  .col-chip {
+    display: inline-flex; align-items: center; gap: 8px;
+    border: 1px solid var(--line); border-radius: 6px;
+    padding: 6px 12px; cursor: pointer; user-select: none;
+    font-size: 14px; background: var(--panel);
+    transition: background-color .12s, border-color .12s;
+  }
+  .col-chip:hover { border-color: var(--ink-3); }
+  .col-chip.on { background: var(--accent-soft); border-color: var(--accent); }
+  .col-chip input { accent-color: var(--accent); margin: 0; }
+  .col-chip .empty-tag {
+    font-size: 11px; color: var(--warn); background: var(--warn-soft);
+    border-radius: 4px; padding: 1px 6px; font-weight: 600;
+  }
+  .col-actions { display: flex; gap: 14px; margin-top: 14px; font-size: 13px; }
+  .col-actions button {
+    background: none; border: none; padding: 0; color: var(--accent);
+    font: 600 13px var(--sans); cursor: pointer;
+  }
+  .col-actions button:hover { text-decoration: underline; }
+  input:focus-visible, button:focus-visible, .col-chip:focus-within {
+    outline: 2px solid var(--accent); outline-offset: 2px;
+  }
+
+  /* Step 3: preview + export */
+  .table-scroll {
+    overflow-x: auto; overflow-y: auto; max-height: 480px;
+    border: 1px solid var(--line); border-radius: 6px;
+  }
+  table { border-collapse: collapse; width: 100%; font-size: 13px; }
+  thead th {
+    position: sticky; top: 0; z-index: 1;
+    background: var(--panel-2); color: var(--ink-2);
+    font-size: 11px; font-weight: 650; letter-spacing: .07em; text-transform: uppercase;
+    text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+  }
+  tbody td {
+    padding: 7px 12px; border-bottom: 1px solid var(--line);
+    white-space: nowrap; max-width: 340px; overflow: hidden; text-overflow: ellipsis;
+    font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 12.5px;
+  }
+  tbody td.txt { font-family: var(--sans); font-size: 13px; }
+  tbody tr:hover td { background: var(--row-hover); }
+  tbody tr:last-child td { border-bottom: none; }
+  .preview-note { color: var(--ink-3); font-size: 13px; margin: 10px 2px 0; }
+
+  .export-bar { display: flex; align-items: center; gap: 12px; margin-top: 18px; flex-wrap: wrap; }
+  .btn-export {
+    background: var(--accent); color: var(--accent-ink);
+    border: none; border-radius: 6px; padding: 11px 26px;
+    font: 650 15px var(--sans); cursor: pointer; letter-spacing: .01em;
+  }
+  .btn-export:hover { filter: brightness(1.08); }
+  .btn-export:active { filter: brightness(.95); }
+  .btn-secondary {
+    background: none; color: var(--accent);
+    border: 1px solid var(--accent); border-radius: 6px; padding: 10px 20px;
+    font: 650 14px var(--sans); cursor: pointer;
+  }
+  .btn-secondary:hover { background: var(--accent-soft); }
+  .export-note { color: var(--ink-3); font-size: 13px; }
+  .fallback {
+    margin-top: 14px; padding: 14px 16px; border-radius: 6px;
+    background: var(--panel-2); border: 1px solid var(--line);
+  }
+  .fallback[hidden] { display: none; }
+  .fallback p { margin: 0 0 10px; font-size: 13.5px; color: var(--ink-2); }
+  .fallback textarea {
+    width: 100%; height: 180px; resize: vertical;
+    background: var(--panel); color: var(--ink);
+    border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px;
+    font: 12px/1.5 var(--mono); white-space: pre;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+
+<div class="wrap">
+  <header class="masthead">
+    <h1>Archive Log Builder<span class="tc" id="mast-tc">00:00:00:00</span></h1>
+    <p>Load a Final Cut Pro XML exported from Premiere Pro, pick the columns your archive log needs, and export a CSV sorted by record timecode. Everything runs in your browser — nothing is uploaded anywhere.</p>
+  </header>
+
+  <!-- STEP 1 -->
+  <section class="step" id="step1">
+    <div class="step-head"><span class="step-num">STEP 1</span><h2>Load the XML</h2></div>
+    <div class="step-body">
+      <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Load a Final Cut XML file">
+        <div><strong>Drop your .xml here</strong> or click to browse</div>
+        <div class="sub">Final Cut Pro XML (xmeml) exported from Premiere via File → Export → Final Cut Pro XML</div>
+      </div>
+      <input type="file" id="file-input" accept=".xml,text/xml" hidden>
+      <div class="file-error" id="file-error" hidden></div>
+      <div class="loaded" id="loaded-summary" hidden></div>
+    </div>
+  </section>
+
+  <!-- STEP 2 -->
+  <section class="step" id="step2" hidden>
+    <div class="step-head">
+      <span class="step-num">STEP 2</span><h2>Choose your columns</h2>
+      <span class="hint">Columns with no data in this XML are flagged</span>
+    </div>
+    <div class="step-body">
+      <div class="opts" id="opts">
+        <label><input type="checkbox" id="opt-merge" checked> Merge linked audio &amp; video into one row</label>
+        <label><input type="checkbox" id="opt-audio" checked> Include audio-only clips</label>
+        <label><input type="checkbox" id="opt-disabled"> Include disabled clips</label>
+      </div>
+      <div id="col-groups"></div>
+      <div class="col-actions">
+        <button type="button" id="cols-all">Select all</button>
+        <button type="button" id="cols-none">Clear all</button>
+        <button type="button" id="cols-default">Reset to defaults</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 3 -->
+  <section class="step" id="step3" hidden>
+    <div class="step-head">
+      <span class="step-num">STEP 3</span><h2>Preview &amp; export</h2>
+      <span class="hint" id="sort-hint">Sorted by Record In</span>
+    </div>
+    <div class="step-body">
+      <div class="table-scroll"><table id="preview-table"></table></div>
+      <p class="preview-note" id="preview-note"></p>
+      <div class="export-bar">
+        <button type="button" class="btn-export" id="btn-export">Export CSV</button>
+        <button type="button" class="btn-secondary" id="btn-copy">Copy for Excel / Sheets</button>
+        <span class="export-note" id="export-note"></span>
+      </div>
+      <div class="fallback" id="fallback" hidden>
+        <p id="fallback-msg">If no file downloaded (some hosts block downloads), copy the CSV below and paste it into a new file saved as <b>.csv</b> — or use <b>Copy for Excel / Sheets</b> above and paste straight into a spreadsheet.</p>
+        <textarea id="fallback-text" readonly spellcheck="false" aria-label="CSV output"></textarea>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+'use strict';
+
+/* ---------- column model ---------- */
+const COLUMNS = [
+  { id: 'sequence',  label: 'Sequence',      group: 'Timeline',       def: false, txt: true },
+  { id: 'track',     label: 'Track',          group: 'Timeline',       def: false },
+  { id: 'name',      label: 'Clip Name',      group: 'Timeline',       def: true,  txt: true },
+  { id: 'recIn',     label: 'Record In',      group: 'Timecode',       def: true },
+  { id: 'recOut',    label: 'Record Out',     group: 'Timecode',       def: true },
+  { id: 'duration',  label: 'Duration',       group: 'Timecode',       def: true },
+  { id: 'srcIn',     label: 'Source In',      group: 'Timecode',       def: true },
+  { id: 'srcOut',    label: 'Source Out',     group: 'Timecode',       def: true },
+  { id: 'fps',       label: 'FPS',            group: 'Timecode',       def: false },
+  { id: 'reel',      label: 'Reel / Tape',    group: 'Source media',   def: true,  txt: true },
+  { id: 'fileName',  label: 'File Name',      group: 'Source media',   def: true,  txt: true },
+  { id: 'filePath',  label: 'File Path',      group: 'Source media',   def: false, txt: true },
+  { id: 'mediaType', label: 'Media Type',     group: 'Source media',   def: false, txt: true },
+  { id: 'frameSize', label: 'Frame Size',     group: 'Source media',   def: false },
+  { id: 'scene',     label: 'Scene',          group: 'Logging & notes', def: false, txt: true },
+  { id: 'shotTake',  label: 'Shot / Take',    group: 'Logging & notes', def: false, txt: true },
+  { id: 'description', label: 'Description',  group: 'Logging & notes', def: false, txt: true },
+  { id: 'logNote',   label: 'Log Note',       group: 'Logging & notes', def: false, txt: true },
+  { id: 'good',      label: 'Good Take',      group: 'Logging & notes', def: false, txt: true },
+  { id: 'label',     label: 'Label',          group: 'Logging & notes', def: false, txt: true },
+  { id: 'comments',  label: 'Comments',       group: 'Logging & notes', def: false, txt: true },
+  { id: 'masterClip', label: 'Master Clip ID', group: 'Logging & notes', def: false, txt: true },
+];
+const GROUP_ORDER = ['Timeline', 'Timecode', 'Source media', 'Logging & notes'];
+
+let allRows = [];        // every parsed clip row
+let viewRows = [];       // rows after option filters + merge + sort
+let selected = new Set(COLUMNS.filter(c => c.def).map(c => c.id));
+let sourceFileName = 'archive-log';
+
+/* ---------- XML helpers ---------- */
+function child(el, tag) {
+  for (const c of el.children) if (c.tagName === tag) return c;
+  return null;
+}
+function childText(el, tag) {
+  const c = el && child(el, tag);
+  return c ? c.textContent.trim() : '';
+}
+function childInt(el, tag, fallback) {
+  const t = childText(el, tag);
+  const n = parseInt(t, 10);
+  return Number.isFinite(n) ? n : fallback;
+}
+function getRate(el) {
+  const r = el && child(el, 'rate');
+  if (!r) return null;
+  const timebase = childInt(r, 'timebase', NaN);
+  if (!Number.isFinite(timebase)) return null;
+  const ntsc = childText(r, 'ntsc').toUpperCase() === 'TRUE';
+  return { timebase, ntsc };
+}
+function fpsLabel(rate) {
+  if (!rate) return '';
+  const f = rate.ntsc ? (rate.timebase * 1000 / 1001) : rate.timebase;
+  return Number.isInteger(f) ? String(f) : f.toFixed(2);
+}
+
+/* ---------- timecode math ---------- */
+function framesToTC(frames, rate, drop) {
+  if (!rate || !Number.isFinite(frames)) return '';
+  const tb = rate.timebase;
+  let f = Math.max(0, Math.round(frames));
+  if (drop && rate.ntsc && tb % 30 === 0) {
+    // convert a real frame count into drop-frame display numbers
+    const dropPerMin = 2 * (tb / 30);            // 2 @29.97, 4 @59.94
+    const framesPerMin = tb * 60 - dropPerMin;
+    const framesPer10 = framesPerMin * 10 + dropPerMin;
+    const tens = Math.floor(f / framesPer10);
+    const rem = f % framesPer10;
+    f += dropPerMin * 9 * tens;
+    if (rem > dropPerMin) f += dropPerMin * Math.floor((rem - dropPerMin) / framesPerMin);
+  }
+  const ff = f % tb;
+  const ss = Math.floor(f / tb) % 60;
+  const mm = Math.floor(f / (tb * 60)) % 60;
+  const hh = Math.floor(f / (tb * 3600));
+  const p = n => String(n).padStart(2, '0');
+  return `${p(hh)}:${p(mm)}:${p(ss)}:${p(ff)}`;
+}
+
+/* ---------- parsing ---------- */
+function decodePathUrl(u) {
+  if (!u) return '';
+  let s = u.replace(/^file:\/\/localhost\//i, '').replace(/^file:\/\//i, '');
+  try { s = decodeURIComponent(s); } catch (e) { /* leave as-is */ }
+  return s;
+}
+
+function parseXmeml(text) {
+  const doc = new DOMParser().parseFromString(text, 'text/xml');
+  if (doc.querySelector('parsererror')) throw new Error('This file is not valid XML.');
+  if (!doc.querySelector('xmeml')) throw new Error('No <xmeml> root found — this doesn’t look like a Final Cut Pro XML. In Premiere use File → Export → Final Cut Pro XML.');
+
+  // top-level sequences only (a clipitem can embed a nested sequence)
+  const sequences = [...doc.getElementsByTagName('sequence')]
+    .filter(s => !s.closest('clipitem'));
+  if (!sequences.length) throw new Error('No sequences found in this XML.');
+
+  const fileRegistry = new Map();  // file id -> element with content
+  const rows = [];
+
+  sequences.forEach((seq, seqIndex) => {
+    const seqName = childText(seq, 'name') || `Sequence ${seqIndex + 1}`;
+    const seqRate = getRate(seq) || { timebase: 25, ntsc: false };
+    const tcEl = child(seq, 'timecode');
+    const seqStartFrame = tcEl ? childInt(tcEl, 'frame', 0) : 0;
+    const seqDrop = tcEl ? childText(tcEl, 'displayformat').toUpperCase() === 'DF' : false;
+
+    const media = child(seq, 'media');
+    if (!media) return;
+
+    for (const kind of ['video', 'audio']) {
+      const section = child(media, kind);
+      if (!section) continue;
+      let trackNum = 0;
+      for (const track of section.children) {
+        if (track.tagName !== 'track') continue;
+        trackNum++;
+        const trackLabel = (kind === 'video' ? 'V' : 'A') + trackNum;
+        let prevEnd = 0, pendingTransition = null;
+
+        for (const item of track.children) {
+          if (item.tagName === 'transitionitem') { pendingTransition = item; continue; }
+          if (item.tagName !== 'clipitem') continue;
+
+          // resolve file reference (later occurrences are empty <file id=""/>)
+          let fileEl = child(item, 'file');
+          if (fileEl) {
+            const fid = fileEl.getAttribute('id');
+            if (fileEl.children.length > 0) { if (fid) fileRegistry.set(fid, fileEl); }
+            else if (fid && fileRegistry.has(fid)) fileEl = fileRegistry.get(fid);
+          }
+
+          let start = childInt(item, 'start', -1);
+          let end = childInt(item, 'end', -1);
+          // -1 means the edge sits under a transition
+          if (start === -1) start = pendingTransition ? childInt(pendingTransition, 'start', prevEnd) : prevEnd;
+          if (end === -1) {
+            let sib = item.nextElementSibling;
+            end = (sib && sib.tagName === 'transitionitem') ? childInt(sib, 'end', start) : start;
+          }
+          prevEnd = end;
+          pendingTransition = null;
+
+          const inF = childInt(item, 'in', 0);
+          const outF = childInt(item, 'out', 0);
+          const clipRate = getRate(item) || seqRate;
+          const fileRate = (fileEl && getRate(fileEl)) || clipRate;
+
+          const fileTcEl = fileEl && child(fileEl, 'timecode');
+          const srcStartFrame = fileTcEl ? childInt(fileTcEl, 'frame', 0) : 0;
+          const srcDrop = fileTcEl ? childText(fileTcEl, 'displayformat').toUpperCase() === 'DF' : false;
+          const reelEl = fileTcEl && child(fileTcEl, 'reel');
+
+          const logEl = child(item, 'logginginfo');
+          const labelsEl = child(item, 'labels');
+          const commentsEl = child(item, 'comments');
+          const commentParts = [];
+          if (commentsEl) {
+            for (const c of commentsEl.children) {
+              const v = c.textContent.trim();
+              if (v) commentParts.push(v);
+            }
+          }
+          let frameSize = '';
+          if (fileEl) {
+            const fm = child(fileEl, 'media');
+            const fv = fm && child(fm, 'video');
+            const sc = fv && child(fv, 'samplecharacteristics');
+            if (sc) {
+              const w = childText(sc, 'width'), h = childText(sc, 'height');
+              if (w && h) frameSize = w + ' × ' + h;
+            }
+          }
+
+          rows.push({
+            sequence: seqName,
+            seqIndex,
+            trackLabel,
+            kind,
+            enabled: childText(item, 'enabled').toUpperCase() !== 'FALSE',
+            name: childText(item, 'name') || (fileEl ? childText(fileEl, 'name') : ''),
+            startF: start, endF: end,
+            recInFrames: seqStartFrame + start,
+            recIn: framesToTC(seqStartFrame + start, seqRate, seqDrop),
+            recOut: framesToTC(seqStartFrame + end, seqRate, seqDrop),
+            duration: framesToTC(end - start, seqRate, false),
+            srcIn: fileEl ? framesToTC(srcStartFrame + inF, fileRate, srcDrop) : '',
+            srcOut: fileEl ? framesToTC(srcStartFrame + outF, fileRate, srcDrop) : '',
+            fps: fpsLabel(clipRate),
+            reel: reelEl ? childText(reelEl, 'name') : '',
+            fileName: fileEl ? childText(fileEl, 'name') : '',
+            filePath: fileEl ? decodePathUrl(childText(fileEl, 'pathurl')) : '',
+            mediaType: kind,
+            frameSize,
+            scene: logEl ? childText(logEl, 'scene') : '',
+            shotTake: logEl ? childText(logEl, 'shottake') : '',
+            description: logEl ? childText(logEl, 'description') : '',
+            logNote: logEl ? childText(logEl, 'lognote') : '',
+            good: logEl ? (childText(logEl, 'good').toUpperCase() === 'TRUE' ? 'Yes' : '') : '',
+            label: labelsEl ? (childText(labelsEl, 'label2') || childText(labelsEl, 'label')) : '',
+            comments: commentParts.join(' | '),
+            masterClip: childText(item, 'masterclipid'),
+            mergeKey: [seqIndex, childText(item, 'masterclipid') || childText(item, 'name'), start, end].join('|'),
+          });
+        }
+      }
+    }
+  });
+
+  return { rows, sequences: sequences.map(s => childText(s, 'name')), multiSeq: sequences.length > 1 };
+}
+
+/* ---------- view assembly (filters, merge, sort) ---------- */
+function buildViewRows() {
+  const merge = document.getElementById('opt-merge').checked;
+  const includeAudio = document.getElementById('opt-audio').checked;
+  const includeDisabled = document.getElementById('opt-disabled').checked;
+
+  let rows = allRows.filter(r => includeDisabled || r.enabled);
+
+  if (merge) {
+    const map = new Map();
+    for (const r of rows) {
+      const existing = map.get(r.mergeKey);
+      if (!existing) {
+        map.set(r.mergeKey, { ...r, tracks: [r.trackLabel], kinds: new Set([r.kind]) });
+      } else {
+        existing.tracks.push(r.trackLabel);
+        existing.kinds.add(r.kind);
+        if (r.kind === 'video') {  // prefer video-side media details
+          for (const k of ['fileName', 'filePath', 'frameSize', 'reel', 'srcIn', 'srcOut', 'fps']) {
+            if (r[k]) existing[k] = r[k];
+          }
+          existing.kind = 'video';
+        }
+      }
+    }
+    rows = [...map.values()].map(r => ({
+      ...r,
+      track: r.tracks.join(', '),
+      mediaType: r.kinds.has('video') && r.kinds.has('audio') ? 'A/V'
+               : r.kinds.has('video') ? 'Video' : 'Audio',
+    }));
+    if (!includeAudio) rows = rows.filter(r => r.kinds.has('video'));
+  } else {
+    rows = rows.map(r => ({ ...r, track: r.trackLabel, mediaType: r.kind === 'video' ? 'Video' : 'Audio' }));
+    if (!includeAudio) rows = rows.filter(r => r.kind === 'video');
+  }
+
+  rows.sort((a, b) => a.seqIndex - b.seqIndex || a.recInFrames - b.recInFrames
+                   || a.track.localeCompare(b.track));
+  viewRows = rows;
+}
+
+/* ---------- rendering ---------- */
+function renderColumnChips() {
+  const nonEmpty = new Set();
+  for (const c of COLUMNS) {
+    if (viewRows.some(r => String(r[c.id] ?? '') !== '')) nonEmpty.add(c.id);
+  }
+  const container = document.getElementById('col-groups');
+  container.innerHTML = '';
+  for (const g of GROUP_ORDER) {
+    const groupCols = COLUMNS.filter(c => c.group === g);
+    const div = document.createElement('div');
+    div.className = 'col-group';
+    const lab = document.createElement('div');
+    lab.className = 'g-label';
+    lab.textContent = g;
+    div.appendChild(lab);
+    const grid = document.createElement('div');
+    grid.className = 'col-grid';
+    for (const c of groupCols) {
+      const chip = document.createElement('label');
+      chip.className = 'col-chip' + (selected.has(c.id) ? ' on' : '');
+      const cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.checked = selected.has(c.id);
+      cb.addEventListener('change', () => {
+        if (cb.checked) selected.add(c.id); else selected.delete(c.id);
+        chip.classList.toggle('on', cb.checked);
+        renderPreview();
+      });
+      chip.appendChild(cb);
+      chip.appendChild(document.createTextNode(' ' + c.label));
+      if (!nonEmpty.has(c.id)) {
+        const tag = document.createElement('span');
+        tag.className = 'empty-tag';
+        tag.textContent = 'empty';
+        chip.appendChild(tag);
+      }
+      grid.appendChild(chip);
+    }
+    div.appendChild(grid);
+    container.appendChild(div);
+  }
+}
+
+const PREVIEW_LIMIT = 150;
+function renderPreview() {
+  const cols = COLUMNS.filter(c => selected.has(c.id));
+  const table = document.getElementById('preview-table');
+  table.innerHTML = '';
+  const thead = table.createTHead();
+  const hr = thead.insertRow();
+  for (const c of cols) {
+    const th = document.createElement('th');
+    th.textContent = c.label;
+    hr.appendChild(th);
+  }
+  const tbody = table.createTBody();
+  for (const r of viewRows.slice(0, PREVIEW_LIMIT)) {
+    const tr = tbody.insertRow();
+    for (const c of cols) {
+      const td = tr.insertCell();
+      td.textContent = String(r[c.id] ?? '');
+      if (c.txt) td.className = 'txt';
+      td.title = td.textContent;
+    }
+  }
+  const note = document.getElementById('preview-note');
+  note.textContent = viewRows.length > PREVIEW_LIMIT
+    ? `Showing the first ${PREVIEW_LIMIT} of ${viewRows.length} rows — the CSV includes all of them.`
+    : `${viewRows.length} row${viewRows.length === 1 ? '' : 's'}.`;
+  document.getElementById('export-note').textContent =
+    `${viewRows.length} rows × ${cols.length} columns`;
+}
+
+function refresh() {
+  buildViewRows();
+  renderColumnChips();
+  renderPreview();
+  document.getElementById('fallback').hidden = true;  // stale CSV, rebuild on next export
+}
+
+/* ---------- CSV export ---------- */
+function csvEscape(v) {
+  const s = String(v ?? '');
+  return /[",\r\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+}
+function buildDelimited(sep) {
+  const cols = COLUMNS.filter(c => selected.has(c.id));
+  if (!cols.length) return null;
+  const esc = sep === ',' ? csvEscape : v => String(v ?? '').replace(/[\t\r\n]+/g, ' ');
+  const lines = [cols.map(c => esc(c.label)).join(sep)];
+  for (const r of viewRows) {
+    lines.push(cols.map(c => esc(r[c.id])).join(sep));
+  }
+  return lines.join('\r\n');
+}
+function exportCSV() {
+  const csv = buildDelimited(',');
+  if (csv === null) { alert('Select at least one column first.'); return; }
+  // some hosts (e.g. sandboxed iframes) silently block downloads, so always
+  // surface the CSV text as a fallback alongside the download attempt
+  const ta = document.getElementById('fallback-text');
+  ta.value = csv;
+  document.getElementById('fallback').hidden = false;
+  try {
+    const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = sourceFileName.replace(/\.xml$/i, '') + ' - archive log.csv';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+  } catch (e) { /* fallback textarea is already visible */ }
+}
+function copyForSheets() {
+  const tsv = buildDelimited('\t');
+  if (tsv === null) { alert('Select at least one column first.'); return; }
+  const btn = document.getElementById('btn-copy');
+  const done = ok => {
+    btn.textContent = ok ? 'Copied — paste into your spreadsheet' : 'Copy failed — use the CSV text below';
+    if (!ok) {
+      const ta = document.getElementById('fallback-text');
+      ta.value = buildDelimited(',');
+      document.getElementById('fallback').hidden = false;
+    }
+    setTimeout(() => { btn.textContent = 'Copy for Excel / Sheets'; }, 2600);
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(tsv).then(() => done(true), () => done(legacyCopy(tsv)));
+  } else {
+    done(legacyCopy(tsv));
+  }
+}
+function legacyCopy(text) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  let ok = false;
+  try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+  ta.remove();
+  return ok;
+}
+
+/* ---------- file loading ---------- */
+function showError(msg) {
+  const el = document.getElementById('file-error');
+  el.textContent = msg;
+  el.hidden = false;
+}
+function loadFile(file) {
+  document.getElementById('file-error').hidden = true;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const { rows, multiSeq } = parseXmeml(reader.result);
+      if (!rows.length) throw new Error('The sequence contains no clips.');
+      allRows = rows;
+      sourceFileName = file.name;
+      if (multiSeq && !selected.has('sequence')) selected.add('sequence');
+
+      // summary
+      const seqNames = [...new Set(rows.map(r => r.sequence))];
+      const fpsSet = [...new Set(rows.map(r => r.fps).filter(Boolean))];
+      const sum = document.getElementById('loaded-summary');
+      sum.innerHTML = '';
+      const mkStat = (k, v, mono) => {
+        const d = document.createElement('span');
+        d.className = 'stat';
+        const kk = document.createElement('span'); kk.className = 'k'; kk.textContent = k;
+        const vv = document.createElement('b'); if (mono) vv.className = 'mono';
+        vv.textContent = v;
+        d.append(kk, vv);
+        return d;
+      };
+      sum.append(
+        mkStat('File', file.name),
+        mkStat(seqNames.length > 1 ? 'Sequences' : 'Sequence',
+               seqNames.length > 2 ? `${seqNames.length} sequences` : seqNames.join(', ')),
+        mkStat('Clips', String(rows.length), true),
+        mkStat('FPS', fpsSet.join(', ') || '—', true),
+      );
+      const reset = document.createElement('button');
+      reset.className = 'btn-reset';
+      reset.type = 'button';
+      reset.textContent = 'Load a different file';
+      reset.addEventListener('click', () => {
+        document.getElementById('file-input').value = '';
+        document.getElementById('file-input').click();
+      });
+      sum.appendChild(reset);
+      sum.hidden = false;
+      document.getElementById('dropzone').style.display = 'none';
+      document.getElementById('step2').hidden = false;
+      document.getElementById('step3').hidden = false;
+      refresh();
+      document.getElementById('step2').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } catch (err) {
+      showError(err.message || 'Could not read this file.');
+      document.getElementById('dropzone').style.display = '';
+      document.getElementById('loaded-summary').hidden = true;
+      document.getElementById('step2').hidden = true;
+      document.getElementById('step3').hidden = true;
+    }
+  };
+  reader.onerror = () => showError('Could not read this file.');
+  reader.readAsText(file);
+}
+
+/* ---------- wiring ---------- */
+const dz = document.getElementById('dropzone');
+const fi = document.getElementById('file-input');
+dz.addEventListener('click', () => fi.click());
+dz.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fi.click(); } });
+fi.addEventListener('change', () => { if (fi.files[0]) loadFile(fi.files[0]); });
+['dragover', 'dragenter'].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.add('dragover'); }));
+['dragleave', 'drop'].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.remove('dragover'); }));
+dz.addEventListener('drop', e => { if (e.dataTransfer.files[0]) loadFile(e.dataTransfer.files[0]); });
+
+for (const id of ['opt-merge', 'opt-audio', 'opt-disabled']) {
+  document.getElementById(id).addEventListener('change', refresh);
+}
+document.getElementById('cols-all').addEventListener('click', () => {
+  selected = new Set(COLUMNS.map(c => c.id)); renderColumnChips(); renderPreview();
+});
+document.getElementById('cols-none').addEventListener('click', () => {
+  selected = new Set(); renderColumnChips(); renderPreview();
+});
+document.getElementById('cols-default').addEventListener('click', () => {
+  selected = new Set(COLUMNS.filter(c => c.def).map(c => c.id)); renderColumnChips(); renderPreview();
+});
+document.getElementById('btn-export').addEventListener('click', exportCSV);
+document.getElementById('btn-copy').addEventListener('click', copyForSheets);
+
+/* masthead timecode ticker — a quiet nod to the subject */
+(function tick() {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const el = document.getElementById('mast-tc');
+  const start = Date.now();
+  setInterval(() => {
+    const s = Math.floor((Date.now() - start) / 1000);
+    const f = Math.floor(((Date.now() - start) % 1000) / 40);
+    const p = n => String(n).padStart(2, '0');
+    el.textContent = `${p(Math.floor(s / 3600))}:${p(Math.floor(s / 60) % 60)}:${p(s % 60)}:${p(f)}`;
+  }, 120);
+})();
+</script>
