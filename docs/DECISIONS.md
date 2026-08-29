@@ -101,3 +101,39 @@ Measured on the real map, a 6-Area Pennsylvania flip war held 1 of 6 under the o
 advances a breadth-first front from the attacker's own border through the contested set and stops
 when the score's allowance runs out — always connected, always non-empty, sized 97% → 15% of the
 selection across the partial band.
+
+### D14 — Untouchable neighbours are decided by SIZE, not by ideology
+**M1.4, finding 29.** The annex gate blocked only *same-lean* nations that were larger, which left
+every ideological opposite wide open however large it was: Wyoming (0.59M, $51B) could not touch
+Montana or Idaho but could chew on Colorado (5.96M, $558B) freely, every turn, at no risk. The rule
+reads as a placeholder for a strength check and implements an ideology check. It is now a size gate
+(`annex.strongNeighbourFactor`, 4×, on *both* population and GDP). This was going to have to be
+rewritten in M2.2 anyway when `lean` leaves the model API — doing it once, now, is less work than
+doing it twice, and it removes a perverse incentive in the meantime.
+
+### D15 — Nations gained `founded`, `homeSt` and `lastAnnexTurn` in M1.4, ahead of M3
+**M1.4.** M3 owns nation history proper (`annexed[]`, `lost[]`). But the M1.4 cooldown needs a clock
+on the nation record, and the occupation cost needs to know which ground is *foreign* — which needs
+a notion of home soil. `homeSt` is the state for an origin nation and the modal state of the
+founding Areas for one born in a breakup. M4.5 replaces it with a real per-Area `occupied` flag and
+scales the cost by hostility.
+
+### D16 — A starting treasury, because otherwise nothing is affordable at turn 0
+**M1.4.** `treasury` starts at 0 and only ticks on world turns, so the moment annexation had a price
+it became unreachable until several world turns had passed — an action menu that does nothing reads
+as broken, not as scarce. Every nation now opens with `econ.startingTreasuryTurns` (4) turns of
+gross tax income banked.
+
+### D17 — Every nation that loses ground pays, not just the plurality victim
+**M1.4, finding 31.** One selection can span any number of nations; charging only the plurality
+victim meant the rest lost territory with no population loss, no GDP transfer and no
+acknowledgement. `chargeVictims` now applies the civil-war cost to each, weighted by its share of
+the contested Areas. `victim` also initialises to `null` rather than to the attacker.
+
+### D18 — The fall-apart message reports what actually happened
+**M1.4, finding 23.** A selection smaller than `nation.minAreas` cannot form a breakaway, so its
+fragments go to their nearest neighbour — which, with the attacker excluded, is usually the nation
+that already owned them. That is the correct *outcome* (the defender holds) and the wrong *message*:
+the old text claimed the counties "scattered and were absorbed by neighboring nations" when nothing
+had moved. `confirmAnnex` now diffs ownership across the resolution and says which of three things
+occurred.

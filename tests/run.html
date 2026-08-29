@@ -86,6 +86,9 @@
     <script src="../js/turns.js"></script>
     <script src="../js/world.js"></script>
     <script src="../js/market.js"></script>
+    <!-- actions.js touches the DOM only inside handlers, so it loads headlessly;
+         the M1.4 suite exercises its pricing and cooldown helpers. -->
+    <script src="../js/actions.js"></script>
 
     <script type="module">
       import * as RNG from '../js/rng.js';
@@ -116,7 +119,7 @@
         const canonical = await import('./harness.js');
         canonical.reset();
 
-        const suiteFiles = ['./rng.test.js', './tunables.test.js', './invariants.test.js', './saves.test.js', './batching.test.js', './parties.test.js', './geo-ct.test.js', './civilwar.test.js'];
+        const suiteFiles = ['./rng.test.js', './tunables.test.js', './invariants.test.js', './saves.test.js', './batching.test.js', './parties.test.js', './geo-ct.test.js', './civilwar.test.js', './annex.test.js'];
         for (const f of suiteFiles) {
           try {
             await import(f + bust);

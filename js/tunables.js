@@ -95,6 +95,16 @@ export const SCHEMA = {
     label: 'Occupation cost exponent',
     doc: 'Superlinear exponent on the number of occupied Areas, so conquest stops paying for itself. Anti-snowball brake #2.',
   },
+  'econ.occupationRef': {
+    v: 25, min: 1, max: 500, step: 1, group: 'Economy',
+    label: 'Occupation reference size (Areas)',
+    doc: 'Occupied-Area count at which the occupation surcharge equals one extra Area upkeep per occupied Area. Below it conquest is cheap; above it the cost climbs superlinearly.',
+  },
+  'econ.startingTreasuryTurns': {
+    v: 4, min: 0, max: 40, step: 1, group: 'Economy',
+    label: 'Starting treasury (turns of income)',
+    doc: 'Every nation opens with this many turns of gross tax income banked. Without it the treasury is zero at turn 0 and no priced action is affordable until several world turns have passed.',
+  },
   'econ.occupationHostility': {
     v: 1.0, min: 0, max: 3, step: 0.05, group: 'Economy',
     label: 'Occupation hostility multiplier',
@@ -191,6 +201,11 @@ export const SCHEMA = {
   },
 
   /* ---------------- civil war ---------------- */
+  'war.triggerSizeRatio': {
+    v: 0.15, min: 0.01, max: 3, step: 0.01, group: 'Civil war',
+    label: 'War trigger: size ratio',
+    doc: 'An annexation this large relative to the annexer triggers a civil war. The old rule needed the bite to exceed the whole nation, which an absolute per-turn budget makes unreachable for anyone large.',
+  },
   'war.sizeRatioPopWeight': {
     v: 0.6, min: 0, max: 1, step: 0.05, group: 'Civil war',
     label: 'War points: population weight',
@@ -319,14 +334,19 @@ export const SCHEMA = {
     doc: 'ABSOLUTE per-turn cap. The old cap was a multiple of your own size, which is what let Wyoming take 1,167 Areas in 9 turns (M1.4).',
   },
   'annex.costPerArea': {
-    v: 900e6, min: 0, max: 1e10, step: 50e6, group: 'Annexation',
+    v: 250e6, min: 0, max: 1e10, step: 50e6, group: 'Annexation',
     label: 'Annex cost per Area ($)',
     doc: 'Treasury debited per Area taken. Game.spend finally has a call site.',
   },
   'annex.costPopScale': {
-    v: 1400, min: 0, max: 20000, step: 50, group: 'Annexation',
+    v: 400, min: 0, max: 20000, step: 50, group: 'Annexation',
     label: 'Annex cost per head ($)',
-    doc: 'Additional treasury cost scaled by the population being taken.',
+    doc: 'Additional treasury cost scaled by the population being taken, so a metro Area costs more to swallow than an empty one.',
+  },
+  'annex.strongNeighbourFactor': {
+    v: 4, min: 1, max: 20, step: 0.5, group: 'Annexation',
+    label: 'Untouchable-neighbour factor',
+    doc: 'A neighbour this many times your size on BOTH population and GDP cannot be attacked. Replaces the old rule, which blocked only SAME-LEAN larger nations and therefore left every ideological opposite wide open however large it was.',
   },
   'annex.shellCostMult': {
     v: 1.0, min: 0, max: 3, step: 0.05, group: 'Annexation',

@@ -64,14 +64,24 @@ const CivilWar = (function () {
     return name == null ? { name: null, pct: 0 } : { name, pct };
   }
 
-  // Would annexing `added` into `before` trigger a civil war, and why?
-  function assess(before, added, after) {
+  /*
+   * Would annexing `added` into `before` trigger a civil war, and why?
+   *
+   * The size triggers fire on the RATIO of what you took this turn to what you
+   * already held, not on out-and-out exceedance. The old rule needed a single
+   * annexation to outweigh the entire nation, which an absolute per-turn Area
+   * budget (M1.4) makes unreachable for anyone larger than a few Areas — so the
+   * only surviving trigger would have been the flip.
+   */
+  function assess(before, added, after, tune) {
+    const tn = tune || window.TUNE;
+    const ratio = tn.get('war.triggerSizeRatio');
     const b = plurality(before), a = plurality(after);
     const flip = b.name != null && a.name != null && b.name !== a.name;
     const reasons = [];
     if (flip) reasons.push('flip');
-    if (added.gdp > before.gdp) reasons.push('gdp');
-    if (added.pop > before.pop) reasons.push('pop');
+    if (added.gdp > before.gdp * ratio) reasons.push('gdp');
+    if (added.pop > before.pop * ratio) reasons.push('pop');
     return { flip, reasons, triggered: reasons.length > 0, fromParty: b.name, toParty: a.name };
   }
 
@@ -119,7 +129,7 @@ const CivilWar = (function () {
     const tune = opts.tune || window.TUNE;
     const dieStream = opts.rng.stream('combat');
     const mult = opts.scoreMult || 1;
-    const { flip, reasons, triggered, fromParty, toParty } = assess(before, added, after);
+    const { flip, reasons, triggered, fromParty, toParty } = assess(before, added, after, tune);
     const dc = Math.max(triggered ? 1 : 0, diceCount(before, after, tune));
 
     const sides = tune.get('war.diceSides');

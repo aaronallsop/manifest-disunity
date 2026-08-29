@@ -616,11 +616,15 @@ function renderNationPanel(nid) {
   const sub = n.origin ? 'Sovereign nation &middot; former U.S. state' : 'Sovereign nation &middot; formed during play';
   const isTurn = nid === TurnSystem.currentId();
   const currentName = Game.getNation(TurnSystem.currentId())?.name || '';
+  const cd = Actions.annexCooldownLeft(nid);
+  const annexAttrs = cd > 0
+    ? ` disabled title="Regrouping — ${cd} more world ${cd === 1 ? 'turn' : 'turns'}"`
+    : '';
   const actionsHtml = isTurn
     ? `<div class="actions">
         <div class="label">Actions &middot; your move</div>
         <button class="act" data-act="unite">🤝 Unite with nation</button>
-        <button class="act" data-act="annex">⚔️ Annex counties</button>
+        <button class="act" data-act="annex"${annexAttrs}>⚔️ Annex counties${cd > 0 ? ` <span class="act-note">regrouping ${cd}</span>` : ''}</button>
         <button class="act" data-act="trade">🚛 Trade with nation</button>
         <button class="act" data-act="release" disabled title="Coming next">🕊️ Release counties</button>
         <button class="act pass" data-act="pass">⏭ Pass turn</button>
@@ -699,12 +703,19 @@ function renderTreasury(nid) {
   const n = Game.getNation(nid);
   const flow = Game.treasuryFlow(nid);
   if (!n || !flow) return '';
-  const sign = (v) => `<strong class="${v >= 0 ? 'surplus' : 'deficit'}">${v >= 0 ? '+' : '&minus;'}${fmtGdp(Math.abs(v))}</strong>`;
-  const bal = `${n.treasury < 0 ? '&minus;' : ''}${fmtGdp(Math.abs(n.treasury))}`;
+  const sign = (v) => `<strong class="${v >= 0 ? 'surplus' : 'deficit'}">${v >= 0 ? '+' : ''}${fmtGdp(v)}</strong>`;
+  const bal = fmtGdp(n.treasury);
+  // Occupation is broken out because it is the anti-snowball brake the player
+  // most needs to see: it climbs superlinearly with foreign ground held.
+  const occ = flow.occupied
+    ? `<div class="geo-row"><span>Occupation &middot; ${flow.occupied} foreign ${flow.occupied === 1 ? 'Area' : 'Areas'}</span>
+        <strong class="deficit">&minus;${fmtGdp(flow.occupation)}</strong></div>`
+    : '';
   return `<div class="stat"><div class="label">Treasury &middot; ${escapeHtml(n.gov)}</div>
     <div class="value">${bal}</div>
     <div class="geo-row"><span>Per turn (income &minus; maintenance)</span>${sign(flow.delta)}</div>
-    <div class="geo-row"><span>Income ${fmtGdp(flow.income)} &middot; maintenance ${fmtGdp(flow.maintenance)}</span></div>
+    <div class="geo-row"><span>Income ${fmtGdp(flow.income)} &middot; administration ${fmtGdp(flow.administration)}</span></div>
+    ${occ}
   </div>`;
 }
 
@@ -964,10 +975,14 @@ function fmtPop(n) {
 }
 function fmtGdp(n) {
   if (n == null) return '&mdash;';
-  if (n >= 1e12) return '$' + (n / 1e12).toFixed(2) + ' trillion';
-  if (n >= 1e9) return '$' + (n / 1e9).toFixed(1) + ' billion';
-  if (n >= 1e6) return '$' + (n / 1e6).toFixed(1) + ' million';
-  return '$' + Math.round(n).toLocaleString('en-US');
+  // Negatives fell through every magnitude branch and printed as a raw
+  // "$-662,509,295"; treasuries go negative routinely now that actions cost money.
+  const sign = n < 0 ? '&minus;$' : '$';
+  const v = Math.abs(n);
+  if (v >= 1e12) return sign + (v / 1e12).toFixed(2) + ' trillion';
+  if (v >= 1e9) return sign + (v / 1e9).toFixed(1) + ' billion';
+  if (v >= 1e6) return sign + (v / 1e6).toFixed(1) + ' million';
+  return sign + Math.round(v).toLocaleString('en-US');
 }
 function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));

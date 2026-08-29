@@ -463,21 +463,58 @@ const Actions = (function () {
   /* ================================================================= */
   /* ANNEX                                                             */
   /* ================================================================= */
+  /*
+   * What one annexation of `chosen` Areas costs the treasury.
+   * Flat per Area plus a per-head term, so swallowing a metro Area costs more
+   * than swallowing empty ground. The leader tier pays a surcharge.
+   */
+  function annexCost(chosen, shell) {
+    const pop = chosen.length ? Game.demographics(chosen).pop : 0;
+    const base = chosen.length * TUNE.get('annex.costPerArea') + pop * TUNE.get('annex.costPopScale');
+    return base * (1 + TUNE.get('annex.shellCostMult') * (shell || 0));
+  }
+
+  /** Turns until this nation may annex again; 0 when it is ready. */
+  function annexCooldownLeft(nid) {
+    const n = Game.getNation(nid);
+    if (!n || !Number.isFinite(n.lastAnnexTurn)) return 0;
+    const wait = TUNE.get('annex.cooldownTurns');
+    return Math.max(0, wait - (World.getTurn() - n.lastAnnexTurn));
+  }
+
   function startAnnex(nid) {
     const me = Game.nationDemographics(nid);
-    // hard block: can't annex FROM a same-lean nation that is bigger than you
+    const cd = annexCooldownLeft(nid);
+    if (cd > 0) {
+      flash(`Your armies are still regrouping &mdash; ${cd} more world ${plural(cd, 'turn', 'turns')} before you can annex again.`, 'warn');
+      return select('nation', nid);
+    }
+    /*
+     * Untouchable neighbours are decided by SIZE, not by ideology.
+     *
+     * The old rule blocked only same-lean nations that were bigger, which left
+     * every ideological opposite wide open however large it was: Wyoming (0.59M,
+     * $51B) could not touch Montana or Idaho but could chew on Colorado (5.96M,
+     * $558B) freely, every turn, at no risk. A strength gate is what that rule
+     * was clearly reaching for.
+     */
+    const factor = TUNE.get('annex.strongNeighbourFactor');
     const blocked = new Set();
-    for (const [oid, n] of Game.nations) {
+    for (const [oid] of Game.nations) {
       if (oid === nid) continue;
       const d = Game.nationDemographics(oid);
-      if (d.lean === me.lean && (d.gdp > me.gdp || d.pop > me.pop)) blocked.add(oid);
+      if (d.pop > me.pop * factor && d.gdp > me.gdp * factor) blocked.add(oid);
     }
     const shell = Game.blueShell(nid);
-    A = { type: 'annex', nid, chosen: new Set(), blocked, before: me, selectable: new Set(), shell, capFactor: 2 - shell };
+    A = {
+      type: 'annex', nid, chosen: new Set(), blocked, before: me, selectable: new Set(), shell,
+      budget: TUNE.get('annex.budgetAreas'),
+    };
     recomputeAnnexSelectable();
     if (A.selectable.size === 0) {
       A = null;
-      flash('No counties you can annex right now (neighbors are protected or too strong).', 'warn');
+      flash('No counties you can annex right now (every neighbour is more than ' +
+        `${factor}\u00d7 your size).`, 'warn');
       return select('nation', nid);
     }
     prevColorMode = store.colorMode;
@@ -506,10 +543,18 @@ const Actions = (function () {
       return refreshAnnex();
     }
     if (!A.selectable.has(fips)) return;
-    // selection cap: capFactor x current pop/gdp (halved for top-tier nations)
-    const added = Game.demographics([...A.chosen, fips]);
-    if (added.pop >= A.capFactor * A.before.pop || added.gdp >= A.capFactor * A.before.gdp) {
-      flash('Selection capped — your armies can only mobilize so far.', 'warn');
+    /*
+     * The cap is an ABSOLUTE per-turn budget in Areas.
+     *
+     * It used to be a multiple of your OWN size, which is a doubling every turn:
+     * a greedy "take the largest set that stays under the trigger" play took
+     * Wyoming from 27 to 1,167 of 1,676 Areas in nine turns without triggering a
+     * single civil war, and California did it in three. A relative cap cannot be
+     * an anti-snowball device, because it grows with the snowball.
+     */
+    if (A.chosen.size >= A.budget) {
+      flash(`Your armies can mobilise for <strong>${A.budget}</strong> ${plural(A.budget, 'Area', 'Areas')} this turn. ` +
+        'Drop one to pick another.', 'warn');
       return;
     }
     A.chosen.add(fips);
@@ -527,80 +572,136 @@ const Actions = (function () {
     const n = Game.getNation(A.nid);
     const added = Game.demographics(A.chosen);
     const after = Game.demographics([...Game.getNation(A.nid).counties, ...A.chosen]);
-    const assess = A.chosen.size ? CivilWar.assess(A.before, added, after) : { triggered: false, reasons: [] };
+    const assess = A.chosen.size ? CivilWar.assess(A.before, added, after, TUNE) : { triggered: false, reasons: [] };
     const reasons = assess.reasons || [];
+    const ratioPct = Math.round(TUNE.get('war.triggerSizeRatio') * 100);
     const triggerHtml = A.chosen.size === 0 ? '' : assess.triggered
-      ? `<div class="warn-box">⚔️ <strong>This means civil war.</strong> Triggered by:
+      ? `<div class="warn-box">\u2694\ufe0f <strong>This means civil war.</strong> Triggered by:
           ${reasons.includes('flip') ? '<span class="tag">party flip</span>' : ''}
-          ${reasons.includes('gdp') ? '<span class="tag">GDP &gt; yours</span>' : ''}
-          ${reasons.includes('pop') ? '<span class="tag">population &gt; yours</span>' : ''}
+          ${reasons.includes('gdp') ? `<span class="tag">GDP &gt; ${ratioPct}% of yours</span>` : ''}
+          ${reasons.includes('pop') ? `<span class="tag">population &gt; ${ratioPct}% of yours</span>` : ''}
           Outcome decided by dice on confirm.</div>`
-      : `<div class="ok-box">✓ Peaceful annexation — no civil war triggered.</div>`;
+      : `<div class="ok-box">\u2713 Peaceful annexation \u2014 no civil war triggered.</div>`;
+
+    const cost = annexCost([...A.chosen], A.shell);
+    const canPay = n.treasury >= cost;
+    const afterTreasury = n.treasury - cost;
+    const costHtml = `<div class="stat"><div class="label">Cost to mobilise</div>
+      <div class="value ${canPay ? '' : 'deficit'}">${fmtGdp(cost)}</div>
+      <div class="geo-row"><span>Treasury after</span><strong class="${canPay ? 'surplus' : 'deficit'}">${fmtGdp(afterTreasury)}</strong></div>
+      ${A.shell ? `<div class="geo-row"><span>Leader surcharge</span><strong>+${Math.round(TUNE.get('annex.shellCostMult') * A.shell * 100)}%</strong></div>` : ''}
+      ${canPay ? '' : '<div class="warn-box">\u26d4 Your treasury cannot pay for this. Drop an Area, or bank another turn of income.</div>'}
+    </div>`;
+
+    const blockedGo = !A.chosen.size || !canPay;
     setPanel(`
-      ${actionHead('⚔️ Annex counties', n)}
+      ${actionHead('\u2694\ufe0f Annex counties', n)}
       <p class="hint-block">Click <strong>highlighted counties</strong> bordering your nation to add them. Click a chosen
       county again to drop it.</p>
-      <div class="stat"><div class="label">Counties chosen</div><div class="value">${A.chosen.size}</div></div>
+      <div class="stat"><div class="label">Mobilisation budget</div>
+        <div class="value">${A.chosen.size} / ${A.budget} ${plural(A.budget, 'Area', 'Areas')}</div>
+        <div class="geo-row"><span>A fixed budget &mdash; not a share of your size, so it does not grow as you do.</span></div>
+      </div>
+      ${costHtml}
       <div class="stat"><div class="label">Would-be population</div><div class="value">${fmtPop(after.pop)} <span class="delta">${deltaPop(added.pop)}</span></div></div>
       <div class="stat"><div class="label">Would-be GDP</div><div class="value">${fmtGdp(after.gdp)} <span class="delta">${deltaGdp(added.gdp)}</span></div></div>
       <div class="stat"><div class="label">Would-be political leaning</div>${renderPolitics(after)}</div>
       ${triggerHtml}
       <div class="btn-row">
         <button class="btn ghost" id="a-cancel">Cancel</button>
-        <button class="btn go" id="a-go" ${A.chosen.size ? '' : 'disabled'}>${assess.triggered ? 'Declare war' : 'Annex'} ${A.chosen.size ? '(' + A.chosen.size + ')' : ''}</button>
+        <button class="btn go" id="a-go" ${blockedGo ? 'disabled' : ''}>${assess.triggered ? 'Declare war' : 'Annex'} ${A.chosen.size ? '(' + A.chosen.size + ')' : ''}</button>
       </div>
     `);
     document.getElementById('a-cancel').onclick = cancel;
     document.getElementById('a-go').onclick = confirmAnnex;
   }
 
+  /**
+   * Charge the civil-war cost to EVERY nation that lost ground, weighted by its
+   * share of the contested Areas.
+   *
+   * One selection can span any number of nations. Charging only the plurality
+   * victim meant a 180-Area annexation off 14 nations cost 13 of them nothing:
+   * no population loss, no GDP transfer, no acknowledgement.
+   */
+  function chargeVictims(tally, total, winnerId, score) {
+    for (const [oid, count] of Object.entries(tally)) {
+      if (!Game.getNation(oid)) continue;
+      Game.applyCivilWarCost(oid, winnerId, Math.round(score * (count / total)));
+    }
+  }
+
   function confirmAnnex() {
     if (!A.chosen.size) return;
     const nid = A.nid;
     const chosen = [...A.chosen];
-    // nation that owns the plurality of the contested counties (splinter parent)
+    const me = Game.getNation(nid);
+
+    // Pay first. Game.spend was exported with zero call sites; this is the first
+    // action in the game that costs anything.
+    const cost = annexCost(chosen, A.shell);
+    if (!Game.spend(nid, cost)) {
+      flash(`\u26d4 <strong>${escapeHtml(me.name)}</strong> cannot afford to mobilise (${fmtGdp(cost)} needed, ${fmtGdp(Math.max(0, me.treasury))} in the treasury).`, 'bad');
+      return;
+    }
+    me.lastAnnexTurn = World.getTurn();
+
+    // Who is losing ground, and how much of the contested set is theirs.
     const victimTally = {};
-    chosen.forEach((f) => { const o = Game.getOwner(f); victimTally[o] = (victimTally[o] || 0) + 1; });
-    let victim = nid, vc = -1;
+    chosen.forEach((f) => { const o = Game.getOwner(f); if (o && o !== nid) victimTally[o] = (victimTally[o] || 0) + 1; });
+    let victim = null, vc = -1;
     for (const [o, c] of Object.entries(victimTally)) if (c > vc) { victim = o; vc = c; }
+
     const before = Game.nationDemographics(nid);
     const added = Game.demographics(chosen);
     const after = Game.demographics([...Game.getNation(nid).counties, ...chosen]);
     const res = CivilWar.resolve(before, added, after, { scoreMult: 1 + (A.shell || 0), rng: store.rng, tune: TUNE });
+    const bill = `<span class="deal-cost">Cost ${fmtGdp(cost)}.</span>`;
 
     let msg, kind;
     // Every branch below is a multi-step mutation; batch() collapses each to one
     // render instead of two or three full border meshes and leaderboard rebuilds.
     if (!res.triggered) {
       Game.moveCounties(chosen, nid);
-      msg = `Annexed <strong>${chosen.length}</strong> ${plural(chosen.length, 'county', 'counties')} peacefully.`;
+      msg = `Annexed <strong>${chosen.length}</strong> ${plural(chosen.length, 'county', 'counties')} peacefully. ${bill}`;
       kind = 'good';
     } else if (res.outcome === 'victory') {
       Game.batch(() => {
         Game.moveCounties(chosen, nid);
-        Game.applyCivilWarCost(victim, nid, res.score);
+        chargeVictims(victimTally, chosen.length, nid, res.score);
       });
-      msg = `${cwLine(res)} <strong>Complete victory!</strong> All ${chosen.length} counties annexed.`;
+      msg = `${cwLine(res)} <strong>Complete victory!</strong> All ${chosen.length} counties annexed. ${bill}`;
       kind = 'good';
     } else if (res.outcome === 'partial') {
       const taken = partialSubset(nid, chosen, res.score);
       Game.batch(() => {
         Game.moveCounties(taken, nid);
-        Game.applyCivilWarCost(victim, nid, Math.round(res.score / 2));
+        chargeVictims(victimTally, chosen.length, nid, Math.round(res.score / 2));
       });
-      msg = `${cwLine(res)} <strong>Partial victory.</strong> Held ${taken.length} of ${chosen.length} counties &mdash; a connected front from your border.`;
+      msg = `${cwLine(res)} <strong>Partial victory.</strong> Held ${taken.length} of ${chosen.length} counties &mdash; a connected front from your border. ${bill}`;
       kind = taken.length ? 'good' : 'warn';
     } else {
+      // Report what actually happened territorially. A selection smaller than
+      // nation.minAreas cannot form a breakaway, so its fragments go to their
+      // nearest neighbour - which, with the attacker excluded, is usually the
+      // nation that already owned them. That is the right OUTCOME (the defender
+      // holds) and the wrong MESSAGE: the old text claimed the counties
+      // "scattered and were absorbed by neighboring nations" when nothing moved.
+      const ownersBefore = new Map(chosen.map((f) => [f, Game.getOwner(f)]));
       const bornIds = Game.batch(() => {
         const ids = fragment(chosen, nid);
         Game.applyCivilWarCost(nid, null, res.score); // the failed aggressor bleeds population
         return ids;
       });
-      TurnSystem.insertAfter(victim, bornIds);
+      TurnSystem.insertAfter(victim || nid, bornIds);
       const born = bornIds.length;
+      let changed = 0;
+      for (const [f, was] of ownersBefore) if (Game.getOwner(f) !== was) changed++;
       msg = born
-        ? `${cwLine(res)} <strong>The union fell apart!</strong> The ${chosen.length} counties splintered into ${born} new ${plural(born, 'nation', 'nations')}.`
-        : `${cwLine(res)} <strong>The union fell apart!</strong> The ${chosen.length} counties scattered and were absorbed by neighboring nations.`;
+        ? `${cwLine(res)} <strong>The union fell apart!</strong> The ${chosen.length} counties splintered into ${born} new ${plural(born, 'nation', 'nations')}. ${bill}`
+        : changed
+          ? `${cwLine(res)} <strong>The offensive collapsed.</strong> ${changed} of ${chosen.length} counties changed hands in the chaos &mdash; none of them yours. ${bill}`
+          : `${cwLine(res)} <strong>The offensive collapsed.</strong> The defenders held every county, and your own people paid for it. ${bill}`;
       kind = 'bad';
     }
     A = null;
@@ -679,5 +780,5 @@ const Actions = (function () {
   const deltaPop = (n) => (n ? `+${fmtPop(n)}` : '');
   const deltaGdp = (n) => (n ? `+${fmtGdp(n)}` : '');
 
-  return { isActive, start, onHover, onClick, cancel };
+  return { isActive, start, onHover, onClick, cancel, annexCooldownLeft, annexCost };
 })();

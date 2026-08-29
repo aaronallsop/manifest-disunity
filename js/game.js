@@ -18,6 +18,7 @@ const Game = (function () {
   const cid = (f) => alias[f] || f;
   let adjacency = null;
   let seq = 0;
+  let originalNationCount = 0; // the leader tier is a share of THIS, not of the survivors
   const listeners = [];
 
   // Every constant this module uses lives in TUNE (js/tunables.js). Reading it
@@ -38,6 +39,7 @@ const Game = (function () {
     owner.clear();
     adjacency = null;
     seq = 0;
+    originalNationCount = 0;
     listeners.length = 0;
   }
 
@@ -78,12 +80,24 @@ const Game = (function () {
       }
     }
     for (const [st, s] of Object.entries(data.states)) {
-      nations.set(st, { id: st, name: s.name, color: Colors.forState(st), counties: new Set(), origin: true, treasury: 0, gov: 'Republic' });
+      nations.set(st, {
+        id: st, name: s.name, color: Colors.forState(st), counties: new Set(), origin: true,
+        treasury: 0, gov: 'Republic',
+        founded: 0,        // world turn the nation came into being
+        homeSt: st,        // its own soil; anything else it holds is OCCUPIED
+        lastAnnexTurn: -Infinity,
+      });
     }
     for (const [fips, c] of Object.entries(county)) {
       const n = nations.get(c.st);
       if (n) { n.counties.add(fips); owner.set(fips, c.st); }
     }
+    originalNationCount = nations.size;
+    // Open the books with a few turns of income banked. Without this the treasury
+    // is zero at turn 0 and every priced action is unaffordable until several
+    // world turns have passed, which reads as a broken action menu, not as scarcity.
+    const bank = T('econ.startingTreasuryTurns') * T('econ.taxRate');
+    for (const [nid, n] of nations) n.treasury = demographics(n.counties).gdp * bank;
   }
 
   /* ---- per-county reads (population includes regional parties in ext) ---- */
@@ -210,10 +224,33 @@ const Game = (function () {
 
   /* ---- blue shell: anti-snowball penalty for the biggest nations ---- */
   // returns severity 0..1 (0 = not in the top tier, 1 = the #1 nation)
+  /*
+   * Ranked on a COMPOSITE of population, GDP and territory, against a tier size
+   * fixed to the ORIGINAL nation count.
+   *
+   * Ranking on population alone let a nation that pumped GDP escape the shell
+   * entirely. Sizing the tier as a share of the SURVIVORS made the anti-snowball
+   * weaken exactly as the snowball grew: 5 nations penalised at 51, 2 at 15, 1 at
+   * 10 or fewer.
+   */
   function blueShell(nid) {
-    const ranked = [...nations.keys()].map((id) => ({ id, pop: nationDemographics(id).pop })).sort((a, b) => b.pop - a.pop);
-    const topCount = Math.max(1, Math.round(T('shell.topShare') * ranked.length)); // ~top 10% (5 of 51)
-    const idx = ranked.findIndex((x) => x.id === nid);
+    const rows = [...nations.keys()].map((id) => {
+      const d = nationDemographics(id);
+      return { id, pop: d.pop, gdp: d.gdp, areas: nations.get(id).counties.size };
+    });
+    let maxPop = 0, maxGdp = 0, maxAreas = 0;
+    for (const r of rows) {
+      if (r.pop > maxPop) maxPop = r.pop;
+      if (r.gdp > maxGdp) maxGdp = r.gdp;
+      if (r.areas > maxAreas) maxAreas = r.areas;
+    }
+    for (const r of rows) {
+      r.score = (maxPop ? r.pop / maxPop : 0) + (maxGdp ? r.gdp / maxGdp : 0) + (maxAreas ? r.areas / maxAreas : 0);
+    }
+    rows.sort((a, b) => b.score - a.score);
+    const base = originalNationCount || rows.length;
+    const topCount = Math.max(1, Math.round(T('shell.topShare') * base));
+    const idx = rows.findIndex((x) => x.id === nid);
     if (idx < 0 || idx >= topCount) return 0;
     return (topCount - idx) / topCount;
   }
@@ -295,9 +332,25 @@ const Game = (function () {
       emit({ ownership: true, roster: true });
     });
   }
-  function createNation(name, countyIds, { color, silent } = {}) {
+  /** The state most of a set of Areas sits in — a new nation's home soil. */
+  function modalState(countyIds) {
+    const tally = {};
+    for (const f of countyIds) {
+      const c = county[f];
+      if (c) tally[c.st] = (tally[c.st] || 0) + 1;
+    }
+    return argmax(tally);
+  }
+
+  function createNation(name, countyIds, { color, silent, founded } = {}) {
     const id = 'n' + ++seq;
-    nations.set(id, { id, name, color: color || Colors.newColor(), counties: new Set(), origin: false, treasury: 0, gov: 'Republic' });
+    nations.set(id, {
+      id, name, color: color || Colors.newColor(), counties: new Set(), origin: false,
+      treasury: 0, gov: 'Republic',
+      founded: founded == null ? (typeof World !== 'undefined' ? World.getTurn() : 0) : founded,
+      homeSt: modalState(countyIds),
+      lastAnnexTurn: -Infinity,
+    });
     moveCounties(countyIds, id, { silent: true });
     if (!silent) emit({ ownership: true, roster: true });
     return id;
@@ -385,6 +438,23 @@ const Game = (function () {
 
   const clamp = (x, lo, hi) => Math.max(lo, Math.min(hi, x));
 
+  /**
+   * Areas a nation holds that are not its own soil.
+   * An origin nation's soil is its state; a nation born from a breakup takes the
+   * state most of its founding Areas sat in. M4.5 replaces this with a real
+   * occupied flag and scales the cost by per-Area hostility.
+   */
+  function occupiedCount(nid) {
+    const n = nations.get(nid);
+    if (!n) return 0;
+    let k = 0;
+    for (const f of n.counties) {
+      const c = county[f];
+      if (c && c.st !== n.homeSt) k++;
+    }
+    return k;
+  }
+
   /* ---- treasury: income (from GDP) minus maintenance, ticked once per world turn ---- */
   function treasuryFlow(nid) {
     const n = nations.get(nid);
@@ -392,8 +462,18 @@ const Game = (function () {
     const gdp = demographics(n.counties).gdp;
     const gov = T('econ.govMaintenance');
     const income = gdp * T('econ.taxRate');
-    const maintenance = gdp * (gov[n.gov] ?? gov.Republic) + n.counties.size * T('econ.areaUpkeep');
-    return { income, maintenance, delta: income - maintenance };
+    const base = T('econ.areaUpkeep');
+
+    // Occupation is SUPERLINEAR in how much foreign ground you sit on, so past a
+    // point conquest stops paying for itself. Anti-snowball brake #2: holding 25
+    // occupied Areas doubles their upkeep, 100 costs ~5x, 400 costs ~24x.
+    const occ = occupiedCount(nid);
+    const ref = T('econ.occupationRef');
+    const surcharge = occ ? occ * base * Math.pow(occ / ref, T('econ.occupationAlpha')) : 0;
+
+    const administration = n.counties.size * base;
+    const maintenance = gdp * (gov[n.gov] ?? gov.Republic) + administration + surcharge;
+    return { income, maintenance, administration, occupation: surcharge, occupied: occ, delta: income - maintenance };
   }
   function tickTreasuries() {
     for (const [nid, n] of nations) n.treasury += treasuryFlow(nid).delta;
@@ -433,8 +513,14 @@ const Game = (function () {
       counties[f] = rec;
     }
     const nats = [];
-    for (const [, n] of nations) nats.push({ id: n.id, name: n.name, color: n.color, origin: n.origin, treasury: n.treasury, gov: n.gov, counties: [...n.counties] });
-    return { seq, counties, nations: nats };
+    for (const [, n] of nations) nats.push({
+      id: n.id, name: n.name, color: n.color, origin: n.origin, treasury: n.treasury, gov: n.gov,
+      founded: n.founded, homeSt: n.homeSt,
+      // -Infinity does not survive JSON; null means "has never annexed".
+      lastAnnexTurn: Number.isFinite(n.lastAnnexTurn) ? n.lastAnnexTurn : null,
+      counties: [...n.counties],
+    });
+    return { seq, originalNationCount, counties, nations: nats };
   }
   function loadState(snap) {
     let dropped = 0;
@@ -453,10 +539,18 @@ const Game = (function () {
       // TypeError three turns later (finding 53).
       const live = n.counties.filter((f) => { if (county[f]) return true; orphans++; return false; });
       if (!live.length) continue;
-      nations.set(n.id, { id: n.id, name: n.name, color: n.color, origin: n.origin, treasury: n.treasury || 0, gov: n.gov || 'Republic', counties: new Set(live) });
+      nations.set(n.id, {
+        id: n.id, name: n.name, color: n.color, origin: n.origin,
+        treasury: n.treasury || 0, gov: n.gov || 'Republic',
+        founded: n.founded || 0,
+        homeSt: n.homeSt || modalState(live),
+        lastAnnexTurn: n.lastAnnexTurn == null ? -Infinity : n.lastAnnexTurn,
+        counties: new Set(live),
+      });
       for (const f of live) owner.set(f, n.id);
     }
     seq = snap.seq || 0;
+    originalNationCount = snap.originalNationCount || nations.size;
     if (dropped || orphans) {
       console.warn(`Game.loadState: ${dropped} unknown Area records and ${orphans} orphan ownership entries were skipped.`);
     }
@@ -479,6 +573,8 @@ const Game = (function () {
     areaCounties: (id) => county[cid(id)]?.counties || [cid(id)],
     treasuryFlow,
     tickTreasuries,
+    occupiedCount,
+    originalNations: () => originalNationCount,
     spend,
     boostGdp,
     nations,
