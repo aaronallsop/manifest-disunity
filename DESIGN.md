@@ -1,24 +1,22 @@
-# Nation States — Design & Roadmap
+# Nation States — Design
 
-*Consolidated reference, assembled 2026-08-29 from the project's README, source
-files, and build scripts. This is the single place to look for what the game is,
-what is built, and what comes next. The README stayed accurate through the
-"actions + civil war" era; everything after it (Areas, economy, market, trade,
-transport, emergent parties, map editor, treasuries, save/load) was built after
-and is documented here for the first time.*
+*The single source of truth for what this game is and how it works, **as it actually is today**.
+Last rewritten at the end of **M1** of `docs/REBUILD-PLAN.md`. If this document and the code
+disagree, the document is a bug — say so and fix it.*
+
+*What comes next lives in `docs/REBUILD-PLAN.md`, not here. This file describes the present.*
 
 ---
 
 ## 1. Premise
 
-A map-based strategy game set in a scenario where **every U.S. state becomes its
-own nation**. You start on a board of 51 nations built from real 2024 data —
-population, GDP, and presidential vote — and play through turns of union,
-annexation, civil war, politics, and economy.
+A browser strategy game set in a scenario where **every U.S. state becomes its own nation**. You
+start on a board of 51 nations built from real 2024 data — population, GDP and presidential vote —
+and play through turns of union, annexation, civil war, trade and politics.
 
-Nothing is invented where real data exists. Where a figure isn't published
-separately, a grounded estimate is apportioned from a real total (so nation-level
-sums stay correct) and flagged in the UI with an **est.** badge.
+Nothing is invented where real data exists. Where a figure is not published separately, a grounded
+estimate is apportioned from a real total (so nation-level sums stay correct) and flagged in the UI
+with an **est.** badge.
 
 ---
 
@@ -27,241 +25,317 @@ sums stay correct) and flagged in the UI with an **est.** badge.
 | Layer | Source |
 | --- | --- |
 | Geometry | us-atlas / Census TIGER counties (`counties-10m.json`) |
-| Connecticut | Current 9 planning regions from Census TIGERweb (replaces the obsolete 8 counties) |
+| Connecticut | the nine 2022 planning regions from Census TIGERweb, which replaced the eight abolished counties |
 | Population | Census Bureau 2024 estimates |
 | GDP | BEA 2024 county GDP, all-industry total, current dollars |
 | Politics | 2024 presidential vote share, to 0.1% |
 | Adjacency | Census county adjacency file → `adjacency.json`, `county_neighbors.json` |
 | Trade geography | BTS/USACE navigable waterways, principal ports, TIGER coastline → `county_trade.json` |
-| Transport | BTS Class I rail network, TIGER primary/secondary roads (Interstates), border crossings → `transport.json` |
+| Transport | BTS Class-I rail, TIGER primary/secondary roads (Interstates), border crossings → `transport.json` |
+| Economy | six-sector production profile per Area → `economy.json` |
 
-**Known estimates.** Alaska boroughs use the statewide 2024 result (Alaska reports
-vote by house district, not borough). Virginia independent cities + their counties,
-and Hawaii's Maui/Kalawao, split a combined BEA GDP by population.
+**Everything is baked offline.** The browser never does geography at runtime: each
+`build/build_*.py` writes a JSON file into `data/` and the game only reads. Every build script
+carries an editable authored table at its top.
 
-**Everything is baked offline.** The browser never does geography at runtime — each
-`build/build_*.py` script writes a JSON file into `data/`, and the game only reads.
-Every build script carries an editable authored table at its top; edit and re-run.
+**Known estimates.** Alaska boroughs use the statewide 2024 result (Alaska reports vote by house
+district, not borough). Virginia independent cities plus their counties, and Hawaii's
+Maui/Kalawao, split a combined BEA GDP by population.
+
+**Connecticut is a special case that costs real code.** Three files disagree about what
+Connecticut is: the base geometry still holds the eight pre-2022 *counties*, `game-data.json` holds
+the nine *planning regions*, and `areas.json` has no `09*` entries at all — so `Game.areaIdOf` has
+nothing to say about CT. `js/geo-ct.js` is the one place that is reconciled. The internal border
+layer cannot be fixed by a predicate over the topology, because the topology only contains the old
+county polygons; CT is excluded from that mesh and drawn from the planning-region geojson instead,
+which is what makes the lines coincide with the fills.
 
 ---
 
 ## 3. Core model
 
-- **The county is the only unit of truth.** A nation is never stored as primary
-  data — it is *derived* by summing the counties it owns. Invariant enforced
-  everywhere: each county's party counts sum exactly to its population.
-- **The Area is the atomic clickable unit.** `build_areas.py` merges small counties
-  into an adjacent same-state neighbor until each Area clears a 50k population
-  threshold — east of the MT/WY/CO/NM line only; western states and AK/HI are left
-  alone apart from authored merges (San Juan WA, the Aleutians cluster, Dukes +
-  Nantucket → Barnstable). Member counties are preserved inside each Area, so no
-  data is lost, and a **County lines** toggle reveals them.
-- **Nations own Areas** and carry a color, a treasury, and a government type.
-- Runtime state is one serializable object; `game_state.py` is the Python mirror of
-  the same model.
+- **The Area is the atomic unit.** `build_areas.py` merges small counties into an adjacent
+  same-state neighbour until each Area clears a 50k population threshold — east of the
+  MT/WY/CO/NM line only; western states and AK/HI are left alone apart from authored merges (San
+  Juan WA, the Aleutians, Dukes + Nantucket → Barnstable). 3,143 counties collapse to **1,676
+  Areas**. Member counties are preserved on the record, so no data is lost, and a **County lines**
+  toggle reveals them.
+- **A nation is derived, never stored.** Population, GDP and politics are always the sum of the
+  Areas it owns. The invariant, enforced by the test suite: every Area's party counts sum exactly
+  to its population, and every nation's totals reconcile with its Areas'.
+- **Ownership is one relation** — `owner: fips → nationId` — with `nation.counties` as the derived
+  index. The two are kept in step by `moveCounties` and checked by the suite.
+- **Nations carry**: a name, a colour, a treasury, a government type, a founding turn, a home state
+  (`homeSt` — ground that is not theirs is *occupied*), an annexation clock, a release clock and a
+  per-partner trade cooldown.
+- **Every model constant is a named tunable.** `js/tunables.js` holds all of them with a label, a
+  doc line and a slider range; `TUNE.get(key)` records every read, and `TUNE.trace(fn)` returns the
+  exact set of keys a computation touched. Authored overrides live in `content/tunables.json`.
+- **Every random draw is seeded.** `js/rng.js` gives each system its own named stream
+  (`spawn`, `combat`, `turnorder`, `unite`, `drift`) derived from `hash(seed, name)`, so adding a
+  die roll to combat cannot reshuffle party spawns. The whole generator serializes and restores in
+  one step.
 
 ---
 
-## 4. What's built
+## 4. The turn
 
-### Map & interface
-- Select **Nations** or **Counties**; hover to preview, click to select, scroll to
-  zoom, drag to pan, click ocean to deselect.
-- Seven map modes, each with a legend, nation borders always drawn on top:
-  **Standard** (ownership) · **Political** (red→purple→blue) · **GDP** (white→green)
-  · **Population** (yellow→blue) · **Geographic** · **Culture** · **Economy**.
-- **Leaderboard** ranking every live nation by Population, GDP, or Politics;
-  updates as nations form and dissolve; click a row to select.
-- **Save / Load** — full runtime state serialized into localStorage under a
-  player-chosen name, with overwrite-or-rename.
+**One clock.** A full cycle of nation turns is one **world turn**. There is no separate "advance
+the world" button in normal play — `completeTurn()` drives `World.advanceTurn()` on the round
+boundary. (`?dev=1` exposes a manual step control, which is what the M5 simulator grows out of.)
 
-### Turns
-51 nations are shuffled into a hidden 1..N order at start. Each nation takes **one
-action or a pass** per turn. Splinter nations are slotted in right after their
-parent in random relative order; dissolved nations drop out.
+A world turn runs these phases in a fixed order:
 
-### Actions
-- **🤝 Unite with nation** — propose union with an *adjacent* nation (adjacency uses
-  the state graph plus the "Canadian-highway" rule: Alaska borders every Pacific and
-  Canada nation, Hawaii every Pacific one). Success is probabilistic, driven by
-  closeness in population + GDP and political alignment, clamped so either outcome
-  is always possible. On failure your nation splinters: same-party border counties
-  defect to the target, cut-off regions break away, you lose pop and GDP.
-- **⚔️ Annex counties** — take bordering counties; selection grows contiguously and
-  is capped at 2× your pop/GDP. You can't annex from a larger same-lean nation.
-  Triggers a civil war if it flips your party or adds more GDP or population than
-  you already have. Map auto-switches to Political while picking.
-- **🕊️ Release counties** — *not built.* Button is present and disabled.
+1. **Recompute leans** — each nation's political mix, cached from the start-of-turn snapshot.
+2. **Political drift** — each Area eases toward a blended target.
+3. **Party growth** — each emergent movement closes a fraction of the gap to its ceiling.
+4. **Population growth** — everybody grows, movements included.
+5. **Economic growth** — GDP moves, by sector.
+6. **Cleanup** — movements below a floor are removed.
+
+Then treasuries tick and the market reprices.
+
+**The phase contract**, precisely:
+
+- No phase reads back a value **it** wrote.
+- Every cross-Area **aggregate** (nation leans, nation totals) is computed from `snap`.
+- Per-Area values **do** compose down the pipeline — a later phase sees an earlier one's result in
+  `next`. This is deliberate and noted at each site that relies on it.
+- **Ownership is snapshotted** for the whole turn, so a future phase that moves an Area cannot
+  make its successors see the move.
+
+### Political drift
+
+Each Area eases toward
+
+```
+target = 0.35 × its owner nation's mix
+       + 0.40 × its own founding character   (the structural anchor)
+       + 0.25 × the population-weighted mean of its neighbours
+```
+
+then takes a small bounded jitter, then renormalises.
+
+The anchor and the neighbourhood term are why the county grid survives. With the owner's mix as
+the *only* target — which is what it was — drift and population growth both pulled toward one
+attractor with nothing pushing back, and the within-nation spread of dem% decayed with a 23-turn
+half-life: 12.5 points at turn 0, 2.5 by turn 50, effectively zero by turn 200, with every nation
+politically uniform. Since county-level politics is the foundation the sentiment model is built
+on, that collapse would leave nothing to differentiate.
+
+Measured now, on the real map: **13.3 → 7.5 (t50) → 5.5 (t100) → 4.8 (t200) → 4.8 (t300)**. The
+spread *stabilises* rather than decaying, which is the property that matters.
+
+### Population and economic growth
+
+New residents arrive **35% in the owner nation's mix and 65% in the Area's own** — a full national
+mix would be a second attractor at exactly the drift fixed point. Emergent movements grow with
+everybody else; omitting them (which is what happened) meant movement members literally did not
+reproduce and every movement was diluted toward a common equilibrium instead of its own ceiling.
+
+GDP grows at a base rate multiplied by the Area's **sector mix** (IT compounds fastest,
+agriculture slowest) plus a share of its realised population growth. The sector differential is
+what makes relative market prices move at all: with one uniform rate the global sector mix is
+frozen and the price index is six constants.
+
+---
+
+## 5. The economy
+
+**Six sectors**: Agriculture, Resource Extraction, Manufacturing, Trade & Transportation, Finance,
+Information Technology. Each Area has a baked production profile; its **live** production is that
+profile rescaled to the Area's current GDP. One definition, used by the market, the trade screens
+and the nation panel alike.
+
+**Prices** are `100 × (demand share ÷ supply share)^1.3`, clamped. The per-capita spend is
+recalibrated every turn, so the index reports *what is scarce*, not what turn it is. Demand shares
+sum to exactly 1.0, which is what makes "100 = balanced" true.
+
+**Treasury** = GDP × tax rate − government maintenance − administration − occupation.
+
+**Occupation is the anti-snowball brake.** Administration is a flat per-Area cost; occupation is a
+*superlinear* surcharge on the Areas a nation holds outside its home state. 25 occupied Areas
+roughly double their own upkeep; 100 costs about 5×; 400 about 24×. A greedy conqueror's per-turn
+treasury delta crosses into deficit around 110 occupied Areas.
+
+---
+
+## 6. Actions
+
+One action per nation per turn. Each ends the turn.
+
+### Unite
+Merge an adjacent nation into yours. A peace roll decides: on success the two become one; on
+failure your nation fractures — border Areas defect to the target, cut-off regions break away, and
+you bleed population and GDP. The peace chance is driven by your share of the combined
+population and GDP and by political similarity, and is lowered by the anti-snowball penalty.
+
+Reach is **land borders plus maritime links** — `build_adjacency.py` deliberately gives Alaska a
+sea border with every Pacific and Canada-border state, and Hawaii with every Pacific one.
+
+### Annex
+Take adjacent Areas. Three things bound it:
+
+- **An absolute budget of 3 Areas per turn**, identical for a minnow and a superpower. It used to
+  be a multiple of *your own size*, which is a doubling every turn: greedy play took Wyoming from
+  27 to 1,167 of 1,676 Areas in nine turns without triggering a single civil war. A relative cap
+  cannot be an anti-snowball device, because it grows with the snowball.
+- **A price**, debited from the treasury: per Area, per head, plus a surcharge if you are in the
+  leading tier. Refused if you cannot pay.
+- **A cooldown**, and neighbours more than 4× your size on *both* population and GDP are
+  untouchable.
 
 ### Civil war
-```
-dice   = points past 50% into the other party, rounded up (>=1)
-points = round(addedPop / 1e6) + round(addedGDP / 1e10)
-score  = points × (d1 × d2 × …) × blueShell        each die 1-6
-
-  0-33  Complete victory   — all chosen counties annexed
- 34-66  Partial victory    — only same-lean counties still connected to you
-  67+   The union falls apart — chosen counties break into new nations
-```
-The dice aren't shown; the result line reports the numbers. **Fallout:** the loser
-sheds a dice-scaled slice of its ruling-party population (spread evenly across its
-counties) and hands **2%+ of its GDP** to the winner.
-
-**Blue shell (anti-snowball).** The top ~10% of nations by population are penalized
-when they act — the #1 nation gets **half the annex cap** and **double** civil-war
-severity, scaling down to the tier edge, plus worse peaceful-union odds.
-
-**Breakup rule.** A nation formed by a breakup must be **≥10 counties** (smaller only
-if that's all that's left); smaller fragments join whichever neighbor they border
-most, never the attacker.
-
-### World engine (`world.js`)
-The world advances separately from player/AI actions, in a fixed phase order, under
-strict **double buffering**: every phase reads a frozen `snap` of this turn's values
-and writes into a fresh `nxt`, swapped in at the end — so no feedback loop can
-compound within one turn.
-
-1. **Recompute leans** — cache each nation's D/R/Other mix from the snapshot.
-2. **Political drift** — each county eases 2% of the gap toward its *owner nation's*
-   lean per turn. Moves people between parties; population unchanged.
-3. **Party growth** — each emergent party closes 3% of its gap to a 35% per-county
-   ceiling, taken proportionally from all other parties.
-4. **Population growth** — ~1%/turn (README-era value was ~5%); new residents arrive
-   in the *nation's* party mix, so annexed counties drift toward their new owner.
-5. **Cleanup** — emergent parties under 1% share are removed and redistributed.
-   D/R/Other are structural and never cleaned up.
-6. **Treasuries tick**, then **the market reprices**.
-
-### Emergent parties (`parties.js`, `build_parties.py`)
-Regional parties spawn **once, at setup**, before play. Definitions come from an
-editable region table (spawn chance default 0.5, initial county share 0–20%), with
-regions resolved by state list, population band, 2024 lean, hand-picked FIPS, or
-special rules (e.g. Montana interior counties).
-
-Absorption rule: a new party at rolled share X takes X of the population **plus the
-county's entire "Other" share** (Other → 0); remaining parties shrink proportionally.
-
-Six color families; parties sharing a color form a **coalition** that pools its share:
-
-| Color | Parties |
-| --- | --- |
-| red | Republican |
-| orange | Christian Nationalism, New Confederacy |
-| yellow | socialists / anything unlisted |
-| green | Northern Christian Kingdom, Cascadian Separatists |
-| blue | Democrat |
-| purple | Libertarians, Anarcho-Capitalist |
-
-Authored regions include Deseret (Utah + SE Idaho + Elko NV), El Paso United
-(Trans-Pecos), Great Lakes, Absaroka, and hand-listed tech hubs.
-
-### Economy (`build_economy.py`, `market.js`, treasuries in `game.js`)
-Six sectors: **Agriculture, Resource Extraction, Manufacturing, Trade &
-Transportation, Finance, Information Technology.** Each Area's GDP is split across
-them by a profile chosen from layered signals, first match wins:
-
-1. authored county profiles (real-world knowledge)
-2. structural — port / choke-point counties → Trade & Transportation
-3. state tilt — the characteristic rural economy of the state
-4. fallback ladder by population: <50k Agriculture · 50–200k Extraction ·
-   200–500k Manufacturing · 500k–1M IT · ≥1M Trade if port/major river, else Finance
-
-**Global market.** Each world turn every resource is repriced:
+An annexation starts one if it flips your **plurality** party, or if what you took is larger than
+15% of what you held (on population or GDP).
 
 ```
-supply_i = Σ each Area's production of i, scaled by that Area's LIVE GDP
-demand_i = DEMAND_SHARE_i × live population × per-capita spend (calibrated at start)
-price_i  = 100 × (demand / supply)^1.3,  clamped to 20–400
+points = ( 0.6 × popRatio + 0.4 × gdpRatio ) ^ 0.5     — continuous, relative, compressed
+dice   = 1 + 0.35 × how decisively the plurality flipped, capped at 6
+score  = 12 × points × (d1 + d2 + … + dN)
 ```
-So war losses cut supply and push prices up; population growth pushes demand up.
 
-**Treasuries.** Income = 2% of GDP per turn. Maintenance = a government-type rate
-(Republic 1.5%, a placeholder for a fuller government system) + $40M flat upkeep per
-Area. Actions draw from the treasury.
+- ≤ 33 → **victory**: you take everything.
+- ≤ 66 → **partial**: you hold a contiguous front advancing from your own border, sized by the
+  score — 97% of the selection at the bottom of the band, 15% at the top.
+- \> 66 → **fall apart**: the contested Areas fragment into new nations, and if none is large
+  enough to stand alone the defender holds and you paid for nothing.
 
-### Trade & transport geography (baked, partly surfaced)
-`county_trade.json` carries navigable-river intersects and names, principal ports,
-coastal vs Great Lakes shoreline, legal border crossings, and an authored set of
-**choke points** (Soo Locks, Straits of Mackinac, Detroit River, and others).
-`transport.json` carries Class I rail, passenger-rail hubs, Interstate routes per
-county, and Canada/Mexico gateways. Both are loaded and shown in the info panel;
-neither yet drives mechanics.
+Every nation that lost ground pays, weighted by its share of the contested Areas. The losing side
+bleeds a **proportional** share of its ruling bloc — where the ruling bloc is the real plurality
+including emergent movements, not a D-vs-R letter — and transfers GDP to the winner, who receives
+it in proportion to where its economy already is.
 
-### Map editor (`editor.js`)
-An EU4-style authoring tool for **3-tier region hierarchies** as map modes:
-super-region → region → group. Each Area belongs to at most one path; painting a
-child auto-assigns the parent chain, painting another branch reassigns. Paint at
-state or Area granularity. Built-in **Geographical** and **Cultural** modes must
-contain every Area before publishing. Drafts live in localStorage; **Publish**
-downloads `<name>.mapmode.json` to drop into `data/`. Both built-in modes have been
-published and are live as map modes.
+*Measured on the real turn-0 map across 52 triggered wars: 30.8% victory / 30.8% partial / 38.5%
+fall apart. Before M1.3 the same measurement was 1.5 / 3.0 / 95.5 — a step function, not a dice
+game.*
+
+### Trade
+Sell surplus production for **money**. Income goes to the treasury, never to GDP: the goods were
+already counted when they were produced.
+
+- **Bilateral** with a neighbour: surpluses flow to whoever runs the matching deficit, valued at
+  market prices, at the **full** rate to both sides.
+- **External** (Canada, Mexico, the world market): sell your whole positive surplus, at **45%** of
+  the bilateral rate.
+- **Transit**: a landlocked nation reaches the market through a neighbour that has export access,
+  over a real rail or highway corridor, for a negotiated toll. The neighbour weighs your offer
+  against its size, its need and your political alignment, and accepts, counters or declines.
+
+**Capacity** is the thing that makes the choice real. Ports, rail hubs and border gateways cap what
+a nation can physically move in a turn. Without it the world market absorbed a nation's entire
+surplus in one click and beat the best bilateral deal by 1.7×–50× for 41 of 51 nations, making the
+headline trade feature dead content. With capacity and the penalty, most nations now do better with
+a well-matched neighbour.
+
+Each partner is on a cooldown.
+
+### Release
+Hand territory over — the first of the design's release valves, and the reason Counties mode
+exists. A contiguous block large enough to stand alone becomes a new nation; anything smaller joins
+its nearest neighbour, **never you**. The panel shows what the handover saves: the per-Area upkeep
+and, on foreign ground, the superlinear occupation surcharge.
+
+### Counties mode
+Selecting an Area shows what the acting nation can do with it — release it if it is theirs, annex
+from it if it is not — and when neither is possible, the reason why.
 
 ---
 
-## 5. Roadmap
+## 7. Emergent movements
 
-**Next up**
-- **Release counties** — the third action; UI exists, logic doesn't.
-- **Per-nation growth rates** — `phasePopulationGrowth` currently applies one global
-  rate; the code notes per-nation rates as the intended replacement.
-- **Government types** — `GOV_TYPES` holds a single placeholder (Republic, 1.5%
-  maintenance). A real set of governments with distinct income/maintenance/behavior
-  is the obvious extension.
+Regional movements spawn **once, at setup**, from `data/parties.json` (baked by
+`build_parties.py`, whose region table is the authored content). Each rolls a spawn chance and a
+per-Area share; the new movement takes its rolled share **plus** the Area's entire "Other" share,
+and the remaining parties shrink proportionally so counts still sum exactly to the population.
 
-**Systems baked but not yet mechanical**
-- **Trade** — ports, navigable rivers, choke points, coastline classification are all
-  baked and displayed. No trade routes, no blockades, no choke-point control yet.
-- **Transport** — rail, rail hubs, Interstates, border gateways likewise: data
-  present, no movement or logistics layer consuming it.
-- **Resource market** — prices move each turn but nothing yet spends against them
-  (no buying, selling, shortages, or price-driven events).
+Authored FIPS are resolved through the **Area alias** and de-duplicated. Indexing the raw county
+table directly — which is what happened — silently discarded 2,025 of 4,198 authored references
+(48.2%), because `Game.init` deletes the 1,467 member counties merged into Areas. El Paso United
+got 2 Areas of its 12.
 
-**Open / unresolved**
-- Turn state and saves are browser-side only (localStorage); no server, no files.
-- No AI opponents — the turn order cycles through all 51 nations as player-driven
-  seats.
-- README is stale relative to the code; DESIGN.md (this file) is now the source of
-  truth.
+Each turn a movement closes 3% of the gap to a 35% per-Area ceiling, taking the gain
+proportionally from every other party. All gains are computed before any is applied, so the result
+does not depend on the insertion order of the movement names.
+
+**Known limitation, by design, until M4:** a movement can only ever exist where it spawned. There
+is no diffusion term, so nothing spreads. `phaseCleanup` is correspondingly inert — under
+growth-only dynamics the smallest reachable share is above the floor — and the code says so.
 
 ---
 
-## 6. Running it
+## 8. Rendering
 
-The game fetches local data, so it needs a server (`file://` is blocked):
-
-```bash
-python -m http.server 8000     # from this folder, then open http://localhost:8000
-```
-
-A VS Code launch config for this is in `.claude/launch.json` as `nation-states`.
-
-Rebuild any baked data by editing the table at the top of the relevant script and
-re-running it: `python build/build_data.py`, `build_areas.py`, `build_adjacency.py`,
-`build_neighbors.py`, `build_parties.py`, `build_economy.py`, `build_trade.py`,
-`build_transport.py`.
+- d3 + topojson, both vendored. One SVG, layered: county fills, Area borders, nation borders,
+  nation outline, cultural highlights, the action layer, hover and selection shapes.
+- **Seven map modes**: Standard (ownership), Political, GDP, Population, Geographic, Culture,
+  Economy — each with a legend.
+- **Rendering is decoupled from mutation.** `Game.emit` carries a reason —
+  `{ownership, values, roster}` — and the renderer skips the border re-mesh when ownership did not
+  move and skips the recolor when the active map mode does not depend on what changed.
+  `Game.batch(fn)` collapses a multi-step mutation into one render. **One annex is one render**;
+  before M0.7 it was two emits cascading into five leaderboard rebuilds, five whole-topology merges
+  and three full recolors.
 
 ---
 
-## 7. Code map
+## 9. Persistence
 
-```
-index.html              markup + script tags (cache-busted ?v= on each)
-css/style.css           styling
-js/colors.js            distinct color per nation
-js/game.js              counties, Areas, ownership, demographics, adjacency, treasuries
-js/parties.js           emergent regional parties, coalitions, spawn/absorption
-js/civilwar.js          pure scoring: triggers, dice, points, outcome
-js/mapmodes.js          per-county color scales + legends (political/GDP/pop/geo/culture/economy)
-js/turns.js             hidden turn order, advance, splinter insertion
-js/actions.js           Unite / Annex UI flows + outcome application
-js/leaderboard.js       live ranking sidebar
-js/world.js             world turn engine, double-buffered phases
-js/market.js            global resource market pricing
-js/app.js               rendering, interaction dispatch, info panel, data loading
-js/saves.js             save/load to localStorage
-js/editor.js            3-tier region map-mode editor
-game_state.py           Python mirror of the serializable state model
-build/                  one-time offline bakes (see above) + raw/ sources
-data/                   all baked JSON the game reads
-lib/                    vendored d3 + topojson-client (offline)
-```
+Save format **version 2**. Every module that holds mutable state serializes: the model, turn order,
+world turn, market, colours, the movement roster, the RNG, the tunable overrides and the UI mode.
+Version 1 saves are **refused** with a message naming what they lack, not migrated — they carry no
+world turn, no prices, no roster, no colour counter and no RNG state, so migrating one means
+inventing five values and calling the result the player's game.
+
+A save also carries a **build stamp** (Area count and the `areas.json` threshold) and is refused if
+the map has been rebuilt underneath it.
+
+Saves go to disk through the server (`content/save-<slug>.json`, mirrored to `data/state.json`),
+with `localStorage` as the fallback — and that fallback surfaces its quota error instead of failing
+silently. Loading cancels any in-flight action first.
+
+---
+
+## 10. The map editor
+
+Author 3-tier region hierarchies ("map modes") — super-region → region → sub-region — by painting
+Areas. Each Area belongs to at most one path; painting a child auto-assigns its parents. Modes can
+require full coverage. Drafts save to `localStorage`.
+
+**Known limitation:** publish still triggers a browser download that must be hand-copied into
+`data/`, and there is no import path — you cannot load a published mode back into the editor. M2.5
+routes both through `PUT /api/content/<name>.json`.
+
+---
+
+## 11. Testing
+
+`tests/run.html` runs every suite in the browser; 187 tests, all green, in about 27 seconds. The
+files are plain ES modules with no dependencies, written so they run under `node --test` unchanged.
+
+What is pinned: the model invariants (sums, ownership consistency, save round-trip, same-seed
+determinism), and one suite per M1 fix asserting the *measured* property the fix was for — the
+outcome spread of civil wars, the stationary within-nation political spread at turn 200, the
+absence of a price ratchet at turn 200, that one annex is one render, that no Area is zeroed by a
+war, that the world market no longer dominates.
+
+---
+
+## 12. What is deliberately not built yet
+
+Listed so nobody mistakes an absence for a bug. Each is a milestone in
+`docs/REBUILD-PLAN.md`.
+
+- **Six ideologies on two axes.** Politics is still D / R / Other plus named movements. Civil war
+  already reasons over the full plurality rather than a D-vs-R letter, which is the shape M2.2
+  needs, but the model API still exposes `lean`. *(M2.2)*
+- **Movements cannot spread.** A movement exists only where it spawned. *(M4.2)*
+- **No county-level sentiment, no two-tier secession, no Authority / Influence / QoL / Civil
+  Liberties.** *(M3, M4)*
+- **No player identity, no AI, no win or lose condition.** You operate all 51 seats, and a nation
+  conquered out of existence disappears without comment. *(M6)*
+- **No event ledger.** An action's only output is a six-second toast. *(M5.1)*
+- **`game_state.py` is dead code**, marked as such at the top of the file. *(M2.1)*
+- **Known data-pipeline gaps**: `build_areas.py` is non-deterministic; Hawaii's islands have no
+  adjacency entry; `county_neighbors.json` comes from a pre-2015 Census file; two builds fetch live
+  endpoints with no cache; there is no cross-file validator. *(M1.13)*

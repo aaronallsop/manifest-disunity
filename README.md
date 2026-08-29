@@ -1,185 +1,99 @@
 # Nation States
 
-A map-based game that simulates a scenario where **every U.S. state becomes its own nation**.
+A browser strategy game about the fragmentation and re-formation of the United States. All 51
+states begin as sovereign nations on a real-data county map; movements, secession, trade and war
+take it from there.
 
-The interactive map lets you select two kinds of things:
-
-- **Nations** — the former states, each drawn in its own color.
-- **Counties** — outlined individually but filled with the color of the nation they belong to.
-
-Selecting either opens an info panel showing:
-
-1. **Name**
-2. **Population** — U.S. Census Bureau, 2024 population estimates
-3. **GDP** — U.S. Bureau of Economic Analysis, 2024 county GDP (all-industry total, current dollars)
-4. **Political leaning** — 2024 U.S. presidential vote share, to the nearest tenth of a percent
+**`DESIGN.md` is the single source of truth for what the game is and how it works.** This file
+tells you how to run it and where things live. If the two ever disagree, `DESIGN.md` is right and
+this file is a bug.
 
 ## Running it
 
-The game loads local data with `fetch()`, so it needs a local web server (opening
-`index.html` directly with `file://` will be blocked by the browser).
+The game loads local data with `fetch()` and writes saves back to disk, so it needs the local
+server. Opening `index.html` with `file://` will not work.
 
 ```bash
-# from this folder
-python -m http.server 8000
+python server.py
 ```
 
-Then open <http://localhost:8000> in a browser.
+Then open <http://localhost:8000>.
 
-## How to play (so far)
+`server.py` is Python standard library only — no `pip install`, no Node. It serves the repo as
+static files and adds the endpoints the game needs to persist state:
 
-- Toggle **Nations / Counties** at the top to choose what clicking selects.
-- **Hover** to preview an entity, **click** to select it, **scroll** to zoom, **drag** to pan.
-- Click empty ocean to deselect.
+| | |
+|---|---|
+| `GET/PUT/DELETE /api/state` | `data/state.json`, the live game |
+| `GET/PUT /api/content/<name>.json` | authored content and named saves |
 
-## Project layout
+Append `?dev=1` to the URL for the developer controls (currently a manual world-step button).
 
-```
-index.html            markup + script tags
-css/style.css         styling
-js/colors.js          assigns each nation a distinct color
-js/app.js             map rendering, interaction, info panel
-data/
-  counties-10m.json         county + state geometry (us-atlas / Census TIGER)
-  ct-planning-regions.geojson  Connecticut's current 9 regions (replaces old CT counties)
-  game-data.json            baked population + GDP + 2024 vote, keyed by FIPS
-build/
-  build_data.py       regenerates data/game-data.json from raw sources
-  raw/                raw source files (Census, BEA, election CSV)
-lib/                  vendored d3 + topojson-client (works offline)
-```
-
-## Rebuilding the data
-
-`data/game-data.json` is generated. To regenerate it (e.g. with newer figures),
-place updated source files in `build/raw/` and run:
+## Tests
 
 ```bash
-python build/build_data.py
+python server.py
 ```
 
-## Estimated values
+Then open <http://localhost:8000/tests/run.html>. All green is the bar.
 
-Every rendered unit now has a population, GDP, and political leaning — there are no
-blanks. Where a figure isn't published separately, a grounded best estimate is used
-and flagged in the UI with a small **est.** badge plus an explanatory note. Estimates
-are apportioned from a real total, so nation-level sums stay correct.
+The tests are plain ES modules with no dependencies, written so the same files run under
+`node --test` unchanged if Node ever appears on this machine. `tests/harness.js` is the whole
+framework.
 
-- **Alaska boroughs — political leaning (estimated).** Alaska reports the presidential
-  vote by state-house district, not by borough, so each borough shows the 2024
-  *statewide* result. (Population and GDP are real.)
-- **Virginia independent cities + their counties — GDP (estimated).** The BEA reports
-  these as combined areas; the combined GDP is split among members by population.
-- **Hawaii (Maui/Kalawao) — GDP (estimated).** Same combined-area split.
-
-Two things were resolved with **real** data rather than estimates:
-
-- **Connecticut** now uses the current 9 planning-region boundaries (fetched from the
-  Census TIGERweb service, `data/ct-planning-regions.geojson`) instead of the obsolete
-  8 counties, so its population, GDP, and vote are all real 2024 figures.
-- **Alaska borough populations** were being mis-joined to same-numbered house districts
-  (e.g. Anchorage showed ~7k votes); borough vote is now excluded from that join.
-
-## Actions
-
-Select a nation (Nations mode) to act on it. Each action is atomic: you enter it,
-it resolves, and the map re-renders from the model.
-
-- **🤝 Unite with nation** — propose union with an *adjacent* nation (adjacency uses the
-  state graph plus the "Canadian-highway" rule: Alaska borders every Pacific & Canada
-  nation, Hawaii every Pacific one). Success is **probabilistic**: the preview shows a
-  *chance of peaceful union* driven by how close the two are in population + GDP and how
-  aligned they are politically, clamped so there's always a chance either way (a much
-  bigger nation usually — but not always — absorbs a smaller one; a minnow uniting a
-  giant is a long shot but possible). On **failure** your nation splinters: same-party
-  border counties defect to the target, cut-off regions break away, and you lose
-  population + GDP.
-
-- **⚔️ Annex counties** — take counties bordering your nation (selection grows
-  contiguously and is capped at 2× your pop/GDP). You can't annex from a same-lean
-  nation that's larger than you. Annexing triggers a **civil war** if it flips your
-  party, or adds more GDP or population than you already have. The map auto-switches
-  to the Political view while you pick.
-
-- **🕊️ Release counties** — *coming next.*
-
-**Blue shell (anti-snowball).** The top ~10% of nations by population are penalized when
-they act: the #1 nation gets **half the annex cap** and **double** civil-war severity,
-scaling down to the edge of the tier. It also lowers their odds of a peaceful union.
-
-**Breakup rule.** A new nation formed when a nation breaks apart must be **≥10 counties**
-(smaller only if that's genuinely all that's left); smaller fragments join the neighbor
-they border most.
-
-## Map modes & leaderboard
-
-- **Map** toggle (header): **Standard** (nation colors) · **Political** (per-county
-  red → purple → blue) · **GDP** (white → green) · **Population** (yellow → blue),
-  each with a legend. Nation borders stay drawn on top so you can read ownership and
-  the data at once.
-- **Leaderboard** (left): ranks every current nation by **Population**, **GDP**, or
-  **Politics**; updates live as nations form or are absorbed. Click a row to select it.
-
-## Turns
-
-At game start the 51 nations are shuffled into a hidden 1..N order. Play moves through
-that order — each nation gets **one action (or a pass)** on its turn, shown in the turn
-bar and auto-selected. Other nations can be inspected but not acted on until their turn.
-
-When an action splinters a nation into new ones, the newborns are slotted into the turn
-order **right after their parent** (in random relative order) and everyone after shifts
-down; dissolved nations drop out. (Turn state is in memory; reloading reshuffles.)
-
-### Civil war resolution
-
-When triggered, the outcome is scored:
+## Layout
 
 ```
-dice   = points past 50% into the other party, rounded up (>=1)
-points = round(addedPop / 1e6) + round(addedGDP / 1e10)
-score  = points × (d1 × d2 × …) × blueShell    each die 1-6
+index.html              markup + script tags
+server.py               local server: static files + the state/content write API
+css/style.css           styling
 
-  0-33  Complete victory  — all chosen counties annexed
- 34-66  Partial victory   — only same-lean counties still connected to you
-  67+   The union falls apart — chosen counties break into new nations
-                              (contiguous chunks of >=10 counties; small
-                               fragments join a neighbor, never the attacker)
+js/rng.js               seeded PRNG with named streams (ESM)
+js/tunables.js          TUNE: every model constant, named, with a slider range (ESM)
+js/geo-ct.js            the one place Connecticut's obsolete counties are normalised (ESM)
+js/boot-globals.js      bridges the ESM modules onto window for the legacy files (ESM)
+
+js/game.js              the model: Areas, nations, ownership, treasury, adjacency
+js/world.js             the world turn: drift, party growth, population, GDP, cleanup
+js/civilwar.js          civil-war resolution (pure math)
+js/market.js            the six-sector resource market
+js/parties.js           emergent regional movements
+js/turns.js             turn order
+js/actions.js           Unite / Annex / Trade / Release
+js/app.js               d3 map, panels, boot
+js/colors.js            nation colours
+js/leaderboard.js       the ranked nation list
+js/mapmodes.js          map colouring modes
+js/saves.js             save/load (format v2)
+js/editor.js            the 3-tier map-mode editor
+
+data/                   baked game data (committed) + state.json (not)
+content/                authored content: tunables, saves
+build/                  the offline Python bakes that produce data/
+tests/                  the test harness and suites
+docs/                   the rebuild plan, the code review, progress and decisions
 ```
 
-The bigger the political shift, the more dice, the sharper the risk. The dice roll
-isn't shown, but the result line reports the numbers.
+## The data
 
-**Fallout.** Whichever side loses a civil war loses a slice of its **ruling-party
-population** (dice-scaled, spread evenly across its counties) and hands **2%+ of its
-GDP** to the winner (spread evenly across the winner's counties).
+Everything the map knows is baked offline by the scripts in `build/` from real sources:
 
-## Dynamics
+- **Population** — U.S. Census Bureau, 2024 county population estimates
+- **GDP** — U.S. Bureau of Economic Analysis, 2024 county GDP, all-industry, current dollars
+- **Politics** — 2024 U.S. presidential vote share by county
+- **Geography** — county adjacency, ports, navigable waterways, Class-I rail, interstates, border
+  crossings and hand-authored choke points
 
-Population, GDP, and politics all change over the game:
+Connecticut's eight counties were abolished in 2022; the map uses the nine planning regions that
+replaced them, fetched from TIGERweb. See `js/geo-ct.js` for why that is more work than it sounds.
 
-- **Growth** — at the end of each full round every nation grows ~5%. The new residents
-  arrive in that *nation's* overall party mix (not each county's), so counties slowly
-  drift toward their nation's leaning. GDP grows ~5% too.
-- **War** — civil wars bleed population and transfer GDP (above).
-- The **Political / GDP / Population** map modes, the info panels, and the leaderboard
-  all read these live values.
+`build/raw/` holds ~376 MB of download caches and is not committed —
+`build/raw/README.md` lists every artifact, its source URL and how to fetch it again.
 
-Game state lives in memory only — reload the page to reset to the 51-nation board.
+## Where the work is tracked
 
-## Next steps (not built yet)
-
-- **Release counties** (the third action).
-- Save/load game state.
-
-## Code map (actions)
-
-```
-js/game.js      mutable nations + ownership, demographics, adjacency & grouping
-js/civilwar.js  pure scoring: triggers, dice, points, outcome
-js/mapmodes.js  per-county color scales (political / GDP / population) + legend
-js/turns.js     hidden turn order, advance, splinter insertion
-js/actions.js   Unite / Annex UI flows + outcome application
-js/leaderboard.js  live ranking sidebar
-js/app.js       ownership-driven rendering, interaction dispatch, info panel
-build/build_adjacency.py   -> data/adjacency.json (county+state neighbors)
-```
+- `DESIGN.md` — what the game is, now
+- `docs/REBUILD-PLAN.md` — the milestone plan being worked through
+- `docs/PROGRESS.md` — which tasks are done
+- `docs/DECISIONS.md` — every judgment call and its reason
+- `docs/CODE-REVIEW.md` and `docs/CODE-REVIEW-FINDINGS.md` — the review the plan came from

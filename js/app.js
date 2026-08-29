@@ -102,7 +102,7 @@ async function init() {
     document.getElementById('loading')?.remove();
   } catch (err) {
     const el = document.getElementById('loading');
-    if (el) el.textContent = 'Could not load map data. Run a local server (see README).';
+    if (el) el.textContent = 'Could not load map data. Start the local server with `python server.py` and reload (see README.md).';
     console.error(err);
   }
 }

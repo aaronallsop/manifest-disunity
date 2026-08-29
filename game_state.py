@@ -1,4 +1,27 @@
 """
+DEAD CODE. DO NOT USE. DO NOT EXTEND. Deleted in M2.1.
+
+This is an abandoned partial Python mirror of the JavaScript model, and it
+implements a MATERIALLY DIFFERENT simulation from js/world.js:
+
+  - a different drift denominator
+  - a different growth base
+  - a different ATOMIC UNIT: it never applies data/areas.json, so it models
+    3,143 counties against the JS model's 1,676 merged Areas
+
+It therefore cannot validate the JS engine, which is the only reason a second
+implementation would be worth having. JavaScript owns the game rules; Python owns
+the local server (server.py) and the offline data bakes (build/).
+
+The one thing worth keeping from it is the exact-sum `_counts_from_percentages`
+drift absorption; M2.1 ports that into the JS model and the test suite, then
+deletes this file.
+
+See docs/REBUILD-PLAN.md M2.1 and docs/CODE-REVIEW-FINDINGS.md findings 9, 106
+and 135.
+"""
+
+"""
 Serializable game-state model for Nation States.
 
 The COUNTY is the atomic unit of truth. A NATION/STATE is never stored as primary
