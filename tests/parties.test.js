@@ -89,6 +89,21 @@ describe('Party spawn coverage', () => {
     }
   });
 
+  it('the movement roster covers every state', async () => {
+    const { raw } = await bootWorld({ seed: SEED, spawnParties: false });
+    const byState = {};
+    for (const [name, def] of Object.entries(raw.partyDefs)) {
+      for (const a of Parties.resolveAreas(def.counties).areas) {
+        (byState[a.slice(0, 2)] = byState[a.slice(0, 2)] || new Set()).add(name);
+      }
+    }
+    const states = new Set(Object.keys(Game.county).map((f) => f.slice(0, 2)));
+    const bare = [...states].filter((s) => !byState[s]).sort();
+    equal(bare.length, 0, `states with no movement homeland at all: ${bare}`);
+    ok(Object.keys(raw.partyDefs).length >= 20,
+      `only ${Object.keys(raw.partyDefs).length} movements defined`);
+  });
+
   it('Other is fully absorbed in every Area a party spawns into', async () => {
     await bootWorld({ seed: 4242, spawnParties: true });
     for (const f in Game.county) {

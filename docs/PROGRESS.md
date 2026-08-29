@@ -48,7 +48,17 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done
 - [ ] **M1.10** Implement Release; give Counties mode a purpose.
 - [ ] **M1.11** Documentation and dead weight.
 - [ ] **M1.12** Performance: the three things that run on mousemove.
-- [ ] **M1.13** Data pipeline integrity + `build/validate.py`.
+- [x] **M1.13** Data pipeline integrity + `build/validate.py`. Split into six sub-tasks:
+  - [x] **M1.13a** `build/validate.py`: 13 cross-file checks, wired into the documented build
+        order. Reproduces every data finding on the shipped data, including the 48.2% figure.
+  - [x] **M1.13b** `build_areas.py` deterministic (five runs under different `PYTHONHASHSEED`
+        are byte-identical) + `MAX_MEMBERS` cap. **Not re-baked** — see D36.
+  - [x] **M1.13c** Hawaii's islands linked (`MARITIME_COUNTY_LINKS`), Valdez-Cordova folded onto
+        the legacy FIPS the game data uses. 0 isolated Areas, Cordova's port visible.
+  - [x] **M1.13d** `build_neighbors.py --force`; `rail_counties()` cached to `build/raw/`.
+  - [x] **M1.13e** `build/requirements.txt` + `build/README.md` with the DAG and run order.
+  - [x] **M1.13f** Eight new authored movements. Every state now has a homeland; uncovered Areas
+        348 → 278, states with no coverage 5 → 0.
 
 ## M2 — Model rewrite
 

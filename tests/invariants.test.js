@@ -202,6 +202,35 @@ describe('Data integrity', () => {
     }
   });
 
+  it('every live Area has at least one neighbour', async () => {
+    // An Area with no neighbours is mechanically inert: nothing can be annexed
+    // from it, nothing released into it, and the neighbour-pull term in
+    // political drift has nothing to read. Hawaii's three main islands were in
+    // exactly this state — county adjacency comes from shared map arcs, and an
+    // island shares none. build_adjacency.py MARITIME_COUNTY_LINKS fixes it.
+    await bootWorld({ seed: SEED });
+    const isolated = Object.keys(Game.county).filter((f) => Game.countyNeighbors(f).length === 0);
+    equal(isolated.length, 0, `mechanically inert Areas: ${isolated.slice(0, 8)}`);
+  });
+
+  it('every state can receive at least one emergent movement', async () => {
+    // Five states — Alaska, Arizona, Colorado, Hawaii and New Mexico — had no
+    // homeland in build_parties.py at all, so 348 Areas were permanently outside
+    // the movement system with nothing for secession to build on.
+    const { raw } = await bootWorld({ seed: SEED, spawnParties: false });
+    const reachable = new Set();
+    for (const def of Object.values(raw.partyDefs)) {
+      for (const a of Parties.resolveAreas(def.counties).areas) reachable.add(a);
+    }
+    const statesWithout = new Set();
+    for (const f of Object.keys(Game.county)) {
+      if (!reachable.has(f)) statesWithout.add(f.slice(0, 2));
+    }
+    const covered = new Set([...reachable].map((f) => f.slice(0, 2)));
+    const bare = [...statesWithout].filter((s) => !covered.has(s)).sort();
+    equal(bare.length, 0, `states no movement can ever reach: ${bare}`);
+  });
+
   it('countyNeighbors is symmetric at Area level', async () => {
     await bootWorld({ seed: SEED });
     const ids = Object.keys(Game.county);

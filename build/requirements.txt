@@ -1,0 +1,22 @@
+# Offline data bakes for Nation States.
+#
+# MOST OF THE PIPELINE NEEDS NOTHING. Six of the eight build scripts, the
+# validator and the dev server all run on the Python standard library alone:
+#
+#   build_data.py       build_areas.py      build_neighbors.py
+#   build_adjacency.py  build_economy.py    build_parties.py
+#   validate.py         ../server.py
+#
+# Only the two geospatial bakes need third-party packages, and only when they are
+# actually re-run — the JSON they produce is committed, so a fresh clone plays the
+# game and passes the tests without installing anything:
+#
+#   build_trade.py      ports, coastline, navigable waterways
+#   build_transport.py  Class-I rail, Interstates
+#
+# Install those two only if you are re-baking geography:
+#
+#   python -m pip install -r build/requirements.txt
+
+geopandas>=0.14
+shapely>=2.0

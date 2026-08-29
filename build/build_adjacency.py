@@ -9,6 +9,13 @@ neighbors iff they share an arc). Then:
     regions come from a separate GeoJSON (no shared arcs), CT is approximated as a
     clique internally, all jointly adjacent to whatever external counties bordered
     old Connecticut.
+  - MARITIME_COUNTY_LINKS are added. County adjacency from shared arcs cannot
+    connect an ISLAND to anything, so Hawaii County, Honolulu and Kauai had zero
+    neighbours and the state was mechanically inert: nothing could be annexed
+    from it, nothing released into it, and no movement could ever diffuse across
+    it. Inter-island sea routes are how everything in Hawaii actually moves, so
+    the archipelago is authored as a clique, the same approximation the script
+    already makes for Connecticut.
   - State adjacency is rolled up from county adjacency, then the special "Canadian
     highway / ocean" links are added: Alaska borders every Pacific and Canada-border
     state; Hawaii borders every Pacific state.
@@ -31,6 +38,16 @@ DATA = os.path.join(HERE, "..", "data")
 TERRITORIES = {"60", "66", "69", "72", "78"}
 OLD_CT = {"09001", "09003", "09005", "09007", "09009", "09011", "09013", "09015"}
 CT_REGIONS = ["09110", "09120", "09130", "09140", "09150", "09160", "09170", "09180", "09190"]
+
+# ---- MARITIME_COUNTY_LINKS: sea routes shared arcs cannot see (edit freely) ----
+# Each inner list becomes a mutually-adjacent clique. Islands have no shared arcs
+# with anything, so without this they are unreachable in every system built on
+# county adjacency: annexation targets, release, contiguity, the neighbour-pull
+# term in political drift, and M4's movement diffusion.
+MARITIME_COUNTY_LINKS = [
+    # The Hawaiian archipelago. Kalawao (15005) already shares an arc with Maui.
+    ["15001", "15003", "15005", "15007", "15009"],
+]
 
 # States touching the Pacific / bordering Canada (for Alaska & Hawaii's links).
 PACIFIC_STATES = ["02", "06", "15", "41", "53"]                     # AK CA HI OR WA
@@ -83,6 +100,14 @@ def main():
     for r in CT_REGIONS:
         adj[r] = (set(CT_REGIONS) - {r}) | set(external_ct)
 
+    # ---- authored maritime links (islands share no arcs with anything) ----
+    for group in MARITIME_COUNTY_LINKS:
+        for a in group:
+            for b in group:
+                if a != b:
+                    adj[a].add(b)
+                    adj[b].add(a)
+
     # ---- drop territories ----
     def keep(fp):
         return fp[:2] not in TERRITORIES
@@ -125,6 +150,8 @@ def main():
     avg = sum(len(v) for v in county_adj.values()) / len(county_adj)
     print(f"avg county neighbors: {avg:.1f}")
     print(f"CT external neighbors: {sorted(external_ct)}")
+    isolated = sorted(f for f in county_adj if not county_adj[f])
+    print(f"counties with no neighbours: {len(isolated)}{' ' + str(isolated) if isolated else ''}")
     for s in ["02", "15", "09", "06"]:
         print(f"  state {s} neighbors: {out['state'].get(s)}")
     print(f"output: {os.path.getsize(path)//1024} KB")

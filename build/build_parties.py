@@ -54,6 +54,42 @@ ABSAROKA = ["56033", "56019", "56005", "56011", "56045", "56003", "56043", "5601
 EL_PASO = ["48141", "48229", "48109", "48243", "48377", "48043", "48443", "48389",
            "48301", "48475", "48495", "48371"]            # *Trans-Pecos
 
+# ---- M1.13f: five states could not receive ANY movement -------------------
+# Alaska, Arizona, Colorado, Hawaii and New Mexico had no homeland in this
+# table at all, so 348 of 1,676 Areas were permanently outside the emergent-
+# movement system: no separatism, no sentiment, nothing for two-tier secession
+# to build on. The regions below close that gap and add the three movements
+# docs/REBUILD-PLAN.md M4.1 names by name.
+
+# Greater Idaho: the real proposal to move Oregon's rural east into Idaho.
+GREATER_IDAHO = ["41045", "41001", "41023", "41025", "41063", "41061", "41059",
+                 "41049", "41021", "41069", "41013", "41031", "41035", "41037",
+                 "41033", "41029", "41019"]               # *E + S Oregon
+# Jefferson: the 1941 State of Jefferson, far northern CA + southern OR.
+JEFFERSON = ["06015", "06093", "06049", "06023", "06105", "06089", "06035",
+             "06103", "06063", "41015", "41033", "41029", "41019", "41011"]
+# Tribal-majority and reservation counties across the interior West and Plains.
+NATIVE_CONFED = ["04001", "04017", "04005", "04003", "04009", "04023",   # AZ
+                 "35031", "35045", "35006", "35039", "35043", "35055", "35049",  # NM
+                 "49037", "46102", "46121", "46041", "46137", "46031", "46017", "46007",
+                 "30003", "30035", "30085", "30087", "30005", "30041",   # MT
+                 "38085", "38079", "38005", "38061",                     # ND
+                 "40021", "40001", "40041", "40113", "40097", "40135", "40091",
+                 "02050", "02070", "02180", "02185", "02188", "02270"]   # AK
+# Alaskan Independence: a real party that has held statewide office.
+ALASKA_STATES = ["02"]
+# Hawaiian sovereignty, a live political tradition since 1893.
+HAWAII_STATES = ["15"]
+# Front Range: Colorado's urban corridor, which votes nothing like its plains.
+FRONT_RANGE = ["08031", "08013", "08059", "08001", "08005", "08035", "08041",
+               "08069", "08123", "08101", "08014"]
+# Sonoran Republic: the Arizona borderlands.
+SONORAN = ["04019", "04023", "04003", "04027", "04021", "04012", "04013", "04007"]
+# Rio Grande Union: the New Mexico corridor from Las Cruces to Taos.
+RIO_GRANDE = ["35001", "35049", "35035", "35029", "35017", "35023", "35051",
+              "35053", "35061", "35057", "35007", "35033", "35047", "35043",
+              "35039", "35055"]
+
 REGIONS = {
     "Christian Nationalism":     {"states": SOUTH, "min_pop": 100_000},
     "Cascadian Separatists":     {"states": ["41", "53", "16", "30"], "lean": "R", "fips": NORTHERN_CA},
@@ -72,6 +108,18 @@ REGIONS = {
                                    "fips_states": ["16", "30", "56"]},
     "The Farmers Union":         {"states": GREAT_PLAINS + MIDWEST, "max_pop": 100_000},
     "Eastern Progressives":      {"states": EAST_COAST, "min_pop": 500_000},
+
+    # --- M1.13f: the five states with no coverage, plus the three movements
+    #     docs/REBUILD-PLAN.md M4.1 names. Deterministic movements (Cascadia,
+    #     Deseret, Greater Idaho, Jefferson) get chance 1.0; the rest roll.
+    "Greater Idaho":             {"fips": GREATER_IDAHO, "chance": 1.0},
+    "State of Jefferson":        {"fips": JEFFERSON, "chance": 1.0},
+    "Native American Confederation": {"fips": NATIVE_CONFED, "share": [0.05, 0.30]},
+    "Alaskan Independence":      {"states": ALASKA_STATES},
+    "Hawaiian Sovereignty":      {"states": HAWAII_STATES, "share": [0.05, 0.30]},
+    "Front Range Republic":      {"fips": FRONT_RANGE},
+    "Sonoran Republic":          {"fips": SONORAN},
+    "Rio Grande Union":          {"fips": RIO_GRANDE},
 }
 # ============================ END EDITABLE TABLE ================================
 

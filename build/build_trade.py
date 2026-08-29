@@ -109,6 +109,34 @@ PORTS_URL = ("https://services7.arcgis.com/n1YM8pTrFmm7L4hs/ArcGIS/rest/services
              "Principal_Ports/FeatureServer/0/query")
 
 
+# ---- FIPS the shipped geometry and game-data still key the OLD way ----
+# Valdez-Cordova AK (02261) was split into Chugach (02063) and Copper River
+# (02066) in 2019. data/counties-10m.json and data/game-data.json both still use
+# 02261, so a record keyed by a successor joins to nothing and the port at
+# Cordova is invisible. Fold successors back onto the key the game actually uses.
+SUCCESSOR_TO_LEGACY = {
+    "02063": "02261",   # Chugach      -> Valdez-Cordova
+    "02066": "02261",   # Copper River -> Valdez-Cordova
+}
+
+
+def fold_successors(by_county):
+    """Merge successor-FIPS records onto the legacy key the game data uses."""
+    for new, legacy in SUCCESSOR_TO_LEGACY.items():
+        rec = by_county.pop(new, None)
+        if rec is None:
+            continue
+        base = by_county.setdefault(legacy, {})
+        for k, v in rec.items():
+            if isinstance(v, bool):
+                base[k] = bool(base.get(k)) or v
+            elif isinstance(v, list):
+                base[k] = sorted(set(base.get(k, [])) | set(v))
+            else:
+                base.setdefault(k, v)
+    return by_county
+
+
 def fetch(url, dest):
     if os.path.exists(dest):
         return dest
@@ -223,6 +251,8 @@ def main():
         }
         if any(v for v in rec.values()):
             out_counties[f] = rec
+
+    fold_successors(out_counties)
 
     out = {
         "counties": out_counties,

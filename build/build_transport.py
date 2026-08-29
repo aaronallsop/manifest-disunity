@@ -58,8 +58,21 @@ RAIL_HUBS = {
 # ---------------------------------------------------------------------------
 
 
-def rail_counties():
-    """Distinct county FIPS crossed by Class I rail (attribute-only queries)."""
+def rail_counties(force=False):
+    """
+    Distinct county FIPS crossed by Class I rail (attribute-only queries).
+
+    CACHED to build/raw/transport/rail_counties.json. This had no cache at all:
+    every run re-queried a live ArcGIS endpoint in 2,000-record pages, so the
+    build could not be reproduced offline, could not be reproduced at all if the
+    service moved, and silently produced different data if the upstream layer was
+    revised between runs. Pass force=True to refresh.
+    """
+    cache = os.path.join(RAW, "rail_counties.json")
+    if os.path.exists(cache) and not force:
+        with open(cache, encoding="utf-8") as f:
+            return set(json.load(f))
+
     out, offset = set(), 0
     while True:
         q = (f"{RAIL_URL}?where=1%3D1&outFields=STCNTYFIPS&returnGeometry=false"
@@ -71,8 +84,13 @@ def rail_counties():
             if len(v) == 5:
                 out.add(v)
         if len(feats) < 2000:
-            return out
+            break
         offset += 2000
+
+    os.makedirs(RAW, exist_ok=True)
+    with open(cache, "w", encoding="utf-8") as f:
+        json.dump(sorted(out), f)
+    return out
 
 
 def interstates_by_county(states, counties_gdf):
