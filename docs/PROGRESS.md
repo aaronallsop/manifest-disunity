@@ -11,13 +11,21 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done
 
 - [x] **M0.1** Version control first — `.gitignore` (excludes 376 MB `build/raw/`), `git init`,
       baseline commit, `build/raw/README.md`. `.git` = 1.4 MB.
-- [ ] **M0.2** Write-capable local server (`server.py`, stdlib only, 127.0.0.1, `/api/state`,
-      `/api/content/<name>.json`); clean `.claude/launch.json`.
-- [ ] **M0.3** Seeded RNG with named streams (`js/rng.js`); replace all 5 `Math.random()` sites.
-- [ ] **M0.4** One tunables object (`js/tunables.js`), every constant named, reads recorded.
-- [ ] **M0.5** Test harness (`tests/`, ESM, `tests/run.html`) + seed invariants.
-- [ ] **M0.6** Fix live save/load bugs; save v2; refuse v1; guard against in-flight action.
-- [ ] **M0.7** `Game.batch(fn)` — stop the per-mutation full repaint.
+- [x] **M0.2** `server.py` (stdlib, 127.0.0.1) with GET/PUT/DELETE `/api/state` and
+      GET/PUT `/api/content/<name>.json`, atomic writes, traversal-proof names. `launch.json`
+      cut to one config. Static responses send `no-store`, retiring the `?v=` cache-busters.
+- [x] **M0.3** `js/rng.js` — mulberry32 per named stream, stream seed = hash(runSeed, name).
+      All five `Math.random()` sites take an explicit rng. Streams proven independent.
+- [x] **M0.4** `js/tunables.js` — 60 named keys with label/group/doc/range; `TUNE.get` records
+      every read and `TUNE.trace(fn)` returns a computation's ruleset keys. Behaviour-preserving:
+      opening prices still match the review's measured baseline.
+- [x] **M0.5** `tests/` + `tests/run.html`. The plan's five invariants plus data-integrity and
+      determinism checks. Caught a real defect on first run (tunables handed out arrays by ref).
+- [x] **M0.6** Save v2: all 8 stateful modules serialize; v1 refused with a clear message; build
+      stamp refuses a cross-build save; load cancels an in-flight action; quota surfaced; primary
+      store is the server. Verified: turn 6 -> reload -> load restores everything.
+- [x] **M0.7** `Game.batch(fn)` + `{ownership, values, roster}` emit reasons. **One annex = 1
+      render**, measured through the real action layer.
 
 ## M1 — Correctness patch pass
 
@@ -95,4 +103,12 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done
 *(Updated as work proceeds — what is done, what is next, what was learned that is not yet
 written down elsewhere.)*
 
-- Current task: **M0.2**.
+**M0 complete.** 71 tests green at `tests/run.html`; the game loads, plays and saves with a clean
+console. Next: **M1.1** (48% of emergent party spawns hit a deleted key).
+
+Learned along the way, not written elsewhere:
+- The in-app browser serves a cached document on a same-URL `navigate`. Add a throwaway query
+  string (`?x=7`) when reloading after an edit, or you will verify the previous build.
+- `read_console_messages` keeps a buffer across navigations; open a fresh tab for a clean read.
+- `TUNE.trace(fn)` already gives M5's "show your work" data for free — one world turn reads 13 keys.
+- `window.__renderCount()` / `__resetRenderCount()` in app.js are the M0.7 instrument; keep them.
