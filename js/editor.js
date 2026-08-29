@@ -44,14 +44,42 @@ const Editor = (function () {
     return null;
   }
   const nodeByPath = (path) => (path.length ? findPath(modes[cur].nodes, path[path.length - 1]) : null);
-  const memberCount = (id) => Object.values(modes[cur].assign).filter((p) => p.includes(id)).length;
+  /*
+   * One pass over the assignments per render instead of one pass PER NODE.
+   * renderSidebar calls this for every node in the tree, and it ran the full
+   * 1,676-entry scan each time — so a 40-node tree cost 67,000 array scans per
+   * paint click.
+   */
+  let countCache = null;
+  function buildCounts() {
+    countCache = new Map();
+    for (const path of Object.values(modes[cur].assign)) {
+      for (const id of path) countCache.set(id, (countCache.get(id) || 0) + 1);
+    }
+  }
+  const memberCount = (id) => (countCache ? countCache.get(id) || 0 : 0);
 
   /* ---- painting ---- */
+  /*
+   * PRECOMPUTED. At State granularity this scanned all 1,676 Area keys and the
+   * caller then ran up to 33 topojson.merge calls — per mousemove.
+   * State -> Areas is immutable, so it is built once on entry.
+   */
+  let areasByState = null;
+  function buildStateIndex() {
+    areasByState = new Map();
+    for (const a of Object.keys(Game.county)) {
+      const st = Game.county[a].st;
+      let list = areasByState.get(st);
+      if (!list) areasByState.set(st, (list = []));
+      list.push(a);
+    }
+  }
   function unitAreas(fips) {
     const aid = Game.areaIdOf(fips);
     if (gran === 'county') return [aid];
-    const st = Game.county[aid].st;
-    return Object.keys(Game.county).filter((a) => Game.county[a].st === st);
+    if (!areasByState) buildStateIndex();
+    return areasByState.get(Game.county[aid].st) || [aid];
   }
   function paintUnit(fips) {
     if (!selPath.length) return flash('Select a node in the tree first.', 'warn');
@@ -75,6 +103,15 @@ const Editor = (function () {
   }
 
   /* ---- coloring (used by app.fillFor while active) ---- */
+  // Editor.color ran TWO fresh d3.interpolateRgb per county per repaint, which
+  // is ~12,928 colour parses for one paint click.
+  const dimCache = new Map();
+  function dim(c) {
+    let hit = dimCache.get(c);
+    if (hit === undefined) { hit = d3.interpolateRgb(c, '#242a31')(0.75); dimCache.set(c, hit); }
+    return hit;
+  }
+
   function color(fips) {
     const aid = Game.areaIdOf(fips);
     const path = modes[cur].assign[aid];
@@ -82,14 +119,20 @@ const Editor = (function () {
     if (!path) return selId ? '#242a31' : UNASSIGNED;
     const rootIdx = modes[cur].nodes.findIndex((n) => n.id === path[0]);
     let c = PALETTE[(rootIdx + PALETTE.length) % PALETTE.length];
-    c = d3.interpolateRgb(c, '#ffffff')(0.22 * (path.length - 1)); // deeper tier = lighter
-    if (selId && !path.includes(selId)) c = d3.interpolateRgb(c, '#242a31')(0.75); // dim others
+    c = MapModes.lighten(c, path.length - 1); // deeper tier = lighter, memoized
+    if (selId && !path.includes(selId)) c = dim(c); // dim others, memoized
     return c;
   }
 
   /* ---- map events (routed from app.js) ---- */
   const onClick = (d) => paintUnit(d.id);
+  // Same-target guard: bound to mousemove, so without it the whole unit outline
+  // is rebuilt and re-serialised on every pointer event inside one shape.
+  let hoverKey = null;
   function onHover(d) {
+    const key = gran + ':' + (gran === 'county' ? Game.areaIdOf(d.id) : Game.county[Game.areaIdOf(d.id)].st);
+    if (key === hoverKey) return;
+    hoverKey = key;
     const feats = unitAreas(d.id).map((a) => areaFeature(a));
     store.hoverShape.attr('d', store.path({ type: 'FeatureCollection', features: feats.flatMap((f) => (f.type === 'FeatureCollection' ? f.features : [f])) })).style('display', null);
   }
@@ -139,6 +182,7 @@ const Editor = (function () {
       ${addSub}<button class="ed-mini" data-del="${n.id}">✕</button></div>${kids}`;
   }
   function renderSidebar() {
+    buildCounts();
     const m = modes[cur];
     const el = document.getElementById('leaderboard');
     el.innerHTML = `
@@ -221,6 +265,7 @@ const Editor = (function () {
   /* ---- enter / exit ---- */
   function enter() {
     if (!modes) defaults();
+    if (!areasByState) buildStateIndex();
     active = true;
     document.getElementById('btn-editor').textContent = 'Exit map editor';
     deselect();

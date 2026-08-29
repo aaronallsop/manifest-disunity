@@ -78,6 +78,18 @@ main { flex: 1 1 auto; display: flex; min-height: 0; }
 
 .bg { fill: transparent; pointer-events: all; }
 
+/*
+ * NON-SCALING STROKES. The zoom transform is applied to the <g>, so without
+ * vector-effect every stroke width is multiplied by the zoom factor: at the 9x
+ * maximum the nation borders become 9.9px and the selection outline 21.6px, and
+ * a small county can be entirely covered by its own border — at exactly the zoom
+ * where the player is trying to read county-level detail.
+ */
+.county, .area-borders, .nation-borders, .nation-outline,
+.hover-shape, .select-shape, .c-super, .c-region, .c-sub {
+  vector-effect: non-scaling-stroke;
+}
+
 .county {
   stroke: rgba(10, 16, 23, 0.35);
   stroke-width: 0.3px;
@@ -111,7 +123,19 @@ main { flex: 1 1 auto; display: flex; min-height: 0; }
   stroke-width: 2.4px;
   stroke-linejoin: round;
   pointer-events: none;
-  filter: drop-shadow(0 0 4px rgba(255, 213, 74, 0.8));
+}
+/* The glow is a WIDER SIBLING PATH drawn underneath, not a drop-shadow() filter.
+   The filter forced the browser to allocate a separate raster surface for a path
+   that can be all of Alaska (4,194 points) and re-rasterise it on every zoom step
+   and every `d` change — four or five per action. */
+.select-glow {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 6px;
+  stroke-opacity: .28;
+  stroke-linejoin: round;
+  pointer-events: none;
+  vector-effect: non-scaling-stroke;
 }
 
 /* ---------- info panel ---------- */

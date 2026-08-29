@@ -36,7 +36,7 @@ const MapModes = (function () {
     const p = region && region.def.assign[Game.areaIdOf(fips)];
     if (!p) return '#3a4149';
     const base = REGION_PALETTE[region.order.indexOf(p[0]) % REGION_PALETTE.length];
-    return d3.interpolateRgb(base, '#ffffff')(0.22 * (p.length - 1)); // deeper tier = lighter
+    return lighten(base, p.length - 1); // deeper tier = lighter
   }
 
   // Cultural mode: each super-region gets its own HUE; its regions are different
@@ -79,6 +79,32 @@ const MapModes = (function () {
   const PURPLE = '#7b57c8';
   const MARGIN_FULL = 40; // margin (pts) at which color is fully saturated
 
+  /*
+   * Colour ramps are built ONCE.
+   *
+   * recolor() calls color() for all 3,232 path elements, and each
+   * d3.interpolateRgb parses two colour strings, builds three per-channel gamma
+   * interpolators and returns a closure that is thrown away after one
+   * evaluation. That is ~6,464 colour parses per repaint in political/gdp/
+   * population/geographic mode, and ~12,928 in the editor, which does it twice
+   * per county. There are at most a dozen distinct ramps in the whole program.
+   */
+  const RAMP_D = d3.interpolateRgb(PURPLE, BLUE);
+  const RAMP_R = d3.interpolateRgb(PURPLE, RED);
+  const RAMP_GDP = d3.interpolateRgb('#eaf5ec', '#146a34');
+  const RAMP_POP = d3.interpolateRgb('#fde047', '#15308f');
+  /** memoized `mix toward white by tier` — the argument only ever takes 3 values */
+  const tierCache = new Map();
+  function lighten(base, tier) {
+    const key = base + '|' + tier;
+    let hit = tierCache.get(key);
+    if (hit === undefined) {
+      hit = d3.interpolateRgb(base, '#ffffff')(0.22 * tier);
+      tierCache.set(key, hit);
+    }
+    return hit;
+  }
+
   function init(gameData) {
     data = gameData;
     const recs = Object.values(data.counties);
@@ -93,17 +119,17 @@ const MapModes = (function () {
     if (!p) return '#7a7a7a';
     const margin = p.dem - p.gop; // + = Democratic
     const t = Math.min(Math.abs(margin) / MARGIN_FULL, 1);
-    return d3.interpolateRgb(PURPLE, margin >= 0 ? BLUE : RED)(t);
+    return (margin >= 0 ? RAMP_D : RAMP_R)(t);
   }
   function gdp(fips) {
     const v = Game.countyGdp(fips);
     if (!v) return '#eef1ee';
-    return d3.interpolateRgb('#eaf5ec', '#146a34')(gdpScale(v));
+    return RAMP_GDP(gdpScale(v));
   }
   function population(fips) {
     const v = Game.countyPop(fips);
     if (!v) return '#fef9c3';
-    return d3.interpolateRgb('#fde047', '#15308f')(popScale(v));
+    return RAMP_POP(popScale(v));
   }
 
   function color(mode, fips) {
@@ -149,5 +175,5 @@ const MapModes = (function () {
       <div class="legend-labels"><span>${a}</span><span>${b}</span><span>${c}</span></div>`;
   }
 
-  return { init, color, legend, setRegion, getRegion: () => region, setCulture, getCulture: () => culture, setEconomy, getEconomy: () => economy, ECON_COLORS };
+  return { init, color, legend, lighten, setRegion, getRegion: () => region, setCulture, getCulture: () => culture, setEconomy, getEconomy: () => economy, ECON_COLORS };
 })();

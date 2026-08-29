@@ -11,7 +11,7 @@
  *   - batch(fn) collapses every emit inside fn into one, with the reasons merged
  *   - batch returns fn's return value and still emits if fn throws
  */
-import { describe, it, ok, equal, deepEqual } from './harness.js';
+import { describe, it, ok, equal, notEqual, deepEqual } from './harness.js';
 import { bootWorld } from './world-fixture.js';
 
 const SEED = 20260829;
@@ -153,6 +153,44 @@ describe('Render batching', () => {
     World.advanceTurn(window.TUNE);
     equal(w.n, 1, 'a world turn should render once');
     equal(w.last.values, true, 'a world turn changes values and must say so');
+  });
+
+  /* --- M1.12: caches that must invalidate on a mutation, not per call --- */
+
+  it('blueShell is memoized between mutations and recomputed after one', async () => {
+    await bootWorld({ seed: SEED });
+    const e0 = Game.epoch();
+    const a = Game.blueShell('06');
+    equal(Game.epoch(), e0, 'reading the shell should not count as a mutation');
+    equal(Game.blueShell('06'), a);
+
+    // a mutation must invalidate it: give a mid-tier nation an enormous economy
+    Game.boostGdp('49', Game.nationDemographics('06').gdp * 5);
+    ok(Game.epoch() > e0, 'the epoch did not advance on a mutation');
+    ok(Game.blueShell('49') > 0, 'the memoized ranking survived a mutation that should have changed it');
+  });
+
+  it('the epoch advances exactly once per render, batched or not', async () => {
+    await bootWorld({ seed: SEED });
+    const e0 = Game.epoch();
+    Game.batch(() => {
+      Game.boostGdp('06', 1e9);
+      Game.boostGdp('06', 1e9);
+      Game.boostGdp('06', 1e9);
+    });
+    equal(Game.epoch(), e0 + 1, 'a batch of three mutations advanced the epoch more than once');
+    Game.boostGdp('06', 1e9);
+    equal(Game.epoch(), e0 + 2);
+  });
+
+  it('MapModes.lighten memoizes its ramp results', async () => {
+    await bootWorld({ seed: SEED });
+    const a = MapModes.lighten('#e0483b', 2);
+    const b = MapModes.lighten('#e0483b', 2);
+    equal(a, b);
+    ok(typeof a === 'string' && a.startsWith('rgb'), `expected a colour string, got ${a}`);
+    notEqual(MapModes.lighten('#e0483b', 0), MapModes.lighten('#e0483b', 2),
+      'the tier argument is being ignored');
   });
 
   it('breakApart is one render however many nations it mints', async () => {

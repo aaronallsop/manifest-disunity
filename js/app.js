@@ -34,6 +34,8 @@ const store = {
   nationBorders: null,
   countyById: new Map(),
   outlineCache: new Map(),
+  selectGlow: null,
+  hoverKey: null, // what the hover outline currently shows; the mousemove guard
   selected: null, // { level:'nation'|'county', id }
   rng: null,      // seeded RNG for this session (js/rng.js); serialized in the save
   seed: null,
@@ -186,6 +188,7 @@ function buildMap(topo, ctGeo) {
 
   store.actionLayer = g.append('g').attr('class', 'action-layer');
   store.hoverShape = g.append('path').attr('class', 'hover-shape').style('display', 'none');
+  store.selectGlow = g.append('path').attr('class', 'select-glow').style('display', 'none');
   store.selectShape = g.append('path').attr('class', 'select-shape').style('display', 'none');
 
   redrawBorders();
@@ -281,11 +284,18 @@ function setColorMode(mode) {
 
 /* nested super/region/sub-region outlines when a county is picked in Culture mode */
 const cultureOutlineCache = new Map();
+// Cached: the node -> Area mapping is authored data and the Area -> member
+// mapping is baked, so this list never changes. It was rebuilt on every panel
+// render, and the panel re-renders on every selection change.
+const cultureMemberCache = new Map();
 function cultureMembers(nodeId) {
+  let hit = cultureMemberCache.get(nodeId);
+  if (hit) return hit;
   const c = MapModes.getCulture();
   const areas = (c && c.nodeAreas[nodeId]) || [];
   const out = [];
   for (const a of areas) for (const m of Game.areaCounties(a)) out.push(m);
+  cultureMemberCache.set(nodeId, out);
   return out;
 }
 function cultureOutline(nodeId) {
@@ -422,6 +432,7 @@ function onGameChange(reason) {
   if (r.roster) TurnSystem.sync();
   if (r.ownership) {
     store.outlineCache.clear();
+    store.hoverKey = null; // the cached hover outline is now stale
     redrawBorders();
   }
   const dep = MODE_DEPENDS[store.colorMode];
@@ -443,35 +454,62 @@ window.__resetRenderCount = () => { gameChangeCount = 0; };
 /* ------------------------------------------------------------------ */
 /* interaction (dispatches to Actions when an action is running)       */
 /* ------------------------------------------------------------------ */
-/* the clickable unit is the Area: one feature, or the merged member features */
+/*
+ * The clickable unit is the Area: one feature, or the merged member features.
+ *
+ * CACHED. An Area's shape is a function of the immutable geometry and the
+ * immutable Area membership, so it never changes — but this ran a full
+ * topojson.merge over all 3,231 county geometries on EVERY mousemove for each of
+ * the 483 merged Areas.
+ */
+const areaFeatureCache = new Map();
 function areaFeature(id) {
+  let hit = areaFeatureCache.get(id);
+  if (hit !== undefined) return hit;
   const members = Game.areaCounties(id);
-  if (members.length === 1) return store.countyById.get(members[0]);
-  const set = new Set(members);
-  return topojson.merge(store.topo, store.topo.objects.counties.geometries.filter((g) => set.has(g.id)));
+  hit = members.length === 1
+    ? store.countyById.get(members[0])
+    : topojson.merge(store.topo, store.topo.objects.counties.geometries.filter((g) => new Set(members).has(g.id)));
+  areaFeatureCache.set(id, hit);
+  return hit;
 }
 
+/*
+ * SAME-TARGET GUARD. This is bound to `mousemove`, which fires continuously while
+ * the pointer sits inside one shape. Without the guard, every single event
+ * re-projected the whole hovered outline — which for a nation is a
+ * topojson.merge plus a path serialisation of up to 4,000 points — and wrote it
+ * back into the DOM.
+ */
 function onHover(event, d) {
   if (Editor.isActive()) return Editor.onHover(d);
   if (Actions.isActive()) return Actions.onHover(d);
   if (store.colorMode === 'cultural' && MapModes.getCulture()) {
     const nid = cultureNodeAt(d.id);
-    if (nid === store.cultureHoverId) return;
-    store.cultureHoverId = nid;
+    if (nid === store.hoverKey) return;
+    store.hoverKey = nid;
     if (nid) store.hoverShape.attr('d', store.path(cultureOutline(nid))).style('display', null);
     else store.hoverShape.style('display', 'none');
     return;
   }
   if (store.mode === 'nations') {
     const nid = Game.getOwner(d.id);
+    const key = 'n:' + nid;
+    if (key === store.hoverKey) return;
+    store.hoverKey = key;
     if (nid) store.hoverShape.attr('d', store.path(nationOutline(nid))).style('display', null);
+    else store.hoverShape.style('display', 'none');
   } else {
-    store.hoverShape.attr('d', store.path(areaFeature(d.id))).style('display', null);
+    const aid = Game.areaIdOf(d.id);
+    const key = 'a:' + aid;
+    if (key === store.hoverKey) return;
+    store.hoverKey = key;
+    store.hoverShape.attr('d', store.path(areaFeature(aid))).style('display', null);
   }
 }
 function onHoverOut() {
   if (Actions.isActive()) return;
-  store.cultureHoverId = null;
+  store.hoverKey = null;
   store.hoverShape.style('display', 'none');
 }
 function onClick(event, d) {
@@ -496,9 +534,7 @@ function onBackgroundClick() {
 function select(level, id) {
   if (level === 'culture') return selectCulture(id);
   store.selected = { level, id };
-  const feat = level === 'nation' ? nationOutline(id) : areaFeature(id);
-  if (feat) store.selectShape.attr('d', store.path(feat)).style('display', null);
-  else store.selectShape.style('display', 'none');
+  setSelectOutline(level === 'nation' ? nationOutline(id) : areaFeature(id));
   if (level === 'nation') renderNationPanel(id);
   else renderCountyPanel(id);
   updateCultureHighlight();
@@ -507,7 +543,7 @@ function select(level, id) {
 
 function deselect() {
   store.selected = null;
-  store.selectShape.style('display', 'none');
+  setSelectOutline(null);
   store.hoverShape.style('display', 'none');
   updateCultureHighlight();
   renderPlaceholder();
@@ -515,8 +551,14 @@ function deselect() {
 }
 
 function setSelectOutline(feature) {
-  if (feature) store.selectShape.attr('d', store.path(feature)).style('display', null);
-  else store.selectShape.style('display', 'none');
+  const d = feature ? store.path(feature) : null;
+  if (d) {
+    store.selectShape.attr('d', d).style('display', null);
+    if (store.selectGlow) store.selectGlow.attr('d', d).style('display', null);
+  } else {
+    store.selectShape.style('display', 'none');
+    if (store.selectGlow) store.selectGlow.style('display', 'none');
+  }
 }
 
 /* ------------------------------------------------------------------ */
@@ -547,7 +589,10 @@ function wireControls() {
 function setMode(mode) {
   if (mode === store.mode || Actions.isActive()) return;
   store.mode = mode;
-  document.querySelectorAll('.toggle button').forEach((b) => b.classList.toggle('active', b.dataset.mode === mode));
+  // [data-mode] scoping matters: the County-lines button lives inside a .toggle
+  // and has no data-mode, so an unscoped selector strips its .active class and
+  // the button then lies about whether the lines are showing.
+  document.querySelectorAll('.toggle button[data-mode]').forEach((b) => b.classList.toggle('active', b.dataset.mode === mode));
   onHoverOut();
   if (store.selected) {
     if (mode === 'nations' && store.selected.level === 'county') select('nation', Game.getOwner(store.selected.id));

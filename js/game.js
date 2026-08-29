@@ -44,6 +44,9 @@ const Game = (function () {
     transportData = null;
     seq = 0;
     originalNationCount = 0;
+    epoch = 0;
+    shellCache = null;
+    shellEpoch = -1;
     listeners.length = 0;
   }
 
@@ -341,7 +344,16 @@ const Game = (function () {
    * weaken exactly as the snowball grew: 5 nations penalised at 51, 2 at 15, 1 at
    * 10 or fewer.
    */
+  /*
+   * Memoized per mutation. This recomputes demographics for EVERY nation — a full
+   * scan of all 1,676 Area records — and then sorts, and it is called from
+   * click-driven render paths (startAnnex, renderUnitePreview, the annex cost
+   * panel on every selection change). The ranking cannot move without a
+   * mutation, so `epoch` invalidates it.
+   */
+  let shellCache = null, shellEpoch = -1;
   function blueShell(nid) {
+    if (shellEpoch === epoch && shellCache) return shellCache.get(nid) || 0;
     const rows = [...nations.keys()].map((id) => {
       const d = nationDemographics(id);
       return { id, pop: d.pop, gdp: d.gdp, areas: nations.get(id).counties.size };
@@ -358,9 +370,12 @@ const Game = (function () {
     rows.sort((a, b) => b.score - a.score);
     const base = originalNationCount || rows.length;
     const topCount = Math.max(1, Math.round(T('shell.topShare') * base));
-    const idx = rows.findIndex((x) => x.id === nid);
-    if (idx < 0 || idx >= topCount) return 0;
-    return (topCount - idx) / topCount;
+    shellCache = new Map();
+    for (let i = 0; i < topCount && i < rows.length; i++) {
+      shellCache.set(rows[i].id, (topCount - i) / topCount);
+    }
+    shellEpoch = epoch;
+    return shellCache.get(nid) || 0;
   }
 
   /* ---- mutations ---- */
@@ -382,6 +397,8 @@ const Game = (function () {
 
   let batchDepth = 0;
   let pending = null;
+  /** Bumped on every emit. Caches that are only valid between mutations key on it. */
+  let epoch = 0;
 
   const FULL = { ownership: true, values: true, roster: true };
 
@@ -402,6 +419,7 @@ const Game = (function () {
       pending = merge(pending || NONE(), r);
       return;
     }
+    epoch++;
     listeners.forEach((f) => f(r));
   }
 
@@ -415,6 +433,7 @@ const Game = (function () {
       if (batchDepth === 0 && pending) {
         const r = pending;
         pending = null;
+        epoch++;
         listeners.forEach((f) => f(r));
       }
     }
@@ -833,6 +852,7 @@ const Game = (function () {
     nameForCounty,
     nearestNation,
     blueShell,
+    epoch: () => epoch,
     moveCounties,
     mergeInto,
     createNation,
