@@ -152,12 +152,18 @@ const World = (function () {
     phasePartyGrowth(snap, nxt, tn);
     phasePopulationGrowth(snap, nxt, tn);
     phaseCleanup(snap, nxt, tn);
-    for (const f in nxt) {
-      const c = Game.county[f], v = nxt[f];
-      c.demPop = v.demPop; c.gopPop = v.gopPop; c.othPop = v.othPop; c.ext = v.ext; c.gdp = v.gdp;
-    }
-    Game.tickTreasuries(); // income minus maintenance, on this turn's updated GDP
-    Market.update(tn);     // reprice every resource from live supply vs demand
+    // One render for the whole turn. The writeback mutates the county records
+    // directly and never emitted, so any driver other than the one button left
+    // the UI stale (finding 19). Batch it and emit exactly once, from here.
+    Game.batch(() => {
+      for (const f in nxt) {
+        const c = Game.county[f], v = nxt[f];
+        c.demPop = v.demPop; c.gopPop = v.gopPop; c.othPop = v.othPop; c.ext = v.ext; c.gdp = v.gdp;
+      }
+      Game.tickTreasuries(); // income minus maintenance, on this turn's updated GDP
+      Market.update(tn);     // reprice every resource from live supply vs demand
+      Game.touch({ values: true });
+    });
     turn += 1;
     return turn;
   }

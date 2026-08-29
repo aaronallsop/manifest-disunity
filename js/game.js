@@ -219,8 +219,61 @@ const Game = (function () {
   }
 
   /* ---- mutations ---- */
+  /*
+   * emit() carries a REASON. Without one, every mutation forced the renderer to
+   * clear the outline cache, re-mesh all 9,869 arcs of the county topology,
+   * rewrite 3,232 fills and rebuild the leaderboard — even for a pure treasury
+   * change. One annex cost two of those cascades; a transit trade cost two for a
+   * change that moved no border at all.
+   *
+   *   ownership : who owns what changed  -> borders, outline cache, standard fill
+   *   values    : population/GDP/treasury changed -> value fills, leaderboard, panel
+   *   roster    : nations were created or destroyed -> turn order, banner
+   *
+   * batch(fn) suppresses emits for the duration of fn and fires ONE merged emit
+   * afterwards, so a multi-step mutation renders once.
+   */
   function onChange(fn) { listeners.push(fn); }
-  function emit() { listeners.forEach((f) => f()); }
+
+  let batchDepth = 0;
+  let pending = null;
+
+  const FULL = { ownership: true, values: true, roster: true };
+
+  function merge(into, r) {
+    into.ownership = into.ownership || !!r.ownership;
+    into.values = into.values || !!r.values;
+    into.roster = into.roster || !!r.roster;
+    return into;
+  }
+
+  const NONE = () => ({ ownership: false, values: false, roster: false });
+
+  function emit(reason) {
+    // Always hand listeners all three bits. A partial object would make
+    // `reason.ownership` undefined, which reads as false but tests as neither.
+    const r = merge(NONE(), reason || FULL);
+    if (batchDepth > 0) {
+      pending = merge(pending || NONE(), r);
+      return;
+    }
+    listeners.forEach((f) => f(r));
+  }
+
+  /** Run fn with emits suppressed, then emit once with everything fn touched. */
+  function batch(fn) {
+    batchDepth++;
+    try {
+      return fn();
+    } finally {
+      batchDepth--;
+      if (batchDepth === 0 && pending) {
+        const r = pending;
+        pending = null;
+        listeners.forEach((f) => f(r));
+      }
+    }
+  }
 
   function moveCounties(fipsList, toId, { silent } = {}) {
     const to = nations.get(toId);
@@ -232,23 +285,28 @@ const Game = (function () {
       to.counties.add(f);
       owner.set(f, toId);
     }
-    pruneEmpty();
-    if (!silent) emit();
+    const removed = pruneEmpty();
+    if (!silent) emit({ ownership: true, roster: removed > 0 });
   }
   function mergeInto(intoId, fromId) {
-    const from = nations.get(fromId);
-    if (from) moveCounties([...from.counties], intoId, { silent: true });
-    emit();
+    batch(() => {
+      const from = nations.get(fromId);
+      if (from) moveCounties([...from.counties], intoId, { silent: true });
+      emit({ ownership: true, roster: true });
+    });
   }
   function createNation(name, countyIds, { color, silent } = {}) {
     const id = 'n' + ++seq;
     nations.set(id, { id, name, color: color || Colors.newColor(), counties: new Set(), origin: false, treasury: 0, gov: 'Republic' });
     moveCounties(countyIds, id, { silent: true });
-    if (!silent) emit();
+    if (!silent) emit({ ownership: true, roster: true });
     return id;
   }
+  /** Delete nations with no territory. Returns how many were removed. */
   function pruneEmpty() {
-    for (const [id, n] of nations) if (n.counties.size === 0) nations.delete(id);
+    let n = 0;
+    for (const [id, rec] of nations) if (rec.counties.size === 0) { nations.delete(id); n++; }
+    return n;
   }
 
   // Break a set of counties into new nations. Contiguous chunks of at least
@@ -270,7 +328,7 @@ const Game = (function () {
       else created.push(createNation(nameForCounty(largestCounty(comp)), comp, { silent: true }));
     }
     pruneEmpty();
-    emit();
+    emit({ ownership: true, roster: true });
     return created;
   }
 
@@ -300,7 +358,7 @@ const Game = (function () {
       const perW = moved / winner.counties.size;
       for (const f of winner.counties) { if (county[f]) county[f].gdp += perW; }
     }
-    emit();
+    emit({ values: true });
   }
 
   /* ---- round-end growth: +rate population (in the nation's party mix) + GDP ---- */
@@ -322,7 +380,7 @@ const Game = (function () {
         c.gdp *= 1 + rate;
       }
     }
-    emit();
+    emit({ values: true });
   }
 
   const clamp = (x, lo, hi) => Math.max(lo, Math.min(hi, x));
@@ -346,14 +404,14 @@ const Game = (function () {
     if (!n || !n.counties.size) return;
     const per = amount / n.counties.size;
     for (const f of n.counties) { if (county[f]) county[f].gdp += per; }
-    emit();
+    emit({ values: true });
   }
   // spendable balance: actions draw from the treasury via this
   function spend(nid, amount) {
     const n = nations.get(nid);
     if (!n || n.treasury < amount) return false;
     n.treasury -= amount;
-    emit();
+    emit({ values: true });
     return true;
   }
 
@@ -402,7 +460,7 @@ const Game = (function () {
     if (dropped || orphans) {
       console.warn(`Game.loadState: ${dropped} unknown Area records and ${orphans} orphan ownership entries were skipped.`);
     }
-    emit();
+    emit(FULL);
     return { dropped, orphans };
   }
 
@@ -447,5 +505,9 @@ const Game = (function () {
     applyCivilWarCost,
     growAll,
     onChange,
+    batch,
+    /** Declare a change made by writing the records directly (world.js's phase
+     *  writeback). Inside batch() it merges into the one pending emit. */
+    touch: (reason) => emit(reason),
   };
 })();

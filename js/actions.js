@@ -123,9 +123,13 @@ const Actions = (function () {
     } else {
       const score = CivilWar.uniteSeverity(P);
       const plan = planSplinter(S, tid);
-      Game.moveCounties(plan.defect, tid, { silent: true });
-      const created = Game.breakApart(plan.secede);
-      Game.applyCivilWarCost(S, tid, score); // remnant bleeds population; GDP flows to the target
+      // One render for the whole fallout, not four.
+      const created = Game.batch(() => {
+        Game.moveCounties(plan.defect, tid, { silent: true });
+        const born = Game.breakApart(plan.secede);
+        Game.applyCivilWarCost(S, tid, score); // remnant bleeds population; GDP flows to the target
+        return born;
+      });
       TurnSystem.insertAfter(S, created);
       const parts = [`${plan.defect.length} counties defected to <strong>${escapeHtml(Tname)}</strong>`];
       if (created.length) parts.push(`${created.length} new ${plural(created.length, 'nation', 'nations')} broke away`);
@@ -354,9 +358,11 @@ const Actions = (function () {
       const finalize = (toll) => {
         const net = benefit * (1 - toll), cut = benefit * toll;
         A = null; clearVisuals();
-        Game.boostGdp(S, net * 1e6);
-        Game.boostGdp(T, cut * 1e6);
-        Market.update();
+        Game.batch(() => {
+          Game.boostGdp(S, net * 1e6);
+          Game.boostGdp(T, cut * 1e6);
+        });
+        Market.update(TUNE);
         flash(`🚂 <strong>${escapeHtml(Game.getNation(S).name)}</strong> reached the market via <strong>${escapeHtml(tName)}</strong> at ${Math.round(toll * 100)}% toll — net +${fmtGdp(net * 1e6)}.`, 'good');
         completeTurn();
       };
@@ -408,7 +414,7 @@ const Actions = (function () {
       A = null;
       clearVisuals();
       Game.boostGdp(S, gain * 1e6);
-      Market.update();
+      Market.update(TUNE);
       flash(`🌐 <strong>${escapeHtml(Sname)}</strong> exported ${fmtGdp(total * 1e6)} to ${escapeHtml(partner)} — GDP +${fmtGdp(gain * 1e6)}.`, 'good');
       completeTurn();
     };
@@ -445,9 +451,11 @@ const Actions = (function () {
     const Sname = Game.getNation(S).name, Tname = Game.getNation(tid).name;
     A = null;
     clearVisuals();
-    Game.boostGdp(S, gain * 1e6);
-    Game.boostGdp(tid, gain * 1e6);
-    Market.update(); // traded supply moves the prices
+    Game.batch(() => {
+      Game.boostGdp(S, gain * 1e6);
+      Game.boostGdp(tid, gain * 1e6);
+    });
+    Market.update(TUNE); // traded supply moves the prices
     flash(`🚛 <strong>${escapeHtml(Sname)}</strong> and <strong>${escapeHtml(Tname)}</strong> signed a trade deal — both GDPs +${fmtGdp(gain * 1e6)}.`, 'good');
     completeTurn();
   }
@@ -561,25 +569,34 @@ const Actions = (function () {
     const res = CivilWar.resolve(before, added, after, { scoreMult: 1 + (A.shell || 0), rng: store.rng });
 
     let msg, kind;
+    // Every branch below is a multi-step mutation; batch() collapses each to one
+    // render instead of two or three full border meshes and leaderboard rebuilds.
     if (!res.triggered) {
       Game.moveCounties(chosen, nid);
       msg = `Annexed <strong>${chosen.length}</strong> ${plural(chosen.length, 'county', 'counties')} peacefully.`;
       kind = 'good';
     } else if (res.outcome === 'victory') {
-      Game.moveCounties(chosen, nid);
-      Game.applyCivilWarCost(victim, nid, res.score);
+      Game.batch(() => {
+        Game.moveCounties(chosen, nid);
+        Game.applyCivilWarCost(victim, nid, res.score);
+      });
       msg = `${cwLine(res)} <strong>Complete victory!</strong> All ${chosen.length} counties annexed.`;
       kind = 'good';
     } else if (res.outcome === 'partial') {
       const taken = partialSubset(nid, chosen, before.lean);
-      Game.moveCounties(taken, nid);
-      Game.applyCivilWarCost(victim, nid, Math.round(res.score / 2));
+      Game.batch(() => {
+        Game.moveCounties(taken, nid);
+        Game.applyCivilWarCost(victim, nid, Math.round(res.score / 2));
+      });
       msg = `${cwLine(res)} <strong>Partial victory.</strong> Held ${taken.length} of ${chosen.length} counties (same-lean & connected).`;
       kind = taken.length ? 'good' : 'warn';
     } else {
-      const bornIds = fragment(chosen, nid);
+      const bornIds = Game.batch(() => {
+        const ids = fragment(chosen, nid);
+        Game.applyCivilWarCost(nid, null, res.score); // the failed aggressor bleeds population
+        return ids;
+      });
       TurnSystem.insertAfter(victim, bornIds);
-      Game.applyCivilWarCost(nid, null, res.score); // the failed aggressor bleeds population
       const born = bornIds.length;
       msg = born
         ? `${cwLine(res)} <strong>The union fell apart!</strong> The ${chosen.length} counties splintered into ${born} new ${plural(born, 'nation', 'nations')}.`

@@ -294,7 +294,7 @@ function selectCulture(nodeId) {
   ctx(store.cRegion, anc[1]);  // parent region for context
   store.cSub.style('display', 'none');
   renderCultureNodePanel(nodeId);
-  Leaderboard.refresh();
+  Leaderboard.setSelected(null);
 }
 function clearCultureHighlight() {
   [store.cSuper, store.cRegion, store.cSub].forEach((l) => l && l.style('display', 'none'));
@@ -361,14 +361,35 @@ function renderCultureNodePanel(nodeId) {
   panel.querySelectorAll('[data-node]').forEach((b) => (b.onclick = () => selectCulture(b.dataset.node)));
 }
 
-/* called after any change to the model */
-function onGameChange() {
-  store.outlineCache.clear();
-  TurnSystem.sync();
-  recolor();
-  redrawBorders();
-  Leaderboard.refresh();
-  renderTurnBanner();
+/* Which map modes depend on which kind of change. Standard mode paints owner
+   colours, so it moves only when ownership does; the value modes paint per-Area
+   numbers, so they move only when values do; the authored modes are static. */
+const MODE_DEPENDS = {
+  standard: 'ownership',
+  political: 'values',
+  gdp: 'values',
+  population: 'values',
+  geographic: null,
+  cultural: null,
+  economy: null,
+};
+
+/* called after any change to the model, with the reason Game.emit reported */
+let gameChangeCount = 0; // instrumentation: window.__renderCount() reads it
+function onGameChange(reason) {
+  const r = reason || { ownership: true, values: true, roster: true };
+  gameChangeCount++;
+
+  if (r.roster) TurnSystem.sync();
+  if (r.ownership) {
+    store.outlineCache.clear();
+    redrawBorders();
+  }
+  const dep = MODE_DEPENDS[store.colorMode];
+  if (dep && r[dep]) recolor();
+  if (r.ownership || r.values || r.roster) Leaderboard.refresh();
+  if (r.roster) renderTurnBanner();
+
   if (store.selected) {
     if (store.selected.level === 'nation' && !Game.getNation(store.selected.id)) {
       deselect();
@@ -377,6 +398,8 @@ function onGameChange() {
     }
   }
 }
+window.__renderCount = () => gameChangeCount;
+window.__resetRenderCount = () => { gameChangeCount = 0; };
 
 /* ------------------------------------------------------------------ */
 /* interaction (dispatches to Actions when an action is running)       */
@@ -440,7 +463,7 @@ function select(level, id) {
   if (level === 'nation') renderNationPanel(id);
   else renderCountyPanel(id);
   updateCultureHighlight();
-  Leaderboard.refresh();
+  Leaderboard.setSelected(level === 'nation' ? id : null);
 }
 
 function deselect() {
@@ -449,7 +472,7 @@ function deselect() {
   store.hoverShape.style('display', 'none');
   updateCultureHighlight();
   renderPlaceholder();
-  Leaderboard.refresh();
+  Leaderboard.setSelected(null);
 }
 
 function setSelectOutline(feature) {
@@ -524,8 +547,7 @@ function renderTurnBanner() {
     // letting an action be restarted on top of itself and losing the stashed
     // colour mode (finding 37).
     if (Actions.isActive()) return flash('Finish or cancel the current action first.', 'warn');
-    World.advanceTurn(TUNE);
-    onGameChange();
+    World.advanceTurn(TUNE); // emits once, from inside its own batch
   };
   document.getElementById('tb-pass').onclick = passTurn;
 }

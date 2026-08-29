@@ -68,7 +68,16 @@ const Leaderboard = (function () {
 
   const sortBtn = (key, label) => `<button data-key="${key}" class="${sortKey === key ? 'active' : ''}">${label}</button>`;
 
-  return { refresh };
+  /* Move the selection highlight without rebuilding 51 rows, re-reading 1,676
+     Area records and re-attaching ~54 listeners. select() used to call refresh(),
+     which meant every onGameChange rebuilt the leaderboard twice. */
+  function setSelected(nid) {
+    const host = document.getElementById('leaderboard');
+    if (!host) return;
+    host.querySelectorAll('.lb-row').forEach((el) => el.classList.toggle('sel', el.dataset.id === nid));
+  }
+
+  return { refresh, setSelected };
 })();
 
 /* compact number formatting for the narrow leaderboard column */
