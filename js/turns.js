@@ -15,6 +15,7 @@ const TurnSystem = (function () {
   let ptr = 0;
   let round = 1;
   let currentRemoved = false;
+  let wrapped = false; // set by drop() when removing the current actor wrapped the order
 
   // The turn-order rng is handed in at begin() and kept so that insertAfter can
   // draw from the same 'turnorder' stream mid-game. It is the ONLY module-level
@@ -31,6 +32,7 @@ const TurnSystem = (function () {
     ptr = 0;
     round = 1;
     currentRemoved = false;
+    wrapped = false;
   }
 
   const currentId = () => order[ptr];
@@ -43,7 +45,12 @@ const TurnSystem = (function () {
     if (i < ptr) ptr--;
     else if (i === ptr) {
       currentRemoved = true;
-      if (ptr >= order.length) { ptr = 0; round++; }
+      // Wrapping here must NOT bump `round`: completeTurn samples the round
+      // counter after every mutation has run, so a bump inside drop() is
+      // invisible to it and the round's growth tick is silently skipped
+      // (finding 49). endTurn() is the single owner of `round`; it consumes
+      // this flag.
+      if (ptr >= order.length) { ptr = 0; wrapped = true; }
     }
   }
 
@@ -71,8 +78,12 @@ const TurnSystem = (function () {
 
   // Advance to the next nation's turn.
   function endTurn() {
-    if (currentRemoved) currentRemoved = false; // ptr already sits on the successor
-    else ptr++;
+    if (currentRemoved) {
+      currentRemoved = false; // ptr already sits on the successor
+      if (wrapped) { wrapped = false; round++; }
+    } else {
+      ptr++;
+    }
     if (ptr >= order.length) { ptr = 0; round++; }
     return currentId();
   }
@@ -86,6 +97,7 @@ const TurnSystem = (function () {
     ptr = snap.ptr;
     round = snap.round;
     currentRemoved = false;
+    wrapped = false;
   }
 
   return { begin, currentId, sync, insertAfter, endTurn, progress, snapshot, serialize, loadState, setRng: (r) => { rng = r; } };

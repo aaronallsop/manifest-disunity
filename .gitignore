@@ -14,3 +14,7 @@ __pycache__/
 # lives in content/*.json and IS committed.
 data/state.json
 data/state.json.tmp
+
+# Player save games (server-side store). content/ otherwise holds AUTHORED
+# content and IS committed; saves are not authored content.
+content/save-*.json

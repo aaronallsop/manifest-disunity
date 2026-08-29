@@ -279,25 +279,26 @@ const Game = (function () {
     const loser = nations.get(loserId);
     if (loser && loser.counties.size) {
       let d = 0, g = 0;
-      for (const f of loser.counties) { d += county[f].demPop; g += county[f].gopPop; }
+      for (const f of loser.counties) { const c = county[f]; if (!c) continue; d += c.demPop; g += c.gopPop; }
       const rulingDem = d >= g;
       const lossPct = clamp(T('war.popLossBase') + score * T('war.popLossPerScore'), T('war.popLossBase'), T('war.popLossMax'));
       const per = (lossPct * (rulingDem ? d : g)) / loser.counties.size; // spread evenly by county
       for (const f of loser.counties) {
         const c = county[f];
+        if (!c) continue;
         if (rulingDem) c.demPop = Math.max(0, c.demPop - per);
         else c.gopPop = Math.max(0, c.gopPop - per);
       }
     }
     if (winnerId && nations.has(winnerId) && loser && loser.counties.size) {
       let gdp = 0;
-      for (const f of loser.counties) gdp += county[f].gdp;
+      for (const f of loser.counties) gdp += county[f] ? county[f].gdp : 0;
       const gPct = clamp(T('war.gdpLossBase') + score * T('war.gdpLossPerScore'), T('war.gdpLossBase'), T('war.gdpLossMax'));
       let moved = 0; // each loser county gives up the same fraction; winner gets it all
-      for (const f of loser.counties) { const take = county[f].gdp * gPct; county[f].gdp -= take; moved += take; }
+      for (const f of loser.counties) { const c = county[f]; if (!c) continue; const take = c.gdp * gPct; c.gdp -= take; moved += take; }
       const winner = nations.get(winnerId);
       const perW = moved / winner.counties.size;
-      for (const f of winner.counties) county[f].gdp += perW;
+      for (const f of winner.counties) { if (county[f]) county[f].gdp += perW; }
     }
     emit();
   }
@@ -306,13 +307,14 @@ const Game = (function () {
   function growAll(rate) {
     for (const [, n] of nations) {
       let d = 0, g = 0, o = 0;
-      for (const f of n.counties) { const c = county[f]; d += c.demPop; g += c.gopPop; o += c.othPop; }
+      for (const f of n.counties) { const c = county[f]; if (!c) continue; d += c.demPop; g += c.gopPop; o += c.othPop; }
       const pop = d + g + o;
       if (pop <= 0) continue;
       const add = pop * rate;
       const fd = d / pop, fg = g / pop, fo = o / pop; // nation's party proportions
       for (const f of n.counties) {
         const c = county[f];
+        if (!c) continue;
         const frac = (c.demPop + c.gopPop + c.othPop) / pop; // share of the nation
         c.demPop += add * fd * frac;
         c.gopPop += add * fg * frac;
@@ -343,7 +345,7 @@ const Game = (function () {
     const n = nations.get(nid);
     if (!n || !n.counties.size) return;
     const per = amount / n.counties.size;
-    for (const f of n.counties) county[f].gdp += per;
+    for (const f of n.counties) { if (county[f]) county[f].gdp += per; }
     emit();
   }
   // spendable balance: actions draw from the treasury via this
@@ -358,24 +360,50 @@ const Game = (function () {
   /* ---- save / load (plain JSON in, plain JSON out) ---- */
   function serialize() {
     const counties = {};
-    for (const [f, c] of Object.entries(county)) counties[f] = { d: c.demPop, g: c.gopPop, o: c.othPop, e: { ...c.ext }, a: { ...c.attrs }, gdp: c.gdp };
+    // LOSSLESS. Rounding populations to 2dp would cut a 30-turn save from ~536 KB
+    // to ~172 KB, but it also breaks "a save/load round-trip reproduces the state
+    // exactly" — and that property is the substrate for replay, the M5 simulator
+    // and M2.5's state document, all of which are worth more than 360 KB on a
+    // local disk. Size is handled where it actually bites instead: the primary
+    // store is the server (M0.2), and the localStorage fallback surfaces its
+    // quota error rather than failing silently. Empty ext/attrs bags ARE omitted,
+    // which is free.
+    for (const [f, c] of Object.entries(county)) {
+      const rec = { d: c.demPop, g: c.gopPop, o: c.othPop, gdp: c.gdp };
+      for (const p in c.ext) { rec.e = { ...c.ext }; break; }
+      for (const k in c.attrs) { rec.a = { ...c.attrs }; break; }
+      counties[f] = rec;
+    }
     const nats = [];
     for (const [, n] of nations) nats.push({ id: n.id, name: n.name, color: n.color, origin: n.origin, treasury: n.treasury, gov: n.gov, counties: [...n.counties] });
     return { seq, counties, nations: nats };
   }
   function loadState(snap) {
+    let dropped = 0;
     for (const [f, c] of Object.entries(snap.counties)) {
       const cc = county[f];
-      if (cc) { cc.demPop = c.d; cc.gopPop = c.g; cc.othPop = c.o; cc.ext = { ...(c.e || {}) }; cc.attrs = { ...(c.a || {}) }; cc.gdp = c.gdp; }
+      if (!cc) { dropped++; continue; }
+      cc.demPop = c.d; cc.gopPop = c.g; cc.othPop = c.o;
+      cc.ext = { ...(c.e || {}) }; cc.attrs = { ...(c.a || {}) }; cc.gdp = c.gdp;
     }
     nations.clear();
     owner.clear();
+    let orphans = 0;
     for (const n of snap.nations) {
-      nations.set(n.id, { id: n.id, name: n.name, color: n.color, origin: n.origin, treasury: n.treasury || 0, gov: n.gov || 'Republic', counties: new Set(n.counties) });
-      for (const f of n.counties) owner.set(f, n.id);
+      // A save made against a different areas.json can name Areas that no longer
+      // exist. Skip them here rather than letting them reach growAll as a
+      // TypeError three turns later (finding 53).
+      const live = n.counties.filter((f) => { if (county[f]) return true; orphans++; return false; });
+      if (!live.length) continue;
+      nations.set(n.id, { id: n.id, name: n.name, color: n.color, origin: n.origin, treasury: n.treasury || 0, gov: n.gov || 'Republic', counties: new Set(live) });
+      for (const f of live) owner.set(f, n.id);
     }
     seq = snap.seq || 0;
+    if (dropped || orphans) {
+      console.warn(`Game.loadState: ${dropped} unknown Area records and ${orphans} orphan ownership entries were skipped.`);
+    }
     emit();
+    return { dropped, orphans };
   }
 
   return {

@@ -35,5 +35,11 @@ const Colors = (function () {
 
   const reset = () => { for (const k of Object.keys(map)) delete map[k]; gen = 0; };
 
-  return { assign, forState, newColor, map, reset, getGen: () => gen, setGen: (g) => { gen = g | 0; } };
+  // `gen` advances in lockstep with Game.seq during play. Persisting only one
+  // of them means the first nation minted after a load reuses a colour already
+  // on the map (finding 55), and two nations that look identical read as one.
+  const serialize = () => ({ gen });
+  const loadState = (s) => { gen = (s && s.gen) | 0; };
+
+  return { assign, forState, newColor, map, reset, serialize, loadState, getGen: () => gen };
 })();

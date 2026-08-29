@@ -68,6 +68,7 @@ async function init() {
 
     store.data = data;
     store.topo = topo;
+    store.areasDef = areas; // the build stamp a save is validated against
     store.neighbors = neighbors; // Census County Adjacency File (fips -> [fips])
     store.trade = trade;         // offline-baked trade attributes (county_trade.json)
     store.transport = transport; // rail / interstates / Canada-Mexico gateways (transport.json)
@@ -466,7 +467,12 @@ function wireControls() {
   document.querySelectorAll('.color-toggle button').forEach((btn) => {
     btn.addEventListener('click', () => setColorMode(btn.dataset.color));
   });
-  document.getElementById('btn-editor').addEventListener('click', () => Editor.toggle());
+  document.getElementById('btn-editor').addEventListener('click', () => {
+    // The editor takes click priority over an in-flight action, and exiting it
+    // leaves that action's stale Sets live (finding 48). Gate it.
+    if (Actions.isActive()) return flash('Finish or cancel the current action first.', 'warn');
+    Editor.toggle();
+  });
   // county-lines toggle (off by default: merged Areas render as one shape)
   const clines = document.getElementById('btn-clines');
   clines.addEventListener('click', () => {
@@ -513,7 +519,14 @@ function renderTurnBanner() {
     <button class="tb-pass" id="tb-advance" style="margin-left:0">Advance world &#9193;</button>
     <button class="tb-pass" id="tb-pass">Pass turn &#9197;</button>`;
   document.getElementById('tb-jump').onclick = () => { if (!Actions.isActive()) { setMode('nations'); select('nation', TurnSystem.currentId()); } };
-  document.getElementById('tb-advance').onclick = () => { World.advanceTurn(TUNE); onGameChange(); };
+  document.getElementById('tb-advance').onclick = () => {
+    // Advancing the world re-renders the nation panel with live action buttons,
+    // letting an action be restarted on top of itself and losing the stashed
+    // colour mode (finding 37).
+    if (Actions.isActive()) return flash('Finish or cancel the current action first.', 'warn');
+    World.advanceTurn(TUNE);
+    onGameChange();
+  };
   document.getElementById('tb-pass').onclick = passTurn;
 }
 

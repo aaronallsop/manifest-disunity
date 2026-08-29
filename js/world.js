@@ -166,6 +166,8 @@ const World = (function () {
     advanceTurn,
     getTurn: () => turn,
     setTurn: (t) => { turn = t | 0; },
+    serialize: () => ({ turn }),
+    loadState: (s) => { turn = (s && s.turn) | 0; },
     phaseRecomputeLeans,
     phasePoliticalDrift,
     phasePartyGrowth,
