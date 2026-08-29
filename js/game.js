@@ -37,6 +37,7 @@ const Game = (function () {
     for (const k of Object.keys(alias)) delete alias[k];
     nations.clear();
     owner.clear();
+    neighborCache.clear();
     adjacency = null;
     seq = 0;
     originalNationCount = 0;
@@ -60,6 +61,15 @@ const Game = (function () {
         ext: {},           // emergent regional parties: name -> head count
         gdp: r.gdp || 0,
         attrs: {},         // Area attributes: region tags, resources, terrain, modifiers, ...
+        // STRUCTURAL ANCHOR: the county's founding political character, in
+        // percent, fixed for the life of the game. Political drift pulls partly
+        // toward this and a nation can only partly override it. Without a
+        // per-county fixed point, drift and owner-mix growth pull every county
+        // toward the SAME attractor with nothing pushing back, and the county
+        // grid collapses into a nation-level scalar in ~23 turns of half-life.
+        // Derived from the baked 2024 result, so it is recomputed at init and
+        // needs no place in the save.
+        anchor: null,
       };
     }
     // collapse merged Areas (data/areas.json): the Area becomes the atomic unit;
@@ -78,6 +88,15 @@ const Game = (function () {
           alias[m] = aid;
         }
       }
+    }
+    // Anchors are computed AFTER the Area merge so a merged Area's anchor is the
+    // political character of the whole Area, not of its primary county.
+    for (const f in county) {
+      const c = county[f];
+      const core = c.demPop + c.gopPop + c.othPop;
+      c.anchor = core > 0
+        ? { d: (c.demPop / core) * 100, g: (c.gopPop / core) * 100, o: (c.othPop / core) * 100 }
+        : { d: 0, g: 0, o: 0 };
     }
     for (const [st, s] of Object.entries(data.states)) {
       nations.set(st, {
@@ -141,15 +160,28 @@ const Game = (function () {
   const nationDemographics = (nid) => (nations.has(nid) ? demographics(nations.get(nid).counties) : null);
 
   /* ---- adjacency & grouping (Area level: union of member-county neighbors) ---- */
+  /*
+   * Memoized. The Area adjacency graph is derived from immutable data, but this
+   * used to allocate a fresh Set and re-walk every member county on EVERY query
+   * — and it is the hot loop for the neighbour-pull term in political drift, for
+   * contiguity, and for every system M4 adds. M2.4 replaces the cache with a
+   * compressed-sparse-row graph built once; the signature stays the same so
+   * nothing else has to change.
+   */
+  const neighborCache = new Map();
   function countyNeighbors(fips) {
     const a = cid(fips);
+    let hit = neighborCache.get(a);
+    if (hit) return hit;
     const out = new Set();
     for (const m of county[a]?.counties || [a])
       for (const nb of adjacency.county[m] || []) {
         const n = cid(nb);
         if (n !== a) out.add(n);
       }
-    return [...out];
+    hit = [...out];
+    neighborCache.set(a, hit);
+    return hit;
   }
 
   function statesOf(nid) {
@@ -549,6 +581,7 @@ const Game = (function () {
     areaAttrs: (id) => county[cid(id)]?.attrs,
     areaIdOf: cid,
     areaCounties: (id) => county[cid(id)]?.counties || [cid(id)],
+    anchorOf: (id) => county[cid(id)]?.anchor,
     treasuryFlow,
     tickTreasuries,
     occupiedCount,

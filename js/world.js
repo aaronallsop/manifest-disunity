@@ -71,23 +71,86 @@ const World = (function () {
     return leans;
   }
 
-  // Ease each county toward its OWNER nation's cached lean:
-  // new% = old% + step * (target% - old%), renormalized (default closes 2% of the
-  // gap per turn -- self-limiting). Moves people BETWEEN parties; population is
-  // unchanged by this phase.
-  function phasePoliticalDrift(snap, nxt, leans, tune, owners) {
-    const s = T(tune).get('world.driftStep');
+  /*
+   * Ease each county toward a BLENDED target:
+   *
+   *   target = ownerWeight    * the owner nation's lean
+   *          + anchorWeight   * the county's own founding character
+   *          + neighbourWeight * the population-weighted mean of its neighbours
+   *
+   * new% = old% + driftStep * (target% - old%), then bounded noise, then
+   * renormalise. Moves people BETWEEN parties; population is unchanged here.
+   *
+   * WHY IT IS NOT JUST THE OWNER'S LEAN. It used to be. Drift pulled every
+   * county toward its nation's mix and population growth added new residents in
+   * that same mix, so both forces pulled toward ONE attractor and nothing pushed
+   * back. Measured per-turn deviation multiplier 0.9703, half-life 23 turns:
+   * population-weighted within-nation stdev of dem% went 12.5 -> 2.5 by turn 50,
+   * and nations in which every county carried the same lean letter went 10/51 ->
+   * 35/51. Since "county party majority" is factor #1 of the sentiment model
+   * M4.2 builds, that collapse degenerates the county grid into a nation-level
+   * scalar and leaves two-tier secession nothing to differentiate.
+   *
+   * Three counter-forces, each doing a different job:
+   *   - the ANCHOR gives every county its own fixed point, so the equilibrium is
+   *     a spread rather than a single value;
+   *   - the NEIGHBOUR term makes that spread spatially smooth, so what survives
+   *     is a gradient a movement can diffuse along rather than salt-and-pepper;
+   *   - the NOISE gives the deviation a non-zero stationary variance instead of
+   *     a fixed point it converges onto exactly.
+   */
+  function phasePoliticalDrift(snap, nxt, leans, tune, owners, rng) {
+    const tn = T(tune);
+    const step = tn.get('world.driftStep');
+    const wOwner = tn.get('world.driftOwnerWeight');
+    const wAnchor = tn.get('world.driftAnchorWeight');
+    const wNbr = Math.max(0, 1 - wOwner - wAnchor);
+    const noise = tn.get('world.driftNoise') * 100; // tunable is a share; shares here are percent
+    const jitter = rng ? rng.stream('drift') : null;
     const own = owners || snapshotOwners();
+
     for (const f in nxt) {
       const o = own[f];
-      const tgt = o && leans[o];
-      if (!tgt) continue;
+      const lean = o && leans[o];
+      if (!lean) continue;
       const c = snap[f];
       const pop = c.demPop + c.gopPop + c.othPop;
       if (!pop) continue;
-      let d = (c.demPop / pop) * 100; d += s * (tgt.d - d);
-      let g = (c.gopPop / pop) * 100; g += s * (tgt.g - g);
-      let o2 = (c.othPop / pop) * 100; o2 += s * (tgt.o - o2);
+
+      const anchor = Game.anchorOf(f) || lean;
+
+      // Neighbour mean, population-weighted, read from SNAP so the gradient is
+      // computed against start-of-turn values and phase order cannot skew it.
+      let nd = 0, ng = 0, no = 0, nw = 0;
+      if (wNbr > 0) {
+        for (const nb of Game.countyNeighbors(f)) {
+          const s2 = snap[nb];
+          if (!s2) continue;
+          const w = s2.demPop + s2.gopPop + s2.othPop;
+          if (w <= 0) continue;
+          nd += s2.demPop; ng += s2.gopPop; no += s2.othPop; nw += w;
+        }
+      }
+      const hasNbr = nw > 0;
+      const wN = hasNbr ? wNbr : 0;
+      // With no neighbours on file (Hawaii, Watonwan MN) the neighbour weight
+      // falls back to the owner rather than silently biasing toward zero.
+      const wO = wOwner + (hasNbr ? 0 : wNbr);
+
+      const tD = wO * lean.d + wAnchor * anchor.d + (hasNbr ? wN * (nd / nw) * 100 : 0);
+      const tG = wO * lean.g + wAnchor * anchor.g + (hasNbr ? wN * (ng / nw) * 100 : 0);
+      const tO = wO * lean.o + wAnchor * anchor.o + (hasNbr ? wN * (no / nw) * 100 : 0);
+
+      let d = (c.demPop / pop) * 100; d += step * (tD - d);
+      let g = (c.gopPop / pop) * 100; g += step * (tG - g);
+      let o2 = (c.othPop / pop) * 100; o2 += step * (tO - o2);
+
+      if (jitter && noise > 0) {
+        d = Math.max(0, d + (jitter.random() * 2 - 1) * noise);
+        g = Math.max(0, g + (jitter.random() * 2 - 1) * noise);
+        o2 = Math.max(0, o2 + (jitter.random() * 2 - 1) * noise);
+      }
+
       const tot = (d + g + o2) || 1;
       nxt[f].demPop = (d / tot) * pop;
       nxt[f].gopPop = (g / tot) * pop;
@@ -149,6 +212,24 @@ const World = (function () {
    * county's own, so an annexed county gradually drifts toward its nation's
    * alignment while nation-level ratios stay put.
    *
+   * The national pull is PARTIAL (`world.growthMixNationWeight`). At 1.0 this
+   * phase is a second attractor pulling at exactly the same fixed point as
+   * political drift, with nothing opposing either — which is half of why the
+   * county grid collapsed into a nation-level scalar. The remainder of the new
+   * residents arrive in the county's own mix, which is neutral.
+   *
+   * The national pull is PARTIAL (`world.growthMixNationWeight`). At 1.0 this
+   * phase is a second attractor pulling at exactly the same fixed point as
+   * political drift, with nothing opposing either - which is half of why the
+   * county grid collapsed into a nation-level scalar. The rest of the new
+   * residents arrive in the county's own mix, which is politically neutral.
+   *
+   * The national pull is PARTIAL (`world.growthMixNationWeight`). At 1.0 this
+   * phase is a second attractor pulling at exactly the same fixed point as
+   * political drift, with nothing opposing either - which is half of why the
+   * county grid collapsed into a nation-level scalar. The rest of the new
+   * residents arrive in the county's own mix, which is politically neutral.
+   *
    * `ext` IS INCLUDED, in the nation mix and in the county growth base.
    * Omitting it meant members of a regional party literally did not reproduce:
    * realised growth was 0.93%/turn rather than the declared 1%, every movement
@@ -159,7 +240,9 @@ const World = (function () {
    * ended up numerically identical.
    */
   function phasePopulationGrowth(snap, nxt, tune, owners) {
-    const r = T(tune).get('world.popGrowth');
+    const tn = T(tune);
+    const r = tn.get('world.popGrowth');
+    const wNat = tn.get('world.growthMixNationWeight');
     const own = owners || snapshotOwners();
     const natTotals = {}; // owner -> {d,g,o,ext:{},total}, from this turn's snapshot
     for (const f in snap) {
@@ -178,13 +261,20 @@ const World = (function () {
       // per-county counts from nxt (post-drift, post-partyGrowth, so phases
       // compose); the nation mix still comes from snap.
       const c = nxt[f];
-      const growth = recPop(c) * r; // new people this turn, movements included
-      c.demPop += growth * (t.d / t.total);
-      c.gopPop += growth * (t.g / t.total);
-      c.othPop += growth * (t.o / t.total);
-      for (const p in t.ext) {
-        if (!t.ext[p]) continue;
-        c.ext[p] = (c.ext[p] || 0) + growth * (t.ext[p] / t.total);
+      const here = recPop(c);
+      if (!here) continue;
+      const growth = here * r; // new people this turn, movements included
+
+      // Blend the nation's mix with the county's own. Names are unioned so a
+      // movement present in either shows up in the arriving cohort.
+      const mix = (natShare, ownCount) => wNat * natShare + (1 - wNat) * (ownCount / here);
+      c.demPop += growth * mix(t.d / t.total, c.demPop);
+      c.gopPop += growth * mix(t.g / t.total, c.gopPop);
+      c.othPop += growth * mix(t.o / t.total, c.othPop);
+      const names = new Set([...Object.keys(t.ext), ...Object.keys(c.ext)]);
+      for (const p of names) {
+        const add = growth * mix((t.ext[p] || 0) / t.total, c.ext[p] || 0);
+        if (add) c.ext[p] = (c.ext[p] || 0) + add;
       }
     }
   }
@@ -243,7 +333,13 @@ const World = (function () {
     }
   }
 
-  function advanceTurn(tune) {
+  /**
+   * Run one world turn.
+   * @param tune the tunable set; the live game passes the session TUNE
+   * @param rng  the session RNG. Optional only so a caller can run a
+   *             deterministic no-noise turn; without it the drift jitter is off.
+   */
+  function advanceTurn(tune, rng) {
     const tn = T(tune);
     const owners = snapshotOwners();
     const snap = {}, nxt = {};
@@ -253,7 +349,7 @@ const World = (function () {
       nxt[f] = { demPop: c.demPop, gopPop: c.gopPop, othPop: c.othPop, ext: { ...c.ext }, gdp: c.gdp };
     }
     const leans = phaseRecomputeLeans(snap, nxt, owners); // start-of-turn lean cache
-    phasePoliticalDrift(snap, nxt, leans, tn, owners);
+    phasePoliticalDrift(snap, nxt, leans, tn, owners, rng);
     phasePartyGrowth(snap, nxt, tn);
     phasePopulationGrowth(snap, nxt, tn, owners);
     phaseEconomicGrowth(snap, nxt, tn); // after popGrowth: reads the realised change

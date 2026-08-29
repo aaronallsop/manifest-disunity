@@ -591,7 +591,7 @@ function renderTurnBanner() {
     // letting an action be restarted on top of itself and losing the stashed
     // colour mode (finding 37).
     if (Actions.isActive()) return flash('Finish or cancel the current action first.', 'warn');
-    World.advanceTurn(TUNE); // emits once, from inside its own batch
+    World.advanceTurn(TUNE, store.rng); // emits once, from inside its own batch
   };
   document.getElementById('tb-pass').onclick = passTurn;
 }
@@ -609,7 +609,7 @@ function completeTurn() {
   const beforeRound = TurnSystem.progress().round;
   const next = TurnSystem.endTurn();
   if (TurnSystem.progress().round > beforeRound) {
-    World.advanceTurn(TUNE); // emits once, from inside its own batch
+    World.advanceTurn(TUNE, store.rng); // emits once, from inside its own batch
     const growth = Math.round(TUNE.peek('world.popGrowth') * 1000) / 10;
     flash(`\u{1F4C5} <strong>World turn ${World.getTurn()}</strong> &mdash; population +${growth}%, ` +
       'economies grew, movements gained ground, treasuries settled and the market repriced.', '');

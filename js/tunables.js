@@ -29,14 +29,19 @@ export const SCHEMA = {
     doc: 'Fraction of the gap to the drift target a county closes each turn.',
   },
   'world.driftOwnerWeight': {
-    v: 0.5, min: 0, max: 1, step: 0.05, group: 'World',
+    v: 0.35, min: 0, max: 1, step: 0.05, group: 'World',
     label: 'Drift target: owner weight',
-    doc: 'Share of the drift target taken from the owner nation vs the local neighbourhood. 1.0 reproduces the pre-M1.6 single global attractor.',
+    doc: 'Share of the drift target taken from the owner nation. 1.0 reproduces the pre-M1.6 single global attractor, which collapsed the county grid into a nation-level scalar with a 23-turn half-life.',
   },
   'world.driftAnchorWeight': {
-    v: 0.25, min: 0, max: 1, step: 0.05, group: 'World',
+    v: 0.40, min: 0, max: 1, step: 0.05, group: 'World',
     label: 'Drift target: structural anchor weight',
-    doc: 'Share of the drift target held by the county\'s own founding mix — the part a nation can never fully override.',
+    doc: 'Share of the drift target held by the county own founding character, the part a nation can only partly override. The remainder after owner + anchor is the neighbourhood weight, which makes the surviving spread spatially smooth.',
+  },
+  'world.growthMixNationWeight': {
+    v: 0.35, min: 0, max: 1, step: 0.05, group: 'World',
+    label: 'New residents: national mix weight',
+    doc: 'How much of a county new residents arrive in the OWNER NATION party mix rather than the county own. At 1.0 population growth is a second unopposed attractor pulling at exactly the same fixed point as political drift, which is half of why the county grid collapsed. M7 replaces this with real migration along the QoL gradient.',
   },
   'world.driftNoise': {
     v: 0.004, min: 0, max: 0.05, step: 0.001, group: 'World',

@@ -161,3 +161,29 @@ a phase that moves counties, and the header comment is load-bearing documentatio
 contributor will trust. Snapshotting now costs one object per turn and makes the contract true
 rather than true-by-accident. The header was also rewritten to say precisely what holds: no phase
 reads back its own writes, aggregates come from `snap`, per-county values deliberately compose.
+
+### D22 — M1.6 needed a fourth counter-force the plan did not list: the growth mix
+**M1.6.** The plan named three fixes — a local blend, a structural anchor, bounded noise. All three
+were implemented, and the collapse only *slowed*: median within-nation stdev still fell 13.2 → 2.32
+by turn 200, under the ≥4 acceptance. The reason is that `phasePopulationGrowth` adds new residents
+in the owner nation's mix, which is a **second attractor at exactly the same fixed point** as drift,
+and the plan's three fixes only counter the first one. `world.growthMixNationWeight` (0.35) blends
+the arriving cohort between the nation's mix and the county's own. With it, and with the drift
+weights at owner 0.35 / anchor 0.40 / neighbourhood 0.25, the spread stabilises: 7.45 at t50, 5.54
+at t100, **4.78 at t200, 4.80 at t300** — it stops falling, which is the property that actually
+matters. Monolithic nations settle at 25/51 instead of 51/51.
+
+### D23 — The anchor is the county's founding mix, not a culture-region lookup
+**M1.6.** The plan offered "urban/rural, or the culture region from `data/cultural.mapmode.json`".
+The county's own 2024 result is a better anchor than either: it already encodes urban/rural *and*
+culture *and* everything else that made the place vote the way it did, it needs no join against a
+second file that a map-editor session can change underneath the model, and it is exactly the
+quantity whose spread the acceptance measures. It is computed after the Area merge (so a merged
+Area is anchored to the character of the whole Area) and derived from baked data, so it is
+recomputed at `init` and needs no place in the save.
+
+### D24 — `Game.countyNeighbors` is memoized now, not in M2.4
+**M1.6.** The neighbour-pull term calls it once per Area per turn, and it re-derived the graph with
+fresh `Set` allocations on every query (finding 136). A one-line `Map` cache turns 200 simulated
+turns from unusable into 17 seconds of test suite. M2.4 replaces the cache with the CSR graph behind
+the same signature.
