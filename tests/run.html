@@ -93,8 +93,10 @@
     <script type="module">
       import * as RNG from '../js/rng.js';
       import { createTune } from '../js/tunables.js';
+import * as Counts from '../js/counts.js';
       window.RNG = RNG;
       window.TUNE = createTune();
+      window.Counts = Counts;
 
       const out = document.getElementById('out');
       const summary = document.getElementById('summary');
@@ -119,7 +121,7 @@
         const canonical = await import('./harness.js');
         canonical.reset();
 
-        const suiteFiles = ['./rng.test.js', './tunables.test.js', './invariants.test.js', './saves.test.js', './batching.test.js', './parties.test.js', './geo-ct.test.js', './civilwar.test.js', './annex.test.js', './world.test.js', './drift.test.js', './distribution.test.js', './market.test.js', './trade.test.js', './release.test.js'];
+        const suiteFiles = ['./rng.test.js', './tunables.test.js', './invariants.test.js', './saves.test.js', './batching.test.js', './parties.test.js', './geo-ct.test.js', './civilwar.test.js', './annex.test.js', './world.test.js', './drift.test.js', './distribution.test.js', './market.test.js', './trade.test.js', './release.test.js', './counts.test.js'];
         for (const f of suiteFiles) {
           try {
             await import(f + bust);

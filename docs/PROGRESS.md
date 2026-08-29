@@ -62,7 +62,9 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done
 
 ## M2 — Model rewrite
 
-- [ ] **M2.1** Delete `game_state.py` (port the exact-sum drift absorption first).
+- [x] **M2.1** `game_state.py` deleted. Its one worthwhile algorithm — the exact-sum
+      shares→counts absorption — is `js/counts.js`, used by `Game.init`, with 12 tests. Measured:
+      the float split it replaces is inexact for 986 of 3,143 counties (31.4%).
 - [ ] **M2.2** Six symmetric ideologies on two axes; delete `lean` from the model API.
 - [ ] **M2.3** Columnar state (typed arrays); ownership stored once.
 - [ ] **M2.4** CSR adjacency graph, built once.

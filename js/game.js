@@ -66,16 +66,29 @@ const Game = (function () {
     transportData = (extras && extras.transport) || null;
     for (const [fips, r] of Object.entries(data.counties)) {
       const pop = r.pop || 0;
-      const dem = r.dem != null ? r.dem / 100 : 0;
-      const gop = r.gop != null ? r.gop / 100 : 0;
-      const oth = r.other != null ? r.other / 100 : Math.max(0, 1 - dem - gop);
-      // partisan population: split the county's people by its 2024 vote shares
+      const dem = r.dem != null ? r.dem : 0;
+      const gop = r.gop != null ? r.gop : 0;
+      const oth = r.other != null ? r.other : Math.max(0, 100 - dem - gop);
+      /*
+       * Partisan population: the county's people split by its 2024 vote shares,
+       * as EXACT integer head counts.
+       *
+       * `pop * dem/100` for three parties gives three floats that do not sum to
+       * the integer population — 88,948 people at 41.7/56.9/1.4 sums to
+       * 88948.00000000001. Small, but it turns "the counts sum to the
+       * population" from an equality into an approximation with an undocumented
+       * tolerance, across 1,676 Areas, compounded every world turn.
+       * Counts.countsFromShares rounds each share and pushes the residual onto
+       * the largest bloc. (js/counts.js — the one algorithm worth keeping from
+       * the abandoned Python mirror.)
+       */
+      const split = Counts.countsFromShares(pop, { d: dem, g: gop, o: oth });
       county[fips] = {
         name: r.name,
         st: r.st,
-        demPop: pop * dem,
-        gopPop: pop * gop,
-        othPop: pop * oth,
+        demPop: split.d,
+        gopPop: split.g,
+        othPop: split.o,
         ext: {},           // emergent regional parties: name -> head count
         gdp: r.gdp || 0,
         attrs: {},         // Area attributes: region tags, resources, terrain, modifiers, ...

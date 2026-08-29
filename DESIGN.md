@@ -352,7 +352,6 @@ Listed so nobody mistakes an absence for a bug. Each is a milestone in
 - **No player identity, no AI, no win or lose condition.** You operate all 51 seats, and a nation
   conquered out of existence disappears without comment. *(M6)*
 - **No event ledger.** An action's only output is a six-second toast. *(M5.1)*
-- **`game_state.py` is dead code**, marked as such at the top of the file. *(M2.1)*
 - **The Area merge plan has not been re-baked.** `build_areas.py` is now deterministic and caps an
   Area at 8 counties, but the shipped `areas.json` still contains a 22-county Area. Adopting the
   new plan moves 10 of 483 Area primaries, which is a data migration across `economy.json`, both
