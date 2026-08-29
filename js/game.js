@@ -120,6 +120,7 @@ const Game = (function () {
         founded: 0,        // world turn the nation came into being
         homeSt: st,        // its own soil; anything else it holds is OCCUPIED
         lastAnnexTurn: -Infinity,
+        lastReleaseTurn: -Infinity,
         tradeCooldown: {}, // partner key -> world turn of the last deal
       });
     }
@@ -457,6 +458,7 @@ const Game = (function () {
       founded: founded == null ? (typeof World !== 'undefined' ? World.getTurn() : 0) : founded,
       homeSt: modalState(countyIds),
       lastAnnexTurn: -Infinity,
+      lastReleaseTurn: -Infinity,
       tradeCooldown: {},
     });
     moveCounties(countyIds, id, { silent: true });
@@ -743,6 +745,7 @@ const Game = (function () {
       founded: n.founded, homeSt: n.homeSt,
       // -Infinity does not survive JSON; null means "has never annexed".
       lastAnnexTurn: Number.isFinite(n.lastAnnexTurn) ? n.lastAnnexTurn : null,
+      lastReleaseTurn: Number.isFinite(n.lastReleaseTurn) ? n.lastReleaseTurn : null,
       tradeCooldown: { ...n.tradeCooldown },
       counties: [...n.counties],
     });
@@ -771,6 +774,7 @@ const Game = (function () {
         founded: n.founded || 0,
         homeSt: n.homeSt || modalState(live),
         lastAnnexTurn: n.lastAnnexTurn == null ? -Infinity : n.lastAnnexTurn,
+        lastReleaseTurn: n.lastReleaseTurn == null ? -Infinity : n.lastReleaseTurn,
         tradeCooldown: { ...(n.tradeCooldown || {}) },
         counties: new Set(live),
       });

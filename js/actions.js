@@ -890,14 +890,169 @@ const Actions = (function () {
   }
 
   /* ================================================================= */
-  /* RELEASE (next turn)                                               */
+  /* RELEASE                                                           */
   /* ================================================================= */
-  function startRelease(nid) {
-    flash('🕊️ Release counties is coming next.', 'warn');
-    select('nation', nid);
+  /*
+   * Let territory go.
+   *
+   * This is the first of the design's five release valves and the reason
+   * Counties mode exists: a nation that has over-extended can shed the ground
+   * that is costing it more than it earns — occupation upkeep is superlinear
+   * (M1.4), so the marginal Area of a sprawling empire is genuinely expensive —
+   * and a nation whose politics have drifted away from a region can let it go
+   * before that region takes the decision itself.
+   *
+   * It is the annex machinery inverted: the same selection loop over YOUR OWN
+   * Areas, terminating in Game.breakApart(chosen, {exclude: nid}) — which
+   * already existed and already worked. The exclude is load-bearing: without it
+   * a fragment too small to stand alone rejoins the nation that just released it.
+   *
+   * M4.4 adds the guardrail from the design (the recipient must accept, be at war
+   * with you, or be in a deal with you) so you cannot dump counties on a rival to
+   * game their sentiment.
+   */
+  function releaseCooldownLeft(nid) {
+    const n = Game.getNation(nid);
+    if (!n || !Number.isFinite(n.lastReleaseTurn)) return 0;
+    return Math.max(0, TUNE.get('release.cooldownTurns') - (World.getTurn() - n.lastReleaseTurn));
   }
-  function clickRelease() {}
 
+  function startRelease(nid) {
+    const n = Game.getNation(nid);
+    const cd = releaseCooldownLeft(nid);
+    if (cd > 0) {
+      flash(`The last handover is still being arranged &mdash; ${cd} more world ${plural(cd, 'turn', 'turns')}.`, 'warn');
+      return select('nation', nid);
+    }
+    if (n.counties.size <= 1) {
+      flash('You cannot release your last Area.', 'warn');
+      return select('nation', nid);
+    }
+    A = {
+      type: 'release', nid, chosen: new Set(), selectable: new Set(),
+      budget: Math.min(TUNE.get('release.budgetAreas'), n.counties.size - 1),
+      before: Game.nationDemographics(nid),
+    };
+    recomputeReleaseSelectable();
+    setSelectOutline(nationOutline(nid));
+    refreshRelease();
+  }
+
+  /** Everything you hold except what you have already chosen. */
+  function recomputeReleaseSelectable() {
+    const sel = new Set();
+    for (const f of Game.getNation(A.nid).counties) if (!A.chosen.has(f)) sel.add(f);
+    A.selectable = sel;
+  }
+
+  function clickRelease(d) {
+    const fips = Game.areaIdOf(d.id);
+    if (A.chosen.has(fips)) {
+      A.chosen.delete(fips);
+      recomputeReleaseSelectable();
+      return refreshRelease();
+    }
+    if (!A.selectable.has(fips)) return;
+    if (A.chosen.size >= A.budget) {
+      flash(`You can hand over <strong>${A.budget}</strong> ${plural(A.budget, 'Area', 'Areas')} at a time.`, 'warn');
+      return;
+    }
+    A.chosen.add(fips);
+    recomputeReleaseSelectable();
+    refreshRelease();
+  }
+
+  function refreshRelease() {
+    dimExcept(new Set(Game.getNation(A.nid).counties));
+    renderReleasePanel();
+  }
+
+  function renderReleasePanel() {
+    const n = Game.getNation(A.nid);
+    const given = Game.demographics(A.chosen);
+    const keptIds = [...n.counties].filter((f) => !A.chosen.has(f));
+    const after = Game.demographics(keptIds);
+
+    // What it saves: the upkeep of the Areas you hand over, plus the occupation
+    // surcharge you stop paying on any of them that were not your own soil.
+    const flowNow = Game.treasuryFlow(A.nid);
+    let occupiedGiven = 0;
+    for (const f of A.chosen) {
+      const c = Game.area(f);
+      if (c && c.st !== n.homeSt) occupiedGiven++;
+    }
+    const savedAdmin = A.chosen.size * TUNE.get('econ.areaUpkeep');
+
+    const preview = A.chosen.size
+      ? `<div class="ok-box">\u{1F54A}\u{FE0F} Handing over <strong>${A.chosen.size}</strong>
+          ${plural(A.chosen.size, 'Area', 'Areas')}: ${fmtPop(given.pop)} people and ${fmtGdp(given.gdp)} of output.
+          ${occupiedGiven ? `<strong>${occupiedGiven}</strong> of them ${occupiedGiven === 1 ? 'is' : 'are'} occupied ground, so the occupation surcharge falls too.` : ''}</div>`
+      : `<p class="hint-block">Click <strong>your own Areas</strong> to hand them over. A contiguous group large
+          enough to stand alone becomes a new nation; anything smaller joins its nearest neighbour &mdash;
+          never you.</p>`;
+
+    setPanel(`
+      ${actionHead('\u{1F54A}\u{FE0F} Release counties', n)}
+      ${preview}
+      <div class="stat"><div class="label">Handover budget</div>
+        <div class="value">${A.chosen.size} / ${A.budget} ${plural(A.budget, 'Area', 'Areas')}</div></div>
+      <div class="stat"><div class="label">Upkeep you stop paying</div>
+        <div class="value surplus">+${fmtGdp(savedAdmin)} / turn</div>
+        <div class="geo-row"><span>Current maintenance</span><strong>${fmtGdp(flowNow.maintenance)}</strong></div>
+        ${flowNow.occupation ? `<div class="geo-row"><span>of which occupation</span><strong class="deficit">${fmtGdp(-flowNow.occupation)}</strong></div>` : ''}
+      </div>
+      <div class="stat"><div class="label">Population after</div><div class="value">${fmtPop(after.pop)} <span class="delta">${given.pop ? '&minus;' + fmtPop(given.pop) : ''}</span></div></div>
+      <div class="stat"><div class="label">GDP after</div><div class="value">${fmtGdp(after.gdp)} <span class="delta">${given.gdp ? '&minus;' + fmtGdp(given.gdp) : ''}</span></div></div>
+      <div class="stat"><div class="label">Political leaning after</div>${renderPolitics(after)}</div>
+      <div class="btn-row">
+        <button class="btn ghost" id="a-cancel">Cancel</button>
+        <button class="btn go" id="a-go" ${A.chosen.size ? '' : 'disabled'}>Release ${A.chosen.size ? '(' + A.chosen.size + ')' : ''}</button>
+      </div>
+    `);
+    document.getElementById('a-cancel').onclick = cancel;
+    document.getElementById('a-go').onclick = confirmRelease;
+  }
+
+  function confirmRelease() {
+    if (!A.chosen.size) return;
+    const nid = A.nid;
+    const chosen = [...A.chosen];
+    const me = Game.getNation(nid);
+    const name = me.name;
+    const ownersBefore = new Map(chosen.map((f) => [f, Game.getOwner(f)]));
+
+    me.lastReleaseTurn = World.getTurn();
+    // exclude: nid — otherwise a fragment too small to stand alone is handed
+    // straight back to the nation that just released it.
+    const born = Game.batch(() => Game.breakApart(chosen, { exclude: nid }));
+    TurnSystem.insertAfter(nid, born);
+
+    // Count where each released Area actually ended up, rather than inferring it:
+    // breakApart can hand a fragment too small to stand alone to a nation it just
+    // created, so nation sizes are not a reliable proxy.
+    const bornSet = new Set(born);
+    let toNewNations = 0, toNeighbours = 0, stayed = 0;
+    for (const [f, was] of ownersBefore) {
+      const now = Game.getOwner(f);
+      if (now === was) stayed++;
+      else if (bornSet.has(now)) toNewNations++;
+      else toNeighbours++;
+    }
+
+    A = null;
+    clearVisuals();
+    const parts = [];
+    if (born.length) {
+      parts.push(`${toNewNations} ${plural(toNewNations, 'Area', 'Areas')} became ` +
+        `${born.length} new ${plural(born.length, 'nation', 'nations')} ` +
+        `(<strong>${born.map((id) => escapeHtml(Game.getNation(id).name)).join('</strong>, <strong>')}</strong>)`);
+    }
+    if (toNeighbours) parts.push(`${toNeighbours} ${plural(toNeighbours, 'Area', 'Areas')} joined neighbouring nations`);
+    if (stayed) parts.push(`${stayed} had nowhere to go and stayed`);
+    flash(`\u{1F54A}\u{FE0F} <strong>${escapeHtml(name)}</strong> released ${chosen.length} ` +
+      `${plural(chosen.length, 'Area', 'Areas')}: ${parts.join('; ') || 'nothing changed hands'}.`, 'good');
+    completeTurn();
+  }
   /* ---- panel/util helpers ---- */
   function setPanel(html) { document.getElementById('panel').innerHTML = html; }
   function actionHead(title, n) {
@@ -913,9 +1068,16 @@ const Actions = (function () {
   const deltaPop = (n) => (n ? `+${fmtPop(n)}` : '');
   const deltaGdp = (n) => (n ? `+${fmtGdp(n)}` : '');
 
+  /** Start Release with one Area already picked — the Counties-mode entry point. */
+  function startReleaseWith(nid, fips) {
+    startRelease(nid);
+    if (A && A.type === 'release' && A.selectable.has(fips)) clickRelease({ id: fips });
+  }
+
   return {
     isActive, start, onHover, onClick, cancel,
     annexCooldownLeft, annexCost,
     tradeCooldownLeft, nationTradeCapacityFor, hasExportAccess, exportFlows, applyCapacity,
+    releaseCooldownLeft, startReleaseWith,
   };
 })();

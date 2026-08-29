@@ -379,6 +379,18 @@ export const SCHEMA = {
     doc: 'Turns a nation must wait between annexations.',
   },
 
+
+  /* ---------------- release ---------------- */
+  'release.budgetAreas': {
+    v: 6, min: 1, max: 50, step: 1, group: 'Release',
+    label: 'Release budget (Areas / turn)',
+    doc: 'Areas a nation can hand over in one turn. Higher than the annex budget on purpose: giving territory away is easier than taking it, and this is the release valve an over-extended nation reaches for when occupation cost outruns income.',
+  },
+  'release.cooldownTurns': {
+    v: 1, min: 0, max: 20, step: 1, group: 'Release',
+    label: 'Release cooldown (turns)',
+    doc: 'World turns between handovers, so a nation cannot dissolve itself one Area at a time inside a single round.',
+  },
   /* ---------------- anti-snowball ---------------- */
   'shell.topShare': {
     v: 0.1, min: 0, max: 1, step: 0.02, group: 'Anti-snowball',

@@ -638,13 +638,17 @@ function renderNationPanel(nid) {
   const annexAttrs = cd > 0
     ? ` disabled title="Regrouping — ${cd} more world ${cd === 1 ? 'turn' : 'turns'}"`
     : '';
+  const rcd = Actions.releaseCooldownLeft(nid);
+  const releaseAttrs = rcd > 0
+    ? ` disabled title="Handover still being arranged — ${rcd} more world ${rcd === 1 ? 'turn' : 'turns'}"`
+    : n.counties.size <= 1 ? ' disabled title="You cannot release your last Area"' : '';
   const actionsHtml = isTurn
     ? `<div class="actions">
         <div class="label">Actions &middot; your move</div>
         <button class="act" data-act="unite">🤝 Unite with nation</button>
         <button class="act" data-act="annex"${annexAttrs}>⚔️ Annex counties${cd > 0 ? ` <span class="act-note">regrouping ${cd}</span>` : ''}</button>
         <button class="act" data-act="trade">🚛 Trade with nation</button>
-        <button class="act" data-act="release" disabled title="Coming next">🕊️ Release counties</button>
+        <button class="act" data-act="release"${releaseAttrs}>🕊️ Release counties${rcd > 0 ? ` <span class="act-note">arranging ${rcd}</span>` : ''}</button>
         <button class="act pass" data-act="pass">⏭ Pass turn</button>
       </div>`
     : `<div class="actions">
@@ -684,6 +688,14 @@ function renderNationPanel(nid) {
   if (goto) goto.onclick = () => { setMode('nations'); select('nation', TurnSystem.currentId()); };
 }
 
+/*
+ * Counties mode is a place you ACT from, not a read-only inspector.
+ *
+ * It used to emit no buttons at all: half of the primary Select toggle led
+ * nowhere, and the one county-level verb in the game (Release) was a disabled
+ * stub. An Area you hold is now something you can hand over; an Area a neighbour
+ * holds tells you plainly why you can or cannot take it.
+ */
 function renderCountyPanel(fips) {
   const rec = store.data.counties[fips];
   const ownerId = Game.getOwner(fips);
@@ -706,6 +718,7 @@ function renderCountyPanel(fips) {
       <div class="label">Political leaning</div>
       ${renderPolitics(pol, rec)}
     </div>
+    ${renderAreaActions(fips, ownerId)}
     ${renderEconomy(fips)}
     ${renderCulture(fips)}
     ${renderGeography(fips)}
@@ -714,6 +727,53 @@ function renderCountyPanel(fips) {
     ${renderEstNote(rec)}
     ${renderSources('county')}
   `;
+  const rel = panel.querySelector('#area-release');
+  if (rel) rel.onclick = () => { setMode('nations'); Actions.startReleaseWith(ownerId, fips); };
+  const goAnnex = panel.querySelector('#area-annex');
+  if (goAnnex) goAnnex.onclick = () => { setMode('nations'); Actions.start('annex', TurnSystem.currentId()); };
+}
+
+/* What the acting nation can do with this Area right now, and why not if not. */
+function renderAreaActions(fips, ownerId) {
+  const actor = TurnSystem.currentId();
+  const me = Game.getNation(actor);
+  const owner = ownerId && Game.getNation(ownerId);
+  // An Area with no live owner is a data problem, not an action surface.
+  if (!me || !owner) return '';
+  const upkeep = TUNE.peek('econ.areaUpkeep');
+  const occupied = Game.area(fips) && Game.area(fips).st !== me.homeSt;
+
+  if (ownerId === actor) {
+    const rcd = Actions.releaseCooldownLeft(actor);
+    const last = me.counties.size <= 1;
+    const why = last ? 'This is your last Area.'
+      : rcd > 0 ? `The last handover is still being arranged &mdash; ${rcd} more world ${rcd === 1 ? 'turn' : 'turns'}.`
+        : '';
+    return `<div class="actions">
+      <div class="label">Yours &middot; ${escapeHtml(me.name)}</div>
+      <div class="geo-row"><span>Upkeep${occupied ? ' &middot; occupied ground' : ''}</span>
+        <strong class="deficit">${fmtGdp(-upkeep)} / turn</strong></div>
+      <button class="act" id="area-release" ${why ? 'disabled' : ''}>🕊️ Release this Area</button>
+      ${why ? `<div class="locked-note">${why}</div>` : ''}
+    </div>`;
+  }
+
+  // Someone else's. Say plainly whether it is takeable.
+  const neighbours = Game.countyNeighbors(fips);
+  const adjacent = neighbours.some((nb) => Game.getOwner(nb) === actor);
+  const factor = TUNE.peek('annex.strongNeighbourFactor');
+  const them = Game.nationDemographics(ownerId), mine = Game.nationDemographics(actor);
+  const tooStrong = !!them && !!mine && them.pop > mine.pop * factor && them.gdp > mine.gdp * factor;
+  const acd = Actions.annexCooldownLeft(actor);
+  const reason = !adjacent ? 'It does not border you.'
+    : tooStrong ? `${escapeHtml(Game.getNation(ownerId).name)} is more than ${factor}&times; your size on both population and GDP.`
+      : acd > 0 ? `Your armies are regrouping &mdash; ${acd} more world ${acd === 1 ? 'turn' : 'turns'}.`
+        : '';
+  return `<div class="actions">
+    <div class="label">Not yours &middot; ${escapeHtml(owner.name)}</div>
+    <button class="act" id="area-annex" ${reason ? 'disabled' : ''}>⚔️ Annex from here</button>
+    ${reason ? `<div class="locked-note">${reason}</div>` : ''}
+  </div>`;
 }
 
 /* treasury: spendable balance, ticked each world turn (income − maintenance) */

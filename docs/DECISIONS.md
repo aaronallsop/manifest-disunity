@@ -244,3 +244,22 @@ corridor; Unite and bilateral trade keep the sea reach.
 game contributed nothing. `trade.openingOfferFactor` (0.6) makes the default a lowball, so the
 slider is a decision. Verified live: South Dakota opens at 11% against an 18% rail corridor and
 Minnesota counters at 19%.
+
+### D32 — Counties mode acts through the *acting* nation, not through a player identity
+**M1.10.** The county panel now shows what the nation whose turn it is can do with the selected
+Area: release it if it is theirs, annex from it if it is not — with the reason spelled out when it
+is neither. That is the honest thing to render while `state.player` does not exist (M6.2). When it
+does, "the acting nation" becomes "you" and the same panel keeps working.
+
+### D33 — Release is free but budgeted and on a cooldown
+**M1.10.** Giving territory away already costs the population, the output and the strategic depth of
+what you hand over; charging a treasury fee on top would make the release valve something a nation
+in trouble cannot afford, which is precisely backwards — the valve exists for the over-extended.
+`release.budgetAreas` (6) is larger than the annex budget on purpose, and `release.cooldownTurns`
+stops a nation dissolving itself one Area at a time inside a single round.
+
+### D34 — The dead `.actions-stub` CSS was replaced, not just deleted
+**M1.10.** The plan says delete it. Deleting it alone leaves finding 147 standing: the transit
+negotiation — the most elaborate interaction in the game — shipped referencing `deal-verdict`,
+`deal-why` and a slider row that had no styles at all, so an accept, a counter and a decline all
+rendered identically. The block those rules now occupy defines them.
