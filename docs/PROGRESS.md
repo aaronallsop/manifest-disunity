@@ -29,13 +29,20 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done
 
 ## M1 — Correctness patch pass
 
-- [ ] **M1.1** 48% of emergent party spawns silently fail (Area alias lookup).
-- [ ] **M1.2** Connecticut renders wrong internal borders on first load.
-- [ ] **M1.3** Civil war is a step function, not a dice game.
-- [ ] **M1.4** Annexation is free; absolute cap + treasury debit + occupation upkeep.
-- [ ] **M1.5** One growth clock; `ext` in growth; real `phaseEconomicGrowth`.
-- [ ] **M1.6** Counties converge to a single political mix — add counter-forces.
-- [ ] **M1.7** Even-spread mutations flatten the map — distribute proportionally.
+- [x] **M1.1** Party spawn routes through the Area alias and de-duplicates. Measured 48.2% of
+      authored references were hitting a deleted key; now 0 unresolved across all 16 parties.
+- [x] **M1.2** CT area-borders drawn from the planning-region geojson, not the obsolete county
+      topology. A predicate-only fix suppresses 1 of 8 arcs — proved by overlaying the old mesh.
+- [x] **M1.3** Ratio points through a sqrt curve, dice SUMMED and capped, plurality flips,
+      partialSubset by contiguity. Real map: 30.8/30.8/38.5 (was 1.5/3.0/95.5).
+- [x] **M1.4** Absolute 3-Area budget, priced through `Game.spend`, superlinear occupation cost,
+      composite blue shell. Wyoming 27→32 Areas then bankrupt (was 27→1,167 in 9 turns).
+- [x] **M1.5** One clock at the round boundary; `growAll` deleted; `ext` grows; real
+      `phaseEconomicGrowth`. One round = +1.000% pop, +1.4% GDP, one render.
+- [x] **M1.6** Anchor + neighbourhood + noise + a blended growth mix. Spread STABILISES at
+      4.78 (t200) / 4.80 (t300) against a floor of 4; was 0.026.
+- [x] **M1.7** All three even-spread mutations distribute proportionally; the bleeding bloc is the
+      real plurality. California at the 40% cap: 0 Areas zeroed, 100% delivered (was 34/58, 57.3%).
 - [ ] **M1.8** Market one-way ratchet; two economies; `DEMAND_SHARE` sums to 0.80.
 - [ ] **M1.9** Trade mints GDP from nothing; World market dominates.
 - [ ] **M1.10** Implement Release; give Counties mode a purpose.
@@ -103,8 +110,8 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done
 *(Updated as work proceeds — what is done, what is next, what was learned that is not yet
 written down elsewhere.)*
 
-**M0 complete.** 71 tests green at `tests/run.html`; the game loads, plays and saves with a clean
-console. Next: **M1.1** (48% of emergent party spawns hit a deleted key).
+**M0 complete. M1.1–M1.7 complete.** 149 tests green at `tests/run.html`; the game loads, plays and
+saves with a clean console. Next: **M1.8** (the market is a one-way ratchet over two economies).
 
 Learned along the way, not written elsewhere:
 - The in-app browser serves a cached document on a same-URL `navigate`. Add a throwaway query
