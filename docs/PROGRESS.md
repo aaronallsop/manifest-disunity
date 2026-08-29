@@ -7,7 +7,7 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done
 
 ---
 
-## M0 — Safety net & foundation
+## M0 — Safety net & foundation ✅
 
 - [x] **M0.1** Version control first — `.gitignore` (excludes 376 MB `build/raw/`), `git init`,
       baseline commit, `build/raw/README.md`. `.git` = 1.4 MB.
@@ -27,7 +27,7 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done
 - [x] **M0.7** `Game.batch(fn)` + `{ownership, values, roster}` emit reasons. **One annex = 1
       render**, measured through the real action layer.
 
-## M1 — Correctness patch pass
+## M1 — Correctness patch pass ✅
 
 - [x] **M1.1** Party spawn routes through the Area alias and de-duplicates. Measured 48.2% of
       authored references were hitting a deleted key; now 0 unresolved across all 16 parties.
@@ -120,8 +120,27 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done
 *(Updated as work proceeds — what is done, what is next, what was learned that is not yet
 written down elsewhere.)*
 
-**M0 complete. M1.1–M1.7 complete.** 149 tests green at `tests/run.html`; the game loads, plays and
-saves with a clean console. Next: **M1.8** (the market is a one-way ratchet over two economies).
+**M0 and M1 complete.** 193 tests green at `tests/run.html`, `build/validate.py` reports 0 errors,
+and the game loads, plays and saves with a clean console. Verified end to end: fresh boot -> select
+a nation -> trade -> a full 51-nation round (world turn 0 -> 1) -> annex -> save -> reload the page
+-> load, and every piece of state came back.
+
+Next: **M2.1** (delete `game_state.py`, porting the exact-sum drift absorption first).
+
+Learned along the way, not written elsewhere:
+- The in-app browser serves a cached document on a same-URL `navigate`. Add a throwaway query
+  string (`?x=7`) when reloading after an edit, or you will verify the previous build.
+- `read_console_messages` keeps a buffer across navigations; open a fresh tab for a clean read.
+- The browser also replayed a **pre-M0.2 HTTP cache entry** for `data/*.json` for hours after a
+  re-bake. `getJSON` now passes `cache: 'no-store'`; if a data change seems not to land, that is why.
+- `TUNE.trace(fn)` already gives M5's "show your work" data for free - one world turn reads 13 keys.
+- `window.__renderCount()` / `__resetRenderCount()` in app.js are the M0.7 instrument; keep them.
+- `Game.epoch()` is the invalidation key for caches that are valid between mutations (M1.12).
+- Editing JS from Python: write the script to a FILE rather than `python - <<'PY'`, and use raw
+  strings. A literal `\u{1F69B}` inside a normal Python string is a syntax error, and the JS source
+  contains real emoji, so anchor replacements on lines that do not carry them.
+- The test suite takes ~28s, dominated by the drift and market suites running 200-300 world turns.
+  That IS the M1.6 and M1.8 acceptance criteria; M2.3's columnar state makes it fast.
 
 Learned along the way, not written elsewhere:
 - The in-app browser serves a cached document on a same-URL `navigate`. Add a throwaway query
