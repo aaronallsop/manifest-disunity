@@ -181,7 +181,7 @@ describe('Save round-trip', () => {
     equal(Game.getOwner('99999'), undefined, 'a dead fips reached the owner map');
     // and the world still runs rather than throwing three turns later
     World.advanceTurn(window.TUNE);
-    Game.growAll(0.05);
+    World.advanceTurn(window.TUNE);
     ok(true);
   });
 });

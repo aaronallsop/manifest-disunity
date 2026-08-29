@@ -119,7 +119,7 @@
         const canonical = await import('./harness.js');
         canonical.reset();
 
-        const suiteFiles = ['./rng.test.js', './tunables.test.js', './invariants.test.js', './saves.test.js', './batching.test.js', './parties.test.js', './geo-ct.test.js', './civilwar.test.js', './annex.test.js'];
+        const suiteFiles = ['./rng.test.js', './tunables.test.js', './invariants.test.js', './saves.test.js', './batching.test.js', './parties.test.js', './geo-ct.test.js', './civilwar.test.js', './annex.test.js', './world.test.js'];
         for (const f of suiteFiles) {
           try {
             await import(f + bust);

@@ -414,28 +414,6 @@ const Game = (function () {
     emit({ values: true });
   }
 
-  /* ---- round-end growth: +rate population (in the nation's party mix) + GDP ---- */
-  function growAll(rate) {
-    for (const [, n] of nations) {
-      let d = 0, g = 0, o = 0;
-      for (const f of n.counties) { const c = county[f]; if (!c) continue; d += c.demPop; g += c.gopPop; o += c.othPop; }
-      const pop = d + g + o;
-      if (pop <= 0) continue;
-      const add = pop * rate;
-      const fd = d / pop, fg = g / pop, fo = o / pop; // nation's party proportions
-      for (const f of n.counties) {
-        const c = county[f];
-        if (!c) continue;
-        const frac = (c.demPop + c.gopPop + c.othPop) / pop; // share of the nation
-        c.demPop += add * fd * frac;
-        c.gopPop += add * fg * frac;
-        c.othPop += add * fo * frac;
-        c.gdp *= 1 + rate;
-      }
-    }
-    emit({ values: true });
-  }
-
   const clamp = (x, lo, hi) => Math.max(lo, Math.min(hi, x));
 
   /**
@@ -535,7 +513,7 @@ const Game = (function () {
     let orphans = 0;
     for (const n of snap.nations) {
       // A save made against a different areas.json can name Areas that no longer
-      // exist. Skip them here rather than letting them reach growAll as a
+      // exist. Skip them here rather than letting them reach a world phase as a
       // TypeError three turns later (finding 53).
       const live = n.counties.filter((f) => { if (county[f]) return true; orphans++; return false; });
       if (!live.length) continue;
@@ -599,7 +577,6 @@ const Game = (function () {
     createNation,
     breakApart,
     applyCivilWarCost,
-    growAll,
     onChange,
     batch,
     /** Declare a change made by writing the records directly (world.js's phase

@@ -37,6 +37,9 @@ const store = {
   selected: null, // { level:'nation'|'county', id }
   rng: null,      // seeded RNG for this session (js/rng.js); serialized in the save
   seed: null,
+  // ?dev=1 exposes the manual world-step control. M5 grows the dashboard and the
+  // 50-turn simulator out of the same flag.
+  dev: new URLSearchParams(location.search).has('dev'),
 };
 
 /* ------------------------------------------------------------------ */
@@ -575,10 +578,15 @@ function renderTurnBanner() {
     <button class="tb-current" id="tb-jump"><span class="dot" style="background:${n.color}"></span>
       <strong>${escapeHtml(n.name)}</strong>'s turn</button>
     <span class="tb-label">&middot; World turn <strong id="world-turn">${World.getTurn()}</strong></span>
-    <button class="tb-pass" id="tb-advance" style="margin-left:0">Advance world &#9193;</button>
+    ${store.dev ? '<button class="tb-pass" id="tb-advance" style="margin-left:0" title="Dev: step the world engine without playing a round">Step world &#9193;</button>' : ''}
     <button class="tb-pass" id="tb-pass">Pass turn &#9197;</button>`;
   document.getElementById('tb-jump').onclick = () => { if (!Actions.isActive()) { setMode('nations'); select('nation', TurnSystem.currentId()); } };
-  document.getElementById('tb-advance').onclick = () => {
+  // Dev-only from M1.5: the world now advances on the round boundary, in
+  // completeTurn. This button is the manual step control the M5 simulator grows
+  // out of. It was the ONLY caller of World.advanceTurn, which is why a player
+  // who never pressed it saw a completely static simulation.
+  const adv = document.getElementById('tb-advance');
+  if (adv) adv.onclick = () => {
     // Advancing the world re-renders the nation panel with live action buttons,
     // letting an action be restarted on top of itself and losing the stashed
     // colour mode (finding 37).
@@ -588,13 +596,23 @@ function renderTurnBanner() {
   document.getElementById('tb-pass').onclick = passTurn;
 }
 
-/* advance to the next nation after the current one has acted (or passed) */
+/*
+ * Advance to the next nation after the current one has acted (or passed).
+ *
+ * ONE CLOCK: a completed cycle of nation turns advances the WORLD. There used to
+ * be two growth models here - Game.growAll(5%) on this boundary, and the world
+ * engine's own 1% that ran only when a human clicked "Advance world". A player
+ * who never noticed the button played a game in which drift, party growth, GDP,
+ * treasuries and the market never ran at all.
+ */
 function completeTurn() {
   const beforeRound = TurnSystem.progress().round;
   const next = TurnSystem.endTurn();
   if (TurnSystem.progress().round > beforeRound) {
-    Game.growAll(0.05); // end of a full cycle: everyone grows ~5%
-    flash(`📈 Round ${TurnSystem.progress().round}: every nation grew ~5% (new residents follow each nation's own party mix).`, '');
+    World.advanceTurn(TUNE); // emits once, from inside its own batch
+    const growth = Math.round(TUNE.peek('world.popGrowth') * 1000) / 10;
+    flash(`\u{1F4C5} <strong>World turn ${World.getTurn()}</strong> &mdash; population +${growth}%, ` +
+      'economies grew, movements gained ground, treasuries settled and the market repriced.', '');
   }
   renderTurnBanner();
   if (next && Game.getNation(next)) { setMode('nations'); select('nation', next); }

@@ -137,3 +137,27 @@ that already owned them. That is the correct *outcome* (the defender holds) and 
 the old text claimed the counties "scattered and were absorbed by neighboring nations" when nothing
 had moved. `confirmAnnex` now diffs ownership across the resolution and says which of three things
 occurred.
+
+### D19 — `world.popGrowth` stays at 1%/turn for now; retuning is M5's job
+**M1.5.** Unifying the clock changed the effective rate a lot: `growAll` ran at 5% per player round
+and the world engine at 1% per button press, which in practice was never. One clock at 1% per round
+compounds to 2.2× over an 80-turn game — generous for a 20-year span but *visible*, which matters
+more while there is no simulator to measure with. The rate is a named tunable; M5.3 measures it and
+M5 tunes it. Retuning it now, before the tool that measures it exists, is exactly what the plan
+warns against.
+
+### D20 — `phaseCleanup` is kept and documented as inert rather than retuned
+**M1.5, finding 14.** The floor cannot fire under growth-only dynamics: the smallest reachable
+movement share is `partyStep × partyCeiling` = 0.0105, above the 0.01 floor, and 500 measured turns
+removed nothing. Raising the floor would only delete movements that happened to spawn small; the
+case the floor exists for is a movement that *shrinks*, which arrives with M4's sentiment model. The
+phase stays, the reasoning is written at the code, and a test asserts the current inertness so that
+when M4 makes it fire, that is a deliberate change and not a surprise.
+
+### D21 — Ownership is snapshotted per world turn, ahead of need
+**M1.5, finding 12.** No phase moves a county today, so reading live ownership is bit-identical to
+reading a snapshot — the hazard is entirely prospective. But M4.2's continuous county defection is
+a phase that moves counties, and the header comment is load-bearing documentation that a
+contributor will trust. Snapshotting now costs one object per turn and makes the contract true
+rather than true-by-accident. The header was also rewritten to say precisely what holds: no phase
+reads back its own writes, aggregates come from `snap`, per-county values deliberately compose.
