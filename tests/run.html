@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nation States &mdash; tests</title>
+    <style>
+      :root {
+        --bg: #171b20; --panel: #1e242b; --line: #2b333c; --text: #dfe4ea;
+        --muted: #8b95a1; --pass: #4ec27a; --fail: #e0483b; --skip: #e3c229;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0; background: var(--bg); color: var(--text);
+        font: 14px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      }
+      header {
+        position: sticky; top: 0; z-index: 2; background: var(--panel);
+        border-bottom: 1px solid var(--line); padding: 14px 20px;
+        display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+      }
+      h1 { font-size: 15px; margin: 0; font-weight: 600; letter-spacing: .02em; }
+      h1 small { color: var(--muted); font-weight: 400; margin-left: 8px; }
+      #summary { font-weight: 600; }
+      .pill {
+        display: inline-block; padding: 2px 9px; border-radius: 999px;
+        font-size: 12px; margin-right: 6px;
+      }
+      .pill.pass { background: rgba(78,194,122,.16); color: var(--pass); }
+      .pill.fail { background: rgba(224,72,59,.16); color: var(--fail); }
+      .pill.skip { background: rgba(227,194,41,.16); color: var(--skip); }
+      .pill.time { background: rgba(139,149,161,.14); color: var(--muted); }
+      button {
+        background: #2b333c; color: var(--text); border: 1px solid #3a444f;
+        border-radius: 6px; padding: 5px 12px; cursor: pointer; font: inherit;
+      }
+      button:hover { background: #35404b; }
+      main { padding: 16px 20px 60px; max-width: 1100px; }
+      .suite { margin-bottom: 22px; }
+      .suite h2 {
+        font-size: 13px; margin: 0 0 6px; color: var(--muted);
+        text-transform: uppercase; letter-spacing: .08em; font-weight: 600;
+      }
+      .t { display: flex; gap: 10px; padding: 3px 0 3px 8px; border-left: 2px solid transparent; }
+      .t.pass { border-left-color: var(--pass); }
+      .t.fail { border-left-color: var(--fail); background: rgba(224,72,59,.06); }
+      .t.skip { border-left-color: var(--skip); opacity: .65; }
+      .mark { width: 1.2em; flex: none; }
+      .t.pass .mark { color: var(--pass); }
+      .t.fail .mark { color: var(--fail); }
+      .t.skip .mark { color: var(--skip); }
+      .name { flex: 1; }
+      .ms { color: var(--muted); font-size: 12px; flex: none; }
+      pre.err {
+        margin: 4px 0 10px 30px; padding: 9px 12px; background: #241b1b;
+        border: 1px solid #4a2b28; border-radius: 6px; color: #f0b0aa;
+        white-space: pre-wrap; word-break: break-word; font-size: 12.5px;
+      }
+      #banner { padding: 10px 20px; font-weight: 600; }
+      #banner.pass { background: rgba(78,194,122,.14); color: var(--pass); }
+      #banner.fail { background: rgba(224,72,59,.14); color: var(--fail); }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Nation States tests<small>tests/run.html</small></h1>
+      <span id="summary"><span class="pill time">running…</span></span>
+      <button id="rerun">Re-run</button>
+      <label style="color:var(--muted);font-size:12px">
+        <input type="checkbox" id="failonly" /> failures only
+      </label>
+    </header>
+    <div id="banner"></div>
+    <main id="out"></main>
+
+    <!-- The model is still thirteen classic IIFE globals (M2 converts them).
+         Load the ones the headless suites need; app.js / actions.js / saves.js /
+         editor.js / leaderboard.js are DOM-bound and deliberately excluded. -->
+    <script src="../lib/d3.v7.min.js"></script>
+    <script src="../lib/topojson-client.min.js"></script>
+    <script src="../js/colors.js"></script>
+    <script src="../js/game.js"></script>
+    <script src="../js/parties.js"></script>
+    <script src="../js/civilwar.js"></script>
+    <script src="../js/mapmodes.js"></script>
+    <script src="../js/turns.js"></script>
+    <script src="../js/world.js"></script>
+    <script src="../js/market.js"></script>
+
+    <script type="module">
+      import * as RNG from '../js/rng.js';
+      import { createTune } from '../js/tunables.js';
+      window.RNG = RNG;
+      window.TUNE = createTune();
+
+      const out = document.getElementById('out');
+      const summary = document.getElementById('summary');
+      const banner = document.getElementById('banner');
+      const failonly = document.getElementById('failonly');
+
+      const esc = (s) => String(s).replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+      const MARK = { pass: '✓', fail: '✗', skip: '–' };
+
+      async function go() {
+        out.innerHTML = '';
+        banner.className = '';
+        banner.textContent = '';
+        summary.innerHTML = '<span class="pill time">running…</span>';
+        window.__TEST_RESULTS__ = null;
+
+        // Test files import './harness.js' with no cache-buster, so they all
+        // register into this one canonical instance. Re-running re-imports the
+        // TEST files under a fresh query string (so describe() runs again) but
+        // resets the canonical harness first so suites are not duplicated.
+        const bust = '?r=' + Date.now();
+        const canonical = await import('./harness.js');
+        canonical.reset();
+
+        const suiteFiles = ['./rng.test.js', './tunables.test.js', './invariants.test.js'];
+        for (const f of suiteFiles) {
+          try {
+            await import(f + bust);
+          } catch (err) {
+            const div = document.createElement('div');
+            div.className = 'suite';
+            div.innerHTML = `<h2>${esc(f)}</h2><div class="t fail"><span class="mark">✗</span>
+              <span class="name">failed to load</span></div><pre class="err">${esc(err && err.stack || err)}</pre>`;
+            out.appendChild(div);
+          }
+        }
+
+        let cur = null;
+        const res = await canonical.run((evt) => {
+          if (evt.type === 'suite') {
+            cur = document.createElement('div');
+            cur.className = 'suite';
+            cur.innerHTML = `<h2>${esc(evt.name)}</h2>`;
+            out.appendChild(cur);
+          } else if (evt.type === 'test' && cur) {
+            const row = document.createElement('div');
+            row.className = 't ' + evt.status;
+            row.innerHTML =
+              `<span class="mark">${MARK[evt.status]}</span><span class="name">${esc(evt.name)}</span>` +
+              (evt.ms != null ? `<span class="ms">${evt.ms.toFixed(1)}ms</span>` : '');
+            cur.appendChild(row);
+            if (evt.status === 'fail') {
+              const pre = document.createElement('pre');
+              pre.className = 'err';
+              pre.textContent = evt.detail || evt.error;
+              cur.appendChild(pre);
+            }
+          }
+        });
+
+        window.__TEST_RESULTS__ = res;
+        summary.innerHTML =
+          `<span class="pill pass">${res.passed} passed</span>` +
+          (res.failed ? `<span class="pill fail">${res.failed} failed</span>` : '') +
+          (res.skipped ? `<span class="pill skip">${res.skipped} skipped</span>` : '') +
+          `<span class="pill time">${(res.durationMs / 1000).toFixed(2)}s</span>`;
+        banner.className = res.failed ? 'fail' : 'pass';
+        banner.textContent = res.failed
+          ? `${res.failed} failing test${res.failed === 1 ? '' : 's'}.`
+          : `All ${res.passed} tests green.`;
+        applyFilter();
+      }
+
+      function applyFilter() {
+        const only = failonly.checked;
+        document.querySelectorAll('.t').forEach((el) => {
+          el.style.display = only && !el.classList.contains('fail') ? 'none' : '';
+        });
+        document.querySelectorAll('.suite').forEach((s) => {
+          const any = [...s.querySelectorAll('.t')].some((t) => t.style.display !== 'none');
+          s.style.display = only && !any ? 'none' : '';
+        });
+      }
+
+      document.getElementById('rerun').onclick = go;
+      failonly.onchange = applyFilter;
+      go();
+    </script>
+  </body>
+</html>

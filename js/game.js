@@ -27,6 +27,20 @@ const Game = (function () {
   // document and every engine function then takes (state, tune, rng).
   const T = (k) => TUNE.get(k);
 
+  // Tear the singleton down so a fresh init() starts clean. Exists because every
+  // module here is a singleton IIFE with private mutable state (finding 129):
+  // you cannot run two worlds, so the test harness runs one world repeatedly.
+  // M2.3 makes state a value and this goes away.
+  function reset() {
+    for (const k of Object.keys(county)) delete county[k];
+    for (const k of Object.keys(alias)) delete alias[k];
+    nations.clear();
+    owner.clear();
+    adjacency = null;
+    seq = 0;
+    listeners.length = 0;
+  }
+
   function init(data, adj, areasDef) {
     adjacency = adj;
     for (const [fips, r] of Object.entries(data.counties)) {
@@ -366,6 +380,7 @@ const Game = (function () {
 
   return {
     init,
+    reset,
     serialize,
     loadState,
     county,

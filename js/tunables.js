@@ -345,7 +345,19 @@ export const SCHEMA = {
 /* ------------------------------------------------------------------ */
 
 const isPlainObject = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
-const cloneValue = (v) => (Array.isArray(v) ? v.slice() : isPlainObject(v) ? { ...v } : v);
+
+/*
+ * Stored array/object values are cloned on the way IN and frozen, then handed
+ * out by reference. Freezing rather than cloning on every read matters: get()
+ * is called inside per-Area loops, and a 6-element array copy per Area per turn
+ * is 10k allocations a turn for nothing. Freezing turns "caller mutates a
+ * tunable" from a silent action-at-a-distance bug into a no-op (sloppy mode) or
+ * a TypeError (module/strict code, which is all the new engine code).
+ */
+const cloneValue = (v) =>
+  Array.isArray(v) ? Object.freeze(v.slice())
+    : isPlainObject(v) ? Object.freeze({ ...v })
+      : v;
 
 export class Tune {
   constructor(overrides) {

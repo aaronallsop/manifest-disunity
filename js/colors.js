@@ -33,5 +33,7 @@ const Colors = (function () {
     return `hsl(${hue.toFixed(1)}deg 60% ${light}%)`;
   }
 
-  return { assign, forState, newColor, map };
+  const reset = () => { for (const k of Object.keys(map)) delete map[k]; gen = 0; };
+
+  return { assign, forState, newColor, map, reset, getGen: () => gen, setGen: (g) => { gen = g | 0; } };
 })();
