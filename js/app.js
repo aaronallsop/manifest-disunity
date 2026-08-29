@@ -32,6 +32,8 @@ const store = {
   countyById: new Map(),
   outlineCache: new Map(),
   selected: null, // { level:'nation'|'county', id }
+  rng: null,      // seeded RNG for this session (js/rng.js); serialized in the save
+  seed: null,
 };
 
 /* ------------------------------------------------------------------ */
@@ -53,6 +55,11 @@ async function init() {
       fetch('data/transport.json').then((r) => r.json()).catch(() => null),
       fetch('data/cultural.mapmode.json').then((r) => r.json()).catch(() => null),
     ]);
+    // Seeded RNG, created before anything draws. Everything downstream takes it
+    // explicitly; nothing reads it off a module global.
+    store.seed = RNG.newSeed();
+    store.rng = RNG.create(store.seed);
+
     store.data = data;
     store.topo = topo;
     store.neighbors = neighbors; // Census County Adjacency File (fips -> [fips])
@@ -60,13 +67,13 @@ async function init() {
     store.transport = transport; // rail / interstates / Canada-Mexico gateways (transport.json)
     Colors.assign(Object.keys(data.states));
     Game.init(data, adjacency, areas);
-    const emerged = Parties.setup(partyDefs); // setup-only regional party spawns
+    const emerged = Parties.setup(partyDefs, store.rng); // setup-only regional party spawns
     MapModes.init(data);
     if (geoMode && geoMode.type === 'ns-mapmode') MapModes.setRegion(geoMode); // published in the editor
     if (cultureMode && cultureMode.type === 'ns-mapmode') MapModes.setCulture(cultureMode);
     if (economy) MapModes.setEconomy(economy); // baked six-sector production values
     if (economy) Market.update(); // opening market prices
-    TurnSystem.begin([...Game.nations.keys()]);
+    TurnSystem.begin([...Game.nations.keys()], store.rng);
     if (emerged.length) {
       setTimeout(() => flash(`\u{1F5F3} Regional parties emerged: <strong>${emerged.map(escapeHtml).join('</strong>, <strong>')}</strong>.`, 'warn'), 300);
     }

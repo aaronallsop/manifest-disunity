@@ -53,10 +53,13 @@ const Parties = (function () {
       .sort((a, b) => b.pct - a.pct);
   }
 
-  function setup(defs) {
+  // rng is REQUIRED and explicit: spawn draws come from the 'spawn' stream so
+  // that adding a die roll elsewhere cannot reshuffle which movements appear.
+  function setup(defs, rng) {
+    const r = rng.stream('spawn');
     spawned = [];
     for (const [name, def] of Object.entries(defs || {})) {
-      if (Math.random() > (def.chance == null ? 0.5 : def.chance)) continue;
+      if (r.random() > (def.chance == null ? 0.5 : def.chance)) continue;
       spawned.push(name);
       colorOf(name);
       const [lo, hi] = def.share || [0.0, 0.2];
@@ -66,7 +69,7 @@ const Parties = (function () {
         const extSum = Object.values(c.ext).reduce((a, b) => a + b, 0);
         const pop = c.demPop + c.gopPop + c.othPop + extSum;
         if (!pop) continue;
-        const x = lo + Math.random() * (hi - lo);
+        const x = r.range(lo, hi);
         const newCount = x * pop + c.othPop;      // rolled share + all of "Other"
         const pool = pop - c.othPop;
         const factor = pool ? (pop - newCount) / pool : 0;
@@ -80,5 +83,8 @@ const Parties = (function () {
     return spawned;
   }
 
-  return { setup, getSpawned: () => spawned, colorOf, groupOf, blocs };
+  const serialize = () => spawned.slice();
+  const loadState = (list) => { spawned = Array.isArray(list) ? list.slice() : []; };
+
+  return { setup, getSpawned: () => spawned, serialize, loadState, colorOf, groupOf, blocs };
 })();

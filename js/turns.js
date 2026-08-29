@@ -16,15 +16,17 @@ const TurnSystem = (function () {
   let round = 1;
   let currentRemoved = false;
 
-  function shuffle(a) {
-    for (let i = a.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [a[i], a[j]] = [a[j], a[i]];
-    }
-    return a;
-  }
+  // The turn-order rng is handed in at begin() and kept so that insertAfter can
+  // draw from the same 'turnorder' stream mid-game. It is the ONLY module-level
+  // rng reference in the codebase and it exists because TurnSystem's own API is
+  // called from event handlers that have no state argument to thread one through.
+  let rng = null;
+  const orderStream = () => rng.stream('turnorder');
 
-  function begin(ids) {
+  const shuffle = (a) => orderStream().shuffle(a);
+
+  function begin(ids, r) {
+    rng = r;
     order = shuffle([...ids]);
     ptr = 0;
     round = 1;
@@ -86,5 +88,5 @@ const TurnSystem = (function () {
     currentRemoved = false;
   }
 
-  return { begin, currentId, sync, insertAfter, endTurn, progress, snapshot, serialize, loadState };
+  return { begin, currentId, sync, insertAfter, endTurn, progress, snapshot, serialize, loadState, setRng: (r) => { rng = r; } };
 })();

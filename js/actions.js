@@ -117,7 +117,7 @@ const Actions = (function () {
     const Tname = Game.getNation(tid).name;
     A = null;
     clearVisuals();
-    if (Math.random() < P) {
+    if (store.rng.stream('unite').chance(P)) {
       Game.mergeInto(S, tid);
       flash(`🤝 <strong>${escapeHtml(Tname)}</strong> united into <strong>${escapeHtml(Game.getNation(S).name)}</strong>.`, 'good');
     } else {
@@ -559,7 +559,7 @@ const Actions = (function () {
     const before = Game.nationDemographics(nid);
     const added = Game.demographics(chosen);
     const after = Game.demographics([...Game.getNation(nid).counties, ...chosen]);
-    const res = CivilWar.resolve(before, added, after, { scoreMult: 1 + (A.shell || 0) });
+    const res = CivilWar.resolve(before, added, after, { scoreMult: 1 + (A.shell || 0), rng: store.rng });
 
     let msg, kind;
     if (!res.triggered) {

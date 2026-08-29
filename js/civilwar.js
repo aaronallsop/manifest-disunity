@@ -16,7 +16,7 @@
  *   67+   -> fall apart     (targets fragment into new nations)
  */
 const CivilWar = (function () {
-  const roll = () => 1 + Math.floor(Math.random() * 6);
+  const roll = (rng, sides) => rng.roll(sides);
 
   // Would annexing `added` into `before` trigger a civil war, and why?
   function assess(before, added, after) {
@@ -40,13 +40,15 @@ const CivilWar = (function () {
 
   // Full resolution. `before`/`after`/`added` are demographics objects.
   // opts.scoreMult scales the score (blue-shell penalty for big aggressors).
+  // opts.rng is REQUIRED: every die comes from the caller's 'combat' stream.
   function resolve(before, added, after, opts = {}) {
+    const dieStream = opts.rng.stream('combat');
     const mult = opts.scoreMult || 1;
     const { flip, reasons, triggered } = assess(before, added, after);
     const dc = Math.max(triggered ? 1 : 0, diceCount(before, after));
     const dice = [];
     let product = 1;
-    for (let i = 0; i < dc; i++) { const d = roll(); dice.push(d); product *= d; }
+    for (let i = 0; i < dc; i++) { const d = roll(dieStream, 6); dice.push(d); product *= d; }
     const pts = points(added);
     const score = dc ? Math.round(pts * product * mult) : 0;
     const outcome = score <= 33 ? 'victory' : score <= 66 ? 'partial' : 'fall_apart';
