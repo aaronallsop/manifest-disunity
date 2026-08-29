@@ -417,33 +417,105 @@ const Game = (function () {
     return created;
   }
 
+  /**
+   * Which bloc actually rules a set of Areas: 'dem', 'gop', 'oth', or the name of
+   * an emergent movement. Returns null for an empty set.
+   *
+   * The old test was `d >= g` over demPop and gopPop alone, so a nation whose
+   * real plurality was an emergent movement bled the WRONG bloc, and a movement
+   * could never take a single casualty however many wars it lost. `Other` was
+   * invisible too.
+   */
+  function rulingBloc(countyIds) {
+    const tally = { dem: 0, gop: 0, oth: 0 };
+    for (const f of countyIds) {
+      const c = county[f];
+      if (!c) continue;
+      tally.dem += c.demPop; tally.gop += c.gopPop; tally.oth += c.othPop;
+      for (const p in c.ext) tally['ext:' + p] = (tally['ext:' + p] || 0) + c.ext[p];
+    }
+    let best = null, bv = -1;
+    for (const k of Object.keys(tally).sort()) if (tally[k] > bv) { best = k; bv = tally[k]; }
+    return bv > 0 ? best : null;
+  }
+
+  /** Read/write one bloc's head count on an Area record. */
+  const blocGet = (c, bloc) =>
+    bloc === 'dem' ? c.demPop : bloc === 'gop' ? c.gopPop : bloc === 'oth' ? c.othPop
+      : (c.ext[bloc.slice(4)] || 0);
+  function blocScale(c, bloc, k) {
+    if (bloc === 'dem') c.demPop *= k;
+    else if (bloc === 'gop') c.gopPop *= k;
+    else if (bloc === 'oth') c.othPop *= k;
+    else {
+      const name = bloc.slice(4);
+      if (c.ext[name]) c.ext[name] *= k;
+    }
+  }
+
   /* ---- civil war fallout: population + GDP ---- */
+  /*
+   * Both halves distribute PROPORTIONALLY to each Area's existing share, never
+   * as a flat per-Area amount.
+   *
+   * The population loss used to be `lossPct * total / counties.size` subtracted
+   * from every Area and clamped at zero, so a 12k-person rural Area and a
+   * 9.8M-person metro Area lost the same absolute head count. Measured at the
+   * 40% cap: California had its Democratic population driven to zero in 34 of 58
+   * Areas and only 57.3% of the intended loss was actually applied; New York
+   * 32/50 and 66.7%. The severity dial was broken — doubling the score did not
+   * double the casualties, because the clamp ate 30-58% of it on exactly the
+   * nations meant to suffer most — and it flattened the political map wherever
+   * it landed.
+   *
+   * A proportional loss is scale-free, exact, and cannot clamp.
+   */
   function applyCivilWarCost(loserId, winnerId, score) {
     const loser = nations.get(loserId);
     if (loser && loser.counties.size) {
-      let d = 0, g = 0;
-      for (const f of loser.counties) { const c = county[f]; if (!c) continue; d += c.demPop; g += c.gopPop; }
-      const rulingDem = d >= g;
-      const lossPct = clamp(T('war.popLossBase') + score * T('war.popLossPerScore'), T('war.popLossBase'), T('war.popLossMax'));
-      const per = (lossPct * (rulingDem ? d : g)) / loser.counties.size; // spread evenly by county
-      for (const f of loser.counties) {
-        const c = county[f];
-        if (!c) continue;
-        if (rulingDem) c.demPop = Math.max(0, c.demPop - per);
-        else c.gopPop = Math.max(0, c.gopPop - per);
+      const bloc = rulingBloc(loser.counties);
+      if (bloc) {
+        const lossPct = clamp(T('war.popLossBase') + score * T('war.popLossPerScore'), T('war.popLossBase'), T('war.popLossMax'));
+        const k = 1 - lossPct;
+        for (const f of loser.counties) {
+          const c = county[f];
+          if (c) blocScale(c, bloc, k);
+        }
       }
     }
     if (winnerId && nations.has(winnerId) && loser && loser.counties.size) {
-      let gdp = 0;
-      for (const f of loser.counties) gdp += county[f] ? county[f].gdp : 0;
       const gPct = clamp(T('war.gdpLossBase') + score * T('war.gdpLossPerScore'), T('war.gdpLossBase'), T('war.gdpLossMax'));
-      let moved = 0; // each loser county gives up the same fraction; winner gets it all
+      let moved = 0; // each loser Area gives up the same fraction of its own GDP
       for (const f of loser.counties) { const c = county[f]; if (!c) continue; const take = c.gdp * gPct; c.gdp -= take; moved += take; }
-      const winner = nations.get(winnerId);
-      const perW = moved / winner.counties.size;
-      for (const f of winner.counties) { if (county[f]) county[f].gdp += perW; }
+      // ...and the winner receives it in proportion to where its economy already
+      // is, so reparations do not flatten the victor's GDP map either.
+      addGdpProportionally(nations.get(winnerId), moved);
     }
     emit({ values: true });
+  }
+
+  /**
+   * Add `amount` of GDP across a nation's Areas in proportion to their existing
+   * GDP. An even split is what erased the economic geography every map mode and
+   * the market depend on: 50 rounds of trading drove every Area in a nation
+   * toward the same output.
+   *
+   * Falls back to an even split only when the nation has no GDP at all to
+   * proportion against.
+   */
+  function addGdpProportionally(n, amount) {
+    if (!n || !n.counties.size || !amount) return;
+    let total = 0;
+    for (const f of n.counties) if (county[f]) total += county[f].gdp;
+    if (total > 0) {
+      for (const f of n.counties) {
+        const c = county[f];
+        if (c) c.gdp += amount * (c.gdp / total);
+      }
+    } else {
+      const per = amount / n.counties.size;
+      for (const f of n.counties) { if (county[f]) county[f].gdp += per; }
+    }
   }
 
   const clamp = (x, lo, hi) => Math.max(lo, Math.min(hi, x));
@@ -488,12 +560,13 @@ const Game = (function () {
   function tickTreasuries() {
     for (const [nid, n] of nations) n.treasury += treasuryFlow(nid).delta;
   }
-  // trade gains etc: add GDP to a nation, spread evenly across its areas
+  // Trade gains etc: add GDP to a nation, in proportion to where its economy
+  // already is. An even split flattened the map that the market, every value map
+  // mode and the target design's economic win condition all read.
   function boostGdp(nid, amount) {
     const n = nations.get(nid);
     if (!n || !n.counties.size) return;
-    const per = amount / n.counties.size;
-    for (const f of n.counties) { if (county[f]) county[f].gdp += per; }
+    addGdpProportionally(n, amount);
     emit({ values: true });
   }
   // spendable balance: actions draw from the treasury via this
@@ -585,6 +658,7 @@ const Game = (function () {
     treasuryFlow,
     tickTreasuries,
     occupiedCount,
+    rulingBloc,
     originalNations: () => originalNationCount,
     spend,
     boostGdp,
