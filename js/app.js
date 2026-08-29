@@ -9,12 +9,15 @@
 const WIDTH = 975;
 const HEIGHT = 610;
 
-// Connecticut's old counties still live in the base geometry (used only for the
-// border mesh). Map each to the planning region that carries its ownership.
-const OLD_CT_TO_REGION = {
-  '09001': '09190', '09003': '09110', '09005': '09160', '09007': '09130',
-  '09009': '09170', '09011': '09180', '09013': '09110', '09015': '09150',
-};
+// Connecticut's old counties still live in the base geometry. The mapping and
+// the reasoning live in js/geo-ct.js so tests/ can reach them; boot-globals.js
+// publishes the module as window.GeoCT.
+//
+// BOUND IN init(), NOT HERE. boot-globals.js is a deferred module, so it has not
+// run yet while this classic script is being evaluated. Reading an ESM-bridged
+// global at top level is a load-time TypeError.
+let OLD_CT_TO_REGION = null;
+let OLD_CT = null;
 
 const store = {
   mode: 'nations', // 'nations' | 'counties'
@@ -66,6 +69,9 @@ async function init() {
     store.seed = RNG.newSeed();
     store.rng = RNG.create(store.seed);
 
+    OLD_CT_TO_REGION = GeoCT.OLD_CT_TO_REGION;
+    OLD_CT = GeoCT.OLD_CT;
+
     store.data = data;
     store.topo = topo;
     store.areasDef = areas; // the build stamp a save is validated against
@@ -102,7 +108,6 @@ async function init() {
 /* map                                                                 */
 /* ------------------------------------------------------------------ */
 function buildMap(topo, ctGeo) {
-  const OLD_CT = new Set(Object.keys(OLD_CT_TO_REGION));
   const countyFeatures = topojson.feature(topo, topo.objects.counties).features.filter((f) => !OLD_CT.has(f.id));
   ctGeo.features.forEach((f) => {
     f.id = f.properties.GEOID;
@@ -147,11 +152,23 @@ function buildMap(topo, ctGeo) {
     .on('mouseleave', onHoverOut)
     .on('click', onClick);
 
-  // borders between AREAS only (interior county lines of a merged Area omitted);
-  // shown instead of per-county strokes when county lines are toggled off
+  // Borders between AREAS only (interior county lines of a merged Area omitted);
+  // shown instead of per-county strokes when county lines are toggled off.
+  //
+  // Connecticut is excluded from the topology mesh entirely and drawn from the
+  // planning-region geojson instead. Fixing only the mesh PREDICATE is not
+  // enough: the topology carries the eight pre-2022 CT county polygons, so any
+  // arc it emits inside CT follows an old county edge, while the nine coloured
+  // fills are the planning-region polygons. The lines and the fills are different
+  // shapes, and no predicate over the wrong geometry can reconcile them.
+  const ctBoundaries = path({ type: 'FeatureCollection', features: ctGeo.features });
+  const nonCtMesh = path(topojson.mesh(topo, topo.objects.counties, (a, b) =>
+    a !== b
+    && !OLD_CT.has(a.id) && !OLD_CT.has(b.id)
+    && baseGeomToArea(a.id) !== baseGeomToArea(b.id)));
   g.append('path')
     .attr('class', 'area-borders')
-    .attr('d', path(topojson.mesh(topo, topo.objects.counties, (a, b) => a !== b && Game.areaIdOf(a.id) !== Game.areaIdOf(b.id))));
+    .attr('d', (nonCtMesh || '') + (ctBoundaries || ''));
 
   store.nationBorders = g.append('path').attr('class', 'nation-borders');
   g.append('path')
@@ -178,9 +195,28 @@ function buildMap(topo, ctGeo) {
   svg.call(zoom).on('dblclick.zoom', null);
 }
 
+/*
+ * Base geometry -> Area id. THE single place the old-CT proxy counties are
+ * normalised.
+ *
+ * data/counties-10m.json still carries Connecticut's eight pre-2022 counties;
+ * data/game-data.json carries only the nine planning regions, and data/areas.json
+ * has no 09* entries at all, so Game.areaIdOf('09001') returns '09001' unchanged.
+ * Any mesh predicate keyed on Game.areaIdOf alone therefore sees eight distinct
+ * CT keys and draws eight interior boundaries that follow none of the nine
+ * coloured fills — visible on first load, with no clicks, in the one state the
+ * project worked hardest to get right.
+ *
+ * The nation mesh got this right via meshOwner; the area mesh did not. Now all
+ * three layers (area borders, nation borders, nation outline) route through here.
+ */
+function baseGeomToArea(id) {
+  return GeoCT.baseGeomToArea(id, Game.areaIdOf);
+}
+
 /* owner of a base-geometry county id (handles old-CT proxy counties) */
 function meshOwner(id) {
-  return Game.getOwner(OLD_CT_TO_REGION[id] || id);
+  return Game.getOwner(baseGeomToArea(id));
 }
 
 /* merged outline of a nation (cached; invalidated on every mutation) */
