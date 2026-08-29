@@ -12,6 +12,7 @@
  */
 const Parties = (function () {
   let spawned = [];
+  let coverage = {}; // name -> {authored, areas, unresolved[]}, filled by setup()
 
   // Six fixed color families -- parties sharing a color form a COALITION (close
   // enough interests to work together and pool their share):
@@ -53,19 +54,57 @@ const Parties = (function () {
       .sort((a, b) => b.pct - a.pct);
   }
 
+  /*
+   * Resolve an authored county-FIPS list to the Areas the runtime actually has.
+   *
+   * data/parties.json is written in COUNTY fips by build_parties.py, but
+   * Game.init collapses 483 Areas and DELETES the 1,467 member records
+   * (game.js: `delete county[m]; alias[m] = aid;`). Indexing Game.county by a
+   * raw member fips therefore hits nothing: 2,025 of 4,198 authored references
+   * (48.2%) used to no-op silently. El Paso United got 2 Areas of its 12,
+   * Libertarians 84 of 394, The Farmers Union 287 of 983.
+   *
+   * Game.areaIdOf is the alias that resolves it. Several members map to the same
+   * Area, so de-duplicate — otherwise one Area takes one roll per member county
+   * and its share compounds.
+   *
+   * Returns {areas, unresolved}: `unresolved` is a fips that is neither an Area
+   * nor a member of one, which means parties.json and areas.json have genuinely
+   * drifted apart and is worth a warning.
+   */
+  function resolveAreas(fipsList) {
+    const areas = [];
+    const seen = new Set();
+    const unresolved = [];
+    for (const raw of fipsList || []) {
+      const aid = Game.areaIdOf(raw);
+      if (seen.has(aid)) continue;
+      seen.add(aid);
+      if (!Game.county[aid]) { unresolved.push(raw); continue; }
+      areas.push(aid);
+    }
+    return { areas, unresolved };
+  }
+
   // rng is REQUIRED and explicit: spawn draws come from the 'spawn' stream so
   // that adding a die roll elsewhere cannot reshuffle which movements appear.
   function setup(defs, rng) {
     const r = rng.stream('spawn');
     spawned = [];
+    coverage = {};
     for (const [name, def] of Object.entries(defs || {})) {
       if (r.random() > (def.chance == null ? 0.5 : def.chance)) continue;
       spawned.push(name);
       colorOf(name);
       const [lo, hi] = def.share || [0.0, 0.2];
-      for (const f of def.counties) {
+      const { areas, unresolved } = resolveAreas(def.counties);
+      coverage[name] = { authored: (def.counties || []).length, areas: areas.length, unresolved };
+      if (unresolved.length) {
+        console.warn(`Parties: "${name}" lists ${unresolved.length} FIPS that resolve to no live Area`,
+          unresolved.slice(0, 8));
+      }
+      for (const f of areas) {
         const c = Game.county[f];
-        if (!c) continue;
         const extSum = Object.values(c.ext).reduce((a, b) => a + b, 0);
         const pop = c.demPop + c.gopPop + c.othPop + extSum;
         if (!pop) continue;
@@ -86,5 +125,15 @@ const Parties = (function () {
   const serialize = () => spawned.slice();
   const loadState = (list) => { spawned = Array.isArray(list) ? list.slice() : []; };
 
-  return { setup, getSpawned: () => spawned, serialize, loadState, colorOf, groupOf, blocs };
+  return {
+    setup,
+    getSpawned: () => spawned,
+    resolveAreas,
+    getCoverage: () => coverage,
+    serialize,
+    loadState,
+    colorOf,
+    groupOf,
+    blocs,
+  };
 })();
