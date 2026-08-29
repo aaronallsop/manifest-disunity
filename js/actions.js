@@ -121,7 +121,7 @@ const Actions = (function () {
       Game.mergeInto(S, tid);
       flash(`🤝 <strong>${escapeHtml(Tname)}</strong> united into <strong>${escapeHtml(Game.getNation(S).name)}</strong>.`, 'good');
     } else {
-      const score = CivilWar.uniteSeverity(P);
+      const score = CivilWar.uniteSeverity(P, TUNE);
       const plan = planSplinter(S, tid);
       // One render for the whole fallout, not four.
       const created = Game.batch(() => {
@@ -155,7 +155,7 @@ const Actions = (function () {
     const tName = Game.getNation(tid).name;
     const combined = Game.demographics([...Game.getNation(A.nid).counties, ...Game.getNation(tid).counties]);
     const shell = Game.blueShell(A.nid);
-    const P = CivilWar.unitePeaceChance(me, them, shell);
+    const P = CivilWar.unitePeaceChance(me, them, shell, TUNE);
     A.chance = P;
     const pct = Math.round(P * 100);
     const risky = P < 0.5;
@@ -566,7 +566,7 @@ const Actions = (function () {
     const before = Game.nationDemographics(nid);
     const added = Game.demographics(chosen);
     const after = Game.demographics([...Game.getNation(nid).counties, ...chosen]);
-    const res = CivilWar.resolve(before, added, after, { scoreMult: 1 + (A.shell || 0), rng: store.rng });
+    const res = CivilWar.resolve(before, added, after, { scoreMult: 1 + (A.shell || 0), rng: store.rng, tune: TUNE });
 
     let msg, kind;
     // Every branch below is a multi-step mutation; batch() collapses each to one
@@ -583,12 +583,12 @@ const Actions = (function () {
       msg = `${cwLine(res)} <strong>Complete victory!</strong> All ${chosen.length} counties annexed.`;
       kind = 'good';
     } else if (res.outcome === 'partial') {
-      const taken = partialSubset(nid, chosen, before.lean);
+      const taken = partialSubset(nid, chosen, res.score);
       Game.batch(() => {
         Game.moveCounties(taken, nid);
         Game.applyCivilWarCost(victim, nid, Math.round(res.score / 2));
       });
-      msg = `${cwLine(res)} <strong>Partial victory.</strong> Held ${taken.length} of ${chosen.length} counties (same-lean & connected).`;
+      msg = `${cwLine(res)} <strong>Partial victory.</strong> Held ${taken.length} of ${chosen.length} counties &mdash; a connected front from your border.`;
       kind = taken.length ? 'good' : 'warn';
     } else {
       const bornIds = Game.batch(() => {
@@ -610,19 +610,43 @@ const Actions = (function () {
     completeTurn();
   }
 
-  // Partial victory: same-lean chosen counties reachable from the attacker's border.
-  function partialSubset(nid, chosen, attackerLean) {
-    const same = new Set(chosen.filter((f) => Game.leanOf(f)?.lean === attackerLean));
-    const reached = new Set();
-    const stack = [];
-    for (const f of same) {
-      if (Game.countyNeighbors(f).some((nb) => Game.getOwner(nb) === nid)) { reached.add(f); stack.push(f); }
+  /*
+   * Partial victory: the CONTIGUOUS, border-adjacent share of the contested
+   * Areas that the score lets you hold.
+   *
+   * The old rule kept only Areas matching the attacker's own lean - which, for a
+   * war triggered BY a party flip, is empty by construction: a flip means the
+   * annexed bloc leans the other way. That is what a "partial victory" was:
+   * "Held 0 of 1 counties", while the victim still bled population and handed
+   * over 2-20% of its GDP to an attacker that gained nothing.
+   *
+   * Now the front advances from the attacker's own border through the contested
+   * set, breadth-first, and stops when the score's allowance runs out. A partial
+   * victory is always a real, connected gain.
+   */
+  function partialSubset(nid, chosen, score) {
+    if (!chosen.length) return [];
+    const pool = new Set(chosen);
+    const want = Math.max(1, Math.round(CivilWar.partialKeepFraction(score, TUNE) * chosen.length));
+
+    // Seed: contested Areas touching the attacker, largest first, so the hold is
+    // the militarily meaningful part rather than whatever the Set iterates to.
+    const seeds = chosen
+      .filter((f) => Game.countyNeighbors(f).some((nb) => Game.getOwner(nb) === nid))
+      .sort((a, b) => Game.countyPop(b) - Game.countyPop(a));
+    // A selection is grown from the attacker's frontier, so there is always at
+    // least one seed; fall back to the largest contested Area if that ever fails.
+    if (!seeds.length) seeds.push(Game.largestCounty(chosen));
+
+    const held = new Set();
+    const queue = [...seeds];
+    while (queue.length && held.size < want) {
+      const cur = queue.shift();
+      if (held.has(cur) || !pool.has(cur)) continue;
+      held.add(cur);
+      for (const nb of Game.countyNeighbors(cur)) if (pool.has(nb) && !held.has(nb)) queue.push(nb);
     }
-    while (stack.length) {
-      const c = stack.pop();
-      for (const nb of Game.countyNeighbors(c)) if (same.has(nb) && !reached.has(nb)) { reached.add(nb); stack.push(nb); }
-    }
-    return [...reached];
+    return [...held];
   }
 
   // Fall apart: chosen counties break into new nations (>=10 counties each); small
@@ -648,7 +672,8 @@ const Actions = (function () {
   }
   const leanName = (l) => (l === 'D' ? 'Democratic' : l === 'R' ? 'Republican' : '—');
   function cwLine(res) {
-    return `🎲 ${res.dice.join(' × ')} &nbsp; ${res.points} pts × ${res.product} = <strong>${res.score}</strong>.`;
+    const roll = res.dice.length ? `${res.dice.join(' + ')} = ${res.diceSum}` : '\u2014';
+    return `\u{1F3B2} ${roll} &nbsp; \u00d7 ${res.points.toFixed(2)} pts = <strong>${res.score}</strong>.`;
   }
   const plural = (n, a, b) => (n === 1 ? a : b);
   const deltaPop = (n) => (n ? `+${fmtPop(n)}` : '');

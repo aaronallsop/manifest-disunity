@@ -191,20 +191,25 @@ export const SCHEMA = {
   },
 
   /* ---------------- civil war ---------------- */
-  'war.popPerPoint': {
-    v: 1e6, min: 1e4, max: 1e8, step: 1e4, group: 'Civil war',
-    label: 'People per war point',
-    doc: 'Annexed population divided by this gives the population half of the war points.',
+  'war.sizeRatioPopWeight': {
+    v: 0.6, min: 0, max: 1, step: 0.05, group: 'Civil war',
+    label: 'War points: population weight',
+    doc: 'Weight on the annexed/annexer POPULATION ratio; the remainder weights the GDP ratio. Points are a ratio, not an absolute, because that is the quantity the trigger already cares about - and because absolute rounded points made the median Area worth 0.',
   },
-  'war.gdpPerPoint': {
-    v: 1e10, min: 1e8, max: 1e12, step: 1e8, group: 'Civil war',
-    label: 'GDP per war point ($)',
-    doc: 'Annexed GDP divided by this gives the GDP half of the war points.',
+  'war.pointsCurve': {
+    v: 0.5, min: 0.1, max: 1, step: 0.05, group: 'Civil war',
+    label: 'War points: size curve',
+    doc: 'Exponent on the size ratio. 1.0 is linear, which makes every large annexation a certain fall-apart; 0.5 (square root) keeps doubling your size a bad gamble rather than a mathematical certainty.',
   },
   'war.pointsScale': {
-    v: 1, min: 0.1, max: 100, step: 0.5, group: 'Civil war',
-    label: 'Points scale',
-    doc: 'Multiplier turning raw points into the score band. M1.3 raises it once the rounding is removed, so a median Area annexation lands near the victory/partial boundary.',
+    v: 12, min: 0.1, max: 100, step: 0.5, group: 'Civil war',
+    label: 'War points: scale',
+    doc: 'Multiplier turning sqrt(size ratio) x dice sum into the score band. Tuned so a 5%-of-your-size annexation is a safe victory, 20% is mostly partial, 50% spans all three outcomes and 100% is mostly fall-apart.',
+  },
+  'war.partialMinKeep': {
+    v: 0.15, min: 0, max: 1, step: 0.05, group: 'Civil war',
+    label: 'Partial victory: minimum kept',
+    doc: 'Smallest fraction of the contested Areas a partial victory holds, at the top of the partial band. The old rule kept only same-lean Areas, which for a FLIP-triggered war is empty by construction.',
   },
   'war.maxDice': {
     v: 6, min: 1, max: 20, step: 1, group: 'Civil war',

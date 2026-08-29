@@ -1,62 +1,153 @@
 /*
- * Civil War resolver (pure math).
+ * Civil War resolver (pure math — no DOM, no globals, rng and tune passed in).
  *
  * Triggered by an annexation when any of these hold:
- *   - the annexation flips the nation's majority party,
+ *   - the annexation flips the nation's PLURALITY party,
  *   - the annexed counties' GDP exceeds the nation's current GDP,
  *   - the annexed counties' population exceeds the nation's current population.
  *
- * Scoring:
- *   dice   = ceil(points past 50% into the other party)   [>=1 if any trigger]
- *   points = round(addedPop / 1e6) + round(addedGdp / 1e10)
- *   score  = points * (d1 * d2 * ... )                     [each die 1-6]
+ * Scoring — three deliberate properties, each fixing a way the old version was
+ * not a dice game at all:
  *
- *   0-33  -> victory        (annex everything)
- *   34-66 -> partial        (same-lean contiguous subset)
- *   67+   -> fall apart     (targets fragment into new nations)
+ *   1. POINTS ARE A RATIO, NOT AN ABSOLUTE, AND ARE NOT ROUNDED.
+ *      `round(pop/1e6) + round(gdp/1e10)` gave the median Area (88,948 people,
+ *      $4.93B) exactly 0 points, so `score = 0` and the war was an automatic
+ *      victory however the dice fell. Points are now how big the bite is
+ *      relative to the biter — which is the quantity the trigger already cares
+ *      about — passed through a square root so that doubling your size is a bad
+ *      gamble rather than certain doom.
+ *
+ *   2. THE DICE ARE SUMMED, NOT MULTIPLIED, AND THEIR COUNT IS CAPPED.
+ *      A real party flip produced 4-10 dice, and at 10 dice the median product
+ *      is 3.5^10 = 2.8e5 — six orders of magnitude past the 67 threshold, so
+ *      even the minimum possible product still landed in `fall_apart`. Score now
+ *      grows linearly in the dice, so the outcome is a distribution.
+ *
+ *   3. FLIP MAGNITUDE IS MEASURED FROM THE PLURALITY, NOT FROM 50%.
+ *      `50 - oldMajorityShareAfter` conflates "below 50%" with "lost the lead".
+ *      Once emergent movements exist (up to 20% at spawn, growing toward 35%)
+ *      both D and R sit far below 50, so a 1-point flip yielded 10-15 dice.
+ *
+ *   score   = pointsScale * sqrt(sizeRatio) * (d1 + d2 + ... + dN)
+ *   0..33   -> victory        (annex everything)
+ *   34..66  -> partial        (contiguous border-adjacent subset, sized by score)
+ *   67+     -> fall apart     (targets fragment into new nations)
  */
 const CivilWar = (function () {
-  const roll = (rng, sides) => rng.roll(sides);
+  const clamp = (x, lo, hi) => Math.max(lo, Math.min(hi, x));
+
+  /*
+   * Every party's share of a demographics object, as percentages.
+   *
+   * The engine's own `lean` is a D-vs-R letter that ignores `ext` entirely, so a
+   * nation that is 40% Deseret / 31% R / 29% D reports its lean as a minority
+   * party. Plurality over the full share set is what the flip test actually
+   * means, and it is forward-compatible with M2.2's six ideologies.
+   */
+  function shares(demo) {
+    const out = {};
+    if (!demo) return out;
+    if (demo.dem != null) out.Democrat = demo.dem;
+    if (demo.gop != null) out.Republican = demo.gop;
+    if (demo.other != null && demo.other > 0) out.Other = demo.other;
+    for (const [p, v] of Object.entries(demo.extPct || {})) out[p] = (out[p] || 0) + v;
+    return out;
+  }
+
+  /** The largest party and its share, or {name:null} for an empty scope. */
+  function plurality(demo) {
+    const s = shares(demo);
+    let name = null, pct = -1;
+    for (const k of Object.keys(s).sort()) { // sorted: ties resolve deterministically
+      if (s[k] > pct) { name = k; pct = s[k]; }
+    }
+    return name == null ? { name: null, pct: 0 } : { name, pct };
+  }
 
   // Would annexing `added` into `before` trigger a civil war, and why?
   function assess(before, added, after) {
-    const flip = before.lean != null && after.lean != null && before.lean !== after.lean;
+    const b = plurality(before), a = plurality(after);
+    const flip = b.name != null && a.name != null && b.name !== a.name;
     const reasons = [];
     if (flip) reasons.push('flip');
     if (added.gdp > before.gdp) reasons.push('gdp');
     if (added.pop > before.pop) reasons.push('pop');
-    return { flip, reasons, triggered: reasons.length > 0 };
+    return { flip, reasons, triggered: reasons.length > 0, fromParty: b.name, toParty: a.name };
   }
 
-  function diceCount(before, after) {
-    if (before.lean == null || after.lean == null || before.lean === after.lean) return 0;
-    const oldMajorityShareAfter = before.lean === 'D' ? after.dem : after.gop;
-    return Math.max(1, Math.ceil(50 - oldMajorityShareAfter)); // how far past 50 into the other party
+  /**
+   * How decisively the plurality flipped, in percentage points: the new leader's
+   * share minus what the old leader is left with. 0 when nothing flipped.
+   */
+  function flipMagnitude(before, after) {
+    const b = plurality(before), a = plurality(after);
+    if (b.name == null || a.name == null || b.name === a.name) return 0;
+    const afterShares = shares(after);
+    return Math.max(0, a.pct - (afterShares[b.name] || 0));
   }
 
-  function points(added, tune) {
-    return Math.round(added.pop / tune.get('war.popPerPoint'))
-         + Math.round(added.gdp / tune.get('war.gdpPerPoint'));
+  /** Dice for a flip, capped. Uncapped multiplied dice were the whole problem. */
+  function diceCount(before, after, tune) {
+    const mag = flipMagnitude(before, after);
+    if (mag <= 0) return 0;
+    const per = tune.get('war.dicePerFlipPoint');
+    return clamp(1 + Math.round(per * mag), 1, tune.get('war.maxDice'));
   }
 
-  // Full resolution. `before`/`after`/`added` are demographics objects.
-  // opts.scoreMult scales the score (blue-shell penalty for big aggressors).
-  // opts.rng is REQUIRED: every die comes from the caller's 'combat' stream.
+  /**
+   * Points: how big the annexation is relative to the annexer, compressed.
+   *
+   * Continuous — no rounding at any magnitude. `sqrt` (war.pointsCurve) is what
+   * keeps a 1:1 annexation a bad gamble rather than a mathematical certainty:
+   * without it, score is linear in size and every large annexation is a
+   * guaranteed fall-apart regardless of the dice.
+   */
+  function points(before, added, tune) {
+    const wPop = tune.get('war.sizeRatioPopWeight');
+    const popRatio = added.pop / Math.max(1, before.pop);
+    const gdpRatio = added.gdp / Math.max(1, before.gdp);
+    const ratio = wPop * popRatio + (1 - wPop) * gdpRatio;
+    return Math.pow(Math.max(0, ratio), tune.get('war.pointsCurve'));
+  }
+
+  /**
+   * Full resolution.
+   * @param before/added/after demographics objects
+   * @param opts {rng (required), tune, scoreMult}
+   */
   function resolve(before, added, after, opts = {}) {
-    const dieStream = opts.rng.stream('combat');
     const tune = opts.tune || window.TUNE;
+    const dieStream = opts.rng.stream('combat');
     const mult = opts.scoreMult || 1;
-    const { flip, reasons, triggered } = assess(before, added, after);
-    const dc = Math.max(triggered ? 1 : 0, diceCount(before, after));
-    const dice = [];
-    let product = 1;
+    const { flip, reasons, triggered, fromParty, toParty } = assess(before, added, after);
+    const dc = Math.max(triggered ? 1 : 0, diceCount(before, after, tune));
+
     const sides = tune.get('war.diceSides');
-    for (let i = 0; i < dc; i++) { const d = roll(dieStream, sides); dice.push(d); product *= d; }
-    const pts = points(added, tune);
-    const score = dc ? Math.round(pts * product * mult * tune.get('war.pointsScale')) : 0;
+    const dice = [];
+    let sum = 0;
+    for (let i = 0; i < dc; i++) { const d = dieStream.roll(sides); dice.push(d); sum += d; }
+
+    const pts = points(before, added, tune);
+    const score = dc ? Math.round(pts * sum * mult * tune.get('war.pointsScale')) : 0;
     const outcome = score <= tune.get('war.victoryBand') ? 'victory'
       : score <= tune.get('war.partialBand') ? 'partial' : 'fall_apart';
-    return { flip, reasons, triggered, diceCount: dc, dice, points: pts, product, score, outcome, scoreMult: mult };
+    return {
+      flip, reasons, triggered, fromParty, toParty,
+      diceCount: dc, dice, diceSum: sum,
+      points: pts, flipMagnitude: flipMagnitude(before, after),
+      score, outcome, scoreMult: mult,
+    };
+  }
+
+  /**
+   * What fraction of the contested Areas a partial victory keeps.
+   * A score just past the victory band keeps nearly all of them; a score at the
+   * top of the partial band keeps the floor.
+   */
+  function partialKeepFraction(score, tune) {
+    const vb = tune.get('war.victoryBand'), pb = tune.get('war.partialBand');
+    const span = Math.max(1, pb - vb);
+    return clamp((pb - score) / span, tune.get('war.partialMinKeep'), 1);
   }
 
   // Probability a union is peaceful (vs. sparking a splinter civil war). Driven by
@@ -77,7 +168,11 @@ const CivilWar = (function () {
   }
 
   // Severity score for a failed union (used for population/GDP fallout).
-  const uniteSeverity = (p, tune) => Math.round((1 - p) * (tune || window.TUNE).get('war.uniteSeverityScale'));
+  const uniteSeverity = (p, tune) =>
+    Math.round((1 - p) * (tune || window.TUNE).get('war.uniteSeverityScale'));
 
-  return { assess, diceCount, points, resolve, unitePeaceChance, uniteSeverity };
+  return {
+    assess, diceCount, points, resolve, unitePeaceChance, uniteSeverity,
+    shares, plurality, flipMagnitude, partialKeepFraction,
+  };
 })();

@@ -73,3 +73,31 @@ now sets a `wrapped` flag and `endTurn()` consumes it, making `endTurn` the sing
 **M0.5.** Every module is a singleton IIFE with private mutable state (finding 129), so the harness
 cannot run two worlds; it runs one world repeatedly and needs an explicit teardown. M2.3 makes
 state a value and these go away.
+
+### D11 — War points are a size RATIO through a square root, not an absolute
+**M1.3.** The plan offered "continuous point values, or scale so a median Area is ~1 point".
+Absolute points have a worse problem than rounding: they scale linearly with the size of the
+annexation while the outcome bands are fixed, so *every* large annexation becomes a certain
+fall-apart regardless of the dice — the same step function in a different direction. Points are
+therefore `sqrt(0.6·popRatio + 0.4·gdpRatio)`, the bite relative to the biter, which is the quantity
+the trigger already tests. `sqrt` is what keeps doubling your size a bad gamble (mostly fall apart,
+sometimes partial) rather than a mathematical certainty. Measured on the real turn-0 map across 52
+triggered wars: 30.8% victory / 30.8% partial / 38.5% fall apart, against the old 1.5 / 3.0 / 95.5.
+
+### D12 — The flip test itself moved to plurality, not just the magnitude
+**M1.3.** The plan asked for flip *magnitude* measured from the plurality. Measuring the magnitude
+that way while still detecting the flip with `before.lean !== after.lean` would be incoherent: the
+D-vs-R letter ignores `ext` entirely, so a nation that is 40% Deseret / 31% R / 29% D reports its
+lean as a minority party and a real change of leadership is invisible to it. `CivilWar.assess` now
+takes the plurality over the full share set — D, R, Other and every emergent movement — which is
+both correct today and the shape M2.2 needs.
+
+### D13 — `partialSubset` was rewritten in M1.3, not left for later
+**M1.3.** M1.3's acceptance is "a spread across all three outcomes". The middle outcome was
+reachable but *territorially empty*: it kept only Areas matching the attacker's own lean, which for
+a flip-triggered war is empty by construction (a flip means the annexed bloc leans the other way).
+Measured on the real map, a 6-Area Pennsylvania flip war held 1 of 6 under the old rule. Shipping
+"a spread" whose middle third does nothing would not have been the fix. A partial victory now
+advances a breadth-first front from the attacker's own border through the contested set and stops
+when the score's allowance runs out — always connected, always non-empty, sized 97% → 15% of the
+selection across the partial band.
