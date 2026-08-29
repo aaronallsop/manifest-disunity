@@ -28,8 +28,10 @@ export function loadData() {
       get('../data/parties.json', {}),
       get('../data/economy.json', null),
       get('../data/county_neighbors.json', {}),
-    ]).then(([data, adjacency, areas, partyDefs, economy, neighbors]) => ({
-      data, adjacency, areas, partyDefs, economy, neighbors,
+      get('../data/county_trade.json', null),
+      get('../data/transport.json', null),
+    ]).then(([data, adjacency, areas, partyDefs, economy, neighbors, trade, transport]) => ({
+      data, adjacency, areas, partyDefs, economy, neighbors, trade, transport,
     }));
   }
   return dataPromise;
@@ -54,7 +56,7 @@ export async function bootWorld(opts = {}) {
   const rng = RNG.create(seed);
 
   Colors.assign(Object.keys(raw.data.states));
-  Game.init(raw.data, raw.adjacency, raw.areas);
+  Game.init(raw.data, raw.adjacency, raw.areas, { trade: raw.trade, transport: raw.transport });
   const spawned = spawnParties ? Parties.setup(raw.partyDefs, rng) : Parties.setup({}, rng);
   MapModes.init(raw.data);
   if (raw.economy) {

@@ -38,14 +38,29 @@ const Game = (function () {
     nations.clear();
     owner.clear();
     neighborCache.clear();
+    maritimeLinks = null;
     adjacency = null;
+    tradeData = null;
+    transportData = null;
     seq = 0;
     originalNationCount = 0;
     listeners.length = 0;
   }
 
-  function init(data, adj, areasDef) {
+  /**
+   * Baked trade and transport attributes, keyed by raw county fips.
+   *
+   * These used to be loaded straight into the RENDERER's `store` and read by
+   * app.js helpers, which meant export access and trade capacity — both model
+   * quantities that decide what an action can do — were unreachable to anything
+   * headless. M2.5 folds them into the state document; for now Game owns them.
+   */
+  let tradeData = null, transportData = null;
+
+  function init(data, adj, areasDef, extras) {
     adjacency = adj;
+    tradeData = (extras && extras.trade) || null;
+    transportData = (extras && extras.transport) || null;
     for (const [fips, r] of Object.entries(data.counties)) {
       const pop = r.pop || 0;
       const dem = r.dem != null ? r.dem / 100 : 0;
@@ -105,6 +120,7 @@ const Game = (function () {
         founded: 0,        // world turn the nation came into being
         homeSt: st,        // its own soil; anything else it holds is OCCUPIED
         lastAnnexTurn: -Infinity,
+        tradeCooldown: {}, // partner key -> world turn of the last deal
       });
     }
     for (const [fips, c] of Object.entries(county)) {
@@ -189,15 +205,74 @@ const Game = (function () {
     for (const f of nations.get(nid).counties) s.add(f.slice(0, 2));
     return s;
   }
-  function adjacentNations(nid) {
-    const mine = statesOf(nid);
+
+  /*
+   * MARITIME reach, kept separate from land borders.
+   *
+   * build_adjacency.py deliberately adds sea links to the STATE table — Alaska
+   * borders every Pacific and Canada-border state, Hawaii every Pacific one —
+   * and the Unite prompt documents that rule. But the state table was ALSO the
+   * only adjacency the game used for partners, and `adjacentNations` degrades
+   * into "any nation owning a county in a state adjacent to a state I own a
+   * county in" the moment a single county changes hands. California was offered
+   * Alaska and Hawaii as overland transit routes on turn 1, before any county
+   * moved at all.
+   *
+   * So: land pairs are derived from the real COUNTY adjacency, and anything in
+   * the state table that is not a land pair is a maritime link. Callers pick the
+   * reach they actually mean.
+   */
+  let maritimeLinks = null; // st -> Set(st) of sea-only links
+  function buildMaritimeLinks() {
+    const land = {};
+    for (const [f, nbs] of Object.entries(adjacency.county || {})) {
+      const a = f.slice(0, 2);
+      for (const nb of nbs) {
+        const b = nb.slice(0, 2);
+        if (a === b) continue;
+        (land[a] = land[a] || new Set()).add(b);
+      }
+    }
+    maritimeLinks = {};
+    for (const [st, nbs] of Object.entries(adjacency.state || {})) {
+      const sea = new Set();
+      for (const other of nbs) if (!(land[st] && land[st].has(other))) sea.add(other);
+      if (sea.size) maritimeLinks[st] = sea;
+    }
+  }
+
+  /** Nations sharing a real land border with `nid`. */
+  function borderingNations(nid) {
+    const n = nations.get(nid);
+    if (!n) return [];
+    const out = new Set();
+    for (const f of n.counties) {
+      for (const nb of countyNeighbors(f)) {
+        const o = owner.get(nb);
+        if (o && o !== nid) out.add(o);
+      }
+    }
+    return [...out];
+  }
+
+  /** Nations reachable only across water (Alaska, Hawaii, the Pacific rim). */
+  function maritimeNations(nid) {
+    if (!maritimeLinks) buildMaritimeLinks();
     const reach = new Set();
-    for (const s of mine) for (const n of adjacency.state[s] || []) reach.add(n);
+    for (const st of statesOf(nid)) for (const other of maritimeLinks[st] || []) reach.add(other);
+    if (!reach.size) return [];
     const out = new Set();
     for (const [oid, n] of nations) {
       if (oid === nid) continue;
       for (const f of n.counties) if (reach.has(f.slice(0, 2))) { out.add(oid); break; }
     }
+    return [...out];
+  }
+
+  /** Everyone you can reach: a shared land border, or a sea link. */
+  function adjacentNations(nid) {
+    const out = new Set(borderingNations(nid));
+    for (const o of maritimeNations(nid)) out.add(o);
     return [...out];
   }
   function annexTargets(nid) {
@@ -382,6 +457,7 @@ const Game = (function () {
       founded: founded == null ? (typeof World !== 'undefined' ? World.getTurn() : 0) : founded,
       homeSt: modalState(countyIds),
       lastAnnexTurn: -Infinity,
+      tradeCooldown: {},
     });
     moveCounties(countyIds, id, { silent: true });
     if (!silent) emit({ ownership: true, roster: true });
@@ -537,6 +613,55 @@ const Game = (function () {
     return k;
   }
 
+  /* ---- export access & trade capacity (from the baked trade/transport data) ---- */
+  /** Does this Area carry a port, or a Canada/Mexico border gateway? */
+  function areaExport(fips) {
+    const members = county[cid(fips)]?.counties || [cid(fips)];
+    const t = tradeData, x = transportData;
+    return {
+      port: !!(t && t.counties && members.some((m) => t.counties[m] && t.counties[m].has_port)),
+      canada: !!(x && x.external && members.some((m) => x.external.Canada.includes(m))),
+      mexico: !!(x && x.external && members.some((m) => x.external.Mexico.includes(m))),
+      railHub: !!(x && x.counties && members.some((m) => x.counties[m] && x.counties[m].rail_hub)),
+    };
+  }
+
+  /** Ports, land gateways and rail hubs a nation holds. */
+  function exportAccess(nid) {
+    const n = nations.get(nid);
+    const acc = { ports: 0, canada: 0, mexico: 0, railHubs: 0, gateways: 0, any: false };
+    if (!n) return acc;
+    for (const aid of n.counties) {
+      const e = areaExport(aid);
+      if (e.port) acc.ports++;
+      if (e.canada) acc.canada++;
+      if (e.mexico) acc.mexico++;
+      if (e.railHub) acc.railHubs++;
+    }
+    acc.gateways = acc.canada + acc.mexico;
+    acc.any = acc.ports + acc.gateways > 0;
+    return acc;
+  }
+
+  /**
+   * How much trade a nation can physically move in a turn, in $M.
+   *
+   * This is the first thing that makes the baked port / rail-hub / border-gateway
+   * data do work. Without a capacity cap the world market absorbs a nation's
+   * ENTIRE surplus in one click, which is what made it dominate bilateral trade
+   * by 1.7x-50x: a bilateral deal is clipped by whatever deficit the neighbour
+   * happens to run, so the external option won on volume no matter what rate it
+   * paid. Cap the volume and the rate becomes the thing that decides.
+   */
+  function tradeCapacity(nid) {
+    const acc = exportAccess(nid);
+    const total = T('trade.capacityBase')
+      + acc.ports * T('trade.capacityPerPort')
+      + acc.railHubs * T('trade.capacityPerRailHub')
+      + acc.gateways * T('trade.capacityPerGateway');
+    return { ...acc, total };
+  }
+
   /* ---- treasury: income (from GDP) minus maintenance, ticked once per world turn ---- */
   function treasuryFlow(nid) {
     const n = nations.get(nid);
@@ -569,6 +694,23 @@ const Game = (function () {
     addGdpProportionally(n, amount);
     emit({ values: true });
   }
+  /**
+   * Credit the treasury. The counterpart of spend().
+   *
+   * Trade income used to be added to GDP via boostGdp, which minted GDP out of
+   * nothing for both sides every turn — the goods had already been counted when
+   * they were produced — while the treasury, which every action now draws on,
+   * received nothing at all. Eleven of the fifty-one nations ran a permanent
+   * structural deficit from turn 1 with no recovery path.
+   */
+  function earn(nid, amount) {
+    const n = nations.get(nid);
+    if (!n || !amount) return false;
+    n.treasury += amount;
+    emit({ values: true });
+    return true;
+  }
+
   // spendable balance: actions draw from the treasury via this
   function spend(nid, amount) {
     const n = nations.get(nid);
@@ -601,6 +743,7 @@ const Game = (function () {
       founded: n.founded, homeSt: n.homeSt,
       // -Infinity does not survive JSON; null means "has never annexed".
       lastAnnexTurn: Number.isFinite(n.lastAnnexTurn) ? n.lastAnnexTurn : null,
+      tradeCooldown: { ...n.tradeCooldown },
       counties: [...n.counties],
     });
     return { seq, originalNationCount, counties, nations: nats };
@@ -628,6 +771,7 @@ const Game = (function () {
         founded: n.founded || 0,
         homeSt: n.homeSt || modalState(live),
         lastAnnexTurn: n.lastAnnexTurn == null ? -Infinity : n.lastAnnexTurn,
+        tradeCooldown: { ...(n.tradeCooldown || {}) },
         counties: new Set(live),
       });
       for (const f of live) owner.set(f, n.id);
@@ -659,6 +803,10 @@ const Game = (function () {
     tickTreasuries,
     occupiedCount,
     rulingBloc,
+    earn,
+    areaExport,
+    exportAccess,
+    tradeCapacity,
     originalNations: () => originalNationCount,
     spend,
     boostGdp,
@@ -673,6 +821,8 @@ const Game = (function () {
     leanOf,
     countyNeighbors,
     adjacentNations,
+    borderingNations,
+    maritimeNations,
     annexTargets,
     components,
     largestCounty,

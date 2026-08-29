@@ -212,3 +212,35 @@ structure the designer chose is exactly preserved.
 construction, so that line would have printed `$0` for every nation forever. It now shows the sum of
 the nation's *positive* surpluses valued at market prices — which is what the trade screens actually
 move, and therefore a number a player can act on.
+
+### D28 — Trade pays the treasury and nothing else; it does not grow GDP
+**M1.9.** The plan says "route trade income to the treasury, not to GDP". Taken literally that
+leaves trade with no GDP effect at all, which is the coherent reading: the goods were already
+counted in GDP when they were *produced*, so paying GDP for selling them counts the same output
+twice. Selling surplus converts production into money. GDP grows through `phaseEconomicGrowth`,
+which is where growth belongs. This also gives every priced action a funding source, which is what
+the structural-deficit nations lacked.
+
+### D29 — Trade capacity and export access moved from the renderer into `Game`
+**M1.9.** They were app.js helpers reading `store.trade` / `store.transport`, so two quantities that
+*decide what an action can do* were unreachable to anything headless — the first two capacity tests
+failed for that reason alone. `Game.init` now takes the baked trade/transport data and owns
+`areaExport`, `exportAccess` and `tradeCapacity`; app.js keeps one-line aliases. M2.5 folds the data
+into the state document.
+
+### D30 — `adjacentNations` split into land borders and maritime reach
+**M1.9, finding 90.** The state-level adjacency table is not simply wrong — `build_adjacency.py`
+*deliberately* adds sea links (Alaska borders every Pacific and Canada-border state) and the Unite
+prompt documents that rule. The bug is that a state-level table was the only adjacency the game had,
+so it degraded into "any nation owning a county in a state adjacent to a state I own a county in"
+the moment one county changed hands, and California was offered Alaska as an **overland** transit
+route on turn 1. Land pairs are now derived from the real county adjacency; anything in the state
+table that is not a land pair is a maritime link. Transit requires a land border *and* a non-null
+corridor; Unite and bilateral trade keep the sea reach.
+
+### D31 — The transit slider opens below the corridor rate
+**M1.9, finding 38.** It opened *at* the rate, which the transit nation accepted outright in 190 of
+214 adjacent pairs: the player pressed Propose, got a yes, and the most elaborate interaction in the
+game contributed nothing. `trade.openingOfferFactor` (0.6) makes the default a lowball, so the
+slider is a decision. Verified live: South Dakota opens at 11% against an 18% rail corridor and
+Minnesota counters at 19%.

@@ -185,24 +185,106 @@ const Actions = (function () {
   /* ================================================================= */
   /* TRADE                                                             */
   /* ================================================================= */
-  // All trade constants live in TUNE (js/tunables.js). Read at call time, not at
-  // module load, so a dashboard slider takes effect without a page reload.
+  /*
+   * Trade sells SURPLUS PRODUCTION for MONEY.
+   *
+   * It used to call Game.boostGdp on both sides — minting GDP out of nothing,
+   * every turn, with no cost, no cooldown, no capacity and no depletion. The
+   * goods had already been counted in GDP when they were produced, so the deal
+   * created output twice; meanwhile the treasury, which every priced action now
+   * draws on, received nothing at all, and eleven of the fifty-one nations ran a
+   * permanent structural deficit from turn 1 with no recovery path.
+   *
+   * Three things make it a decision rather than a free click:
+   *   CAPACITY  — you can only move what your ports, rail hubs and border
+   *               gateways can physically carry. The baked transport/trade data
+   *               finally does something.
+   *   COOLDOWN  — the same partner cannot be squeezed every single turn.
+   *   PRICING   — the world market pays a FRACTION of the bilateral rate. It used
+   *               to be the better click for 41 of 51 nations by 1.7x-50x,
+   *               because it absorbs your whole surplus while a bilateral deal is
+   *               clipped by whatever deficit the neighbour happens to run. The
+   *               capacity cap removes that volume advantage and the penalty
+   *               inverts the margin, so the world market is the low-margin
+   *               fallback and a well-matched neighbour is the skilled play.
+   */
   const TRADE_GAIN = () => TUNE.get('trade.gain');
-  // transit routing: a landlocked nation reaches the market through a neighbor
+  // transit routing: a landlocked nation reaches the market through a neighbour
   // that has export access; the transit nation takes a toll, discounted by the
   // corridor it controls (rail beats highway).
   const TRANSIT_TOLL = () => TUNE.get('trade.transitToll');
   const linkDiscount = (link) =>
     (link === 'rail' ? TUNE.get('trade.railDiscount')
       : link === 'highway' ? TUNE.get('trade.highwayDiscount') : 0);
-  const linkLabel = (link) => (link === 'rail' ? '🚂 rail corridor' : link === 'highway' ? '🛣 highway' : '🚚 overland');
+  const linkLabel = (link) => (link === 'rail' ? '\u{1F682} rail corridor' : link === 'highway' ? '\u{1F6E3} highway' : '\u{1F69A} overland');
+
+  // Export access and trade capacity are model quantities; Game owns the baked
+  // trade/transport data they read.
+  const nationTradeCapacityFor = (nid) => Game.tradeCapacity(nid).total;
+  const hasExportAccess = (nid) => Game.exportAccess(nid).any;
+
+  /** Turns until `nid` may deal with `key` again ('world', 'Canada', or a nation id). */
+  function tradeCooldownLeft(nid, key) {
+    const n = Game.getNation(nid);
+    if (!n || !n.tradeCooldown) return 0;
+    const last = n.tradeCooldown[key];
+    if (last == null) return 0;
+    return Math.max(0, TUNE.get('trade.cooldownTurns') - (World.getTurn() - last));
+  }
+  function markTraded(nid, key) {
+    const n = Game.getNation(nid);
+    if (n) (n.tradeCooldown || (n.tradeCooldown = {}))[key] = World.getTurn();
+  }
+
+  /** A nation's positive surplus by sector, valued at market prices ($M). */
+  function exportFlows(nid) {
+    const ms = Market.nationSurplus(nid, TUNE);
+    const prices = Market.getPrices();
+    const e = MapModes.getEconomy();
+    if (!ms || !prices || !e) return [];
+    return e.sectors
+      .map((s, i) => ({ i, s, vol: Math.max(0, ms.surplus[i]) }))
+      .filter((f) => f.vol > 1)
+      .map((f) => ({ ...f, value: f.vol * (prices[f.i] / 100) }));
+  }
+
+  /**
+   * Scale a set of flows down to fit a capacity, preserving their shape.
+   * Returns {flows, total, capped, uncappedTotal}.
+   */
+  function applyCapacity(flows, capacity) {
+    const uncappedTotal = flows.reduce((s, f) => s + f.value, 0);
+    if (uncappedTotal <= capacity || uncappedTotal <= 0) {
+      return { flows, total: uncappedTotal, capped: false, uncappedTotal };
+    }
+    const k = capacity / uncappedTotal;
+    return {
+      flows: flows.map((f) => ({ ...f, vol: f.vol * k, value: f.value * k })),
+      total: capacity,
+      capped: true,
+      uncappedTotal,
+    };
+  }
+
+  /** A short line describing the capacity that limited a deal. */
+  function capacityNote(nid, res, viaName) {
+    const cap = nationTradeCapacity(nid);
+    const who = viaName ? `${escapeHtml(viaName)}'s` : 'Your';
+    const detail = `${who} ports, rail hubs and border gateways can move ${fmtGdp(cap.total * 1e6)} a turn` +
+      ` (${cap.ports} ${plural(cap.ports, 'port', 'ports')}, ${cap.railHubs} rail ` +
+      `${plural(cap.railHubs, 'hub', 'hubs')}, ${cap.gateways} ${plural(cap.gateways, 'gateway', 'gateways')}).`;
+    return res.capped
+      ? `<div class="warn-box">\u{1F6A2} Capped at <strong>${fmtGdp(res.total * 1e6)}</strong> of ` +
+        `${fmtGdp(res.uncappedTotal * 1e6)} available. ${detail}</div>`
+      : `<div class="geo-row"><span>${detail}</span></div>`;
+  }
 
   function startTrade(nid) {
     const eligible = new Set(Game.adjacentNations(nid));
     A = { type: 'trade', nid, eligible, pending: null };
     if (eligible.size === 0) {
       A = null;
-      flash('No neighboring nations to trade with.', 'warn');
+      flash('No neighbouring nations to trade with.', 'warn');
       return select('nation', nid);
     }
     const keep = new Set();
@@ -223,7 +305,7 @@ const Actions = (function () {
 
   // surplus resources one side sells to the other, valued at market price
   function tradeFlows(S, T) {
-    const ms = Market.nationSurplus(S), ts = Market.nationSurplus(T);
+    const ms = Market.nationSurplus(S, TUNE), ts = Market.nationSurplus(T, TUNE);
     const prices = Market.getPrices();
     const e = MapModes.getEconomy();
     if (!ms || !ts || !prices) return [];
@@ -231,7 +313,7 @@ const Actions = (function () {
     e.sectors.forEach((s, i) => {
       const sell = Math.min(Math.max(0, ms.surplus[i]), Math.max(0, -ts.surplus[i])); // us -> them
       const buy = Math.min(Math.max(0, ts.surplus[i]), Math.max(0, -ms.surplus[i])); // them -> us
-      if (sell + buy > 1) flows.push({ i, s, sell, buy, value: (sell + buy) * (prices[i] / 100) });
+      if (sell + buy > 1) flows.push({ i, s, sell, buy, vol: sell + buy, value: (sell + buy) * (prices[i] / 100) });
     });
     return flows;
   }
@@ -239,41 +321,66 @@ const Actions = (function () {
   function renderTradePrompt() {
     const n = Game.getNation(A.nid);
     const acc = nationExportAccess(A.nid);
+    const cap = nationTradeCapacity(A.nid);
+    const penalty = TUNE.get('trade.worldMarketPenalty');
+    const cd = (key) => tradeCooldownLeft(A.nid, key);
+    const extBtn = (id, key, label, enabled, why) => {
+      const left = cd(key);
+      const off = !enabled || left > 0;
+      const title = left > 0 ? `Recently traded — ${left} more world ${plural(left, 'turn', 'turns')}` : why;
+      return `<button class="btn ghost" id="${id}" ${off ? `disabled title="${title}"` : ''}>${label}${left > 0 ? ` <span class="act-note">${left}</span>` : ''}</button>`;
+    };
     const ext = `
       <div class="label" style="margin-top:10px">External partners &middot; via export points</div>
       <div class="btn-row">
-        <button class="btn ghost" id="a-canada" ${acc.canada ? '' : 'disabled title="Needs a Canada border gateway"'}>🇨🇦 Canada</button>
-        <button class="btn ghost" id="a-mexico" ${acc.mexico ? '' : 'disabled title="Needs a Mexico border gateway"'}>🇲🇽 Mexico</button>
-        <button class="btn ghost" id="a-world" ${acc.any ? '' : 'disabled title="Needs a port or border gateway"'}>🌐 World market</button>
+        ${extBtn('a-canada', 'Canada', '\u{1F1E8}\u{1F1E6} Canada', acc.canada, 'Needs a Canada border gateway')}
+        ${extBtn('a-mexico', 'Mexico', '\u{1F1F2}\u{1F1FD} Mexico', acc.mexico, 'Needs a Mexico border gateway')}
+        ${extBtn('a-world', 'world', '\u{1F310} World market', acc.any, 'Needs a port or border gateway')}
       </div>
-      ${acc.any ? '' : '<div class="warn-box">⛔ Landlocked — no port or Canada/Mexico gateway. Route through a neighbor below.</div>'}`;
-    // transit routes: neighbors that DO have export access can carry our goods
-    const routes = Game.adjacentNations(A.nid)
+      <div class="geo-row"><span>External sales pay <strong>${Math.round(penalty * 100)}%</strong> of the bilateral rate &mdash; volume without margin.</span></div>
+      <div class="geo-row"><span>Export capacity</span><strong>${fmtGdp(cap.total * 1e6)} / turn</strong></div>
+      ${acc.any ? '' : '<div class="warn-box">⛔ Landlocked &mdash; no port or Canada/Mexico gateway. Route through a neighbour below.</div>'}`;
+
+    /*
+     * Transit needs a REAL shared border and a REAL corridor.
+     *
+     * The route list came from state-level adjacency, which build_adjacency.py
+     * deliberately extends across water (Alaska borders every Pacific state), so
+     * California was offered Alaska and Hawaii as "overland" routes on turn 1 —
+     * and `transitLink` returning null was rendered as "overland" at the full
+     * 35% toll rather than as "no route".
+     */
+    const routes = Game.borderingNations(A.nid)
       .filter((t) => nationExportAccess(t).any)
-      .map((t) => ({ t, link: transitLink(A.nid, t) }));
+      .map((t) => ({ t, link: transitLink(A.nid, t) }))
+      .filter((r) => r.link !== null);
     const transitHtml = routes.length ? `
-      <div class="label" style="margin-top:12px">Transit routes &middot; reach the market via a neighbor</div>
-      ${routes.map((r) => `<button class="btn ghost transit-btn" data-t="${r.t}">
+      <div class="label" style="margin-top:12px">Transit routes &middot; reach the market through a neighbour</div>
+      ${routes.map((r) => `<button class="btn ghost transit-btn" data-t="${r.t}" ${tradeCooldownLeft(A.nid, r.t) ? 'disabled' : ''}>
           <span>${escapeHtml(Game.getNation(r.t).name)}</span>
           <span class="transit-meta">${linkLabel(r.link)} &middot; toll ${Math.round(TRANSIT_TOLL() * (1 - linkDiscount(r.link)) * 100)}%</span>
         </button>`).join('')}` : '';
+
     setPanel(`
-      ${actionHead('🚛 Trade with nation', n)}
-      <p class="hint-block">Click a <strong>highlighted neighboring nation</strong> to preview a trade deal:
-      each side sells its <strong>surplus resources</strong> to the other at market price, boosting both GDPs.</p>
+      ${actionHead('\u{1F69B} Trade with nation', n)}
+      <p class="hint-block">Click a <strong>highlighted neighbouring nation</strong> to preview a trade deal:
+      each side sells its <strong>surplus resources</strong> to the other at market price. Income goes to the
+      <strong>treasury</strong>, not to GDP &mdash; the goods were already counted when they were made.</p>
       ${ext}
       ${transitHtml}
       <div class="btn-row"><button class="btn ghost" id="a-cancel">Cancel</button></div>
     `);
     document.getElementById('a-cancel').onclick = cancel;
-    const wire = (id, label) => {
+    const wire = (id, key, label) => {
       const b = document.getElementById(id);
-      if (b && !b.hasAttribute('disabled')) b.onclick = () => renderExternalPreview(label);
+      if (b && !b.hasAttribute('disabled')) b.onclick = () => renderExternalPreview(key, label);
     };
-    wire('a-canada', 'Canada');
-    wire('a-mexico', 'Mexico');
-    wire('a-world', 'the world market');
-    document.querySelectorAll('.transit-btn').forEach((b) => (b.onclick = () => renderTransitPreview(b.dataset.t)));
+    wire('a-canada', 'Canada', 'Canada');
+    wire('a-mexico', 'Mexico', 'Mexico');
+    wire('a-world', 'world', 'the world market');
+    document.querySelectorAll('.transit-btn').forEach((b) => {
+      if (!b.hasAttribute('disabled')) b.onclick = () => renderTransitPreview(b.dataset.t);
+    });
   }
 
   // how the transit nation T judges a proposed toll p (its cut, higher = better
@@ -282,9 +389,23 @@ const Actions = (function () {
     const dS = Game.nationDemographics(S), dT = Game.nationDemographics(T);
     const relSize = dT.gdp / (dS.gdp + dT.gdp);        // T's share of the pair's GDP
     const sizeMult = 0.75 + 0.5 * relSize;             // bigger T holds out for more
-    const rel = Math.max(-1, Math.min(1, 1 - Math.abs((dS.dem || 0) - (dT.dem || 0)) / 25)); // political alignment
+    /*
+     * Political alignment over the FULL party vector. It compared only the
+     * Democratic share, so two nations agreed insofar as their dem percentages
+     * matched — gop, Other and every emergent movement ignored. Once a
+     * 30%-separatist nation exists its dem share compresses to ~30 and it reads
+     * as "relations are warm" with a mainstream nation that happens to be at 30
+     * while the two have nothing in common. Parties.setup already runs at init,
+     * so this is misreading at turn 0, not eventually.
+     */
+    const sS = CivilWar.shares(dS), sT = CivilWar.shares(dT);
+    let dist = 0;
+    for (const k of new Set([...Object.keys(sS), ...Object.keys(sT)])) {
+      dist += Math.abs((sS[k] || 0) - (sT[k] || 0));
+    }
+    const rel = Math.max(-1, Math.min(1, 1 - dist / TUNE.get('trade.alignmentScale')));
     const relMult = 1 - 0.2 * rel;                     // warm relations -> asks less
-    const incomeToT = total * TRADE_GAIN() * base;       // ballpark toll income ($M)
+    const incomeToT = total * TRADE_GAIN() * base;     // ballpark toll income ($M)
     const need = Math.max(0, Math.min(1, (incomeToT / (dT.gdp / 1e6)) * TUNE.get('trade.needScale')));
     const needMult = 1 - 0.25 * need;                  // the needier, the more it settles
     const ask = Math.max(0.05, Math.min(0.6, base * sizeMult * relMult * needMult));
@@ -307,32 +428,31 @@ const Actions = (function () {
     const tName = Game.getNation(T).name;
     const link = transitLink(S, T);
     const base = TRANSIT_TOLL() * (1 - linkDiscount(link)); // the "fair" corridor rate
-    const ms = Market.nationSurplus(S);
-    const prices = Market.getPrices();
-    const e = MapModes.getEconomy();
-    const flows = e.sectors
-      .map((s, i) => ({ i, s, vol: Math.max(0, ms.surplus[i]) }))
-      .filter((f) => f.vol > 1)
-      .map((f) => ({ ...f, value: f.vol * (prices[f.i] / 100) }));
-    const total = flows.reduce((s, f) => s + f.value, 0);
-    const benefit = total * TRADE_GAIN();
-    const start = Math.round(base * 100);
-    const rows = flows.sort((a, b) => b.value - a.value)
+    // Your goods leave through THEIR export points, so THEIR capacity is the limit.
+    const res = applyCapacity(exportFlows(S), nationTradeCapacity(T).total);
+    const flows = res.flows;
+    const total = res.total;
+    const benefit = total * TRADE_GAIN() * TUNE.get('trade.worldMarketPenalty');
+    // Open below the corridor rate so the default is a lowball rather than an
+    // offer they accept 89% of the time without the player deciding anything.
+    const start = Math.max(5, Math.round(base * TUNE.get('trade.openingOfferFactor') * 100));
+    const rows = flows.slice().sort((a, b) => b.value - a.value)
       .map((f) => `<div class="geo-row"><span><i class="econ-dot" style="background:${MapModes.ECON_COLORS[f.i]}"></i>${f.s} &rarr; export</span>
         <strong>${fmtGdp(f.value * 1e6)}</strong></div>`)
       .join('');
     setPanel(`
-      ${actionHead('🚛 Trade — negotiate transit', Game.getNation(S))}
+      ${actionHead('\u{1F69B} Trade — negotiate transit', Game.getNation(S))}
       <p class="hint-block">Propose a toll to <strong>${escapeHtml(tName)}</strong> for carrying your exports to market
       (${linkLabel(link)}). They weigh your offer against their size, need and relations.</p>
       ${flows.length ? rows : '<div class="warn-box">No surpluses to export.</div>'}
+      ${capacityNote(S, res, tName)}
       <div class="stat"><div class="label">Exported value</div><div class="value">${fmtGdp(total * 1e6)}</div></div>
       <div class="slider-row">
         <div class="label">Your toll offer to ${escapeHtml(tName)}: <strong id="toll-val">${start}%</strong></div>
         <input type="range" id="toll-slider" min="5" max="60" value="${start}" ${flows.length ? '' : 'disabled'} />
       </div>
-      <div class="stat"><div class="label">Transit toll to ${escapeHtml(tName)}</div><div class="value deficit" id="toll-cut">&minus;${fmtGdp(benefit * base * 1e6)}</div></div>
-      <div class="stat"><div class="label">Your net GDP boost</div><div class="value surplus" id="toll-net">+${fmtGdp(benefit * (1 - base) * 1e6)}</div></div>
+      <div class="stat"><div class="label">Transit toll to ${escapeHtml(tName)}</div><div class="value deficit" id="toll-cut">${fmtGdp(-benefit * base * 1e6)}</div></div>
+      <div class="stat"><div class="label">Your net treasury income</div><div class="value surplus" id="toll-net">+${fmtGdp(benefit * (1 - base) * 1e6)}</div></div>
       <div id="deal-response"></div>
       <div class="btn-row">
         <button class="btn ghost" id="a-back">Back</button>
@@ -343,7 +463,7 @@ const Actions = (function () {
     const refresh = () => {
       const p = +slider.value / 100;
       document.getElementById('toll-val').textContent = slider.value + '%';
-      document.getElementById('toll-cut').innerHTML = '&minus;' + fmtGdp(benefit * p * 1e6);
+      document.getElementById('toll-cut').innerHTML = fmtGdp(-benefit * p * 1e6);
       document.getElementById('toll-net').innerHTML = '+' + fmtGdp(benefit * (1 - p) * 1e6);
       document.getElementById('deal-response').innerHTML = ''; // stale verdict on change
     };
@@ -359,11 +479,13 @@ const Actions = (function () {
         const net = benefit * (1 - toll), cut = benefit * toll;
         A = null; clearVisuals();
         Game.batch(() => {
-          Game.boostGdp(S, net * 1e6);
-          Game.boostGdp(T, cut * 1e6);
+          Game.earn(S, net * 1e6);
+          Game.earn(T, cut * 1e6);
+          markTraded(S, T);
+          markTraded(S, 'world');
         });
         Market.update(TUNE);
-        flash(`🚂 <strong>${escapeHtml(Game.getNation(S).name)}</strong> reached the market via <strong>${escapeHtml(tName)}</strong> at ${Math.round(toll * 100)}% toll — net +${fmtGdp(net * 1e6)}.`, 'good');
+        flash(`\u{1F682} <strong>${escapeHtml(Game.getNation(S).name)}</strong> reached the market via <strong>${escapeHtml(tName)}</strong> at ${Math.round(toll * 100)}% toll &mdash; treasury +${fmtGdp(net * 1e6)}.`, 'good');
         completeTurn();
       };
       if (p >= v.ask - 0.005) {
@@ -381,27 +503,27 @@ const Actions = (function () {
     };
   }
 
-  // external deal: sell ALL surpluses to Canada/Mexico/world at market price
-  function renderExternalPreview(partner) {
-    const ms = Market.nationSurplus(A.nid);
-    const prices = Market.getPrices();
-    const e = MapModes.getEconomy();
-    const flows = e.sectors
-      .map((s, i) => ({ i, s, vol: Math.max(0, ms.surplus[i]) }))
-      .filter((f) => f.vol > 1)
-      .map((f) => ({ ...f, value: f.vol * (prices[f.i] / 100) }));
-    const total = flows.reduce((s, f) => s + f.value, 0);
-    const gain = total * TRADE_GAIN();
-    const rows = flows.sort((a, b) => b.value - a.value)
+  // external deal: sell surplus to Canada/Mexico/the world, capped by capacity
+  // and paid at a FRACTION of the bilateral rate
+  function renderExternalPreview(key, partner) {
+    const S = A.nid;
+    const res = applyCapacity(exportFlows(S), nationTradeCapacity(S).total);
+    const flows = res.flows, total = res.total;
+    const penalty = TUNE.get('trade.worldMarketPenalty');
+    const gain = total * TRADE_GAIN() * penalty;
+    const rows = flows.slice().sort((a, b) => b.value - a.value)
       .map((f) => `<div class="geo-row"><span><i class="econ-dot" style="background:${MapModes.ECON_COLORS[f.i]}"></i>${f.s} &rarr; export</span>
         <strong>${fmtGdp(f.value * 1e6)}</strong></div>`)
       .join('');
     setPanel(`
-      ${actionHead('🚛 Trade — export preview', Game.getNation(A.nid))}
-      <p class="hint-block">Selling every surplus to <strong>${escapeHtml(partner)}</strong> at market prices through your export points.</p>
+      ${actionHead('\u{1F69B} Trade — export preview', Game.getNation(S))}
+      <p class="hint-block">Selling surplus to <strong>${escapeHtml(partner)}</strong> at market prices through your
+      export points. An untargeted sale pays <strong>${Math.round(penalty * 100)}%</strong> of what a matched
+      neighbour deal pays.</p>
       ${flows.length ? rows : '<div class="warn-box">No surpluses to export.</div>'}
+      ${capacityNote(S, res)}
       <div class="stat"><div class="label">Exported value</div><div class="value">${fmtGdp(total * 1e6)}</div></div>
-      <div class="stat"><div class="label">Your GDP boost</div><div class="value">+${fmtGdp(gain * 1e6)}</div></div>
+      <div class="stat"><div class="label">Your treasury income</div><div class="value surplus">+${fmtGdp(gain * 1e6)}</div></div>
       <div class="btn-row">
         <button class="btn ghost" id="a-back">Back</button>
         <button class="btn go" id="a-go" ${flows.length ? '' : 'disabled'}>Sign export deal</button>
@@ -410,40 +532,50 @@ const Actions = (function () {
     document.getElementById('a-back').onclick = renderTradePrompt;
     document.getElementById('a-go').onclick = () => {
       if (!flows.length) return;
-      const S = A.nid, Sname = Game.getNation(S).name;
+      const Sname = Game.getNation(S).name;
       A = null;
       clearVisuals();
-      Game.boostGdp(S, gain * 1e6);
+      Game.batch(() => {
+        Game.earn(S, gain * 1e6);
+        markTraded(S, key);
+        markTraded(S, 'world');
+      });
       Market.update(TUNE);
-      flash(`🌐 <strong>${escapeHtml(Sname)}</strong> exported ${fmtGdp(total * 1e6)} to ${escapeHtml(partner)} — GDP +${fmtGdp(gain * 1e6)}.`, 'good');
+      flash(`\u{1F310} <strong>${escapeHtml(Sname)}</strong> exported ${fmtGdp(total * 1e6)} to ${escapeHtml(partner)} &mdash; treasury +${fmtGdp(gain * 1e6)}.`, 'good');
       completeTurn();
     };
   }
 
   function renderTradePreview(tid) {
+    const S = A.nid;
     const tName = Game.getNation(tid).name;
-    const flows = tradeFlows(A.nid, tid);
-    const total = flows.reduce((s, f) => s + f.value, 0);
-    const gain = total * TRADE_GAIN();
-    const rows = flows
+    // Both sides must be able to physically move the goods.
+    const limit = Math.min(nationTradeCapacity(S).total, nationTradeCapacity(tid).total);
+    const res = applyCapacity(tradeFlows(S, tid), limit);
+    const flows = res.flows, total = res.total;
+    const gain = total * TRADE_GAIN(); // FULL rate: a matched deal is the good one
+    const cd = tradeCooldownLeft(S, tid);
+    const rows = flows.slice()
       .sort((a, b) => b.value - a.value)
       .map((f) => `<div class="geo-row"><span><i class="econ-dot" style="background:${MapModes.ECON_COLORS[f.i]}"></i>${f.s}
           ${f.sell > f.buy ? '&rarr; them' : '&larr; us'}</span><strong>${fmtGdp(f.value * 1e6)}</strong></div>`)
       .join('');
     setPanel(`
-      ${actionHead('🚛 Trade — preview', Game.getNation(A.nid))}
+      ${actionHead('\u{1F69B} Trade — preview', Game.getNation(S))}
       <p class="hint-block">Deal with <strong>${escapeHtml(tName)}</strong>: surpluses flow to whoever runs the
-      matching deficit, valued at current market prices.</p>
-      ${flows.length ? rows : '<div class="warn-box">No matching surplus/deficit pairs — nothing to trade.</div>'}
+      matching deficit, valued at current market prices. A matched deal pays the full rate to both sides.</p>
+      ${flows.length ? rows : '<div class="warn-box">No matching surplus/deficit pairs &mdash; nothing to trade.</div>'}
+      ${flows.length ? capacityNote(S, res) : ''}
       <div class="stat"><div class="label">Traded value</div><div class="value">${fmtGdp(total * 1e6)}</div></div>
-      <div class="stat"><div class="label">GDP boost (each side)</div><div class="value">+${fmtGdp(gain * 1e6)}</div></div>
+      <div class="stat"><div class="label">Treasury income (each side)</div><div class="value surplus">+${fmtGdp(gain * 1e6)}</div></div>
+      ${cd ? `<div class="warn-box">⏳ You dealt with ${escapeHtml(tName)} recently &mdash; ${cd} more world ${plural(cd, 'turn', 'turns')}.</div>` : ''}
       <div class="btn-row">
         <button class="btn ghost" id="a-back">Back</button>
-        <button class="btn go" id="a-go" ${flows.length ? '' : 'disabled'}>Sign trade deal</button>
+        <button class="btn go" id="a-go" ${flows.length && !cd ? '' : 'disabled'}>Sign trade deal</button>
       </div>
     `);
     document.getElementById('a-back').onclick = () => { A.pending = null; setSelectOutline(nationOutline(A.nid)); renderTradePrompt(); };
-    document.getElementById('a-go').onclick = () => flows.length && confirmTrade(tid, gain);
+    document.getElementById('a-go').onclick = () => flows.length && !cd && confirmTrade(tid, gain);
   }
 
   function confirmTrade(tid, gain) {
@@ -452,14 +584,15 @@ const Actions = (function () {
     A = null;
     clearVisuals();
     Game.batch(() => {
-      Game.boostGdp(S, gain * 1e6);
-      Game.boostGdp(tid, gain * 1e6);
+      Game.earn(S, gain * 1e6);
+      Game.earn(tid, gain * 1e6);
+      markTraded(S, tid);
+      markTraded(tid, S);
     });
     Market.update(TUNE); // traded supply moves the prices
-    flash(`🚛 <strong>${escapeHtml(Sname)}</strong> and <strong>${escapeHtml(Tname)}</strong> signed a trade deal — both GDPs +${fmtGdp(gain * 1e6)}.`, 'good');
+    flash(`\u{1F69B} <strong>${escapeHtml(Sname)}</strong> and <strong>${escapeHtml(Tname)}</strong> signed a trade deal &mdash; both treasuries +${fmtGdp(gain * 1e6)}.`, 'good');
     completeTurn();
   }
-
   /* ================================================================= */
   /* ANNEX                                                             */
   /* ================================================================= */
@@ -780,5 +913,9 @@ const Actions = (function () {
   const deltaPop = (n) => (n ? `+${fmtPop(n)}` : '');
   const deltaGdp = (n) => (n ? `+${fmtGdp(n)}` : '');
 
-  return { isActive, start, onHover, onClick, cancel, annexCooldownLeft, annexCost };
+  return {
+    isActive, start, onHover, onClick, cancel,
+    annexCooldownLeft, annexCost,
+    tradeCooldownLeft, nationTradeCapacityFor, hasExportAccess, exportFlows, applyCapacity,
+  };
 })();

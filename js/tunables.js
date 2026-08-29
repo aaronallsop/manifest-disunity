@@ -209,6 +209,16 @@ export const SCHEMA = {
     label: 'Counter-offer floor',
     doc: 'Offers below this fraction of the transit nation\'s ask are declined outright.',
   },
+  'trade.alignmentScale': {
+    v: 60, min: 5, max: 400, step: 5, group: 'Trade',
+    label: 'Political alignment scale',
+    doc: 'Total absolute difference across every party share (0..200) at which two nations read as completely unaligned. The old term compared ONLY the Democratic share, so gop, Other and every emergent movement were invisible and a 30%-separatist nation read as warm toward any mainstream nation that happened to sit at 30% Democratic.',
+  },
+  'trade.openingOfferFactor': {
+    v: 0.6, min: 0.1, max: 1.5, step: 0.05, group: 'Trade',
+    label: 'Transit: opening offer',
+    doc: 'The toll slider opens at this fraction of the corridor rate. It opened AT the corridor rate, which the transit nation accepted outright in 190 of 214 adjacent pairs - the player pressed Propose, got a yes, and the negotiation contributed nothing. A lowball default makes the slider a decision.',
+  },
 
   /* ---------------- civil war ---------------- */
   'war.triggerSizeRatio': {

@@ -82,7 +82,7 @@ async function init() {
     store.trade = trade;         // offline-baked trade attributes (county_trade.json)
     store.transport = transport; // rail / interstates / Canada-Mexico gateways (transport.json)
     Colors.assign(Object.keys(data.states));
-    Game.init(data, adjacency, areas);
+    Game.init(data, adjacency, areas, { trade, transport });
     const emerged = Parties.setup(partyDefs, store.rng); // setup-only regional party spawns
     MapModes.init(data);
     if (geoMode && geoMode.type === 'ns-mapmode') MapModes.setRegion(geoMode); // published in the editor
@@ -826,31 +826,19 @@ function renderExportAccess(nid) {
   const line = acc.any
     ? `&#127758; International market access: ${bits.join(' &middot; ')}`
     : '&#9940; Landlocked &mdash; no export points (no port or border gateway)';
+  const cap = nationTradeCapacity(nid);
   return `<div class="stat"><div class="label">Export access</div>
-    <div class="trade-chips"><span class="chip">${line}</span></div></div>`;
+    <div class="trade-chips"><span class="chip">${line}</span></div>
+    <div class="geo-row"><span>Trade capacity &middot; ${cap.ports} ports, ${cap.railHubs} rail hubs, ${cap.gateways} gateways</span>
+      <strong>${fmtGdp(cap.total * 1e6)} / turn</strong></div></div>`;
 }
 
-/* export points: an Area with a port, or a Canada/Mexico border gateway */
-function areaExport(fips) {
-  const members = Game.areaCounties(fips);
-  const t = store.trade, x = store.transport;
-  return {
-    port: !!(t && t.counties && members.some((m) => t.counties[m]?.has_port)),
-    canada: !!(x && members.some((m) => x.external.Canada.includes(m))),
-    mexico: !!(x && members.some((m) => x.external.Mexico.includes(m))),
-  };
-}
-function nationExportAccess(nid) {
-  const acc = { ports: 0, canada: 0, mexico: 0 };
-  for (const aid of Game.getNation(nid).counties) {
-    const e = areaExport(aid);
-    if (e.port) acc.ports++;
-    if (e.canada) acc.canada++;
-    if (e.mexico) acc.mexico++;
-  }
-  acc.any = acc.ports + acc.canada + acc.mexico > 0;
-  return acc;
-}
+/* Export points and trade capacity are MODEL quantities — they decide what an
+   action can do — so they live in Game, which owns the baked trade/transport
+   data. These are the renderer's shorthand. */
+const areaExport = (fips) => Game.areaExport(fips);
+const nationExportAccess = (nid) => Game.exportAccess(nid);
+const nationTradeCapacity = (nid) => Game.tradeCapacity(nid);
 
 // best transport corridor across the border between two nations: rail > highway
 function transitLink(fromNid, throughNid) {
