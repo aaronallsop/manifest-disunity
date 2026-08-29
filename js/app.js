@@ -746,24 +746,26 @@ function renderTreasury(nid) {
 function renderNationEconomy(nid) {
   const e = MapModes.getEconomy();
   if (!e) return '';
-  const DEMAND_SHARE = TUNE.get('market.demandShare');
-  const prod = [0, 0, 0, 0, 0, 0];
-  for (const aid of Game.getNation(nid).counties) {
-    const a = e.areas[aid];
-    if (a) a.v.forEach((v, i) => { prod[i] += v; });
-  }
-  const gross = prod.reduce((s, v) => s + v, 0);
+  // Straight from the market's own model, so the panel and the trade screens
+  // cannot disagree about what a nation produces.
+  const ns = Market.nationSurplus(nid, TUNE);
+  if (!ns) return '';
+  const { gross, surplus } = ns;
   if (!gross) return '';
-  const surplus = prod.map((p, i) => p - DEMAND_SHARE[i] * gross);
-  const net = gross - DEMAND_SHARE.reduce((s, d) => s + d, 0) * gross;
+  // Demand shares sum to 1.0, so a nation's surpluses and deficits net to zero
+  // by construction. The meaningful headline is what it has SPARE to sell,
+  // valued at market prices - which is exactly what the trade screens move.
+  const prices = Market.getPrices();
+  const exportable = surplus.reduce(
+    (t, d, i) => t + (d > 0 ? d * (prices ? prices[i] / 100 : 1) : 0), 0);
   const rows = e.sectors
     .map((s, i) => ({ s, i, d: surplus[i] }))
     .sort((x, y) => y.d - x.d)
     .map(({ s, i, d }) => `<div class="geo-row"><span><i class="econ-dot" style="background:${MapModes.ECON_COLORS[i]}"></i>${s}</span>
       <strong class="${d >= 0 ? 'surplus' : 'deficit'}">${d >= 0 ? '+' : '&minus;'}${fmtGdp(Math.abs(d) * 1e6)}</strong></div>`)
     .join('');
-  return `<div class="stat"><div class="label">Economy &middot; GDP after internal consumption</div>
-    <div class="value">${fmtGdp(net * 1e6)}</div>
+  return `<div class="stat"><div class="label">Economy &middot; exportable surplus at market prices</div>
+    <div class="value">${fmtGdp(exportable * 1e6)}</div>
     <div class="label" style="margin-top:8px">Resource surplus / deficit</div>${rows}</div>`;
 }
 

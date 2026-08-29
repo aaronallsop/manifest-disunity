@@ -187,3 +187,28 @@ recomputed at `init` and needs no place in the save.
 fresh `Set` allocations on every query (finding 136). A one-line `Map` cache turns 200 simulated
 turns from unusable into 17 seconds of test suite. M2.4 replaces the cache with the CSR graph behind
 the same signature.
+
+### D25 — M1.8 needed sector-differentiated GDP growth, or the market reports a constant
+**M1.8.** Recalibrating `perCap` kills the ratchet exactly as the plan says — prices stop climbing
+and no longer pin at the 400 clamp. But it leaves the market reporting the *same six numbers
+forever*, because with one uniform growth rate the global sector mix never moves and the price index
+is a pure function of that mix. The finding names this as part of the defect ("relative prices never
+change, because the sector mix is fixed"); fixing only the level would have replaced a market that
+lies with a market that says nothing. `world.sectorGrowth` multiplies the base GDP growth rate by an
+Area's baked sector profile, so IT-heavy Areas compound faster than agricultural ones and the global
+mix genuinely shifts. Measured over 200 turns: Agriculture 108→140, Extraction 166→196, IT 55→46,
+nothing pinned. Prices now move for a modelled structural reason, which is the only thing a price
+index can honestly be about.
+
+### D26 — `demandShare` was normalised, not relabelled
+**M1.8.** The plan offered "make it sum to 1.0 or relabel the index honestly". Normalising is
+strictly better: the index is demand share over supply share, so a sum of 0.80 shifts *every* price
+by 0.80^1.3 for no modelled reason, and "balanced is 75" is a fact about an arithmetic slip rather
+than about the economy. The authored 0.80 mix was divided through by its own sum, so the relative
+structure the designer chose is exactly preserved.
+
+### D27 — The nation panel's "GDP after internal consumption" became "exportable surplus"
+**M1.8.** With demand shares summing to 1.0, a nation's surpluses and deficits net to zero by
+construction, so that line would have printed `$0` for every nation forever. It now shows the sum of
+the nation's *positive* surpluses valued at market prices — which is what the trade screens actually
+move, and therefore a number a player can act on.

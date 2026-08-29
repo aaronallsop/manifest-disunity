@@ -63,6 +63,11 @@ export const SCHEMA = {
     label: 'GDP growth: population coupling',
     doc: 'How much of a county\'s population growth feeds through into its GDP growth.',
   },
+  'world.sectorGrowth': {
+    v: [0.45, 0.65, 0.90, 1.05, 1.25, 1.70], kind: 'array', group: 'World',
+    label: 'GDP growth multiplier by sector',
+    doc: 'Ag, Extraction, Manufacturing, Trade, Finance, IT. Multiplies world.gdpGrowth according to an Area sector mix, so an IT-heavy Area compounds faster than an agricultural one. This is what makes RELATIVE market prices move: with a single uniform growth rate the global sector mix is frozen forever, so every price is a constant and the market reports nothing. Structural change in the economy is the only thing a price index can be about.',
+  },
   'world.partyCeiling': {
     v: 0.35, min: 0, max: 1, step: 0.01, group: 'World',
     label: 'Emergent party ceiling',
@@ -138,9 +143,9 @@ export const SCHEMA = {
     doc: 'Upper clamp on any sector price.',
   },
   'market.demandShare': {
-    v: [0.08, 0.10, 0.22, 0.15, 0.15, 0.10], kind: 'array', group: 'Market',
+    v: [0.10, 0.125, 0.275, 0.1875, 0.1875, 0.125], kind: 'array', group: 'Market',
     label: 'Demand share by sector',
-    doc: 'Ag, Extraction, Manufacturing, Trade, Finance, IT. Sums to 0.80 today, which is why the "100 = balanced" label is wrong (balanced is 75). M1.8 fixes the sum or relabels the index. Lives here, not in the renderer, which is where it used to be (app.js:630) — a live load-order hazard.',
+    doc: 'Ag, Extraction, Manufacturing, Trade, Finance, IT. MUST sum to 1.0: the index is demand share over supply share, so a sum of 0.80 (which is what it was) made every price a factor of 0.80^elasticity too low and the UI "100 = balanced" label wrong by construction - balanced was 75. Normalised from the authored 0.80 mix, so the relative structure is unchanged. Lives here, not in the renderer, which is where it used to be (app.js:630) and read by market.js purely on script order.',
   },
 
   /* ---------------- trade ---------------- */

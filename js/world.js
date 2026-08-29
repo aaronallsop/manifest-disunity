@@ -294,11 +294,33 @@ const World = (function () {
     const tn = T(tune);
     const base = tn.get('world.gdpGrowth');
     const coupling = tn.get('world.gdpGrowthPopCoupling');
+    const sectorMult = tn.get('world.sectorGrowth');
+    const econ = typeof MapModes !== 'undefined' ? MapModes.getEconomy() : null;
+
+    // An Area's growth multiplier from its baked sector mix, memoized per turn.
+    // Without this every Area grows at the same rate, the GLOBAL sector mix is
+    // frozen forever, and every market price is a constant — a price index that
+    // reports nothing is not a fixed market, it is a broken one that no longer
+    // climbs.
+    const mixCache = new Map();
+    function sectorFactor(f) {
+      if (!econ) return 1;
+      let m = mixCache.get(f);
+      if (m !== undefined) return m;
+      const a = econ.areas[f];
+      if (!a) { mixCache.set(f, 1); return 1; }
+      let total = 0, weighted = 0;
+      for (let i = 0; i < a.v.length; i++) { total += a.v[i]; weighted += a.v[i] * (sectorMult[i] ?? 1); }
+      m = total > 0 ? weighted / total : 1;
+      mixCache.set(f, m);
+      return m;
+    }
+
     for (const f in nxt) {
       const s = snap[f], c = nxt[f];
       const before = recPop(s);
       const popRate = before > 0 ? recPop(c) / before - 1 : 0;
-      c.gdp = s.gdp * (1 + base + coupling * popRate);
+      c.gdp = s.gdp * (1 + base * sectorFactor(f) + coupling * popRate);
     }
   }
 

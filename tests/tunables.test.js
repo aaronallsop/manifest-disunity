@@ -151,11 +151,12 @@ describe('TUNE', () => {
     for (const x of d) ok(x >= 0, 'negative demand share');
   });
 
-  /* M1.8 will make this sum 1.0; until then the current 0.80 is recorded so the
-   * change shows up as a deliberate edit rather than a silent drift. */
-  it('demandShare currently sums to 0.80 — M1.8 fixes this', () => {
+  /* The price index is demand share over supply share, so any sum other than
+   * 1.0 shifts every price by sum^elasticity and makes the UI's "100 = balanced"
+   * label wrong by construction. It summed to 0.80 until M1.8; balanced was 75. */
+  it('demandShare sums to exactly 1.0', () => {
     const t = createTune();
     const sum = t.get('market.demandShare').reduce((a, b) => a + b, 0);
-    close(sum, 0.80, 1e-9, 'demandShare sum');
+    close(sum, 1, 1e-9, 'demandShare sum');
   });
 });

@@ -93,16 +93,25 @@ describe('Economic growth', () => {
     ok(after > before, 'GDP shrank on a growth turn');
   });
 
-  it('GDP growth couples to realised population growth', async () => {
+  it('GDP growth couples to realised population growth and to the sector mix', async () => {
     await bootWorld({ seed: SEED });
     const base = T().get('world.gdpGrowth');
     const coupling = T().get('world.gdpGrowthPopCoupling');
     const popRate = T().get('world.popGrowth');
+    const mult = T().get('world.sectorGrowth');
     const f = '06037'; // Los Angeles
+    // the Area's own growth multiplier, from its baked sector profile
+    const a = MapModes.getEconomy().areas[f];
+    let total = 0, weighted = 0;
+    for (let i = 0; i < a.v.length; i++) { total += a.v[i]; weighted += a.v[i] * mult[i]; }
+    const sectorFactor = weighted / total;
+
     const before = Game.countyGdp(f);
     World.advanceTurn(T());
-    close(Game.countyGdp(f) / before - 1, base + coupling * popRate, 1e-6,
-      'GDP growth is not base + coupling x population growth');
+    close(Game.countyGdp(f) / before - 1, base * sectorFactor + coupling * popRate, 1e-6,
+      'GDP growth is not base x sectorFactor + coupling x population growth');
+    ok(Math.abs(sectorFactor - 1) > 0.01,
+      'Los Angeles has a sector-neutral mix; pick a different Area for this test');
   });
 
   it('GDP per capita does not decay monotonically', async () => {
