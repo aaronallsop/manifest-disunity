@@ -102,6 +102,58 @@ const Ledger = (function () {
    * kind — a one-Area defection into a movement's first country matters more
    * than a routine six-Area annexation, and only the magnitude knows that.
    */
+  const WEIGHT = { declare: 100, died: 90, unite: 70, war: 60, found: 55, annex: 40,
+                   govern: 35, release: 30, defect: 25, fragment: 20, trade: 10, power: 5 };
+
+  /**
+   * Rank a set of entries and keep the few most worth a headline.
+   *
+   * Ranked rather than filtered, because "important" is not a property of the
+   * kind — a one-Area defection into a movement's first country matters more
+   * than a routine six-Area annexation, and only the magnitude knows that.
+   */
+  function rank(rows, limit) {
+    /*
+     * A declaration already says a country came into being, so the `found` entry
+     * beside it is the same news twice. It stays in the ledger — the timeline
+     * and the simulator both want the founding as its own fact — and is dropped
+     * only from the headlines, which is a place where saying it twice costs one
+     * of five slots.
+     */
+    const declared = new Set(rows.filter((e) => e.kind === 'declare').map((e) => e.subject));
+    return rows
+      .filter((e) => e.text)
+      .filter((e) => !(e.kind === 'found' && declared.has(e.subject)))
+      .map((e) => ({ e, score: (WEIGHT[e.kind] || 1) * 1000 + Math.abs(e.delta || 0) }))
+      .sort((a, b) => b.score - a.score)
+      .slice(0, limit || 5)
+      .map((x) => x.e);
+  }
+
+  /*
+   * WHAT HAPPENED WHILE YOU WERE AWAY.
+   *
+   * `headlines` answers "what happened during world turn N", which was the right
+   * question while the human took all fifty-one seats and watched every one. From
+   * M6.2 the human acts once per round, and the AI sweep between two of their
+   * turns crosses a world-turn boundary in the middle — so a single-turn query
+   * drops half of every interval, including, on a bad interval, the declaration
+   * of independence in the player's own back yard.
+   *
+   * The interval is marked by ID rather than by turn because the question is
+   * "since I finished my turn", not "since the world ticked", and those are two
+   * different clocks. It also keeps the player's own action out of their own
+   * newspaper: they were told what it did when they did it, and re-reporting it
+   * as the top headline (an annexation outranks almost everything) would spend
+   * the lead slot saying something they already know.
+   */
+  const mark = () => (entries.length ? entries[entries.length - 1].id : 0);
+  const after = (id) => entries.filter((e) => e.id > id);
+
+  /**
+   * The turn-summary newspaper: the few entries from ONE turn most worth a
+   * headline.
+   */
   function headlines(turn, limit) {
     /*
      * No turn given = the most recent turn that HAS anything, which is what
@@ -115,24 +167,7 @@ const Ledger = (function () {
       if (!entries.length) return [];
       turn = entries[entries.length - 1].turn;
     }
-    const weight = { declare: 100, died: 90, unite: 70, war: 60, found: 55, annex: 40,
-                     govern: 35, release: 30, defect: 25, fragment: 20, trade: 10, power: 5 };
-    const rows = forTurn(turn);
-    /*
-     * A declaration already says a country came into being, so the `found` entry
-     * beside it is the same news twice. It stays in the ledger — the timeline
-     * and the simulator both want the founding as its own fact — and is dropped
-     * only from the headlines, which is a place where saying it twice costs one
-     * of five slots.
-     */
-    const declared = new Set(rows.filter((e) => e.kind === 'declare').map((e) => e.subject));
-    return rows
-      .filter((e) => e.text)
-      .filter((e) => !(e.kind === 'found' && declared.has(e.subject)))
-      .map((e) => ({ e, score: (weight[e.kind] || 1) * 1000 + Math.abs(e.delta || 0) }))
-      .sort((a, b) => b.score - a.score)
-      .slice(0, limit || 5)
-      .map((x) => x.e);
+    return rank(forTurn(turn), limit);
   }
 
   function reset() { entries = []; seq = 0; }
@@ -149,7 +184,7 @@ const Ledger = (function () {
 
   return {
     KINDS, append, termsOf, all, since, forTurn, forSubject, ofKind, latest,
-    headlines, reset, serialize, loadState,
+    headlines, rank, mark, after, reset, serialize, loadState,
     count: () => entries.length,
   };
 })();

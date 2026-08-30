@@ -71,7 +71,6 @@ export function assemble(session = {}) {
     colors: Colors.serialize(),
     parties: Movements.serialize(),
     ledger: Ledger.serialize(),
-    ledger: Ledger.serialize(),
     // only deliberate overrides, so a schema change is not baked into a save
     tune: window.TUNE.diff(),
     ui: session.ui || {},

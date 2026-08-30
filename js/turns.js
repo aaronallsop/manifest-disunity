@@ -100,7 +100,32 @@ const TurnSystem = (function () {
     return currentId();
   }
 
+  /*
+   * End the current nation's turn and, if that completed a round, ADVANCE THE
+   * WORLD.
+   *
+   * This used to live in `completeTurn()` in app.js, which meant the one clock
+   * in the game was owned by the renderer: the world advanced when a human
+   * clicked, and any headless caller stepping the turn order got the nations
+   * moving through a world that never changed. It is the same mistake as the
+   * turn-order sync that used to live in app.js's change handler, and M6.2 is
+   * where it starts to bite, because from here on most turns are not taken by a
+   * human at all.
+   *
+   * app.js keeps what is genuinely UI — the banner, the newspaper, the autosave
+   * — and reads `roundEnded` to know when to draw it.
+   */
+  function advance(tune, rng) {
+    const before = round;
+    const next = endTurn();
+    const roundEnded = round > before;
+    if (roundEnded) World.advanceTurn(tune, rng); // emits once, from its own batch
+    return { next, roundEnded, round };
+  }
+
   const progress = () => ({ index: ptr + 1, total: order.length, round });
+  /** Where a given nation sits in the order, or -1. */
+  const indexOf = (id) => order.indexOf(id);
   const snapshot = () => ({ order: [...order], ptr });
 
   const serialize = () => ({ order: [...order], ptr, round });
@@ -112,5 +137,5 @@ const TurnSystem = (function () {
     wrapped = false;
   }
 
-  return { begin, currentId, sync, insertAfter, endTurn, progress, snapshot, serialize, loadState, setRng: (r) => { rng = r; } };
+  return { begin, currentId, sync, insertAfter, endTurn, advance, progress, indexOf, snapshot, serialize, loadState, setRng: (r) => { rng = r; } };
 })();

@@ -1092,3 +1092,72 @@ treasury, checks it is still *offered* annexations, and checks `plan` is what sa
 One annex intent per bordering nation rather than the power set: a full enumeration of 3-Area
 combinations is thousands of intents for a decision that turns on *which neighbour*, not which three
 Areas.
+
+### D101 — The player is an id in the model, not a nation in `store`
+**M6.2.** `grep -rni "player\b" js/*.js` returned **zero hits** across thirteen modules before this
+task. The only gate on acting was `nid === TurnSystem.currentId()`, which the human satisfied
+fifty-one times a round — so an annexation was not a risk, it was a transfer between two of your own
+accounts, and every anti-snowball device in the game was a speed bump you routed around by taking
+the other nation's turn. That is upstream of every balance complaint in the review.
+
+It lives in `js/game.js` and not in `store` for the reason the turn order moved out of `app.js`: it
+is saved state, the headless suite has to be able to set it, and a renderer that owns a model
+invariant is a renderer the simulator silently disagrees with.
+
+It is an **id**, and `getPlayer()` keeps naming a nation that has died. `playerNation()` is the one
+that returns null. Nulling the id on death would throw away the only answer to "what was I playing",
+which is the first thing a defeat screen needs and the second thing a save wants to say.
+
+**A fresh world has nobody in the chair**, and that is load-bearing rather than incidental: the M5
+simulator and most of the suite drive `World.advanceTurn` directly, and if `Game.init` invented a
+player then `AI.sweep` would find a slot to stop at and start consuming turns inside code that only
+asked for a world. There is a test whose whole job is to say so.
+
+Until M6.4's faction picker, the seat is assigned from the seed — the nation at the head of the
+shuffled turn order — with `?play=<id or name>` to override, which is how a particular situation
+gets played twice. Assigning rather than asking is deliberate: the milestone is about there BEING
+one seat, and a chooser landing in the same commit would hide whether the seat works.
+
+### D102 — `TurnSystem.advance` owns the round boundary; the sweep is one batch
+**M6.2.** The world used to advance from `completeTurn()` in `app.js`, so the one clock in the game
+was owned by the renderer: a headless caller stepping the turn order moved nations through a world
+that never changed. That was survivable while a human took all fifty-one seats. From M6.2 most turns
+are not taken by a human at all, so it moves to `TurnSystem.advance(tune, rng)` and `app.js` keeps
+only what is genuinely UI — the banner, the newspaper, the autosave.
+
+**Termination is the contract** of `AI.sweep`, not a detail, because its failure mode is a hung tab
+rather than a wrong number — which is exactly the kind of failure the rest of the suite would not
+notice. Three guards, three tests: no player (decline to start), a dead player (stop and report
+`playerGone`), and a corrupted order (a `maxSteps` backstop that warns, and that the dead-player
+test asserts is *not* what caught it).
+
+The whole sweep runs inside one `Game.batch`, so fifty AI turns cost one repaint. Measured: 25 rounds
+in 552 ms in the browser, about 22 ms per round including every render.
+
+### D103 — M6.2 ships a seam with an empty policy, on purpose
+**M6.2.** The AI passes. That is a decision, not a stub left behind: the turn loop is the part that
+can hang the page, silently skip a round's growth tick, or diverge between the browser and the
+simulator, and it should not land in the same commit as a scoring function whose weights will be
+argued with for the rest of M6.
+
+It is playable in the meantime because the world engine still runs every round — population,
+economies, the power stocks, sentiment, secession — so nations still fragment and movements still
+declare. Verified in the browser: playing Ohio, the State of Jefferson declared at turn 30 with 14
+Areas and Greater Idaho ceased to exist, none of it scripted and none of it the player's doing.
+
+The policy is a **field** (`AI.setPolicy`), not a function body, which is what lets the suite drive
+the real turn loop with a deliberately bad policy — one that proposes moves the rules refuse — and
+assert the game passes rather than throws. A move the policy proposed and the rules refused is a
+pass: the AI is allowed to be wrong about what it can afford, it is not allowed to stop the game.
+
+### D104 — The newspaper reports an interval marked by ledger id, not a world turn
+**M6.2.** `headlines(turn)` answered "what happened during world turn N", which was the right
+question while the human watched all fifty-one seats. The AI sweep straddles the turn boundary — the
+nations after you in the order act in the old world turn, the ones before you act in the new one —
+so a single-turn query silently drops half of every interval, including, on a bad interval, the
+declaration of independence in the player's own back yard.
+
+Marked by **id** rather than by turn because the question is "since I finished my turn", not "since
+the world ticked", and those are two different clocks. It also keeps the player's own action out of
+their own newspaper: they were told what it did when they did it, and an annexation outranks almost
+everything, so re-reporting it would spend the lead slot on news they already have.

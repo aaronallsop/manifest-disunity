@@ -178,6 +178,30 @@ const Game = (function () {
   let state = null;   // the columnar Area store (js/state.js)
   let seq = 0;
   let originalNationCount = 0; // the leader tier is a share of THIS, not of the survivors
+  /*
+   * WHO THE HUMAN IS.
+   *
+   * Until M6.2 there was no such thing: `grep -rni "player" js/*.js` returned
+   * zero hits across thirteen modules, and the only gate on acting was "is it
+   * this nation's turn", which the human satisfied fifty-one times a round. That
+   * is upstream of every balance complaint in the review. If you control both
+   * the aggressor and the victim then an annexation is not a risk, it is a
+   * transfer between two of your own accounts — and every anti-snowball device
+   * in the game is a speed bump you route around by taking the other nation's
+   * turn.
+   *
+   * It lives HERE, in the model, and not in `store`, for the same reason the
+   * turn order does: it is saved state, the headless suite has to be able to set
+   * it, and a renderer that owns a model invariant is a renderer the simulator
+   * silently disagrees with.
+   *
+   * It is an id and not a nation reference, deliberately. A nation can cease to
+   * exist; the answer to "who were you playing" must survive that, because
+   * losing is a thing the game has to be able to say out loud (M6.4). So
+   * `getPlayer()` can name a nation that is gone, and `playerNation()` is the
+   * one that returns null.
+   */
+  let player = null;
   const listeners = [];
 
   // Every constant this module uses lives in TUNE (js/tunables.js). Reading it
@@ -207,6 +231,7 @@ const Game = (function () {
     transportData = null;
     seq = 0;
     originalNationCount = 0;
+    player = null;
     epoch = 0;
     shellCache = null;
     shellEpoch = -1;
@@ -1395,7 +1420,7 @@ const Game = (function () {
       tradeCooldown: { ...n.tradeCooldown },
       counties: [...n.counties],
     });
-    return { seq, originalNationCount, counties, nations: nats };
+    return { seq, originalNationCount, player, counties, nations: nats };
   }
   function loadState(snap) {
     let dropped = 0;
@@ -1448,6 +1473,8 @@ const Game = (function () {
     }
     seq = snap.seq || 0;
     originalNationCount = snap.originalNationCount || nations.size;
+    // `|| null` and not `?? null`: a document written before M6.2 has no player.
+    player = snap.player || null;
     // A pre-M3 document carries no ruling ideology; derive one rather than
     // leaving every nation ungoverned. A document that HAS one keeps it,
     // including `since` — deriving over the top would re-date every government
@@ -1484,6 +1511,22 @@ const Game = (function () {
     exportAccess,
     tradeCapacity,
     originalNations: () => originalNationCount,
+    /** The id of the nation the human is playing, or null in a headless world. */
+    getPlayer: () => player,
+    /** The player's nation record, or null if there is none or it has died. */
+    playerNation: () => (player == null ? null : nations.get(player) || null),
+    isPlayer: (nid) => player != null && nid === player,
+    /**
+     * Choose who the human is. Refuses an id that names nothing, because the
+     * failure mode of accepting it is a turn loop that sweeps forever looking
+     * for a slot that will never come up.
+     */
+    setPlayer: (nid) => {
+      if (nid != null && !nations.has(nid)) return false;
+      player = nid == null ? null : nid;
+      emit({ values: true });
+      return true;
+    },
     spend,
     boostGdp,
     nations,

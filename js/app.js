@@ -112,7 +112,6 @@ async function init() {
     store.trade = trade;         // offline-baked trade attributes (county_trade.json)
     store.transport = transport; // rail / interstates / Canada-Mexico gateways (transport.json)
     Ledger.reset();
-    Ledger.reset();
     Colors.assign(Object.keys(data.states));
     Game.init(data, adjacency, areas, { trade, transport, culture: cultureMode });
     const emerged = Parties.setup(partyDefs, store.rng); // setup-only regional party spawns
@@ -122,6 +121,7 @@ async function init() {
     if (economy) MapModes.setEconomy(economy); // baked six-sector production values
     if (economy) Market.update(TUNE); // opening market prices
     TurnSystem.begin([...Game.nations.keys()], store.rng);
+    choosePlayer();
     World.begin(TUNE); // seed the power stocks for the world just built
     if (emerged.length) {
       setTimeout(() => flash(`\u{1F5F3} Regional parties emerged: <strong>${emerged.map(escapeHtml).join('</strong>, <strong>')}</strong>.`, 'warn'), 300);
@@ -154,9 +154,21 @@ async function init() {
       }
     }
 
+    /*
+     * A resumed document carries its own player; a document written before M6.2
+     * carries none, and so does a fresh game whose `choosePlayer` ran against
+     * the pre-resume world. Either way, settle it before the first sweep — a
+     * sweep with no player declines to run, and the symptom would be a game that
+     * simply never lets the AI move.
+     */
+    if (!Game.playerNation()) choosePlayer();
+    // ...and hand the seat back to the human, wherever in the order the load left
+    // the pointer.
+    AI.sweep(TUNE, store.rng);
+
     Leaderboard.refresh();
     renderTurnBanner();
-    select('nation', TurnSystem.currentId());
+    select('nation', you());
     document.getElementById('loading')?.remove();
   } catch (err) {
     const el = document.getElementById('loading');
@@ -164,6 +176,32 @@ async function init() {
     console.error(err);
   }
 }
+
+/*
+ * WHO YOU ARE.
+ *
+ * M6.4 puts a faction picker in front of this. Until then the seat is assigned
+ * from the seed — the nation at the head of the shuffled turn order — and
+ * `?play=<id or name>` overrides it, which is how a particular situation gets
+ * played twice. Assigning rather than asking is the deliberate choice for M6.2:
+ * the milestone is about there BEING one seat, and a chooser landing in the same
+ * commit would hide whether the seat works.
+ */
+function choosePlayer() {
+  const wanted = new URLSearchParams(location.search).get('play');
+  let pick = null;
+  if (wanted) {
+    const key = wanted.trim().toLowerCase();
+    for (const [id, n] of Game.nations) {
+      if (id === wanted || n.name.toLowerCase() === key) { pick = id; break; }
+    }
+    if (!pick) console.warn(`?play=${wanted} names no nation; falling back to the turn order.`);
+  }
+  Game.setPlayer(pick || TurnSystem.currentId());
+}
+
+/** The nation the human is playing. Null only in a world nobody is playing. */
+const you = () => Game.getPlayer();
 
 /* ------------------------------------------------------------------ */
 /* map                                                                 */
@@ -669,20 +707,26 @@ function flash(html, kind = '') {
 /* ------------------------------------------------------------------ */
 /* turns                                                               */
 /* ------------------------------------------------------------------ */
+/*
+ * The banner answers "whose turn is it", and from M6.2 that question has one
+ * answer forever: yours. The old "17/51" counter measured how far the human had
+ * got through operating the entire world — a number that only meant anything
+ * while that was the game.
+ */
 function renderTurnBanner() {
   const bar = document.getElementById('turnbar');
-  const id = TurnSystem.currentId();
+  const id = you() || TurnSystem.currentId();
   const n = Game.getNation(id);
   if (!n) { bar.innerHTML = ''; return; }
   const p = TurnSystem.progress();
   bar.innerHTML = `
-    <span class="tb-label">Round ${p.round} &middot; ${p.index}/${p.total}</span>
+    <span class="tb-label">Round ${p.round} &middot; ${p.total} nations</span>
     <button class="tb-current" id="tb-jump"><span class="dot" style="background:${n.color}"></span>
-      <strong>${escapeHtml(n.name)}</strong>'s turn</button>
+      You are <strong>${escapeHtml(n.name)}</strong></button>
     <span class="tb-label">&middot; World turn <strong id="world-turn">${World.getTurn()}</strong></span>
     ${store.dev ? '<button class="tb-pass" id="tb-advance" style="margin-left:0" title="Dev: step the world engine without playing a round">Step world &#9193;</button>' : ''}
-    <button class="tb-pass" id="tb-pass">Pass turn &#9197;</button>`;
-  document.getElementById('tb-jump').onclick = () => { if (!Actions.isActive()) { setMode('nations'); select('nation', TurnSystem.currentId()); } };
+    <button class="tb-pass" id="tb-pass">End turn &#9197;</button>`;
+  document.getElementById('tb-jump').onclick = () => { if (!Actions.isActive()) { setMode('nations'); select('nation', you()); } };
   // Dev-only from M1.5: the world now advances on the round boundary, in
   // completeTurn. This button is the manual step control the M5 simulator grows
   // out of. It was the ONLY caller of World.advanceTurn, which is why a player
@@ -708,33 +752,62 @@ function renderTurnBanner() {
  * treasuries and the market never ran at all.
  */
 function completeTurn() {
-  const beforeRound = TurnSystem.progress().round;
-  const next = TurnSystem.endTurn();
-  if (TurnSystem.progress().round > beforeRound) {
-    World.advanceTurn(TUNE, store.rng); // emits once, from inside its own batch
-    /*
-     * THE NEWSPAPER. The growth toast used to be the only thing a round boundary
-     * said, and it said the same thing every time — while immediately clobbering
-     * whatever the player's own action had reported. Three to six headlines from
-     * the ledger is the difference between "a turn passed" and "here is what
-     * happened in the world while you were looking at Nevada".
-     */
-    const heads = Ledger.headlines();
-    const growth = Math.round(TUNE.peek('world.popGrowth') * 1000) / 10;
-    const body = heads.length
-      ? heads.map((h) => `<div class="head-line">${escapeHtml(h.text)}</div>`).join('')
-      : `<div class="head-line quiet">A quiet quarter. Population +${growth}%, economies grew, `
-        + 'movements gained ground, treasuries settled and the market repriced.</div>';
-    flash(`\u{1F4F0} <strong>World turn ${World.getTurn()}</strong>${body}`,
-      heads.some((h) => h.kind === 'declare' || h.kind === 'died') ? 'bad' : '');
-    // The live document tracks the world at every turn boundary, not only when
-    // someone presses Save. Fire and forget: a failed autosave must not stall
-    // the round, and the Save button reports the server honestly when asked.
-    SaveManager.autosave();
-  }
+  const mark = Ledger.mark();          // everything after this is news to the player
+  const beforeTurn = World.getTurn();
+  const name = Game.playerNation()?.name;
+  TurnSystem.advance(TUNE, store.rng); // your seat is done; the world may tick here
+  /*
+   * ...and now the other fifty nations take their turns, headlessly, in one
+   * batch. Before M6.2 this loop did not exist because it did not need to: the
+   * human WAS all fifty-one nations, which is exactly why an annexation felt
+   * like a transfer between two of their own accounts rather than a risk.
+   */
+  const swept = AI.sweep(TUNE, store.rng);
+  // The live document tracks the world at every turn boundary, not only when
+  // someone presses Save. Fire and forget: a failed autosave must not stall the
+  // round, and the Save button reports the server honestly when asked.
+  if (World.getTurn() > beforeTurn) SaveManager.autosave();
+  newspaper(mark, World.getTurn() - beforeTurn);
   renderTurnBanner();
+  if (swept.playerGone) {
+    /*
+     * The nation you were playing no longer exists. M6.4 makes this a defeat
+     * screen with a verdict; saying it plainly is what M6.2 owes it, because the
+     * alternative — a turn banner naming a nation that is not in the game — is
+     * the kind of quiet wrongness that takes an hour to find.
+     */
+    flash('\u{1F3F3} <strong>' + escapeHtml(name || 'Your nation')
+      + ' no longer exists.</strong> The world plays on without you.', 'bad');
+    return deselect();
+  }
+  const next = you();
   if (next && Game.getNation(next)) { setMode('nations'); select('nation', next); }
   else deselect();
+}
+
+/*
+ * THE NEWSPAPER. The growth toast used to be the only thing a round boundary
+ * said, and it said the same thing every time — while immediately clobbering
+ * whatever the player's own action had reported. Headlines from the ledger are
+ * the difference between "a turn passed" and "here is what happened in the world
+ * while you were looking at Nevada".
+ *
+ * It reads the interval since the player's own turn ended rather than one world
+ * turn, because the AI sweep straddles the boundary: the nations after you in
+ * the order act in the old turn and the ones before you act in the new one, and
+ * reporting either half alone silently drops the other.
+ */
+function newspaper(mark, turnsPassed) {
+  const heads = Ledger.rank(Ledger.after(mark), 6);
+  const growth = Math.round(TUNE.peek('world.popGrowth') * 1000) / 10;
+  const body = heads.length
+    ? heads.map((h) => `<div class="head-line">${escapeHtml(h.text)}</div>`).join('')
+    : `<div class="head-line quiet">A quiet quarter. Population +${growth}%, economies grew, `
+      + 'movements gained ground, treasuries settled and the market repriced.</div>';
+  const head = turnsPassed
+    ? `\u{1F4F0} <strong>World turn ${World.getTurn()}</strong>`
+    : '\u{1F4F0} <strong>Meanwhile</strong>';
+  flash(head + body, heads.some((h) => h.kind === 'declare' || h.kind === 'died') ? 'bad' : '');
 }
 
 function passTurn() {
@@ -750,8 +823,16 @@ function renderNationPanel(nid) {
   if (!n) return renderPlaceholder();
   const demo = Game.nationDemographics(nid);
   const sub = n.origin ? 'Sovereign nation &middot; former U.S. state' : 'Sovereign nation &middot; formed during play';
-  const isTurn = nid === TurnSystem.currentId();
-  const currentName = Game.getNation(TurnSystem.currentId())?.name || '';
+  /*
+   * THE GATE. It used to be "is it this nation's turn", which the human satisfied
+   * fifty-one times a round; it is now "is this nation me". That one line is the
+   * root of the not-fun problem the review names: while you can act as the
+   * victim as well as the aggressor, an annexation is a transfer between two of
+   * your own accounts and every anti-snowball device in the game is a speed bump
+   * you route around by taking the other nation's turn.
+   */
+  const isTurn = Game.isPlayer(nid);
+  const currentName = Game.playerNation()?.name || '';
   const cd = Actions.annexCooldownLeft(nid);
   const annexAttrs = cd > 0
     ? ` disabled title="Regrouping — ${cd} more world ${cd === 1 ? 'turn' : 'turns'}"`
@@ -773,11 +854,11 @@ function renderNationPanel(nid) {
         <button class="act" data-act="trade">🚛 Trade with nation</button>
         <button class="act" data-act="release"${releaseAttrs}>🕊️ Release counties${rcd > 0 ? ` <span class="act-note">arranging ${rcd}</span>` : ''}</button>
         <button class="act" data-act="govern"${govAttrs}>🗳️ Change course${gcd > 0 ? ` <span class="act-note">${gcd} turns</span>` : ''}</button>
-        <button class="act pass" data-act="pass">⏭ Pass turn</button>
+        <button class="act pass" data-act="pass">⏭ End turn</button>
       </div>`
     : `<div class="actions">
         <div class="label">Actions</div>
-        <div class="locked-note">Not this nation's turn &mdash; it's <strong>${escapeHtml(currentName)}</strong>'s.
+        <div class="locked-note">A rival power. You are playing <strong>${escapeHtml(currentName)}</strong>.
           <button class="linklike" id="goto-current">Go to them &rarr;</button></div>
       </div>`;
   const panel = document.getElementById('panel');
@@ -810,7 +891,7 @@ function renderNationPanel(nid) {
     })
   );
   const goto = panel.querySelector('#goto-current');
-  if (goto) goto.onclick = () => { setMode('nations'); select('nation', TurnSystem.currentId()); };
+  if (goto) goto.onclick = () => { setMode('nations'); select('nation', you()); };
 }
 
 /*
@@ -903,12 +984,12 @@ function renderCountyPanel(fips) {
   const rel = panel.querySelector('#area-release');
   if (rel) rel.onclick = () => { setMode('nations'); Actions.startReleaseWith(ownerId, fips); };
   const goAnnex = panel.querySelector('#area-annex');
-  if (goAnnex) goAnnex.onclick = () => { setMode('nations'); Actions.start('annex', TurnSystem.currentId()); };
+  if (goAnnex) goAnnex.onclick = () => { setMode('nations'); Actions.start('annex', you()); };
 }
 
-/* What the acting nation can do with this Area right now, and why not if not. */
+/* What YOU can do with this Area right now, and why not if not. */
 function renderAreaActions(fips, ownerId) {
-  const actor = TurnSystem.currentId();
+  const actor = you();
   const me = Game.getNation(actor);
   const owner = ownerId && Game.getNation(ownerId);
   // An Area with no live owner is a data problem, not an action surface.

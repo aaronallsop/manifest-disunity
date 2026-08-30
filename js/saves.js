@@ -83,7 +83,13 @@ const SaveManager = (function () {
       document.querySelectorAll('.toggle button[data-mode]').forEach((b) =>
         b.classList.toggle('active', b.dataset.mode === store.mode));
 
-      const cur = TurnSystem.currentId();
+      /*
+       * A load can land the turn pointer on any slot, including one of the fifty
+       * the human does not operate. Sweep the AI seats so the game resumes where
+       * every other turn resumes: on the player's move.
+       */
+      if (Game.getPlayer() != null) AI.sweep(TUNE, store.rng);
+      const cur = Game.getPlayer() || TurnSystem.currentId();
       if (cur && Game.getNation(cur)) { setMode('nations'); select('nation', cur); }
       else deselect();
       renderTurnBanner();

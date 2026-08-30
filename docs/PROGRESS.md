@@ -188,7 +188,15 @@ Done in the order **M3.4 -> M3.1 -> M3.2 -> M3.3**, because the plan lists M3.4'
       annex, unite, release and govern (D99). `Moves.legal(nid)` is the AI's candidate list — the
       rules, unscored (D100). The contract is what the tests pin: plan never mutates, resolve refuses
       exactly what plan refused with the same sentence, and the bill matches the quote.
-- [ ] **M6.2** Player identity.
+- [x] **M6.2** Player identity. `Game.getPlayer/setPlayer/isPlayer/playerNation`, persisted in the
+      state document (D101). `TurnSystem.advance` takes the round boundary back off the renderer, and
+      `js/ai.js`'s `sweep` plays the other fifty seats headlessly between two of yours (D102). The
+      policy is deliberately empty until M6.3 (D103). The newspaper now reports the interval since
+      your turn ended rather than one world turn, because the sweep straddles the boundary.
+      *Observed while verifying:* Areas can oscillate across a contested border turn by turn
+      ("Douglas County left Greater Idaho for State of Jefferson", and back the next turn). Real, and
+      now visible because the interval newspaper reports both halves. Belongs with M7's relations
+      work or a defection hysteresis tunable; not fixed here.
 - [ ] **M6.3** AI.
 - [ ] **M6.4** Faction selection and win conditions.
 - [ ] **M6.5** Faction-switch, military, remaining valves.
@@ -236,7 +244,7 @@ Performance, measured on the real map rather than predicted: a world turn 24.7 -
 phases 12.4 -> 2.8 ms, political drift 8.0 -> 2.0 ms, a 50-turn simulator run 1,237 -> 466 ms. The
 columnar store is 173 KB and the adjacency graph 43.5 KB.
 
-Next: **M6.1** (split every action into `plan` and `resolve`; do it before anything else in M6).
+Next: **M6.3** (`js/ai.js` scoring `plan()` outputs — fill in the policy the M6.2 seam calls).
 
 Open, carried into M2.3: after 21 turns no Area is yet LED by a minority ideology (Rep 1,288 /
 Dem 388 of 1,676). That is the expected shape at 11% organised movements and it is M5's dial to
