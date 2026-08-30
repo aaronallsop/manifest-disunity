@@ -176,6 +176,28 @@ const AI = (function () {
         -(Game.occupiedCount(intent.nid) + foreign) / endAreas, 'hold'));
     }
 
+    /*
+     * HOW THEY SEE YOU, on any move aimed at another nation.
+     *
+     * Standing is already inside a union's `chance`, so scoring it again there
+     * would double-count the same fact; what this adds is the cost of doing it
+     * to somebody who has done nothing to you, and the discount on doing it to
+     * somebody who has. It is a `hold` term because a nation under strain has
+     * more reason to care what its neighbours think, not less.
+     */
+    if (typeof Relations !== 'undefined') {
+      const against = intent.type === 'unite' ? [intent.target]
+        : (preview.targets || []).map((f) => Game.getOwner(f)).filter((o) => o && o !== intent.nid);
+      const seen = new Set(against);
+      if (seen.size) {
+        let sum = 0;
+        for (const o of seen) sum += Relations.score(o, intent.nid, tune);
+        const mean = sum / seen.size;
+        terms.push(term('How they see you', 'ai.wStanding', mean, mean, 'hold',
+          mean < -0.15 ? 'they already resent you' : mean > 0.15 ? 'they are friendly' : null));
+      }
+    }
+
     if (intent.type === 'unite') {
       /*
        * There is deliberately NO term for the odds themselves. The prize above

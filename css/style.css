@@ -540,3 +540,14 @@ svg.hide-clines .area-borders { display: block; }
 .mil .mil-row .num { width: 74px; text-align: right; font-variant-numeric: tabular-nums; }
 .mil .mil-row .ask { color: var(--muted); }
 .mil .mil-note { font-size: 11px; color: var(--muted); line-height: 1.5; margin: 4px 0 6px; }
+
+/* ---- what they remember --------------------------------------------- */
+.rel .rel-band { font-size: 12px; color: var(--muted); line-height: 1.5; margin-bottom: 4px; }
+.rel .rel-band.bad { color: var(--bad, #d1706a); }
+.rel .rel-band.good { color: var(--good, #6fbf73); }
+.rel .rel-row { display: flex; align-items: baseline; gap: 8px; font-size: 12px; padding: 2px 0; }
+.rel .rel-row .lbl { flex: 1; color: var(--muted); }
+.rel .rel-row .when { font-size: 11px; color: var(--muted); opacity: .8; }
+.rel .rel-row .num { font-variant-numeric: tabular-nums; width: 46px; text-align: right; }
+.rel .rel-row .num.bad { color: var(--bad, #d1706a); }
+.rel .rel-row .num.good { color: var(--good, #6fbf73); }

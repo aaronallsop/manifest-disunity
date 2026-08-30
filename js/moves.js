@@ -69,6 +69,28 @@ const Moves = (function () {
    */
   const log = (e) => Ledger.append({ phase: 'action', ...e });
 
+  /*
+   * AND THE OTHER NATIONS REMEMBER IT.
+   *
+   * Recorded from the resolver for the same reason the ledger is: it is the one
+   * place that knows what actually happened, and two callers describing the same
+   * event differently is the failure the whole plan/resolve split exists to
+   * prevent.
+   *
+   * `witnessed` is the term that matters most and is easiest to leave out. A
+   * conqueror resented only by its victims is resented only by the nations least
+   * able to do anything about it; the coalition M7.2 builds needs the neighbours
+   * who merely watched, and they have to have been watching all along.
+   */
+  function remember(actor, victims, kind, scale, tune) {
+    const hit = new Set(victims.filter(Boolean));
+    for (const v of hit) Relations.record(v, actor, kind, { scale, tune });
+    for (const other of Game.adjacentNations(actor)) {
+      if (hit.has(other)) continue;
+      Relations.record(other, actor, 'witnessed', { scale, tune });
+    }
+  }
+
   /* ------------------------------------------------------------------ */
   /* shared preconditions                                               */
   /* ------------------------------------------------------------------ */
@@ -228,6 +250,8 @@ const Moves = (function () {
       { name: 'Flip magnitude', value: res.flipMagnitude, key: 'war.diceFlipFloor' },
       { name: 'Score', value: res.score, key: 'war.victoryBand' },
     ] : null;
+    remember(nid, Object.keys(victims), res.triggered ? 'warred' : 'annexed',
+      Math.max(1, taken.length), tune);
     const who = nameOf(nid);
     const entry = log({
       subject: nid, kind: res.triggered ? 'war' : 'annex', delta: taken.length, terms,
@@ -331,8 +355,16 @@ const Moves = (function () {
     if (ucd > 0) {
       return no(`Talks with your neighbours are still going on — ${ucd} more world ${ucd === 1 ? 'turn' : 'turns'}.`);
     }
+    /*
+     * STANDING MOVES THE ODDS. A nation that likes you is likelier to accept
+     * union and one that does not is likelier to come apart in the attempt.
+     * Multiplied rather than added, so it scales a probability and the result
+     * stays inside [0,1] without a clamp doing the work.
+     */
+    const standing = Relations.score(target, nid, T(tune));
     const chance = CivilWar.unitePeaceChance(
-      Game.nationDemographics(nid), Game.nationDemographics(target), Game.blueShell(nid), T(tune));
+      Game.nationDemographics(nid), Game.nationDemographics(target), Game.blueShell(nid), T(tune))
+      * (1 + T(tune).get('rel.uniteSwing') * standing);
     const fallout = planSplinter(nid, target, tune);
     const gained = them.counties.size;
     const prize = Game.nationDemographics(target);
@@ -354,7 +386,7 @@ const Moves = (function () {
       { cost, chance, fallout, target });
     }
     return {
-      ok: true, reason: null, cost, chance, fallout, target,
+      ok: true, reason: null, cost, chance, fallout, target, standing,
       effects: [
         { label: 'Areas gained if it works', value: gained },
         // The PRIZE, under the same labels every other move uses for it. It was
@@ -365,6 +397,7 @@ const Moves = (function () {
         { label: 'Population', value: prize.pop },
         { label: 'GDP', value: prize.gdp },
         { label: 'Chance', value: chance },
+        { label: 'How they see you', value: standing },
         { label: 'Areas that would defect', value: fallout.defect.length },
         { label: 'Areas that would secede', value: fallout.secede.length },
       ],
@@ -382,6 +415,9 @@ const Moves = (function () {
     const theirName = nameOf(target), myName = nameOf(nid);
     if (peaceful) {
       const gained = nationOf(target).counties.size;
+      // Everybody notices a country leaving the map, including the ones who
+      // were not in it. The victim is gone, so there is nobody to resent it.
+      remember(nid, [], 'absorbed', Math.max(1, gained / 10), tune);
       Game.mergeInto(nid, target);
       const entry = log({
         subject: nid, kind: 'unite', delta: gained, terms: [odds], absorbed: target,
@@ -397,6 +433,8 @@ const Moves = (function () {
       return born;
     });
     TurnSystem.insertAfter(nid, created);
+    Relations.record(target, nid, 'broke',
+      { scale: Math.max(1, plan.fallout.defect.length / 3), tune });
     const entry = log({
       subject: nid, kind: 'unite', target, failed: true,
       delta: -(plan.fallout.defect.length + plan.fallout.secede.length),
@@ -425,8 +463,12 @@ const Moves = (function () {
       const them = Game.nationDemographics(recipient);
       const it = Game.demographics(new Set(comp));
       if (Ideology.mixAffinity(them.mix, it.mix) >= T(tune).get('release.acceptAffinity')) return true;
-      const g = nationOf(giver);
-      if (g && g.tradeCooldown && g.tradeCooldown[recipient] != null) return true;
+      /*
+       * Or they simply think well of you. This replaced "there is a trade deal
+       * on the books", which was a proxy for exactly this and could not tell a
+       * long partnership from one transaction ten turns ago.
+       */
+      if (Relations.score(recipient, giver, T(tune)) >= T(tune).get('rel.acceptFriend')) return true;
       return r.counties.size <= T(tune).get('release.desperateAreas');
     };
   }
@@ -550,12 +592,16 @@ const Moves = (function () {
 
     const bornSet = new Set(born);
     let toNew = 0, toNeighbours = 0, refused = 0;
+    const thanked = new Map();
     for (const [f, was] of wasOwner) {
       const now = Game.getOwner(f);
       if (now === was) refused++;
       else if (bornSet.has(now)) toNew++;
-      else toNeighbours++;
+      else { toNeighbours++; thanked.set(now, (thanked.get(now) || 0) + 1); }
     }
+    // Gratitude, and the reason release is not only a way to shed a problem:
+    // the neighbour who takes the Areas remembers who handed them over.
+    for (const [who, n2] of thanked) Relations.record(who, nid, 'granted', { scale: n2, tune });
     const entry = log({
       subject: nid, kind: 'release', delta: -areas.length, born: born.length,
       terms: [{ name: 'Refused by every neighbour', value: refused, key: 'release.acceptAffinity' }],

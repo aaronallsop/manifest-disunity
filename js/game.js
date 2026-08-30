@@ -1620,6 +1620,15 @@ const Game = (function () {
     nearestNation,
     blueShell,
     epoch: () => epoch,
+    /*
+     * A counter that moves on every OWNERSHIP write, synchronously, whatever the
+     * batch depth. `epoch` is the render clock and is deliberately frozen inside
+     * a batch; this is the model clock, and it is what a cache of a world
+     * snapshot must key on. The two are different questions and conflating them
+     * handed the AI a sentiment context built before a nation existed, indexed
+     * by a nation index that had not been assigned yet.
+     */
+    ownerEpoch: () => ownerEpoch,
     /** Nation id -> its integer index in the ownership column. */
     nationIndexOf,
     /** Is this Area foreign soil to whoever holds it? */

@@ -711,6 +711,10 @@ const World = (function () {
         }
         rec.nation = best;
         rec.state = 'realized';
+        // Directed, and only one way: the breakaway resents the state it left.
+        // The parent's own feeling is carried by the Areas it lost, which
+        // Authority already reads.
+        if (parentOf) Relations.record(best, parentOf, 'seceded', { scale: 1, tune: tn });
         TurnSystem.insertAfter(parentOf || best, born);
         const ev = { kind: 'declare', movement: rec.name, nation: best, parent: parentOf,
                      areas: largest.length, born: born.length, turn };
@@ -844,6 +848,9 @@ const World = (function () {
       // because a garrison that came up this turn should be holding ground down
       // when Civil Liberties are computed at the end of it.
       Military.tick(tn);
+      // ...and drop the memories nobody can feel any more, so an append-only
+      // list that lives in the save document does not grow without bound.
+      Relations.forget(tn);
       Movements.refreshStates(tn); // derived from the map, so it follows the writeback
       Game.tickTreasuries(); // income minus maintenance, on this turn's updated GDP
       Market.update(tn);     // reprice every resource from live supply vs demand

@@ -113,6 +113,7 @@ async function init() {
     store.trade = trade;         // offline-baked trade attributes (county_trade.json)
     store.transport = transport; // rail / interstates / Canada-Mexico gateways (transport.json)
     Ledger.reset();
+    Relations.reset();
     Colors.assign(Object.keys(data.states));
     Game.init(data, adjacency, areas, { trade, transport, culture: cultureMode });
     const emerged = Parties.setup(partyDefs, store.rng); // setup-only regional party spawns
@@ -1124,6 +1125,7 @@ function renderNationPanel(nid) {
       ${renderPolitics(demo)}
     </div>
     ${renderNationEconomy(nid)}
+    ${renderStanding(nid)}
     ${renderMilitary(nid)}
     ${renderVictory(nid)}
     ${renderExportAccess(nid)}
@@ -1155,6 +1157,47 @@ function renderNationPanel(nid) {
   );
   const goto = panel.querySelector('#goto-current');
   if (goto) goto.onclick = () => { setMode('nations'); select('nation', you()); };
+}
+
+/*
+ * WHAT THEY REMEMBER.
+ *
+ * On a rival's card, how THEY see YOU and why — which is the question a player
+ * actually has in front of a neighbour they are thinking about. On your own
+ * card, who resents you most, which is the same list read the other way and is
+ * the one that tells you where the trouble is coming from.
+ *
+ * The reason is always a specific event with a date on it, because "Cold" on its
+ * own is a mood and "took our ground, 4 turns ago" is something you did.
+ */
+function renderStanding(nid) {
+  if (typeof Relations === 'undefined') return '';
+  const me = you();
+  if (!me || !Game.getNation(me)) return '';
+  if (nid !== me) {
+    const r = Relations.between(nid, me, TUNE);
+    const rows = r.inputs.slice(0, 3).map((i) => `
+      <div class="rel-row"><span class="lbl">${escapeHtml(i.label)}</span>
+        <span class="when">${i.age === 0 ? 'this turn' : `${i.age} ${i.age === 1 ? 'turn' : 'turns'} ago`}</span>
+        <span class="num ${i.contribution < 0 ? 'bad' : 'good'}">${i.contribution >= 0 ? '+' : ''}${i.contribution.toFixed(2)}</span>
+      </div>`).join('');
+    return `
+      <div class="stat rel">
+        <div class="label">How they see you</div>
+        <div class="rel-band ${r.value < -0.15 ? 'bad' : r.value > 0.15 ? 'good' : ''}">${escapeHtml(r.summary)}</div>
+        ${rows}
+      </div>`;
+  }
+  const worst = Relations.toward(nid, TUNE).filter((x) => Math.abs(x.value) > 0.02).slice(0, 4);
+  if (!worst.length) return '';
+  return `
+    <div class="stat rel">
+      <div class="label">How the continent sees you</div>
+      ${worst.map((x) => `
+        <div class="rel-row"><span class="lbl">${escapeHtml(x.name)}</span>
+          <span class="num ${x.value < -0.15 ? 'bad' : x.value > 0.15 ? 'good' : ''}">${x.value >= 0 ? '+' : ''}${x.value.toFixed(2)}</span>
+        </div>`).join('')}
+    </div>`;
 }
 
 /*

@@ -52,6 +52,7 @@ const Victory = (function () {
    * first time and would be just as quiet here.
    */
   function load(doc) {
+    ctxCache = null; ctxEpoch = -1; ctxTurn = -1;
     const rows = (doc && doc.capitals) || {};
     capitals = {};
     seatSet = null;
@@ -129,8 +130,27 @@ const Victory = (function () {
    * conditions across seventy nations is two hundred and ten evaluations, and
    * each of them wants the same four world totals.
    */
+  let ctxCache = null, ctxEpoch = -1, ctxTurn = -1;
+
   function context(tune) {
     const t = tune || window.TUNE;
+    /*
+     * ONE PASS PER TURN, SHARED BY EVERY NATION.
+     *
+     * `Victory.progress` is called for all three conditions for every nation the
+     * AI deliberates for, and this builds the world totals plus a 1,676-Area
+     * sweep for the ideology tally — so a per-caller rebuild is O(nations^2 +
+     * nations x areas) a turn. Measured: it took a 244 ms round to 783 ms by
+     * turn 20 and got worse as the roster grew.
+     *
+     * Cached on `Game.ownerEpoch()` — the MODEL clock, which moves on every
+     * ownership write whatever the batch depth. `Game.epoch()` is the render
+     * clock and is deliberately frozen inside a batch, so keying on it hands a
+     * mid-sweep caller a snapshot taken before half the map moved.
+     */
+    const epoch = Game.ownerEpoch();
+    const turn = World.getTurn();
+    if (ctxCache && ctxEpoch === epoch && ctxTurn === turn) return ctxCache;
     let pop = 0, gdp = 0;
     const per = [];
     const rows = new Map();
@@ -170,7 +190,10 @@ const Victory = (function () {
       const dom = Game.dominantOf(one);
       if (dom >= 0) { byIdeology[dom]++; areas++; }
     }
-    return { pop, gdp, median, rows, byIdeology, areas };
+    ctxCache = { pop, gdp, median, rows, byIdeology, areas };
+    ctxEpoch = epoch;
+    ctxTurn = turn;
+    return ctxCache;
   }
 
   /* ------------------------------------------------------------------ */

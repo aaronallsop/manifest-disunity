@@ -125,6 +125,7 @@ const Sim = (function () {
     const rng = RNG.create(seed);
     Game.reset();
     Ledger.reset();
+    Relations.reset();
     Colors.reset();
     World.setTurn(0);
     Market.loadState(null);

@@ -59,6 +59,7 @@ export async function bootWorld(opts = {}) {
 
   Game.reset();
   Ledger.reset();
+  Relations.reset();
   Colors.reset();
   World.setTurn(0);
   Market.loadState(null);

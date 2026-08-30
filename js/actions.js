@@ -642,6 +642,17 @@ const Actions = (function () {
       Game.earn(tid, gain * 1e6);
       markTraded(S, tid);
       markTraded(tid, S);
+      /*
+       * Both directions, and the only relations term that accumulates through
+       * ordinary play rather than through violence — which is what lets a
+       * patient nation build standing without taking anything from anybody.
+       */
+      Relations.record(S, tid, 'traded', { tune: TUNE });
+      Relations.record(tid, S, 'traded', { tune: TUNE });
+      Ledger.append({
+        phase: 'action', subject: S, kind: 'trade', delta: gain * 1e6, partner: tid,
+        text: `${Sname} and ${Tname} signed a trade deal worth ${Math.round(gain)}M to each.`,
+      });
     });
     Market.update(TUNE); // traded supply moves the prices
     flash(`\u{1F69B} <strong>${escapeHtml(Sname)}</strong> and <strong>${escapeHtml(Tname)}</strong> signed a trade deal &mdash; both treasuries +${fmtGdp(gain * 1e6)}.`, 'good');

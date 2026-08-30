@@ -899,6 +899,11 @@ export const SCHEMA = {
     label: 'AI: weight of closing on a victory condition',
     doc: 'How much a nation wants the ONE requirement currently holding back the victory it is nearest. The heaviest single weight, deliberately: without it the AI does not know the conditions exist and the human wins by default the moment they read the table, which is not an opponent but a scoreboard with nobody else on it. It only scores requirements a territorial move can actually shift \u2014 nothing an annexation does moves Influence, which is exactly the shape of the capstone and the reason a conqueror stalls.',
   },
+  'ai.wStanding': {
+    v: 0.40, min: -2, max: 2, step: 0.05, group: 'AI',
+    label: 'AI: weight of how the target already sees it',
+    doc: 'SIGNED, and the sign is the interesting part: a nation that already resents you is cheaper to move against, because you have nothing left to lose with them. Turning it negative gives you an AI that prefers to attack its friends, which is a coherent and horrible opponent.',
+  },
   'ai.temperature': {
     v: 0.22, min: 0, max: 2, step: 0.01, group: 'AI',
     label: 'AI: decision temperature',
@@ -918,6 +923,77 @@ export const SCHEMA = {
     v: 8, min: 0, max: 40, step: 1, group: 'Unite',
     label: 'Union cooldown (turns)',
     doc: 'World turns after an attempted union before a nation may propose another. Unite was the ONE action in the game with no clock on it \u2014 annex, release and changing course all have one \u2014 so a nation could re-roll the same union every turn until it landed, which makes any probability under 100% equal to 100% given enough turns. Found by the M6.3 AI on its first run: 35 of 53 nations opened by proposing a union.',
+  },
+  /* ---------------- what nations remember ---------------- */
+  'rel.base': {
+    v: 0, min: -1, max: 1, step: 0.05, group: 'Relations',
+    label: 'Relations: where two nations start',
+    doc: 'Indifference. Nations that have never done anything to each other have no opinion, and every opinion in the game is therefore something that HAPPENED \u2014 which is what makes the record answerable rather than assumed.',
+  },
+  'rel.decay': {
+    v: 0.94, min: 0.5, max: 1, step: 0.005, group: 'Relations',
+    label: 'Relations: what remains of a memory each turn',
+    doc: 'At 0.94 an event is two thirds of itself after ten turns and a fifth after thirty. This is what makes "recently" mean something without anybody storing a window \u2014 and setting it to 1 gives nations perfect infinite memory, which is a different and much less forgiving game.',
+  },
+  'rel.forget': {
+    v: 0.002, min: 0, max: 0.1, step: 0.001, group: 'Relations',
+    label: 'Relations: weight below which a memory is dropped',
+    doc: 'Housekeeping with a real reason: the list is append-only and saved, so without a floor a long game accumulates one entry per action per nation forever, for entries contributing less than a thousandth of a relation.',
+  },
+  'rel.maxScale': {
+    v: 3, min: 1, max: 20, step: 0.5, group: 'Relations',
+    label: 'Relations: most a single event can be multiplied by',
+    doc: 'Five Areas taken is worse than one, but the point of a magnitude is that a big event is bigger \u2014 not that a big enough event is unforgivable forever.',
+  },
+  'rel.magAnnexed': {
+    v: -0.22, min: -1, max: 1, step: 0.01, group: 'Relations',
+    label: 'Relations: they took our ground',
+    doc: 'Per Area taken, before the scale. The core grievance the whole structure exists to carry.',
+  },
+  'rel.magWarred': {
+    v: -0.30, min: -1, max: 1, step: 0.01, group: 'Relations',
+    label: 'Relations: and it came to a civil war',
+    doc: 'On top of the annexation itself. Taking ground is resented; fighting over it is remembered.',
+  },
+  'rel.magWitnessed': {
+    v: -0.05, min: -1, max: 1, step: 0.01, group: 'Relations',
+    label: 'Relations: we watched them take somebody else\u2019s',
+    doc: 'Small, and it is the seed of every coalition (M7.2): a nation nobody has attacked still ends up surrounded by neighbours who have been watching. Without a witness term a conqueror is resented only by its victims, who are by then the nations least able to do anything about it.',
+  },
+  'rel.magAbsorbed': {
+    v: -0.14, min: -1, max: 1, step: 0.01, group: 'Relations',
+    label: 'Relations: they swallowed a nation whole',
+    doc: 'Witnessed by everyone. A union is peaceful and it still removes a country from the map, which the remaining countries notice.',
+  },
+  'rel.magBroke': {
+    v: -0.35, min: -1, max: 1, step: 0.01, group: 'Relations',
+    label: 'Relations: their bid to unite us fell apart',
+    doc: 'The worst single thing one nation can do to another short of conquest: you proposed to absorb them, it failed, and their country came apart in the attempt.',
+  },
+  'rel.magGranted': {
+    v: 0.30, min: -1, max: 1, step: 0.01, group: 'Relations',
+    label: 'Relations: they handed us ground',
+    doc: 'Gratitude, and the reason release is not only a way to shed a problem: the neighbour who takes the Areas remembers who gave them.',
+  },
+  'rel.magTraded': {
+    v: 0.12, min: -1, max: 1, step: 0.01, group: 'Relations',
+    label: 'Relations: we did business',
+    doc: 'Both directions. Small per deal and the only term that accumulates through ordinary play rather than through violence, which is what lets a patient nation build standing without taking anything.',
+  },
+  'rel.magSeceded': {
+    v: -0.40, min: -1, max: 1, step: 0.01, group: 'Relations',
+    label: 'Relations: we broke away from them',
+    doc: 'Directed, and only one way: the breakaway resents the state it left. The parent\u2019s own feeling about the secession is carried by the Areas it lost, which Authority already reads.',
+  },
+  'rel.acceptFriend': {
+    v: 0.18, min: -1, max: 1, step: 0.01, group: 'Relations',
+    label: 'Relations: standing at which a neighbour will take ground you release',
+    doc: 'Replaces "there is a trade deal on the books", which was a proxy for exactly this and could not tell a long partnership from a single transaction ten turns ago.',
+  },
+  'rel.uniteSwing': {
+    v: 0.35, min: 0, max: 1.5, step: 0.05, group: 'Relations',
+    label: 'Relations: how far standing moves a union\u2019s chance',
+    doc: 'A nation that likes you is likelier to accept union and one that does not is likelier to fall apart in the attempt. Multiplies the peace chance, so it scales a probability rather than adding to one \u2014 which keeps the result inside [0,1] without a clamp doing the work.',
   },
   /* ---------------- autonomy ---------------- */
   'autonomy.maxShare': {

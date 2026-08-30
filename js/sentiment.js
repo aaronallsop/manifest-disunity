@@ -142,7 +142,38 @@ const Sentiment = (function () {
    * owns, and `Ideology.affinity` between two fixed ideologies is a lookup, not
    * a computation — asking per Area per movement is the M3.3 mistake again.
    */
+  let ctxCache = null, ctxEpoch = -1, ctxTurn = -1;
+
   function context(owners, tune) {
+    /*
+     * ONE PASS PER TURN for the read-only callers, and only for them.
+     *
+     * `explain` and `clock` build this to answer one question about one Area,
+     * and the AI's scorer asks that question for every candidate release and
+     * every candidate grant of autonomy — several hundred times a turn, each
+     * one a full sweep of the roster and all 1,676 Areas. Measured: it was
+     * 950 ms of a 1,000 ms round.
+     *
+     * The `owners` argument is the PHASE's, which passes a specific ownership
+     * snapshot and must never be handed somebody else's — so only the
+     * `owners == null` path is cached. Keyed on `Game.ownerEpoch()`, the MODEL
+     * clock: it moves on every ownership write whatever the batch depth, where
+     * `Game.epoch()` is the render clock and is frozen inside one. Keying on the
+     * render clock handed the scorer a context built before a nation existed,
+     * indexed by a nation index that had not been assigned yet.
+     */
+    if (owners == null) {
+      const epoch = Game.ownerEpoch();
+      const turn = World.getTurn();
+      if (ctxCache && ctxEpoch === epoch && ctxTurn === turn) return ctxCache;
+      const built = build(owners, tune);
+      ctxCache = built; ctxEpoch = epoch; ctxTurn = turn;
+      return built;
+    }
+    return build(owners, tune);
+  }
+
+  function build(owners, tune) {
     const byNation = [];           // nation index -> {qol, liberties, power, authority}
     let maxWeight = 0;
     const weightOf = [];
@@ -243,7 +274,16 @@ const Sentiment = (function () {
       neighbourSum,
       occupied: Game.isOccupied ? Game.isOccupied(areaId) : false,
       autonomous: Game.isAutonomous ? Game.isAutonomous(areaId) : false,
-      garrison: (ctx.byNation[Game.nationIndexOf(Game.getOwner(areaId))] || {}).garrison || 0,
+      /*
+       * Read LIVE, not from the cached context. The garrison is the one input
+       * here that changes without ownership moving and without the turn
+       * advancing — the two things the context cache is keyed on — so a player
+       * dragging the Garrison slider would have seen the sentiment panel report
+       * the pressure they had before they touched it. Caught by the test that
+       * garrisons fully and checks the target moves.
+       */
+      garrison: typeof Military !== 'undefined'
+        ? Military.garrisonPressure(Game.getOwner(areaId), t) : 0,
       cap: ctx.caps[mi],
       current: pop > 0 ? (c.mov[movementName] || 0) / pop : 0,
     }, t, true);   // collect: this IS the explanation

@@ -259,7 +259,12 @@ Done in the order **M3.4 -> M3.1 -> M3.2 -> M3.3**, because the plan lists M3.4'
 
 ## M7 — Depth and widen
 
-- [ ] **M7.1** Relations as one append-only structure.
+- [x] **M7.1** Relations as one append-only structure — `js/relations.js`. Directed, decaying, a Why
+      record, recorded from the resolvers beside the ledger writes. `witnessed` is the term the
+      coalitions rest on. Two live consumers: a union's odds and whether a neighbour will take
+      released ground. Plus three caches (a from|to index, `Victory.context`, `Sentiment.context`)
+      keyed on a new `Game.ownerEpoch()` — the MODEL clock, where `Game.epoch()` is the render clock
+      and is frozen inside a batch. Round cost 244ms -> 97ms; suite 298s -> 104s.
 - [ ] **M7.2** Coalitions replacing the blue shell.
 - [ ] **M7.3** War weariness.
 - [ ] **M7.4** Events and crises.
@@ -300,7 +305,7 @@ Performance, measured on the real map rather than predicted: a world turn 24.7 -
 phases 12.4 -> 2.8 ms, political drift 8.0 -> 2.0 ms, a 50-turn simulator run 1,237 -> 466 ms. The
 columnar store is 173 KB and the adjacency graph 43.5 KB.
 
-Next: **M6.5** (faction-switch, military as allocation, suppression and autonomy valves) — and the AI should learn that the victory conditions exist.
+Next: **M7.2** (coalitions, replacing the raw blue shell — trigger on `threat = size_share * (1 - influence)`, read off the relations list M7.1 built).
 
 Open, carried into M2.3: after 21 turns no Area is yet LED by a minority ideology (Rep 1,288 /
 Dem 388 of 1,676). That is the expected shape at 11% organised movements and it is M5's dial to
