@@ -494,6 +494,12 @@ export const SCHEMA = {
     doc: 'Measured from the last DELIBERATE change, not from gov.since. Those look like the same clock and are not: `since` is set at founding, so every nation would begin the game under a lockout for a decision nobody made, and refreshGovernments moves it whenever the population shifts a plurality, which would hand a player a free reset for something they did not do. Without a cooldown at all, a player could change hats every turn and dodge every consequence in the game.',
   },
 
+  'ledger.cap': {
+    v: 4000, min: 100, max: 100000, step: 100, group: 'Nations',
+    label: 'Events the ledger keeps',
+    doc: 'The ledger is append-only and IS state - a save that forgets what happened cannot show a timeline, and "why is my Authority falling" is not answerable from a snapshot of the present. The cap exists so an unattended simulator run cannot grow it without bound; a full 80-turn game sits well inside it.',
+  },
+
   'nation.historyWindow': {
     v: 20, min: 4, max: 80, step: 1, group: 'Nations',
     label: 'Territorial memory, in turns',

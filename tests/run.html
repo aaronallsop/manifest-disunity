@@ -84,6 +84,7 @@
     <script src="../js/civilwar.js"></script>
     <script src="../js/mapmodes.js"></script>
     <script src="../js/turns.js"></script>
+    <script src="../js/ledger.js"></script>
     <script src="../js/sentiment.js"></script>
     <script src="../js/world.js"></script>
     <script src="../js/market.js"></script>
@@ -123,7 +124,7 @@
         const canonical = await import('./harness.js');
         canonical.reset();
 
-        const suiteFiles = ['./rng.test.js', './tunables.test.js', './ideology.test.js', './graph.test.js', './state.test.js', './content.test.js', './nation.test.js', './power.test.js', './invariants.test.js', './saves.test.js', './batching.test.js', './parties.test.js', './movements.test.js', './sentiment.test.js', './secession.test.js', './valves.test.js', './geo-ct.test.js', './civilwar.test.js', './annex.test.js', './world.test.js', './drift.test.js', './distribution.test.js', './market.test.js', './trade.test.js', './release.test.js', './counts.test.js'];
+        const suiteFiles = ['./rng.test.js', './tunables.test.js', './ideology.test.js', './graph.test.js', './state.test.js', './content.test.js', './nation.test.js', './power.test.js', './invariants.test.js', './saves.test.js', './batching.test.js', './parties.test.js', './movements.test.js', './sentiment.test.js', './secession.test.js', './valves.test.js', './ledger.test.js', './geo-ct.test.js', './civilwar.test.js', './annex.test.js', './world.test.js', './drift.test.js', './distribution.test.js', './market.test.js', './trade.test.js', './release.test.js', './counts.test.js'];
         for (const f of suiteFiles) {
           try {
             await import(f + bust);

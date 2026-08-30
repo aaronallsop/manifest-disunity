@@ -165,7 +165,11 @@ Done in the order **M3.4 -> M3.1 -> M3.2 -> M3.3**, because the plan lists M3.4'
 - [x] **M4.5** Occupation upkeep scaled by local hostility: `base * (1 + w*hostility) * (1 + n^alpha)`.
       The count term is the anti-snowball brake; the hostility term is what makes WHICH ground you
       took matter as much as how much. One helper, no new state — it reads the sentiment M4.2 keeps.
-- [ ] **M5.1** The event ledger.
+- [x] **M5.1** `js/ledger.js`: one append-only structure serving the tooltip, the formula expander,
+      the timeline and the simulator. `terms` IS the Why record, so logging an explanation costs one
+      array reference rather than a second calculation. Wired into annex, civil war, both unite
+      outcomes, release, changing course and both tiers of secession — and a nation ceasing to exist
+      is an event now rather than a silent `Map.delete`.
 - [ ] **M5.2** Developer dashboard.
 - [ ] **M5.3** 50-turn step-through simulator.
 - [ ] **M5.4** Player-facing explanation (clocks, newspaper, Pressure mode, fog).

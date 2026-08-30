@@ -70,6 +70,8 @@ export function assemble(session = {}) {
     market: Market.serialize(),
     colors: Colors.serialize(),
     parties: Movements.serialize(),
+    ledger: Ledger.serialize(),
+    ledger: Ledger.serialize(),
     // only deliberate overrides, so a schema change is not baked into a save
     tune: window.TUNE.diff(),
     ui: session.ui || {},
@@ -117,6 +119,7 @@ export function applyModel(doc) {
   World.loadState(doc.world || { turn: (doc.meta && doc.meta.turn) || 0 });
   Colors.loadState(doc.colors);
   Movements.loadState(doc.parties);
+  Ledger.loadState(doc.ledger);
   Market.loadState(doc.market);
   TurnSystem.loadState(doc.turns);
   Game.loadState(doc.game); // emits -> full re-render
@@ -130,6 +133,6 @@ export function applyModel(doc) {
 }
 
 /** Every module a document must round-trip, for the "nothing was forgotten" test. */
-export const STATEFUL_MODULES = ['Game', 'TurnSystem', 'World', 'Market', 'Colors', 'Movements'];
+export const STATEFUL_MODULES = ['Game', 'TurnSystem', 'World', 'Market', 'Colors', 'Movements', 'Ledger'];
 
 export default { VERSION, buildStamp, assemble, validate, applyModel, STATEFUL_MODULES };

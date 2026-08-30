@@ -200,7 +200,14 @@ const Actions = (function () {
     A = null;
     clearVisuals();
     if (store.rng.stream('unite').chance(P)) {
+      const gained = Game.getNation(tid).counties.size;
       Game.mergeInto(S, tid);
+      Ledger.append({
+        phase: 'action', subject: S, kind: 'unite', delta: gained,
+        text: `${Tname} united into ${Game.getNation(S).name}.`,
+        terms: [{ name: 'Chance of a peaceful union', value: P, key: 'war.unitePeaceBase' }],
+        absorbed: tid,
+      });
       flash(`🤝 <strong>${escapeHtml(Tname)}</strong> united into <strong>${escapeHtml(Game.getNation(S).name)}</strong>.`, 'good');
     } else {
       const score = CivilWar.uniteSeverity(P, TUNE);
@@ -221,6 +228,14 @@ const Actions = (function () {
         return born;
       });
       TurnSystem.insertAfter(S, created);
+      Ledger.append({
+        phase: 'action', subject: S, kind: 'unite', delta: -(plan.defect.length + plan.secede.length),
+        text: `${Sname}'s bid to unite ${Tname} failed and the union fell apart: `
+          + `${plan.defect.length} Areas defected and ${created.length} new nations broke away.`,
+        terms: [{ name: 'Chance of a peaceful union', value: P, key: 'war.unitePeaceBase' },
+                { name: 'Severity', value: score, key: 'war.pointsScale' }],
+        target: tid, failed: true,
+      });
       const parts = [`${plan.defect.length} counties defected to <strong>${escapeHtml(Tname)}</strong>`];
       if (created.length) parts.push(`${created.length} new ${plural(created.length, 'nation', 'nations')} broke away`);
       flash(`⚔️ <strong>${escapeHtml(Sname)}</strong>'s bid to unite <strong>${escapeHtml(Tname)}</strong> sparked a civil war! ${parts.join('; ')}.`, 'bad');
@@ -882,6 +897,19 @@ const Actions = (function () {
     const bill = `<span class="deal-cost">Cost ${fmtGdp(cost)}.</span>`;
 
     let msg, kind;
+    /*
+     * The civil-war roll IS the explanation, and it already exists: dice, points
+     * and the flip magnitude are what `CivilWar.resolve` returned. Logging them
+     * as `terms` costs one array literal and turns the six-second toast into a
+     * permanent, inspectable account of why the annexation went the way it did.
+     */
+    const warTerms = res.triggered ? [
+      { name: 'Dice', value: res.diceCount, key: 'war.dicePerFlipPoint' },
+      { name: 'Roll', value: res.diceSum, key: 'war.diceSides' },
+      { name: 'Points', value: res.points, key: 'war.pointsScale' },
+      { name: 'Flip magnitude', value: res.flipMagnitude, key: 'war.diceFlipFloor' },
+      { name: 'Score', value: res.score, key: 'war.victoryBand' },
+    ] : null;
     // Every branch below is a multi-step mutation; batch() collapses each to one
     // render instead of two or three full border meshes and leaderboard rebuilds.
     if (!res.triggered) {
@@ -930,6 +958,17 @@ const Actions = (function () {
     A = null;
     restoreColorMode();
     clearVisuals();
+    Ledger.append({
+      phase: 'action', subject: nid, kind: res.triggered ? 'war' : 'annex',
+      delta: chosen.length,
+      text: res.triggered
+        ? `${Game.getNation(nid) ? Game.getNation(nid).name : nid} fought a civil war over `
+          + `${chosen.length} ${chosen.length === 1 ? 'Area' : 'Areas'} — ${String(res.outcome).replace('_', ' ')}.`
+        : `${Game.getNation(nid) ? Game.getNation(nid).name : nid} annexed ${chosen.length} `
+          + `${chosen.length === 1 ? 'Area' : 'Areas'} peacefully.`,
+      terms: warTerms, outcome: res.triggered ? res.outcome : 'peaceful',
+      from: res.fromIdeology, to: res.toIdeology,
+    });
     flash(msg, kind);
     completeTurn();
   }
@@ -1158,6 +1197,13 @@ const Actions = (function () {
 
     A = null;
     clearVisuals();
+    Ledger.append({
+      phase: 'action', subject: nid, kind: 'release', delta: -chosen.length,
+      text: `${name} released ${chosen.length} ${chosen.length === 1 ? 'Area' : 'Areas'}: `
+        + `${toNewNations} into new nations, ${toNeighbours} to neighbours, ${stayed} refused.`,
+      terms: [{ name: 'Refused by every neighbour', value: stayed, key: 'release.acceptAffinity' }],
+      born: born.length,
+    });
     const parts = [];
     if (born.length) {
       parts.push(`${toNewNations} ${plural(toNewNations, 'Area', 'Areas')} became ` +

@@ -885,11 +885,28 @@ const Game = (function () {
     if (!silent) emit({ ownership: true, roster: true });
     return id;
   }
-  /** Delete nations with no territory. Returns how many were removed. */
+  /**
+   * Delete nations with no territory. Returns how many were removed.
+   *
+   * A nation being conquered out of existence used to be a silent `Map.delete`:
+   * the swatch vanished from the leaderboard, the turn order quietly shortened,
+   * and the player could not tell "Wyoming was annihilated" from "I mis-clicked".
+   * It is an event now, which is the cheapest half of the elimination feedback
+   * the review asks for.
+   */
   function pruneEmpty() {
     refreshCounties();
     let n = 0;
-    for (const [id, rec] of nations) if (rec._counties.size === 0) { nations.delete(id); n++; }
+    for (const [id, rec] of nations) {
+      if (rec._counties.size !== 0) continue;
+      nations.delete(id);
+      n++;
+      Ledger.append({
+        turn: worldTurn(), phase: 'roster', subject: id, kind: 'died', delta: -1,
+        text: `${rec.name} ceased to exist.`,
+        founded: rec.founded, lost: rec.lost.length,
+      });
+    }
     return n;
   }
 
@@ -1216,9 +1233,21 @@ const Game = (function () {
     }
 
     n.treasury -= cost;
+    const wasId = Ideology.idAt(from);
     n.gov.rulingIdeology = ideologyId;
     n.gov.since = turn;
     n.gov.lastChange = turn;
+    Ledger.append({
+      turn, phase: 'action', subject: nid, kind: 'govern', delta: distance,
+      text: `${n.name} changed course from ${Ideology.nameAt(from)} to ${Ideology.byId(ideologyId).name}.`,
+      terms: [
+        { name: 'Support for the new course', value: share, key: 'gov.changeMinShare' },
+        { name: 'Distance moved on the axes', value: distance, key: null },
+        { name: 'Cost', value: -cost, key: 'gov.changeCost' },
+        { name: 'Authority', value: -T('gov.changeAuthorityHit') * distance, key: 'gov.changeAuthorityHit' },
+      ],
+      from: wasId, to: ideologyId,
+    });
     // Applied to the STOCK, not to the target: the target recomputes from the
     // world next turn and would simply undo it. This is a shock, and the stock
     // discipline is what turns it back into a recovery over several turns.

@@ -54,6 +54,7 @@ export async function bootWorld(opts = {}) {
   const raw = await loadData();
 
   Game.reset();
+  Ledger.reset();
   Colors.reset();
   World.setTurn(0);
   Market.loadState(null);

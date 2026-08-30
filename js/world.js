@@ -652,6 +652,11 @@ const World = (function () {
         }
         const nation = Game.getNation(best);
         if (nation) {
+          Ledger.append({
+            turn, phase: 'secession', subject: best, kind: 'found', delta: nation.counties.size,
+            text: `${rec.name} came into being with ${nation.counties.size} `
+              + `${nation.counties.size === 1 ? 'Area' : 'Areas'}.`,
+          });
           nation.name = rec.name;
           nation.gov.rulingIdeology = rec.ideology;
           nation.gov.since = turn;
@@ -660,8 +665,19 @@ const World = (function () {
         rec.nation = best;
         rec.state = 'realized';
         TurnSystem.insertAfter(Game.getOwner(claim[0]) || best, born);
-        events.push({ kind: 'declare', movement: rec.name, nation: best,
-                      areas: claim.length, born: born.length, turn });
+        const ev = { kind: 'declare', movement: rec.name, nation: best,
+                     areas: claim.length, born: born.length, turn };
+        events.push(ev);
+        // The explanation is the one the model already computed for the Area the
+        // movement is strongest in — no second calculation, and it names the
+        // exact factors that got it over the line.
+        const why = Sentiment.explain(rec.core[0], rec.name, tn);
+        Ledger.append({
+          turn, phase: 'secession', subject: best, kind: 'declare', delta: claim.length,
+          text: `${rec.name} declared independence, taking ${claim.length} `
+            + `${claim.length === 1 ? 'Area' : 'Areas'}.`,
+          terms: Ledger.termsOf(why), movement: rec.name,
+        });
       }
 
       /* ---- tier 1: defections to a movement that already has a country ---- */
@@ -680,6 +696,14 @@ const World = (function () {
         Game.moveCounties([r.f], nid, { silent: true, reason: 'defect' });
         events.push({ kind: 'defect', movement: r.rec.name, nation: nid,
                       area: r.f, from: owner, share: r.share, turn });
+        const area = Game.county[r.f];
+        Ledger.append({
+          turn, phase: 'secession', subject: nid, kind: 'defect', delta: 1,
+          text: `${area ? area.name : r.f} left ${Game.getNation(owner) ? Game.getNation(owner).name : owner} `
+            + `for ${Game.getNation(nid).name} — ${(r.share * 100).toFixed(0)}% organised.`,
+          terms: Ledger.termsOf(Sentiment.explain(r.f, r.rec.name, tn)),
+          area: r.f, movement: r.rec.name, from: owner,
+        });
         spent++;
       }
     });

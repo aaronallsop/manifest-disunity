@@ -111,6 +111,8 @@ async function init() {
     store.neighbors = neighbors; // Census County Adjacency File (fips -> [fips])
     store.trade = trade;         // offline-baked trade attributes (county_trade.json)
     store.transport = transport; // rail / interstates / Canada-Mexico gateways (transport.json)
+    Ledger.reset();
+    Ledger.reset();
     Colors.assign(Object.keys(data.states));
     Game.init(data, adjacency, areas, { trade, transport, culture: cultureMode });
     const emerged = Parties.setup(partyDefs, store.rng); // setup-only regional party spawns
