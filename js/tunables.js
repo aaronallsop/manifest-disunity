@@ -1189,6 +1189,58 @@ export const SCHEMA = {
     label: 'Influence: cost of not being recognised',
     doc: 'SIGNED, AND MEASURED AS A DEFICIT: a fully recognised nation contributes exactly nothing and a wholly unrecognised one loses the full weight. Written the other way round \u2014 a positive term worth 1.0 to everybody who is recognised \u2014 it would have raised every established nation\u2019s Influence by a constant and quietly re-tuned the coalition trigger, which is the mistake the leadership term already made once.',
   },
+  /* ---------------- projection ---------------- */
+  'proj.decay': {
+    v: 0.86, min: 0.5, max: 0.999, step: 0.005, group: 'Projection',
+    label: 'How fast reach falls off with distance',
+    doc: 'Reach is decay to the power of the accumulated cost, so it falls smoothly and there is no ring on the map. At 0.86 an army is at half strength about five overland Areas from a capital and about eleven along a rail corridor — which is what makes the corridors worth holding.',
+  },
+  'proj.minReach': {
+    v: 0.18, min: 0.001, max: 0.9, step: 0.005, group: 'Projection',
+    label: 'Reach below which ground cannot be taken at all',
+    doc: 'THE BRAKE, and the thing the other two anti-snowball devices are not: the coalition and the cost of occupation make expansion expensive, and this makes it impossible. Measured across empire sizes, projecting from one capital: the worst of the 944 opening targets sits at 0.31 reach, a 270-Area empire’s worst frontier at 0.23, a 517-Area empire’s at 0.13 and a 660-Area one’s at 0.10. So 0.18 leaves ordinary play untouched, starts refusing the far corners somewhere past a quarter of the continent, and stalls a single-capital empire around a third of it — which is the size at which a conqueror has to answer for the shape of what it holds rather than only for its size. It is also the bound on the search: an Area nobody can act on does not need a number.',
+  },
+
+  'proj.homeFloor': {
+    v: 0.45, min: 0, max: 1, step: 0.01, group: 'Projection',
+    label: 'Reach a nation always has over ground it already holds',
+    doc: 'A state administers its own soil whatever the distance. Without it, nineteen of the fifty-one opening nations could not reach part of their own state and Nevada reached nine of its seventeen Areas — which reads as a broken map rather than as a limit. Applied AFTER the search so it never feeds the frontier: a far border still projects nothing beyond itself, because holding and taking are different questions.',
+  },
+  'proj.overlandCost': {
+    v: 1.0, min: 0.1, max: 5, step: 0.05, group: 'Projection',
+    label: 'Cost of moving into an Area with no transport at all',
+    doc: 'The unit everything else is measured in. Empty ground with no interstate and no railway is the hardest kind to move an army through, and most of the interior west is exactly that.',
+  },
+  'proj.highwayCost': {
+    v: 0.72, min: 0.05, max: 5, step: 0.02, group: 'Projection',
+    label: 'Cost of moving along an interstate',
+    doc: '1,421 of 2,430 counties carry one, so this is the ordinary case rather than the privileged one.',
+  },
+  'proj.railCost': {
+    v: 0.58, min: 0.05, max: 5, step: 0.02, group: 'Projection',
+    label: 'Cost of moving along a railway',
+    doc: 'Rail moves an army and its supplies where a road moves an army. 2,245 counties carry track — the difference between them and the rest is most of the shape of the reach map.',
+  },
+  'proj.hubCost': {
+    v: 0.34, min: 0.05, max: 5, step: 0.02, group: 'Projection',
+    label: 'Cost of moving through a rail hub',
+    doc: 'Seventy-six counties in the whole country, and holding one is worth a war. This is where the baked transport data stops being scenery.',
+  },
+  'proj.foreignCost': {
+    v: 2.2, min: 1, max: 10, step: 0.1, group: 'Projection',
+    label: 'How much dearer it is to project through ground you do not hold',
+    doc: 'Most of what makes a distant war hard. It is why a nation cannot fight on the far side of a neighbour it has not conquered, and why taking the ground in between is the move that unlocks the ground beyond it.',
+  },
+  'proj.costAtLimit': {
+    v: 1.6, min: 0, max: 6, step: 0.1, group: 'Projection',
+    label: 'Surcharge on an annexation at the very edge of reach',
+    doc: 'Between full reach and none, the price of taking an Area rises by this much. Distance is expensive before it is impossible — the refusal at `proj.minReach` should be the end of a ramp the player has been watching, not a wall they walk into.',
+  },
+  'proj.warAtLimit': {
+    v: 0.8, min: 0, max: 4, step: 0.05, group: 'Projection',
+    label: 'How much worse a war goes at the edge of reach',
+    doc: 'The same number that priced the attempt, applied to the fight: an army at the end of its supply line fights badly. Multiplies the existing force multiplier, so a nation with a strong field army can still overreach — it just cannot do it cheaply.',
+  },
   /* ---------------- elections ---------------- */
   'election.termTurns': {
     v: 16, min: 2, max: 80, step: 1, group: 'Elections',

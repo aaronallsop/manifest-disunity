@@ -686,7 +686,23 @@ const Game = (function () {
       return out;
     });
   }
-  const largestCounty = (arr) => arr.reduce((b, f) => (countyPop(f) > countyPop(b) ? f : b), arr[0]);
+  /*
+   * The most populous Area of a collection — ANY collection.
+   *
+   * It took an array and called `.reduce`, and half its callers hold a Set: a
+   * nation's `counties` is one, and passing it threw "arr.reduce is not a
+   * function" from inside a projection lookup three layers down. The same shape
+   * as `dominantOf` being handed a single id — a helper that accepts what its
+   * callers actually have is one fewer thing to remember.
+   */
+  function largestCounty(ids) {
+    let best = null, bestPop = -1;
+    for (const f of ids) {
+      const p = countyPop(f);
+      if (p > bestPop) { bestPop = p; best = f; }
+    }
+    return best;
+  }
 
   const SUFFIX = /\s+(County|Borough|Parish|Census Area|city|City|Municipality|Planning Region)$/;
   const nameForCounty = (fips) => (county[fips]?.name || 'New Republic').replace(SUFFIX, '');
@@ -1181,6 +1197,26 @@ const Game = (function () {
       canada: !!(x && x.external && members.some((m) => x.external.Canada.includes(m))),
       mexico: !!(x && x.external && members.some((m) => x.external.Mexico.includes(m))),
       railHub: !!(x && x.counties && members.some((m) => x.counties[m] && x.counties[m].rail_hub)),
+    };
+  }
+
+  /**
+   * The transport an Area carries, as flags (M7.11).
+   *
+   * `areaExport` answers "can goods leave the country here"; this answers "can
+   * an army move through here", and they read the same baked file for different
+   * questions. Members are checked rather than the Area id, because an Area is
+   * a merge of counties and a single rail hub inside one puts the hub in the
+   * Area — the M1.13 trap in its other direction.
+   */
+  function areaTransport(fips) {
+    const members = county[cid(fips)]?.counties || [cid(fips)];
+    const x = transportData;
+    const rows = x && x.counties ? members.map((m) => x.counties[m]).filter(Boolean) : [];
+    return {
+      rail: rows.some((r) => r.rail),
+      hub: rows.some((r) => r.rail_hub),
+      highway: rows.some((r) => r.interstates && r.interstates.length),
     };
   }
 
@@ -1688,6 +1724,7 @@ const Game = (function () {
     rulingBloc,
     earn,
     areaExport,
+    areaTransport,
     exportAccess,
     tradeCapacity,
     originalNations: () => originalNationCount,

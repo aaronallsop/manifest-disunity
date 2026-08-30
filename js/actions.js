@@ -775,6 +775,15 @@ const Actions = (function () {
         if (o && o !== A.nid && !A.blocked.has(o) && !A.chosen.has(nb)) sel.add(nb);
       }
     }
+    /*
+     * ...and beyond the edge of what this nation can project, nothing is
+     * selectable at all (M7.11). Dropped here rather than refused on click,
+     * because the map is the explanation: the ground you cannot reach is the
+     * ground that does not light up, and the panel says why underneath.
+     */
+    if (typeof Projection !== 'undefined') {
+      for (const f of [...sel]) if (!Projection.inRange(A.nid, f, TUNE)) sel.delete(f);
+    }
     A.selectable = sel;
   }
 

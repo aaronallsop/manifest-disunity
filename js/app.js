@@ -1748,6 +1748,35 @@ function renderPressure(fips) {
 }
 
 /*
+ * WHETHER YOU COULD ACTUALLY TAKE THIS (M7.11).
+ *
+ * Drawn on ground the player does not hold, because that is the only place the
+ * question comes up. Reach is one number and it does three things — it prices
+ * the annexation, it weakens the army that fights for it, and past
+ * `proj.minReach` it refuses the move outright — so all three are named here
+ * rather than discovered one at a time.
+ */
+function renderReach(fips, ownerId) {
+  if (typeof Projection === 'undefined') return '';
+  const me = you();
+  if (!me || !Game.getNation(me) || ownerId === me) return '';
+  const why = Projection.explain(me, fips, TUNE);
+  if (!why || !why.sources.length) return '';
+  const band = why.inRange ? (why.value > 0.45 ? 'good' : '') : 'bad';
+  return `
+    <div class="stat rel">
+      <div class="label">Your reach here &middot; ${Math.round(why.value * 100)}%</div>
+      <div class="rel-band ${band}">${escapeHtml(why.summary)}</div>
+      <div class="rel-row"><span class="lbl">Price of taking it</span>
+        <span class="when">distance from ${escapeHtml(why.seats[0] || 'your capital')}</span>
+        <span class="num ${why.costMultiplier > 1.5 ? 'bad' : ''}">&times;${why.costMultiplier.toFixed(2)}</span></div>
+      <div class="rel-row"><span class="lbl">How the fight goes</span>
+        <span class="when">an army at the end of its supply line</span>
+        <span class="num ${why.warMultiplier > 1.3 ? 'bad' : ''}">&times;${why.warMultiplier.toFixed(2)}</span></div>
+    </div>`;
+}
+
+/*
  * WHY ANYBODY WOULD LIVE HERE (M7.9).
  *
  * Migration happens between Areas, so this is the level it has to be explained
@@ -1798,6 +1827,7 @@ function renderCountyPanel(fips) {
       ${renderPolitics(pol, rec)}
     </div>
     ${renderLivability(fips)}
+    ${renderReach(fips, ownerId)}
     ${renderPressure(fips)}
     ${renderAreaActions(fips, ownerId)}
     ${renderEconomy(fips)}

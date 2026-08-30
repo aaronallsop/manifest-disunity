@@ -176,10 +176,36 @@ const Moves = (function () {
       targets.push(f);
     }
 
+    /*
+     * OUT OF REACH IS NOT A PRICE (M7.11). Past the edge of what a nation can
+     * project from its seats of government, along the network rather than across
+     * the map, there is no amount of money that buys the ground. This is the
+     * refusal every other anti-snowball device is not: the coalition and the
+     * cost of occupation make expansion expensive, and this makes it impossible
+     * until the nation takes the infrastructure that would carry it.
+     */
+    if (typeof Projection !== 'undefined') {
+      const far = targets.find((f) => !Projection.inRange(nid, f, T(tune)));
+      if (far) {
+        const why = Projection.explain(nid, far, T(tune));
+        return no(`${Game.nameForCounty(far)} is beyond anything you could hold. ${why.summary}`,
+          { projection: why });
+      }
+    }
+
     const shell = Game.blueShell(nid);
-    const cost = annexCost(targets, shell, tune);
+    const reachMult = typeof Projection !== 'undefined'
+      ? Projection.costMultiplier(nid, targets, T(tune)) : 1;
+    const cost = annexCost(targets, shell, tune) * reachMult;
     const against = [...new Set(targets.map((f) => Game.getOwner(f)).filter((o) => o && o !== nid))];
-    const forceMult = Military.warMultiplier(nid, against, tune);
+    /*
+     * ...and an army fighting at the edge of its reach fights worse. The same
+     * number that priced the attempt, so the panel explains both with one
+     * record rather than two that could disagree.
+     */
+    const reachWar = typeof Projection !== 'undefined'
+      ? Projection.warMultiplier(nid, targets, T(tune)) : 1;
+    const forceMult = Military.warMultiplier(nid, against, tune) * reachWar;
     const affordable = n.treasury >= cost;
 
     const before = Game.nationDemographics(nid);
@@ -191,7 +217,7 @@ const Moves = (function () {
       ok: affordable,
       reason: affordable ? null
         : `Mobilising costs ${Math.round(cost / 1e9)}bn and the treasury holds ${Math.round(Math.max(0, n.treasury) / 1e9)}bn.`,
-      cost, shell, targets, war, forceMult,
+      cost, shell, targets, war, forceMult, reachMult, reachWar,
       effects: [
         { label: 'Areas', value: targets.length },
         { label: 'Population', value: added.pop },
@@ -820,7 +846,11 @@ const Moves = (function () {
       // One intent per bordering nation, taking the Areas of theirs nearest to
       // you — a full power set of 3-Area combinations is thousands of intents
       // for a decision that turns on which neighbour, not which three Areas.
-      const targets = [...Game.annexTargets(nid)];
+      // Out-of-reach ground is not a candidate: the AI should not spend its
+      // scoring on moves the rules will refuse, and a list that offers them is
+      // a list that teaches the wrong thing.
+      const targets = [...Game.annexTargets(nid)]
+        .filter((f) => typeof Projection === 'undefined' || Projection.inRange(nid, f, T(tune)));
       const byOwner = {};
       for (const f of targets) {
         const o = Game.getOwner(f);

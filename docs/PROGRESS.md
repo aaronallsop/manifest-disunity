@@ -329,7 +329,16 @@ Done in the order **M3.4 -> M3.1 -> M3.2 -> M3.3**, because the plan lists M3.4'
       the plurality every turn and “it chose; it keeps its choice” locking in anybody who ever
       used the appeasement valve. A government whose Civil Liberties are already below
       `election.stealBelow` may refuse the result and pay in more of them; the player is asked.
-- [ ] **M7.11** Projection range off the transport network.
+- [x] **M7.11** Projection range off the transport network — `js/projection.js`. Reach is a bounded
+      Dijkstra from ONE place, where the government sits: making every captured seat a source made
+      the brake a no-op, because an empire built by conquest captures capitals by construction.
+      Entering an Area costs what its transport costs — hub, rail, interstate, open country — and
+      foreign ground costs 2.2x that, so armies move down the corridors the country was built
+      along. It prices an annexation, weakens the army that fights for it, and past
+      `proj.minReach` refuses the move outright: the opening board is untouched (944 of 944
+      targets), a 517-Area empire loses a third of its frontier and a 660-Area one loses nearly
+      half. Also fixed here: the distance array was Float32, so Dijkstra discarded its own heap
+      entries as stale and 481 of 944 targets were refused for a rounding error.
 - [ ] **M7.12** Widen east.
 
 ---
@@ -339,7 +348,7 @@ Done in the order **M3.4 -> M3.1 -> M3.2 -> M3.3**, because the plan lists M3.4'
 *(Updated as work proceeds — what is done, what is next, what was learned that is not yet
 written down elsewhere.)*
 
-**M0-M5 complete.** 762 tests green at `tests/run.html` in ~130s,
+**M0-M5 complete.** 780 tests green at `tests/run.html` in ~136s,
 `build/validate.py` reports 0 errors, and the game loads, plays and saves with a clean console.
 `DESIGN.md` rewritten at the M5 close: section 4.1 is the four power stocks, section 7 is movements,
 sentiment and two-tier secession, section 7.6 is the ledger, the simulator, the dashboard and the
@@ -360,7 +369,7 @@ Performance, measured on the real map rather than predicted: a world turn 24.7 -
 phases 12.4 -> 2.8 ms, political drift 8.0 -> 2.0 ms, a 50-turn simulator run 1,237 -> 466 ms. The
 columnar store is 173 KB and the adjacency graph 43.5 KB.
 
-Next: **M7.11** (projection range off the transport network — anti-snowball brake #3).
+Next: **M7.12** (widen east — bake homelands for Franklin, Acadiana, New England Revivalist, Central States Union and Great Lakes).
 
 Open, carried into M2.3: after 21 turns no Area is yet LED by a minority ideology (Rep 1,288 /
 Dem 388 of 1,676). That is the expected shape at 11% organised movements and it is M5's dial to
