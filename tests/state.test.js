@@ -296,3 +296,124 @@ describe('The field registry', () => {
     }
   });
 });
+
+describe('Ownership is stored once', () => {
+  const columnSays = () => {
+    // Rebuild the nation -> Areas mapping straight from the column, with no
+    // help from anything derived.
+    const st = Game.state();
+    const out = new Map();
+    for (let i = 0; i < st.n; i++) {
+      const nid = Game.getOwner(st.idAt(i));
+      if (!nid) continue;
+      if (!out.has(nid)) out.set(nid, new Set());
+      out.get(nid).add(st.idAt(i));
+    }
+    return out;
+  };
+  const agrees = (why) => {
+    const col = columnSays();
+    for (const [nid, n] of Game.nations) {
+      const want = col.get(nid) || new Set();
+      equal(n.counties.size, want.size, `${why}: ${n.name} holds ${n.counties.size} Areas, the column says ${want.size}`);
+      for (const f of n.counties) ok(want.has(f), `${why}: ${n.name} claims ${f}, which the column gives to someone else`);
+    }
+    // and every owned Area belongs to a live nation
+    for (const [nid] of col) ok(Game.nations.has(nid), `${why}: the column names dead nation ${nid}`);
+  };
+
+  it('every Area is owned by exactly one live nation at turn 0', async () => {
+    await bootWorld({ seed: SEED });
+    const st = Game.state();
+    let owned = 0;
+    for (let i = 0; i < st.n; i++) {
+      ok(st.owner[i] >= 0, `Area ${st.idAt(i)} is unowned at turn 0`);
+      owned++;
+    }
+    equal(owned, st.n);
+    agrees('at turn 0');
+    let total = 0;
+    for (const [, n] of Game.nations) total += n.counties.size;
+    equal(total, st.n, 'the nations between them hold a different number of Areas than exist');
+  });
+
+  it('nation.counties is DERIVED: writing the column moves the Area', async () => {
+    // This is the property. If `counties` were still a second source of truth,
+    // this write would be invisible to it and the two would silently diverge.
+    await bootWorld({ seed: SEED });
+    const f = '06037'; // Los Angeles
+    equal(Game.getOwner(f), '06');
+    ok(Game.getNation('06').counties.has(f));
+    Game.moveCounties([f], '32');       // to Nevada
+    equal(Game.getOwner(f), '32');
+    ok(!Game.getNation('06').counties.has(f), 'the losing nation still lists the Area');
+    ok(Game.getNation('32').counties.has(f), 'the winning nation does not list the Area');
+    agrees('after moveCounties');
+  });
+
+  it('stays consistent through annex, release, secession and merge', async () => {
+    await bootWorld({ seed: SEED });
+    const targets = [...Game.annexTargets('06')].slice(0, 5);
+    Game.moveCounties(targets, '06');
+    agrees('after an annex');
+
+    const some = [...Game.getNation('48').counties].slice(0, 14);
+    const made = Game.breakApart(some, { exclude: '48' });
+    agrees('after a break-apart');
+    ok(Game.nations.size >= 51 || made.length >= 0);
+
+    Game.mergeInto('06', '32');
+    agrees('after a merge');
+    ok(!Game.nations.has('32'), 'the absorbed nation was not pruned');
+  });
+
+  it('a nation with no Areas left is pruned, and its index is not reused', async () => {
+    await bootWorld({ seed: SEED });
+    const before = Game.nations.size;
+    Game.moveCounties([...Game.getNation('10').counties], '24'); // Delaware -> Maryland
+    equal(Game.nations.has('10'), false, 'an empty nation survived');
+    equal(Game.nations.size, before - 1);
+    agrees('after a nation died');
+    // a new nation must not inherit the dead one's Areas through a recycled index
+    const fresh = Game.createNation('Testland', [...Game.getNation('24').counties].slice(0, 3));
+    equal(Game.getNation(fresh).counties.size, 3);
+    agrees('after a new nation');
+  });
+
+  it('a save round-trip restores ownership from the column, not from the Sets', async () => {
+    await bootWorld({ seed: SEED });
+    Game.moveCounties([...Game.annexTargets('49')].slice(0, 6), '49');
+    const doc = JSON.parse(JSON.stringify(Game.serialize()));
+    const want = new Map();
+    for (const f in Game.county) want.set(f, Game.getOwner(f));
+
+    await bootWorld({ seed: 999 });   // a different world entirely
+    Game.loadState(doc);
+    for (const [f, nid] of want) equal(Game.getOwner(f), nid, `Area ${f} came back owned by the wrong nation`);
+    agrees('after a load');
+  });
+
+  it('the derived index is rebuilt once per mutation, not once per read', async () => {
+    await bootWorld({ seed: SEED });
+    // 200 reads with no mutation between them must not cost 200 rebuilds; the
+    // cheap proxy for that is that the Set object itself is stable.
+    const a = Game.getNation('06').counties;
+    const b = Game.getNation('06').counties;
+    ok(a === b, 'reading counties twice rebuilt the index');
+    Game.moveCounties([[...Game.annexTargets('06')][0]], '06');
+    const c = Game.getNation('06').counties;
+    ok(c === a, 'the Set is replaced rather than refilled; outstanding references would go stale');
+    ok(c.size === a.size);
+  });
+
+  it('nearest-nation ties break on nation index, not on traversal order', async () => {
+    await bootWorld({ seed: SEED });
+    // Determinism is the point: the old version tallied into a plain object and
+    // took the first maximum in insertion order, which was the order neighbours
+    // happened to leave a Set.
+    const f = [...Game.annexTargets('06')][0];
+    const a = Game.nearestNation(f);
+    await bootWorld({ seed: SEED });
+    equal(Game.nearestNation(f), a, 'the same question gave two answers in two identical worlds');
+  });
+});

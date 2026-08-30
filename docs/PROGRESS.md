@@ -80,8 +80,9 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done
         (which boots the world ~270 times) fell from 41.4s to 27.6s. Float64 not Float32 (D51).
   - [ ] **M2.3c** `advanceTurn` snapshots the store instead of building 1,676 object literals
         twice a turn; the five phases become index loops.
-  - [ ] **M2.3b** Ownership stored once: `Int16Array owner` is the truth, `nation.counties` becomes
-        a derived index rebuilt on an ownership epoch rather than a hand-synced second copy.
+  - [x] **M2.3b** Ownership stored once: `state.owner` (Int16Array of nation index) is the truth and
+        `nation.counties` is a derived Set refilled on an ownership epoch (D54). `moveCounties` went
+        from three writes per Area to one. Two tie-breaks made canonical on the way (D55).
 - [x] **M2.4** CSR adjacency graph, built once (`js/graph.js`), done BEFORE M2.3 because it builds
       the `fips -> int` Area index the columnar arrays need (D46). 1,676 nodes / 9,454 directed
       edges / 43.5 KB of flat Int32Array; a full graph sweep is 7.7x faster than the already-memoized

@@ -456,3 +456,28 @@ list: `clone()`, `copyFrom()`, `bytes()` and the save path all iterate it. The t
 the one that adds a field at runtime and clones — nothing in `clone()` mentions it by name, and it
 survives. Fields carry `save: false` when they are derived from immutable baked data (`anchor`), so
 the registry stays honest without putting 80 KB of reproducible numbers in every save.
+
+### D54 — `nation.counties` is a derived cache, rebuilt on an ownership epoch
+**M2.3b.** Ownership was two facts: `owner: Map<fips,nid>` and `nation.counties: Set<fips>`,
+hand-synced in `moveCounties` and `loadState`. Two sources of truth for one fact is a bug waiting
+for its third writer, and the target design adds occupier, claimant, homeland and garrison on top.
+`state.owner` (Int16Array of nation index, keyed by Area node) is now the only place ownership
+lives. `nation.counties` still exists, because about a hundred call sites iterate it, but it is a
+getter over a Set that is **refilled in one pass when the ownership epoch has moved** — never
+replaced, so an outstanding reference cannot go stale. Ownership changes are rare (annex, release,
+civil war) and reads are frequent, so that is one O(1,676) rebuild per mutation rather than per
+read, and `moveCounties` went from three writes per Area to one.
+
+The Set is a cache, not an interface: writing to it would be invisible to the column until the next
+ownership change. Nothing does — the only remaining reference outside `Game` is `serialize`, which
+reads it — and the suite asserts the column and every nation's Set agree after each kind of
+mutation, which is the invariant that actually matters.
+
+### D55 — Two tie-breaks made canonical while converting them to index space
+**M2.3b.** `nearestNation` and `nearestNationForGroup` tallied border counts into a plain object and
+took the first maximum in `Object.entries` order — insertion order, which was the order neighbours
+happened to leave a Set. `modalState` did the same over state FIPS. Two nations with an equal share
+of a border therefore resolved on a traversal detail, which is a replay divergence with no modelled
+cause, of exactly the kind D47 removed from the graph. Ties now break on the lower nation index and
+on the alphabetically first state FIPS respectively: facts about the world rather than about how it
+was walked.

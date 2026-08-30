@@ -25,8 +25,63 @@
 const Game = (function () {
   const county = {};
   const nations = new Map();
-  const owner = new Map();
   const alias = {}; // merged member county fips -> its Area id
+
+  /*
+   * OWNERSHIP IS STORED IN EXACTLY ONE PLACE: `state.owner`, an Int16Array of
+   * nation indices keyed by Area node.
+   *
+   * It used to live in two — `owner: Map<fips,nid>` AND `nation.counties:
+   * Set<fips>` — hand-synced in moveCounties and loadState. Two sources of truth
+   * for the same fact is a bug waiting for the third writer, and the target
+   * design adds occupier, claimant, homeland and garrison on top of it; each
+   * would either add another parallel index or bolt onto the same object.
+   *
+   * `nation.counties` still exists, because a hundred call sites iterate it, but
+   * it is now DERIVED: a getter that rebuilds every nation's Set in one pass
+   * when the ownership epoch has moved. Ownership changes are rare (annex,
+   * release, civil war) and reads are frequent, so that is one O(n) rebuild per
+   * mutation, not per read.
+   */
+  const nationIdList = [];            // nation index -> nation id
+  const nationIdx = new Map();        // nation id -> nation index
+  let ownerEpoch = 0, derivedEpoch = -1;
+
+  /** Index for a nation id, assigned on first use and never reused. */
+  function nationIndexOf(nid) {
+    let i = nationIdx.get(nid);
+    if (i === undefined) { i = nationIdList.length; nationIdList.push(nid); nationIdx.set(nid, i); }
+    return i;
+  }
+  const ownerIndexAt = (node) => (node < 0 ? -1 : state.owner[node]);
+  const ownerIdAt = (node) => { const i = ownerIndexAt(node); return i < 0 ? undefined : nationIdList[i]; };
+  function setOwnerNode(node, nid) {
+    if (node < 0) return;
+    state.owner[node] = nid == null ? -1 : nationIndexOf(nid);
+    ownerEpoch++;
+  }
+  /** Rebuild every nation's derived county Set, if ownership has moved. */
+  function refreshCounties() {
+    if (derivedEpoch === ownerEpoch || !state) return;
+    for (const [, n] of nations) n._counties.clear();
+    for (let i = 0; i < state.n; i++) {
+      const oi = state.owner[i];
+      if (oi < 0) continue;
+      const n = nations.get(nationIdList[oi]);
+      if (n) n._counties.add(state.idAt(i));
+    }
+    derivedEpoch = ownerEpoch;
+  }
+  /** Build a nation record whose `counties` is a view of the ownership column. */
+  function makeNation(props) {
+    const n = { ...props, _counties: new Set() };
+    Object.defineProperty(n, 'counties', {
+      enumerable: true,
+      get() { refreshCounties(); return n._counties; },
+    });
+    nationIndexOf(n.id);
+    return n;
+  }
   const cid = (f) => alias[f] || f;
   let adjacency = null;
   let state = null;   // the columnar Area store (js/state.js)
@@ -49,7 +104,10 @@ const Game = (function () {
     for (const k of Object.keys(county)) delete county[k];
     for (const k of Object.keys(alias)) delete alias[k];
     nations.clear();
-    owner.clear();
+    nationIdList.length = 0;
+    nationIdx.clear();
+    ownerEpoch = 0;
+    derivedEpoch = -1;
     graph = null;
     state = null;
     maritimeLinks = null;
@@ -194,19 +252,19 @@ const Game = (function () {
       delete c.raw;
     }
     for (const [st, s] of Object.entries(data.states)) {
-      nations.set(st, {
-        id: st, name: s.name, color: Colors.forState(st), counties: new Set(), origin: true,
+      nations.set(st, makeNation({
+        id: st, name: s.name, color: Colors.forState(st), origin: true,
         treasury: 0, gov: 'Republic',
         founded: 0,        // world turn the nation came into being
         homeSt: st,        // its own soil; anything else it holds is OCCUPIED
         lastAnnexTurn: -Infinity,
         lastReleaseTurn: -Infinity,
         tradeCooldown: {}, // partner key -> world turn of the last deal
-      });
+      }));
     }
-    for (const [fips, c] of Object.entries(county)) {
-      const n = nations.get(c.st);
-      if (n) { n.counties.add(fips); owner.set(fips, c.st); }
+    for (let i = 0; i < ids.length; i++) {
+      const st = county[ids[i]].st;
+      if (nations.has(st)) setOwnerNode(i, st);
     }
     originalNationCount = nations.size;
     // Open the books with a few turns of income banked. Without this the treasury
@@ -427,14 +485,12 @@ const Game = (function () {
 
   /** Nations sharing a real land border with `nid`. */
   function borderingNations(nid) {
-    const n = nations.get(nid);
-    if (!n) return [];
+    if (!nations.has(nid)) return [];
+    const self = nationIndexOf(nid);
     const out = new Set();
-    for (const f of n.counties) {
-      for (const nb of countyNeighbors(f)) {
-        const o = owner.get(nb);
-        if (o && o !== nid) out.add(o);
-      }
+    for (const i of graph.frontier(nationMask(nid))) {
+      const o = state.owner[i];
+      if (o >= 0 && o !== self) out.add(nationIdList[o]);
     }
     return [...out];
   }
@@ -485,30 +541,49 @@ const Game = (function () {
   const SUFFIX = /\s+(County|Borough|Parish|Census Area|city|City|Municipality|Planning Region)$/;
   const nameForCounty = (fips) => (county[fips]?.name || 'New Republic').replace(SUFFIX, '');
 
-  // nation sharing the most border with a county / group (its "nearest")
+  /*
+   * The nation sharing the most border with an Area or a group — its "nearest".
+   *
+   * Tallied by nation INDEX, not by id string. That matters for the tie-break:
+   * the old version tallied into a plain object and took the first maximum in
+   * `Object.entries` order, which is insertion order, which was the order the
+   * neighbours happened to come out of a Set. Two nations with an equal share of
+   * the border now resolve to the lower nation index, which is a fact about the
+   * world rather than about a traversal.
+   */
   function nearestNation(fips, excludeCounties) {
-    const tally = {};
-    for (const nb of countyNeighbors(fips)) {
-      if (excludeCounties && excludeCounties.has(nb)) continue;
-      const o = owner.get(nb);
-      if (o) tally[o] = (tally[o] || 0) + 1;
+    const node = nodeOf(fips);
+    if (node < 0) return null;
+    const tally = [];
+    for (const nb of graph.neighbors(node)) {
+      if (excludeCounties && excludeCounties.has(graph.idAt(nb))) continue;
+      const o = state.owner[nb];
+      if (o >= 0) tally[o] = (tally[o] || 0) + 1;
     }
-    return argmax(tally);
+    return argmaxIndex(tally);
   }
   function nearestNationForGroup(comp, excludeNation) {
-    const inComp = new Set(comp);
-    const tally = {};
-    for (const f of comp) for (const nb of countyNeighbors(f)) {
-      if (inComp.has(nb)) continue;
-      const o = owner.get(nb);
-      if (o && o !== excludeNation) tally[o] = (tally[o] || 0) + 1;
+    const inComp = graph.mask();
+    for (const f of comp) { const i = nodeOf(f); if (i >= 0) inComp[i] = 1; }
+    const skip = excludeNation != null && nationIdx.has(excludeNation)
+      ? nationIndexOf(excludeNation) : -1;
+    const tally = [];
+    for (const f of comp) {
+      const node = nodeOf(f);
+      if (node < 0) continue;
+      for (const nb of graph.neighbors(node)) {
+        if (inComp[nb]) continue;
+        const o = state.owner[nb];
+        if (o >= 0 && o !== skip) tally[o] = (tally[o] || 0) + 1;
+      }
     }
-    return argmax(tally);
+    return argmaxIndex(tally);
   }
-  function argmax(tally) {
-    let best = null, bc = -1;
-    for (const [k, v] of Object.entries(tally)) if (v > bc) { best = k; bc = v; }
-    return best;
+  /** The nation id with the highest tally; ties break on the lower index. */
+  function argmaxIndex(tally) {
+    let best = -1, bc = 0;
+    for (let i = 0; i < tally.length; i++) if (tally[i] > bc) { best = i; bc = tally[i]; }
+    return best < 0 ? null : nationIdList[best];
   }
 
   /* ---- blue shell: anti-snowball penalty for the biggest nations ---- */
@@ -620,13 +695,10 @@ const Game = (function () {
   function moveCounties(fipsList, toId, { silent } = {}) {
     const to = nations.get(toId);
     if (!to) return;
-    for (const f of fipsList) {
-      const from = owner.get(f);
-      if (from === toId) continue;
-      if (from != null && nations.has(from)) nations.get(from).counties.delete(f);
-      to.counties.add(f);
-      owner.set(f, toId);
-    }
+    // One write per Area, to one array. The old version also had to delete from
+    // the losing nation's Set and add to the winner's, which is the hand-sync
+    // that made ownership two facts instead of one.
+    for (const f of fipsList) setOwnerNode(nodeOf(f), toId);
     const removed = pruneEmpty();
     if (!silent) emit({ ownership: true, roster: removed > 0 });
   }
@@ -637,35 +709,41 @@ const Game = (function () {
       emit({ ownership: true, roster: true });
     });
   }
-  /** The state most of a set of Areas sits in — a new nation's home soil. */
+  /**
+   * The state most of a set of Areas sits in — a new nation's home soil.
+   * Ties break on the alphabetically first state FIPS, not on iteration order.
+   */
   function modalState(countyIds) {
     const tally = {};
     for (const f of countyIds) {
-      const c = county[f];
+      const c = county[cid(f)];
       if (c) tally[c.st] = (tally[c.st] || 0) + 1;
     }
-    return argmax(tally);
+    let best = null, bc = 0;
+    for (const k of Object.keys(tally).sort()) if (tally[k] > bc) { best = k; bc = tally[k]; }
+    return best;
   }
 
   function createNation(name, countyIds, { color, silent, founded } = {}) {
     const id = 'n' + ++seq;
-    nations.set(id, {
-      id, name, color: color || Colors.newColor(), counties: new Set(), origin: false,
+    nations.set(id, makeNation({
+      id, name, color: color || Colors.newColor(), origin: false,
       treasury: 0, gov: 'Republic',
       founded: founded == null ? (typeof World !== 'undefined' ? World.getTurn() : 0) : founded,
       homeSt: modalState(countyIds),
       lastAnnexTurn: -Infinity,
       lastReleaseTurn: -Infinity,
       tradeCooldown: {},
-    });
+    }));
     moveCounties(countyIds, id, { silent: true });
     if (!silent) emit({ ownership: true, roster: true });
     return id;
   }
   /** Delete nations with no territory. Returns how many were removed. */
   function pruneEmpty() {
+    refreshCounties();
     let n = 0;
-    for (const [id, rec] of nations) if (rec.counties.size === 0) { nations.delete(id); n++; }
+    for (const [id, rec] of nations) if (rec._counties.size === 0) { nations.delete(id); n++; }
     return n;
   }
 
@@ -954,7 +1032,10 @@ const Game = (function () {
       cc.attrs = { ...cc.attrs, ...(c.a || {}) };
     }
     nations.clear();
-    owner.clear();
+    nationIdList.length = 0;
+    nationIdx.clear();
+    state.owner.fill(-1);
+    ownerEpoch++;
     let orphans = 0;
     for (const n of snap.nations) {
       // A save made against a different areas.json can name Areas that no longer
@@ -962,7 +1043,7 @@ const Game = (function () {
       // TypeError three turns later (finding 53).
       const live = n.counties.filter((f) => { if (county[f]) return true; orphans++; return false; });
       if (!live.length) continue;
-      nations.set(n.id, {
+      nations.set(n.id, makeNation({
         id: n.id, name: n.name, color: n.color, origin: n.origin,
         treasury: n.treasury || 0, gov: n.gov || 'Republic',
         founded: n.founded || 0,
@@ -970,9 +1051,8 @@ const Game = (function () {
         lastAnnexTurn: n.lastAnnexTurn == null ? -Infinity : n.lastAnnexTurn,
         lastReleaseTurn: n.lastReleaseTurn == null ? -Infinity : n.lastReleaseTurn,
         tradeCooldown: { ...(n.tradeCooldown || {}) },
-        counties: new Set(live),
-      });
-      for (const f of live) owner.set(f, n.id);
+      }));
+      for (const f of live) setOwnerNode(nodeOf(f), n.id);
     }
     seq = snap.seq || 0;
     originalNationCount = snap.originalNationCount || nations.size;
@@ -1009,9 +1089,9 @@ const Game = (function () {
     spend,
     boostGdp,
     nations,
-    getOwner: (f) => owner.get(cid(f)),
+    getOwner: (f) => ownerIdAt(nodeOf(f)),
     getNation: (nid) => nations.get(nid),
-    colorForCounty: (f) => nations.get(owner.get(cid(f)))?.color || '#c9ced6',
+    colorForCounty: (f) => nations.get(ownerIdAt(nodeOf(f)))?.color || '#c9ced6',
     countyPop,
     countyGdp,
     demographics,
