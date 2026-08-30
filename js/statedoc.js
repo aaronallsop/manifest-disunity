@@ -120,6 +120,11 @@ export function applyModel(doc) {
   Market.loadState(doc.market);
   TurnSystem.loadState(doc.turns);
   Game.loadState(doc.game); // emits -> full re-render
+  // A pre-M3 document carries no power stocks; seed the nations that have none
+  // rather than leaving them null and letting every reader guard for it. A
+  // document that HAS them keeps them, stocks included, because the whole point
+  // of a stock is that it remembers.
+  World.begin(window.TUNE, (n) => n.authority == null);
   return { rng };
 }
 

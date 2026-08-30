@@ -120,6 +120,7 @@ async function init() {
     if (economy) MapModes.setEconomy(economy); // baked six-sector production values
     if (economy) Market.update(TUNE); // opening market prices
     TurnSystem.begin([...Game.nations.keys()], store.rng);
+    World.begin(TUNE); // seed the power stocks for the world just built
     if (emerged.length) {
       setTimeout(() => flash(`\u{1F5F3} Regional parties emerged: <strong>${emerged.map(escapeHtml).join('</strong>, <strong>')}</strong>.`, 'warn'), 300);
     }
@@ -769,6 +770,7 @@ function renderNationPanel(nid) {
     <div class="stat"><div class="label">Population</div><div class="value">${fmtPop(demo.pop)}</div></div>
     <div class="stat"><div class="label">GDP</div><div class="value">${fmtGdp(demo.gdp)}</div></div>
     ${renderTreasury(nid)}
+    ${renderAuthority(nid)}
     <div class="stat">
       <div class="label">Political leaning</div>
       ${renderPolitics(demo)}
@@ -896,6 +898,51 @@ function renderTreasury(nid) {
     <div class="geo-row"><span>Per turn (income &minus; maintenance)</span>${sign(flow.delta)}</div>
     <div class="geo-row"><span>Income ${fmtGdp(flow.income)} &middot; administration ${fmtGdp(flow.administration)}</span></div>
     ${occ}
+  </div>`;
+}
+
+/*
+ * Authority, rendered straight from its Why record.
+ *
+ * NOTHING IS RECOMPUTED HERE. Every number on screen — the value, each term's
+ * raw input, its weight, its contribution — is read out of the record the power
+ * phase already produced. That is the whole return on the Why-record convention:
+ * the explanation is a by-product of the calculation rather than a second,
+ * drifting implementation of it. When M5 builds the dashboard it renders the
+ * same array, and the `key` on each row is the slider that moves it.
+ *
+ * Terms are shown largest-effect-first and near-zero ones are dropped, because a
+ * list of eight rows where six read 0.000 hides the two that matter.
+ */
+function renderAuthority(nid) {
+  const n = Game.getNation(nid);
+  const why = n && n.why && n.why.authority;
+  if (!why) return '';
+  const pct = (why.value * 100).toFixed(0);
+  const drift = why.target - why.value;
+  // Where the stock is heading, when it is not there yet. Rate-limiting means a
+  // nation can be visibly on its way up or down for a dozen turns, and that
+  // trajectory is more useful to a player than the instantaneous number.
+  const arrow = Math.abs(drift) < 0.005 ? ''
+    : ` <span class="auth-drift ${drift > 0 ? 'up' : 'down'}">${drift > 0 ? '\u2191' : '\u2193'} heading for ${(why.target * 100).toFixed(0)}%</span>`;
+
+  const rows = why.inputs
+    .filter((i) => Math.abs(i.contribution) >= 0.002)
+    .sort((a, b) => Math.abs(b.contribution) - Math.abs(a.contribution))
+    .map((i) => {
+      const c = (i.contribution >= 0 ? '+' : '\u2212') + Math.abs(i.contribution * 100).toFixed(1);
+      return `<div class="geo-row" title="${escapeHtml(i.note || '')} \u00b7 ${escapeHtml(i.key)}">
+        <span>${escapeHtml(i.label)}</span>
+        <strong class="${i.contribution >= 0 ? 'surplus' : 'deficit'}">${c}</strong></div>`;
+    })
+    .join('');
+
+  return `<div class="stat">
+    <div class="label">Authority</div>
+    <div class="value">${pct}%${arrow}</div>
+    <div class="auth-bar"><span style="width:${pct}%"></span></div>
+    <div class="auth-summary">${escapeHtml(why.summary)}</div>
+    ${rows}
   </div>`;
 }
 

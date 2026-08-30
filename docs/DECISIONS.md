@@ -632,3 +632,53 @@ Two bugs found by writing the tests, both about *when*:
   `makeGov` stamped `since` with the current turn instead of reading it back, so opening a save
   re-dated every government in the world — which the round-trip test caught as a straight identity
   failure.
+
+### D67 — The Why record is the calculation, not a second description of it
+**M3.1.** The plan asks every power function to return `{value, inputs, summary}`. The rule that
+makes it pay is that **nothing downstream recomputes anything**: the nation panel reads the record
+the power phase already produced, the M5 dashboard will read the same array, and the `key` on each
+input names the exact tunable slider that moves that term. A summary built from a second pass over
+the source data can disagree with the numbers printed beside it, so `defaultSummary` is built from
+the `inputs` array itself.
+
+It also changes what a test can assert. `tests/power.test.js` checks *contributions* — that
+territory lost outweighs territory taken, that age stops paying past its full point, that overreach
+is what stops conquest being a pure Authority engine — rather than final values. A formula change
+that happens to preserve the total still fails the test that cared about the term.
+
+Two supporting rules. **Normalise before weighting**: every input is mapped to 0–1 by a named curve
+(`ramp`, `saturate`) before its weight applies, so weights are comparable and a slider means the
+same kind of thing everywhere; raw numbers with implicit scales are how a weight of 0.2 ends up
+dominating a weight of 5. And **the unclamped total is kept** alongside the clamped value, so "your
+Authority is pinned at the floor and here is the 0.4 of pressure holding it there" stays answerable.
+
+### D68 — The CHANGE is rate-limited, not the value
+**M3.1.** `power.floor`, `power.maxRise` (0.05) and `power.maxFall` (0.08) apply to every stock in
+`js/power.js`, and they are in from the start rather than added when a death spiral shows up —
+because by then the tuning is built on top of the spiral.
+
+The distinction matters and is easy to get backwards. Clamping the **value** to a minimum leaves the
+*pressure* unbounded, so the moment the clamp is relaxed the nation falls off a cliff; the clamp is
+hiding the problem rather than solving it. Rate-limiting the **change** means a nation that has a
+catastrophic turn still ends it with most of the standing it had, and a collapse takes a decade of
+bad turns — long enough to be a story, and long enough to be recoverable. `maxFall > maxRise`
+because standing is easier to lose than to build. A null previous value opens **at** the target
+rather than climbing from the floor, so a fresh 51-nation board shows real opening Authority instead
+of every nation at 0.08 for fifteen turns.
+
+### D69 — Authority ships with five real terms, not eight with three sources of zero
+**M3.1.** The plan lists `f(age, wars_won, territory_held_without_unrest, gov_type, readiness) -
+f(losses, failed_suppressions, unrest, coalition_pressure)`. Unrest and failed suppressions are M4
+(they need sentiment), coalition pressure and military readiness are M6. Adding placeholder terms
+for them would mean tuning the terms that exist against three constants of zero, and then re-tuning
+everything when they arrive. What shipped is age, tenure, wars won, solvency and cohesion against
+territory lost, occupation and overreach — all eight of which read something the model actually
+knows. The rest become terms here when the mechanics behind them do.
+
+**Overreach** earned a tunable the tests forced into existence. Taking ground pays through "wars
+won"; taking a *lot* of ground quickly should cost, because a state digesting six conquests at once
+is not more secure than one that took two. The first implementation had no free allowance, and
+measured, a single six-Area war scored +0.047 on wars won against −0.060 on overreach — so
+**winning a war lowered Authority**, which is not a position anyone would defend. `power.authority.
+paceFree` (0.35 Areas/turn) is the rate a state absorbs without strain; only what is taken above it
+counts as overreach. The test that caught it is the one that says a won war must raise Authority.

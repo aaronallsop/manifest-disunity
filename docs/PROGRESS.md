@@ -112,7 +112,11 @@ Done in the order **M3.4 -> M3.1 -> M3.2 -> M3.3**, because the plan lists M3.4'
       choke point, bounded to a 20-turn window (D65); `gov` is now `{type, rulingIdeology, since}`,
       derived but stored and refreshed once per turn (D66). 29 red / 22 blue governments at turn 0,
       matching the 2024 map.
-- [ ] **M3.1** `js/power.js` Why-record convention + Authority.
+- [x] **M3.1** `js/power.js`: the Why-record convention (D67), the rate-limited stock discipline
+      (D68) and Authority on top of both (D69). Rendered in the nation panel straight from the
+      record — nothing recomputed. Measured at turn 0: Authority spreads 0.399 (Montana) to 0.559
+      (DC) across 51 nations; by turn 11 California reads 65% with solvency +13.8, cohesion +9.4,
+      wars won +6.0 against overreach −2.7 and occupation −2.4.
 - [ ] **M3.2** Influence.
 - [ ] **M3.3** QoL (food/health as needs) + Civil Liberties.
 - [ ] **M3.5** All four cached once per turn and surfaced in the nation panel.

@@ -72,6 +72,7 @@ export async function bootWorld(opts = {}) {
     Market.update(tune);
   }
   TurnSystem.begin([...Game.nations.keys()], rng);
+  World.begin(tune);
 
   return { seed, rng, tune, raw, spawned };
 }

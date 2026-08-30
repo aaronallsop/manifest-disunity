@@ -183,6 +183,16 @@ main { flex: 1 1 auto; display: flex; min-height: 0; }
 
 /* geography tier rows + geographic legend */
 .geo-row { display: flex; justify-content: space-between; font-size: 13px; padding: 3px 0; }
+/* Authority: one bar plus its Why record. Same visual language as the political
+   bar above it, so the two read as the same KIND of fact about a nation. */
+.auth-bar { display: flex; height: 8px; border-radius: 4px; overflow: hidden;
+  background: var(--line); margin: 8px 0 6px; }
+.auth-bar span { display: block; height: 100%; border-radius: 4px;
+  background: linear-gradient(90deg, #8a5cf5, #3b6fe0); transition: width .3s ease; }
+.auth-summary { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+.auth-drift { font-size: 12px; font-weight: 500; margin-left: 6px; }
+.auth-drift.up { color: #3bb273; }
+.auth-drift.down { color: #e0483b; }
 .geo-row span { color: var(--muted); }
 .legend-keys { display: flex; flex-wrap: wrap; gap: 4px 10px; max-width: 320px; }
 .legend-key { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text); }

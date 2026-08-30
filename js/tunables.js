@@ -95,6 +95,107 @@ export const SCHEMA = {
     label: 'Government maintenance rate',
     doc: 'Maintenance cost per turn as a share of GDP, by government type. One entry until M6 gives the player a government to choose; the lookup falls back to Republic for anything unlisted, so adding a type here is the whole change.',
   },
+  /* ---- Power: the shared stock discipline --------------------------------
+   * These three are the anti-death-spiral guarantee and they apply to every
+   * stock in js/power.js. Rate-limiting the CHANGE rather than the value means a
+   * catastrophic turn costs a nation `maxFall`, not everything - so a collapse
+   * takes a decade of bad turns, which is long enough to be a story and long
+   * enough to be recoverable.
+   */
+  'power.floor': {
+    v: 0.08, min: 0, max: 0.5, step: 0.01, group: 'Power',
+    label: 'Stock floor',
+    doc: 'No power stock falls below this, however bad things get. A floor on the STOCK, not on the target: a nation can be under sustained downward pressure and still hold the floor, which is what stops "already losing" from meaning "cannot recover".',
+  },
+  'power.maxRise': {
+    v: 0.05, min: 0.005, max: 0.5, step: 0.005, group: 'Power',
+    label: 'Maximum rise per turn',
+    doc: 'The most a power stock can gain in one turn. Standing is built slowly; one good war does not make a state legitimate.',
+  },
+  'power.maxFall': {
+    v: 0.08, min: 0.005, max: 0.5, step: 0.005, group: 'Power',
+    label: 'Maximum fall per turn',
+    doc: 'The most a power stock can lose in one turn. Deliberately larger than the rise - authority is easier to lose than to build - but bounded, which is the whole anti-spiral guarantee.',
+  },
+
+  /* ---- Authority --------------------------------------------------------- */
+  'power.authority.base': {
+    v: 0.30, min: 0, max: 1, step: 0.01, group: 'Power',
+    label: 'Authority: base',
+    doc: 'Where a nation sits with every input at zero - brand new, no history, no reserves, no cohesion. Everything else adds to or subtracts from this.',
+  },
+  'power.authority.ageFull': {
+    v: 40, min: 1, max: 200, step: 1, group: 'Power',
+    label: 'Authority: turns to full age credit',
+    doc: 'Age stops paying after this many turns. 40 turns is ten years at 1 turn = 1 quarter - about how long it takes for "this state has always been here" to be true of anyone alive.',
+  },
+  'power.authority.tenureFull': {
+    v: 24, min: 1, max: 200, step: 1, group: 'Power',
+    label: 'Authority: turns to full tenure credit',
+    doc: 'How long one ideology must hold power for the government to read as settled rather than new. Shorter than ageFull: a long-established state with a brand-new government is a different thing from a brand-new state.',
+  },
+  'power.authority.warsK': {
+    v: 12, min: 1, max: 200, step: 1, group: 'Power',
+    label: 'Authority: wars-won half-point',
+    doc: 'Areas taken by force, recently, at which the "wars won" term is half its maximum. Diminishing: the tenth conquest proves less than the first.',
+  },
+  'power.authority.solvencyFull': {
+    v: 8, min: 1, max: 100, step: 1, group: 'Power',
+    label: 'Authority: turns of reserves for full solvency credit',
+    doc: 'Treasury measured in turns of upkeep it covers. Past this the state is comfortably funded and more money proves nothing further.',
+  },
+  'power.authority.lossesK': {
+    v: 6, min: 1, max: 200, step: 1, group: 'Power',
+    label: 'Authority: territorial-loss half-point',
+    doc: 'Areas lost, recently, at which the losses term is half its maximum. Lower than warsK on purpose: losing ground says more about a state than taking it does.',
+  },
+  'power.authority.paceFree': {
+    v: 0.35, min: 0, max: 5, step: 0.05, group: 'Power',
+    label: 'Authority: digestible expansion rate',
+    doc: 'Areas per turn a state can absorb without strain; overreach only counts what is taken ABOVE this. Without the allowance, a single six-Area war scored +0.047 on wars won and -0.060 on overreach, so winning a war LOWERED Authority - which is not a design position anyone would defend. 0.35/turn is about seven Areas across the memory window.',
+  },
+  'power.authority.overreachK': {
+    v: 0.5, min: 0.05, max: 10, step: 0.05, group: 'Power',
+    label: 'Authority: overreach half-point',
+    doc: 'Areas per turn ABOVE the digestible rate at which overreach is half its maximum. This is what stops conquest being a pure Authority engine: taking ground pays through "wars won", but digesting six conquests at once does not leave a state more secure than two.',
+  },
+  'power.authority.wAge': {
+    v: 0.18, min: -1, max: 1, step: 0.01, group: 'Power',
+    label: 'Authority: weight of age', doc: 'How much a long-established state is trusted.',
+  },
+  'power.authority.wTenure': {
+    v: 0.12, min: -1, max: 1, step: 0.01, group: 'Power',
+    label: 'Authority: weight of tenure', doc: 'How much a settled government is trusted.',
+  },
+  'power.authority.wWars': {
+    v: 0.14, min: -1, max: 1, step: 0.01, group: 'Power',
+    label: 'Authority: weight of wars won', doc: 'How much conquest demonstrates the state can act.',
+  },
+  'power.authority.wSolvency': {
+    v: 0.16, min: -1, max: 1, step: 0.01, group: 'Power',
+    label: 'Authority: weight of solvency', doc: 'How much a funded treasury underwrites the state.',
+  },
+  'power.authority.wCohesion': {
+    v: 0.20, min: -1, max: 1, step: 0.01, group: 'Power',
+    label: 'Authority: weight of cohesion',
+    doc: 'How much an ideologically united population strengthens the state. The largest positive weight, because a state governing people who agree with each other is the easiest state to govern.',
+  },
+  'power.authority.wLosses': {
+    v: -0.30, min: -1, max: 1, step: 0.01, group: 'Power',
+    label: 'Authority: weight of territory lost',
+    doc: 'How much losing ground costs. The largest single weight in either direction: a state that cannot hold its territory has failed at the one thing a state is for.',
+  },
+  'power.authority.wOccupation': {
+    v: -0.18, min: -1, max: 1, step: 0.01, group: 'Power',
+    label: 'Authority: weight of occupation',
+    doc: 'How much holding foreign soil costs. Occupation is a standing commitment of force that is not available for anything else.',
+  },
+  'power.authority.wOverreach': {
+    v: -0.16, min: -1, max: 1, step: 0.01, group: 'Power',
+    label: 'Authority: weight of overreach',
+    doc: 'How much a fast rate of acquisition costs. See overreachK.',
+  },
+
   'nation.historyWindow': {
     v: 20, min: 4, max: 80, step: 1, group: 'Nations',
     label: 'Territorial memory, in turns',

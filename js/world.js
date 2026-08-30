@@ -435,6 +435,46 @@ const World = (function () {
     }
   }
 
+  /**
+   * Power stocks, recomputed once per turn and stored on the nation.
+   *
+   * Runs AFTER the population and economy phases and after governments are
+   * refreshed, because every input it reads — cohesion, treasury, upkeep,
+   * occupied ground, who is in power — is a result of this turn, not of the
+   * last one. Running it earlier would report the previous turn's world with
+   * this turn's label on it.
+   *
+   * The Why record is kept beside the value. That is what makes M5's "show your
+   * work" free: nothing has to recompute anything to explain a number, and the
+   * `key` on each input names the slider that moves it.
+   */
+  function phasePower(tune, turn, only) {
+    const tn = T(tune);
+    for (const [nid, n] of Game.nations) {
+      if (only && !only(n)) continue;
+      const why = Power.authority(Power.gatherAuthority(nid, turn), tn);
+      n.authority = why.value;
+      n.why = n.why || {};
+      n.why.authority = why;
+    }
+  }
+
+  /**
+   * Seed the power stocks for a world that has just been built or loaded.
+   *
+   * A stock has to start somewhere, and `Power.step` treats a null previous
+   * value as "open at the target" rather than climbing to it from the floor —
+   * so a fresh 51-nation board shows each nation's real opening Authority
+   * instead of every one of them at 0.08 for the first fifteen turns.
+   *
+   * Called by whoever finishes building a world (app.js, the test fixture). The
+   * suite asserts that every nation has an Authority at turn 0, so a caller that
+   * forgets is a test failure rather than a blank panel.
+   */
+  function begin(tune, only) {
+    phasePower(T(tune), turn, only);
+  }
+
   function advanceTurn(tune, rng) {
     const tn = T(tune);
     const owners = snapshotOwners();
@@ -467,6 +507,7 @@ const World = (function () {
       Game.refreshGovernments(turn + 1);
       Game.tickTreasuries(); // income minus maintenance, on this turn's updated GDP
       Market.update(tn);     // reprice every resource from live supply vs demand
+      phasePower(tn, turn + 1); // last: every input it reads is a result of this turn
       Game.touch({ values: true });
     });
     turn += 1;
@@ -480,6 +521,8 @@ const World = (function () {
     serialize: () => ({ turn }),
     loadState: (s) => { turn = (s && s.turn) | 0; },
     snapshotOwners,
+    begin,
+    phasePower,
     buffer,
     recPop,
     phaseRecomputeMixes,
