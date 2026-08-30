@@ -664,7 +664,7 @@ const Moves = (function () {
      * owner exists to prevent — so the owner is Game, and this returns its
      * entry rather than writing a second one.
      */
-    const res = Game.changeRulingIdeology(intent.nid, intent.ideology);
+    const res = Game.changeRulingIdeology(intent.nid, intent.ideology, { rng });
     if (!res.ok) return { ...plan, ok: false, reason: res.message, events: [] };
     return { ...plan, ok: true, reason: null,
       cost: res.cost == null ? plan.cost : res.cost,

@@ -86,10 +86,22 @@ export function build(base, terms, tune, summarise) {
   for (const t of terms) {
     if (!t) continue;
     const weight = tune.get(t.key);
-    const norm = clamp01(t.norm);
+    /*
+     * MOST INPUTS ARE "HOW MUCH OF A THING", 0..1, and clamping there is what
+     * keeps a stock's base meaningful: a nation with every input at zero sits
+     * exactly at its base.
+     *
+     * A few are genuinely SIGNED — the leadership term is the first, and it has
+     * to be, because a leader with no opinion about civil liberties must
+     * contribute nothing rather than half a weight. Mapping a signed value onto
+     * 0..1 with `centred` gives every nation a constant offset and quietly moves
+     * the base for everybody, which three "sits at the base" tests caught.
+     */
+    const norm = t.signed ? Math.max(-1, Math.min(1, Number(t.norm) || 0)) : clamp01(t.norm);
     const contribution = weight * norm;
     total += contribution;
-    inputs.push({ label: t.label, raw: t.raw, norm, weight, contribution, key: t.key, note: t.note });
+    inputs.push({ label: t.label, raw: t.raw, norm, weight, contribution, key: t.key, note: t.note,
+                  signed: !!t.signed });
   }
   const value = clamp01(total);
   return { value, raw: total, base, inputs, summary: (summarise || defaultSummary)(value, inputs) };
@@ -235,6 +247,15 @@ export function authority(a, tune) {
       key: 'power.authority.wAutonomy', note: 'share of held ground that governs itself' },
     { label: 'Overreach', raw: pace, norm: saturate(excess, tune.get('power.authority.overreachK')),
       key: 'power.authority.wOverreach', note: 'Areas taken per turn beyond what a state can digest' },
+    /*
+     * WHO IS IN CHARGE (M7.5). One named line, deliberately small: a leader
+     * should be a thumb on the scale and not the scale, or every other term in
+     * the record becomes noise. `centred` maps a modifier of roughly -1..1 onto
+     * the 0..1 a term wants, so a leader with no pull on this stock contributes
+     * exactly nothing.
+     */
+    { label: 'Leadership', signed: true, raw: a.leaderAuthority || 0, norm: a.leaderAuthority || 0,
+      key: 'power.authority.wLeader', note: a.leaderNote || 'the traits of whoever is in charge' },
   ];
 
   const record = build(tune.get('power.authority.base'), terms, tune, authoritySummary);
@@ -333,6 +354,15 @@ export function influence(a, tune) {
      */
     { label: 'Coalition', raw: a.coalition || 0, norm: clamp01(a.coalition || 0),
       key: 'power.influence.wCoalition', note: 'how much of the continent is lined up against you' },
+    /*
+     * WHO IS IN CHARGE (M7.5). One named line, deliberately small: a leader
+     * should be a thumb on the scale and not the scale, or every other term in
+     * the record becomes noise. `centred` maps a modifier of roughly -1..1 onto
+     * the 0..1 a term wants, so a leader with no pull on this stock contributes
+     * exactly nothing.
+     */
+    { label: 'Leadership', signed: true, raw: a.leaderInfluence || 0, norm: a.leaderInfluence || 0,
+      key: 'power.influence.wLeader', note: a.leaderNote || 'the traits of whoever is in charge' },
   ];
 
   const record = build(tune.get('power.influence.base'), terms, tune, influenceSummary);
@@ -419,6 +449,15 @@ export function qol(a, tune) {
      */
     { label: 'War weariness', raw: a.weariness || 0, norm: clamp01(a.weariness || 0),
       key: 'qol.wWeariness', note: 'what continuous war is costing at home' },
+    /*
+     * WHO IS IN CHARGE (M7.5). One named line, deliberately small: a leader
+     * should be a thumb on the scale and not the scale, or every other term in
+     * the record becomes noise. `centred` maps a modifier of roughly -1..1 onto
+     * the 0..1 a term wants, so a leader with no pull on this stock contributes
+     * exactly nothing.
+     */
+    { label: 'Leadership', signed: true, raw: a.leaderQol || 0, norm: a.leaderQol || 0,
+      key: 'qol.wLeader', note: a.leaderNote || 'the traits of whoever is in charge' },
   ];
 
   const record = build(tune.get('qol.base'), terms, tune, qolSummary);
@@ -519,6 +558,15 @@ export function weariness(a, tune) {
       key: 'power.weariness.wOccupation', note: 'share of held ground that is somebody else\u2019s' },
     { label: 'In the field', raw: deployed, norm: deployed,
       key: 'power.weariness.wDeployed', note: 'share of the army posted abroad rather than at home' },
+    /*
+     * WHO IS IN CHARGE (M7.5). One named line, deliberately small: a leader
+     * should be a thumb on the scale and not the scale, or every other term in
+     * the record becomes noise. `centred` maps a modifier of roughly -1..1 onto
+     * the 0..1 a term wants, so a leader with no pull on this stock contributes
+     * exactly nothing.
+     */
+    { label: 'Leadership', signed: true, raw: a.leaderWeariness || 0, norm: a.leaderWeariness || 0,
+      key: 'power.weariness.wLeader', note: a.leaderNote || 'the traits of whoever is in charge' },
   ];
 
   const record = build(tune.get('power.weariness.base'), terms, tune, wearinessSummary);
@@ -549,6 +597,8 @@ export function gatherWeariness(facts, turn) {
     deployed: typeof Military !== 'undefined'
       ? (() => { const s = Military.state(n.id); return s ? s.alloc.field * s.ready.field : 0; })()
       : 0,
+    leaderWeariness: lead(facts.nid, 'weariness'),
+    leaderNote: leaderNote(facts.nid),
     previous: n.weariness,
   };
 }
@@ -581,6 +631,15 @@ export function liberties(a, tune) {
      */
     { label: 'Garrison', raw: a.garrison || 0, norm: clamp01(a.garrison || 0),
       key: 'liberty.wGarrison', note: 'troops stationed among your own people' },
+    /*
+     * WHO IS IN CHARGE (M7.5). One named line, deliberately small: a leader
+     * should be a thumb on the scale and not the scale, or every other term in
+     * the record becomes noise. `centred` maps a modifier of roughly -1..1 onto
+     * the 0..1 a term wants, so a leader with no pull on this stock contributes
+     * exactly nothing.
+     */
+    { label: 'Leadership', signed: true, raw: a.leaderLiberties || 0, norm: a.leaderLiberties || 0,
+      key: 'liberty.wLeader', note: a.leaderNote || 'the traits of whoever is in charge' },
   ];
 
   const record = build(tune.get('liberty.base'), terms, tune, libertySummary);
@@ -646,6 +705,27 @@ export function worldContext() {
  * turn stamps to detect that only works while two independent clocks agree.
  */
 const CONQUEST = new Set(['annex', 'war']);
+
+/**
+ * One leader's pull on one stock, and a note naming them.
+ *
+ * Guarded on the module rather than imported, because the map editor and old
+ * saves load a page without it — and a stock that throws when nobody is in
+ * charge would be a worse bargain than a stock that reads zero.
+ */
+const lead = (nid, key) => (typeof Leaders !== 'undefined' && Leaders.loaded()
+  ? Leaders.modifier(nid, key) : 0);
+function leaderNote(nid) {
+  if (typeof Leaders === 'undefined' || !Leaders.loaded()) return null;
+  /*
+   * `all()[nid]`, not `of(nid)`. `of` SEATS a leader when the chair is empty,
+   * and a Why record must not have side effects — it read the modifier before
+   * that happened and the note after, so the term said "Governor Vance" while
+   * its own value said nobody was in charge.
+   */
+  const l = Leaders.all()[nid];
+  return l ? `${l.title} ${l.name} — ${Leaders.describe(l)}` : null;
+}
 
 export function nationFacts(nid, tune) {
   const n = Game.getNation(nid);
@@ -734,6 +814,8 @@ export function gatherAuthority(facts, turn) {
     autonomous: Game.autonomousCount(facts.nid),
     gains: facts.gains,
     losses: n.lost,
+    leaderAuthority: lead(facts.nid, 'authority'),
+    leaderNote: leaderNote(facts.nid),
     previous: n.authority,
   };
 }
@@ -773,6 +855,8 @@ export function gatherInfluence(facts, turn, tune, ctx) {
     gdpShare: world.gdp > 0 ? self.gdp / world.gdp : 0,
     alignment: weight > 0 ? weighted / weight : 0,
     coalition: typeof Coalitions !== 'undefined' ? Coalitions.pressure(facts.nid) : 0,
+    leaderInfluence: lead(facts.nid, 'influence'),
+    leaderNote: leaderNote(facts.nid),
     partners,
     areas: facts.areas,
     occupied: facts.occupied,
@@ -797,6 +881,8 @@ export function gatherQol(facts, turn) {
     treasuryDelta: flow ? flow.delta : 0,
     income: flow ? flow.income : 0,
     weariness: n.weariness || 0,
+    leaderQol: lead(facts.nid, 'qol'),
+    leaderNote: leaderNote(facts.nid),
     previous: n.qol,
   };
 }
@@ -813,6 +899,8 @@ export function gatherLiberties(facts, turn) {
     areas: facts.areas,
     occupied: facts.occupied,
     garrison: typeof Military !== 'undefined' ? Military.garrisonPressure(facts.nid) : 0,
+    leaderLiberties: lead(facts.nid, 'liberties'),
+    leaderNote: leaderNote(facts.nid),
     govType: n.gov ? n.gov.type : 'Republic',
     previous: n.liberties,
   };

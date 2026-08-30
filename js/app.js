@@ -74,7 +74,7 @@ const getJSON = (path, fallback) =>
 
 async function init() {
   try {
-    const [topo, data, ctGeo, adjacency, neighbors, partyDefs, trade, areas, geoMode, economy, transport, cultureMode, tunables, ideologies, capitals, eventDefs] = await Promise.all([
+    const [topo, data, ctGeo, adjacency, neighbors, partyDefs, trade, areas, geoMode, economy, transport, cultureMode, tunables, ideologies, capitals, eventDefs, leaderDefs] = await Promise.all([
       getJSON('data/counties-10m.json'),
       getJSON('data/game-data.json'),
       getJSON('data/ct-planning-regions.geojson'),
@@ -91,6 +91,7 @@ async function init() {
       getJSON('content/ideologies.json', null),
       getJSON('content/capitals.json', null),
       getJSON('content/events.json', null),
+      getJSON('content/leaders.json', null),
     ]);
     // The six ideologies, before anything reads a political value.
     Ideology.load(ideologies);
@@ -130,9 +131,11 @@ async function init() {
     if (capitals) Victory.load(capitals);
     Events.reset();
     if (eventDefs) Events.load(eventDefs);
+    Leaders.reset();
+    if (leaderDefs) Leaders.load(leaderDefs);
     TurnSystem.begin([...Game.nations.keys()], store.rng);
     choosePlayer();
-    World.begin(TUNE); // seed the power stocks for the world just built
+    World.begin(TUNE, null, store.rng); // the power stocks and the leaders
     if (emerged.length) {
       setTimeout(() => flash(`\u{1F5F3} Regional parties emerged: <strong>${emerged.map(escapeHtml).join('</strong>, <strong>')}</strong>.`, 'warn'), 300);
     }
@@ -1145,6 +1148,7 @@ function renderNationPanel(nid) {
       <h2>${escapeHtml(n.name)}</h2>
     </div>
     <div class="kind">${sub} &middot; ${n.counties.size} counties</div>
+    ${renderLeader(nid)}
 
     <div class="stat"><div class="label">Population</div><div class="value">${fmtPop(demo.pop)}</div></div>
     <div class="stat"><div class="label">GDP</div><div class="value">${fmtGdp(demo.gdp)}</div></div>
@@ -1188,6 +1192,31 @@ function renderNationPanel(nid) {
   );
   const goto = panel.querySelector('#goto-current');
   if (goto) goto.onclick = () => { setMode('nations'); select('nation', you()); };
+}
+
+/*
+ * WHO IS IN CHARGE.
+ *
+ * A name, a title and two traits. Everything else in this panel is a number
+ * about a place; this is the one line about a person, and it is what makes
+ * "Nevada changed course" a thing that happened to somebody rather than a shift
+ * in an ideology index.
+ */
+function renderLeader(nid) {
+  if (typeof Leaders === 'undefined' || !Leaders.loaded()) return '';
+  const l = Leaders.of(nid, store.rng, TUNE);
+  if (!l) return '';
+  const traits = Leaders.traits(nid);
+  const years = World.getTurn() - l.since;
+  return `
+    <div class="leader">
+      <div class="leader-name">${escapeHtml(l.title)} <strong>${escapeHtml(l.name)}</strong>
+        <span class="leader-since">${years <= 0 ? 'newly in office'
+          : `${years} ${years === 1 ? 'quarter' : 'quarters'} in office`}</span></div>
+      <div class="leader-traits">${traits.map((tr) =>
+        `<span class="trait" title="${escapeHtml(tr.blurb || '')}">${escapeHtml(tr.name)}</span>`).join('')}</div>
+      ${traits.length ? `<div class="leader-blurb">${escapeHtml(traits[0].blurb || '')}</div>` : ''}
+    </div>`;
 }
 
 /*

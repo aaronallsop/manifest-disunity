@@ -1,0 +1,111 @@
+{
+  "note": "Leaders, as two traits and a name. Every trait's effects are modifiers on stocks that already exist and already explain themselves, so a leader adds one named line to a Why record rather than a system. Traits are drawn against the government's ideology: a Distributist state is likelier to be led by a Steward than by a Financier, and unlikely to be led by either by accident.",
+  "titles": {
+    "red": "Governor",
+    "blue": "Governor",
+    "yellow": "First Steward",
+    "green": "Convenor",
+    "orange": "Chancellor",
+    "purple": "Premier"
+  },
+  "traits": [
+    {
+      "id": "hawk",
+      "name": "Hawk",
+      "blurb": "Believes the border is a verb.",
+      "affinity": ["red", "orange"],
+      "effects": { "authority": 0.35, "weariness": 0.30, "war": -0.25, "liberties": -0.15 }
+    },
+    {
+      "id": "conciliator",
+      "name": "Conciliator",
+      "blurb": "Would rather be owed a favour than a border.",
+      "affinity": ["blue", "green"],
+      "effects": { "influence": 0.40, "war": 0.20, "authority": -0.10 }
+    },
+    {
+      "id": "technocrat",
+      "name": "Technocrat",
+      "blurb": "Has read the file and will tell you what is in it.",
+      "affinity": ["blue", "purple"],
+      "effects": { "qol": 0.35, "authority": 0.15, "influence": -0.10 }
+    },
+    {
+      "id": "orator",
+      "name": "Orator",
+      "blurb": "Can hold a square for an hour and does.",
+      "affinity": ["green", "orange"],
+      "effects": { "influence": 0.35, "liberties": 0.15, "qol": -0.10 }
+    },
+    {
+      "id": "hardliner",
+      "name": "Hardliner",
+      "blurb": "Order first, and then whatever is left.",
+      "affinity": ["orange", "red"],
+      "effects": { "authority": 0.40, "liberties": -0.35, "influence": -0.15 }
+    },
+    {
+      "id": "reformer",
+      "name": "Reformer",
+      "blurb": "Arrived with a list and has not put it down.",
+      "affinity": ["purple", "blue"],
+      "effects": { "liberties": 0.35, "qol": 0.15, "authority": -0.20 }
+    },
+    {
+      "id": "steward",
+      "name": "Steward",
+      "blurb": "Governs as though somebody will inherit it.",
+      "affinity": ["yellow", "green"],
+      "effects": { "qol": 0.25, "liberties": 0.15, "weariness": -0.20, "authority": -0.20 }
+    },
+    {
+      "id": "financier",
+      "name": "Financier",
+      "blurb": "Knows exactly what everything costs.",
+      "affinity": ["red", "purple"],
+      "effects": { "authority": 0.20, "qol": -0.15, "influence": 0.20 }
+    },
+    {
+      "id": "veteran",
+      "name": "Veteran",
+      "blurb": "Was there, and has not said much about it since.",
+      "affinity": ["red", "yellow"],
+      "effects": { "war": -0.20, "weariness": -0.25, "authority": 0.15 }
+    },
+    {
+      "id": "idealist",
+      "name": "Idealist",
+      "blurb": "Means every word, which is the problem.",
+      "affinity": ["green", "purple"],
+      "effects": { "influence": 0.25, "liberties": 0.25, "authority": -0.25 }
+    },
+    {
+      "id": "populist",
+      "name": "Populist",
+      "blurb": "Says the thing the room is already thinking.",
+      "affinity": ["orange", "yellow"],
+      "effects": { "authority": 0.25, "qol": 0.15, "influence": -0.25 }
+    },
+    {
+      "id": "caretaker",
+      "name": "Caretaker",
+      "blurb": "Did not want the job and is doing it anyway.",
+      "affinity": ["blue", "yellow"],
+      "effects": { "liberties": 0.10, "weariness": -0.10, "authority": -0.05 }
+    }
+  ],
+  "first": [
+    "Marguerite", "Desmond", "Ilona", "Cyrus", "Beatrix", "Anselm", "Odette", "Rafael",
+    "Winifred", "Emeka", "Theodora", "Lars", "Priya", "Gideon", "Saoirse", "Malik",
+    "Constance", "Rueben", "Ingrid", "Tomas", "Adaeze", "Hollis", "Yusuf", "Verity",
+    "Augusto", "Nadia", "Ellery", "Bao", "Rosalind", "Kwame", "Delphine", "Ivo",
+    "Marisol", "Hartley", "Zora", "Emil", "Fenella", "Osric", "Leilani", "Casimir"
+  ],
+  "last": [
+    "Vance", "Okonkwo", "Hartline", "Brennan", "Nakamura", "Delacroix", "Whitlow", "Ferreira",
+    "Ashworth", "Kovac", "Mbeki", "Sandoval", "Thorne", "Lindqvist", "Reyes", "Aitken",
+    "Duval", "Petrossian", "Calloway", "Ibarra", "Fenwick", "Adeyemi", "Marchetti", "Sinclair",
+    "Halloran", "Novak", "Castellanos", "Boone", "Rasmussen", "Achebe", "Ellsworth", "Quintero",
+    "Strand", "Mwangi", "Larkspur", "Bassett", "Volkov", "Ngata", "Crowder", "Almeida"
+  ]
+}

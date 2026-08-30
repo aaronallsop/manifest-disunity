@@ -40,7 +40,7 @@ const Ledger = (function () {
    */
   const KINDS = [
     'annex', 'war', 'unite', 'defect', 'declare', 'fragment', 'release',
-    'govern', 'trade', 'found', 'died', 'power', 'won', 'autonomy', 'crisis',
+    'govern', 'trade', 'found', 'died', 'power', 'won', 'autonomy', 'crisis', 'leader',
   ];
 
   /**
@@ -104,7 +104,7 @@ const Ledger = (function () {
    */
   const WEIGHT = { won: 1000, declare: 100, died: 90, unite: 70, war: 60, found: 55, annex: 40,
                    govern: 35, crisis: 32, release: 30, autonomy: 28, defect: 25, fragment: 20,
-                   trade: 10, power: 5 };
+                   leader: 15, trade: 10, power: 5 };
 
   /**
    * Rank a set of entries and keep the few most worth a headline.

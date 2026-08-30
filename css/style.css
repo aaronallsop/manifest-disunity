@@ -565,3 +565,11 @@ svg.hide-clines .area-borders { display: block; }
 .crisis-opt .fx.bad { color: var(--bad, #d1706a); }
 
 .head-line.alarm { color: var(--accent); font-weight: 600; }
+
+/* ---- who is in charge ------------------------------------------------ */
+.leader { margin: 10px 0 4px; padding: 9px 11px; background: var(--panel-bg-2); border: 1px solid var(--line); border-radius: 10px; }
+.leader-name { font-size: 13px; }
+.leader-since { font-size: 11px; color: var(--muted); margin-left: 6px; }
+.leader-traits { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 5px; }
+.leader-traits .trait { font-size: 11px; padding: 1px 8px; border-radius: 999px; background: var(--bg); color: var(--accent); cursor: help; }
+.leader-blurb { font-size: 11px; color: var(--muted); line-height: 1.5; margin-top: 5px; font-style: italic; }

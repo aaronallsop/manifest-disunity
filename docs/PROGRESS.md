@@ -285,7 +285,12 @@ Done in the order **M3.4 -> M3.1 -> M3.2 -> M3.3**, because the plan lists M3.4'
       newspaper warns when anybody is within 80% of a condition. Also: the test runner now FAILS on a
       suite that will not load (a syntax error had silently deleted 22 tests while the run read
       green), and `power.floor` no longer applies to war weariness.
-- [ ] **M7.5** Leaders with light traits.
+- [x] **M7.5** Leaders with light traits — `content/leaders.json` (12 traits, 80 names) and
+      `js/leaders.js`. One signed `Leadership` term in each of the five stocks, plus a small pull on
+      the war roll. Traits are drawn against the government's ideology; two traits sum, so a Hawk
+      paired with a Reformer cancels. A new government is a new person. Also here: `Power.build`
+      learned about SIGNED inputs (mapping a modifier through `centred` gave every nation a constant
+      offset), and a Why record no longer seats a leader as a side effect of describing one.
 - [ ] **M7.6** Map-history timeline.
 - [ ] **M7.7** Names and flags for new nations.
 - [ ] **M7.8** Recognition / legitimacy.
@@ -322,7 +327,7 @@ Performance, measured on the real map rather than predicted: a world turn 24.7 -
 phases 12.4 -> 2.8 ms, political drift 8.0 -> 2.0 ms, a 50-turn simulator run 1,237 -> 466 ms. The
 columnar store is 173 KB and the adjacency graph 43.5 KB.
 
-Next: **M7.5** (leaders with light traits — the least blocked system in the whole analysis, and cheap personality).
+Next: **M7.6** (map-history timeline — replay the ledger, which is already saved state).
 
 Open, carried into M2.3: after 21 turns no Area is yet LED by a minority ideology (Rep 1,288 /
 Dem 388 of 1,676). That is the expected shape at 11% organised movements and it is M5's dial to

@@ -924,6 +924,47 @@ export const SCHEMA = {
     label: 'Union cooldown (turns)',
     doc: 'World turns after an attempted union before a nation may propose another. Unite was the ONE action in the game with no clock on it \u2014 annex, release and changing course all have one \u2014 so a nation could re-roll the same union every turn until it landed, which makes any probability under 100% equal to 100% given enough turns. Found by the M6.3 AI on its first run: 35 of 53 nations opened by proposing a union.',
   },
+  /* ---------------- leaders ---------------- */
+  'leader.affinityWeight': {
+    v: 3, min: 1, max: 20, step: 0.5, group: 'Leaders',
+    label: 'How much a trait that fits the government is favoured',
+    doc: 'A Distributist state is likelier to be led by a Steward than by a Financier. At 3 a fitting trait is three times as likely as any other, so a nation usually gets a leader who suits it and occasionally does not \u2014 a more interesting distribution than either always-on-brand or a coin flip. Set it to 1 for pure chance.',
+  },
+  'leader.termTurns': {
+    v: 24, min: 0, max: 200, step: 1, group: 'Leaders',
+    label: 'Turns a leader holds office before being replaced',
+    doc: 'A placeholder for elections (M7.8), and deliberately a plain one: the interesting version is a nation LOSING a government it wanted to keep, and that needs a vote rather than a timer. 0 means leaders serve for life.',
+  },
+  'power.authority.wLeader': {
+    v: 0.06, min: -0.5, max: 0.5, step: 0.01, group: 'Leaders',
+    label: 'Authority: weight of who is in charge',
+    doc: 'Small on purpose. A leader should be a thumb on the scale, not the scale \u2014 the point of the trait system is personality and legibility, and a leader who swings a stock by a third makes every other term in it noise.',
+  },
+  'power.influence.wLeader': {
+    v: 0.06, min: -0.5, max: 0.5, step: 0.01, group: 'Leaders',
+    label: 'Influence: weight of who is in charge',
+    doc: 'The stock a Conciliator or an Orator is for.',
+  },
+  'qol.wLeader': {
+    v: 0.05, min: -0.5, max: 0.5, step: 0.01, group: 'Leaders',
+    label: 'QoL: weight of who is in charge',
+    doc: 'The stock a Technocrat or a Steward is for.',
+  },
+  'liberty.wLeader': {
+    v: 0.06, min: -0.5, max: 0.5, step: 0.01, group: 'Leaders',
+    label: 'Civil liberties: weight of who is in charge',
+    doc: 'The stock a Hardliner or a Reformer is for, and the one where a leader is most visible from inside the country.',
+  },
+  'power.weariness.wLeader': {
+    v: 0.05, min: -0.5, max: 0.5, step: 0.01, group: 'Leaders',
+    label: 'War weariness: weight of who is in charge',
+    doc: 'A Hawk spends the country; a Veteran spares it.',
+  },
+  'leader.warSwing': {
+    v: 0.12, min: 0, max: 1, step: 0.01, group: 'Leaders',
+    label: 'How far a leader moves a war',
+    doc: 'Applied to the civil-war score multiplier, where low is a win for the attacker. Smaller than the force ratio and the coalition, because who is in charge should matter less than whether the army is ready and whether the neighbours have lined up.',
+  },
   /* ---------------- crises ---------------- */
   'events.maxPerTurn': {
     v: 3, min: 0, max: 20, step: 1, group: 'Events',

@@ -1281,6 +1281,15 @@ const Game = (function () {
     n.gov.rulingIdeology = ideologyId;
     n.gov.since = turn;
     n.gov.lastChange = turn;
+    /*
+     * A NEW GOVERNMENT IS A NEW GOVERNMENT (M7.5). Changing course and keeping
+     * the same person in the chair is the version of this that means nothing;
+     * the leader is where the change becomes a face and a sentence in the
+     * newspaper rather than a shift in an ideology index.
+     */
+    if (typeof Leaders !== 'undefined' && Leaders.loaded()) {
+      Leaders.replace(nid, opts.rng || null, null, 'course');
+    }
     Ledger.append({
       turn, phase: 'action', subject: nid, kind: 'govern', delta: distance,
       text: `${n.name} changed course from ${Ideology.nameAt(from)} to ${Ideology.byId(ideologyId).name}.`,

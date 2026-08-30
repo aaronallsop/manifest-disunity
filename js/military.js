@@ -249,6 +249,15 @@ const Military = (function () {
      * is applied to specific armies belonging to specific countries with
      * specific grievances.
      */
+    /*
+     * ...and who is in charge (M7.5). Smaller than the force ratio and smaller
+     * than the coalition, deliberately: a Hawk should matter less than whether
+     * the army is ready and whether the neighbours have lined up.
+     */
+    let leaderMult = 1;
+    if (typeof Leaders !== 'undefined' && Leaders.loaded()) {
+      leaderMult = 1 - t.get('leader.warSwing') * Leaders.modifier(attacker, 'war') * -1;
+    }
     if (typeof Coalitions !== 'undefined') {
       const rec = Coalitions.against(attacker, t);
       if (rec && rec.formed) {
@@ -262,7 +271,7 @@ const Military = (function () {
     const total = mine + theirs;
     // Nobody has anything: no advantage either way, rather than a divide by zero.
     const share = total > 0 ? mine / total : 0.5;
-    return 1 + t.get('mil.warSwing') * (0.5 - share) * 2;
+    return (1 + t.get('mil.warSwing') * (0.5 - share) * 2) * leaderMult;
   }
 
   /* ------------------------------------------------------------------ */

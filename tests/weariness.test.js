@@ -36,8 +36,19 @@ describe('A nation at peace is not tired', () => {
     const w = wear('06');
     for (const i of w.inputs) {
       ok(i.label && i.key, 'a weariness term with no label or tunable behind it');
-      ok(i.norm >= 0 && i.norm <= 1, `${i.label} normalised to ${i.norm}`);
-      ok(i.contribution >= 0, `${i.label} made a nation LESS tired`);
+      /*
+       * Every term but one is "how much of a thing", 0..1, and every one of them
+       * can only ADD to weariness — a nation is tired because of something it
+       * did. Leadership is the exception and is signed: a Veteran spares the
+       * country and a Hawk spends it, which is the one input here that can point
+       * either way.
+       */
+      if (i.signed) {
+        ok(i.norm >= -1 && i.norm <= 1, `${i.label} normalised to ${i.norm}`);
+      } else {
+        ok(i.norm >= 0 && i.norm <= 1, `${i.label} normalised to ${i.norm}`);
+        ok(i.contribution >= 0, `${i.label} made a nation LESS tired`);
+      }
     }
     close(w.raw, w.inputs.reduce((a, i) => a + i.contribution, T().get('power.weariness.base')), 1e-9,
       'the value is not the sum of what it reported');
@@ -195,7 +206,8 @@ describe('It is a stock, and it is state', () => {
     for (const [, n] of Game.nations) {
       ok(typeof n.weariness === 'number' && Number.isFinite(n.weariness),
         `${n.name} has no weariness`);
-      ok(n.why.weariness && n.why.weariness.inputs.length === 4,
+      // Four, plus Leadership since M7.5.
+      ok(n.why.weariness && n.why.weariness.inputs.length === 5,
         `${n.name} reported ${n.why.weariness ? n.why.weariness.inputs.length : 0} terms`);
       ok(/[A-Z]/.test(n.why.weariness.summary));
     }

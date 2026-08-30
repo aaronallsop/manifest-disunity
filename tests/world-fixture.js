@@ -39,10 +39,11 @@ export function loadData() {
       get('../content/tunables.json', null),
       get('../content/capitals.json', null),
       get('../content/events.json', null),
+      get('../content/leaders.json', null),
     ]).then(([data, adjacency, areas, partyDefs, economy, neighbors, trade, transport, culture,
-              ideologies, tunables, capitals, eventDefs]) => ({
+              ideologies, tunables, capitals, eventDefs, leaderDefs]) => ({
       data, adjacency, areas, partyDefs, economy, neighbors, trade, transport, culture,
-      ideologies, tunables, capitals, eventDefs,
+      ideologies, tunables, capitals, eventDefs, leaderDefs,
     }));
   }
   return dataPromise;
@@ -83,6 +84,8 @@ export async function bootWorld(opts = {}) {
   if (raw.capitals) Victory.load(raw.capitals);
   Events.reset();
   if (raw.eventDefs) Events.load(raw.eventDefs);
+  Leaders.reset();
+  if (raw.leaderDefs) Leaders.load(raw.leaderDefs);
   const spawned = spawnParties ? Parties.setup(raw.partyDefs, rng) : Parties.setup({}, rng);
   MapModes.init(raw.data);
   if (raw.economy) {
@@ -90,7 +93,7 @@ export async function bootWorld(opts = {}) {
     Market.update(tune);
   }
   TurnSystem.begin([...Game.nations.keys()], rng);
-  World.begin(tune);
+  World.begin(tune, null, rng);
 
   return { seed, rng, tune, raw, spawned };
 }

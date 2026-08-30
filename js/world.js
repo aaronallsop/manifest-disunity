@@ -811,8 +811,19 @@ const World = (function () {
    * suite asserts that every nation has an Authority at turn 0, so a caller that
    * forgets is a test failure rather than a blank panel.
    */
-  function begin(tune, only) {
+  /**
+   * Seed a world: the power stocks, and whoever is in charge of what.
+   *
+   * @param only  a predicate, for a load that must seed only the nations a
+   *              pre-M3 document has no stocks for.
+   * @param rng   so the leaders drawn at the start of a game are as
+   *              reproducible as everything else.
+   */
+  function begin(tune, only, rng) {
     if (!only) winner = null;
+    // Everybody has a leader before the first stock is computed, so the
+    // Leadership term is never reading an empty chair on turn 0.
+    if (typeof Leaders !== 'undefined' && Leaders.loaded()) Leaders.tick(T(tune), rng || null);
     phasePower(T(tune), turn, only);
   }
 
@@ -867,6 +878,8 @@ const World = (function () {
        * asking about last turn's world.
        */
       if (typeof Events !== 'undefined' && Events.loaded()) Events.tick(tn, rng);
+      // ...and seat anybody without a leader, and retire anybody whose term is up.
+      if (typeof Leaders !== 'undefined' && Leaders.loaded()) Leaders.tick(tn, rng);
       Movements.refreshStates(tn); // derived from the map, so it follows the writeback
       Game.tickTreasuries(); // income minus maintenance, on this turn's updated GDP
       Market.update(tn);     // reprice every resource from live supply vs demand
