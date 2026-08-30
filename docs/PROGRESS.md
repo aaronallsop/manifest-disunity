@@ -339,7 +339,15 @@ Done in the order **M3.4 -> M3.1 -> M3.2 -> M3.3**, because the plan lists M3.4'
       targets), a 517-Area empire loses a third of its frontier and a 660-Area one loses nearly
       half. Also fixed here: the distance array was Float32, so Dijkstra discarded its own heap
       entries as stale and 481 of 944 targets were refused for a rounding error.
-- [ ] **M7.12** Widen east.
+- [x] **M7.12** Widen east — five eastern movements authored into `build/build_parties.py` and
+      baked: **Franklin** (the state that really existed from 1784 to 1788, across what are now
+      five state lines), **Acadiana**, **New England Revivalist**, **Central States Union** and
+      **Delmarva Republic**, plus the Great Lakes homeland widened along the Erie Canal. Kentucky
+      and West Virginia had no homeland AT ALL, upstate New York had two Areas of one, and
+      Maryland, Delaware and rural New Jersey had none — so every movement mechanic in the game
+      was a western feature. Areas that can never receive a movement: 278 → 179, and what is left
+      is the empty western interior. Franklin and New England Revivalist spawn deterministically,
+      for the same reason Deseret and Cascadia do.
 
 ---
 
@@ -348,7 +356,7 @@ Done in the order **M3.4 -> M3.1 -> M3.2 -> M3.3**, because the plan lists M3.4'
 *(Updated as work proceeds — what is done, what is next, what was learned that is not yet
 written down elsewhere.)*
 
-**M0-M5 complete.** 780 tests green at `tests/run.html` in ~136s,
+**M0-M5 complete.** 785 tests green at `tests/run.html` in ~140s,
 `build/validate.py` reports 0 errors, and the game loads, plays and saves with a clean console.
 `DESIGN.md` rewritten at the M5 close: section 4.1 is the four power stocks, section 7 is movements,
 sentiment and two-tier secession, section 7.6 is the ledger, the simulator, the dashboard and the
@@ -369,7 +377,7 @@ Performance, measured on the real map rather than predicted: a world turn 24.7 -
 phases 12.4 -> 2.8 ms, political drift 8.0 -> 2.0 ms, a 50-turn simulator run 1,237 -> 466 ms. The
 columnar store is 173 KB and the adjacency graph 43.5 KB.
 
-Next: **M7.12** (widen east — bake homelands for Franklin, Acadiana, New England Revivalist, Central States Union and Great Lakes).
+Next: the **M7 close** — the western half of the movement-coverage gap, then the DESIGN.md rewrite.
 
 Open, carried into M2.3: after 21 turns no Area is yet LED by a minority ideology (Rep 1,288 /
 Dem 388 of 1,676). That is the expected shape at 11% organised movements and it is M5's dial to

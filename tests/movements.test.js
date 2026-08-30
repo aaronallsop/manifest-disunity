@@ -20,13 +20,17 @@ import { bootWorld } from './world-fixture.js';
 
 const SEED = 20260829;
 const T = () => window.TUNE;
-const DETERMINISTIC = ['Cascadian Separatists', 'Deseret', 'Greater Idaho', 'State of Jefferson'];
+// The spine of each slice: a West with no Deseret is not the scenario, and
+// since M7.12 an East with no Franklin is not the widened East.
+const DETERMINISTIC = ['Cascadian Separatists', 'Deseret', 'Greater Idaho', 'State of Jefferson',
+                      'Franklin', 'New England Revivalist'];
 
 describe('The movement definitions', () => {
   it('every one carries an id, a type, a cap, goals, a homeland and a core', async () => {
     const { raw } = await bootWorld({ seed: SEED });
     const defs = raw.partyDefs;
-    equal(Object.keys(defs).length, 24);
+    // 24 through M7.11, and 29 since M7.12 gave the east five of its own.
+    equal(Object.keys(defs).length, 29);
     for (const [name, d] of Object.entries(defs)) {
       ok(/^[a-z0-9-]+$/.test(d.id), `"${name}" has no machine id (got ${d.id})`);
       ok(d.type && d.type.length > 3, `"${name}" has no type`);
