@@ -741,6 +741,11 @@ function renderNationPanel(nid) {
   const annexAttrs = cd > 0
     ? ` disabled title="Regrouping — ${cd} more world ${cd === 1 ? 'turn' : 'turns'}"`
     : '';
+  const gcd = n.gov.lastChange == null ? 0
+    : Math.max(0, TUNE.peek('gov.changeCooldown') - (World.getTurn() - n.gov.lastChange));
+  const govAttrs = gcd > 0
+    ? ` disabled title="The government changed course too recently — ${gcd} more world ${gcd === 1 ? 'turn' : 'turns'}"`
+    : '';
   const rcd = Actions.releaseCooldownLeft(nid);
   const releaseAttrs = rcd > 0
     ? ` disabled title="Handover still being arranged — ${rcd} more world ${rcd === 1 ? 'turn' : 'turns'}"`
@@ -752,6 +757,7 @@ function renderNationPanel(nid) {
         <button class="act" data-act="annex"${annexAttrs}>⚔️ Annex counties${cd > 0 ? ` <span class="act-note">regrouping ${cd}</span>` : ''}</button>
         <button class="act" data-act="trade">🚛 Trade with nation</button>
         <button class="act" data-act="release"${releaseAttrs}>🕊️ Release counties${rcd > 0 ? ` <span class="act-note">arranging ${rcd}</span>` : ''}</button>
+        <button class="act" data-act="govern"${govAttrs}>🗳️ Change course${gcd > 0 ? ` <span class="act-note">${gcd} turns</span>` : ''}</button>
         <button class="act pass" data-act="pass">⏭ Pass turn</button>
       </div>`
     : `<div class="actions">

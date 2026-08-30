@@ -944,3 +944,57 @@ The related half: that sync lived in `app.js`'s change handler, so it ran in the
 nowhere else — and the M5 simulator is headless by definition. `TurnSystem` now registers for roster
 changes itself at `begin()`, which makes the renderer's involvement unnecessary and the invariant
 impossible to miss.
+
+### D90 — A released fragment needs a recipient, not a target
+**M4.4.** Without the guardrail, releasing counties is a way to **dump** them: hand a hostile
+neighbour three Areas full of a movement it cannot govern and you have exported your secession
+problem for free. `breakApart` now takes an `accept(nid, comp)` predicate, and a neighbour that
+refuses simply does not receive — the Areas stay where they were, which is the honest outcome of
+trying to give something away that nobody wants.
+
+Three ways in, matching the design: the fragment is politically compatible with the recipient
+(`release.acceptAffinity`), the two nations have a live trade relationship (a standing deal is
+consent enough), or the recipient is small enough that any territory beats ceasing to exist.
+
+A chunk large enough to stand alone never needs anyone's consent, which is why the predicate applies
+only to the fragments that would otherwise be forced on a neighbour.
+
+### D91 — Appeasement needed almost no machinery, and that is the point
+**M4.4.** M3 put `gov.rulingIdeology` in the record and M3.3 made Civil Liberties a function of how
+far the governed sit from the governing. So changing course is one field write, and **the model does
+the rest**: liberties move where the new ideology is strong and where the old one was, grievance
+follows, and M4.2's sentiment follows that. Nobody had to write "calms the aligned region and angers
+another" — it is what the existing terms already say.
+
+Verified live, Oklahoma switching Republican → Democrat: alignment at home **0.9338 → 0.6683**,
+civil liberties **0.733 → 0.653**, Authority **0.765 → 0.647**. Which also shows the valve is a real
+trade rather than a free fix: appeasing a minority alienates the majority you already had.
+
+Three guardrails, because a free switch would let a player dodge every consequence in the game by
+changing hats each turn: a mandate threshold (you cannot claim support you have no voters for), a
+treasury cost **scaled by how far you move on the axes** (a small correction is cheap, a reversal is
+not), and an Authority hit applied to the **stock rather than the target** — applied to the target,
+the next power phase recomputes from the world and the shock simply vanishes.
+
+### D92 — A nation that has never chosen drifts with its people; one that has chosen stays chosen
+**M4.4.** `refreshGovernments` derives the ruling ideology from the plurality, which was right in
+M3.4 when nothing else could set it. It is wrong the moment a player can deliberately govern by a
+minority ideology: measured, the change fired — the money was spent, the Authority hit landed — and
+then the refresh put the plurality straight back at the end of the same turn, **so the whole valve
+was a fee for nothing**.
+
+`gov.lastChange != null` is the record of a deliberate choice, so it is also the flag that says
+"leave this alone". Unmanaged nations still track their own politics, which is what keeps AI
+governments sensible; a nation that has chosen keeps its choice until it chooses again.
+
+The consequence is wanted rather than tolerated: a government that has chosen can end up badly out of
+step with its own population, which is precisely the pressure Civil Liberties and sentiment exist to
+express. Changing course becomes a commitment instead of a toggle.
+
+### D93 — The change-course cooldown needed its own clock
+**M4.4.** It ran from `gov.since`, which looks like the same clock and is not. `since` is set at
+founding, so **every nation began the game under an eight-turn lockout for a decision nobody had
+made**; and `refreshGovernments` moves it whenever the population shifts a plurality, which would
+hand a player a free reset for something they did not do. `gov.lastChange` is null until a
+deliberate change and is the only thing the cooldown reads. Third instance of the same lesson as D66
+and D88: when two quantities look like the same clock, they are usually two clocks.

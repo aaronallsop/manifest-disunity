@@ -157,7 +157,11 @@ Done in the order **M3.4 -> M3.1 -> M3.2 -> M3.3**, because the plan lists M3.4'
 
       *Watch in M5:* all three declare by turn 10, which is fast. The plan tunes the West with the
       simulator and this is the first number to point it at.
-- [ ] **M4.4** The two cheapest release valves.
+- [x] **M4.4** The two release valves. Voluntary release gains the recipient guardrail (D90);
+      appeasement is `gov.rulingIdeology` plus three guardrails, and the effect is Civil Liberties
+      recomputing rather than anything scripted (D91). Two bugs: the refresh stomping a deliberate
+      choice (D92) and the cooldown reading the wrong clock (D93). Measured live, Oklahoma
+      Republican -> Democrat: alignment at home 0.93 -> 0.67, liberties 0.73 -> 0.65.
 - [ ] **M4.5** Sentiment-scaled occupation cost.
 
 ## M5 — Instrumentation

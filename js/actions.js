@@ -44,6 +44,64 @@ const Actions = (function () {
     else if (type === 'annex') startAnnex(nid);
     else if (type === 'trade') startTrade(nid);
     else if (type === 'release') startRelease(nid);
+    else if (type === 'govern') startGovern(nid);
+  }
+
+  /*
+   * CHANGE COURSE — the appeasement valve.
+   *
+   * Every ideology with real support in your own population, with what adopting
+   * it would cost and what it would do. The interesting part is the last column:
+   * the *effect* is not scripted anywhere, it is Civil Liberties recomputing
+   * against a different ruling ideology, so the preview is honest by
+   * construction — it reports the same affinity the model will use next turn.
+   */
+  function startGovern(nid) {
+    const n = Game.getNation(nid);
+    const d = Game.nationDemographics(nid);
+    const cur = Ideology.index(n.gov.rulingIdeology);
+    const need = TUNE.get('gov.changeMinShare');
+
+    const options = Ideology.all().map((x, i) => {
+      const share = d.pop > 0 ? d.mix[i] / d.pop : 0;
+      const distance = 1 - Ideology.affinity(cur, i);
+      return { x, i, share, distance, cost: d.gdp * TUNE.get('gov.changeCost') * distance,
+               ok: i !== cur && share >= need && n.treasury >= d.gdp * TUNE.get('gov.changeCost') * distance };
+    }).filter((o) => o.i !== cur).sort((a, b) => b.share - a.share);
+
+    const rows = options.map((o) => `
+      <div class="geo-row gov-opt ${o.ok ? '' : 'dim'}" ${o.ok ? `data-ideo="${o.x.id}"` : ''}>
+        <span><i class="econ-dot" style="background:${o.x.color}"></i>${escapeHtml(o.x.name)}
+          &middot; ${(o.share * 100).toFixed(1)}% of your people</span>
+        <strong>${o.share < TUNE.get('gov.changeMinShare') ? 'no mandate' : fmtGdp(o.cost)}</strong>
+      </div>`).join('');
+
+    setPanel(`
+      ${actionHead('\u{1F5F3} Change course', n)}
+      <p class="hint-block">Govern by a different ideology. Areas that hold it will find the state
+      easier to live under and Areas that held the old one will not &mdash; which is not a scripted
+      effect but civil liberties recomputing against a new government.
+      Costs ${(TUNE.peek('gov.changeCost') * 100).toFixed(1)}% of GDP scaled by how far you move,
+      and ${(TUNE.peek('gov.changeAuthorityHit') * 100).toFixed(0)}% of your Authority.</p>
+      <div class="stat"><div class="label">Currently ${escapeHtml(Ideology.nameAt(cur))}
+        &middot; since turn ${n.gov.since}</div>${rows}</div>
+      <div class="btn-row"><button class="btn ghost" id="a-cancel">Cancel</button></div>
+    `);
+    document.getElementById('a-cancel').onclick = cancel;
+    document.querySelectorAll('.gov-opt[data-ideo]').forEach((el) => {
+      el.onclick = () => confirmGovern(nid, el.dataset.ideo);
+    });
+  }
+
+  function confirmGovern(nid, ideologyId) {
+    const res = Game.changeRulingIdeology(nid, ideologyId);
+    if (!res.ok) return flash(escapeHtml(res.message), 'warn');
+    A = null;
+    clearVisuals();
+    flash(`\u{1F5F3} <strong>${escapeHtml(Game.getNation(nid).name)}</strong> now governs as `
+      + `<strong>${escapeHtml(Ideology.byId(ideologyId).name)}</strong>, at a cost of `
+      + `${fmtGdp(res.cost)} and its standing.`, '');
+    completeTurn();
   }
 
   function onHover(d) {
@@ -1045,6 +1103,29 @@ const Actions = (function () {
     document.getElementById('a-go').onclick = confirmRelease;
   }
 
+  /**
+   * Will `recipient` accept a released fragment from `giver`?
+   *
+   * Three ways in, matching the design: the fragment is politically compatible
+   * with the recipient, or the two nations have a live trade relationship, or
+   * the recipient is small enough that any territory is worth having. A neighbour
+   * that satisfies none of them declines, and the Areas stay where they were.
+   */
+  function acceptsRelease(giver) {
+    return (recipient, comp) => {
+      const r = Game.getNation(recipient);
+      if (!r) return false;
+      const them = Game.nationDemographics(recipient);
+      const it = Game.demographics(new Set(comp));
+      if (Ideology.mixAffinity(them.mix, it.mix) >= TUNE.get('release.acceptAffinity')) return true;
+      // A standing deal is consent enough: you are already doing business.
+      const g = Game.getNation(giver);
+      if (g && g.tradeCooldown && g.tradeCooldown[recipient] != null) return true;
+      // And a nation with almost nothing takes what it is offered.
+      return r.counties.size <= TUNE.get('release.desperateAreas');
+    };
+  }
+
   function confirmRelease() {
     if (!A.chosen.size) return;
     const nid = A.nid;
@@ -1056,7 +1137,11 @@ const Actions = (function () {
     me.lastReleaseTurn = World.getTurn();
     // exclude: nid — otherwise a fragment too small to stand alone is handed
     // straight back to the nation that just released it.
-    const born = Game.batch(() => Game.breakApart(chosen, { exclude: nid }));
+    // accept: the design's guardrail. Without it, releasing counties is a way to
+    // DUMP them on a rival — hand a hostile neighbour three Areas full of a
+    // movement it cannot govern and you have exported your secession problem for
+    // free.
+    const born = Game.batch(() => Game.breakApart(chosen, { exclude: nid, accept: acceptsRelease(nid) }));
     TurnSystem.insertAfter(nid, born);
 
     // Count where each released Area actually ended up, rather than inferring it:

@@ -111,6 +111,9 @@ const Game = (function () {
       type: g.type || 'Republic',
       rulingIdeology: g.rulingIdeology == null ? null : g.rulingIdeology,
       since: g.since == null ? worldTurn() : g.since,   // when this ideology took power
+      // null = never deliberately changed course, which is not the same as
+      // "changed course on turn 0" (see changeRulingIdeology).
+      lastChange: g.lastChange == null ? null : g.lastChange,
     };
   }
 
@@ -654,7 +657,7 @@ const Game = (function () {
     }
     return argmaxIndex(tally);
   }
-  function nearestNationForGroup(comp, excludeNation) {
+  function nearestNationForGroup(comp, excludeNation, accept) {
     const inComp = graph.mask();
     for (const f of comp) { const i = nodeOf(f); if (i >= 0) inComp[i] = 1; }
     const skip = excludeNation != null && nationIdx.has(excludeNation)
@@ -669,7 +672,17 @@ const Game = (function () {
         if (o >= 0 && o !== skip) tally[o] = (tally[o] || 0) + 1;
       }
     }
-    return argmaxIndex(tally);
+    if (!accept) return argmaxIndex(tally);
+    // Offer it to each neighbour in order of how much border they share, and
+    // take the first that will have it.
+    const ranked = [];
+    for (let i = 0; i < tally.length; i++) if (tally[i] > 0) ranked.push(i);
+    ranked.sort((a, b) => tally[b] - tally[a] || a - b);
+    for (const i of ranked) {
+      const nid = nationIdList[i];
+      if (nations.has(nid) && accept(nid, comp)) return nid;
+    }
+    return null;
   }
   /** The nation id with the highest tally; ties break on the lower index. */
   function argmaxIndex(tally) {
@@ -888,6 +901,7 @@ const Game = (function () {
     const exclude = opts.exclude || null; // a nation new fragments must not join (e.g. a failed aggressor)
     const reason = opts.reason || 'secede';
     const comps = components(new Set(countyIds), null).sort((a, b) => b.length - a.length);
+    const refused = [];
     const minAreas = T('nation.minAreas');
     const minPop = T('nation.minPop');
 
@@ -913,14 +927,25 @@ const Game = (function () {
       if (viable(comp)) created.push(createNation(nameForCounty(largestCounty(comp)), comp, { silent: true, reason }));
       else small.push(comp);
     }
-    // small fragments join their nearest nation; only truly isolated ones become nations
+    /*
+     * Small fragments join their nearest nation — IF that nation will have them.
+     *
+     * `opts.accept(nid, comp)` is the guardrail from the design: without it,
+     * releasing counties is a way to DUMP them on a rival. Hand a hostile
+     * neighbour three Areas full of a movement it cannot govern and you have
+     * exported your secession problem for free. A recipient that refuses simply
+     * does not receive: the fragment stays where it was, which is the honest
+     * outcome — you tried to give something away and nobody wanted it.
+     */
     for (const comp of small) {
-      const near = nearestNationForGroup(comp, exclude);
+      const near = nearestNationForGroup(comp, exclude, opts.accept);
       if (near) moveCounties(comp, near, { silent: true, reason: 'fragment' });
+      else if (opts.accept) refused.push(...comp);   // nobody would take it; it stays put
       else created.push(createNation(nameForCounty(largestCounty(comp)), comp, { silent: true, reason }));
     }
     pruneEmpty();
     emit({ ownership: true, roster: true });
+    created.refused = refused;   // Areas nobody would accept, still where they were
     return created;
   }
 
@@ -1093,6 +1118,23 @@ const Game = (function () {
    * A nation with no population keeps whatever it had rather than dropping to
    * null; losing your last Area is a different event from having no politics.
    */
+  /*
+   * A nation that has never intervened DRIFTS with its people; one that has
+   * chosen stays chosen.
+   *
+   * Deriving the ruling ideology from the plurality was right in M3.4, when
+   * nothing else could set it. It is wrong now that a player can deliberately
+   * govern by a minority ideology to appease a movement: measured, the choice
+   * fired — the money was spent and the Authority hit landed — and then this
+   * function put the plurality straight back at the end of the same turn, so the
+   * whole valve was a fee for nothing.
+   *
+   * `gov.lastChange != null` is the record of a deliberate choice, so it is also
+   * the flag that says "leave this alone". The consequence is a real and wanted
+   * one: a government that has chosen can end up badly out of step with its own
+   * population, which is exactly the pressure Civil Liberties and sentiment are
+   * built to express.
+   */
   function refreshGovernments(asOf) {
     // The turn is passed in from the world loop, because the refresh happens
     // while turn N is being RESOLVED and the government it produces is the one
@@ -1100,6 +1142,7 @@ const Game = (function () {
     // government to the last turn of the old one.
     const turn = asOf == null ? worldTurn() : asOf;
     for (const [, n] of nations) {
+      if (n.gov.lastChange != null) continue;   // it chose; it keeps its choice
       const bloc = rulingBloc(n.counties);
       if (bloc < 0) continue;
       const id = Ideology.idAt(bloc);
@@ -1108,6 +1151,82 @@ const Game = (function () {
         n.gov.since = turn;
       }
     }
+  }
+
+  /**
+   * APPEASEMENT: a government changes the ideology it governs by.
+   *
+   * The cheapest release valve in the game, and it needs almost no machinery
+   * because M3 already put `gov.rulingIdeology` in the record and M3.3 made
+   * Civil Liberties a function of how far the governed sit from the governing.
+   * Change the ruling ideology and **the model does the rest**: liberties rise
+   * where the new ideology is strong and fall where the old one was, grievance
+   * follows, and M4.2's sentiment follows that. Nobody has to write "calms the
+   * aligned region and angers another" — it is what the existing terms already
+   * say.
+   *
+   * Three guardrails, because a free switch would let a player dodge every
+   * consequence in the game by changing hats each turn:
+   *   - you may only adopt an ideology with real support (`gov.changeMinShare`),
+   *     since a government cannot claim a mandate it has no voters for;
+   *   - it costs treasury, scaled to how far you are moving on the axes;
+   *   - and it costs Authority, because a state that changes what it believes
+   *     by decree has admitted the last thing was not a conviction.
+   *
+   * @returns {{ok: true, from, to, cost}} or {{ok: false, message}}
+   */
+  function changeRulingIdeology(nid, ideologyId, opts = {}) {
+    const n = nations.get(nid);
+    if (!n) return { ok: false, message: 'No such nation.' };
+    const to = Ideology.index(ideologyId);
+    if (to < 0) return { ok: false, message: `"${ideologyId}" is not an ideology.` };
+    const from = Ideology.index(n.gov.rulingIdeology);
+    if (to === from) return { ok: false, message: 'That is already your governing ideology.' };
+
+    const turn = worldTurn();
+    /*
+     * The cooldown runs from the last DELIBERATE change, not from `gov.since`.
+     *
+     * `since` looked like the same clock and is not: it is set at founding, so
+     * every nation began the game under an eight-turn lockout for a decision
+     * nobody had made; and `refreshGovernments` moves it whenever the population
+     * shifts a plurality, which would hand a player a free reset for something
+     * they did not do.
+     */
+    const cd = n.gov.lastChange == null ? 0
+      : T('gov.changeCooldown') - (turn - n.gov.lastChange);
+    if (cd > 0 && !opts.force) {
+      return { ok: false, message: `The government changed course too recently — ${cd} more world ${cd === 1 ? 'turn' : 'turns'}.` };
+    }
+
+    const d = demographics(n.counties);
+    const share = d.pop > 0 ? d.mix[to] / d.pop : 0;
+    const need = T('gov.changeMinShare');
+    if (share < need && !opts.force) {
+      return { ok: false, message: `Only ${(share * 100).toFixed(1)}% of your people hold that ideology; `
+        + `a government needs ${(need * 100).toFixed(0)}% to claim the mandate.` };
+    }
+
+    // The further you move on the axes, the more it costs to be believed.
+    const distance = 1 - Ideology.affinity(from, to);
+    const cost = d.gdp * T('gov.changeCost') * distance;
+    if (n.treasury < cost && !opts.force) {
+      return { ok: false, message: `Changing course would cost ${Math.round(cost / 1e9)}bn and you have `
+        + `${Math.round(n.treasury / 1e9)}bn.` };
+    }
+
+    n.treasury -= cost;
+    n.gov.rulingIdeology = ideologyId;
+    n.gov.since = turn;
+    n.gov.lastChange = turn;
+    // Applied to the STOCK, not to the target: the target recomputes from the
+    // world next turn and would simply undo it. This is a shock, and the stock
+    // discipline is what turns it back into a recovery over several turns.
+    if (typeof n.authority === 'number') {
+      n.authority = Math.max(T('power.floor'), n.authority - T('gov.changeAuthorityHit') * distance);
+    }
+    emit({ values: true });
+    return { ok: true, from: Ideology.idAt(from), to: ideologyId, cost, share, distance };
   }
 
   /* ---- treasury: income (from GDP) minus maintenance, ticked once per world turn ---- */
@@ -1333,6 +1452,7 @@ const Game = (function () {
       return !!(c && n && c.st !== n.homeSt);
     },
     refreshGovernments,
+    changeRulingIdeology,
     /** Territorial events inside the memory window, newest last. */
     historyOf: (nid) => { const n = nations.get(nid); return n ? { annexed: n.annexed, lost: n.lost } : null; },
     moveCounties,

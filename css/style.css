@@ -203,6 +203,10 @@ main { flex: 1 1 auto; display: flex; min-height: 0; }
 .mov-state.s-armed { color: #e8862d; }
 .mov-state.s-declared { color: #e0483b; background: rgba(224,72,59,.16); }
 .mov-state.s-realized { color: #3bb273; }
+.gov-opt { cursor: pointer; padding: 6px 4px; border-radius: 4px; }
+.gov-opt:hover { background: rgba(255,255,255,.06); }
+.gov-opt.dim { opacity: .42; cursor: default; }
+.gov-opt.dim:hover { background: none; }
 .auth-summary { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
 .auth-drift { font-size: 12px; font-weight: 500; margin-left: 6px; }
 .auth-drift.up { color: #3bb273; }

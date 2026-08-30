@@ -458,6 +458,42 @@ export const SCHEMA = {
     doc: 'Institutions, contracts and trade routes all break at once. Deliberately opposite in sign and shorter in duration than the honeymoon: without the cost, declaring independence is free.',
   },
 
+  /* ---- Government change: appeasement (M4.4) ------------------------------
+   * The cheapest release valve in the game, and it needs almost no machinery
+   * because Civil Liberties is already a function of how far the governed sit
+   * from the governing. Change the ruling ideology and the model does the rest.
+   */
+  'release.acceptAffinity': {
+    v: 0.62, min: 0, max: 1, step: 0.01, group: 'Nations',
+    label: 'Political affinity needed to accept a handover',
+    doc: 'How close a neighbour must be politically before it will take Areas you are giving away. THE GUARDRAIL: without it, releasing counties is a way to dump them on a rival - hand a hostile neighbour three Areas full of a movement it cannot govern and you have exported your secession problem for free.',
+  },
+  'release.desperateAreas': {
+    v: 3, min: 0, max: 50, step: 1, group: 'Nations',
+    label: 'A nation this small takes anything',
+    doc: 'A rump state accepts territory whatever its politics, because the alternative is ceasing to exist.',
+  },
+  'gov.changeMinShare': {
+    v: 0.12, min: 0, max: 1, step: 0.01, group: 'Nations',
+    label: 'Support needed to adopt an ideology',
+    doc: 'A government cannot claim a mandate it has no voters for. Low enough that appeasing a rising movement is usually possible and high enough that you cannot adopt something nobody believes purely to dodge a consequence.',
+  },
+  'gov.changeCost': {
+    v: 0.02, min: 0, max: 0.5, step: 0.005, group: 'Nations',
+    label: 'Cost of changing course, as a share of GDP',
+    doc: 'Scaled by how far you move on the two axes, so a small correction is cheap and a reversal is not.',
+  },
+  'gov.changeAuthorityHit': {
+    v: 0.12, min: 0, max: 1, step: 0.01, group: 'Nations',
+    label: 'Authority lost by changing course',
+    doc: 'A state that changes what it believes by decree has admitted the last thing was not a conviction. Applied to the STOCK rather than the target - the target recomputes from the world next turn and would simply undo it - so the stock discipline turns the shock into a recovery over several turns.',
+  },
+  'gov.changeCooldown': {
+    v: 8, min: 0, max: 60, step: 1, group: 'Nations',
+    label: 'Turns between changes of course',
+    doc: 'Measured from the last DELIBERATE change, not from gov.since. Those look like the same clock and are not: `since` is set at founding, so every nation would begin the game under a lockout for a decision nobody made, and refreshGovernments moves it whenever the population shifts a plurality, which would hand a player a free reset for something they did not do. Without a cooldown at all, a player could change hats every turn and dodge every consequence in the game.',
+  },
+
   'nation.historyWindow': {
     v: 20, min: 4, max: 80, step: 1, group: 'Nations',
     label: 'Territorial memory, in turns',
