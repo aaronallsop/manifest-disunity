@@ -663,6 +663,31 @@ const Game = (function () {
   const SUFFIX = /\s+(County|Borough|Parish|Census Area|city|City|Municipality|Planning Region)$/;
   const nameForCounty = (fips) => (county[fips]?.name || 'New Republic').replace(SUFFIX, '');
 
+  /** The ideology a set of Areas actually holds — a new nation governs as its people do. */
+  const dominantIdeologyOf = (ids) => Ideology.idAt(dominantOf(ids));
+
+  /*
+   * WHAT A NEW COUNTRY CALLS ITSELF (M7.7).
+   *
+   * A breakaway used to take the name of its largest county — "Riverside",
+   * "Cook", "Miami-Dade" — which is a place rather than a country, and read on
+   * the leaderboard as though somebody had forgotten to finish it. The templates
+   * live in content/names.json and are drawn against the founding ideology, so a
+   * Distributist breakaway is a Compact and a Nationalist one is a Directorate.
+   *
+   * Falls back to the bare place name when there is no content loaded, which is
+   * what this did before — the map editor and any page without the file still
+   * produce something.
+   */
+  function nameFor(countyIds, ideology, rng) {
+    if (typeof Identity !== 'undefined' && Identity.loaded()) {
+      const used = new Set();
+      for (const [, n] of nations) used.add(n.name);
+      return Identity.name(countyIds, ideology, rng, (x) => used.has(x));
+    }
+    return nameForCounty(largestCounty(countyIds));
+  }
+
   /*
    * The nation sharing the most border with an Area or a group — its "nearest".
    *
@@ -985,7 +1010,7 @@ const Game = (function () {
 
     const created = [], small = [];
     for (const comp of comps) {
-      if (viable(comp)) created.push(createNation(nameForCounty(largestCounty(comp)), comp, { silent: true, reason }));
+      if (viable(comp)) created.push(createNation(nameFor(comp, dominantIdeologyOf(comp), opts.rng), comp, { silent: true, reason }));
       else small.push(comp);
     }
     /*
@@ -1002,7 +1027,7 @@ const Game = (function () {
       const near = nearestNationForGroup(comp, exclude, opts.accept);
       if (near) moveCounties(comp, near, { silent: true, reason: 'fragment' });
       else if (opts.accept) refused.push(...comp);   // nobody would take it; it stays put
-      else created.push(createNation(nameForCounty(largestCounty(comp)), comp, { silent: true, reason }));
+      else created.push(createNation(nameFor(comp, dominantIdeologyOf(comp), opts.rng), comp, { silent: true, reason }));
     }
     pruneEmpty();
     emit({ ownership: true, roster: true });
@@ -1650,6 +1675,7 @@ const Game = (function () {
     components,
     largestCounty,
     nameForCounty,
+    nameFor,
     nearestNation,
     blueShell,
     epoch: () => epoch,

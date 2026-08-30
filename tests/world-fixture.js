@@ -40,10 +40,11 @@ export function loadData() {
       get('../content/capitals.json', null),
       get('../content/events.json', null),
       get('../content/leaders.json', null),
+      get('../content/names.json', null),
     ]).then(([data, adjacency, areas, partyDefs, economy, neighbors, trade, transport, culture,
-              ideologies, tunables, capitals, eventDefs, leaderDefs]) => ({
+              ideologies, tunables, capitals, eventDefs, leaderDefs, nameDefs]) => ({
       data, adjacency, areas, partyDefs, economy, neighbors, trade, transport, culture,
-      ideologies, tunables, capitals, eventDefs, leaderDefs,
+      ideologies, tunables, capitals, eventDefs, leaderDefs, nameDefs,
     }));
   }
   return dataPromise;
@@ -86,6 +87,7 @@ export async function bootWorld(opts = {}) {
   if (raw.eventDefs) Events.load(raw.eventDefs);
   Leaders.reset();
   if (raw.leaderDefs) Leaders.load(raw.leaderDefs);
+  if (raw.nameDefs) Identity.load(raw.nameDefs);
   const spawned = spawnParties ? Parties.setup(raw.partyDefs, rng) : Parties.setup({}, rng);
   MapModes.init(raw.data);
   if (raw.economy) {

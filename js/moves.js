@@ -215,7 +215,7 @@ const Moves = (function () {
         Game.moveCounties(taken, nid, { reason: 'war' });
       } else {
         taken = [];
-        born = Game.breakApart(targets, { exclude: nid, reason: 'fragment' });
+        born = Game.breakApart(targets, { exclude: nid, reason: 'fragment', rng });
       }
       if (res.triggered && res.outcome === 'collapse') {
         /*
@@ -428,7 +428,7 @@ const Moves = (function () {
     const score = CivilWar.uniteSeverity(plan.chance, T(tune));
     const created = Game.batch(() => {
       Game.moveCounties(plan.fallout.defect, target, { silent: true, reason: 'defect' });
-      const born = Game.breakApart(plan.fallout.secede, { exclude: nid, reason: 'secede' });
+      const born = Game.breakApart(plan.fallout.secede, { exclude: nid, reason: 'secede', rng });
       Game.applyCivilWarCost(nid, target, score);
       return born;
     });
@@ -587,7 +587,7 @@ const Moves = (function () {
     n.lastReleaseTurn = World.getTurn();
     const wasOwner = new Map(areas.map((f) => [f, Game.getOwner(f)]));
     const born = Game.batch(() =>
-      Game.breakApart(areas, { exclude: nid, accept: acceptsRelease(nid, tune), reason: 'release' }));
+      Game.breakApart(areas, { exclude: nid, accept: acceptsRelease(nid, tune), reason: 'release', rng }));
     TurnSystem.insertAfter(nid, born);
 
     const bornSet = new Set(born);

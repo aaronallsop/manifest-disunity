@@ -591,3 +591,8 @@ svg.hide-clines .area-borders { display: block; }
 .tl-news { flex: 1; overflow-y: auto; }
 .tl-item { font-size: 12px; line-height: 1.6; color: var(--text); }
 .tl-item.quiet { color: var(--muted); font-style: italic; }
+
+/* ---- flags ---------------------------------------------------------- */
+svg.flag { border-radius: 2px; flex: none; vertical-align: middle; }
+.card-head svg.flag { margin-right: 9px; box-shadow: 0 1px 4px rgba(0,0,0,.4); }
+.lb-row svg.flag { margin-right: 2px; }

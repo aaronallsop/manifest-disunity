@@ -95,7 +95,9 @@ const Leaderboard = (function () {
           .map(
             (r, i) => `<li class="lb-row ${r.id === selId ? 'sel' : ''}" data-id="${r.id}">
             <span class="lb-rank">${i + 1}</span>
-            <span class="lb-sw" style="background:${r.color}"></span>
+            ${typeof Identity !== 'undefined' && Identity.loaded()
+              ? Identity.flag(r.id, 16, 11)
+              : `<span class="lb-sw" style="background:${r.color}"></span>`}
             <span class="lb-name">${escapeHtml(r.name)}</span>
             <span class="lb-metric" ${metricStyle(r)}>${metric(r)}</span>
           </li>`

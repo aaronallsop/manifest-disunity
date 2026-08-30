@@ -139,6 +139,7 @@ const Sim = (function () {
     if (raw.eventDefs) Events.load(raw.eventDefs);
     Leaders.reset();
     if (raw.leaderDefs) Leaders.load(raw.leaderDefs);
+    if (raw.nameDefs) Identity.load(raw.nameDefs);
     Movements.setup(raw.partyDefs, rng);
     MapModes.init(raw.data);
     if (raw.economy) { MapModes.setEconomy(raw.economy); Market.update(tune); }
@@ -238,10 +239,11 @@ const SimData = (function () {
       get('/content/cultural.json', null), get('/content/ideologies.json', null),
       get('/content/tunables.json', null), get('/content/capitals.json', null),
       get('/content/events.json', null), get('/content/leaders.json', null),
+      get('/content/names.json', null),
     ]).then(([data, adjacency, areas, partyDefs, economy, trade, transport, culture,
-              ideologies, tunables, capitals, eventDefs, leaderDefs]) =>
+              ideologies, tunables, capitals, eventDefs, leaderDefs, nameDefs]) =>
       ({ data, adjacency, areas, partyDefs, economy, trade, transport, culture,
-         ideologies, tunables, capitals, eventDefs, leaderDefs }));
+         ideologies, tunables, capitals, eventDefs, leaderDefs, nameDefs }));
     return promise;
   }
   return { load };

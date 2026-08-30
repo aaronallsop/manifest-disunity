@@ -101,6 +101,7 @@
     <script src="../js/events.js"></script>
     <script src="../js/leaders.js"></script>
     <script src="../js/history.js"></script>
+    <script src="../js/identity.js"></script>
     <script src="../js/actions.js"></script>
     <!-- The editor owns the content round-trip (M2.5b), which is model-level:
          publish, list and import are fetch calls, not painting. -->
@@ -135,7 +136,7 @@
         const canonical = await import('./harness.js');
         canonical.reset();
 
-        const suiteFiles = ['./rng.test.js', './tunables.test.js', './ideology.test.js', './graph.test.js', './state.test.js', './content.test.js', './nation.test.js', './power.test.js', './invariants.test.js', './saves.test.js', './batching.test.js', './parties.test.js', './movements.test.js', './sentiment.test.js', './secession.test.js', './valves.test.js', './ledger.test.js', './sim.test.js', './explain.test.js', './moves.test.js', './player.test.js', './ai.test.js', './victory.test.js', './military.test.js', './relations.test.js', './coalitions.test.js', './weariness.test.js', './events.test.js', './leaders.test.js', './history.test.js', './geo-ct.test.js', './civilwar.test.js', './annex.test.js', './world.test.js', './drift.test.js', './distribution.test.js', './market.test.js', './trade.test.js', './release.test.js', './counts.test.js'];
+        const suiteFiles = ['./rng.test.js', './tunables.test.js', './ideology.test.js', './graph.test.js', './state.test.js', './content.test.js', './nation.test.js', './power.test.js', './invariants.test.js', './saves.test.js', './batching.test.js', './parties.test.js', './movements.test.js', './sentiment.test.js', './secession.test.js', './valves.test.js', './ledger.test.js', './sim.test.js', './explain.test.js', './moves.test.js', './player.test.js', './ai.test.js', './victory.test.js', './military.test.js', './relations.test.js', './coalitions.test.js', './weariness.test.js', './events.test.js', './leaders.test.js', './history.test.js', './identity.test.js', './geo-ct.test.js', './civilwar.test.js', './annex.test.js', './world.test.js', './drift.test.js', './distribution.test.js', './market.test.js', './trade.test.js', './release.test.js', './counts.test.js'];
         /*
          * `?only=ai,secession` loads just those files. The suite crossed four
          * minutes in M6.3, because half a dozen of its suites now play tens of

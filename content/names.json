@@ -1,0 +1,34 @@
+{
+  "note": "What a country calls itself, by the ideology that founded it. {PLACE} is the largest Area of the founding ground with its 'County'/'Parish'/'Borough' suffix stripped, so a breakaway around Riverside becomes the Free State of Riverside rather than 'Riverside'. Templates are drawn from the seeded rng, so the same breakaway is always the same country.",
+  "templates": {
+    "red": [
+      "Free State of {PLACE}", "{PLACE} Republic", "Sovereign {PLACE}",
+      "Republic of {PLACE}", "{PLACE} Free State"
+    ],
+    "blue": [
+      "{PLACE} Commonwealth", "United {PLACE}", "Republic of {PLACE}",
+      "Commonwealth of {PLACE}", "{PLACE} Federation"
+    ],
+    "yellow": [
+      "{PLACE} Compact", "The {PLACE} Cooperative", "Distributist {PLACE}",
+      "{PLACE} Commonwealth", "Free Holds of {PLACE}"
+    ],
+    "green": [
+      "{PLACE} Commons", "The {PLACE} Assembly", "Green Republic of {PLACE}",
+      "{PLACE} Bioregion", "Commons of {PLACE}"
+    ],
+    "orange": [
+      "{PLACE} Directorate", "National {PLACE}", "The {PLACE} Authority",
+      "{PLACE} State", "Directorate of {PLACE}"
+    ],
+    "purple": [
+      "{PLACE} Union", "People's {PLACE}", "Socialist Republic of {PLACE}",
+      "Union of {PLACE}", "{PLACE} People's Republic"
+    ]
+  },
+  "generic": ["Free {PLACE}", "New {PLACE}", "{PLACE} Republic", "The {PLACE} Territory"],
+  "suffixes": [
+    " County", " Parish", " Borough", " Census Area", " City and Borough",
+    " Municipality", " Planning Region", " city", " Area"
+  ]
+}

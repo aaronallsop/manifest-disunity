@@ -295,7 +295,13 @@ Done in the order **M3.4 -> M3.1 -> M3.2 -> M3.3**, because the plan lists M3.4'
       (13 KB for thirty turns against ~250 KB naive), a cast recording every nation's name and colour
       when it first appears so the timeline can name countries that no longer exist, and a scrubber
       that repaints the map and lists that turn's standings and news.
-- [ ] **M7.7** Names and flags for new nations.
+- [x] **M7.7** Names and flags for new nations — `content/names.json` and `js/identity.js`.
+      Names are drawn against the FOUNDING IDEOLOGY, so a Distributist breakaway is a Compact
+      and a Nationalist one is a Directorate; the county suffix is stripped because "Cook" is a
+      place and not a country. Flags are a pure function of the nation id — layout, palette and
+      charge all fall out of one hash — so a flag survives a save without being in one and
+      cannot drift from the nation. Two countries may not share a name: the first cut minted
+      the Fairfax Federation twice.
 - [ ] **M7.8** Recognition / legitimacy.
 - [ ] **M7.9** Migration.
 - [ ] **M7.10** Elections.
@@ -309,7 +315,7 @@ Done in the order **M3.4 -> M3.1 -> M3.2 -> M3.3**, because the plan lists M3.4'
 *(Updated as work proceeds — what is done, what is next, what was learned that is not yet
 written down elsewhere.)*
 
-**M0-M5 complete.** 490 tests across 93 suites green at `tests/run.html` in ~94s,
+**M0-M5 complete.** 700 tests green at `tests/run.html` in ~114s,
 `build/validate.py` reports 0 errors, and the game loads, plays and saves with a clean console.
 `DESIGN.md` rewritten at the M5 close: section 4.1 is the four power stocks, section 7 is movements,
 sentiment and two-tier secession, section 7.6 is the ledger, the simulator, the dashboard and the
@@ -330,7 +336,7 @@ Performance, measured on the real map rather than predicted: a world turn 24.7 -
 phases 12.4 -> 2.8 ms, political drift 8.0 -> 2.0 ms, a 50-turn simulator run 1,237 -> 466 ms. The
 columnar store is 173 KB and the adjacency graph 43.5 KB.
 
-Next: **M7.7** (names and flags for new nations — ideology-flavoured name templates and a procedural SVG flag).
+Next: **M7.8** (recognition / legitimacy — an unrecognised breakaway cannot sign trade deals or join coalitions).
 
 Open, carried into M2.3: after 21 turns no Area is yet LED by a minority ideology (Rep 1,288 /
 Dem 388 of 1,676). That is the expected shape at 11% organised movements and it is M5's dial to

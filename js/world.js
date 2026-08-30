@@ -697,7 +697,7 @@ const World = (function () {
         // offers the seat to the parent and nobody else, and after breakApart
         // there is no longer anything to ask.
         const parentOf = Game.getOwner(largest[0]);
-        const born = Game.breakApart(largest, { exclude: null, reason: 'declare' });
+        const born = Game.breakApart(largest, { exclude: null, reason: 'declare', rng });
         if (!born.length) continue;
 
         // The largest new nation carries the movement's name and identity; any

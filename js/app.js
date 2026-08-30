@@ -74,7 +74,7 @@ const getJSON = (path, fallback) =>
 
 async function init() {
   try {
-    const [topo, data, ctGeo, adjacency, neighbors, partyDefs, trade, areas, geoMode, economy, transport, cultureMode, tunables, ideologies, capitals, eventDefs, leaderDefs] = await Promise.all([
+    const [topo, data, ctGeo, adjacency, neighbors, partyDefs, trade, areas, geoMode, economy, transport, cultureMode, tunables, ideologies, capitals, eventDefs, leaderDefs, nameDefs] = await Promise.all([
       getJSON('data/counties-10m.json'),
       getJSON('data/game-data.json'),
       getJSON('data/ct-planning-regions.geojson'),
@@ -92,6 +92,7 @@ async function init() {
       getJSON('content/capitals.json', null),
       getJSON('content/events.json', null),
       getJSON('content/leaders.json', null),
+      getJSON('content/names.json', null),
     ]);
     // The six ideologies, before anything reads a political value.
     Ideology.load(ideologies);
@@ -133,6 +134,8 @@ async function init() {
     if (eventDefs) Events.load(eventDefs);
     Leaders.reset();
     if (leaderDefs) Leaders.load(leaderDefs);
+    // Loaded BEFORE Game.init, because the first thing a breakaway needs is a name.
+    if (nameDefs) Identity.load(nameDefs);
     TurnSystem.begin([...Game.nations.keys()], store.rng);
     choosePlayer();
     World.begin(TUNE, null, store.rng); // the power stocks and the leaders
@@ -1148,7 +1151,7 @@ function renderNationPanel(nid) {
   const panel = document.getElementById('panel');
   panel.innerHTML = `
     <div class="card-head">
-      <span class="swatch" style="background:${n.color}"></span>
+      ${Identity.flag(nid, 34, 23)}
       <h2>${escapeHtml(n.name)}</h2>
     </div>
     <div class="kind">${sub} &middot; ${n.counties.size} counties</div>
