@@ -144,33 +144,58 @@ describe('Occupation cost', () => {
   });
 });
 
-describe('Anti-snowball shell', () => {
-  it('ranks on a composite, so pumping GDP alone does not escape it', async () => {
+/*
+ * THE ANTI-SNOWBALL, which stopped being a rank in M7.2.
+ *
+ * These two tests used to pin the properties of a size TIER — that it ranked on
+ * a composite rather than on population alone, and that its size was fixed to
+ * the original nation count so it did not shrink as nations were eaten. Both
+ * were real fixes to the tier, and both are moot now that there is no tier: the
+ * pressure is a coalition of named nations triggered on
+ * `share x (1 - influence)`.
+ *
+ * What survives is the CONCERN behind them, which finding 36 stated as "the
+ * anti-snowball weakens exactly as the snowball grows". That is what is tested
+ * here now, and it is a stronger test than either of the originals: eat forty
+ * nations and check the survivor is under MORE pressure, not less.
+ */
+describe('Anti-snowball pressure', () => {
+  it('a nation is nothing until it is big AND resented', async () => {
     await bootWorld({ seed: SEED });
-    const before = Game.blueShell('06');
-    ok(before > 0, 'California should be in the leader tier');
-    // A mid-tier nation that quintuples its GDP should now feel the shell
+    equal(Game.blueShell('06'), 0, 'the largest nation was already being ganged up on at turn 0');
     const mid = '49'; // Utah
-    equal(Game.blueShell(mid), 0, 'fixture sanity: Utah should start outside the tier');
-    Game.boostGdp(mid, Game.nationDemographics('06').gdp * 3);
-    ok(Game.blueShell(mid) > 0, 'a GDP superpower escaped the shell entirely');
+    equal(Game.blueShell(mid), 0);
+    // Wealth is half of what makes a threat; standing is the other half.
+    Game.boostGdp(mid, Game.nationDemographics('06').gdp * 8);
+    Game.getNation(mid).influence = 0.02;
+    Coalitions.reset();
+    ok(Game.blueShell(mid) > 0, 'a hated economic superpower faced nobody at all');
+    Game.getNation(mid).influence = 0.98;
+    Coalitions.reset();
+    equal(Game.blueShell(mid), 0, 'the same superpower, admired, was still ganged up on');
   });
 
-  it('the tier size is fixed to the ORIGINAL nation count, not the survivors', async () => {
+  it('does NOT weaken as the snowball grows', async () => {
+    /*
+     * Finding 36's real complaint, and the old tier's real failure: `topCount`
+     * was a share of the live roster, so at 51 nations five were penalised, at
+     * ten just one — the brake let go exactly as it was needed.
+     */
     await bootWorld({ seed: SEED });
-    equal(Game.originalNations(), 51);
-    const tierAt51 = [...Game.nations.keys()].filter((id) => Game.blueShell(id) > 0).length;
-
-    // Eat 40 nations. Under the old rule the tier would shrink from 5 to 1.
     const survivor = '06';
+    Game.getNation(survivor).influence = 0.2;
+    Coalitions.reset();
+    const before = Game.blueShell(survivor);
+
     const ids = [...Game.nations.keys()].filter((id) => id !== survivor).slice(0, 40);
     Game.batch(() => { for (const id of ids) Game.mergeInto(survivor, id); });
     ok(Game.nations.size <= 11, `expected ~11 nations left, got ${Game.nations.size}`);
+    Game.getNation(survivor).influence = 0.2;
+    Coalitions.reset();
 
-    const tierAfter = [...Game.nations.keys()].filter((id) => Game.blueShell(id) > 0).length;
-    equal(Game.originalNations(), 51, 'the original count was lost');
-    equal(tierAfter, tierAt51,
-      `the leader tier shrank from ${tierAt51} to ${tierAfter} as nations were eaten — the anti-snowball weakened as the snowball grew`);
+    ok(Game.blueShell(survivor) > before,
+      `pressure went ${before.toFixed(3)} -> ${Game.blueShell(survivor).toFixed(3)} after eating `
+      + '40 nations; the anti-snowball weakened as the snowball grew');
   });
 });
 

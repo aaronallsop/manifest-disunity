@@ -551,3 +551,4 @@ svg.hide-clines .area-borders { display: block; }
 .rel .rel-row .num { font-variant-numeric: tabular-nums; width: 46px; text-align: right; }
 .rel .rel-row .num.bad { color: var(--bad, #d1706a); }
 .rel .rel-row .num.good { color: var(--good, #6fbf73); }
+.coal .rel-band.bad { font-weight: 600; }

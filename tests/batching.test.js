@@ -157,17 +157,34 @@ describe('Render batching', () => {
 
   /* --- M1.12: caches that must invalidate on a mutation, not per call --- */
 
-  it('blueShell is memoized between mutations and recomputed after one', async () => {
+  it('the anti-snowball pressure is a per-turn snapshot, and reading it is free', async () => {
+    /*
+     * This tested a memoized size RANK until M7.2 replaced the shell with a
+     * coalition, and the expectation genuinely changed rather than merely
+     * breaking: a coalition is a diplomatic fact and should not form and
+     * dissolve twice inside one turn because somebody signed a trade deal in the
+     * middle of it. It is taken once per world turn and once per ownership
+     * change; a mid-turn swing in GDP is felt on the next turn.
+     */
     await bootWorld({ seed: SEED });
     const e0 = Game.epoch();
     const a = Game.blueShell('06');
-    equal(Game.epoch(), e0, 'reading the shell should not count as a mutation');
-    equal(Game.blueShell('06'), a);
+    equal(Game.epoch(), e0, 'reading the pressure should not count as a mutation');
+    equal(Game.blueShell('06'), a, 'two reads of the same snapshot disagreed');
 
-    // a mutation must invalidate it: give a mid-tier nation an enormous economy
+    // A change in VALUE is not felt until the snapshot is retaken...
     Game.boostGdp('49', Game.nationDemographics('06').gdp * 5);
     ok(Game.epoch() > e0, 'the epoch did not advance on a mutation');
-    ok(Game.blueShell('49') > 0, 'the memoized ranking survived a mutation that should have changed it');
+    equal(Game.blueShell('06'), a, 'the snapshot re-formed in the middle of a turn');
+
+    // ...and a change in OWNERSHIP is, because that is the clock it keys on.
+    const targets = [...Game.annexTargets('49')].slice(0, 3);
+    if (targets.length) {
+      Game.moveCounties(targets, '49', { silent: true, reason: 'annex' });
+      ok(Game.ownerEpoch() > 0, 'the model clock did not move on an ownership write');
+    }
+    Coalitions.reset();
+    ok(Number.isFinite(Game.blueShell('49')), 'the pressure is unreadable after a rebuild');
   });
 
   it('the epoch advances exactly once per render, batched or not', async () => {

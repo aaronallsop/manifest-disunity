@@ -446,7 +446,8 @@ describe('Influence in the live world', () => {
     const vals = [];
     for (const [, n] of Game.nations) {
       ok(typeof n.influence === 'number' && Number.isFinite(n.influence), `${n.name} has no Influence`);
-      ok(n.why.influence && n.why.influence.inputs.length === 6);
+      ok(n.why.influence && n.why.influence.inputs.length === 7,
+        `Influence reported ${n.why.influence.inputs.length} terms`);
       vals.push(n.influence);
     }
     const min = Math.min(...vals), max = Math.max(...vals);

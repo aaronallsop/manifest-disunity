@@ -1087,6 +1087,11 @@ export const SCHEMA = {
     label: 'How far force moves a war',
     doc: 'The swing between total superiority and total inferiority, applied to the civil-war score (where low is a win for the attacker). At 0.45 a prepared army roughly halves the score it would otherwise face and an unprepared one adds half again \u2014 large enough to be worth planning for, small enough that the dice still decide.',
   },
+  'coalition.warShare': {
+    v: 0.45, min: 0, max: 1, step: 0.05, group: 'Coalitions',
+    label: 'How much of a coalition member\u2019s border army counts against you',
+    doc: 'A coalition is not a treaty that has to be invoked; it is the fact that three of your neighbours have their armies pointed at you, and they are pointed at you whether or not today\u2019s victim is one of them. Discounted, because they are not the ones being attacked and their border force is spread across a frontier rather than concentrated on this fight.',
+  },
   'mil.suppressLiberty': {
     v: 0.35, min: 0, max: 2, step: 0.05, group: 'Military',
     label: 'Civil liberties lost to a full garrison',
@@ -1193,6 +1198,37 @@ export const SCHEMA = {
     v: 0.75, min: 0, max: 1, step: 0.01, group: 'Victory',
     label: 'Economic Supremacy: quality of life floor',
     doc: 'Wealth that never reaches anybody is not supremacy, it is a statistic.',
+  },
+  /* ---------------- coalitions ---------------- */
+  'coalition.trigger': {
+    v: 0.085, min: 0, max: 0.5, step: 0.005, group: 'Coalitions',
+    label: 'Threat at which the continent starts lining up',
+    doc: 'threat = share of the continent x (1 - Influence). BEING BIG IS NOT THE CRIME: a nation can hold half the map untouched if the other half is glad it is there, and a middling one can be surrounded because of how it got there. Measured against the opening position, where the largest nation is California at 12.7% of the continent and middling standing, for a threat of 0.063 \u2014 so 0.085 leaves the board quiet on turn one and needs a nation to have grown by a third, or spent its standing, before anybody lines up. At turn 40 of a played game California reached 0.093 and three nations formed against it.',
+  },
+  'coalition.joinRelation': {
+    v: -0.10, min: -1, max: 1, step: 0.01, group: 'Coalitions',
+    label: 'Standing at which a nation joins the coalition',
+    doc: 'Read off the M7.1 relations list. A nation joins because it RESENTS the target or because it borders it \u2014 the second is what stops a conqueror being safe simply because it has not got round to its neighbours yet.',
+  },
+  'coalition.minMemberShare': {
+    v: 0.004, min: 0, max: 0.2, step: 0.001, group: 'Coalitions',
+    label: 'Smallest nation that counts as a member',
+    doc: 'A two-Area rump on the far coast is not a check on anybody. Without a floor, twenty of them line up and the coalition reads as enormous.',
+  },
+  'coalition.fullShare': {
+    v: 0.45, min: 0.05, max: 1, step: 0.01, group: 'Coalitions',
+    label: 'Coalition share of the continent that counts as full pressure',
+    doc: 'Pressure is the coalition\u2019s share of the continent by weight, not its head count, scaled so that this much is 1.0. Twenty rump states lining up against a superpower is a sentence, not a constraint.',
+  },
+  'coalition.costMult': {
+    v: 0.9, min: 0, max: 4, step: 0.05, group: 'Coalitions',
+    label: 'Administration surcharge at full coalition pressure',
+    doc: 'THE PENALTY THE LEADER FEELS EVERY TURN, which is what finding 36 asks for: the old shell was a multiplier on a roll that rarely happened, and with it fully applied California still took 1,602 of 1,676 Areas in three turns. Being surrounded is expensive whether or not anybody attacks.',
+  },
+  'power.influence.wCoalition': {
+    v: -0.30, min: -1, max: 0, step: 0.01, group: 'Power',
+    label: 'Influence: weight of a coalition against you',
+    doc: 'And the standing it costs every turn. Deliberately a FEEDBACK LOOP: low Influence is what forms the coalition, and the coalition lowers Influence further. It is escapable \u2014 stop taking ground and the relations decay, the threat falls and the coalition dissolves \u2014 but it does not let go on its own, which is what makes an overreach a decision you can lose.',
   },
   /* ---------------- anti-snowball ---------------- */
   'shell.topShare': {

@@ -737,7 +737,22 @@ const Game = (function () {
    * mutation, so `epoch` invalidates it.
    */
   let shellCache = null, shellEpoch = -1;
+  /*
+   * THE ANTI-SNOWBALL PRESSURE ON A NATION, 0..1.
+   *
+   * From M7.2 this is `Coalitions.pressure` — a set of named nations that each
+   * have a reason — and the size-rank tier below is the fallback for a world
+   * with no coalition module loaded (the map editor, an old save opened in a
+   * page that predates it).
+   *
+   * The name is kept because every caller reads it and because the concept did
+   * not change: it is still "how hard is the rest of the world pressing on the
+   * leader". What changed is that it is now escapable and answerable. Finding 36
+   * measured the old one: with the shell fully applied, California still took
+   * 1,602 of 1,676 Areas in three turns.
+   */
   function blueShell(nid) {
+    if (typeof Coalitions !== 'undefined') return Coalitions.pressure(nid);
     if (shellEpoch === epoch && shellCache) return shellCache.get(nid) || 0;
     const rows = [...nations.keys()].map((id) => {
       const d = nationDemographics(id);
@@ -1358,7 +1373,14 @@ const Game = (function () {
       }
     }
 
-    const administration = n.counties.size * base;
+    /*
+     * BEING SURROUNDED IS EXPENSIVE, whether or not anybody attacks. The penalty
+     * finding 36 asks for: something the leader feels every turn rather than a
+     * multiplier on a roll that rarely happens.
+     */
+    const pressure = typeof Coalitions !== 'undefined' ? Coalitions.pressure(nid) : 0;
+    const encirclement = n.counties.size * base * T('coalition.costMult') * pressure;
+    const administration = n.counties.size * base + encirclement;
     /*
      * AND THE ARMY IS ON THE BOOKS (M6.5). Charged on force rather than on where
      * that force points, which is what makes "how much" a question rather than
@@ -1368,7 +1390,7 @@ const Game = (function () {
     const army = typeof Military !== 'undefined' ? Military.upkeep(nid) : 0;
     const maintenance = gdp * (gov[n.gov.type] ?? gov.Republic) + administration + surcharge + army;
     return { income, maintenance, administration, occupation: surcharge, army, occupied: occ,
-             autonomy: forgone, delta: income - maintenance };
+             autonomy: forgone, encirclement, pressure, delta: income - maintenance };
   }
   function tickTreasuries() {
     for (const [nid, n] of nations) n.treasury += treasuryFlow(nid).delta;

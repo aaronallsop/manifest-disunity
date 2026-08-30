@@ -114,6 +114,7 @@ async function init() {
     store.transport = transport; // rail / interstates / Canada-Mexico gateways (transport.json)
     Ledger.reset();
     Relations.reset();
+    Coalitions.reset();
     Colors.assign(Object.keys(data.states));
     Game.init(data, adjacency, areas, { trade, transport, culture: cultureMode });
     const emerged = Parties.setup(partyDefs, store.rng); // setup-only regional party spawns
@@ -1125,6 +1126,7 @@ function renderNationPanel(nid) {
       ${renderPolitics(demo)}
     </div>
     ${renderNationEconomy(nid)}
+    ${renderCoalition(nid)}
     ${renderStanding(nid)}
     ${renderMilitary(nid)}
     ${renderVictory(nid)}
@@ -1157,6 +1159,39 @@ function renderNationPanel(nid) {
   );
   const goto = panel.querySelector('#goto-current');
   if (goto) goto.onclick = () => { setMode('nations'); select('nation', you()); };
+}
+
+/*
+ * WHO IS LINED UP AGAINST THIS NATION.
+ *
+ * Named, because that is the difference between a coalition and a tier: "Idaho,
+ * Nevada and Oregon, and here is what you did to them" is a situation a player
+ * can act on, where "you are in the top 10%" is a fact about a leaderboard.
+ * Shown on any nation's card, so you can see a rival being surrounded too — that
+ * is a real piece of information about who is about to have a bad decade.
+ */
+function renderCoalition(nid) {
+  if (typeof Coalitions === 'undefined') return '';
+  const rec = Coalitions.against(nid, TUNE);
+  if (!rec || !rec.formed) return '';
+  const flow = Game.treasuryFlow(nid);
+  const rows = rec.members.slice(0, 5).map((m) => `
+    <div class="rel-row"><span class="lbl">${escapeHtml(m.name)}</span>
+      <span class="when">${escapeHtml(m.why)} ${Game.isPlayer(nid) ? 'you' : 'them'}</span>
+      <span class="num bad">${Math.round(m.weight * 100)}%</span>
+    </div>`).join('');
+  return `
+    <div class="stat rel coal">
+      <div class="label">Aligned against ${Game.isPlayer(nid) ? 'you' : 'them'}
+        &middot; ${Math.round(rec.pressure * 100)}% pressure</div>
+      <div class="rel-band bad">${escapeHtml(rec.summary)}</div>
+      ${rows}
+      <div class="vic-note">Threat ${Math.round(rec.threat * 1000) / 10}
+        &mdash; ${Math.round(rec.share * 100)}% of the continent at
+        ${Math.round(rec.influence * 100)}% Influence. Encirclement is costing
+        <strong>${fmtGdp(flow.encirclement || 0)}</strong> a turn, and their border armies
+        stand in the way of anything ${Game.isPlayer(nid) ? 'you' : 'they'} try to take.</div>
+    </div>`;
 }
 
 /*

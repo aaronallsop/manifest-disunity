@@ -316,6 +316,15 @@ export function influence(a, tune) {
       key: 'power.influence.wBlitz', note: 'Areas taken per turn beyond a pace the world tolerates' },
     { label: 'Occupation', raw: occupation, norm: clamp01(occupation),
       key: 'power.influence.wOccupation', note: 'share of held ground that is foreign soil' },
+    /*
+     * A FEEDBACK LOOP, deliberately: low Influence is what forms the coalition,
+     * and the coalition lowers Influence further. It is escapable — stop taking
+     * ground, let the relations decay, and the threat falls — but it does not
+     * let go on its own, which is what makes an overreach something you can
+     * lose rather than something you ride out.
+     */
+    { label: 'Coalition', raw: a.coalition || 0, norm: clamp01(a.coalition || 0),
+      key: 'power.influence.wCoalition', note: 'how much of the continent is lined up against you' },
   ];
 
   const record = build(tune.get('power.influence.base'), terms, tune, influenceSummary);
@@ -665,6 +674,7 @@ export function gatherInfluence(facts, turn, tune, ctx) {
     turn,
     gdpShare: world.gdp > 0 ? self.gdp / world.gdp : 0,
     alignment: weight > 0 ? weighted / weight : 0,
+    coalition: typeof Coalitions !== 'undefined' ? Coalitions.pressure(facts.nid) : 0,
     partners,
     areas: facts.areas,
     occupied: facts.occupied,

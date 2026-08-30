@@ -265,7 +265,13 @@ Done in the order **M3.4 -> M3.1 -> M3.2 -> M3.3**, because the plan lists M3.4'
       released ground. Plus three caches (a from|to index, `Victory.context`, `Sentiment.context`)
       keyed on a new `Game.ownerEpoch()` — the MODEL clock, where `Game.epoch()` is the render clock
       and is frozen inside a batch. Round cost 244ms -> 97ms; suite 298s -> 104s.
-- [ ] **M7.2** Coalitions replacing the blue shell.
+- [x] **M7.2** Coalitions replacing the blue shell — `js/coalitions.js`. `threat = share x (1 -
+      influence)`; members are named nations that resent you or border you, read off the M7.1 list.
+      Costs money every turn (encirclement), standing every turn (an Influence term, a deliberate
+      loop), and their border armies count against you in any war. `Game.blueShell` delegates, so
+      annex cost, the civil-war multiplier and the union chance all changed at once. Two legacy tests
+      rewritten: they pinned properties of a size tier that no longer exists, and the concern behind
+      them — "the anti-snowball weakens as the snowball grows" — is now tested directly.
 - [ ] **M7.3** War weariness.
 - [ ] **M7.4** Events and crises.
 - [ ] **M7.5** Leaders with light traits.
@@ -305,7 +311,7 @@ Performance, measured on the real map rather than predicted: a world turn 24.7 -
 phases 12.4 -> 2.8 ms, political drift 8.0 -> 2.0 ms, a 50-turn simulator run 1,237 -> 466 ms. The
 columnar store is 173 KB and the adjacency graph 43.5 KB.
 
-Next: **M7.2** (coalitions, replacing the raw blue shell — trigger on `threat = size_share * (1 - influence)`, read off the relations list M7.1 built).
+Next: **M7.3** (war weariness — continuous warfare raises sentiment and lowers QoL across the aggressor's own nation; nothing persists between wars today).
 
 Open, carried into M2.3: after 21 turns no Area is yet LED by a minority ideology (Rep 1,288 /
 Dem 388 of 1,676). That is the expected shape at 11% organised movements and it is M5's dial to

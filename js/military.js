@@ -233,7 +233,32 @@ const Military = (function () {
     const t = tune || window.TUNE;
     const mine = strength(attacker, 'field', t);
     let theirs = 0;
-    for (const d of (defenders || [])) theirs += strength(d, 'border', t);
+    const counted = new Set(defenders || []);
+    for (const d of counted) theirs += strength(d, 'border', t);
+    /*
+     * AND EVERYBODY ELSE WHO HAS LINED UP AGAINST YOU (M7.2).
+     *
+     * A coalition is not a treaty that has to be invoked; it is the fact that
+     * three of your neighbours have their armies pointed at you, and they are
+     * pointed at you whether or not today's victim is one of them. Counted at a
+     * discount, because they are not the ones being attacked and their border
+     * force is spread across a frontier rather than concentrated on this one.
+     *
+     * This is what "gets ganged up on" means mechanically, and it is the reason
+     * the coalition is a set of NAMED nations rather than a rank: the discount
+     * is applied to specific armies belonging to specific countries with
+     * specific grievances.
+     */
+    if (typeof Coalitions !== 'undefined') {
+      const rec = Coalitions.against(attacker, t);
+      if (rec && rec.formed) {
+        const share = t.get('coalition.warShare');
+        for (const m of rec.members) {
+          if (counted.has(m.nid)) continue;
+          theirs += strength(m.nid, 'border', t) * share;
+        }
+      }
+    }
     const total = mine + theirs;
     // Nobody has anything: no advantage either way, rather than a divide by zero.
     const share = total > 0 ? mine / total : 0.5;
