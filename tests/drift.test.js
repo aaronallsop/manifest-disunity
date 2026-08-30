@@ -20,20 +20,30 @@ import { bootWorld } from './world-fixture.js';
 const SEED = 20260829;
 const T = () => window.TUNE;
 
-/** Population-weighted within-nation stdev of dem%, on the core denominator. */
+/**
+ * Population-weighted within-nation stdev of the NATION'S LEADING ideology share.
+ *
+ * The old measure was the stdev of dem%, because politics was one number on one
+ * line. With six ideologies the equivalent question is "how much do this
+ * nation's Areas differ in their support for whatever the nation as a whole
+ * leans toward" — the same quantity, asked of a plane.
+ */
 function medianWithinNationSd() {
   const out = [];
-  for (const [, n] of Game.nations) {
+  for (const [id, n] of Game.nations) {
+    const lead = Game.nationDemographics(id).dominant;
+    if (lead < 0) continue;
     let W = 0, sum = 0;
     const rows = [];
     for (const f of n.counties) {
       const c = Game.county[f];
-      const core = c.demPop + c.gopPop + c.othPop;
-      if (core <= 0) continue;
-      const x = (c.demPop / core) * 100;
-      rows.push([x, core]);
-      W += core;
-      sum += x * core;
+      let tot = 0;
+      for (let i = 0; i < c.pop.length; i++) tot += c.pop[i];
+      if (tot <= 0) continue;
+      const x = (c.pop[lead] / tot) * 100;
+      rows.push([x, tot]);
+      W += tot;
+      sum += x * tot;
     }
     if (rows.length < 2 || !W) continue;
     const mean = sum / W;
@@ -45,16 +55,15 @@ function medianWithinNationSd() {
   return out.length ? out[Math.floor(out.length / 2)] : 0;
 }
 
-/** Nations in which every county carries the same D/R letter. */
+/** Nations in which every Area is led by the same ideology. */
 function monolithicNations() {
   let n = 0;
   for (const [, nat] of Game.nations) {
-    let letter = null, same = true;
+    let lead = null, same = true;
     for (const f of nat.counties) {
-      const c = Game.county[f];
-      const l = c.demPop >= c.gopPop ? 'D' : 'R';
-      if (letter === null) letter = l;
-      else if (letter !== l) { same = false; break; }
+      const l = Ideology.dominantIndex(Game.county[f].pop);
+      if (lead === null) lead = l;
+      else if (lead !== l) { same = false; break; }
     }
     if (same) n++;
   }
@@ -64,12 +73,14 @@ function monolithicNations() {
 describe('Political drift', () => {
   it('every Area has a structural anchor derived from its founding character', async () => {
     await bootWorld({ seed: SEED });
+    const BLUE = Ideology.index('blue');
     let differing = 0;
     for (const f in Game.county) {
       const a = Game.anchorOf(f);
       ok(a, `Area ${f} has no anchor`);
-      close(a.d + a.g + a.o, 100, 1e-6, `Area ${f} anchor does not sum to 100`);
-      if (Math.abs(a.d - 50) > 5) differing++;
+      equal(a.length, Ideology.count(), `Area ${f} anchor has the wrong length`);
+      close(a.reduce((t, x) => t + x, 0), 100, 1e-6, `Area ${f} anchor does not sum to 100`);
+      if (Math.abs(a[BLUE] - 50) > 5) differing++;
     }
     ok(differing > 1000, 'the anchors are nearly all identical; there is no structure to anchor to');
   });
@@ -129,21 +140,27 @@ describe('Political drift', () => {
     const before = {};
     for (const f in Game.county) {
       const c = Game.county[f];
-      before[f] = c.demPop + c.gopPop + c.othPop;
+      let t = 0;
+      for (let i = 0; i < c.pop.length; i++) t += c.pop[i];
+      before[f] = t;
     }
     const owners = World.snapshotOwners();
     const snap = {}, nxt = {};
     for (const f in Game.county) {
       const c = Game.county[f];
-      snap[f] = { demPop: c.demPop, gopPop: c.gopPop, othPop: c.othPop, ext: { ...c.ext }, gdp: c.gdp };
-      nxt[f] = { demPop: c.demPop, gopPop: c.gopPop, othPop: c.othPop, ext: { ...c.ext }, gdp: c.gdp };
+      snap[f] = { pop: c.pop.slice(), mov: { ...c.mov }, gdp: c.gdp };
+      nxt[f] = { pop: c.pop.slice(), mov: { ...c.mov }, gdp: c.gdp };
     }
-    const leans = World.phaseRecomputeLeans(snap, nxt, owners);
-    World.phasePoliticalDrift(snap, nxt, leans, T(), owners, rng);
+    const mixes = World.phaseRecomputeMixes(snap, nxt, owners);
+    World.phasePoliticalDrift(snap, nxt, mixes, T(), owners, rng);
     for (const f in nxt) {
       const v = nxt[f];
-      close(v.demPop + v.gopPop + v.othPop, before[f], 1e-6, `drift changed the core population of ${f}`);
-      ok(v.demPop >= 0 && v.gopPop >= 0 && v.othPop >= 0, `${f} went negative under noise`);
+      let tot = 0;
+      for (let i = 0; i < v.pop.length; i++) {
+        ok(v.pop[i] >= 0, `${f} ${Ideology.idAt(i)} went negative under noise`);
+        tot += v.pop[i];
+      }
+      close(tot, before[f], 1e-6, `drift changed the population of ${f}`);
     }
   });
 
@@ -152,7 +169,8 @@ describe('Political drift', () => {
       const w = await bootWorld({ seed: 31337 });
       for (let i = 0; i < 15; i++) World.advanceTurn(T(), w.rng);
       let d = 0;
-      for (const f in Game.county) d += Game.county[f].demPop;
+      const BLUE = Ideology.index('blue');
+      for (const f in Game.county) d += Game.county[f].pop[BLUE];
       return Number(d.toPrecision(12));
     };
     equal(await fp(), await fp(), 'two identical runs diverged — the drift noise is not seeded');

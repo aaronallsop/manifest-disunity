@@ -226,6 +226,11 @@ export const SCHEMA = {
     label: 'War trigger: size ratio',
     doc: 'An annexation this large relative to the annexer triggers a civil war. The old rule needed the bite to exceed the whole nation, which an absolute per-turn budget makes unreachable for anyone large.',
   },
+  'war.splinterAffinity': {
+    v: 0.72, min: 0, max: 1, step: 0.01, group: 'Civil war',
+    label: 'Political affinity threshold',
+    doc: 'How close two positions on the two axes must be to count as politically compatible: an Area below this affinity with its own nation secedes in a failed union, and an ideology above it with the leader is shown as part of the leading coalition. THIS ONE NUMBER replaces `x.lean === y.lean` - the binary enum that four separate game decisions across eight files answered with ===.',
+  },
   'war.sizeRatioPopWeight': {
     v: 0.6, min: 0, max: 1, step: 0.05, group: 'Civil war',
     label: 'War points: population weight',
@@ -257,9 +262,14 @@ export const SCHEMA = {
     doc: 'Sides on each war die.',
   },
   'war.dicePerFlipPoint': {
-    v: 0.35, min: 0, max: 3, step: 0.05, group: 'Civil war',
+    v: 0.5, min: 0, max: 3, step: 0.05, group: 'Civil war',
     label: 'Dice per point of plurality flip',
-    doc: 'Dice granted per point of distance between the old plurality share and the new leader\'s share.',
+    doc: 'Dice granted per point of flip magnitude: the lead gap between the new and the old leading ideology, scaled by how far apart those two sit on the axes.',
+  },
+  'war.diceFlipFloor': {
+    v: 2, min: 1, max: 6, step: 1, group: 'Civil war',
+    label: 'Minimum dice on a flip',
+    doc: 'Any change of governing plurality costs at least this many dice. Losing the plurality is a constitutional crisis whatever replaces it, and without a floor a flip between two ADJACENT ideologies (Democrat to Republican, the commonest of all) became a guaranteed walkover once magnitude was scaled by distance: measured 400 victories out of 400.',
   },
   'war.victoryBand': {
     v: 33, min: 0, max: 200, step: 1, group: 'Civil war',
@@ -310,11 +320,6 @@ export const SCHEMA = {
     v: 0.6, min: 0, max: 1, step: 0.05, group: 'Civil war',
     label: 'Union: size score floor',
     doc: 'Share of the peace chance that comes from size alone, before political similarity is applied.',
-  },
-  'war.unitePolitScale': {
-    v: 100, min: 10, max: 200, step: 5, group: 'Civil war',
-    label: 'Union: political-difference scale',
-    doc: 'Margin difference (0..200 points) at which political similarity hits zero.',
   },
   'war.uniteShellPenalty': {
     v: 0.5, min: 0, max: 1, step: 0.05, group: 'Civil war',

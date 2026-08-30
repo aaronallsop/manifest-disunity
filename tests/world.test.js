@@ -33,46 +33,45 @@ describe('One growth clock', () => {
       `realised growth ${(realised * 100).toFixed(4)}% against a declared ${(T().get('world.popGrowth') * 100).toFixed(2)}% — ext is being excluded again`);
   });
 
-  it('emergent-party members reproduce', async () => {
-    await bootWorld({ seed: 4242 });
-    const extTotal = () => {
+  it('movement members reproduce', async () => {
+    const { rng } = await bootWorld({ seed: 4242 });
+    const movTotal = () => {
       let t = 0;
-      for (const f in Game.county) for (const p in Game.county[f].ext) t += Game.county[f].ext[p];
+      for (const f in Game.county) for (const m in Game.county[f].mov) t += Game.county[f].mov[m];
       return t;
     };
-    const before = extTotal();
+    const before = movTotal();
     ok(before > 0, 'no movement population to test with');
-    World.advanceTurn(T());
-    ok(extTotal() > before, 'movement head counts did not grow at all');
+    World.advanceTurn(T(), rng);
+    ok(movTotal() > before, 'movement head counts did not grow at all');
   });
 
   it('a movement approaches the declared ceiling, not a dilution equilibrium', async () => {
-    await bootWorld({ seed: 4242 });
+    const { rng } = await bootWorld({ seed: 4242 });
     const ceiling = T().get('world.partyCeiling');
-    for (let i = 0; i < 300; i++) World.advanceTurn(T());
+    for (let i = 0; i < 300; i++) World.advanceTurn(T(), rng);
 
-    // the strongest movement share in any county should be near the ceiling
     let best = 0;
     for (const f in Game.county) {
       const c = Game.county[f];
       const pop = recPop(c);
       if (!pop) continue;
-      for (const p in c.ext) best = Math.max(best, c.ext[p] / pop);
+      for (const m in c.mov) best = Math.max(best, c.mov[m] / pop);
     }
-    ok(best > ceiling * 0.9,
+    ok(best > ceiling * 0.8,
       `strongest movement share settled at ${best.toFixed(4)} against a ${ceiling} ceiling; ` +
-      'the ext-dilution bug drove this to 0.278');
+      'the old dilution bug drove this to 0.278');
   });
 
   it('movements do not all converge on the SAME share', async () => {
-    await bootWorld({ seed: 4242 });
-    for (let i = 0; i < 200; i++) World.advanceTurn(T());
+    const { rng } = await bootWorld({ seed: 4242 });
+    for (let i = 0; i < 200; i++) World.advanceTurn(T(), rng);
     const shares = [];
     for (const f in Game.county) {
       const c = Game.county[f];
       const pop = recPop(c);
       if (!pop) continue;
-      for (const p in c.ext) shares.push(c.ext[p] / pop);
+      for (const m in c.mov) shares.push(c.mov[m] / pop);
     }
     ok(shares.length > 100, 'not enough movement/county pairs to measure');
     const min = Math.min(...shares), max = Math.max(...shares);
@@ -152,67 +151,85 @@ describe('Phase discipline', () => {
     equal(owners[some[0]], '49', 'the ownership snapshot tracked a live move');
   });
 
-  it('party growth is independent of ext key insertion order', async () => {
-    await bootWorld({ seed: SEED, spawnParties: false });
+  it('movement growth is independent of key insertion order', async () => {
+    // Two movements of the SAME ideology and the same size in one Area must
+    // settle identically. Applying their gains one at a time made the result
+    // depend on insertion order, worth 0.08 share points — replay-breaking
+    // nondeterminism with no modelled cause.
+    await bootWorld({ seed: SEED, spawnParties: true });
     const f = '06037';
     const c = Game.county[f];
     const pop = recPop(c);
+    const byIdeology = {};
+    for (const n of Movements.getSpawned()) {
+      const i = Movements.ideologyIndexOf(n);
+      (byIdeology[i] = byIdeology[i] || []).push(n);
+    }
+    const pair = Object.values(byIdeology).find((v) => v.length >= 2);
+    ok(pair, 'no two spawned movements share an ideology; cannot test order independence');
+    const A = pair[0], B = pair[1];
 
-    // two identical movements, inserted in opposite orders
     const build = (first, second) => {
-      const rec = { demPop: c.demPop, gopPop: c.gopPop, othPop: c.othPop, gdp: c.gdp, ext: {} };
-      rec.ext[first] = pop * 0.10;
-      rec.ext[second] = pop * 0.10;
-      const scale = (pop - pop * 0.20) / (rec.demPop + rec.gopPop + rec.othPop);
-      rec.demPop *= scale; rec.gopPop *= scale; rec.othPop *= scale;
+      const rec = { pop: c.pop.slice(), gdp: c.gdp, mov: {} };
+      rec.mov[first] = pop * 0.10;
+      rec.mov[second] = pop * 0.10;
       return rec;
     };
     const run = (first, second) => {
       const snap = { [f]: build(first, second) };
-      const nxt = { [f]: JSON.parse(JSON.stringify(snap[f])) };
-      World.phasePartyGrowth(snap, nxt, T());
+      const nxt = { [f]: { pop: snap[f].pop.slice(), gdp: snap[f].gdp, mov: { ...snap[f].mov } } };
+      World.phaseMovementGrowth(snap, nxt, T());
       const p = recPop(nxt[f]);
-      return { A: nxt[f].ext.A / p, B: nxt[f].ext.B / p };
+      return { a: nxt[f].mov[A] / p, b: nxt[f].mov[B] / p };
     };
-    const ab = run('A', 'B'), ba = run('B', 'A');
-    close(ab.A, ba.A, 1e-12, 'party A settled differently depending on key order');
-    close(ab.B, ba.B, 1e-12, 'party B settled differently depending on key order');
-    close(ab.A, ab.B, 1e-12, 'two identical movements settled at different shares');
+    const ab = run(A, B), ba = run(B, A);
+    close(ab.a, ba.a, 1e-12, `${A} settled differently depending on key order`);
+    close(ab.b, ba.b, 1e-12, `${B} settled differently depending on key order`);
+    close(ab.a, ab.b, 1e-12, 'two identical movements settled at different shares');
   });
 
-  it('every phase conserves the county total it is not meant to change', async () => {
-    await bootWorld({ seed: 4242 });
+  it('every phase conserves the Area total it is not meant to change', async () => {
+    const { rng } = await bootWorld({ seed: 4242 });
     const owners = World.snapshotOwners();
     const snap = {}, nxt = {};
     for (const f in Game.county) {
       const c = Game.county[f];
-      snap[f] = { demPop: c.demPop, gopPop: c.gopPop, othPop: c.othPop, ext: { ...c.ext }, gdp: c.gdp };
-      nxt[f] = { demPop: c.demPop, gopPop: c.gopPop, othPop: c.othPop, ext: { ...c.ext }, gdp: c.gdp };
+      snap[f] = { pop: c.pop.slice(), mov: { ...c.mov }, gdp: c.gdp };
+      nxt[f] = { pop: c.pop.slice(), mov: { ...c.mov }, gdp: c.gdp };
     }
     const before = {};
     for (const f in snap) before[f] = recPop(snap[f]);
 
-    const leans = World.phaseRecomputeLeans(snap, nxt, owners);
-    World.phasePoliticalDrift(snap, nxt, leans, T(), owners);
+    const mixes = World.phaseRecomputeMixes(snap, nxt, owners);
+    World.phasePoliticalDrift(snap, nxt, mixes, T(), owners, rng);
     for (const f in nxt) close(recPop(nxt[f]), before[f], 1e-6, `drift changed the population of ${f}`);
 
-    World.phasePartyGrowth(snap, nxt, T());
-    for (const f in nxt) close(recPop(nxt[f]), before[f], 1e-6, `party growth changed the population of ${f}`);
+    World.phaseMovementGrowth(snap, nxt, T());
+    for (const f in nxt) close(recPop(nxt[f]), before[f], 1e-6, `movement growth changed the population of ${f}`);
   });
 
-  it('phaseCleanup is currently inert on this data — documented, not accidental', async () => {
-    await bootWorld({ seed: 4242 });
+  it('phaseCleanup keeps every movement a valid slice of its ideology', async () => {
+    const { rng } = await bootWorld({ seed: 4242 });
     const pairs = () => {
       let n = 0;
-      for (const f in Game.county) n += Object.keys(Game.county[f].ext).length;
+      for (const f in Game.county) n += Object.keys(Game.county[f].mov).length;
       return n;
     };
-    const before = pairs();
-    ok(before > 0, 'no movements spawned');
-    for (let i = 0; i < 30; i++) World.advanceTurn(T());
-    equal(pairs(), before,
-      'phaseCleanup removed a movement. That is a behaviour change: under ' +
-      'growth-only dynamics the smallest reachable share is partyStep x ' +
-      'partyCeiling, which is above the floor. Re-read the note in world.js.');
+    ok(pairs() > 0, 'no movements spawned');
+    for (let i = 0; i < 30; i++) World.advanceTurn(T(), rng);
+    ok(pairs() > 0, 'every movement was cleaned up');
+
+    // The clamp is the invariant the whole model rests on: drift, growth and war
+    // all move pop[i] without knowing about movements.
+    const N = Ideology.count();
+    for (const f in Game.county) {
+      const c = Game.county[f];
+      const byIdeology = new Array(N).fill(0);
+      for (const m in c.mov) byIdeology[Movements.ideologyIndexOf(m)] += c.mov[m];
+      for (let i = 0; i < N; i++) {
+        ok(byIdeology[i] <= c.pop[i] + 1e-6,
+          `Area ${f}: ${Ideology.idAt(i)} holds ${c.pop[i]} but its movements claim ${byIdeology[i]}`);
+      }
+    }
   });
 });

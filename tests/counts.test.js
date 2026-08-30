@@ -120,18 +120,20 @@ describe('Exact-sum counts', () => {
 });
 
 describe('The model uses it', () => {
-  it('every Area opens with an integer population equal to its baked total', async () => {
+  it('every Area opens with integer ideology counts summing to its baked total', async () => {
     const { raw } = await bootWorld({ seed: SEED, spawnParties: false });
     for (const f in Game.county) {
       const c = Game.county[f];
-      equal(Number.isInteger(c.demPop), true, `Area ${f} demPop is not an integer at boot`);
-      equal(Number.isInteger(c.gopPop), true, `Area ${f} gopPop is not an integer at boot`);
-      equal(Number.isInteger(c.othPop), true, `Area ${f} othPop is not an integer at boot`);
+      let total = 0;
+      for (let i = 0; i < c.pop.length; i++) {
+        equal(Number.isInteger(c.pop[i]), true,
+          `Area ${f} ${Ideology.idAt(i)} is not an integer at boot: ${c.pop[i]}`);
+        total += c.pop[i];
+      }
       const baked = Game.areaCounties(f)
         .reduce((t, m) => t + ((raw.data.counties[m] && raw.data.counties[m].pop) || 0), 0);
       // EXACT, not close(): that is the whole point of the port.
-      equal(c.demPop + c.gopPop + c.othPop, baked,
-        `Area ${f} population ${c.demPop + c.gopPop + c.othPop} != baked ${baked}`);
+      equal(total, baked, `Area ${f} population ${total} != baked ${baked}`);
     }
   });
 
@@ -140,7 +142,7 @@ describe('The model uses it', () => {
     let model = 0;
     for (const f in Game.county) {
       const c = Game.county[f];
-      model += c.demPop + c.gopPop + c.othPop;
+      for (let i = 0; i < c.pop.length; i++) model += c.pop[i];
     }
     let baked = 0;
     for (const r of Object.values(raw.data.counties)) baked += r.pop || 0;

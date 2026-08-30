@@ -179,10 +179,17 @@ describe('Civil war trigger', () => {
     await bootWorld({ seed: SEED });
     const tune = T();
     const ratio = tune.get('war.triggerSizeRatio');
-    const before = { pop: 1e6, gdp: 1e11, dem: 50, gop: 50, other: 0, extPct: {} };
-    const small = { pop: 1e6 * ratio * 0.9, gdp: 1e11 * ratio * 0.9, dem: 50, gop: 50, other: 0, extPct: {} };
-    const big = { pop: 1e6 * ratio * 1.1, gdp: 1e11 * ratio * 1.1, dem: 50, gop: 50, other: 0, extPct: {} };
-    const after = { pop: 2e6, gdp: 2e11, dem: 50, gop: 50, other: 0, extPct: {} };
+    const evenMix = (pop) => {
+      const mix = Ideology.zeroMix();
+      mix[Ideology.index('blue')] = pop * 0.5;
+      mix[Ideology.index('red')] = pop * 0.5;
+      return { pop, mix, shares: Ideology.shares(mix), dominant: Ideology.dominantIndex(mix),
+               centroid: Ideology.centroid(mix) };
+    };
+    const before = { ...evenMix(1e6), gdp: 1e11 };
+    const small = { ...evenMix(1e6 * ratio * 0.9), gdp: 1e11 * ratio * 0.9 };
+    const big = { ...evenMix(1e6 * ratio * 1.1), gdp: 1e11 * ratio * 1.1 };
+    const after = { ...evenMix(2e6), gdp: 2e11 };
     equal(CivilWar.assess(before, small, after, tune).triggered, false,
       'a bite just under the ratio should not start a war');
     equal(CivilWar.assess(before, big, after, tune).triggered, true,

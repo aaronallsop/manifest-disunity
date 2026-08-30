@@ -34,8 +34,10 @@ export function loadData() {
       get('../data/county_neighbors.json', {}),
       get('../data/county_trade.json', null),
       get('../data/transport.json', null),
-    ]).then(([data, adjacency, areas, partyDefs, economy, neighbors, trade, transport]) => ({
-      data, adjacency, areas, partyDefs, economy, neighbors, trade, transport,
+      get('../data/cultural.mapmode.json', null),
+      get('../content/ideologies.json', null),
+    ]).then(([data, adjacency, areas, partyDefs, economy, neighbors, trade, transport, culture, ideologies]) => ({
+      data, adjacency, areas, partyDefs, economy, neighbors, trade, transport, culture, ideologies,
     }));
   }
   return dataPromise;
@@ -59,8 +61,10 @@ export async function bootWorld(opts = {}) {
   const tune = opts.tune || window.TUNE;
   const rng = RNG.create(seed);
 
+  Ideology.load(raw.ideologies);
   Colors.assign(Object.keys(raw.data.states));
-  Game.init(raw.data, raw.adjacency, raw.areas, { trade: raw.trade, transport: raw.transport });
+  Game.init(raw.data, raw.adjacency, raw.areas,
+    { trade: raw.trade, transport: raw.transport, culture: raw.culture });
   const spawned = spawnParties ? Parties.setup(raw.partyDefs, rng) : Parties.setup({}, rng);
   MapModes.init(raw.data);
   if (raw.economy) {
@@ -92,9 +96,16 @@ export function totalNationPop() {
 
 /** Population of one Area record without going through the public accessor. */
 export function recPop(c) {
-  let e = 0;
-  for (const p in c.ext) e += c.ext[p];
-  return c.demPop + c.gopPop + c.othPop + e;
+  let t = 0;
+  for (let i = 0; i < c.pop.length; i++) t += c.pop[i];
+  return t;
+}
+
+/** Total organised-movement head count on one Area record. */
+export function recMov(c) {
+  let t = 0;
+  for (const m in c.mov) t += c.mov[m];
+  return t;
 }
 
 /** Population baked into game-data.json for the member counties of an Area. */
@@ -113,11 +124,15 @@ export function bakedAreaPop(raw, aid) {
  */
 export function fingerprint() {
   const ids = Object.keys(Game.county).sort();
-  let dem = 0, gop = 0, oth = 0, gdp = 0, ext = 0, extNames = new Set();
+  const N = Ideology.count();
+  const mix = new Array(N).fill(0);
+  let gdp = 0, mov = 0;
+  const movNames = new Set();
   for (const f of ids) {
     const c = Game.county[f];
-    dem += c.demPop; gop += c.gopPop; oth += c.othPop; gdp += c.gdp;
-    for (const p in c.ext) { ext += c.ext[p]; extNames.add(p); }
+    for (let i = 0; i < N; i++) mix[i] += c.pop[i];
+    gdp += c.gdp;
+    for (const m in c.mov) { mov += c.mov[m]; movNames.add(m); }
   }
   const nations = [...Game.nations.keys()].sort();
   const owners = ids.map((f) => Game.getOwner(f)).join('|');
@@ -125,8 +140,10 @@ export function fingerprint() {
     turn: World.getTurn(),
     areas: ids.length,
     nations: nations.join(','),
-    dem: sig(dem), gop: sig(gop), oth: sig(oth), gdp: sig(gdp), ext: sig(ext),
-    extNames: [...extNames].sort().join(','),
+    mix: mix.map(sig).join(','),
+    gdp: sig(gdp),
+    mov: sig(mov),
+    movNames: [...movNames].sort().join(','),
     ownerHash: hash(owners),
     prices: (Market.getPrices() || []).map((p) => sig(p)).join(','),
     treasuries: nations.map((n) => sig(Game.getNation(n).treasury)).join(','),

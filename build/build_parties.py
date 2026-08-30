@@ -90,6 +90,46 @@ RIO_GRANDE = ["35001", "35049", "35035", "35029", "35017", "35023", "35051",
               "35053", "35061", "35057", "35007", "35033", "35047", "35043",
               "35039", "35055"]
 
+# ---- IDEOLOGY: every movement sits somewhere on the two axes -------------
+# The six ideologies are authored in content/ideologies.json. A movement is not
+# an ideology - it is an organised faction that HAS one (see REBUILD-PLAN M4.1:
+# a Movement is {id, ideology, type, homeland[], ...}). This mapping is what
+# lets the model carry six symmetric ideologies as the political truth while
+# movements stay named, regional and separately trackable.
+#
+#   red    Republican                mainstream market right
+#   blue   Democrat                  mainstream liberal
+#   green  Democratic Socialist      economically left, socially liberal
+#   yellow Conservative Nationalist  economically right, socially traditional
+#   orange Distributist              economically left, socially traditional
+#   purple Socialist                 furthest economically left
+IDEOLOGY = {
+    "Christian Nationalism":         "yellow",
+    "Cascadian Separatists":         "green",
+    "New England United":            "blue",
+    "Anarcho-Capitalist":            "red",
+    "Libertarians":                  "red",
+    "Blue-Collar Populist":          "orange",
+    "Techno-Autocrat":               "yellow",
+    "A Free Texas":                  "red",
+    "Deseret":                       "yellow",
+    "New Confederacy":               "yellow",
+    "Great Lakes Free Trade":        "blue",
+    "New Absaroka":                  "red",
+    "El Paso United":                "orange",
+    "Northern Christian Kingdom":    "yellow",
+    "The Farmers Union":             "orange",
+    "Eastern Progressives":          "green",
+    "Greater Idaho":                 "red",
+    "State of Jefferson":            "red",
+    "Native American Confederation": "orange",
+    "Alaskan Independence":          "red",
+    "Hawaiian Sovereignty":          "orange",
+    "Front Range Republic":          "blue",
+    "Sonoran Republic":              "orange",
+    "Rio Grande Union":              "green",
+}
+
 REGIONS = {
     "Christian Nationalism":     {"states": SOUTH, "min_pop": 100_000},
     "Cascadian Separatists":     {"states": ["41", "53", "16", "30"], "lean": "R", "fips": NORTHERN_CA},
@@ -156,12 +196,16 @@ def main():
 
     defs = {}
     for name, rule in REGIONS.items():
+        ideology = rule.get("ideology") or IDEOLOGY.get(name)
+        if not ideology:
+            raise SystemExit(f'"{name}" has no ideology - add it to the IDEOLOGY table')
         defs[name] = {
             "chance": rule.get("chance", SPAWN_CHANCE),
             "share": rule.get("share", SHARE_RANGE),
+            "ideology": ideology,
             "counties": resolve(rule),
         }
-        print(f"{name:28} {len(defs[name]['counties']):>5} counties")
+        print(f"{name:32} {ideology:7} {len(defs[name]['counties']):>5} counties")
 
     out_path = os.path.join(DATA, "parties.json")
     with open(out_path, "w", encoding="utf-8") as f:

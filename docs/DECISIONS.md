@@ -306,3 +306,67 @@ M4.1, both real proposals, both `chance: 1.0` because M4.1 wants them determinis
 American Confederation** (also named in M4.1), **Alaskan Independence**, **Hawaiian Sovereignty**,
 **Front Range Republic**, **Sonoran Republic** and **Rio Grande Union**. Every state now has a
 homeland; uncovered Areas fall from 348 to 278. M4.1 authors the rest.
+
+### D40 — Movements are named factions that HAVE an ideology; they are a slice, not a seventh bloc
+**M2.2.** The obvious reading of "six ideologies plus emergent parties" is seven-plus buckets:
+`pop[6]` for the ideologies and `mov[name]` alongside it. That is wrong, and it is the same mistake
+the old model made with `ext` — a parallel population that drift, growth and war all had to be
+taught about separately, and mostly were not. Instead `mov[name]` is a **slice of**
+`pop[ideologyOf(name)]`: Deseret's members are counted in Conservative Nationalist and also recorded
+as organised under Deseret. The whole population is always exactly `sum(pop)`, so every phase that
+moves people can keep ignoring movements entirely, and `phaseCleanup` clamps each ideology's
+movements back inside their bloc once per turn. Deseret is therefore not an opinion, it is an
+organisation *of* an opinion — which is also what makes "Deseret grows" and "Conservative
+Nationalism grows" two different events the model can tell apart.
+
+### D41 — Affinity normalises on the ACTUAL maximum pair distance (1.7804), not 2√2
+**M2.2.** `affinity(a,b) = 1 - distance(a,b)/MAX_DISTANCE` needs a denominator, and the tempting one
+is the diagonal of the [-1,1] coordinate box, 2√2 = 2.8284. No authored pair is anywhere near it:
+the widest is Democratic Socialist to Conservative Nationalist at **1.7804**. Normalising on 2.8284
+would have squashed every real affinity into the range 0.37–1.0, so a "low affinity" threshold of
+0.3 would never fire and every M5 dial would mean less than its label said. `MAX_DISTANCE` is
+therefore computed from the loaded table at `Ideology.load`, which also means adding a seventh
+ideology re-normalises the scale instead of quietly compressing it. The cost is that affinity is a
+*relative* measure — it says how far apart two ideologies are compared to the widest gap that
+exists, not compared to an absolute political space. That is the more useful of the two.
+
+### D42 — `war.splinterAffinity` replaces `x.lean === y.lean`
+**M2.2.** Four game decisions asked "are these two the same political letter" and answered with
+`===`: does this annexation trigger a civil war, may I annex this neighbour, who defects in a failed
+union, which Areas survive a partial victory. Six symmetric ideologies has no `===` answer, so each
+became a distance question against a named threshold. Splintering is the one that changed most:
+a county defects to a neighbour when its ideology is closer to that neighbour than to its current
+owner, and secedes when its affinity to its owner falls below `war.splinterAffinity` **and** it is
+geographically cut off. Both conditions are now continuous, so the M5 simulator can tune how
+fissile the map is with one number instead of by editing branch logic.
+
+### D43 — Any change of governing plurality costs at least `war.diceFlipFloor` dice
+**M2.2.** Flip magnitude is the lead gap between the incoming and outgoing leading ideologies,
+scaled by `1 - affinity` between them, so an annexation that swings a nation from Republican to
+Conservative Nationalist is a smaller shock than one that swings it to Socialist. Correct, and it
+had one measured consequence I did not want: Democrat→Republican is the commonest flip on this map
+and the two are *adjacent* on both axes, so the scaling drove it to 2 dice and the outcome
+distribution collapsed to **400 victories out of 400** — the civil-war system stopped existing for
+the flip that happens most. A floor of 2 dice (with `war.dicePerFlipPoint` raised 0.35→0.5 to keep
+the distant flips where they were) restores the spread: losing the plurality is a constitutional
+crisis whatever replaces it, and *how bad* it gets is what distance decides.
+
+### D44 — The 2024 "Other" residual is split by cultural region, and the region is kept on the Area
+**M2.2.** R becomes red and D becomes blue; Other is everything outside the two-party system, and a
+third-party voter in Vermont is not the same person as one in Alabama. `content/ideologies.json`
+carries per-region weights over the four minority ideologies for all 20 cultural regions, with a
+flat `default`. Two notes. First, the split runs on the **merged Area**, not per member county, so
+an Area takes one region's texture rather than a blend of its members' — Areas are the atomic unit
+and a blended texture would be an average of a thing that no longer exists. Second, `init` computed
+the region and threw it away; it now lands in `attrs.culture`. M4 picks its West scenario by region
+and M5 reports by region, and both would otherwise re-walk the culture tree to learn what `init`
+already knew. All 1,676 Areas are tagged and all 20 regions are covered, which the ideology suite
+asserts so a new region cannot silently fall through to the default.
+
+### D45 — Shares are percentages (0–100), counts are people, and the two never mix
+**M2.2.** `Ideology.shares(mix)` returns 0–100, not 0–1, because every consumer is a label, a bar
+width or an authored threshold written in points ("55.2% Republican", `war.splinterAffinity`). The
+counts vector `pop[]` is people and is exact — `js/counts.js` absorbs the rounding residual so
+`sum(pop)` equals the baked integer population, measured across 986 of 3,143 counties where the
+float product does not. Mixing the two is the easiest bug to write here, so the naming is rigid:
+`pop`/`mix` are counts, `shares` are percentages, `affinity`/`cohesion` are 0–1 fractions.

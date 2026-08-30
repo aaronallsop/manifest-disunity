@@ -25,7 +25,7 @@ function headlessSnapshot(seed, rng) {
     world: World.serialize(),
     market: Market.serialize(),
     colors: Colors.serialize(),
-    parties: Parties.serialize(),
+    parties: Movements.serialize(),
     tune: window.TUNE.diff(),
   };
 }
@@ -33,7 +33,7 @@ function headlessSnapshot(seed, rng) {
 function headlessApply(snap) {
   World.loadState(snap.world);
   Colors.loadState(snap.colors);
-  Parties.loadState(snap.parties);
+  Movements.loadState(snap.parties);
   Market.loadState(snap.market);
   TurnSystem.loadState(snap.turns);
   const rng = RNG.restore(snap.rng);
@@ -45,7 +45,7 @@ function headlessApply(snap) {
 describe('Save round-trip', () => {
   it('every stateful module exposes serialize + loadState', () => {
     for (const [name, mod] of [['Game', Game], ['TurnSystem', TurnSystem], ['World', World],
-                               ['Market', Market], ['Colors', Colors], ['Parties', Parties]]) {
+                               ['Market', Market], ['Colors', Colors], ['Movements', Movements]]) {
       ok(typeof mod.serialize === 'function', `${name}.serialize is missing`);
       ok(typeof mod.loadState === 'function', `${name}.loadState is missing`);
     }
@@ -79,17 +79,18 @@ describe('Save round-trip', () => {
     notEqual(c, b);
   });
 
-  it('Parties.spawned survives — a loaded save reports its own roster', async () => {
+  it('the movement roster survives — a loaded save reports its own', async () => {
     const { spawned } = await bootWorld({ seed: 4242 });
-    ok(spawned.length > 0, 'no parties spawned at seed 4242');
-    const snap = Parties.serialize();
-    deepEqual(snap, spawned);
+    ok(spawned.length > 0, 'no movements spawned at seed 4242');
+    const snap = JSON.parse(JSON.stringify(Movements.serialize()));
+    deepEqual(snap.spawned, spawned);
+    ok(Object.keys(snap.ideologyOf).length > 0, 'the movement->ideology map was not serialized');
 
     // a fresh session rerolls a different roster...
     const other = await bootWorld({ seed: 99 });
     // ...and loading the save must put the original roster back
-    Parties.loadState(snap);
-    deepEqual(Parties.getSpawned(), spawned, 'the roster from the save was not restored');
+    Movements.loadState(snap);
+    deepEqual(Movements.getSpawned(), spawned, 'the roster from the save was not restored');
     ok(other.spawned.length >= 0);
   });
 
@@ -158,22 +159,24 @@ describe('Save round-trip', () => {
     // what "a save/load round-trip reproduces the state exactly" costs.
     for (const [f, r] of Object.entries(doc.counties)) {
       const c = Game.county[f];
-      equal(r.d, c.demPop, `Area ${f} demPop was altered by serialize`);
       equal(r.gdp, c.gdp, `Area ${f} gdp was altered by serialize`);
+      for (let i = 0; i < c.pop.length; i++) {
+        equal(r.p[i], c.pop[i], `Area ${f} ${Ideology.idAt(i)} count was altered by serialize`);
+      }
     }
 
     // empty bags are absent, not written as {}
-    ok(recs.some((r) => r.e === undefined), 'every Area carries an ext bag; the omission is not working');
+    ok(recs.some((r) => r.m === undefined), 'every Area carries a movement bag; the omission is not working');
     equal(recs.some((r) => r.a !== undefined && Object.keys(r.a).length === 0), false,
       'an empty attrs bag was serialized');
-    equal(recs.some((r) => r.e !== undefined && Object.keys(r.e).length === 0), false,
-      'an empty ext bag was serialized');
+    equal(recs.some((r) => r.m !== undefined && Object.keys(r.m).length === 0), false,
+      'an empty movement bag was serialized');
   });
 
   it('loadState skips Areas the current build does not have, and reports them', async () => {
     await bootWorld({ seed: SEED });
     const snap = Game.serialize();
-    snap.counties['99999'] = { d: 1, g: 1, o: 1, gdp: 1 };
+    snap.counties['99999'] = { p: Ideology.zeroMix(), gdp: 1 };
     snap.nations[0].counties = [...snap.nations[0].counties, '99999'];
     const r = Game.loadState(snap);
     equal(r.dropped, 1, 'an unknown Area record was not counted');

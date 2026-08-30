@@ -1,5 +1,5 @@
 /*
- * Leaderboard: ranks every current nation by population, GDP, or political lean.
+ * Leaderboard: ranks every current nation by population, GDP, or ideology.
  * Rebuilt from the model on every change, so nations that form or dissolve appear
  * and disappear automatically. Clicking a row selects that nation on the map.
  */
@@ -10,19 +10,33 @@ const Leaderboard = (function () {
     const list = [];
     for (const [id, n] of Game.nations) {
       const d = Game.nationDemographics(id);
-      list.push({ id, name: n.name, color: n.color, pop: d.pop, gdp: d.gdp, margin: d.dem == null ? 0 : d.dem - d.gop, lean: d.lean });
+      // The lead over the runner-up, which is what "how firmly" means once there
+      // are six ideologies rather than two. A margin off a single D-minus-R line
+      // cannot express it.
+      let first = 0, second = 0;
+      for (const s of d.shares) {
+        if (s > first) { second = first; first = s; }
+        else if (s > second) second = s;
+      }
+      list.push({
+        id, name: n.name, color: n.color, pop: d.pop, gdp: d.gdp,
+        dominant: d.dominant, lead: first - second,
+        econ: d.centroid.economic, social: d.centroid.social,
+      });
     }
     if (sortKey === 'pop') list.sort((a, b) => b.pop - a.pop);
     else if (sortKey === 'gdp') list.sort((a, b) => b.gdp - a.gdp);
-    else list.sort((a, b) => b.margin - a.margin); // most Democratic -> most Republican
+    // Grouped by ideology in canonical order, firmest first within each — so the
+    // list reads as a political map of the board rather than one axis of it.
+    else list.sort((a, b) => (a.dominant - b.dominant) || (b.lead - a.lead));
     return list;
   }
 
   function metric(r) {
     if (sortKey === 'pop') return fmtPopShort(r.pop);
     if (sortKey === 'gdp') return fmtGdpShort(r.gdp);
-    const m = Math.abs(r.margin).toFixed(0);
-    return r.lean === 'D' ? `D+${m}` : `R+${m}`;
+    if (r.dominant < 0) return '—';
+    return `${Ideology.byIndex(r.dominant).short}+${r.lead.toFixed(0)}`;
   }
 
   function refresh() {
@@ -36,7 +50,7 @@ const Leaderboard = (function () {
         <span class="lb-count">${list.length} nations</span>
       </div>
       <div class="lb-sort">
-        ${sortBtn('pop', 'Pop')}${sortBtn('gdp', 'GDP')}${sortBtn('political', 'Politics')}
+        ${sortBtn('pop', 'Pop')}${sortBtn('gdp', 'GDP')}${sortBtn('political', 'Ideology')}
       </div>
       <ol class="lb-list">
         ${list
@@ -45,7 +59,7 @@ const Leaderboard = (function () {
             <span class="lb-rank">${i + 1}</span>
             <span class="lb-sw" style="background:${r.color}"></span>
             <span class="lb-name">${escapeHtml(r.name)}</span>
-            <span class="lb-metric ${sortKey === 'political' ? (r.lean === 'D' ? 'dem' : 'gop') : ''}">${metric(r)}</span>
+            <span class="lb-metric" ${sortKey === 'political' && r.dominant >= 0 ? `style="color:${Ideology.colorAt(r.dominant)}"` : ''}>${metric(r)}</span>
           </li>`
           )
           .join('')}

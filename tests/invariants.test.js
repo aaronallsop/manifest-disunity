@@ -27,30 +27,57 @@ describe('World invariants', () => {
     equal(Object.keys(raw.data.counties).length > areas, true, 'Areas should be fewer than raw counties');
   });
 
-  it('every Area sums its parts exactly (dem + gop + oth + ext == pop)', async () => {
+  it('every Area sums its ideology counts to its population', async () => {
     await bootWorld({ seed: SEED });
+    const N = Ideology.count();
     for (const f in Game.county) {
       const c = Game.county[f];
+      equal(c.pop.length, N, `Area ${f} has ${c.pop.length} ideology slots, not ${N}`);
       close(Game.countyPop(f), recPop(c), 1e-9, `Area ${f} accessor disagrees with its record`);
-      ok(c.demPop >= 0 && c.gopPop >= 0 && c.othPop >= 0, `Area ${f} has a negative party count`);
-      for (const p in c.ext) ok(c.ext[p] >= 0, `Area ${f} has a negative ${p} count`);
+      for (let i = 0; i < N; i++) ok(c.pop[i] >= 0, `Area ${f} has a negative ${Ideology.idAt(i)} count`);
+      for (const m in c.mov) ok(c.mov[m] >= 0, `Area ${f} has a negative ${m} count`);
     }
   });
 
-  it('party spawning does not create or destroy people', async () => {
-    // parties.js documents "exact: sums stay = pop". Check it against the map.
+  it('a movement never claims more people than its own ideology holds', async () => {
+    // A movement is a slice of its ideology, not a separate bucket. Drift,
+    // growth and war all move pop[i] without knowing about movements, so this is
+    // the invariant phaseCleanup exists to restore.
+    const { rng } = await bootWorld({ seed: 4242 });
+    const check = (where) => {
+      const N = Ideology.count();
+      for (const f in Game.county) {
+        const c = Game.county[f];
+        const byIdeology = new Array(N).fill(0);
+        for (const m in c.mov) {
+          const i = Movements.ideologyIndexOf(m);
+          ok(i >= 0, `${where}: Area ${f} carries "${m}", which has no ideology`);
+          byIdeology[i] += c.mov[m];
+        }
+        for (let i = 0; i < N; i++) {
+          ok(byIdeology[i] <= c.pop[i] + 1e-6,
+            `${where}: Area ${f} ${Ideology.idAt(i)} holds ${c.pop[i]} but its movements claim ${byIdeology[i]}`);
+        }
+      }
+    };
+    check('at setup');
+    for (let i = 0; i < 20; i++) World.advanceTurn(window.TUNE, rng);
+    check('after 20 turns');
+  });
+
+  it('movement seeding moves people between ideologies, never creates them', async () => {
     const { raw } = await bootWorld({ seed: SEED, spawnParties: false });
     const before = {};
     for (const f in Game.county) before[f] = Game.countyPop(f);
 
     await bootWorld({ seed: SEED, spawnParties: true });
-    let moved = 0;
+    let organised = 0;
     for (const f in Game.county) {
-      close(Game.countyPop(f), before[f], 1e-6, `Area ${f} population changed during party spawn`);
+      close(Game.countyPop(f), before[f], 1e-6, `Area ${f} population changed during movement seeding`);
       const c = Game.county[f];
-      for (const p in c.ext) moved += c.ext[p];
+      for (const m in c.mov) organised += c.mov[m];
     }
-    ok(moved > 0, 'no emergent party population was placed at all');
+    ok(organised > 0, 'no movement population was placed at all');
     ok(raw.partyDefs && Object.keys(raw.partyDefs).length > 0, 'parties.json is empty');
   });
 
@@ -132,7 +159,7 @@ describe('World invariants', () => {
     deepEqual(Game.serialize(), snap, 'serialize -> loadState -> serialize is not the identity');
     const fpAfter = fingerprint();
     // TurnSystem/Market are restored separately (M0.6); compare the model fields
-    for (const k of ['areas', 'nations', 'dem', 'gop', 'oth', 'gdp', 'ext', 'extNames', 'ownerHash', 'turn']) {
+    for (const k of ['areas', 'nations', 'mix', 'gdp', 'mov', 'movNames', 'ownerHash', 'turn']) {
       deepEqual(fpAfter[k], fpBefore[k], `field "${k}" did not survive the round trip`);
     }
   });
@@ -159,8 +186,8 @@ describe('World invariants', () => {
     for (let i = 0; i < 5; i++) World.advanceTurn(window.TUNE);
     const b = fingerprint();
 
-    ok(a.extNames !== b.extNames || a.order !== b.order,
-      'seed 777 and 778 produced identical party rosters AND turn orders');
+    ok(a.movNames !== b.movNames || a.order !== b.order,
+      'seed 777 and 778 produced identical movement rosters AND turn orders');
   });
 
   it('population is conserved-or-grown across a world turn, never lost', async () => {
@@ -178,8 +205,8 @@ describe('World invariants', () => {
     for (let i = 0; i < 10; i++) World.advanceTurn(window.TUNE);
     for (const f in Game.county) {
       const c = Game.county[f];
-      ok(c.demPop >= 0 && c.gopPop >= 0 && c.othPop >= 0, `Area ${f} went negative`);
-      for (const p in c.ext) ok(c.ext[p] >= 0, `Area ${f} ${p} went negative`);
+      for (let i = 0; i < c.pop.length; i++) ok(c.pop[i] >= 0, `Area ${f} ${Ideology.idAt(i)} went negative`);
+      for (const m in c.mov) ok(c.mov[m] >= 0, `Area ${f} ${m} went negative`);
       ok(Game.countyPop(f) > 0, `Area ${f} lost its entire population`);
     }
   });

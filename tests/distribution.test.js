@@ -87,13 +87,15 @@ describe('Civil war population loss', () => {
   it('is proportional: no Area is zeroed, however severe the war', async () => {
     await bootWorld({ seed: SEED });
     const nid = '06';
-    const before = new Map([...Game.getNation(nid).counties].map((f) => [f, Game.county[f].demPop]));
+    const bloc = Game.rulingBloc(Game.getNation(nid).counties);
+    ok(bloc >= 0, 'California has no ruling ideology');
+    const before = new Map([...Game.getNation(nid).counties].map((f) => [f, Game.county[f].pop[bloc]]));
     Game.applyCivilWarCost(nid, null, 5000); // far past the cap
     let zeroed = 0;
     for (const [f, was] of before) {
-      if (was > 0 && Game.county[f].demPop <= 0) zeroed++;
+      if (was > 0 && Game.county[f].pop[bloc] <= 0) zeroed++;
     }
-    equal(zeroed, 0, `${zeroed} Areas had their ruling bloc driven to exactly zero`);
+    equal(zeroed, 0, `${zeroed} Areas had their ruling ideology driven to exactly zero`);
   });
 
   it('delivers the full intended loss — the severity dial works', async () => {
@@ -102,10 +104,7 @@ describe('Civil war population loss', () => {
     const bloc = Game.rulingBloc(Game.getNation(nid).counties);
     const blocTotal = () => {
       let t = 0;
-      for (const f of Game.getNation(nid).counties) {
-        const c = Game.county[f];
-        t += bloc === 'dem' ? c.demPop : bloc === 'gop' ? c.gopPop : bloc === 'oth' ? c.othPop : (c.ext[bloc.slice(4)] || 0);
-      }
+      for (const f of Game.getNation(nid).counties) t += Game.county[f].pop[bloc];
       return t;
     };
     const before = blocTotal();
@@ -133,27 +132,32 @@ describe('Civil war population loss', () => {
     ok(b > a * 1.5, `score 100 cost ${Math.round(a)}, score 200 cost ${Math.round(b)} — the dial is flat`);
   });
 
-  it('the bleeding bloc is the real plurality, movements included', async () => {
+  it('the bleeding bloc is the real plurality, whichever ideology that is', async () => {
     await bootWorld({ seed: SEED });
     const nid = '49'; // Utah
     const n = Game.getNation(nid);
-    // make an emergent movement the outright plurality
+    const YELLOW = Ideology.index('yellow');
+    // make a MINORITY ideology the outright plurality
     for (const f of n.counties) {
       const c = Game.county[f];
-      const pop = c.demPop + c.gopPop + c.othPop;
-      c.ext = { Deseret: pop * 0.9 };
-      c.demPop = pop * 0.05; c.gopPop = pop * 0.05; c.othPop = 0;
+      let pop = 0;
+      for (let i = 0; i < c.pop.length; i++) pop += c.pop[i];
+      c.pop.fill(0);
+      c.pop[YELLOW] = pop * 0.9;
+      c.pop[Ideology.index('red')] = pop * 0.05;
+      c.pop[Ideology.index('blue')] = pop * 0.05;
+      c.mov = {};
     }
-    equal(Game.rulingBloc(n.counties), 'ext:Deseret',
-      'the ruling bloc test still ignores emergent movements');
+    equal(Game.rulingBloc(n.counties), YELLOW,
+      'the ruling bloc test does not follow the actual plurality');
 
     let before = 0;
-    for (const f of n.counties) before += Game.county[f].ext.Deseret;
+    for (const f of n.counties) before += Game.county[f].pop[YELLOW];
     Game.applyCivilWarCost(nid, null, 400);
     let after = 0;
-    for (const f of n.counties) after += Game.county[f].ext.Deseret || 0;
+    for (const f of n.counties) after += Game.county[f].pop[YELLOW];
     ok(after < before,
-      'a movement that is the actual plurality took no casualties — the old d >= g test bled the wrong bloc');
+      'the ruling ideology took no casualties — the old d >= g test bled the wrong bloc');
   });
 
   it('leaves the other blocs untouched', async () => {
@@ -161,13 +165,13 @@ describe('Civil war population loss', () => {
     const nid = '48'; // Texas
     const n = Game.getNation(nid);
     const bloc = Game.rulingBloc(n.counties);
-    const others = bloc === 'dem' ? 'gopPop' : 'demPop';
+    const other = (bloc + 1) % Ideology.count();
     let before = 0;
-    for (const f of n.counties) before += Game.county[f][others];
+    for (const f of n.counties) before += Game.county[f].pop[other];
     Game.applyCivilWarCost(nid, null, 500);
     let after = 0;
-    for (const f of n.counties) after += Game.county[f][others];
-    close(after, before, 1e-6, 'the war hurt a bloc that was not in power');
+    for (const f of n.counties) after += Game.county[f].pop[other];
+    close(after, before, 1e-6, 'the war hurt an ideology that was not in power');
   });
 });
 

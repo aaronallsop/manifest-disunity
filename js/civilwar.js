@@ -36,32 +36,26 @@
 const CivilWar = (function () {
   const clamp = (x, lo, hi) => Math.max(lo, Math.min(hi, x));
 
-  /*
-   * Every party's share of a demographics object, as percentages.
+  /**
+   * Ideology shares of a demographics object, as percentages.
    *
-   * The engine's own `lean` is a D-vs-R letter that ignores `ext` entirely, so a
-   * nation that is 40% Deseret / 31% R / 29% D reports its lean as a minority
-   * party. Plurality over the full share set is what the flip test actually
-   * means, and it is forward-compatible with M2.2's six ideologies.
+   * The engine used to answer this with a D-vs-R letter that ignored emergent
+   * movements entirely, so a nation that was 40% Deseret / 31% R / 29% D
+   * reported its lean as a minority party. It is now just the ideology mix.
    */
   function shares(demo) {
-    const out = {};
-    if (!demo) return out;
-    if (demo.dem != null) out.Democrat = demo.dem;
-    if (demo.gop != null) out.Republican = demo.gop;
-    if (demo.other != null && demo.other > 0) out.Other = demo.other;
-    for (const [p, v] of Object.entries(demo.extPct || {})) out[p] = (out[p] || 0) + v;
-    return out;
+    if (!demo) return [];
+    if (demo.shares) return demo.shares;
+    if (demo.mix) return Ideology.shares(demo.mix);
+    return [];
   }
 
-  /** The largest party and its share, or {name:null} for an empty scope. */
+  /** The leading ideology and its share. `index` is -1 for an empty scope. */
   function plurality(demo) {
     const s = shares(demo);
-    let name = null, pct = -1;
-    for (const k of Object.keys(s).sort()) { // sorted: ties resolve deterministically
-      if (s[k] > pct) { name = k; pct = s[k]; }
-    }
-    return name == null ? { name: null, pct: 0 } : { name, pct };
+    let index = -1, pct = 0;
+    for (let i = 0; i < s.length; i++) if (s[i] > pct) { index = i; pct = s[i]; }
+    return { index, id: Ideology.idAt(index), name: Ideology.nameAt(index), pct };
   }
 
   /*
@@ -77,31 +71,57 @@ const CivilWar = (function () {
     const tn = tune || window.TUNE;
     const ratio = tn.get('war.triggerSizeRatio');
     const b = plurality(before), a = plurality(after);
-    const flip = b.name != null && a.name != null && b.name !== a.name;
+    const flip = b.index >= 0 && a.index >= 0 && b.index !== a.index;
     const reasons = [];
     if (flip) reasons.push('flip');
     if (added.gdp > before.gdp * ratio) reasons.push('gdp');
     if (added.pop > before.pop * ratio) reasons.push('pop');
-    return { flip, reasons, triggered: reasons.length > 0, fromParty: b.name, toParty: a.name };
+    return {
+      flip, reasons, triggered: reasons.length > 0,
+      fromParty: b.name, toParty: a.name,
+      fromIdeology: b.id, toIdeology: a.id,
+      // How far the nation MOVED on the two axes. A flip between neighbouring
+      // ideologies is a smaller shock than one across the board, and this is
+      // the number that says so — the letter could not.
+      shift: before.centroid && after.centroid
+        ? Ideology.distance(before.centroid, after.centroid) : 0,
+    };
   }
 
   /**
    * How decisively the plurality flipped, in percentage points: the new leader's
-   * share minus what the old leader is left with. 0 when nothing flipped.
+   * share minus what the old leader is left with, scaled by how far apart the
+   * two ideologies actually are.
+   *
+   * The distance factor is the thing six symmetric ideologies buy that a letter
+   * could not express: losing the lead from Republican to Conservative
+   * Nationalist — neighbours on both axes — is a different event from losing it
+   * to Socialist, and the dice should say so. `affinity` is 1 for identical and
+   * 0 for the furthest pair in the set, so `1 - affinity` is the shock.
    */
   function flipMagnitude(before, after) {
     const b = plurality(before), a = plurality(after);
-    if (b.name == null || a.name == null || b.name === a.name) return 0;
+    if (b.index < 0 || a.index < 0 || b.index === a.index) return 0;
     const afterShares = shares(after);
-    return Math.max(0, a.pct - (afterShares[b.name] || 0));
+    const gap = Math.max(0, a.pct - (afterShares[b.index] || 0));
+    return gap * (1 - Ideology.affinity(b.index, a.index));
   }
 
-  /** Dice for a flip, capped. Uncapped multiplied dice were the whole problem. */
+  /**
+   * Dice for a flip, capped. Uncapped multiplied dice were the whole problem.
+   *
+   * The FLOOR matters as much as the cap: losing your governing plurality is a
+   * constitutional crisis whatever replaces it, so any flip costs at least
+   * `war.diceFlipFloor` dice. Without it, scaling the magnitude by ideological
+   * distance made the commonest flip of all — Democrat to Republican, adjacent
+   * on both axes — a guaranteed walkover: measured 400 victories out of 400.
+   */
   function diceCount(before, after, tune) {
     const mag = flipMagnitude(before, after);
     if (mag <= 0) return 0;
     const per = tune.get('war.dicePerFlipPoint');
-    return clamp(1 + Math.round(per * mag), 1, tune.get('war.maxDice'));
+    const floor = tune.get('war.diceFlipFloor');
+    return clamp(floor + Math.round(per * mag), 1, tune.get('war.maxDice'));
   }
 
   /**
@@ -129,7 +149,8 @@ const CivilWar = (function () {
     const tune = opts.tune || window.TUNE;
     const dieStream = opts.rng.stream('combat');
     const mult = opts.scoreMult || 1;
-    const { flip, reasons, triggered, fromParty, toParty } = assess(before, added, after, tune);
+    const { flip, reasons, triggered, fromParty, toParty, fromIdeology, toIdeology, shift } =
+      assess(before, added, after, tune);
     const dc = Math.max(triggered ? 1 : 0, diceCount(before, after, tune));
 
     const sides = tune.get('war.diceSides');
@@ -142,7 +163,7 @@ const CivilWar = (function () {
     const outcome = score <= tune.get('war.victoryBand') ? 'victory'
       : score <= tune.get('war.partialBand') ? 'partial' : 'fall_apart';
     return {
-      flip, reasons, triggered, fromParty, toParty,
+      flip, reasons, triggered, fromParty, toParty, fromIdeology, toIdeology, shift,
       diceCount: dc, dice, diceSum: sum,
       points: pts, flipMagnitude: flipMagnitude(before, after),
       score, outcome, scoreMult: mult,
@@ -169,8 +190,10 @@ const CivilWar = (function () {
     const gdpShare = S.gdp + T.gdp > 0 ? S.gdp / (S.gdp + T.gdp) : 0.5;
     const wPop = tn.get('war.unitePopWeight');
     const sizeScore = wPop * popShare + (1 - wPop) * gdpShare;
-    const marginDiff = Math.abs((S.dem - S.gop) - (T.dem - T.gop)); // 0..200
-    const politSim = Math.max(0, 1 - marginDiff / tn.get('war.unitePolitScale'));
+    // How alike the two nations are politically: the affinity of their
+    // population centroids on the two axes. This was |(S.dem-S.gop) -
+    // (T.dem-T.gop)|, a distance along ONE line that no longer exists.
+    const politSim = Ideology.mixAffinity(S.mix || [], T.mix || []);
     const floor = tn.get('war.uniteSizeFloor');
     let p = sizeScore * (floor + (1 - floor) * politSim);
     p *= 1 - tn.get('war.uniteShellPenalty') * shell;

@@ -65,7 +65,12 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done
 - [x] **M2.1** `game_state.py` deleted. Its one worthwhile algorithm — the exact-sum
       shares→counts absorption — is `js/counts.js`, used by `Game.init`, with 12 tests. Measured:
       the float split it replaces is inexact for 986 of 3,143 counties (31.4%).
-- [ ] **M2.2** Six symmetric ideologies on two axes; delete `lean` from the model API.
+- [x] **M2.2** Six symmetric ideologies on two axes; `lean` deleted from the model API.
+      `js/ideology.js` + `content/ideologies.json`; one function (`affinity`) now answers what
+      `x.lean === y.lean` answered in four places across eight files. Area politics is `pop[6]`
+      counts; movements are a slice of their own ideology, not a seventh bucket. Measured: world
+      population still exactly 340,110,988 at load; red+blue 96.0% before movement seeding; all
+      1,676 Areas tagged with one of 20 cultural regions; 229 tests green.
 - [ ] **M2.3** Columnar state (typed arrays); ownership stored once.
 - [ ] **M2.4** CSR adjacency graph, built once.
 - [ ] **M2.5** One state document (`data/state.json`); editor round-trip via the server.
@@ -122,12 +127,20 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done
 *(Updated as work proceeds — what is done, what is next, what was learned that is not yet
 written down elsewhere.)*
 
-**M0 and M1 complete.** 193 tests green at `tests/run.html`, `build/validate.py` reports 0 errors,
-and the game loads, plays and saves with a clean console. Verified end to end: fresh boot -> select
-a nation -> trade -> a full 51-nation round (world turn 0 -> 1) -> annex -> save -> reload the page
--> load, and every piece of state came back.
+**M0, M1 and M2.1-M2.2 complete.** 229 tests green at `tests/run.html`, `build/validate.py`
+reports 0 errors, and the game loads, plays and saves with a clean console. Verified end to end at
+M2.2: fresh boot -> 21 world turns driven through the real Pass button (1,071 nation turns) ->
+population 340.1M -> 419.2M, GDP 39.7T, organised-movement share 5.8% -> 11.0%, Utah's Conservative
+Nationalist bloc 13.2% -> 21.5% as Deseret organises -> snapshot -> three more world turns ->
+apply the snapshot, and the world came back bit-identical across all six ideology totals, GDP,
+movement head counts, the movement roster and every Area's owner. Zero console errors.
 
-Next: **M2.1** (delete `game_state.py`, porting the exact-sum drift absorption first).
+Next: **M2.3** (columnar state: typed arrays, ownership stored once).
+
+Open, carried into M2.3: after 21 turns no Area is yet LED by a minority ideology (Rep 1,288 /
+Dem 388 of 1,676). That is the expected shape at 11% organised movements and it is M5's dial to
+turn, not a bug -- but it is the number to watch when the simulator lands, because a map where the
+four minority ideologies can never take an Area is a map with two ideologies and four decorations.
 
 Learned along the way, not written elsewhere:
 - The in-app browser serves a cached document on a same-URL `navigate`. Add a throwaway query

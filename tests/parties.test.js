@@ -62,31 +62,60 @@ describe('Party spawn coverage', () => {
     ok(raw.partyDefs);
   });
 
-  it('the absorption rule is exact: spawning moves people, never creates them', async () => {
+  it('seeding moves people between ideologies, never creates them', async () => {
     await bootWorld({ seed: 4242, spawnParties: false });
     const before = {};
     for (const f in Game.county) before[f] = recPop(Game.county[f]);
 
     await bootWorld({ seed: 4242, spawnParties: true });
     for (const f in Game.county) {
-      close(recPop(Game.county[f]), before[f], 1e-6, `Area ${f} gained or lost people during spawn`);
+      close(recPop(Game.county[f]), before[f], 1e-6, `Area ${f} gained or lost people during seeding`);
     }
   });
 
-  it('every spawned party actually holds population somewhere', async () => {
+  it('seeding shifts population INTO the movement\'s own ideology', async () => {
+    await bootWorld({ seed: 4242, spawnParties: false });
+    const before = {};
+    for (const f in Game.county) before[f] = Game.county[f].pop.slice();
+
+    const { spawned } = await bootWorld({ seed: 4242, spawnParties: true });
+    // for each seeded movement, its ideology should have gained where it seeded
+    for (const name of spawned) {
+      const idx = Movements.ideologyIndexOf(name);
+      ok(idx >= 0, `"${name}" has no ideology`);
+      const areas = Movements.resolveAreas(Movements.getDefinition(name).counties).areas;
+      let gained = 0;
+      for (const f of areas) if (Game.county[f].pop[idx] > before[f][idx] + 1e-9) gained++;
+      ok(gained > 0, `"${name}" (${Ideology.idAt(idx)}) gained no ground in any of its ${areas.length} Areas`);
+    }
+  });
+
+  it('every spawned movement actually holds population somewhere', async () => {
     const { spawned } = await bootWorld({ seed: 4242, spawnParties: true });
     const totals = {};
     for (const f in Game.county) {
       const c = Game.county[f];
-      for (const p in c.ext) totals[p] = (totals[p] || 0) + c.ext[p];
+      for (const m in c.mov) totals[m] = (totals[m] || 0) + c.mov[m];
     }
     for (const name of spawned) {
       ok(totals[name] > 0, `"${name}" is in the roster but holds zero people anywhere`);
     }
-    // and nothing holds population without being in the roster
-    for (const p of Object.keys(totals)) {
-      ok(spawned.includes(p), `"${p}" holds population but is not in the spawned roster`);
+    for (const m of Object.keys(totals)) {
+      ok(spawned.includes(m), `"${m}" holds population but is not in the spawned roster`);
     }
+  });
+
+  it('every movement carries an ideology from the bake', async () => {
+    const { raw } = await bootWorld({ seed: SEED, spawnParties: false });
+    for (const [name, def] of Object.entries(raw.partyDefs)) {
+      ok(def.ideology, `"${name}" has no ideology in parties.json`);
+      ok(Ideology.index(def.ideology) >= 0,
+        `"${name}" has ideology "${def.ideology}", which is not in content/ideologies.json`);
+    }
+    // and every one of the six is used by at least one movement, or the spread
+    // of the authored set is narrower than the model claims
+    const used = new Set(Object.values(raw.partyDefs).map((d) => d.ideology));
+    ok(used.size >= 4, `only ${used.size} of ${Ideology.count()} ideologies have a movement: ${[...used]}`);
   });
 
   it('the movement roster covers every state', async () => {
@@ -104,14 +133,11 @@ describe('Party spawn coverage', () => {
       `only ${Object.keys(raw.partyDefs).length} movements defined`);
   });
 
-  it('Other is fully absorbed in every Area a party spawns into', async () => {
+  it('there is no "Other" bucket left to absorb', async () => {
+    // The 2024 residual is split across the four minority ideologies at load;
+    // "Other" is a data artifact, not an ideology, and no longer exists.
     await bootWorld({ seed: 4242, spawnParties: true });
-    for (const f in Game.county) {
-      const c = Game.county[f];
-      let hasExt = false;
-      for (const p in c.ext) { hasExt = true; break; }
-      if (!hasExt) continue;
-      close(c.othPop, 0, 1e-6, `Area ${f} holds a party but kept ${c.othPop} in Other`);
-    }
+    equal(Ideology.index('other'), -1, 'an "other" ideology is in the table');
+    equal(Ideology.count(), 6);
   });
 });

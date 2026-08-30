@@ -1,14 +1,26 @@
 /*
  * Game state for Nation States.
  *
- * Everything is dynamic. Each county tracks a partisan *population* (demPop /
- * gopPop / othPop) and a mutable gdp; totals and political leaning are always
- * derived from those. Population grows each round, civil wars bleed population
- * and GDP, and counties change hands as nations rise and fall.
+ * Politics is SIX SYMMETRIC IDEOLOGIES ON TWO AXES (js/ideology.js). Each Area
+ * carries one head count per ideology, and every political question is answered
+ * by distance on that plane rather than by comparing a letter.
  *
- *   county : fips -> { name, st, demPop, gopPop, othPop, gdp }
- *   nation : { id, name, color, counties:Set<fips>, origin }
+ *   area   : fips -> { name, st, pop: number[6], mov: {name -> count},
+ *                      gdp, attrs, anchor: number[6] }
+ *   nation : { id, name, color, counties: Set<fips>, origin, treasury, gov, ... }
  *   owner  : fips -> nationId
+ *
+ * `pop[i]` is the head count of ideology i. `mov[name]` is how many of those
+ * people belong to an organised MOVEMENT — a movement is not an ideology, it is
+ * a named regional faction that HAS one, so `mov[name]` is a slice of
+ * `pop[ideologyOf(name)]` and never exceeds it. M4 gives movements their own
+ * entity and replaces the head count with a sentiment value.
+ *
+ * WHAT THIS REPLACED. `demPop / gopPop / othPop / ext{}` plus
+ * `lean: dem >= gop ? 'D' : 'R'` — a binary enum answered with `===` by four
+ * separate game decisions across eight files, which also ignored `ext`
+ * entirely, so a nation that was 40% Deseret / 31% R / 29% D reported its lean
+ * as a minority party.
  */
 const Game = (function () {
   const county = {};
@@ -60,51 +72,57 @@ const Game = (function () {
    */
   let tradeData = null, transportData = null;
 
+  /** Cultural-region name for an Area, used only to steer the Other split. */
+  function regionIndexFrom(cultureDoc) {
+    if (!cultureDoc || !cultureDoc.assign) return () => null;
+    const names = {};
+    (function walk(ns) {
+      for (const n of ns) { names[n.id] = n.name; walk(n.children || []); }
+    })(cultureDoc.nodes || []);
+    return (aid) => {
+      const path = cultureDoc.assign[aid];
+      if (!path || !path.length) return null;
+      return names[path[1]] || names[path[0]] || null;
+    };
+  }
+
   function init(data, adj, areasDef, extras) {
     adjacency = adj;
     tradeData = (extras && extras.trade) || null;
     transportData = (extras && extras.transport) || null;
+    const regionOf = regionIndexFrom((extras && extras.culture) || null);
+    const N = Ideology.count();
+
+    /*
+     * Stage 1: exact integer R / D / Other counts per COUNTY.
+     *
+     * `pop * share/100` for three parties gives three floats that do not sum to
+     * the integer population — measured, that is 986 of 3,143 counties, worst
+     * case Clark County NV at 2,398,870.9999999995 for 2,398,871 people. The
+     * exact-sum absorption (js/counts.js) makes "the counts sum to the
+     * population" an equality instead of an approximation with an undocumented
+     * tolerance.
+     */
     for (const [fips, r] of Object.entries(data.counties)) {
       const pop = r.pop || 0;
       const dem = r.dem != null ? r.dem : 0;
       const gop = r.gop != null ? r.gop : 0;
       const oth = r.other != null ? r.other : Math.max(0, 100 - dem - gop);
-      /*
-       * Partisan population: the county's people split by its 2024 vote shares,
-       * as EXACT integer head counts.
-       *
-       * `pop * dem/100` for three parties gives three floats that do not sum to
-       * the integer population — 88,948 people at 41.7/56.9/1.4 sums to
-       * 88948.00000000001. Small, but it turns "the counts sum to the
-       * population" from an equality into an approximation with an undocumented
-       * tolerance, across 1,676 Areas, compounded every world turn.
-       * Counts.countsFromShares rounds each share and pushes the residual onto
-       * the largest bloc. (js/counts.js — the one algorithm worth keeping from
-       * the abandoned Python mirror.)
-       */
       const split = Counts.countsFromShares(pop, { d: dem, g: gop, o: oth });
       county[fips] = {
         name: r.name,
         st: r.st,
-        demPop: split.d,
-        gopPop: split.g,
-        othPop: split.o,
-        ext: {},           // emergent regional parties: name -> head count
+        raw: { d: split.d, g: split.g, o: split.o }, // dropped after stage 3
+        pop: null,
+        mov: {},           // movement name -> head count (a slice of its ideology)
         gdp: r.gdp || 0,
-        attrs: {},         // Area attributes: region tags, resources, terrain, modifiers, ...
-        // STRUCTURAL ANCHOR: the county's founding political character, in
-        // percent, fixed for the life of the game. Political drift pulls partly
-        // toward this and a nation can only partly override it. Without a
-        // per-county fixed point, drift and owner-mix growth pull every county
-        // toward the SAME attractor with nothing pushing back, and the county
-        // grid collapses into a nation-level scalar in ~23 turns of half-life.
-        // Derived from the baked 2024 result, so it is recomputed at init and
-        // needs no place in the save.
+        attrs: {},         // Area attributes: region tags, resources, terrain, ...
         anchor: null,
       };
     }
-    // collapse merged Areas (data/areas.json): the Area becomes the atomic unit;
-    // people/GDP are summed and the member-county list is kept on the record.
+
+    // Stage 2: collapse merged Areas (data/areas.json). The Area becomes the
+    // atomic unit; people and GDP are summed and the member list is kept.
     if (areasDef && areasDef.areas) {
       for (const [aid, members] of Object.entries(areasDef.areas)) {
         const rec = county[aid];
@@ -114,20 +132,51 @@ const Game = (function () {
         for (const m of members) {
           if (m === aid || !county[m]) continue;
           const c = county[m];
-          rec.demPop += c.demPop; rec.gopPop += c.gopPop; rec.othPop += c.othPop; rec.gdp += c.gdp;
+          rec.raw.d += c.raw.d; rec.raw.g += c.raw.g; rec.raw.o += c.raw.o;
+          rec.gdp += c.gdp;
           delete county[m];
           alias[m] = aid;
         }
       }
     }
-    // Anchors are computed AFTER the Area merge so a merged Area's anchor is the
-    // political character of the whole Area, not of its primary county.
+
+    /*
+     * Stage 3: map onto the six ideologies. R -> red, D -> blue, and OTHER split
+     * across the remaining four BY REGION.
+     *
+     * Other is the residual that everything outside the two-party system lived
+     * in, and a third-party voter in Vermont is not the same person as one in
+     * Alabama; content/ideologies.json carries the per-region weights. Done here
+     * rather than per county so a merged Area takes one region's texture instead
+     * of a blend of its members'.
+     *
+     * The STRUCTURAL ANCHOR is the result, as shares: the Area's founding
+     * political character, fixed for the life of the game. Political drift pulls
+     * partly toward it and a nation can only partly override it. Without a
+     * per-Area fixed point, drift and owner-mix growth pull every Area toward
+     * the SAME attractor with nothing pushing back, and the grid collapses into
+     * a nation-level scalar with a 23-turn half-life.
+     */
+    const RED = Ideology.index('red'), BLUE = Ideology.index('blue');
     for (const f in county) {
       const c = county[f];
-      const core = c.demPop + c.gopPop + c.othPop;
-      c.anchor = core > 0
-        ? { d: (c.demPop / core) * 100, g: (c.gopPop / core) * 100, o: (c.othPop / core) * 100 }
-        : { d: 0, g: 0, o: 0 };
+      const region = regionOf(f);
+      // Kept on the Area, not just consumed here: the West slice picks its
+      // scenario by region and the simulator reports by region, and both would
+      // otherwise have to re-walk the culture tree to learn what init knew.
+      if (region) c.attrs.culture = region;
+      const w = Ideology.otherWeights(region);
+      const shares = {};
+      for (let i = 0; i < N; i++) shares[i] = w[i] * c.raw.o;
+      if (RED >= 0) shares[RED] += c.raw.g;
+      if (BLUE >= 0) shares[BLUE] += c.raw.d;
+      const total = c.raw.d + c.raw.g + c.raw.o;
+      // scale = the share total, so countsFromShares treats these as weights
+      const split = Counts.countsFromShares(total, shares, total || 1);
+      c.pop = new Array(N);
+      for (let i = 0; i < N; i++) c.pop[i] = split[i] || 0;
+      c.anchor = Ideology.shares(c.pop);
+      delete c.raw;
     }
     for (const [st, s] of Object.entries(data.states)) {
       nations.set(st, {
@@ -152,45 +201,88 @@ const Game = (function () {
     for (const [nid, n] of nations) n.treasury = demographics(n.counties).gdp * bank;
   }
 
-  /* ---- per-county reads (population includes regional parties in ext) ---- */
-  const extSum = (c) => { let s = 0; for (const p in c.ext) s += c.ext[p]; return s; };
-  const countyPop = (f) => { const c = county[cid(f)]; return c ? c.demPop + c.gopPop + c.othPop + extSum(c) : 0; };
+  /* ---- per-Area reads ---- */
+  const areaPop = (c) => { let t = 0; for (let i = 0; i < c.pop.length; i++) t += c.pop[i]; return t; };
+  const countyPop = (f) => { const c = county[cid(f)]; return c ? areaPop(c) : 0; };
   const countyGdp = (f) => county[cid(f)]?.gdp || 0;
-  function leanOf(fips) {
+
+  /**
+   * One Area's politics: the ideology counts, their shares, which one leads, and
+   * which organised movements hold ground there.
+   *
+   * This replaced `leanOf`, whose whole answer was a D-or-R letter plus a margin
+   * — and which ignored movements entirely, so an Area that was 40% Deseret
+   * reported a minority party as its lean.
+   */
+  function areaPolitics(fips) {
     const c = county[cid(fips)];
     if (!c) return null;
-    const t = c.demPop + c.gopPop + c.othPop + extSum(c);
-    if (!t) return null;
-    const dem = (c.demPop / t) * 100, gop = (c.gopPop / t) * 100, other = (c.othPop / t) * 100;
-    const extPct = {};
-    for (const p in c.ext) extPct[p] = (c.ext[p] / t) * 100;
-    return { lean: dem >= gop ? 'D' : 'R', margin: Math.abs(dem - gop), dem, gop, other, extPct };
+    const total = areaPop(c);
+    if (!total) return null;
+    const mix = c.pop.slice();
+    const shares = Ideology.shares(mix);
+    const movements = {};
+    for (const m in c.mov) if (c.mov[m] > 0) movements[m] = (c.mov[m] / total) * 100;
+    return {
+      pop: total, mix, shares,
+      dominant: Ideology.dominantIndex(mix),
+      dominantId: Ideology.dominantId(mix),
+      centroid: Ideology.centroid(mix),
+      cohesion: Ideology.cohesion(mix),
+      movements,
+    };
   }
 
   /* ---- aggregate demographics ---- */
+  /**
+   * The political and economic totals of a set of Areas.
+   *
+   * `mix` is the head count per ideology and `shares` the same in percent;
+   * `dominant` is an index into the ideology table, `centroid` a position on the
+   * two axes. There is no `lean`: the question "which way does this lean" has no
+   * single-letter answer once there are six ideologies, and every caller that
+   * used to ask it now asks how far apart two centroids are.
+   */
   function demographics(countyIds) {
-    let dem = 0, gop = 0, oth = 0, gdp = 0;
-    const extTotals = {};
+    const N = Ideology.count();
+    const mix = new Array(N).fill(0);
+    const movements = {};
+    let gdp = 0;
     for (const f of countyIds) {
       const c = county[f];
       if (!c) continue;
-      dem += c.demPop; gop += c.gopPop; oth += c.othPop; gdp += c.gdp;
-      for (const p in c.ext) extTotals[p] = (extTotals[p] || 0) + c.ext[p];
+      for (let i = 0; i < N; i++) mix[i] += c.pop[i];
+      for (const m in c.mov) movements[m] = (movements[m] || 0) + c.mov[m];
+      gdp += c.gdp;
     }
-    let ext = 0;
-    for (const p in extTotals) ext += extTotals[p];
-    const pop = dem + gop + oth + ext;
-    const extPct = {};
-    if (pop) for (const p in extTotals) extPct[p] = (extTotals[p] / pop) * 100;
+    let pop = 0;
+    for (let i = 0; i < N; i++) pop += mix[i];
+    const movementPct = {};
+    if (pop) for (const m in movements) movementPct[m] = (movements[m] / pop) * 100;
     return {
-      pop, gdp, demPop: dem, gopPop: gop, othPop: oth, extTotals, extPct,
-      gop: pop ? (gop / pop) * 100 : null,
-      dem: pop ? (dem / pop) * 100 : null,
-      other: pop ? (oth / pop) * 100 : null,
-      lean: pop ? (dem >= gop ? 'D' : 'R') : null,
+      pop, gdp, mix,
+      shares: Ideology.shares(mix),
+      dominant: pop ? Ideology.dominantIndex(mix) : -1,
+      dominantId: pop ? Ideology.dominantId(mix) : null,
+      centroid: Ideology.centroid(mix),
+      cohesion: Ideology.cohesion(mix),
+      movements, movementPct,
     };
   }
   const nationDemographics = (nid) => (nations.has(nid) ? demographics(nations.get(nid).counties) : null);
+
+  /** Ideology counts for a set of Areas — the hot path, without the extras. */
+  function ideologyMix(countyIds) {
+    const N = Ideology.count();
+    const mix = new Array(N).fill(0);
+    for (const f of countyIds) {
+      const c = county[f];
+      if (!c) continue;
+      for (let i = 0; i < N; i++) mix[i] += c.pop[i];
+    }
+    return mix;
+  }
+  const dominantOf = (countyIds) => Ideology.dominantIndex(ideologyMix(countyIds));
 
   /* ---- adjacency & grouping (Area level: union of member-county neighbors) ---- */
   /*
@@ -528,38 +620,26 @@ const Game = (function () {
   }
 
   /**
-   * Which bloc actually rules a set of Areas: 'dem', 'gop', 'oth', or the name of
-   * an emergent movement. Returns null for an empty set.
+   * Which ideology rules a set of Areas — the index of its largest bloc, or -1.
    *
    * The old test was `d >= g` over demPop and gopPop alone, so a nation whose
-   * real plurality was an emergent movement bled the WRONG bloc, and a movement
-   * could never take a single casualty however many wars it lost. `Other` was
-   * invisible too.
+   * real plurality was an emergent movement bled the WRONG population and a
+   * movement could never take a single casualty however many wars it lost.
+   * "Other" was invisible too. With six symmetric ideologies the question is
+   * just "which count is biggest".
    */
-  function rulingBloc(countyIds) {
-    const tally = { dem: 0, gop: 0, oth: 0 };
-    for (const f of countyIds) {
-      const c = county[f];
-      if (!c) continue;
-      tally.dem += c.demPop; tally.gop += c.gopPop; tally.oth += c.othPop;
-      for (const p in c.ext) tally['ext:' + p] = (tally['ext:' + p] || 0) + c.ext[p];
-    }
-    let best = null, bv = -1;
-    for (const k of Object.keys(tally).sort()) if (tally[k] > bv) { best = k; bv = tally[k]; }
-    return bv > 0 ? best : null;
-  }
+  const rulingBloc = (countyIds) => Ideology.dominantIndex(ideologyMix(countyIds));
 
-  /** Read/write one bloc's head count on an Area record. */
-  const blocGet = (c, bloc) =>
-    bloc === 'dem' ? c.demPop : bloc === 'gop' ? c.gopPop : bloc === 'oth' ? c.othPop
-      : (c.ext[bloc.slice(4)] || 0);
-  function blocScale(c, bloc, k) {
-    if (bloc === 'dem') c.demPop *= k;
-    else if (bloc === 'gop') c.gopPop *= k;
-    else if (bloc === 'oth') c.othPop *= k;
-    else {
-      const name = bloc.slice(4);
-      if (c.ext[name]) c.ext[name] *= k;
+  /**
+   * Scale one ideology's head count on an Area, keeping the movements inside it
+   * consistent: a movement's members are a slice of its ideology, so if the
+   * ideology loses a fifth of its people, so does every movement in it.
+   */
+  function blocScale(c, i, k) {
+    if (i < 0 || i >= c.pop.length) return;
+    c.pop[i] *= k;
+    for (const name in c.mov) {
+      if (Movements.ideologyIndexOf(name) === i) c.mov[name] *= k;
     }
   }
 
@@ -583,8 +663,8 @@ const Game = (function () {
   function applyCivilWarCost(loserId, winnerId, score) {
     const loser = nations.get(loserId);
     if (loser && loser.counties.size) {
-      const bloc = rulingBloc(loser.counties);
-      if (bloc) {
+      const bloc = rulingBloc(loser.counties); // an ideology index, or -1
+      if (bloc >= 0) {
         const lossPct = clamp(T('war.popLossBase') + score * T('war.popLossPerScore'), T('war.popLossBase'), T('war.popLossMax'));
         const k = 1 - lossPct;
         for (const f of loser.counties) {
@@ -766,8 +846,8 @@ const Game = (function () {
     // quota error rather than failing silently. Empty ext/attrs bags ARE omitted,
     // which is free.
     for (const [f, c] of Object.entries(county)) {
-      const rec = { d: c.demPop, g: c.gopPop, o: c.othPop, gdp: c.gdp };
-      for (const p in c.ext) { rec.e = { ...c.ext }; break; }
+      const rec = { p: c.pop.slice(), gdp: c.gdp };
+      for (const m in c.mov) { rec.m = { ...c.mov }; break; }
       for (const k in c.attrs) { rec.a = { ...c.attrs }; break; }
       counties[f] = rec;
     }
@@ -788,8 +868,10 @@ const Game = (function () {
     for (const [f, c] of Object.entries(snap.counties)) {
       const cc = county[f];
       if (!cc) { dropped++; continue; }
-      cc.demPop = c.d; cc.gopPop = c.g; cc.othPop = c.o;
-      cc.ext = { ...(c.e || {}) }; cc.attrs = { ...(c.a || {}) }; cc.gdp = c.gdp;
+      // A save written before the ideology model carried d/g/o + e{}; it is
+      // refused by SaveManager on the version stamp, so only `p` is read here.
+      cc.pop = Array.isArray(c.p) ? c.p.slice() : cc.pop;
+      cc.mov = { ...(c.m || {}) }; cc.attrs = { ...(c.a || {}) }; cc.gdp = c.gdp;
     }
     nations.clear();
     owner.clear();
@@ -854,7 +936,10 @@ const Game = (function () {
     countyGdp,
     demographics,
     nationDemographics,
-    leanOf,
+    areaPolitics,
+    ideologyMix,
+    dominantOf,
+    areaPop: (f) => { const c = county[cid(f)]; return c ? areaPop(c) : 0; },
     countyNeighbors,
     adjacentNations,
     borderingNations,

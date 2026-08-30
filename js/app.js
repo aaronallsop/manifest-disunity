@@ -74,7 +74,7 @@ const getJSON = (path, fallback) =>
 
 async function init() {
   try {
-    const [topo, data, ctGeo, adjacency, neighbors, partyDefs, trade, areas, geoMode, economy, transport, cultureMode, tunables] = await Promise.all([
+    const [topo, data, ctGeo, adjacency, neighbors, partyDefs, trade, areas, geoMode, economy, transport, cultureMode, tunables, ideologies] = await Promise.all([
       getJSON('data/counties-10m.json'),
       getJSON('data/game-data.json'),
       getJSON('data/ct-planning-regions.geojson'),
@@ -88,7 +88,10 @@ async function init() {
       getJSON('data/transport.json', null),
       getJSON('data/cultural.mapmode.json', null),
       getJSON('content/tunables.json', null),
+      getJSON('content/ideologies.json', null),
     ]);
+    // The six ideologies, before anything reads a political value.
+    Ideology.load(ideologies);
     // Authored tunable overrides, applied over the schema defaults in js/tunables.js.
     if (tunables) {
       const unknown = TUNE.load(tunables.values || tunables);
@@ -109,7 +112,7 @@ async function init() {
     store.trade = trade;         // offline-baked trade attributes (county_trade.json)
     store.transport = transport; // rail / interstates / Canada-Mexico gateways (transport.json)
     Colors.assign(Object.keys(data.states));
-    Game.init(data, adjacency, areas, { trade, transport });
+    Game.init(data, adjacency, areas, { trade, transport, culture: cultureMode });
     const emerged = Parties.setup(partyDefs, store.rng); // setup-only regional party spawns
     MapModes.init(data);
     if (geoMode && geoMode.type === 'ns-mapmode') MapModes.setRegion(geoMode); // published in the editor
@@ -773,7 +776,7 @@ function renderCountyPanel(fips) {
   const members = Game.areaCounties(fips);
   const name = Game.area(fips)?.name || (rec ? rec.name : store.countyById.get(fips)?.properties.name || fips);
   const color = Game.colorForCounty(fips);
-  const pol = Game.leanOf(fips);
+  const pol = Game.areaPolitics(fips);
   const panel = document.getElementById('panel');
   panel.innerHTML = `
     <div class="card-head">
@@ -929,10 +932,12 @@ function renderCulture(fips) {
   ].filter((t) => t.id);
   const rows = tiers.map((t) => {
     const d = Game.demographics(cultureMembers(t.id));
-    const lean = d.lean === 'D' ? `D+${Math.abs(d.dem - d.gop).toFixed(0)}` : `R+${Math.abs(d.dem - d.gop).toFixed(0)}`;
+    let first = 0, second = 0;
+    for (const s of d.shares) { if (s > first) { second = first; first = s; } else if (s > second) second = s; }
+    const lead = d.dominant >= 0 ? `${Ideology.byIndex(d.dominant).short}+${(first - second).toFixed(0)}` : '—';
     return `<div class="cult-row"><span class="cult-sw" style="background:${c.colorByNode[t.id]}"></span>
       <span class="cult-name"><em>${t.label}</em> ${escapeHtml(c.names[t.id])}</span>
-      <span class="cult-fig">${fmtPop(d.pop)} &middot; ${fmtGdp(d.gdp)} &middot; <b class="${d.lean === 'D' ? 'dem' : 'gop'}">${lean}</b></span></div>`;
+      <span class="cult-fig">${fmtPop(d.pop)} &middot; ${fmtGdp(d.gdp)} &middot; <b style="color:${d.dominant >= 0 ? Ideology.colorAt(d.dominant) : 'inherit'}">${lead}</b></span></div>`;
   }).join('');
   return `<div class="stat"><div class="label">Cultural region</div>${rows}</div>`;
 }
@@ -1055,37 +1060,76 @@ function renderEstNote(rec) {
   return `<div class="est-note"><strong>est.</strong> = best estimate. ${notes.join(' ')}</div>`;
 }
 
-// obj: any {gop,dem,other,extPct?}; estRec: county record for est badge (optional)
-// Emergent regional parties render inside this same area, each in its own color.
+/*
+ * The political composition of a scope, as a stacked bar over the six
+ * ideologies plus the organised movements inside them.
+ *
+ * `obj` is anything with `shares` and `dominant` — a demographics object from
+ * Game.demographics, or an Area's own from Game.areaPolitics.
+ *
+ * WHAT THIS REPLACED. A D/R/Other bar with a tail of named parties, and a
+ * "leading colour BLOC" computed from a hard-coded dict that covered 6 of 16
+ * baked parties and pooled the other 10 into one "Yellow Coalition". A coalition
+ * is now just proximity on the two axes, so it needs no table: the parenthetical
+ * beside the leader names whoever is close enough to work with them.
+ */
 function renderPolitics(obj, estRec) {
-  if (!obj || obj.gop == null || obj.dem == null) return `<div class="value small">No 2024 results available</div>`;
-  const other = obj.other != null && obj.other > 0 ? obj.other : 0;
-  const ext = Object.entries(obj.extPct || {}).filter(([, v]) => v >= 0.05).sort((a, b) => b[1] - a[1]);
-  // lean = leading color BLOC: same-color parties pool their share (coalition)
-  const bl = Parties.blocs(obj);
-  const lead = bl[0], second = bl[1];
+  if (!obj || !obj.shares || obj.dominant < 0) {
+    return `<div class="value small">No political data</div>`;
+  }
+  const shares = obj.shares;
+  const rows = Ideology.all()
+    .map((x, i) => ({ x, i, pct: shares[i] || 0 }))
+    .filter((r) => r.pct >= 0.05)
+    .sort((a, b) => b.pct - a.pct);
+
+  const lead = rows[0];
+  const second = rows[1];
   const margin = (lead.pct - (second ? second.pct : 0)).toFixed(1);
-  const label = lead.members.length > 1
-    ? `${lead.group[0].toUpperCase()}${lead.group.slice(1)} Coalition`
-    : lead.members[0];
-  const winner = `<span class="pill" style="background:${lead.color}">${escapeHtml(label)} +${margin}</span>`;
-  const extBars = ext.map(([p, v]) => `<span style="width:${v}%;background:${Parties.colorOf(p)}"></span>`).join('');
-  const extLegend = ext.map(([p, v]) => `<span class="k custom" style="--kc:${Parties.colorOf(p)}">${escapeHtml(p)} ${v.toFixed(1)}%</span>`).join('');
-  const otherLegend = other > 0 ? `<span class="k oth">Other ${other.toFixed(1)}%</span>` : '';
+
+  /*
+   * Who would work with the leader: everyone within `war.splinterAffinity` of it
+   * on the two axes. This is the "coalition" the old colour-family dict was
+   * hand-authoring, derived instead from the two numbers each ideology already
+   * carries.
+   */
+  const threshold = TUNE.peek('war.splinterAffinity');
+  const allies = rows.filter((r) => r.i !== lead.i && Ideology.affinity(r.i, lead.i) >= threshold);
+  const blocPct = lead.pct + allies.reduce((t, r) => t + r.pct, 0);
+  const winner = `<span class="pill" style="background:${lead.x.color}">${escapeHtml(lead.x.name)} +${margin}</span>`;
+  const coalition = allies.length
+    ? ` &middot; with <strong>${escapeHtml(allies.map((r) => r.x.short).join(', '))}</strong> that is ${blocPct.toFixed(1)}%`
+    : '';
+
+  const bars = rows
+    .map((r) => `<span style="width:${r.pct}%;background:${r.x.color}" title="${escapeHtml(r.x.name)} ${r.pct.toFixed(1)}%"></span>`)
+    .join('');
+  const legend = rows
+    .map((r) => `<span class="k custom" style="--kc:${r.x.color}">${escapeHtml(r.x.name)} ${r.pct.toFixed(1)}%</span>`)
+    .join('');
+
+  // Organised movements, named, inside the ideology they belong to.
+  const movs = Object.entries(obj.movementPct || obj.movements || {})
+    .filter(([, v]) => v >= 0.05)
+    .sort((a, b) => b[1] - a[1]);
+  const movHtml = movs.length
+    ? `<div class="mov-line"><span class="label-inline">Organised movements</span>${movs
+        .map(([name, v]) => `<span class="k custom" style="--kc:${Movements.colorOf(name)}">${escapeHtml(name)} ${v.toFixed(1)}%</span>`)
+        .join('')}</div>`
+    : '';
+
+  const c = obj.centroid || { economic: 0, social: 0 };
+  const axes = `<div class="axis-line">
+      <span>economic <strong>${c.economic >= 0 ? 'market' : 'collective'} ${Math.abs(c.economic).toFixed(2)}</strong></span>
+      <span>social <strong>${c.social >= 0 ? 'traditional' : 'liberal'} ${Math.abs(c.social).toFixed(2)}</strong></span>
+    </div>`;
+
   return `
-    <div class="vote-bar">
-      <span class="dem" style="width:${obj.dem}%"></span>
-      <span class="gop" style="width:${obj.gop}%"></span>
-      ${extBars}
-      <span class="oth" style="width:${other}%"></span>
-    </div>
-    <div class="vote-legend">
-      <span class="k dem">Democrat ${obj.dem.toFixed(1)}%</span>
-      <span class="k gop">Republican ${obj.gop.toFixed(1)}%</span>
-      ${extLegend}
-      ${otherLegend}
-    </div>
-    <div class="margin-line">Leans ${winner}${estTag(estRec, 'v')}</div>
+    <div class="vote-bar">${bars}</div>
+    <div class="vote-legend">${legend}</div>
+    ${movHtml}
+    <div class="margin-line">Leads ${winner}${coalition}${estTag(estRec, 'v')}</div>
+    ${axes}
   `;
 }
 

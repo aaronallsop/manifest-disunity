@@ -17,12 +17,29 @@ import * as RNG from '../js/rng.js';
 const SEED = 20260829;
 const T = () => window.TUNE;
 
-/** A demographics-shaped object for the pure-math tests. */
-const demo = (pop, gdp, shares = {}) => ({
-  pop, gdp,
-  dem: shares.dem ?? 0, gop: shares.gop ?? 0, other: shares.other ?? 0,
-  extPct: shares.ext || {},
-});
+/**
+ * A demographics-shaped object for the pure-math tests.
+ *
+ * `by` is {ideologyId: percent}; anything omitted is zero. The old helper took
+ * {dem, gop, other, ext} because politics was a D/R letter plus a bag of named
+ * parties.
+ */
+function demo(pop, gdp, by = {}) {
+  const N = Ideology.count();
+  const mix = new Array(N).fill(0);
+  for (const [id, pct] of Object.entries(by)) {
+    const i = Ideology.index(id);
+    if (i >= 0) mix[i] = (pct / 100) * (pop || 1);
+  }
+  const shares = Ideology.shares(mix);
+  return {
+    pop, gdp, mix, shares,
+    dominant: Ideology.dominantIndex(mix),
+    dominantId: Ideology.dominantId(mix),
+    centroid: Ideology.centroid(mix),
+    movements: {}, movementPct: {},
+  };
+}
 
 describe('Civil war scoring', () => {
   it('points are continuous — the median Area is not worth zero', async () => {
@@ -67,9 +84,9 @@ describe('Civil war scoring', () => {
   it('dice are SUMMED, not multiplied', async () => {
     await bootWorld({ seed: SEED });
     const rng = RNG.create(1);
-    const before = demo(1e6, 1e11, { dem: 60, gop: 40 });
-    const added = demo(3e6, 3e11, { dem: 0, gop: 100 });
-    const after = demo(4e6, 4e11, { dem: 15, gop: 85 });
+    const before = demo(1e6, 1e11, { blue: 60, red: 40 });
+    const added = demo(3e6, 3e11, { red: 100 });
+    const after = demo(4e6, 4e11, { blue: 15, red: 85 });
     const res = CivilWar.resolve(before, added, after, { rng, tune: T() });
     equal(res.diceSum, res.dice.reduce((a, b) => a + b, 0), 'diceSum is not the sum of the dice');
     ok(res.product === undefined, 'the multiplicative product should be gone');
@@ -81,8 +98,8 @@ describe('Civil war scoring', () => {
     await bootWorld({ seed: SEED });
     const cap = T().get('war.maxDice');
     // an annihilating flip: the old leader is left with almost nothing
-    const before = demo(1e6, 1e11, { dem: 90, gop: 10 });
-    const after = demo(1e6, 1e11, { dem: 1, gop: 99 });
+    const before = demo(1e6, 1e11, { blue: 90, red: 10 });
+    const after = demo(1e6, 1e11, { blue: 1, red: 99 });
     equal(CivilWar.diceCount(before, after, T()), cap, 'a total flip should saturate the cap, not exceed it');
     const rng = RNG.create(2);
     const res = CivilWar.resolve(before, demo(9e6, 9e11), after, { rng, tune: T() });
@@ -94,33 +111,50 @@ describe('Civil war scoring', () => {
     // Three-way split: nobody is near 50, but the lead barely changes hands.
     // The old rule (50 - oldShareAfter) would read this as a 15-point flip and
     // hand out 15 dice; the plurality rule reads it as the 2 points it is.
-    const before = demo(1e6, 1e11, { dem: 35, gop: 33, ext: { Deseret: 32 } });
-    const after = demo(1e6, 1e11, { dem: 33, gop: 35, ext: { Deseret: 32 } });
-    const mag = CivilWar.flipMagnitude(before, after);
-    close(mag, 2, 1e-9, 'flip magnitude should be the 2-point gap between the new and old leaders');
+    const before = demo(1e6, 1e11, { blue: 35, red: 33, yellow: 32 });
+    const after = demo(1e6, 1e11, { blue: 33, red: 35, yellow: 32 });
+    const gap = 2 * (1 - Ideology.affinity('blue', 'red')); // scaled by how far apart they are
+    close(CivilWar.flipMagnitude(before, after), gap, 1e-9,
+      'flip magnitude should be the 2-point lead gap, scaled by ideological distance');
     const oldRuleDice = Math.max(1, Math.ceil(50 - 33));
     const nowDice = CivilWar.diceCount(before, after, T());
     ok(nowDice < oldRuleDice, `plurality gives ${nowDice} dice; the 50%-rule gave ${oldRuleDice}`);
   });
 
-  it('an emergent movement can hold the plurality and be flipped', async () => {
+  it('a flip between NEIGHBOURING ideologies is a smaller shock than one across the board', async () => {
     await bootWorld({ seed: SEED });
-    const before = demo(1e6, 1e11, { dem: 29, gop: 31, ext: { Deseret: 40 } });
-    equal(CivilWar.plurality(before).name, 'Deseret',
-      'a nation that is 40% Deseret must not report a minority party as its lead');
-    const after = demo(1e6, 1e11, { dem: 20, gop: 55, ext: { Deseret: 25 } });
-    const a = CivilWar.assess(before, demo(1e5, 1e9), after);
-    ok(a.flip, 'losing the Deseret plurality is a flip');
-    equal(a.fromParty, 'Deseret');
-    equal(a.toParty, 'Republican');
+    const before = demo(1e6, 1e11, { red: 45, yellow: 30, purple: 25 });
+    const near = demo(1e6, 1e11, { yellow: 45, red: 30, purple: 25 });   // red -> yellow, close
+    const far = demo(1e6, 1e11, { purple: 45, red: 30, yellow: 25 });    // red -> purple, distant
+    const magNear = CivilWar.flipMagnitude(before, near);
+    const magFar = CivilWar.flipMagnitude(before, far);
+    ok(magFar > magNear * 1.5,
+      `a distant flip (${magFar.toFixed(2)}) should shock far more than an adjacent one (${magNear.toFixed(2)}) ` +
+      '— this is the whole point of putting ideologies on axes');
+  });
+
+  it('a minority-ideology plurality is reported correctly and can be flipped', async () => {
+    await bootWorld({ seed: SEED });
+    // A nation that is 40% Conservative Nationalist (Deseret's ideology), 31%
+    // Republican, 29% Democrat. The old D-vs-R letter reported this as leaning
+    // Republican — a minority party — because it ignored everything else.
+    const before = demo(1e6, 1e11, { blue: 29, red: 31, yellow: 40 });
+    equal(CivilWar.plurality(before).id, 'yellow',
+      'a 40% Conservative Nationalist nation reported a minority ideology as its lead');
+    const after = demo(1e6, 1e11, { blue: 20, red: 55, yellow: 25 });
+    const a = CivilWar.assess(before, demo(1e5, 1e9), after, T());
+    ok(a.flip, 'losing the Conservative Nationalist plurality is a flip');
+    equal(a.fromIdeology, 'yellow');
+    equal(a.toIdeology, 'red');
+    ok(a.shift > 0, 'the assessment should report how far the nation moved on the axes');
   });
 
   it('no trigger means no dice and no score', async () => {
     await bootWorld({ seed: SEED });
     const rng = RNG.create(3);
-    const before = demo(1e7, 1e12, { dem: 60, gop: 40 });
-    const added = demo(1e5, 1e9, { dem: 60, gop: 40 });
-    const after = demo(1.01e7, 1.001e12, { dem: 60, gop: 40 });
+    const before = demo(1e7, 1e12, { blue: 60, red: 40 });
+    const added = demo(1e5, 1e9, { blue: 60, red: 40 });
+    const after = demo(1.01e7, 1.001e12, { blue: 60, red: 40 });
     const res = CivilWar.resolve(before, added, after, { rng, tune: T() });
     equal(res.triggered, false);
     equal(res.diceCount, 0);
@@ -141,11 +175,11 @@ describe('Civil war scoring', () => {
     for (const ratio of [0.05, 0.1, 0.2, 0.35, 0.5, 0.75, 1.0, 1.5]) {
       for (const flipGap of [0, 2, 5, 10, 20]) {
         for (let trial = 0; trial < 40; trial++) {
-          const before = demo(4_000_000, 3e11, { dem: 52, gop: 48 });
-          const added = demo(4_000_000 * ratio, 3e11 * ratio, { dem: 20, gop: 80 });
+          const before = demo(4_000_000, 3e11, { blue: 52, red: 48 });
+          const added = demo(4_000_000 * ratio, 3e11 * ratio, { blue: 20, red: 80 });
           const after = flipGap > 0
-            ? demo(0, 0, { dem: 50 - flipGap / 2, gop: 50 + flipGap / 2 })
-            : demo(0, 0, { dem: 52, gop: 48 });
+            ? demo(0, 0, { blue: 50 - flipGap / 2, red: 50 + flipGap / 2 })
+            : demo(0, 0, { blue: 52, red: 48 });
           after.pop = before.pop + added.pop;
           after.gdp = before.gdp + added.gdp;
           const res = CivilWar.resolve(before, added, after, { rng, tune });
@@ -171,10 +205,10 @@ describe('Civil war scoring', () => {
     const run = (ratio, gap) => {
       const c = { victory: 0, partial: 0, fall_apart: 0 };
       for (let i = 0; i < N; i++) {
-        const before = demo(4e6, 3e11, { dem: 52, gop: 48 });
-        const added = demo(4e6 * ratio, 3e11 * ratio, { dem: 10, gop: 90 });
+        const before = demo(4e6, 3e11, { blue: 52, red: 48 });
+        const added = demo(4e6 * ratio, 3e11 * ratio, { blue: 10, red: 90 });
         const after = demo(before.pop + added.pop, before.gdp + added.gdp,
-          { dem: 50 - gap / 2, gop: 50 + gap / 2 });
+          { blue: 50 - gap / 2, red: 50 + gap / 2 });
         c[CivilWar.resolve(before, added, after, { rng, tune }).outcome]++;
       }
       return c;
@@ -204,8 +238,8 @@ describe('Civil war scoring', () => {
   it('the same seed produces the same war, twice', async () => {
     await bootWorld({ seed: SEED });
     const tune = T();
-    const args = [demo(4e6, 3e11, { dem: 52, gop: 48 }), demo(2e6, 1.5e11, { dem: 10, gop: 90 }),
-                  demo(6e6, 4.5e11, { dem: 38, gop: 62 })];
+    const args = [demo(4e6, 3e11, { blue: 52, red: 48 }), demo(2e6, 1.5e11, { blue: 10, red: 90 }),
+                  demo(6e6, 4.5e11, { blue: 38, red: 62 })];
     const a = CivilWar.resolve(...args, { rng: RNG.create(555), tune });
     const b = CivilWar.resolve(...args, { rng: RNG.create(555), tune });
     deepEqual(a, b, 'the same seed produced a different war');

@@ -2,7 +2,7 @@
  * Map coloring modes. Independent of the Nations/Counties select toggle.
  *
  *   standard    - each nation's own color (ownership view)
- *   political   - per-county 2024 lean: red (R) .. purple (even) .. blue (D)
+ *   political   - per-Area leading ideology, its colour, deepened by how
  *   gdp         - per-county GDP: white (low) .. green (high)
  *   population  - per-county population: yellow (low) .. blue (high)
  *
@@ -74,10 +74,9 @@ const MapModes = (function () {
     return culture.colorByNode[p[p.length - 1]] || '#3a4149';
   }
 
-  const RED = '#e0483b';
-  const BLUE = '#3b6fe0';
-  const PURPLE = '#7b57c8';
-  const MARGIN_FULL = 40; // margin (pts) at which color is fully saturated
+  // Ideology colours come from content/ideologies.json, so there is one place
+  // that decides what "Democratic Socialist" looks like.
+  const CONTESTED = '#5b5f6b'; // the colour of a place nobody owns outright
 
   /*
    * Colour ramps are built ONCE.
@@ -89,8 +88,6 @@ const MapModes = (function () {
    * population/geographic mode, and ~12,928 in the editor, which does it twice
    * per county. There are at most a dozen distinct ramps in the whole program.
    */
-  const RAMP_D = d3.interpolateRgb(PURPLE, BLUE);
-  const RAMP_R = d3.interpolateRgb(PURPLE, RED);
   const RAMP_GDP = d3.interpolateRgb('#eaf5ec', '#146a34');
   const RAMP_POP = d3.interpolateRgb('#fde047', '#15308f');
   /** memoized `mix toward white by tier` — the argument only ever takes 3 values */
@@ -114,12 +111,38 @@ const MapModes = (function () {
     popScale = d3.scaleLog().domain([d3.min(pops), d3.max(pops)]).range([0, 1]).clamp(true);
   }
 
+  /*
+   * The leading ideology's own colour, mixed toward a neutral grey by how
+   * CONTESTED the Area is.
+   *
+   * The old version interpolated along a single red-purple-blue line, because a
+   * D-vs-R margin is a scalar and a line is all a scalar can colour. Six
+   * ideologies is a plane, so the honest encoding is "who leads, and by how
+   * much": a solid green Area is Democratic Socialist and unified, a washed-out
+   * yellow one is Conservative Nationalist and barely.
+   *
+   * "By how much" is the leader's margin over the runner-up, not its raw share:
+   * 30% against a field of five is a commanding lead, and 30% against one rival
+   * on 29% is not.
+   */
+  const ramps = new Map();
+  function politicalRamp(i) {
+    let r = ramps.get(i);
+    if (!r) { r = d3.interpolateRgb(CONTESTED, Ideology.colorAt(i)); ramps.set(i, r); }
+    return r;
+  }
+  const MARGIN_FULL = 25; // lead over the runner-up (pts) at which colour saturates
+
   function political(fips) {
-    const p = Game.leanOf(fips); // live partisan split (changes over the game)
-    if (!p) return '#7a7a7a';
-    const margin = p.dem - p.gop; // + = Democratic
-    const t = Math.min(Math.abs(margin) / MARGIN_FULL, 1);
-    return (margin >= 0 ? RAMP_D : RAMP_R)(t);
+    const p = Game.areaPolitics(fips);
+    if (!p || p.dominant < 0) return '#7a7a7a';
+    let first = 0, second = 0;
+    for (const s of p.shares) {
+      if (s > first) { second = first; first = s; }
+      else if (s > second) second = s;
+    }
+    const t = Math.min((first - second) / MARGIN_FULL, 1);
+    return politicalRamp(p.dominant)(0.25 + 0.75 * t);
   }
   function gdp(fips) {
     const v = Game.countyGdp(fips);
@@ -164,8 +187,12 @@ const MapModes = (function () {
         .join('');
       return `<div class="legend-keys">${rows}<span class="legend-note">shades = regions &amp; sub-regions</span></div>`;
     }
-    if (mode === 'political')
-      return grad(`linear-gradient(to right, ${RED}, ${PURPLE}, ${BLUE})`, 'Republican', 'even', 'Democrat');
+    if (mode === 'political') {
+      const rows = Ideology.all()
+        .map((x) => `<span class="legend-key"><i style="background:${x.color}"></i>${x.name}</span>`)
+        .join('');
+      return `<div class="legend-keys">${rows}<span class="legend-note">washed out = contested</span></div>`;
+    }
     if (mode === 'gdp') return grad('linear-gradient(to right, #eaf5ec, #146a34)', 'low GDP', '', 'high GDP');
     if (mode === 'population') return grad('linear-gradient(to right, #fde047, #15308f)', 'low pop.', '', 'high pop.');
     return '';

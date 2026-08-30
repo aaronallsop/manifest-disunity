@@ -20,9 +20,11 @@ import * as RNG from './rng.js';
 import { createTune, describe, groups, SCHEMA } from './tunables.js';
 import * as GeoCT from './geo-ct.js';
 import * as Counts from './counts.js';
+import * as Ideology from './ideology.js';
 
 window.RNG = RNG;
 window.TUNE = createTune();
 window.TuneMeta = { describe, groups, SCHEMA };
 window.GeoCT = GeoCT;
 window.Counts = Counts;
+window.Ideology = Ideology;

@@ -95,17 +95,41 @@ const Actions = (function () {
     renderUnitePreview(tid);
   }
 
-  // Plan (no mutation): who defects to T, who secedes, who stays with S.
+  /*
+   * Plan (no mutation): who defects to T, who secedes, who stays with S.
+   *
+   * Membership is decided by AFFINITY on the two axes, not by a matching letter.
+   * The old rule was `Game.leanOf(c).lean === Tlean` — with two letters, "leans
+   * the same way as the target" and "leans differently from me" partitioned the
+   * map cleanly, and when S and T happened to share a letter the whole border
+   * region defected to a politically identical neighbour for no reason.
+   *
+   * With six ideologies the question is how CLOSE an Area is to each side:
+   *   defect — closer to T than to S, and touching T
+   *   secede — far from S, and cut off from T
+   *   remnant — everyone else
+   */
   function planSplinter(S, T) {
-    const Slean = Game.nationDemographics(S).lean;
-    const Tlean = Game.nationDemographics(T).lean;
+    const sMix = Game.nationDemographics(S).mix;
+    const tMix = Game.nationDemographics(T).mix;
+    const sCentre = Ideology.centroid(sMix), tCentre = Ideology.centroid(tMix);
+    const threshold = TUNE.get('war.splinterAffinity');
     const Sc = [...Game.getNation(S).counties];
     const touchesT = (c) => Game.countyNeighbors(c).some((nb) => Game.getOwner(nb) === T);
-    const defect = Sc.filter((c) => Game.leanOf(c)?.lean === Tlean && touchesT(c));
+
+    const toS = {}, toT = {};
+    for (const c of Sc) {
+      const p = Game.areaPolitics(c);
+      const centre = p ? p.centroid : sCentre;
+      toS[c] = Ideology.affinity(centre, sCentre);
+      toT[c] = Ideology.affinity(centre, tCentre);
+    }
+    const defect = Sc.filter((c) => toT[c] > toS[c] && touchesT(c));
     const defectSet = new Set(defect);
     const rest = Sc.filter((c) => !defectSet.has(c));
-    const secede = rest.filter((c) => Game.leanOf(c)?.lean !== Slean && !touchesT(c));
-    const remnant = rest.filter((c) => !secede.includes(c));
+    const secede = rest.filter((c) => toS[c] < threshold && !touchesT(c));
+    const seceded = new Set(secede);
+    const remnant = rest.filter((c) => !seceded.has(c));
     return { defect, secede, remnant };
   }
 
@@ -159,7 +183,7 @@ const Actions = (function () {
     A.chance = P;
     const pct = Math.round(P * 100);
     const risky = P < 0.5;
-    const flip = me.lean != null && combined.lean != null && me.lean !== combined.lean;
+    const flip = me.dominant >= 0 && combined.dominant >= 0 && me.dominant !== combined.dominant;
     setPanel(`
       ${actionHead('🤝 Unite — preview', Game.getNation(A.nid))}
       <p class="hint-block">Proposing union with <strong>${escapeHtml(tName)}</strong>. If it holds, the combined nation keeps
@@ -170,7 +194,7 @@ const Actions = (function () {
       <div class="stat"><div class="label">Combined population</div><div class="value">${fmtPop(combined.pop)}</div></div>
       <div class="stat"><div class="label">Combined GDP</div><div class="value">${fmtGdp(combined.gdp)}</div></div>
       <div class="stat"><div class="label">Combined political leaning</div>${renderPolitics(combined)}</div>
-      ${flip ? `<div class="warn-box">⚠️ Flips your leaning ${leanName(me.lean)} &rarr; ${leanName(combined.lean)} &mdash; lowers the odds.</div>` : ''}
+      ${flip ? `<div class="warn-box">⚠️ Flips your leading ideology ${leanName(me.dominant)} &rarr; ${leanName(combined.dominant)} &mdash; lowers the odds.</div>` : ''}
       <div class="warn-box">On failure your nation fractures: border counties defect to <strong>${escapeHtml(tName)}</strong>,
         cut-off regions break away, and you lose population &amp; GDP.</div>
       <div class="btn-row">
@@ -1059,7 +1083,7 @@ const Actions = (function () {
     return `<div class="card-head"><span class="swatch" style="background:${n.color}"></span><h2>${escapeHtml(n.name)}</h2></div>
       <div class="kind action-kind">${title}</div>`;
   }
-  const leanName = (l) => (l === 'D' ? 'Democratic' : l === 'R' ? 'Republican' : '—');
+  const leanName = (i) => (i >= 0 ? Ideology.nameAt(i) : '—');
   function cwLine(res) {
     const roll = res.dice.length ? `${res.dice.join(' + ')} = ${res.diceSum}` : '\u2014';
     return `\u{1F3B2} ${roll} &nbsp; \u00d7 ${res.points.toFixed(2)} pts = <strong>${res.score}</strong>.`;
