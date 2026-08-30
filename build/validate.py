@@ -164,6 +164,47 @@ def main():
     # content/ with the rest of the authored data - not in data/, which is bake
     # output. They were the last authored files whose only publish path was the
     # user's Downloads folder (M2.5b).
+    # ------------------------------------------------------- seats of government
+    # Authored by county NAME and baked to a FIPS, so a typo is a loud miss here
+    # rather than a silently wrong capital. Every one must also survive the Area
+    # merge, which is the same hazard that discarded 48.2% of the party
+    # references: several capitals sit in counties the merge deletes.
+    caps_doc = load("capitals.json", required=False, root=CONTENT)
+    if caps_doc:
+        caps = caps_doc.get("capitals", {})
+        missing_states = set(states) - set(caps)
+        extra_states = set(caps) - set(states)
+        if missing_states:
+            r.error("capitals", f"{len(missing_states)} states have no seat of government "
+                                f"— {sample(missing_states)}")
+        if extra_states:
+            r.error("capitals", f"{len(extra_states)} seats name a state that does not exist "
+                                f"— {sample(extra_states)}")
+        bad_fips, wrong_state, unresolved = [], [], []
+        for st, rec in caps.items():
+            fips = rec.get("fips")
+            if fips not in counties:
+                bad_fips.append(f"{rec.get('city')} -> {fips}")
+                continue
+            if counties[fips].get("st") != st:
+                wrong_state.append(f"{rec.get('city')} ({fips}) is in state "
+                                   f"{counties[fips].get('st')}, not {st}")
+            if member_of.get(fips, fips) not in counties:
+                unresolved.append(f"{rec.get('city')} ({fips})")
+        if bad_fips:
+            r.error("capitals", f"{len(bad_fips)} seats resolve to no county — {sample(bad_fips)}")
+        if wrong_state:
+            r.error("capitals", f"{len(wrong_state)} seats sit in the wrong state — {sample(wrong_state)}")
+        if unresolved:
+            r.error("capitals", f"{len(unresolved)} seats do not survive the Area merge "
+                                f"— {sample(unresolved)}")
+        if not (bad_fips or wrong_state or unresolved or missing_states or extra_states):
+            merged = sum(1 for rec in caps.values()
+                         if member_of.get(rec["fips"], rec["fips"]) != rec["fips"])
+            r.ok("capitals", f"all {len(caps)} seats of government resolve to live Areas")
+            r.info(f"{merged} of {len(caps)} sit in a county the Area merge folds into a larger "
+                   f"Area — they must be looked up through the alias, never directly.")
+
     for mode_file in ("geographical.json", "cultural.json"):
         mode = load(mode_file, required=False, root=CONTENT)
         if not mode:

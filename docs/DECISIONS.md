@@ -1296,3 +1296,97 @@ the same branch. It reads `Game.getPlayer()` now.
 `Sentiment.pressure` is the one definition of how close an Area is to leaving, moved out of
 `MapModes` where the model then had to re-derive it. Two definitions of "about to secede" is exactly
 the kind of pair that drifts apart quietly and disagrees only in the cases that matter.
+
+### D111 — The seats of government are authored content, by name
+**M6.4.** `data/game-data.json` carries no capitals, and the capstone needs them. Two options: derive
+"the seat" from the largest Area in each state, or author the real ones. Authored, because
+"you hold Montpelier" is a better sentence than "you hold the biggest Area in Vermont", and because
+targeting metros would quietly turn Reunification into a population race it already has a term for.
+
+Written as **state → county NAME** and baked to a FIPS by `build/`, so a typo is a loud miss rather
+than a silently wrong county — all 51 resolved on the first pass. `build/validate.py` re-checks them
+every run: that every state has one, that none names a county in the wrong state, and that every one
+survives the Area merge. Two of the fifty-one sit in a county the merge folds into a larger Area, so
+`Victory.load` resolves through `Game.areaIdOf` — the M1.13 trap, which discarded 48.2% of authored
+references the first time it was met and would have been exactly as quiet here.
+
+### D112 — Win conditions are a table, and each row is a Why record
+**M6.4.** Three archetypes, one array of rows, each with an `evaluate` returning
+`{met, progress, terms:[{label, value, target, met, key}], summary}` — the same shape `js/power.js`,
+`js/sentiment.js` and `js/ai.js` already produce. So "how close am I" (the panel) and "why did they
+win" (the end screen) are one query at two verbosities, and adding a fourth condition is adding a row.
+
+`progress` is the **worst** term, not the mean. A victory condition is an AND; reporting 80% while
+one requirement sits at zero would be a lie about the only number that matters.
+
+Evaluated over **every nation**, not only the player's. A victory check that looks only at the human
+is a game the AI cannot win, and an AI that cannot win is not an opponent, it is scenery.
+
+**The Influence floor in the capstone is the whole design.** Without it, the shortest path to winning
+is conquering the continent — the strategy the rest of the game spends its time punishing. The test
+that pins it hands one nation every Area, every seat, all the people and all the money, and checks it
+still loses on that one term.
+
+### D113 — Conditional seats: sharing an ideology is not following somebody
+**M6.4.** A seat you do not own counts toward Reunification if the holder governs as you do, your
+Influence clears `win.seatInfluence`, **and** it exceeds theirs by `win.seatInfluenceGap`. The gap is
+what makes it a relationship rather than a coincidence of politics: without it Ohio counted
+twenty-eight of fifty-one seats on turn zero, because at the opening position most of the country
+governs as most of the rest of it does, and the capstone was more than half won before a move.
+
+With the gap, California still opens with eight, and that is the rule working rather than leaking —
+it is the largest economy on the continent and its Influence genuinely exceeds most of the map's by
+the margin. A big state starts closer to reunifying the Union than a small one, which is the whole
+reason the difficulty tiers exist.
+
+This is the "conditional vassal" the review asks for, read as **sphere of influence** rather than as
+a contract, because there is no vassalage mechanic and the save format has nowhere to put one.
+
+### D114 — The targets are calibrated against a measured world, not guessed
+**M6.4.** The first cut of the thresholds was reasonable-sounding and completely unreachable: at turn
+80 with nobody playing, the best nation held 10% of GDP against a 35% target, and Ideological
+Dominance read **0.000 for all 107 nations** because `Game.dominantOf` takes a collection of Area ids
+and was being handed one string, which iterated its characters.
+
+Measured across an eighty-turn game after the fix — GDP share ≤ 0.102, population share ≤ 0.092,
+seats ≤ 0.098, Authority ≤ 0.91, **Influence ≤ 0.53**, sway ≤ 0.448, QoL ≤ 0.98 — every target was
+reset with the evidence written into its `doc`. The Influence ceiling is the important one: the two
+floors had been set at 0.6 and 0.75 as if the stock ranged to 1, and nothing on the map ever gets
+there.
+
+Set at roughly two to five times what the AI-only world produces, on the reasoning that a player
+playing deliberately for eighty turns should substantially outperform a deliberately mild AI. That
+last step is a judgement, not a measurement, and it is the first thing a real play test should
+revisit.
+
+The per-capita median is taken over nations of at least `nation.minAreas` Areas: a played-out world
+is mostly small pieces, and a median dragged down by a hundred rumps put Nevada at 153× the median,
+which is one county with an airport and nobody living in it.
+
+### D115 — Difficulty is derived, and the tiers are proportions of the field
+**M6.4.** A faction's tier is computed from the opening position with the functions the game already
+uses — Area count, economy, `demographics().cohesion`, `AI.strain`, and the share of neighbours
+smaller than you. An authored tier list is a second opinion about the world that drifts from it the
+moment anything is tuned, silently, because nobody re-plays fifty-one openings after moving a slider.
+
+**Ranks, not ratios.** Population and GDP across the fifty-one states are heavy-tailed: measured
+against California, Nebraska scores 0.048 and Vermont 0.010, so a ratio to the maximum put
+forty-five of fifty-one nations in the bottom fifth and the tiers collapsed into one band.
+
+**The bands are proportions of the field** (20% Comfortable, 35% Testing, 30% Punishing, 15% Brutal)
+rather than fixed score thresholds. The question a new player is asking is "which of these is the
+gentle one", and fixed thresholds answered it badly — the first cut put twenty of fifty-one nations
+in one band and exactly one in another. Measured after: 11 / 17 / 15 / 8.
+
+**Every nation is playable.** Restricting to a curated two dozen would be an arbitrary line through a
+map whose whole premise is that every state is a country now.
+
+**The handicap is money, not territory and not a rule change.** Every faction has to play the same
+continent or the difficulty rating is describing a world nobody else is in. Money buys time — an
+early annexation, a handover you could not otherwise afford — which is exactly what a hard opening is
+short of. Paid once, in `Factions.choose`, because `Game.setPlayer` runs again on every load and a
+grant that reapplied there would pay out for reloading.
+
+And the card names the term, not the tier: "New Mexico's problem is economy — 147bn" and "Wisconsin's
+problem is calm — 53% of the way to a breakaway" are two different games, where twenty cards reading
+"Comfortable" are a list of names with extra words.

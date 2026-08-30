@@ -132,6 +132,7 @@ const Sim = (function () {
     Colors.assign(Object.keys(raw.data.states));
     Game.init(raw.data, raw.adjacency, raw.areas,
       { trade: raw.trade, transport: raw.transport, culture: raw.culture });
+    if (raw.capitals) Victory.load(raw.capitals);
     Movements.setup(raw.partyDefs, rng);
     MapModes.init(raw.data);
     if (raw.economy) { MapModes.setEconomy(raw.economy); Market.update(tune); }
@@ -215,11 +216,11 @@ const SimData = (function () {
       get('/data/parties.json', {}), get('/data/economy.json', null),
       get('/data/county_trade.json', null), get('/data/transport.json', null),
       get('/content/cultural.json', null), get('/content/ideologies.json', null),
-      get('/content/tunables.json', null),
+      get('/content/tunables.json', null), get('/content/capitals.json', null),
     ]).then(([data, adjacency, areas, partyDefs, economy, trade, transport, culture,
-              ideologies, tunables]) =>
+              ideologies, tunables, capitals]) =>
       ({ data, adjacency, areas, partyDefs, economy, trade, transport, culture,
-         ideologies, tunables }));
+         ideologies, tunables, capitals }));
     return promise;
   }
   return { load };

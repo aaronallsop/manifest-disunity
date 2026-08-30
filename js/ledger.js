@@ -40,7 +40,7 @@ const Ledger = (function () {
    */
   const KINDS = [
     'annex', 'war', 'unite', 'defect', 'declare', 'fragment', 'release',
-    'govern', 'trade', 'found', 'died', 'power',
+    'govern', 'trade', 'found', 'died', 'power', 'won',
   ];
 
   /**
@@ -102,7 +102,7 @@ const Ledger = (function () {
    * kind — a one-Area defection into a movement's first country matters more
    * than a routine six-Area annexation, and only the magnitude knows that.
    */
-  const WEIGHT = { declare: 100, died: 90, unite: 70, war: 60, found: 55, annex: 40,
+  const WEIGHT = { won: 1000, declare: 100, died: 90, unite: 70, war: 60, found: 55, annex: 40,
                    govern: 35, release: 30, defect: 25, fragment: 20, trade: 10, power: 5 };
 
   /**

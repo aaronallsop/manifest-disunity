@@ -914,6 +914,108 @@ export const SCHEMA = {
     label: 'Union cooldown (turns)',
     doc: 'World turns after an attempted union before a nation may propose another. Unite was the ONE action in the game with no clock on it \u2014 annex, release and changing course all have one \u2014 so a nation could re-roll the same union every turn until it landed, which makes any probability under 100% equal to 100% given enough turns. Found by the M6.3 AI on its first run: 35 of 53 nations opened by proposing a union.',
   },
+  /* ---------------- who you play ---------------- */
+  'start.wSize': {
+    v: 1.0, min: 0, max: 3, step: 0.05, group: 'Start',
+    label: 'Difficulty: weight of size',
+    doc: 'How much the number of Areas a nation opens with counts toward how easy it is to play.',
+  },
+  'start.wEconomy': {
+    v: 0.9, min: 0, max: 3, step: 0.05, group: 'Start',
+    label: 'Difficulty: weight of the economy',
+    doc: 'Money is time \u2014 an annexation you can afford early, a handover you can pay for.',
+  },
+  'start.wCohesion': {
+    v: 0.7, min: 0, max: 3, step: 0.05, group: 'Start',
+    label: 'Difficulty: weight of political agreement',
+    doc: 'How much a population that agrees with itself makes a nation easier to govern. Uses the same cohesion figure Civil Liberties reads.',
+  },
+  'start.wCalm': {
+    v: 1.2, min: 0, max: 3, step: 0.05, group: 'Start',
+    label: 'Difficulty: weight of having no movement in your ground',
+    doc: 'The heaviest term, and the one that separates two nations of the same size: Utah and Missouri open with similar numbers, and one of them has Deseret in it.',
+  },
+  'start.wRoom': {
+    v: 0.6, min: 0, max: 3, step: 0.05, group: 'Start',
+    label: 'Difficulty: weight of having somewhere to go',
+    doc: 'The share of your neighbours smaller than you. A nation ringed by larger ones has no first move.',
+  },
+  'start.bonusAtZero': {
+    v: 90e9, min: 0, max: 500e9, step: 5e9, group: 'Start',
+    label: 'Opening grant at difficulty zero ($)',
+    doc: 'Paid once, at the start, scaled by how hard the start is: a Brutal opening gets most of this, a Comfortable one gets almost none. MONEY, deliberately, and not territory or a rule change \u2014 every faction has to play the same continent or the difficulty rating is describing a world nobody else is in. Money buys time, which is exactly what a hard opening is short of.',
+  },
+  /* ---------------- how a game ends ---------------- */
+  'win.graceTurns': {
+    v: 12, min: 0, max: 80, step: 1, group: 'Victory',
+    label: 'Turns before anyone can win',
+    doc: 'No condition is evaluated before this. The opening position is not a victory, and a game that can be won on turn 2 by whoever started largest is not a game.',
+  },
+  'win.seatInfluence': {
+    v: 0.55, min: 0, max: 1, step: 0.01, group: 'Victory',
+    label: 'Influence needed for another nation\u2019s seat to count',
+    doc: 'A seat of government you do not own counts toward Reunification if the nation holding it governs as you do AND your Influence clears this. A beloved hegemon reunifies through nations it never invaded; a feared one takes every capital by hand. The late-game kingmaker role, without inventing a vassal contract the save format has nowhere to put.',
+  },
+  'win.seatInfluenceGap': {
+    v: 0.18, min: 0, max: 1, step: 0.01, group: 'Victory',
+    label: 'Influence you must hold OVER a nation for its seat to count',
+    doc: 'How far your Influence must exceed the holder\u2019s. Sharing an ideology is not the same as following somebody: without this, Ohio counted twenty-eight seats on turn zero, because at the opening position most of the country governs as most of the rest of it does. At turn 0 nobody is anybody\u2019s junior, so the mechanic arrives late \u2014 which is where a kingmaker belongs.',
+  },
+  'win.reuniteSeats': {
+    v: 0.55, min: 0, max: 1, step: 0.01, group: 'Victory',
+    label: 'Reunification: share of the 51 seats',
+    doc: 'Twenty-eight of the fifty-one seats of government, owned or aligned. Calibrated against a measured world rather than guessed: over eighty turns with nobody playing, the best AI nation held five seats (9.8%), so this is five and a half times what the map produces on its own.',
+  },
+  'win.reunitePop': {
+    v: 0.3, min: 0, max: 1, step: 0.01, group: 'Victory',
+    label: 'Reunification: share of the people',
+    doc: 'Half the continent\u2019s population. Three times the 9.2% the largest nation reaches in an eighty-turn game nobody plays.',
+  },
+  'win.reuniteGdp': {
+    v: 0.3, min: 0, max: 1, step: 0.01, group: 'Victory',
+    label: 'Reunification: share of the economy',
+    doc: 'Half the continent\u2019s GDP. Three times the 10.2% the largest economy reaches on its own.',
+  },
+  'win.reuniteAuthority': {
+    v: 0.65, min: 0, max: 1, step: 0.01, group: 'Victory',
+    label: 'Reunification: Authority floor',
+    doc: 'A state that cannot govern what it holds has not reunified anything. A floor, not a wall: Authority runs to 0.91 in a measured game, so this excludes a state that cannot govern without being the binding constraint on anybody. A floor, not a wall: Authority runs to 0.91 in a measured game, so this excludes a state that cannot govern without ever being the binding constraint.',
+  },
+  'win.reuniteInfluence': {
+    v: 0.5, min: 0, max: 1, step: 0.01, group: 'Victory',
+    label: 'Reunification: Influence floor',
+    doc: 'THE DESIGN OF THE CAPSTONE. Without it the shortest path to winning is conquering the continent \u2014 the strategy the rest of the game spends its time punishing. With it, a conqueror can hold every acre and still be unable to close, and has to spend the late game being tolerable. Set just under the 0.53 ceiling Influence actually reaches, because it IS meant to be the binding constraint: this is the term a conqueror fails.',
+  },
+  'win.ideoSway': {
+    v: 0.55, min: 0, max: 1, step: 0.01, group: 'Victory',
+    label: 'Ideological Dominance: share of Areas holding your ideology',
+    doc: 'Measured over EVERY Area on the map, not only your own: this is a victory of argument, and it is won on other people\u2019s ground. Above the 0.45 that political drift produces unaided by turn 80 - a target the map reaches on its own is a victory won by accident.',
+  },
+  'win.ideoAuthority': {
+    v: 0.7, min: 0, max: 1, step: 0.01, group: 'Victory',
+    label: 'Ideological Dominance: Authority floor',
+    doc: 'Nobody copies a government that cannot govern.',
+  },
+  'win.ideoInfluence': {
+    v: 0.5, min: 0, max: 1, step: 0.01, group: 'Victory',
+    label: 'Ideological Dominance: Influence floor',
+    doc: 'The highest floor of any condition, because being heard is the whole of this victory. Influence tops out near 0.53 in a measured game, so this admits roughly the single most-heard nation on the map and nobody else. Influence tops out near 0.53 in a measured game, so this admits roughly the single most-heard nation on the map and nobody else.',
+  },
+  'win.econGdpShare': {
+    v: 0.22, min: 0, max: 1, step: 0.01, group: 'Victory',
+    label: 'Economic Supremacy: share of the economy',
+    doc: 'Lower than Reunification\u2019s, because this condition also asks to be rich per head, which conquest does not deliver. Twice the 10.2% the largest economy reaches without anyone playing for it.',
+  },
+  'win.econPerCapita': {
+    v: 1.6, min: 1, max: 6, step: 0.05, group: 'Victory',
+    label: 'Economic Supremacy: GDP per head, against the median nation',
+    doc: 'Measured against the MEDIAN nation rather than a dollar figure, so it means the same thing in a fifty-nation world and a ten-nation one, and cannot be reached by inflation.',
+  },
+  'win.econQol': {
+    v: 0.75, min: 0, max: 1, step: 0.01, group: 'Victory',
+    label: 'Economic Supremacy: quality of life floor',
+    doc: 'Wealth that never reaches anybody is not supremacy, it is a statistic.',
+  },
   /* ---------------- anti-snowball ---------------- */
   'shell.topShare': {
     v: 0.1, min: 0, max: 1, step: 0.02, group: 'Anti-snowball',

@@ -74,7 +74,7 @@ const getJSON = (path, fallback) =>
 
 async function init() {
   try {
-    const [topo, data, ctGeo, adjacency, neighbors, partyDefs, trade, areas, geoMode, economy, transport, cultureMode, tunables, ideologies] = await Promise.all([
+    const [topo, data, ctGeo, adjacency, neighbors, partyDefs, trade, areas, geoMode, economy, transport, cultureMode, tunables, ideologies, capitals] = await Promise.all([
       getJSON('data/counties-10m.json'),
       getJSON('data/game-data.json'),
       getJSON('data/ct-planning-regions.geojson'),
@@ -89,6 +89,7 @@ async function init() {
       getJSON('content/cultural.json', null),
       getJSON('content/tunables.json', null),
       getJSON('content/ideologies.json', null),
+      getJSON('content/capitals.json', null),
     ]);
     // The six ideologies, before anything reads a political value.
     Ideology.load(ideologies);
@@ -120,6 +121,10 @@ async function init() {
     if (cultureMode && cultureMode.type === 'ns-mapmode') MapModes.setCulture(cultureMode);
     if (economy) MapModes.setEconomy(economy); // baked six-sector production values
     if (economy) Market.update(TUNE); // opening market prices
+    // The seats of government, resolved through the Area alias — several capital
+    // counties are merged into a larger Area, and a raw FIPS lookup would miss
+    // them silently (the M1.13 trap).
+    if (capitals) Victory.load(capitals);
     TurnSystem.begin([...Game.nations.keys()], store.rng);
     choosePlayer();
     World.begin(TUNE); // seed the power stocks for the world just built
@@ -139,11 +144,13 @@ async function init() {
      * game rather than a blank map. `?fresh=1` skips the resume without deleting
      * anything; the Load dialog is where documents are managed deliberately.
      */
+    let freshGame = true;
     if (!new URLSearchParams(location.search).has('fresh')) {
       const live = await SaveManager.readLive();
       if (live) {
         const res = SaveManager.apply(live);
         if (res.ok) {
+          freshGame = false;
           flash('\u{1F4BE} Resumed at world turn <strong>' + World.getTurn() + '</strong> from '
             + 'data/state.json. Add <code>?fresh=1</code> to the URL to start over.', '');
         } else {
@@ -170,6 +177,29 @@ async function init() {
     renderTurnBanner();
     select('nation', you());
     document.getElementById('loading')?.remove();
+
+    /*
+     * The faction picker, for a genuinely new game only: not after a resume,
+     * which already knows who you were, and not when `?play=` has answered the
+     * question. `choosePlayer` has already seated somebody, so cancelling out of
+     * this leaves a playable game rather than a blank one.
+     */
+    if (freshGame && !new URLSearchParams(location.search).get('play')) {
+      showStart((nid) => {
+        const r = Factions.choose(nid, TUNE);
+        store.playerName = Game.playerNation() ? Game.playerNation().name : null;
+        TurnSystem.seat(nid);
+        Leaderboard.refresh();
+        renderTurnBanner();
+        setMode('nations');
+        select('nation', nid);
+        if (r) {
+          flash(`\u{1F3DB}\u{FE0F} You are <strong>${escapeHtml(r.name)}</strong> — <strong>${escapeHtml(r.label)}</strong>. `
+            + escapeHtml(r.blurb)
+            + (r.bonus > 0 ? ` Opening grant <strong>${fmtGdp(r.bonus)}</strong>.` : ''), '');
+        }
+      });
+    }
   } catch (err) {
     const el = document.getElementById('loading');
     if (el) el.textContent = 'Could not load map data. Start the local server with `python server.py` and reload (see README.md).';
@@ -198,6 +228,9 @@ function choosePlayer() {
     if (!pick) console.warn(`?play=${wanted} names no nation; falling back to the turn order.`);
   }
   Game.setPlayer(pick || TurnSystem.currentId());
+  // Remembered for the defeat screen, which has to name a nation that no longer
+  // exists — `Game.getPlayer()` keeps the id, but the name lives on the record.
+  store.playerName = Game.playerNation() ? Game.playerNation().name : null;
   // ...and start the game on your own slot rather than sweeping the AI round to
   // reach it. A fresh world has not begun yet; nobody is owed a turn in it.
   TurnSystem.seat(Game.getPlayer());
@@ -205,6 +238,66 @@ function choosePlayer() {
 
 /** The nation the human is playing. Null only in a world nobody is playing. */
 const you = () => Game.getPlayer();
+
+/*
+ * WHO DO YOU WANT TO BE.
+ *
+ * Shown once, before a fresh game, and skipped entirely when `?play=` names a
+ * seat or a saved document already knows who you were — a start screen that
+ * appears in front of a game already in progress is a start screen nobody wants
+ * to see twice.
+ *
+ * Every nation is listed, because restricting it to a curated two dozen would be
+ * an arbitrary line through a map whose whole premise is that every state is a
+ * country now. The tier does the steering instead, and it says WHY: "Rhode
+ * Island's problem is room to grow — 0% of its neighbours are smaller" is a
+ * sentence a new player can act on, where "hard" is not.
+ */
+function showStart(onPick) {
+  const el = document.getElementById('startscreen');
+  const card = el.querySelector('.start-card');
+  const rated = Factions.list(TUNE);
+  let filter = 'all';
+
+  const draw = () => {
+    const rows = rated.filter((r) => filter === 'all' || r.tier === filter);
+    card.querySelector('.start-list').innerHTML = rows.map((r) => `
+      <button class="fac" data-nid="${r.nid}">
+        <span class="fac-top">
+          <span class="dot" style="background:${r.color}"></span>
+          <span class="nm">${escapeHtml(r.name)}</span>
+          <span class="tier tier-${r.tier}">${escapeHtml(r.label)}</span>
+        </span>
+        <span class="why">${escapeHtml(r.summary)}</span>
+        ${r.bonus > 0 ? `<span class="grant">Opening grant ${fmtGdp(r.bonus)}</span>` : ''}
+      </button>`).join('');
+    card.querySelectorAll('.fac').forEach((b) => {
+      b.onclick = () => { el.classList.remove('show'); onPick(b.dataset.nid); };
+    });
+    card.querySelectorAll('.start-tabs button').forEach((b) => {
+      b.classList.toggle('active', b.dataset.tier === filter);
+    });
+  };
+
+  const tabs = [{ id: 'all', label: `All ${rated.length}` }]
+    .concat(Factions.TIERS.slice().reverse().map((t) => ({
+      id: t.id, label: `${t.label} (${rated.filter((r) => r.tier === t.id).length})`,
+    })));
+
+  card.innerHTML = `
+    <h2>Choose a nation</h2>
+    <p class="start-sub">Every U.S. state is its own country. Pick one and hold it together — or put
+      the Union back. The map is the same whoever you play; a harder start begins with a larger
+      treasury instead.</p>
+    <div class="start-tabs">${tabs.map((t) =>
+      `<button data-tier="${t.id}">${escapeHtml(t.label)}</button>`).join('')}</div>
+    <div class="start-list"></div>`;
+  card.querySelectorAll('.start-tabs button').forEach((b) => {
+    b.onclick = () => { filter = b.dataset.tier; draw(); };
+  });
+  draw();
+  el.classList.add('show');
+}
 
 /* ------------------------------------------------------------------ */
 /* map                                                                 */
@@ -766,6 +859,7 @@ function completeTurn() {
    * like a transfer between two of their own accounts rather than a risk.
    */
   const swept = AI.sweep(TUNE, store.rng);
+  const won = World.getWinner();
   // The live document tracks the world at every turn boundary, not only when
   // someone presses Save. Fire and forget: a failed autosave must not stall the
   // round, and the Save button reports the server honestly when asked.
@@ -779,14 +873,82 @@ function completeTurn() {
      * alternative — a turn banner naming a nation that is not in the game — is
      * the kind of quiet wrongness that takes an hour to find.
      */
-    flash('\u{1F3F3} <strong>' + escapeHtml(name || 'Your nation')
-      + ' no longer exists.</strong> The world plays on without you.', 'bad');
-    return deselect();
+    store.playerName = name || store.playerName;
+    deselect();
+    return showEnd(null);
   }
+  if (won) return showEnd(won);
   const next = you();
   if (next && Game.getNation(next)) { setMode('nations'); select('nation', next); }
   else deselect();
 }
+
+/* ------------------------------------------------------------------ */
+/* the end of the game                                                 */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Somebody won, or you are gone. Either way the game says so.
+ *
+ * Until M6.4 it said nothing at all: eighty turns of a game about whether a
+ * country holds together ended the way the fortieth turn ended, with a map. The
+ * verdict shows the winning condition TERM BY TERM, because "Texas won" is a
+ * result and "Texas won holding 39 of 51 seats with Influence at 0.71" is an
+ * account of a game — and the same rows are what the player was watching climb
+ * in their own panel all along.
+ *
+ * @param won  a Victory.check result, or null for elimination
+ */
+function showEnd(won) {
+  const el = document.getElementById('endscreen');
+  const card = el.querySelector('.end-card');
+  const me = you();
+  const mine = won && won.winner === me;
+  const n = won && Game.getNation(won.winner);
+
+  const kicker = won
+    ? (mine ? 'Victory' : 'The game is over')
+    : 'Defeat';
+  const title = won
+    ? `${n ? escapeHtml(n.name) : won.name} — ${escapeHtml(won.label)}`
+    : `${escapeHtml(store.playerName || 'Your nation')} no longer exists`;
+  const sub = won
+    ? (mine
+      ? `You held it together, and the continent came round. World turn ${won.turn}.`
+      : `You were playing ${escapeHtml(Game.getNation(me)?.name || store.playerName || 'a nation that is gone')}. World turn ${won.turn}.`)
+    : 'The map went on without you. Reload to begin again.';
+
+  const terms = won ? won.terms.map((t) => `
+    <div class="end-term ${t.met ? 'met' : 'short'}">
+      <span class="lbl">${escapeHtml(t.label)}</span>
+      <span class="val">${fmtTerm(t.value)} / ${fmtTerm(t.target)}</span>
+    </div>`).join('') : '';
+
+  const board = Victory.loaded() ? Victory.standings(TUNE, 6).map((r) => `
+    <div class="row">
+      <strong>${escapeHtml(r.name)}</strong>
+      <span class="bar"><i style="width:${Math.round(r.best.progress * 100)}%"></i></span>
+      <span>${Math.round(r.best.progress * 100)}% ${escapeHtml(r.best.label)}</span>
+    </div>`).join('') : '';
+
+  card.innerHTML = `
+    <div class="end-kicker">${kicker}</div>
+    <h2>${n ? `<span class="dot" style="background:${n.color}"></span>` : ''}${title}</h2>
+    <p class="end-sub">${sub}</p>
+    ${terms ? `<div class="end-terms">${terms}</div>` : ''}
+    ${board ? `<div class="end-standings"><div class="end-kicker">Closest, at the end</div>${board}</div>` : ''}
+    <div class="end-btns">
+      <button class="btn" id="end-close">Look at the map</button>
+      <button class="btn go" id="end-again">Play again</button>
+    </div>`;
+  el.classList.add('show');
+  document.getElementById('end-close').onclick = () => el.classList.remove('show');
+  document.getElementById('end-again').onclick = () => { location.search = '?fresh=1'; };
+  renderTurnBanner();
+}
+
+/** 0.62 -> "62%", 1.6 -> "1.6x". Victory terms are shares except one ratio. */
+const fmtTerm = (v) => (v > 1.0001 ? `${v.toFixed(2)}\u00d7` : `${Math.round(v * 100)}%`);
 
 /*
  * THE NEWSPAPER. The growth toast used to be the only thing a round boundary
@@ -881,6 +1043,7 @@ function renderNationPanel(nid) {
       ${renderPolitics(demo)}
     </div>
     ${renderNationEconomy(nid)}
+    ${renderVictory(nid)}
     ${renderExportAccess(nid)}
 
     ${actionsHtml}
@@ -895,6 +1058,38 @@ function renderNationPanel(nid) {
   );
   const goto = panel.querySelector('#goto-current');
   if (goto) goto.onclick = () => { setMode('nations'); select('nation', you()); };
+}
+
+/*
+ * HOW CLOSE ARE YOU TO WINNING, and what is stopping you.
+ *
+ * Shown only on your own nation, and only for the condition you are closest to,
+ * because three conditions x five terms is a wall the player would learn to skip
+ * past. The one you are nearest is the one you are playing, whether or not you
+ * chose it — and the shortfall line names the two requirements holding you back,
+ * which is the thing that turns a score into a plan.
+ */
+function renderVictory(nid) {
+  if (!Victory.loaded() || !Game.isPlayer(nid)) return '';
+  const rows = Victory.progress(nid, TUNE);
+  if (!rows.length) return '';
+  const best = rows.reduce((a, r) => (r.progress > a.progress ? r : a), rows[0]);
+  const seat = Victory.seats(nid, TUNE);
+  const bars = best.terms.map((t) => `
+    <div class="vic-row ${t.met ? 'met' : ''}">
+      <span class="lbl">${escapeHtml(t.label)}</span>
+      <span class="bar"><i style="width:${Math.round(t.progress * 100)}%"></i></span>
+      <span>${fmtTerm(t.value)}</span>
+    </div>`).join('');
+  return `
+    <div class="stat vic">
+      <div class="label">Path to victory &middot; ${escapeHtml(best.label)}</div>
+      ${bars}
+      <div class="vic-note">${escapeHtml(best.summary)}
+        ${best.id === 'reunification'
+          ? ` Seats: ${seat.own} held, ${seat.aligned} aligned, of ${seat.total}.`
+          : ''}</div>
+    </div>`;
 }
 
 /*

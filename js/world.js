@@ -34,6 +34,13 @@
  */
 const World = (function () {
   let turn = 0;
+  /*
+   * WHO WON, once somebody has. Stored rather than recomputed, and saved with
+   * the world, because a finished game has to stay finished across a reload —
+   * and because the standings that produced the verdict are a snapshot of the
+   * turn it happened on, which nothing later can reconstruct.
+   */
+  let winner = null;
   let lastEvents = [];   // what secession did on the most recent turn
   const getTurn = () => turn;
 
@@ -782,6 +789,7 @@ const World = (function () {
    * forgets is a test failure rather than a blank panel.
    */
   function begin(tune, only) {
+    if (!only) winner = null;
     phasePower(T(tune), turn, only);
   }
 
@@ -830,6 +838,27 @@ const World = (function () {
       Game.touch({ values: true });
     });
     turn += 1;
+    /*
+     * HAS ANYBODY WON. After the stocks, because two of the three conditions
+     * have floors under Authority and Influence and reading them before
+     * `phasePower` would test last turn's answer against this turn's map.
+     *
+     * Evaluated over EVERY nation, not only the player's: a victory check that
+     * only looks at the human is a game the AI cannot win, and an AI that
+     * cannot win is not an opponent, it is scenery.
+     */
+    if (!winner && typeof Victory !== 'undefined' && Victory.loaded()) {
+      const v = Victory.check(tn);
+      if (v) {
+        winner = v;
+        Ledger.append({
+          turn, phase: 'roster', subject: v.winner, kind: 'won', delta: 1,
+          text: `${v.name} achieved ${v.label}.`,
+          terms: v.terms.map((x) => ({ name: x.label, value: x.value, key: x.key })),
+          condition: v.condition,
+        });
+      }
+    }
     return turn;
   }
 
@@ -837,8 +866,10 @@ const World = (function () {
     advanceTurn,
     getTurn: () => turn,
     setTurn: (t) => { turn = t | 0; },
-    serialize: () => ({ turn }),
-    loadState: (s) => { turn = (s && s.turn) | 0; },
+    getWinner: () => winner,
+    setWinner: (w) => { winner = w || null; },
+    serialize: () => ({ turn, winner }),
+    loadState: (s) => { turn = (s && s.turn) | 0; winner = (s && s.winner) || null; },
     snapshotOwners,
     begin,
     phaseSecession,

@@ -217,7 +217,24 @@ Done in the order **M3.4 -> M3.1 -> M3.2 -> M3.3**, because the plan lists M3.4'
       t22-29 (the M5 pass, no AI) to t39-44, because AI annexations disturb movement cores - arguably
       better, since the player gets time to learn the board, but it is a change to a deliberately
       tuned number; (c) the suite crossed four minutes, hence `tests/run.html?only=<names>`.
-- [ ] **M6.4** Faction selection and win conditions.
+- [x] **M6.4** Faction selection and win conditions. `content/capitals.json` (51 seats, authored by
+      county name, validated every bake, D111); `js/victory.js` — three archetypes as a table of Why
+      records, checked over every nation once per world turn (D112); conditional seats read as a
+      sphere of influence (D113); every target calibrated against a measured eighty-turn game rather
+      than guessed (D114); `js/factions.js` rating all 51 openings with tiers as proportions of the
+      field and a money-only handicap (D115). End screen, defeat screen, and a live path-to-victory
+      in the player's own panel. Elimination was already an event (`pruneEmpty`, M4).
+
+      **Fixed on the way:** `Game.dominantOf` takes a collection and was being handed one Area id,
+      which iterated its characters — Ideological Dominance read 0.000 for all 107 nations and could
+      not be won at all.
+
+      **Left open, deliberately:** (a) the AI does not know the victory conditions exist, so it never
+      plays toward one — the human wins by default once they know the table. That is the single most
+      valuable thing left in M6 and it belongs with M6.5's work on the AI; (b) the targets are set at
+      2-5x what an AI-only world produces on the reasoning that a deliberate player outperforms a
+      deliberately mild AI, which is a judgement rather than a measurement and the first thing a real
+      play test should revisit.
 - [ ] **M6.5** Faction-switch, military, remaining valves.
 
 ## M7 — Depth and widen
@@ -263,7 +280,7 @@ Performance, measured on the real map rather than predicted: a world turn 24.7 -
 phases 12.4 -> 2.8 ms, political drift 8.0 -> 2.0 ms, a 50-turn simulator run 1,237 -> 466 ms. The
 columnar store is 173 KB and the adjacency graph 43.5 KB.
 
-Next: **M6.4** (faction selection, difficulty tiers, `checkEndConditions()`, three win archetypes, the Reunification capstone, conditional vassals, elimination as an event).
+Next: **M6.5** (faction-switch, military as allocation, suppression and autonomy valves) — and the AI should learn that the victory conditions exist.
 
 Open, carried into M2.3: after 21 turns no Area is yet LED by a minority ideology (Rep 1,288 /
 Dem 388 of 1,676). That is the expected shape at 11% organised movements and it is M5's dial to

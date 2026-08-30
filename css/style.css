@@ -477,3 +477,56 @@ svg.hide-clines .area-borders { display: block; }
 .save-load span { font-size: 11px; color: var(--muted); margin-top: 2px; }
 .save-del { background: transparent; border: 1px solid var(--line); border-radius: 8px; color: var(--muted); cursor: pointer; padding: 0 12px; font-size: 13px; }
 .save-del:hover { border-color: var(--gop); color: var(--gop); }
+
+/* ---- the end of the game ------------------------------------------- */
+#endscreen { position: fixed; inset: 0; background: rgba(0, 0, 0, .72); display: none; align-items: center; justify-content: center; z-index: 60; }
+#endscreen.show { display: flex; }
+.end-card { background: var(--panel-bg); border: 1px solid var(--line); border-radius: 14px; padding: 26px 28px; width: 520px; max-width: 92vw; max-height: 86vh; overflow-y: auto; box-shadow: 0 24px 70px rgba(0, 0, 0, .7); }
+.end-kicker { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.end-card h2 { margin: 6px 0 4px; font-size: 24px; }
+.end-card h2 .dot { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 8px; vertical-align: baseline; }
+.end-sub { font-size: 13px; color: var(--muted); margin: 0 0 18px; line-height: 1.5; }
+.end-terms { display: flex; flex-direction: column; gap: 7px; margin-bottom: 18px; }
+.end-term { display: flex; align-items: baseline; gap: 8px; font-size: 13px; }
+.end-term .lbl { flex: 1; color: var(--muted); }
+.end-term .val { font-variant-numeric: tabular-nums; }
+.end-term.met .val { color: var(--good, #6fbf73); }
+.end-term.short .val { color: var(--bad, #d1706a); }
+.end-standings { border-top: 1px solid var(--line); padding-top: 14px; }
+.end-standings .row { display: flex; gap: 8px; font-size: 12px; padding: 3px 0; color: var(--muted); }
+.end-standings .row strong { color: var(--text); }
+.end-standings .row .bar { flex: 1; height: 6px; align-self: center; background: var(--panel-bg-2); border-radius: 3px; overflow: hidden; }
+.end-standings .row .bar i { display: block; height: 100%; background: var(--accent); }
+.end-btns { display: flex; gap: 10px; margin-top: 18px; }
+
+/* ---- victory progress in the nation panel --------------------------- */
+.vic { margin-top: 14px; }
+.vic .vic-row { display: flex; align-items: center; gap: 8px; font-size: 12px; padding: 3px 0; }
+.vic .vic-row .lbl { flex: 1; color: var(--muted); }
+.vic .vic-row .bar { width: 84px; height: 6px; background: var(--panel-bg-2); border-radius: 3px; overflow: hidden; }
+.vic .vic-row .bar i { display: block; height: 100%; background: var(--accent); }
+.vic .vic-row.met .lbl { color: var(--good, #6fbf73); }
+.vic .vic-note { font-size: 11px; color: var(--muted); line-height: 1.5; margin-top: 6px; }
+
+/* ---- choosing a faction --------------------------------------------- */
+#startscreen { position: fixed; inset: 0; background: rgba(0, 0, 0, .78); display: none; align-items: center; justify-content: center; z-index: 70; }
+#startscreen.show { display: flex; }
+.start-card { background: var(--panel-bg); border: 1px solid var(--line); border-radius: 14px; padding: 24px 26px; width: 720px; max-width: 94vw; max-height: 88vh; display: flex; flex-direction: column; box-shadow: 0 24px 70px rgba(0, 0, 0, .7); }
+.start-card h2 { margin: 4px 0 4px; font-size: 22px; }
+.start-sub { font-size: 13px; color: var(--muted); margin: 0 0 14px; line-height: 1.5; }
+.start-tabs { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
+.start-tabs button { background: var(--panel-bg-2); border: 1px solid var(--line); border-radius: 999px; padding: 5px 13px; color: var(--muted); font-size: 12px; cursor: pointer; }
+.start-tabs button.active { background: var(--accent); border-color: var(--accent); color: #1a1206; }
+.start-list { overflow-y: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 8px; padding-right: 4px; }
+.fac { text-align: left; background: var(--panel-bg-2); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; color: var(--text); cursor: pointer; display: flex; flex-direction: column; gap: 3px; }
+.fac:hover { border-color: var(--accent); }
+.fac .fac-top { display: flex; align-items: center; gap: 7px; }
+.fac .dot { width: 10px; height: 10px; border-radius: 3px; flex: none; }
+.fac .nm { font-weight: 600; font-size: 13px; flex: 1; }
+.fac .tier { font-size: 10px; letter-spacing: .06em; text-transform: uppercase; }
+.fac .why { font-size: 11px; color: var(--muted); line-height: 1.45; }
+.fac .grant { font-size: 11px; color: var(--accent); }
+.tier-brutal { color: #d1706a; }
+.tier-punishing { color: #d99a5b; }
+.tier-testing { color: #cfc46a; }
+.tier-comfortable { color: #6fbf73; }
