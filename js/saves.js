@@ -248,9 +248,7 @@ const SaveManager = (function () {
 
   async function remove(entry) {
     if (entry.where === 'server') {
-      // The API has no DELETE for content; overwrite with a tombstone the list
-      // filter drops. Simpler than adding an endpoint for a rare operation.
-      await serverWrite(entry.file, { v: VERSION, deleted: true, ts: Date.now() }).catch(() => {});
+      await fetch(`/api/content/${entry.file}`, { method: 'DELETE' }).catch(() => {});
     }
     localStorage.removeItem(PREFIX + entry.name);
   }

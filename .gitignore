@@ -18,3 +18,5 @@ data/state.json.tmp
 # Player save games (server-side store). content/ otherwise holds AUTHORED
 # content and IS committed; saves are not authored content.
 content/save-*.json
+# Scratch documents written by tests/content.test.js.
+content/test-*.json

@@ -13,6 +13,7 @@ process to own the state file. This is that process.
     GET  /api/content            -> list the authored documents in content/
     GET  /api/content/<name>.json-> content/<name>.json   (404 if absent)
     PUT  /api/content/<name>.json-> atomically write content/<name>.json
+    DELETE /api/content/<name>.json -> remove content/<name>.json
 
 `<name>` is validated against ^[a-z0-9-]+$, so path traversal is impossible: the name can
 contain no slash, no dot and no backslash, and it is joined to a fixed directory.
@@ -152,12 +153,25 @@ class Handler(SimpleHTTPRequestHandler):
 
     def do_DELETE(self):
         path = self.path.split("?", 1)[0]
-        if path != "/api/state":
+        if path == "/api/state":
+            target = STATE_PATH
+        elif path.startswith("/api/content/"):
+            # Content is authored and committed, so deleting one is a real
+            # operation, not a convenience. Two callers wanted it and both were
+            # working around its absence: the save browser wrote a "deleted"
+            # tombstone that the listing then had to filter out, and the test
+            # suite left its scratch documents on disk, one of which was
+            # committed as authored content.
+            target = self._content_path(path[len("/api/content/"):])
+            if target is None:
+                return self._send_json({"error": "bad content name"}, 400)
+        else:
             return self._send_json({"error": "unknown endpoint", "path": path}, 404)
-        existed = os.path.exists(STATE_PATH)
+
+        existed = os.path.exists(target)
         if existed:
             try:
-                os.remove(STATE_PATH)
+                os.remove(target)
             except OSError as e:
                 return self._send_json({"error": "delete failed", "detail": str(e)}, 500)
         return self._send_json({"ok": True, "existed": existed})
@@ -186,7 +200,7 @@ def main():
     server = ThreadingHTTPServer(("127.0.0.1", args.port), Handler)
     print(f"Nation States on http://127.0.0.1:{args.port}/  (serving {ROOT})")
     print("  GET/PUT/DELETE /api/state          -> data/state.json")
-    print("  GET/PUT        /api/content/<name>.json -> content/<name>.json")
+    print("  GET/PUT/DELETE /api/content/<name>.json -> content/<name>.json")
     try:
         server.serve_forever()
     except KeyboardInterrupt:

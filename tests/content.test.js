@@ -152,4 +152,41 @@ describe('The editor round-trip', () => {
     ok(!names.includes('tunables') && !names.includes('ideologies'),
       'the authored game tables were offered as map modes');
   });
+
+  it('leaves nothing of its own behind in content/', async () => {
+    /*
+     * The suite writes real files into a real committed directory, so it has to
+     * sweep up. It did not, and content/test-roundtrip.json was committed as
+     * authored content — which is what turned up the fact that the content API
+     * had no DELETE at all. The save browser was working around the same gap by
+     * writing a "deleted" tombstone the listing then had to filter out.
+     *
+     * `content/test-*.json` is gitignored as the second line of defence.
+     */
+    const del = await api(`/api/content/${TEST_DOC}.json`, { method: 'DELETE' });
+    ok(del.ok, `DELETE returned ${del.status}`);
+    equal((await del.json()).existed, true, 'there was nothing to delete; the earlier tests did not write');
+
+    const gone = await api(`/content/${TEST_DOC}.json`);
+    equal(gone.status, 404, 'the scratch document is still on disk');
+    const list = await api('/api/content').then((r) => r.json());
+    ok(!list.content.includes(`${TEST_DOC}.json`), 'the deleted document is still listed');
+
+    // deleting something that is not there is not an error
+    const again = await api(`/api/content/${TEST_DOC}.json`, { method: 'DELETE' });
+    ok(again.ok);
+    equal((await again.json()).existed, false);
+
+    // and the committed content is untouched
+    for (const n of ['cultural.json', 'geographical.json', 'ideologies.json', 'tunables.json']) {
+      ok(list.content.includes(n), `${n} went missing`);
+    }
+  });
+
+  it('DELETE cannot reach outside content/', async () => {
+    for (const bad of ['../server', 'a/b', 'Upper']) {
+      const r = await api(`/api/content/${encodeURIComponent(bad)}.json`, { method: 'DELETE' });
+      ok(!r.ok, `the server accepted a DELETE for "${bad}"`);
+    }
+  });
 });

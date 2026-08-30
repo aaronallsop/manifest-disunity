@@ -577,3 +577,17 @@ defined` and the whole module failed to define — the same failure mode as the 
 ESM-bridged global in M1. The wrapper only has a job while the editor is open, so it is installed on
 first `enter()`. The rule this keeps breaking is worth stating plainly: **a module may read another
 module's global inside a function body, never at the top level.**
+
+### D63 — `DELETE /api/content/<name>.json` exists, because two callers were working around its absence
+**M2.5b.** The content API had GET and PUT and no DELETE, and both callers that wanted one had built
+a workaround rather than asking for it. `SaveManager.remove` wrote a `{deleted: true}` **tombstone**
+that the listing then had to filter out — so a deleted save was still a file, still listed by the
+server, and still read once by `list()` before being dropped. The test suite simply left its scratch
+documents on disk, and one of them, `content/test-roundtrip.json`, was committed as authored content
+in the M2 close commit.
+
+Two independent workarounds for the same missing operation is the signal that the operation should
+exist. Added, with the same `NAME_RE` guard as GET and PUT, returning `{ok, existed}` so deleting
+something that is not there is a success rather than an error. `content/test-*.json` is gitignored
+as the second line of defence, and the content suite's last test now asserts that it has cleaned up
+after itself and that the four committed documents are untouched.
