@@ -370,3 +370,54 @@ counts vector `pop[]` is people and is exact — `js/counts.js` absorbs the roun
 `sum(pop)` equals the baked integer population, measured across 986 of 3,143 counties where the
 float product does not. Mixing the two is the easiest bug to write here, so the naming is rigid:
 `pop`/`mix` are counts, `shares` are percentages, `affinity`/`cohesion` are 0–1 fractions.
+
+### D46 — M2.4 (the CSR graph) was done BEFORE M2.3 (columnar state)
+**M2.4.** The plan numbers columnar state first, but the review that produced the plan is explicit
+about the opposite order — "do it first, before anything else in the rearchitecture" — and the
+reason holds up: building the graph creates the `fips -> int` Area index, which is the same index
+the columnar arrays are keyed on. Doing columnar first would mean building that index for the
+arrays and then either rebuilding or retrofitting it for the graph. The two tasks are independent
+otherwise, both ship a playable game, and both land inside M2, so the swap costs nothing.
+
+### D47 — Neighbour rows are sorted by node index, not left in `adjacency.json` key order
+**M2.4.** The old walk built a Set in whatever order the JSON listed a county's neighbours, and
+that order was load-bearing in two places: `argmax` tie-breaks in `nearestNation` (first maximum
+wins) and the traversal order of every component search. So a re-bake that happened to emit keys
+differently was a silent replay divergence with no modelled cause — a save from before the bake
+would resolve a tie the other way. Sorting each row by index makes neighbour order a property of
+the graph rather than of the file that described it. Same-seed determinism is unaffected either
+way; what changes is that determinism now survives a re-bake.
+
+### D48 — The graph symmetrises every edge, and the test measures how much repair that hides
+**M2.4.** `build()` adds both directions of any edge declared in one. That is the right default —
+an edge is a fact about a pair — but it can also paper over a genuinely broken bake, so the suite
+measures the repair rather than trusting it: if more than 1% of edges are added by symmetrisation,
+`adjacency.json` is meaningfully one-directional and the graph is covering for it. Measured on the
+shipped bake: **0 added of 9,454**, so `build_adjacency.py` already emits a symmetric file and the
+symmetrisation is a guarantee rather than a fix.
+
+### D49 — Five fixed road crossings added to `adjacency.json`: bridges are LAND borders
+**M2.4.** The contiguity test the graph made cheap enough to write reported four states starting in
+two disconnected pieces: Michigan (the Upper Peninsula), New York (Staten Island), Rhode Island
+(Aquidneck Island) and Virginia (the Eastern Shore). Census adjacency is shared-polygon-arc
+adjacency, so a county you can only reach by driving over water has no neighbours on that side at
+all. That was not cosmetic: the splinter rule secedes an Area that is politically distant from its
+owner **and** geographically cut off, so Staten Island and the Upper Peninsula were one bad roll
+from leaving on turn 1 for a reason the map does not show, and the Verrazzano-Narrows Bridge is
+right there. Added as `FIXED_CROSSINGS` in `build_adjacency.py`: Mackinac (26097-26047),
+Verrazzano-Narrows (36085-36047), Pell Newport and Mount Hope (44005-44009, 44005-44001), and the
+Chesapeake Bay Bridge-Tunnel (51131-51810).
+
+Deliberately a SEPARATE table from `MARITIME_COUNTY_LINKS`, because the distinction is load-bearing:
+`game.js` derives land pairs from county adjacency and treats whatever is left in the state table as
+maritime. Putting the Mackinac Bridge in the maritime table would tell the game you cannot march
+across it. And Alaska and Hawaii stay unconnected at the county level on purpose — they are three
+separate land components and reach the mainland through the maritime layer, which is why the
+component test asserts exactly three rather than one.
+
+### D50 — `tests/run.html` imports the real `boot-globals.js` instead of copying it
+**M2.4.** The harness had its own hand-maintained copy of the ESM-to-global bridge, and it had
+already drifted: it published RNG, TUNE, Counts and Ideology but not GeoCT. A suite that runs
+against a different set of globals than the page can pass while the game is broken, which is the
+one thing a test harness must never do. It now imports `../js/boot-globals.js` and gets whatever
+the game gets, by construction.

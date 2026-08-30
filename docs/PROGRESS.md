@@ -72,7 +72,11 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done
       population still exactly 340,110,988 at load; red+blue 96.0% before movement seeding; all
       1,676 Areas tagged with one of 20 cultural regions; 229 tests green.
 - [ ] **M2.3** Columnar state (typed arrays); ownership stored once.
-- [ ] **M2.4** CSR adjacency graph, built once.
+- [x] **M2.4** CSR adjacency graph, built once (`js/graph.js`), done BEFORE M2.3 because it builds
+      the `fips -> int` Area index the columnar arrays need (D46). 1,676 nodes / 9,454 directed
+      edges / 43.5 KB of flat Int32Array; a full graph sweep is 7.7x faster than the already-memoized
+      string path it replaces (0.042 ms vs 0.325 ms). Found and fixed five missing road bridges
+      (D49): Michigan, New York, Rhode Island and Virginia all started in two disconnected pieces.
 - [ ] **M2.5** One state document (`data/state.json`); editor round-trip via the server.
 
 ## M3 — Power

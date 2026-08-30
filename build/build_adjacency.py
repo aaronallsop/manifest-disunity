@@ -9,6 +9,8 @@ neighbors iff they share an arc). Then:
     regions come from a separate GeoJSON (no shared arcs), CT is approximated as a
     clique internally, all jointly adjacent to whatever external counties bordered
     old Connecticut.
+  - FIXED_CROSSINGS are added: five major road bridges and tunnels that join an
+    island county to its own state. These are LAND links.
   - MARITIME_COUNTY_LINKS are added. County adjacency from shared arcs cannot
     connect an ISLAND to anything, so Hawaii County, Honolulu and Kauai had zero
     neighbours and the state was mechanically inert: nothing could be annexed
@@ -47,6 +49,35 @@ CT_REGIONS = ["09110", "09120", "09130", "09140", "09150", "09160", "09170", "09
 MARITIME_COUNTY_LINKS = [
     # The Hawaiian archipelago. Kalawao (15005) already shares an arc with Maui.
     ["15001", "15003", "15005", "15007", "15009"],
+]
+
+# ---- FIXED_CROSSINGS: major road bridges and tunnels, which are LAND links ----
+# A county polygon that touches no other polygon is an island to the topology, but
+# four of them are joined to their own state by a road you can drive across. They
+# are land borders, not sea routes, and the distinction is load-bearing: game.js
+# derives land pairs from county adjacency and treats everything left in the state
+# table as maritime, so putting these in MARITIME_COUNTY_LINKS would tell the game
+# you cannot march across the Mackinac Bridge.
+#
+# Found by the M2.4 contiguity test, which reported Michigan, New York, Rhode
+# Island and Virginia as starting in two disconnected pieces. That was not
+# cosmetic: the splinter rule secedes an Area that is politically distant AND
+# geographically cut off, so Staten Island and the Upper Peninsula were one bad
+# roll from leaving on turn 1 for a reason the map does not show.
+FIXED_CROSSINGS = [
+    # Mackinac Bridge, I-75: St Ignace (Mackinac Co) - Mackinaw City (Emmet Co).
+    # The Upper Peninsula reaches the rest of the country through Wisconsin, but
+    # nothing joined it to the Lower Peninsula.
+    ("26097", "26047"),
+    # Verrazzano-Narrows Bridge, I-278: Staten Island (Richmond) - Brooklyn (Kings).
+    ("36085", "36047"),
+    # Aquidneck Island: Pell Newport Bridge west to Washington County, Mount Hope
+    # Bridge north to Bristol County.
+    ("44005", "44009"),
+    ("44005", "44001"),
+    # Chesapeake Bay Bridge-Tunnel, US-13: Northampton - Virginia Beach city.
+    # Virginia's Eastern Shore otherwise reaches the mainland only via Maryland.
+    ("51131", "51810"),
 ]
 
 # States touching the Pacific / bordering Canada (for Alaska & Hawaii's links).
@@ -99,6 +130,13 @@ def main():
         adj[x] = {n for n in adj[x] if n not in OLD_CT} | set(CT_REGIONS)
     for r in CT_REGIONS:
         adj[r] = (set(CT_REGIONS) - {r}) | set(external_ct)
+
+    # ---- authored fixed crossings (bridges and tunnels are land borders) ----
+    for a, b in FIXED_CROSSINGS:
+        if a not in adj or b not in adj:
+            raise SystemExit(f"FIXED_CROSSINGS names a county not in the topology: {a} {b}")
+        adj[a].add(b)
+        adj[b].add(a)
 
     # ---- authored maritime links (islands share no arcs with anything) ----
     for group in MARITIME_COUNTY_LINKS:

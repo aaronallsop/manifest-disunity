@@ -91,14 +91,10 @@
     <script src="../js/actions.js"></script>
 
     <script type="module">
-      import * as RNG from '../js/rng.js';
-      import { createTune } from '../js/tunables.js';
-import * as Counts from '../js/counts.js';
-      import * as Ideology from '../js/ideology.js';
-      window.RNG = RNG;
-      window.TUNE = createTune();
-      window.Counts = Counts;
-      window.Ideology = Ideology;
+      // The SAME bridge the game uses. This was a hand-maintained copy of it and
+      // had already drifted (no GeoCT), which means the suite can pass against a
+      // set of globals the page never actually has.
+      import '../js/boot-globals.js';
 
       const out = document.getElementById('out');
       const summary = document.getElementById('summary');
@@ -123,7 +119,7 @@ import * as Counts from '../js/counts.js';
         const canonical = await import('./harness.js');
         canonical.reset();
 
-        const suiteFiles = ['./rng.test.js', './tunables.test.js', './ideology.test.js', './invariants.test.js', './saves.test.js', './batching.test.js', './parties.test.js', './geo-ct.test.js', './civilwar.test.js', './annex.test.js', './world.test.js', './drift.test.js', './distribution.test.js', './market.test.js', './trade.test.js', './release.test.js', './counts.test.js'];
+        const suiteFiles = ['./rng.test.js', './tunables.test.js', './ideology.test.js', './graph.test.js', './invariants.test.js', './saves.test.js', './batching.test.js', './parties.test.js', './geo-ct.test.js', './civilwar.test.js', './annex.test.js', './world.test.js', './drift.test.js', './distribution.test.js', './market.test.js', './trade.test.js', './release.test.js', './counts.test.js'];
         for (const f of suiteFiles) {
           try {
             await import(f + bust);

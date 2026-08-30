@@ -49,7 +49,7 @@ const Game = (function () {
     for (const k of Object.keys(alias)) delete alias[k];
     nations.clear();
     owner.clear();
-    neighborCache.clear();
+    graph = null;
     maritimeLinks = null;
     adjacency = null;
     tradeData = null;
@@ -88,6 +88,7 @@ const Game = (function () {
 
   function init(data, adj, areasDef, extras) {
     adjacency = adj;
+    graph = null;
     tradeData = (extras && extras.trade) || null;
     transportData = (extras && extras.transport) || null;
     const regionOf = regionIndexFrom((extras && extras.culture) || null);
@@ -194,6 +195,9 @@ const Game = (function () {
       if (n) { n.counties.add(fips); owner.set(fips, c.st); }
     }
     originalNationCount = nations.size;
+    // Built last: every Area record and every merged-member alias must exist
+    // before the graph can resolve a member county to the Area that absorbed it.
+    buildGraph();
     // Open the books with a few turns of income banked. Without this the treasury
     // is zero at turn 0 and every priced action is unaffordable until several
     // world turns have passed, which reads as a broken action menu, not as scarcity.
@@ -286,27 +290,37 @@ const Game = (function () {
 
   /* ---- adjacency & grouping (Area level: union of member-county neighbors) ---- */
   /*
-   * Memoized. The Area adjacency graph is derived from immutable data, but this
-   * used to allocate a fresh Set and re-walk every member county on EVERY query
-   * — and it is the hot loop for the neighbour-pull term in political drift, for
-   * contiguity, and for every system M4 adds. M2.4 replaces the cache with a
-   * compressed-sparse-row graph built once; the signature stays the same so
-   * nothing else has to change.
+   * ONE compressed-sparse-row graph, built once at load (js/graph.js).
+   *
+   * This used to allocate a fresh Set and re-walk every member county on EVERY
+   * query — and it is the hot loop for the neighbour-pull term in political
+   * drift, for contiguity, for annex targeting, for splinter planning, and for
+   * every system M4 adds. M1 bought time with a memo Map; the graph removes the
+   * string hashing and the array-of-strings result as well.
+   *
+   * The string signature stays for the callers above the model (the DOM speaks
+   * FIPS), but everything inside walks integer indices.
    */
-  const neighborCache = new Map();
-  function countyNeighbors(fips) {
-    const a = cid(fips);
-    let hit = neighborCache.get(a);
-    if (hit) return hit;
-    const out = new Set();
-    for (const m of county[a]?.counties || [a])
-      for (const nb of adjacency.county[m] || []) {
-        const n = cid(nb);
-        if (n !== a) out.add(n);
-      }
-    hit = [...out];
-    neighborCache.set(a, hit);
-    return hit;
+  let graph = null;
+  function buildGraph() {
+    const ids = Object.keys(county);
+    graph = Graph.build(ids, (a) => {
+      const out = [];
+      for (const m of county[a]?.counties || [a])
+        for (const nb of adjacency.county[m] || []) out.push(cid(nb));
+      return out;
+    });
+  }
+  /** Node index for an Area id (or a member county id). */
+  const nodeOf = (fips) => graph.indexOf(cid(fips));
+  /** Neighbours as Area ids. The returned array is shared and frozen. */
+  function countyNeighbors(fips) { return graph.neighborIds(cid(fips)); }
+  /** The nodes a nation holds, as a mask — the shape every graph query wants. */
+  function nationMask(nid) {
+    const mask = graph.mask();
+    const n = nations.get(nid);
+    if (n) for (const f of n.counties) { const i = nodeOf(f); if (i >= 0) mask[i] = 1; }
+    return mask;
   }
 
   function statesOf(nid) {
@@ -385,27 +399,25 @@ const Game = (function () {
     return [...out];
   }
   function annexTargets(nid) {
-    const set = new Set();
-    for (const f of nations.get(nid).counties)
-      for (const nb of countyNeighbors(f)) if (owner.get(nb) !== nid) set.add(nb);
-    return set;
-  }
-  function components(fipsSet, keyFn) {
-    const remaining = new Set(fipsSet);
-    const out = [];
-    while (remaining.size) {
-      const start = remaining.values().next().value;
-      remaining.delete(start);
-      const key = keyFn ? keyFn(start) : null;
-      const group = [start], stack = [start];
-      while (stack.length) {
-        const cur = stack.pop();
-        for (const nb of countyNeighbors(cur))
-          if (remaining.has(nb) && (!keyFn || keyFn(nb) === key)) { remaining.delete(nb); group.push(nb); stack.push(nb); }
-      }
-      out.push(group);
-    }
+    if (!nations.has(nid)) return new Set();
+    const out = new Set();
+    for (const i of graph.frontier(nationMask(nid))) out.add(graph.idAt(i));
     return out;
+  }
+  /**
+   * Connected components of a set of Area ids, optionally split by a key so
+   * "contiguous AND same owner" is one call. Returns arrays of ids, because
+   * every caller feeds them straight back into ownership moves.
+   */
+  function components(fipsSet, keyFn) {
+    const nodes = [];
+    for (const f of fipsSet) { const i = nodeOf(f); if (i >= 0) nodes.push(i); }
+    const byIndex = keyFn ? (i) => keyFn(graph.idAt(i)) : null;
+    return graph.components(nodes, byIndex).map((comp) => {
+      const out = new Array(comp.length);
+      for (let k = 0; k < comp.length; k++) out[k] = graph.idAt(comp[k]);
+      return out;
+    });
   }
   const largestCounty = (arr) => arr.reduce((b, f) => (countyPop(f) > countyPop(b) ? f : b), arr[0]);
 
@@ -941,6 +953,10 @@ const Game = (function () {
     dominantOf,
     areaPop: (f) => { const c = county[cid(f)]; return c ? areaPop(c) : 0; },
     countyNeighbors,
+    /** The CSR graph itself, for index-space callers (M2.3's phases, the tests). */
+    graph: () => graph,
+    nodeOf,
+    nationMask,
     adjacentNations,
     borderingNations,
     maritimeNations,
