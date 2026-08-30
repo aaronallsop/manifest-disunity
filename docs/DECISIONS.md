@@ -516,3 +516,31 @@ The rewrite keeps the share it actually applied and subtracts that, which is exa
 1,691 movement placements. Verified the fix is the ONLY behavioural change in the conversion by
 running the previous commit and the new one from the same seed for 30 turns: population and GDP
 agree to every digit printed, and the only divergence is the movement head count.
+
+### D58 — The state document is a module of its own, because the suite was testing a copy of it
+**M2.5a.** `SaveManager` already built and applied the whole-world document, but it did so tangled
+with the things only a browser can do — set the colour mode, repaint the toolbar, open a modal,
+reach into `store`. So the suite could not run the real load path, and instead ran a hand-written
+reimplementation of it (`headlessSnapshot` / `headlessApply`). **A test of a copy passes while the
+original is broken** — the same trap as the drifted harness bridge in D50, and here it covered the
+single most destructive operation in the game.
+
+Split by dependency rather than by feature: `js/statedoc.js` is `assemble` / `validate` /
+`applyModel`, pure model, no DOM and no globals it does not receive; `SaveManager` keeps transport,
+the modal, the UI restore and the rollback around a failed load. The session values a document needs
+but the model does not hold (seed, RNG, the areas build, the UI mode) are passed in, which is what
+makes the module callable from the suite and, in M5, from the simulator.
+
+### D59 — `data/state.json` is written at every world-turn boundary, and read at boot
+**M2.5a.** It existed before as a copy of the last manual save, which made it a backup rather than
+the source of truth the plan asks for. It is now autosaved on each round boundary — once per 51
+nation turns, ~390 KB, coalesced so a slow write can never queue behind itself — and read at boot,
+so closing the tab mid-game and reopening it puts the world back where it was. Verified live: three
+world turns, reload, and the turn, population, seed and every border came back identical.
+
+Three deliberate choices around it. **Autosave failures are silent**: it runs behind the player's
+back, so if the server is not there the game must behave exactly as it did before, and it is the
+Save button — which the player actually asked for — that reports the server honestly. **The resume
+happens after a full fresh world is built**, not instead of one, so a document that turns out to be
+unreadable leaves a playable game rather than a blank map. **`?fresh=1` skips the resume without
+deleting anything**, because "start over" and "throw away my game" are different requests.

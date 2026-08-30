@@ -22,60 +22,30 @@ const SaveManager = (function () {
   const PREFIX = 'ns_save_';
   const VERSION = 2;
   const SERVER_PREFIX = 'save-';
+  const AUTOSAVE_NAME = 'Autosave';
 
   let serverOk = true; // flips false the first time the API is unreachable
 
   /* ---- the save document ---------------------------------------- */
+  /*
+   * The document itself lives in js/statedoc.js, which is DOM-free so the suite
+   * and the M5 simulator can run the REAL assemble/apply rather than a copy of
+   * them. What stays here is everything that needs a browser: the session values
+   * that live in `store`, transport, the modal, the UI restore and the rollback.
+   */
 
-  function buildStamp() {
-    // The county table's SHAPE is a function of areas.json. If that file is
-    // rebuilt with a different threshold, every existing save silently refers to
-    // Areas that no longer exist (finding 53). Stamp it and refuse a mismatch.
-    return {
-      areas: Object.keys(Game.county).length,
-      threshold: (store.areasDef && store.areasDef.threshold) || null,
-      merged: store.areasDef ? Object.keys(store.areasDef.areas).length : null,
-    };
-  }
+  /** The session values a document needs that are not in the model. */
+  const session = (extra) => ({
+    seed: store.seed,
+    rng: store.rng,
+    areasDef: store.areasDef,
+    ui: { colorMode: store.colorMode, mode: store.mode, cultureGran: store.cultureGran || 'sub' },
+    ...extra,
+  });
 
-  function snapshot() {
-    return {
-      v: VERSION,
-      ts: Date.now(),
-      build: buildStamp(),
-      meta: { seed: store.seed, turn: World.getTurn() },
-      rng: store.rng ? store.rng.serialize() : null,
-      game: Game.serialize(),
-      turns: TurnSystem.serialize(),
-      world: World.serialize(),
-      market: Market.serialize(),
-      colors: Colors.serialize(),
-      parties: Parties.serialize(),
-      tune: TUNE.diff(), // only deliberate overrides, so a schema change is not baked in
-      ui: { colorMode: store.colorMode, mode: store.mode, cultureGran: store.cultureGran || 'sub' },
-    };
-  }
-
-  /** Structural check run BEFORE anything is mutated. Returns null or a message. */
-  function validate(snap) {
-    if (!snap || typeof snap !== 'object') return 'That file is not a Nation States save.';
-    if (snap.v == null) return 'That save has no version stamp and cannot be read.';
-    if (snap.v < VERSION) {
-      return `That is a version ${snap.v} save from before the model rewrite. ` +
-        'It carries no world turn, market prices, party roster or RNG state, so it cannot be ' +
-        'loaded without inventing them. Start a new game.';
-    }
-    if (snap.v > VERSION) return `That save is version ${snap.v}; this build reads version ${VERSION}.`;
-    if (!snap.game || !Array.isArray(snap.game.nations)) return 'That save has no nations in it.';
-    if (!snap.turns || !Array.isArray(snap.turns.order)) return 'That save has no turn order in it.';
-    const b = snap.build || {};
-    const now = buildStamp();
-    if (b.areas != null && b.areas !== now.areas) {
-      return `That save was made against a different map build (${b.areas} Areas; this build has ` +
-        `${now.areas}). data/areas.json has changed, so the save's Area ids no longer line up.`;
-    }
-    return null;
-  }
+  const buildStamp = () => StateDoc.buildStamp(store.areasDef);
+  const snapshot = (extra) => StateDoc.assemble(session(extra));
+  const validate = (snap) => StateDoc.validate(snap, store.areasDef);
 
   /* ---- apply ------------------------------------------------------ */
 
@@ -102,18 +72,9 @@ const SaveManager = (function () {
       if (snap.ui && snap.ui.mode) store.mode = snap.ui.mode;
       if (snap.ui && snap.ui.cultureGran) store.cultureGran = snap.ui.cultureGran;
 
-      if (snap.tune) TUNE.load(snap.tune);
       store.seed = (snap.meta && snap.meta.seed) != null ? snap.meta.seed : store.seed;
-      if (snap.rng) {
-        store.rng = RNG.restore(snap.rng);
-        TurnSystem.setRng(store.rng);
-      }
-      World.loadState(snap.world || { turn: (snap.meta && snap.meta.turn) || 0 });
-      Colors.loadState(snap.colors);
-      Parties.loadState(snap.parties);
-      Market.loadState(snap.market);
-      TurnSystem.loadState(snap.turns);
-      Game.loadState(snap.game); // emits -> full re-render
+      const { rng } = StateDoc.applyModel(snap);
+      if (rng) store.rng = rng;
 
       // Prices are derived; if the save predates Market serialization or the
       // economy failed to load, recompute rather than show the previous world's.
@@ -130,12 +91,7 @@ const SaveManager = (function () {
     } catch (err) {
       console.error('load failed, rolling back', err);
       try {
-        World.loadState(rollback.world);
-        Colors.loadState(rollback.colors);
-        Parties.loadState(rollback.parties);
-        Market.loadState(rollback.market);
-        TurnSystem.loadState(rollback.turns);
-        Game.loadState(rollback.game);
+        StateDoc.applyModel(rollback);
       } catch (e2) {
         console.error('rollback also failed', e2);
       }
@@ -229,8 +185,7 @@ const SaveManager = (function () {
     if (serverOk) {
       try {
         await serverWrite(slug(name) + '.json', doc);
-        // Keep data/state.json pointing at the most recent save — this is the
-        // document M2.5 promotes to the single source of truth.
+        // and the live document tracks the newest state either way
         await fetch('/api/state', { method: 'PUT', body: JSON.stringify(doc) }).catch(() => {});
         return { ok: true, where: 'server' };
       } catch (e) {
@@ -239,6 +194,49 @@ const SaveManager = (function () {
     }
     const r = localWrite(name, doc);
     return r.ok ? { ok: true, where: 'local' } : r;
+  }
+
+  /* ---- data/state.json: the LIVE document ------------------------- */
+  /*
+   * Written at every world-turn boundary and read at boot. That is what makes it
+   * the source of truth rather than a copy of the last time someone pressed
+   * Save: close the tab mid-game, reopen it, and the world is where you left it.
+   *
+   * Failures here are deliberately silent. Autosave is a convenience running
+   * behind the player's back; if the server is not there, the game must keep
+   * working exactly as it did before, and the Save button will say so loudly
+   * when the player actually asks for a save.
+   */
+  let autosaveInFlight = false, autosavePending = false;
+  async function autosave() {
+    if (!serverOk) return;
+    if (autosaveInFlight) { autosavePending = true; return; } // coalesce; never queue
+    autosaveInFlight = true;
+    try {
+      const doc = snapshot({ name: AUTOSAVE_NAME });
+      await fetch('/api/state', { method: 'PUT', body: JSON.stringify(doc) });
+    } catch (e) {
+      serverOk = false;
+    } finally {
+      autosaveInFlight = false;
+      if (autosavePending) { autosavePending = false; autosave(); }
+    }
+  }
+
+  /** The live document, or null if there is none / it is unreadable. */
+  async function readLive() {
+    try {
+      const r = await fetch('/api/state', { cache: 'no-store' });
+      if (!r.ok) return null;               // 404 on a first run is normal
+      return await r.json();
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /** Throw the live document away, so the next boot starts a fresh world. */
+  async function clearLive() {
+    try { await fetch('/api/state', { method: 'DELETE' }); } catch (e) { /* nothing to clear */ }
   }
 
   async function read(entry) {
@@ -364,5 +362,8 @@ const SaveManager = (function () {
     if (e.target.id === 'modal' || e.target.hasAttribute('data-close')) closeModal();
   });
 
-  return { openSave, openLoad, apply, snapshot, validate, list, write, read, VERSION };
+  return {
+    openSave, openLoad, apply, snapshot, validate, list, write, read, VERSION,
+    autosave, readLive, clearLive, AUTOSAVE_NAME,
+  };
 })();

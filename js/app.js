@@ -126,6 +126,31 @@ async function init() {
     Game.onChange(onGameChange);
     buildMap(topo, ctGeo);
     wireControls();
+
+    /*
+     * Resume from the live document if there is one.
+     *
+     * Done AFTER the map is built, because applying a document emits and the
+     * renderer has to exist to hear it — and after a full fresh world has been
+     * assembled, so a document that turns out to be unreadable leaves a playable
+     * game rather than a blank map. `?fresh=1` skips the resume without deleting
+     * anything; the Load dialog is where documents are managed deliberately.
+     */
+    if (!new URLSearchParams(location.search).has('fresh')) {
+      const live = await SaveManager.readLive();
+      if (live) {
+        const res = SaveManager.apply(live);
+        if (res.ok) {
+          flash('\u{1F4BE} Resumed at world turn <strong>' + World.getTurn() + '</strong> from '
+            + 'data/state.json. Add <code>?fresh=1</code> to the URL to start over.', '');
+        } else {
+          console.warn('state.json was not loadable, starting fresh:', res.message);
+          flash('\u{26A0} The saved world could not be resumed (' + escapeHtml(res.message)
+            + ') so this is a fresh game.', 'warn');
+        }
+      }
+    }
+
     Leaderboard.refresh();
     renderTurnBanner();
     select('nation', TurnSystem.currentId());
@@ -686,6 +711,10 @@ function completeTurn() {
     const growth = Math.round(TUNE.peek('world.popGrowth') * 1000) / 10;
     flash(`\u{1F4C5} <strong>World turn ${World.getTurn()}</strong> &mdash; population +${growth}%, ` +
       'economies grew, movements gained ground, treasuries settled and the market repriced.', '');
+    // The live document tracks the world at every turn boundary, not only when
+    // someone presses Save. Fire and forget: a failed autosave must not stall
+    // the round, and the Save button reports the server honestly when asked.
+    SaveManager.autosave();
   }
   renderTurnBanner();
   if (next && Game.getNation(next)) { setMode('nations'); select('nation', next); }

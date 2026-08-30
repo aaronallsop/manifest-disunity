@@ -92,6 +92,12 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done
       string path it replaces (0.042 ms vs 0.325 ms). Found and fixed five missing road bridges
       (D49): Michigan, New York, Rhode Island and Virginia all started in two disconnected pieces.
 - [ ] **M2.5** One state document (`data/state.json`); editor round-trip via the server.
+  - [x] **M2.5a** `js/statedoc.js` — assemble/validate/applyModel, DOM-free, so the suite runs the
+        REAL load path instead of the hand-written copy it had been testing (D58). `data/state.json`
+        is autosaved every world turn and resumed at boot (D59); the round-trip test now goes
+        through the actual HTTP endpoint. Verified live: 3 turns, reload, world came back identical.
+  - [ ] **M2.5b** The editor writes map modes through `PUT /api/content/<name>.json` and gains the
+        import path it has never had; the two authored map modes move out of `data/` into `content/`.
 
 ## M3 — Power
 

@@ -23,6 +23,7 @@ import * as Counts from './counts.js';
 import * as Ideology from './ideology.js';
 import * as Graph from './graph.js';
 import { AreaState, FIELDS } from './state.js';
+import * as StateDoc from './statedoc.js';
 
 window.RNG = RNG;
 window.TUNE = createTune();
@@ -33,3 +34,4 @@ window.Ideology = Ideology;
 window.Graph = Graph;
 window.AreaState = AreaState;
 window.StateFields = FIELDS;
+window.StateDoc = StateDoc;

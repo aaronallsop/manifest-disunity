@@ -9,38 +9,21 @@
 import { describe, it, ok, equal, notEqual, close, deepEqual } from './harness.js';
 import { bootWorld, fingerprint } from './world-fixture.js';
 import * as RNG from '../js/rng.js';
+import * as StateDoc from '../js/statedoc.js';
 
 const SEED = 20260829;
 
-/** The document SaveManager.snapshot() builds, without touching the DOM. */
-function headlessSnapshot(seed, rng) {
-  return {
-    v: 2,
-    ts: 1,
-    build: { areas: Object.keys(Game.county).length },
-    meta: { seed, turn: World.getTurn() },
-    rng: rng.serialize(),
-    game: Game.serialize(),
-    turns: TurnSystem.serialize(),
-    world: World.serialize(),
-    market: Market.serialize(),
-    colors: Colors.serialize(),
-    parties: Movements.serialize(),
-    tune: window.TUNE.diff(),
-  };
-}
-
-function headlessApply(snap) {
-  World.loadState(snap.world);
-  Colors.loadState(snap.colors);
-  Movements.loadState(snap.parties);
-  Market.loadState(snap.market);
-  TurnSystem.loadState(snap.turns);
-  const rng = RNG.restore(snap.rng);
-  TurnSystem.setRng(rng);
-  Game.loadState(snap.game);
-  return rng;
-}
+/*
+ * THE REAL DOCUMENT CODE, not a copy of it.
+ *
+ * These two used to be a hand-written reimplementation of SaveManager's
+ * snapshot() and apply(), because those functions were tangled up with the DOM
+ * and could not run headlessly. A test of a copy passes while the original is
+ * broken, so M2.5 split the model half into js/statedoc.js and these are now
+ * thin wrappers that supply the session values a page would supply.
+ */
+const headlessSnapshot = (seed, rng) => StateDoc.assemble({ seed, rng, ts: 1 });
+const headlessApply = (snap) => StateDoc.applyModel(snap).rng;
 
 describe('Save round-trip', () => {
   it('every stateful module exposes serialize + loadState', () => {
@@ -218,5 +201,110 @@ describe('Turn order', () => {
     TurnSystem.endTurn();
     equal(TurnSystem.progress().round, roundBefore + 1,
       'endTurn() did not consume the wrap flag, so the round-boundary growth tick is skipped');
+  });
+});
+
+describe('data/state.json — the live document', () => {
+  /*
+   * M2.5's acceptance: the round-trip test passes against the real file, over
+   * the real HTTP endpoint. Everything above this block round-trips a document
+   * through memory; this one round-trips it through the server, so the JSON
+   * encoding, the atomic write and the read path are all under test too.
+   *
+   * The file is the player's live game, so the suite puts back whatever it
+   * found before it started.
+   */
+  const GET = () => fetch('/api/state', { cache: 'no-store' });
+
+  it('round-trips the whole world through the server', async () => {
+    const preserved = await GET().then((r) => (r.ok ? r.json() : null)).catch(() => null);
+    let served = true;
+    try {
+      const { seed, rng } = await bootWorld({ seed: 4242 });
+      for (let i = 0; i < 5; i++) World.advanceTurn(window.TUNE, rng);
+      // move some ground so ownership is not just the opening position
+      Game.moveCounties([...Game.annexTargets('49')].slice(0, 5), '49');
+      const doc = StateDoc.assemble({ seed, rng, ts: 1, name: 'round-trip' });
+      const before = fingerprint();
+
+      const put = await fetch('/api/state', { method: 'PUT', body: JSON.stringify(doc) });
+      if (!put.ok) { served = false; return; }
+
+      // a completely different world, so nothing can survive by accident
+      await bootWorld({ seed: 777 });
+      for (let i = 0; i < 3; i++) World.advanceTurn(window.TUNE, RNG.create(1));
+      notEqual(fingerprint().ownerHash, before.ownerHash, 'the two worlds were identical to begin with');
+
+      const back = await GET().then((r) => r.json());
+      equal(StateDoc.validate(back, null), null, 'the served document did not validate');
+      StateDoc.applyModel(back);
+
+      const after = fingerprint();
+      for (const k of Object.keys(before)) {
+        equal(after[k], before[k], `${k} did not survive the trip through data/state.json`);
+      }
+    } finally {
+      if (served && preserved) {
+        await fetch('/api/state', { method: 'PUT', body: JSON.stringify(preserved) }).catch(() => {});
+      } else if (served && !preserved) {
+        await fetch('/api/state', { method: 'DELETE' }).catch(() => {});
+      }
+    }
+  });
+
+  it('the served document is exactly what assemble() built', async () => {
+    const preserved = await GET().then((r) => (r.ok ? r.json() : null)).catch(() => null);
+    try {
+      const { seed, rng } = await bootWorld({ seed: 4242 });
+      const doc = StateDoc.assemble({ seed, rng, ts: 1 });
+      const put = await fetch('/api/state', { method: 'PUT', body: JSON.stringify(doc) });
+      if (!put.ok) return;
+      const back = await GET().then((r) => r.json());
+      // byte-identical after a JSON round-trip: no NaN, no Infinity, no typed
+      // array stringified as {"0":..}, no undefined silently dropped
+      deepEqual(back, JSON.parse(JSON.stringify(doc)),
+        'the document changed shape on its way through the server');
+    } finally {
+      if (preserved) await fetch('/api/state', { method: 'PUT', body: JSON.stringify(preserved) }).catch(() => {});
+      else await fetch('/api/state', { method: 'DELETE' }).catch(() => {});
+    }
+  });
+});
+
+describe('The document module', () => {
+  it('enumerates every stateful module, so none can be forgotten', async () => {
+    await bootWorld({ seed: SEED });
+    const mods = { Game, TurnSystem, World, Market, Colors, Movements };
+    for (const name of StateDoc.STATEFUL_MODULES) {
+      ok(mods[name], `STATEFUL_MODULES names "${name}", which does not exist`);
+      ok(typeof mods[name].serialize === 'function', `${name}.serialize is missing`);
+      ok(typeof mods[name].loadState === 'function', `${name}.loadState is missing`);
+    }
+    // and the document actually carries a key for each of them
+    const doc = StateDoc.assemble({ seed: SEED, rng: RNG.create(1) });
+    for (const k of ['game', 'turns', 'world', 'market', 'colors', 'parties']) {
+      ok(doc[k] !== undefined, `the document has no "${k}" section`);
+    }
+  });
+
+  it('refuses a v1 document with a message a player can act on', async () => {
+    await bootWorld({ seed: SEED });
+    const msg = StateDoc.validate({ v: 1, game: { nations: [] } }, null);
+    ok(msg && /version 1/.test(msg), `the v1 refusal said: ${msg}`);
+    ok(/Start a new game/.test(msg), 'the refusal does not tell the player what to do');
+  });
+
+  it('refuses a document made against a different map build', async () => {
+    await bootWorld({ seed: SEED });
+    const doc = StateDoc.assemble({ seed: SEED, rng: RNG.create(1) });
+    doc.build.areas = 999;
+    const msg = StateDoc.validate(doc, null);
+    ok(msg && /different map build/.test(msg), `the build-mismatch refusal said: ${msg}`);
+    ok(/999/.test(msg) && /areas\.json/.test(msg), 'the refusal does not name the numbers or the file');
+  });
+
+  it('accepts its own output', async () => {
+    const { seed, rng } = await bootWorld({ seed: SEED });
+    equal(StateDoc.validate(StateDoc.assemble({ seed, rng }), null), null);
   });
 });
