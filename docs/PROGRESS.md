@@ -184,7 +184,10 @@ Done in the order **M3.4 -> M3.1 -> M3.2 -> M3.3**, because the plan lists M3.4'
 
 ## M6 — Agency
 
-- [ ] **M6.1** Split every action into `plan` and `resolve`.
+- [x] **M6.1** `js/moves.js`: `plan(intent)` pure, `resolve(intent, rng)` with the RNG explicit, for
+      annex, unite, release and govern (D99). `Moves.legal(nid)` is the AI's candidate list — the
+      rules, unscored (D100). The contract is what the tests pin: plan never mutates, resolve refuses
+      exactly what plan refused with the same sentence, and the bill matches the quote.
 - [ ] **M6.2** Player identity.
 - [ ] **M6.3** AI.
 - [ ] **M6.4** Faction selection and win conditions.

@@ -1065,3 +1065,30 @@ with seventeen Areas. That is a story.
 so the suite validated a differently-tuned world than the one that ships — and M5.3's tuning pass is
 exactly the kind of change that would have silently stopped being tested. Same mistake as D50, in a
 new place, and worth stating as a rule: **anything the game loads at boot, the fixture loads too.**
+
+### D99 — One `plan` function, two callers
+**M6.1.** The UI renders a Preview and then calls `resolve`; the AI plans over its candidates, scores
+the previews, and resolves the winner. Being the **same function** is what stops the human's preview
+and the AI's model from ever disagreeing about what an action does — and a disagreement there is
+unfalsifiable from inside the game, because each side only ever sees its own answer.
+
+The plan says to do this before anything else in M6, and the reason is that it unblocks three things
+at once: deterministic replay (`resolve` takes the rng explicitly), outcome tests (`plan` is pure, so
+an assertion needs no world and no dice), and the explanation layer (a Preview is already the shape a
+tooltip wants).
+
+A Preview is always `{ok, reason, cost, effects[]}`. `reason` is **a sentence**, not a code, so the
+UI can print it and the AI can filter on `ok` without either of them re-translating anything. The
+civil-war assessment is part of the *preview* rather than the result, because a player deciding
+whether to take four Areas needs to know it would flip their governing ideology **before** they
+commit — and `CivilWar.assess` is pure, so both callers get it from the same call.
+
+### D100 — `Moves.legal` is the rules; scoring is policy and lives elsewhere
+**M6.1.** `legal(nid)` enumerates every move a nation could make, unscored and unfiltered by whether
+it looks like a good idea. If it pre-filtered on affordability the AI could never be given a
+different opinion without changing the rules — and the test that pins this gives a nation a zero
+treasury, checks it is still *offered* annexations, and checks `plan` is what says no.
+
+One annex intent per bordering nation rather than the power set: a full enumeration of 3-Area
+combinations is thousands of intents for a decision that turns on *which neighbour*, not which three
+Areas.
