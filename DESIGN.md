@@ -1,7 +1,7 @@
 # Nation States — Design
 
 *The single source of truth for what this game is and how it works, **as it actually is today**.
-Last rewritten at the end of **M4** of `docs/REBUILD-PLAN.md`. If this document and the code
+Last rewritten at the end of **M5** of `docs/REBUILD-PLAN.md`. If this document and the code
 disagree, the document is a bug — say so and fix it.*
 
 *What comes next lives in `docs/REBUILD-PLAN.md`, not here. This file describes the present.*
@@ -619,12 +619,103 @@ existed there was nothing to read and this hook could not have been written.
 
 ---
 
+## 7.6 Instrumentation: the ledger, the simulator, the dashboard
+
+### The event ledger
+
+```
+{ turn, phase, subject, kind, delta, terms: [{name, value, key}], text }
+```
+
+One append-only structure, **four consumers at different verbosities**: the
+player's tooltip, the developer's formula expander, the end-of-game timeline, and
+the simulator's graphs. Before it, the only output any action produced was an
+HTML string handed to `flash()` — a six-second toast that overwrote the previous
+message, and on a round boundary the action result was immediately clobbered by
+the growth toast.
+
+**`terms` IS the Why record**, in the same shape `js/power.js` and
+`js/sentiment.js` already produce, so logging an explanation costs one array
+reference rather than a second calculation. By the time something is worth
+logging, its reason already exists. Everything writes to it: annex and civil war
+(with the dice, points and score the roll returned), both unite outcomes, release
+(including how many neighbours refused), changing course, both tiers of secession
+— and a nation ceasing to exist, which used to be a silent `Map.delete`.
+
+The ledger **is state**. A save that forgets what happened cannot show a timeline,
+and "why is my Authority falling" is not answerable from a snapshot of the
+present.
+
+### The simulator
+
+`Sim.run({seed, turns, overrides})` returns a per-turn series and a summary. A
+50-turn run is **1.7 s in the browser**, which is what lets the dashboard
+recompute on a slider release rather than asking you to wait.
+
+**It drives the real game.** Same `Game.init` the page boots, same
+`World.advanceTurn` the Pass button calls — the only arrangement in which tuning
+the simulator tunes the game. A separate lightweight model that "captured the
+essentials" would be a fourth implementation of the world after the model, the
+tests and the explanation layer, and it would be the one everybody trusted
+because it is the one with the graphs.
+
+Overrides apply to a **clone** of the tunables, layered the way the game layers
+them (schema → `content/tunables.json` → this run), so exploring never touches
+the session and a slider is always measured against the tuning that ships.
+
+### The dashboard (`dev.html`)
+
+A **renderer, not a second model**. All 142 sliders are generated from the TUNE
+schema — label, range, step and doc from the same declaration the engine reads —
+so a tunable added in `js/tunables.js` appears with no work and one renamed
+cannot leave a stale control behind. That is the return on putting every constant
+in one schema *with metadata* rather than in a bag of numbers.
+
+The verdict cards are the questions earlier milestones each asked once:
+first-secession turn, both death-spiral floors, the M1.6 political-spread
+collapse, the movement reach span. Asking all of them on every run is how a
+regression in one becomes visible while tuning another.
+
+### The tuning pass
+
+The first run said why the plan asks for one: at the schema default the three
+deterministic western movements declared at turns **8, 9 and 10** — the West fell
+apart before a player had learned the board and three separate crises arrived as
+one event.
+
+`sent.maxRise` proved a clean, near-orthogonal pacing dial. Measured across four
+seeds: 0.035 → first secession t9, 0.024 → t13, 0.018 → t17, **0.014 → t22–t29**,
+with the organised share, the reach span and the political spread all essentially
+unchanged. At 0.010 movements start failing to arrive at all. `content/tunables.
+json` carries 0.014 **with the measurement that justifies it** — a tuned number
+with no record of what it was tuned against is one nobody can ever change again.
+
+### What the player sees
+
+- **A Pressure map mode.** In a game about fragmentation this is the real map;
+  ownership is what you check to see what the pressure map did. Six bands from
+  Quiet to Critical, and it is the one mode that shows something *before* it
+  happens.
+- **Fog.** Exact bands for your own ground, calm / rising / critical for everyone
+  else's — which is what stops the pressure map being an omniscient targeting
+  overlay for the annex button.
+- **Pressure clocks.** "~3 turns" beside a movement's share in the Area panel.
+  A clock is a different kind of statement from a share: one is something to act
+  on, the other is something to model in your head. It reads **stalling** rather
+  than inventing an ETA for a movement whose target sits below the threshold, and
+  it is a *floor* on the time — the direction a warning should err in.
+- **A turn-summary newspaper.** Three to six headlines per round drawn from the
+  ledger, ranked by kind and magnitude, replacing a growth line that said the
+  same thing every turn.
+
+---
+
 ## 8. Rendering
 
 - d3 + topojson, both vendored. One SVG, layered: county fills, Area borders, nation borders,
   nation outline, cultural highlights, the action layer, hover and selection shapes.
-- **Seven map modes**: Standard (ownership), Political, GDP, Population, Geographic, Culture,
-  Economy — each with a legend. Political colours each Area by its **leading ideology** and the
+- **Eight map modes**: Standard (ownership), **Pressure**, Political, GDP, Population, Geographic,
+  Culture, Economy — each with a legend. Political colours each Area by its **leading ideology** and the
   panel shows the full six-way stacked bar with a derived coalition line and the nation's position
   on the two axes.
 - **Movement state is on the nation panel** beside each movement's share, because a movement at 12%
@@ -694,8 +785,8 @@ server, and the flash says which of the two happened.
 
 ## 11. Testing
 
-`tests/run.html` runs every suite in the browser; **447 tests across 80 suites, all green, in about
-73 seconds** — the M4 suites play tens of thousands of world turns between them, which is the cost of
+`tests/run.html` runs every suite in the browser; **490 tests across 93 suites, all green, in about
+94 seconds** — the M4 suites play tens of thousands of world turns between them, which is the cost of
 testing a model whose interesting behaviour takes forty turns to appear. The files are plain ES modules with no dependencies, written so they run under
 `node --test` unchanged.
 
@@ -725,9 +816,9 @@ Three habits are worth stating, because each was learned by being bitten:
 Listed so nobody mistakes an absence for a bug. Each is a milestone in
 `docs/REBUILD-PLAN.md`.
 
-- **Nothing is tuned yet.** The West breaks apart *fast*: measured, three movements declare by turn
-  10 and the map is at 53 nations by turn 40. That is the whole reason M5 comes next — "tune the West
-  with it" — and it is the first number the simulator should be pointed at. *(M5.3)*
+- **Only one number has been tuned.** M5.3 fixed the pacing of secession (`sent.maxRise`) because it
+  was the one visibly wrong thing. The other 141 sliders are still at values chosen by argument
+  rather than by measurement — defensible, documented, and untested against play. *(M7)*
 - **The power stocks are still per NATION**, so sentiment's grievance terms are uniform across
   everything a nation owns. QoL and liberty satisfaction per **Area** would give the diffusion term
   a real gradient to run along; the economy bake is already per Area, so that is a change of scope
@@ -737,8 +828,7 @@ Listed so nobody mistakes an absence for a bug. Each is a milestone in
   term reads occupation because occupation is the only garrison the model has. *(M6)*
 - **No player identity, no AI, no win or lose condition.** You operate every seat, and a nation
   conquered out of existence disappears without comment. *(M6)*
-- **No event ledger.** An action's only output is a six-second toast, so there is nothing for a
-  phase to append to and nothing to write a turn summary from. *(M5.1)*
+
 - **No `relations` or `history` in the state document.** The plan sketches both; neither has any
   data behind it yet, and stubbing empty arrays would be inventing a shape before knowing it.
   *(M3, M6)*

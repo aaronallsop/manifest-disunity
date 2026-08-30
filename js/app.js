@@ -470,6 +470,7 @@ function renderCultureNodePanel(nodeId) {
    colours, so it moves only when ownership does; the value modes paint per-Area
    numbers, so they move only when values do; the authored modes are static. */
 const MODE_DEPENDS = {
+  pressure: 'values',
   standard: 'ownership',
   political: 'values',
   gdp: 'values',
@@ -711,9 +712,21 @@ function completeTurn() {
   const next = TurnSystem.endTurn();
   if (TurnSystem.progress().round > beforeRound) {
     World.advanceTurn(TUNE, store.rng); // emits once, from inside its own batch
+    /*
+     * THE NEWSPAPER. The growth toast used to be the only thing a round boundary
+     * said, and it said the same thing every time — while immediately clobbering
+     * whatever the player's own action had reported. Three to six headlines from
+     * the ledger is the difference between "a turn passed" and "here is what
+     * happened in the world while you were looking at Nevada".
+     */
+    const heads = Ledger.headlines();
     const growth = Math.round(TUNE.peek('world.popGrowth') * 1000) / 10;
-    flash(`\u{1F4C5} <strong>World turn ${World.getTurn()}</strong> &mdash; population +${growth}%, ` +
-      'economies grew, movements gained ground, treasuries settled and the market repriced.', '');
+    const body = heads.length
+      ? heads.map((h) => `<div class="head-line">${escapeHtml(h.text)}</div>`).join('')
+      : `<div class="head-line quiet">A quiet quarter. Population +${growth}%, economies grew, `
+        + 'movements gained ground, treasuries settled and the market repriced.</div>';
+    flash(`\u{1F4F0} <strong>World turn ${World.getTurn()}</strong>${body}`,
+      heads.some((h) => h.kind === 'declare' || h.kind === 'died') ? 'bad' : '');
     // The live document tracks the world at every turn boundary, not only when
     // someone presses Save. Fire and forget: a failed autosave must not stall
     // the round, and the Save button reports the server honestly when asked.
@@ -808,6 +821,53 @@ function renderNationPanel(nid) {
  * stub. An Area you hold is now something you can hand over; an Area a neighbour
  * holds tells you plainly why you can or cannot take it.
  */
+/*
+ * PRESSURE, per Area: every movement organising here, how fast, and how long
+ * until it takes the place.
+ *
+ * A pressure CLOCK is a different kind of statement from a share — "breakaway in
+ * ~3 turns at current trend" is something a player can act on, where "38%
+ * organised" is something they have to model in their head. It is the whole
+ * point of the explanation layer being predictive rather than retrospective.
+ *
+ * The factors come from `Sentiment.explain`, which recomputes them with the same
+ * function the phase runs, so the reason shown here is the reason the model
+ * used — not a second account of it.
+ */
+function renderPressure(fips) {
+  const c = Game.county[Game.areaIdOf(fips)];
+  if (!c) return '';
+  let pop = 0;
+  for (let i = 0; i < c.pop.length; i++) pop += c.pop[i];
+  if (pop <= 0) return '';
+  const rows = Object.entries(c.mov)
+    .map(([name, n]) => ({ name, share: n / pop }))
+    .filter((r) => r.share >= 0.01)
+    .sort((a, b) => b.share - a.share)
+    .slice(0, 3);
+  if (!rows.length) return '';
+
+  const body = rows.map((r) => {
+    const why = Sentiment.explain(Game.areaIdOf(fips), r.name, TUNE);
+    const cl = Sentiment.clock(Game.areaIdOf(fips), r.name, TUNE);
+    const badge = !cl ? ''
+      : cl.turns === 0 ? '<span class="clock soon">over the line</span>'
+        : cl.turns == null ? '<span class="clock never">stalling</span>'
+          : `<span class="clock ${cl.turns <= 6 ? 'soon' : 'later'}">~${cl.turns} turns</span>`;
+    const drivers = why && why.inputs
+      ? why.inputs.filter((i) => i.contribution > 0.005)
+        .sort((a, b) => b.contribution - a.contribution).slice(0, 2)
+        .map((i) => escapeHtml(i.label.toLowerCase())).join(', ')
+      : '';
+    return `<div class="geo-row" title="${why ? escapeHtml(why.summary) : ''}">
+        <span><i class="econ-dot" style="background:${Movements.colorOf(r.name)}"></i>${escapeHtml(r.name)}
+          ${drivers ? `<span style="opacity:.6">&middot; ${drivers}</span>` : ''}</span>
+        <strong>${(r.share * 100).toFixed(1)}%${badge}</strong></div>`;
+  }).join('');
+
+  return `<div class="stat"><div class="label">Pressure</div>${body}</div>`;
+}
+
 function renderCountyPanel(fips) {
   const rec = store.data.counties[fips];
   const ownerId = Game.getOwner(fips);
@@ -830,6 +890,7 @@ function renderCountyPanel(fips) {
       <div class="label">Political leaning</div>
       ${renderPolitics(pol, rec)}
     </div>
+    ${renderPressure(fips)}
     ${renderAreaActions(fips, ownerId)}
     ${renderEconomy(fips)}
     ${renderCulture(fips)}

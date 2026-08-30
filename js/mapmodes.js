@@ -155,7 +155,55 @@ const MapModes = (function () {
     return RAMP_POP(popScale(v));
   }
 
+  /*
+   * PRESSURE: the strongest organised movement in an Area, banded.
+   *
+   * In a game about fragmentation this is the real map, and ownership is what
+   * you check to see what the pressure map did. It is the one mode that shows
+   * you something BEFORE it happens rather than after.
+   *
+   * FOG. Exact bands for your own ground; for everyone else's, only calm /
+   * rising / critical. You know the temperature of your own country and you read
+   * the newspaper about everyone else's — and the fog is what stops the pressure
+   * map from being an omniscient targeting overlay for the annex button.
+   */
+  const PRESSURE_BANDS = [
+    { upto: 0.08, color: '#2b3440', label: 'Quiet' },
+    { upto: 0.20, color: '#3d5a45', label: 'Stirring' },
+    { upto: 0.32, color: '#8a9a3a', label: 'Organised' },
+    { upto: 0.44, color: '#e3c229', label: 'Rising' },
+    { upto: 0.56, color: '#e8862d', label: 'Armed' },
+    { upto: 1.01, color: '#e0483b', label: 'Critical' },
+  ];
+  const FOG_BANDS = [
+    { upto: 0.20, color: '#2b3440', label: 'Calm' },
+    { upto: 0.40, color: '#7d7440', label: 'Rising' },
+    { upto: 1.01, color: '#8a4038', label: 'Critical' },
+  ];
+
+  /** The strongest movement share in an Area, 0..1. */
+  function pressureOf(fips) {
+    const c = Game.county[Game.areaIdOf(fips)];
+    if (!c) return 0;
+    let pop = 0;
+    for (let i = 0; i < c.pop.length; i++) pop += c.pop[i];
+    if (pop <= 0) return 0;
+    let worst = 0;
+    for (const m in c.mov) { const s = c.mov[m] / pop; if (s > worst) worst = s; }
+    return worst;
+  }
+
+  function pressureColor(fips) {
+    const v = pressureOf(fips);
+    const mine = typeof store !== 'undefined' && store.player
+      ? Game.getOwner(Game.areaIdOf(fips)) === store.player : true;
+    const bands = mine ? PRESSURE_BANDS : FOG_BANDS;
+    for (const b of bands) if (v <= b.upto) return b.color;
+    return bands[bands.length - 1].color;
+  }
+
   function color(mode, fips) {
+    if (mode === 'pressure') return pressureColor(fips);
     if (mode === 'political') return political(fips);
     if (mode === 'gdp') return gdp(fips);
     if (mode === 'population') return population(fips);
@@ -166,6 +214,15 @@ const MapModes = (function () {
   }
 
   function legend(mode) {
+    if (mode === 'pressure') {
+      const own = typeof store !== 'undefined' && store.player;
+      const rows = PRESSURE_BANDS
+        .map((b) => `<span class="legend-key"><i style="background:${b.color}"></i>${b.label}</span>`)
+        .join('');
+      return `<div class="legend-keys">${rows}`
+        + (own ? '<span class="legend-key" style="opacity:.7">&mdash; other nations shown banded</span>' : '')
+        + '</div>';
+    }
     if (mode === 'economy') {
       if (!economy) return '';
       const rows = economy.sectors
@@ -202,5 +259,5 @@ const MapModes = (function () {
       <div class="legend-labels"><span>${a}</span><span>${b}</span><span>${c}</span></div>`;
   }
 
-  return { init, color, legend, lighten, setRegion, getRegion: () => region, setCulture, getCulture: () => culture, setEconomy, getEconomy: () => economy, ECON_COLORS };
+  return { init, color, legend, lighten, pressureOf, setRegion, getRegion: () => region, setCulture, getCulture: () => culture, setEconomy, getEconomy: () => economy, ECON_COLORS };
 })();

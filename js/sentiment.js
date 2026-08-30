@@ -217,5 +217,40 @@ const Sentiment = (function () {
     return rc;
   }
 
-  return { target, context, explain, clamp01 };
+  /**
+   * PRESSURE CLOCK: turns until this Area crosses the secession threshold, at
+   * the rate it is currently moving.
+   *
+   * "Salt Lake corridor: breakaway in ~3 turns at current trend" is a different
+   * kind of statement from "Salt Lake is 38% organised", and it is the one that
+   * lets a player act BEFORE rather than read about it after. It turns the
+   * explanation layer from retrospective to predictive, which the plan asks for
+   * in as many words.
+   *
+   * Honest about its own limits: it reports the gap to the target as well as the
+   * ETA, because a movement whose target sits below the threshold is not slowly
+   * approaching it — it is never getting there, and "12 turns" would be a lie
+   * about a trend that flattens. `null` means exactly that.
+   *
+   * @returns {{turns, target, current, threshold, arriving}} or null
+   */
+  function clock(areaId, movementName, tune) {
+    const t = tune || window.TUNE;
+    const why = explain(areaId, movementName, t);
+    if (!why) return null;
+    const threshold = t.get('secession.countyThreshold');
+    const cur = why.current;
+    const target = why.value;
+    if (cur >= threshold) return { turns: 0, target, current: cur, threshold, arriving: true };
+    // A target under the line is a plateau, not a slow climb.
+    if (target < threshold) return { turns: null, target, current: cur, threshold, arriving: false };
+    const rise = t.get('sent.maxRise');
+    // The approach is rate-limited AND eases as it nears the target, so the
+    // honest estimate is the rate-limited one: it is a floor on the time, which
+    // is the direction a warning should err in.
+    const turns = Math.ceil((threshold - cur) / Math.max(1e-9, Math.min(rise, target - cur)));
+    return { turns, target, current: cur, threshold, arriving: true };
+  }
+
+  return { target, context, explain, clock, clamp01 };
 })();

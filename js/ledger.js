@@ -117,8 +117,18 @@ const Ledger = (function () {
     }
     const weight = { declare: 100, died: 90, unite: 70, war: 60, found: 55, annex: 40,
                      govern: 35, release: 30, defect: 25, fragment: 20, trade: 10, power: 5 };
-    return forTurn(turn)
+    const rows = forTurn(turn);
+    /*
+     * A declaration already says a country came into being, so the `found` entry
+     * beside it is the same news twice. It stays in the ledger — the timeline
+     * and the simulator both want the founding as its own fact — and is dropped
+     * only from the headlines, which is a place where saying it twice costs one
+     * of five slots.
+     */
+    const declared = new Set(rows.filter((e) => e.kind === 'declare').map((e) => e.subject));
+    return rows
       .filter((e) => e.text)
+      .filter((e) => !(e.kind === 'found' && declared.has(e.subject)))
       .map((e) => ({ e, score: (weight[e.kind] || 1) * 1000 + Math.abs(e.delta || 0) }))
       .sort((a, b) => b.score - a.score)
       .slice(0, limit || 5)

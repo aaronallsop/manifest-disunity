@@ -178,7 +178,9 @@ Done in the order **M3.4 -> M3.1 -> M3.2 -> M3.3**, because the plan lists M3.4'
       turn 9 to turns 22-29 across four seeds with nothing else materially changing. Found and fixed
       the declaration fizzle by reading the log (D97), and made the fixture load the authored tuning
       (D98).
-- [ ] **M5.4** Player-facing explanation (clocks, newspaper, Pressure mode, fog).
+- [x] **M5.4** Player-facing explanation: a Pressure map mode with fog, pressure clocks in the Area
+      panel (with STALLING rather than a fake ETA), and a turn-summary newspaper drawn from the
+      ledger, replacing a growth line that said the same thing every turn. (clocks, newspaper, Pressure mode, fog).
 
 ## M6 — Agency
 
@@ -210,10 +212,11 @@ Done in the order **M3.4 -> M3.1 -> M3.2 -> M3.3**, because the plan lists M3.4'
 *(Updated as work proceeds — what is done, what is next, what was learned that is not yet
 written down elsewhere.)*
 
-**M0-M4 complete.** 447 tests across 80 suites green at `tests/run.html` in ~73s,
+**M0-M5 complete.** 490 tests across 93 suites green at `tests/run.html` in ~94s,
 `build/validate.py` reports 0 errors, and the game loads, plays and saves with a clean console.
-`DESIGN.md` rewritten at the M4 close: section 4.1 is the four power stocks, section 7 is movements,
-sentiment and two-tier secession.
+`DESIGN.md` rewritten at the M5 close: section 4.1 is the four power stocks, section 7 is movements,
+sentiment and two-tier secession, section 7.6 is the ledger, the simulator, the dashboard and the
+tuning pass.
 
 Verified at the M4 close: 40 world turns through the real Pass button produced three unscripted
 breakaways (Deseret 39 Areas, Alaskan Independence 23, Greater Idaho 17), movement states spread
@@ -230,7 +233,7 @@ Performance, measured on the real map rather than predicted: a world turn 24.7 -
 phases 12.4 -> 2.8 ms, political drift 8.0 -> 2.0 ms, a 50-turn simulator run 1,237 -> 466 ms. The
 columnar store is 173 KB and the adjacency graph 43.5 KB.
 
-Next: **M5.1** (the event ledger — one append-only structure serving four features).
+Next: **M6.1** (split every action into `plan` and `resolve`; do it before anything else in M6).
 
 Open, carried into M2.3: after 21 turns no Area is yet LED by a minority ideology (Rep 1,288 /
 Dem 388 of 1,676). That is the expected shape at 11% organised movements and it is M5's dial to
