@@ -34,7 +34,7 @@ export function loadData() {
       get('../data/county_neighbors.json', {}),
       get('../data/county_trade.json', null),
       get('../data/transport.json', null),
-      get('../data/cultural.mapmode.json', null),
+      get('../content/cultural.json', null),
       get('../content/ideologies.json', null),
     ]).then(([data, adjacency, areas, partyDefs, economy, neighbors, trade, transport, culture, ideologies]) => ({
       data, adjacency, areas, partyDefs, economy, neighbors, trade, transport, culture, ideologies,

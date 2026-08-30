@@ -10,8 +10,16 @@
  * auto-assigns the parent chain; painting a different branch reassigns.
  *
  * Modes: built-in Geographical + Cultural (both "contain all areas": publish is
- * blocked until every Area is assigned) plus user-created modes. Save/Load are
- * localStorage drafts; Publish downloads <name>.mapmode.json to apply later.
+ * blocked until every Area is assigned) plus user-created modes.
+ *
+ * Two stores, and the distinction is the point. DRAFTS are unfinished work and
+ * live in localStorage, on the machine they were drafted on. PUBLISHED modes are
+ * authored content and live in `content/<slug>.json`, written and read through
+ * the server — the same directory and the same atomic write the rest of the
+ * authored data uses. Before M2.5b there was no second store: Publish triggered
+ * a browser DOWNLOAD which the author had to find and hand-copy into `data/`
+ * under a different name, and there was no import at all, so a published mode
+ * was write-only the moment it left the browser.
  */
 const Editor = (function () {
   const PALETTE = ['#e0483b', '#3b6fe0', '#33a852', '#e8862d', '#8a5cf5', '#e3c229',
@@ -141,17 +149,109 @@ const Editor = (function () {
   function unassignedCount() {
     return Object.keys(Game.county).filter((a) => !modes[cur].assign[a]).length;
   }
-  function publish() {
+  /*
+   * PUBLISH: write the mode into content/ through the server.
+   *
+   * It used to trigger a browser DOWNLOAD, which the author then had to find in
+   * their Downloads folder and hand-copy into data/ under a different name. That
+   * made the editor the one authoring tool whose output lived outside the repo,
+   * and it is why the two shipped map modes sat in data/ — the bake-output
+   * directory — rather than in content/ with everything else authored.
+   *
+   * The document is now PUT to /api/content/<slug>.json, which is the same
+   * atomic write the save system uses, to the same directory the game loads map
+   * modes from. The download survives only as the offline fallback: the editor
+   * has to keep working when the page is opened without the server, and losing
+   * an afternoon of painting because a fetch failed is not an acceptable
+   * outcome.
+   */
+  const slug = (name) => name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+  function download(doc, name) {
+    const blob = new Blob([JSON.stringify(doc, null, 1)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `${name}.json`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+    return a.download;
+  }
+
+  async function publish() {
     const m = modes[cur];
     const missing = unassignedCount();
     if (m.requireAll && missing) return flash(`Cannot publish: ${missing} areas are still unassigned.`, 'bad');
-    const blob = new Blob([JSON.stringify({ type: 'ns-mapmode', ...m }, null, 1)], { type: 'application/json' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = `${m.name.toLowerCase().replace(/\W+/g, '-')}.mapmode.json`;
-    a.click();
-    URL.revokeObjectURL(a.href);
-    flash(`\u{1F4E4} Published ${a.download} (check your downloads).`, 'good');
+    const name = slug(m.name);
+    if (!name) return flash('That mode name has no letters or digits in it, so it cannot be a filename.', 'bad');
+    const doc = { type: 'ns-mapmode', ...m };
+    try {
+      const r = await fetch(`/api/content/${name}.json`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(doc, null, 1),
+      });
+      if (!r.ok) throw new Error(`server said ${r.status}`);
+      flash(`\u{1F4BE} Published to <strong>content/${name}.json</strong>. Reload to play with it.`, 'good');
+    } catch (e) {
+      const file = download(doc, name);
+      flash(`\u{26A0} The server did not accept it (${esc(e.message)}), so ${esc(file)} was `
+        + 'downloaded instead. Copy it into content/ by hand.', 'warn');
+    }
+  }
+
+  /*
+   * IMPORT: read a published mode back out of content/.
+   *
+   * The editor could publish and never load, so a mode was write-only the moment
+   * it left the browser: reopening one meant re-painting 1,676 Areas by hand, or
+   * finding the localStorage draft on the machine it was drafted on. Drafts are
+   * still local (they are unfinished work); published modes are now round-trip.
+   */
+  async function publishedNames() {
+    try {
+      const r = await fetch('/api/content', { cache: 'no-store' });
+      if (!r.ok) return [];
+      const body = await r.json();
+      return (body.content || [])
+        .map((f) => String(f).replace(/\.json$/, ''))
+        // content/ also holds saves and the authored game tables; only offer
+        // things the editor could plausibly have written.
+        .filter((n) => !n.startsWith('save-') && n !== 'tunables' && n !== 'ideologies');
+    } catch (e) {
+      return [];
+    }
+  }
+
+  async function importPublished(name) {
+    try {
+      const r = await fetch(`/api/content/${name}.json`, { cache: 'no-store' });
+      if (!r.ok) throw new Error(`server said ${r.status}`);
+      const doc = await r.json();
+      if (doc.type !== 'ns-mapmode' || !Array.isArray(doc.nodes) || !doc.assign) {
+        return flash(`content/${esc(name)}.json is not a map mode.`, 'bad');
+      }
+      const mode = { name: doc.name || name, requireAll: !!doc.requireAll, nodes: doc.nodes, assign: doc.assign };
+      // Node ids are minted from a counter; importing a mode whose ids run past
+      // ours would mint duplicates on the next Add.
+      let maxId = idSeq;
+      (function walk(ns) {
+        for (const n of ns) {
+          const num = /^n(\d+)$/.exec(n.id);
+          if (num) maxId = Math.max(maxId, Number(num[1]) + 1);
+          walk(n.children || []);
+        }
+      })(mode.nodes);
+      idSeq = maxId;
+      modes[mode.name] = mode;
+      cur = mode.name;
+      selPath = [];
+      renderSidebar();
+      recolor();
+      flash(`\u{1F4C2} Imported <strong>content/${esc(name)}.json</strong> `
+        + `(${Object.keys(mode.assign).length} areas assigned).`, 'good');
+    } catch (e) {
+      flash(`Could not read content/${esc(name)}.json: ${esc(e.message)}`, 'bad');
+    }
   }
   function saveDraft() {
     localStorage.setItem(PREFIX + cur, JSON.stringify({ mode: modes[cur], idSeq }));
@@ -193,8 +293,9 @@ const Editor = (function () {
         <input id="ed-mode-name" class="ed-input" placeholder="New map mode name" />
         <div class="ed-row"><button class="ed-btn" id="ed-mk-all">Contains all areas</button>
         <button class="ed-btn" id="ed-mk-some">Doesn't contain all</button></div></div>
-      <div class="ed-row"><button class="ed-btn" id="ed-save">Save</button>
-        <button class="ed-btn" id="ed-load">Load</button>
+      <div class="ed-row"><button class="ed-btn" id="ed-save">Save draft</button>
+        <button class="ed-btn" id="ed-load">Drafts</button>
+        <button class="ed-btn" id="ed-import">Open published</button>
         <button class="ed-btn go" id="ed-publish">Publish</button></div>
       <div id="ed-drafts" style="display:none"></div>
       <div class="ed-row ed-lbl">Select by
@@ -226,6 +327,17 @@ const Editor = (function () {
       box.style.display = 'block';
       box.innerHTML = draftNames().map((n) => `<button class="ed-chip" data-draft="${esc(n)}">${esc(n)}</button>`).join('') || '<div class="ed-status">No drafts.</div>';
       box.querySelectorAll('[data-draft]').forEach((b) => (b.onclick = () => loadDraft(b.dataset.draft)));
+    };
+    el.querySelector('#ed-import').onclick = async () => {
+      const box = el.querySelector('#ed-drafts');
+      box.style.display = 'block';
+      box.innerHTML = '<div class="ed-status">Reading content/ ...</div>';
+      const names = await publishedNames();
+      box.innerHTML = names.length
+        ? '<div class="ed-status">Published in content/</div>'
+          + names.map((n) => `<button class="ed-chip" data-pub="${esc(n)}">${esc(n)}</button>`).join('')
+        : '<div class="ed-status">Nothing published yet (or the server is not running).</div>';
+      box.querySelectorAll('[data-pub]').forEach((b) => (b.onclick = () => importPublished(b.dataset.pub)));
     };
     el.querySelector('#ed-publish').onclick = publish;
     el.querySelectorAll('[data-gran]').forEach((b) => (b.onclick = () => { gran = b.dataset.gran; renderSidebar(); }));
@@ -266,6 +378,7 @@ const Editor = (function () {
   function enter() {
     if (!modes) defaults();
     if (!areasByState) buildStateIndex();
+    patchLeaderboard();
     active = true;
     document.getElementById('btn-editor').textContent = 'Exit map editor';
     deselect();
@@ -276,13 +389,33 @@ const Editor = (function () {
   function exit() {
     active = false;
     document.getElementById('btn-editor').textContent = 'Enter map editor';
-    Leaderboard.refresh();
+    if (typeof Leaderboard !== 'undefined') Leaderboard.refresh();
     recolor();
   }
 
-  // while the editor is active the leaderboard must not overwrite the sidebar
-  const origRefresh = Leaderboard.refresh;
-  Leaderboard.refresh = (...a) => { if (!active) origRefresh(...a); };
+  /*
+   * While the editor is active the leaderboard must not overwrite the sidebar it
+   * is drawing into.
+   *
+   * Patched on first ENTER, not at load. This ran at the top level, which made
+   * editor.js silently depend on leaderboard.js having been evaluated first — it
+   * happens to be true in index.html and is not true anywhere else, so loading
+   * editor.js on its own threw `Leaderboard is not defined` and the whole module
+   * failed to define. The wrapper only has a job while the editor is open, so
+   * that is when it is installed.
+   */
+  let refreshPatched = false;
+  function patchLeaderboard() {
+    if (refreshPatched || typeof Leaderboard === 'undefined') return;
+    const origRefresh = Leaderboard.refresh;
+    Leaderboard.refresh = (...a) => { if (!active) origRefresh(...a); };
+    refreshPatched = true;
+  }
 
-  return { isActive: () => active, enter, exit, toggle: () => (active ? exit() : enter()), color, onClick, onHover };
+  return {
+    isActive: () => active, enter, exit, toggle: () => (active ? exit() : enter()),
+    color, onClick, onHover,
+    // The content round-trip, exposed so the suite can drive it without a DOM.
+    publish, publishedNames, importPublished,
+  };
 })();

@@ -27,7 +27,8 @@ import sys
 from collections import Counter, defaultdict
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-DATA = os.path.join(HERE, "..", "data")
+DATA = os.path.join(HERE, "..", "data")       # bake output
+CONTENT = os.path.join(HERE, "..", "content") # authored, hand- or editor-written
 
 # Connecticut abolished its eight counties in 2022. The base GEOMETRY still
 # carries them; the game data carries the nine planning regions that replaced
@@ -62,8 +63,9 @@ class Report:
             print(f"       {msg}")
 
 
-def load(name, required=True):
-    path = os.path.join(DATA, name)
+def load(name, required=True, root=None):
+    """Read a JSON file from data/ (bake output) or content/ (authored)."""
+    path = os.path.join(root or DATA, name)
     if not os.path.exists(path):
         return None if not required else {}
     with open(path, encoding="utf-8") as f:
@@ -158,8 +160,12 @@ def main():
         if bad:
             r.error("economy", f"{len(bad)} Areas have the wrong number of sector values — {sample(bad)}")
 
-    for mode_file in ("geographical.mapmode.json", "cultural.mapmode.json"):
-        mode = load(mode_file, required=False)
+    # Authored in the editor and saved through PUT /api/content, so they live in
+    # content/ with the rest of the authored data - not in data/, which is bake
+    # output. They were the last authored files whose only publish path was the
+    # user's Downloads folder (M2.5b).
+    for mode_file in ("geographical.json", "cultural.json"):
+        mode = load(mode_file, required=False, root=CONTENT)
         if not mode:
             continue
         assign = mode.get("assign", {})

@@ -96,8 +96,12 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done
         REAL load path instead of the hand-written copy it had been testing (D58). `data/state.json`
         is autosaved every world turn and resumed at boot (D59); the round-trip test now goes
         through the actual HTTP endpoint. Verified live: 3 turns, reload, world came back identical.
-  - [ ] **M2.5b** The editor writes map modes through `PUT /api/content/<name>.json` and gains the
-        import path it has never had; the two authored map modes move out of `data/` into `content/`.
+  - [x] **M2.5b** The editor writes map modes through `PUT /api/content/<name>.json` (download kept
+        only as the offline fallback) and gains the import path it never had (D61). The two authored
+        map modes moved out of `data/` — bake output — into `content/` (D60). Verified through the
+        real UI: Open published -> Cultural (1,676 unassigned -> 0), add a region, Publish, and the
+        file came back with the new region and all 1,676 assignments. Fixed a top-level global read
+        in `editor.js` that made it undefinable outside `index.html` (D62).
 
 ## M3 — Power
 

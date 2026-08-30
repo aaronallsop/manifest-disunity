@@ -544,3 +544,36 @@ Save button — which the player actually asked for — that reports the server 
 happens after a full fresh world is built**, not instead of one, so a document that turns out to be
 unreadable leaves a playable game rather than a blank map. **`?fresh=1` skips the resume without
 deleting anything**, because "start over" and "throw away my game" are different requests.
+
+### D60 — The two shipped map modes were authored content living in the bake-output directory
+**M2.5b.** `data/cultural.mapmode.json` and `data/geographical.mapmode.json` sat in `data/` beside
+the offline bakes, and nothing in `build/` generates them — they are hand-painted in the editor.
+They were there because the editor's only publish path was a **browser download**, which the author
+then had to find in Downloads and hand-copy in under a different name, so the file landed wherever
+the person doing the copying decided. Moved to `content/cultural.json` and `content/geographical.json`,
+which is where the plan says authored content lives and where `PUT /api/content/<name>.json` writes.
+The old paths are gone rather than left as a redirect: two copies of an authored file is how the two
+copies diverge, and the suite asserts a 404 at the old location.
+
+### D61 — Publish writes through the server; the download survives only as the offline fallback
+**M2.5b.** `publish()` now PUTs to `/api/content/<slug>.json` — the same atomic write the save system
+uses, into the same directory the game loads from — so an afternoon of painting lands in the repo
+instead of in Downloads. The download path is kept for exactly one case: the page opened without the
+server. Losing painted work because a fetch failed is not an acceptable outcome, and the flash says
+plainly which of the two happened.
+
+The editor also gains the **import** it never had. It could publish and never load, so a mode was
+write-only the moment it left the browser: reopening one meant re-painting 1,676 Areas by hand.
+Drafts stay in localStorage because they are unfinished work tied to the machine they were drafted
+on; published modes are authored content and now round-trip. Verified through the actual UI: Open
+published → Cultural (1,676 unassigned → 0 assigned), add a region, Publish, and
+`content/cultural.json` came back with the new region and all 1,676 assignments intact.
+
+### D62 — `editor.js` read another module's global at load time
+**M2.5b.** It wrapped `Leaderboard.refresh` at the top level, so the module silently required
+`leaderboard.js` to have been evaluated first. That is true in `index.html` by luck of script order
+and true nowhere else, so loading `editor.js` into the test harness threw `Leaderboard is not
+defined` and the whole module failed to define — the same failure mode as the top-level read of an
+ESM-bridged global in M1. The wrapper only has a job while the editor is open, so it is installed on
+first `enter()`. The rule this keeps breaking is worth stating plainly: **a module may read another
+module's global inside a function body, never at the top level.**

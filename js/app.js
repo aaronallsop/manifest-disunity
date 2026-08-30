@@ -83,10 +83,10 @@ async function init() {
       getJSON('data/parties.json', {}),
       getJSON('data/county_trade.json', null),
       getJSON('data/areas.json', null),
-      getJSON('data/geographical.mapmode.json', null),
+      getJSON('content/geographical.json', null),
       getJSON('data/economy.json', null),
       getJSON('data/transport.json', null),
-      getJSON('data/cultural.mapmode.json', null),
+      getJSON('content/cultural.json', null),
       getJSON('content/tunables.json', null),
       getJSON('content/ideologies.json', null),
     ]);
