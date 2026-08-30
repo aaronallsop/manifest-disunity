@@ -54,8 +54,7 @@ const Coalitions = (function () {
     const rows = new Map();
     let total = 0;
     for (const [nid] of Game.nations) {
-      const d = Game.nationDemographics(nid);
-      const w = d.pop + d.gdp / 1e5;
+      const w = Game.nationWeight(nid);
       rows.set(nid, w);
       total += w;
     }
@@ -103,6 +102,13 @@ const Coalitions = (function () {
           if (standing > joinAt && !isNear) continue;
           const w = total > 0 ? rows.get(other) / total : 0;
           if (w < t.get('coalition.minMemberShare')) continue;
+          /*
+           * AND IT MUST BE A COUNTRY (M7.8). A coalition is coordination between
+           * governments, and nobody coordinates with a state they do not admit
+           * exists — a two-turn-old breakaway does not get to convene the
+           * neighbours against the power it just left.
+           */
+          if (typeof Recognition !== 'undefined' && !Recognition.seated(other, t)) continue;
           rec.members.push({
             nid: other, name: Game.getNation(other).name, standing, near: isNear, weight: w,
             // A VERB, not a sentence. The model does not know whether it is

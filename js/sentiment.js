@@ -188,9 +188,9 @@ const Sentiment = (function () {
     let maxWeight = 0;
     const weightOf = [];
     for (const [nid] of Game.nations) {
-      const d = Game.nationDemographics(nid);
-      weightOf.push({ nid, w: d.pop + d.gdp / 1e5 });
-      maxWeight = Math.max(maxWeight, d.pop + d.gdp / 1e5);
+      const w = Game.nationWeight(nid);
+      weightOf.push({ nid, w });
+      maxWeight = Math.max(maxWeight, w);
     }
     for (const { nid, w } of weightOf) {
       const n = Game.getNation(nid);

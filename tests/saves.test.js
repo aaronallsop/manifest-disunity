@@ -274,7 +274,7 @@ describe('data/state.json — the live document', () => {
 describe('The document module', () => {
   it('enumerates every stateful module, so none can be forgotten', async () => {
     await bootWorld({ seed: SEED });
-    const mods = { Game, TurnSystem, World, Market, Colors, Movements, Ledger, Military, Relations, Events, Leaders, History };
+    const mods = { Game, TurnSystem, World, Market, Colors, Movements, Ledger, Military, Relations, Recognition, Events, Leaders, History };
     for (const name of StateDoc.STATEFUL_MODULES) {
       ok(mods[name], `STATEFUL_MODULES names "${name}", which does not exist`);
       ok(typeof mods[name].serialize === 'function', `${name}.serialize is missing`);

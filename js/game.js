@@ -517,6 +517,23 @@ const Game = (function () {
   }
   const nationDemographics = (nid) => (nations.has(nid) ? demographics(nations.get(nid).counties) : null);
 
+  /*
+   * HOW MUCH A NATION COUNTS FOR, in one place.
+   *
+   * Population plus GDP at a hundred thousand dollars a head: a blend, because
+   * neither half alone is what the rest of the world weighs. Head count alone
+   * makes a poor crowded state the equal of an industrial one; GDP alone makes
+   * an empty rich one a superpower.
+   *
+   * It was written out three times — sentiment's `power`, the coalition survey
+   * and now recognition — and three copies of a blend is three chances for the
+   * game to disagree with itself about who matters.
+   */
+  const nationWeight = (nid) => {
+    const d = nationDemographics(nid);
+    return d ? d.pop + d.gdp / 1e5 : 0;
+  };
+
   /** Ideology counts for a set of Areas — the hot path, without the extras. */
   function ideologyMix(countyIds) {
     const N = Ideology.count();
@@ -1657,6 +1674,7 @@ const Game = (function () {
     countyGdp,
     demographics,
     nationDemographics,
+    nationWeight,
     areaPolitics,
     ideologyMix,
     dominantOf,

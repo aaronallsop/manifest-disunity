@@ -72,6 +72,7 @@ export function assemble(session = {}) {
     parties: Movements.serialize(),
     military: Military.serialize(),
     relations: Relations.serialize(),
+    recognition: Recognition.serialize(),
     events: Events.serialize(),
     leaders: Leaders.serialize(),
     history: History.serialize(),
@@ -130,6 +131,7 @@ export function applyModel(doc) {
   // After Game, which is where the nation records the allocation hangs off live.
   Military.loadState(doc.military);
   Relations.loadState(doc.relations);
+  Recognition.loadState(doc.recognition);
   Events.loadState(doc.events);
   Leaders.loadState(doc.leaders);
   History.loadState(doc.history);
@@ -143,6 +145,6 @@ export function applyModel(doc) {
 }
 
 /** Every module a document must round-trip, for the "nothing was forgotten" test. */
-export const STATEFUL_MODULES = ['Game', 'TurnSystem', 'World', 'Market', 'Colors', 'Movements', 'Ledger', 'Military', 'Relations', 'Events', 'Leaders', 'History'];
+export const STATEFUL_MODULES = ['Game', 'TurnSystem', 'World', 'Market', 'Colors', 'Movements', 'Ledger', 'Military', 'Relations', 'Recognition', 'Events', 'Leaders', 'History'];
 
 export default { VERSION, buildStamp, assemble, validate, applyModel, STATEFUL_MODULES };

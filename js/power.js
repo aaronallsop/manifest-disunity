@@ -363,6 +363,18 @@ export function influence(a, tune) {
      */
     { label: 'Leadership', signed: true, raw: a.leaderInfluence || 0, norm: a.leaderInfluence || 0,
       key: 'power.influence.wLeader', note: a.leaderNote || 'the traits of whoever is in charge' },
+    /*
+     * WHETHER ANYBODY ADMITS YOU EXIST (M7.8), as a DEFICIT: `legitimacy - 1`,
+     * so a fully recognised nation contributes exactly nothing and a wholly
+     * unrecognised one loses the whole weight. Written the other way round it
+     * would raise every established nation's Influence by a constant and quietly
+     * move the coalition trigger for the entire board — which is the mistake the
+     * leadership term made once already.
+     */
+    { label: 'Recognition', signed: true, raw: a.legitimacy == null ? 1 : a.legitimacy,
+      norm: (a.legitimacy == null ? 1 : a.legitimacy) - 1,
+      key: 'power.influence.wRecognition',
+      note: a.legitimacyNote || 'how much of the continent admits you are a country' },
   ];
 
   const record = build(tune.get('power.influence.base'), terms, tune, influenceSummary);
@@ -555,7 +567,7 @@ export function weariness(a, tune) {
       norm: saturate(warAreas, tune.get('power.weariness.areasK')),
       key: 'power.weariness.wAreas', note: 'Areas taken in those wars' },
     { label: 'Occupation', raw: occupation, norm: clamp01(occupation),
-      key: 'power.weariness.wOccupation', note: 'share of held ground that is somebody else\u2019s' },
+      key: 'power.weariness.wOccupation', note: 'share of held ground that is somebody else’s' },
     { label: 'In the field', raw: deployed, norm: deployed,
       key: 'power.weariness.wDeployed', note: 'share of the army posted abroad rather than at home' },
     /*
@@ -727,6 +739,19 @@ function leaderNote(nid) {
   return l ? `${l.title} ${l.name} — ${Leaders.describe(l)}` : null;
 }
 
+/**
+ * How many nations do not admit this one exists, named rather than counted.
+ *
+ * Reads the same matrix the stock reads; a note that could disagree with the
+ * number beside it is worse than no note.
+ */
+function legitimacyNote(nid) {
+  if (typeof Recognition === 'undefined') return null;
+  const rec = Recognition.legitimacy(nid);
+  if (!rec || rec.origin) return null;
+  return rec.summary;
+}
+
 export function nationFacts(nid, tune) {
   const n = Game.getNation(nid);
   if (!n) return null;
@@ -855,6 +880,8 @@ export function gatherInfluence(facts, turn, tune, ctx) {
     gdpShare: world.gdp > 0 ? self.gdp / world.gdp : 0,
     alignment: weight > 0 ? weighted / weight : 0,
     coalition: typeof Coalitions !== 'undefined' ? Coalitions.pressure(facts.nid) : 0,
+    legitimacy: typeof Recognition !== 'undefined' ? Recognition.scalar(facts.nid) : 1,
+    legitimacyNote: legitimacyNote(facts.nid),
     leaderInfluence: lead(facts.nid, 'influence'),
     leaderNote: leaderNote(facts.nid),
     partners,

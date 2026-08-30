@@ -277,6 +277,31 @@ const Actions = (function () {
   const nationTradeCapacityFor = (nid) => Game.tradeCapacity(nid).total;
   const hasExportAccess = (nid) => Game.exportAccess(nid).any;
 
+  /*
+   * WHAT AN UNRECOGNISED STATE IS PAID (M7.8).
+   *
+   * A bilateral deal is a signature between two governments, so it needs both to
+   * admit the other is a government. An external sale is not: goods from a
+   * country nobody recognises still reach the market, through intermediaries who
+   * take a cut for the trouble — so the world market is a HAIRCUT rather than a
+   * lock, and the haircut shrinks to nothing as the continent comes round.
+   *
+   * Refusing external trade outright would make an unrecognised landlocked state
+   * unplayable, which is a dead end rather than a difficulty.
+   */
+  const marketRate = (nid) => (typeof Recognition === 'undefined' ? 1 : Recognition.marketRate(nid, TUNE));
+  const dealsWith = (a, b) => (typeof Recognition === 'undefined' ? true : Recognition.canTrade(a, b));
+
+  /** The line that explains a smuggler's price, or nothing when there is none. */
+  function smugglingNote(nid) {
+    const rate = marketRate(nid);
+    if (rate >= 0.999) return '';
+    const v = Recognition.scalar(nid);
+    return `<div class="warn-box">\u{1F3F4} Unrecognised &mdash; only <strong>${Math.round(v * 100)}%</strong> of the
+      continent admits you are a country, so your goods move through intermediaries who keep
+      <strong>${Math.round((1 - rate) * 100)}%</strong> of the price. It shrinks as the world comes round.</div>`;
+  }
+
   /** Turns until `nid` may deal with `key` again ('world', 'Canada', or a nation id). */
   function tradeCooldownLeft(nid, key) {
     const n = Game.getNation(nid);
@@ -331,6 +356,27 @@ const Actions = (function () {
       ? `<div class="warn-box">\u{1F6A2} Capped at <strong>${fmtGdp(res.total * 1e6)}</strong> of ` +
         `${fmtGdp(res.uncappedTotal * 1e6)} available. ${detail}</div>`
       : `<div class="geo-row"><span>${detail}</span></div>`;
+  }
+
+  /**
+   * ADMIT THAT A NEW STATE IS A COUNTRY.
+   *
+   * It does NOT end your turn, and that is deliberate: recognition costs no
+   * money, moves no ground and takes no army, so charging a nation's one action
+   * for it would price a diplomatic signature at the same rate as a war. What it
+   * costs is with whoever they broke away from, and that bill arrives on its own.
+   */
+  function recognise(target) {
+    const me = Game.getPlayer();
+    if (me == null) return;
+    const res = Moves.resolve({ type: 'recognise', nid: me, target }, store.rng, TUNE);
+    if (!res.ok) return flash(`\u26d4 ${escapeHtml(res.reason)}`, 'bad');
+    const name = Game.getNation(target)?.name || 'them';
+    Game.touch({ values: true });
+    flash(`\u{1F91D} <strong>${escapeHtml(Game.getNation(me).name)}</strong> recognised
+      <strong>${escapeHtml(name)}</strong> &mdash; ${Math.round(res.after * 100)}% of the continent now does.`
+      + (res.unlocks ? ' The rest of the world takes its lead from you.' : ''), 'good');
+    select('nation', target);
   }
 
   function startTrade(nid) {
@@ -486,7 +532,7 @@ const Actions = (function () {
     const res = applyCapacity(exportFlows(S), nationTradeCapacity(T).total);
     const flows = res.flows;
     const total = res.total;
-    const benefit = total * TRADE_GAIN() * TUNE.get('trade.worldMarketPenalty');
+    const benefit = total * TRADE_GAIN() * TUNE.get('trade.worldMarketPenalty') * marketRate(S);
     // Open below the corridor rate so the default is a lowball rather than an
     // offer they accept 89% of the time without the player deciding anything.
     const start = Math.max(5, Math.round(base * TUNE.get('trade.openingOfferFactor') * 100));
@@ -500,6 +546,7 @@ const Actions = (function () {
       (${linkLabel(link)}). They weigh your offer against their size, need and relations.</p>
       ${flows.length ? rows : '<div class="warn-box">No surpluses to export.</div>'}
       ${capacityNote(S, res, tName)}
+      ${smugglingNote(S)}
       <div class="stat"><div class="label">Exported value</div><div class="value">${fmtGdp(total * 1e6)}</div></div>
       <div class="slider-row">
         <div class="label">Your toll offer to ${escapeHtml(tName)}: <strong id="toll-val">${start}%</strong></div>
@@ -564,7 +611,7 @@ const Actions = (function () {
     const res = applyCapacity(exportFlows(S), nationTradeCapacity(S).total);
     const flows = res.flows, total = res.total;
     const penalty = TUNE.get('trade.worldMarketPenalty');
-    const gain = total * TRADE_GAIN() * penalty;
+    const gain = total * TRADE_GAIN() * penalty * marketRate(S);
     const rows = flows.slice().sort((a, b) => b.value - a.value)
       .map((f) => `<div class="geo-row"><span><i class="econ-dot" style="background:${MapModes.ECON_COLORS[f.i]}"></i>${f.s} &rarr; export</span>
         <strong>${fmtGdp(f.value * 1e6)}</strong></div>`)
@@ -576,6 +623,7 @@ const Actions = (function () {
       neighbour deal pays.</p>
       ${flows.length ? rows : '<div class="warn-box">No surpluses to export.</div>'}
       ${capacityNote(S, res)}
+      ${smugglingNote(S)}
       <div class="stat"><div class="label">Exported value</div><div class="value">${fmtGdp(total * 1e6)}</div></div>
       <div class="stat"><div class="label">Your treasury income</div><div class="value surplus">+${fmtGdp(gain * 1e6)}</div></div>
       <div class="btn-row">
@@ -609,6 +657,14 @@ const Actions = (function () {
     const flows = res.flows, total = res.total;
     const gain = total * TRADE_GAIN(); // FULL rate: a matched deal is the good one
     const cd = tradeCooldownLeft(S, tid);
+    /*
+     * A DEAL NEEDS TWO GOVERNMENTS. Shown as a refusal on the preview rather
+     * than by hiding the neighbour, because "Nevada will not deal with you and
+     * here is why" is a fact the player can act on, and a missing button is a
+     * bug report.
+     */
+    const shut = !dealsWith(S, tid);
+    const oneWay = shut && typeof Recognition !== 'undefined' && !Recognition.recognises(tid, S);
     const rows = flows.slice()
       .sort((a, b) => b.value - a.value)
       .map((f) => `<div class="geo-row"><span><i class="econ-dot" style="background:${MapModes.ECON_COLORS[f.i]}"></i>${f.s}
@@ -623,13 +679,16 @@ const Actions = (function () {
       <div class="stat"><div class="label">Traded value</div><div class="value">${fmtGdp(total * 1e6)}</div></div>
       <div class="stat"><div class="label">Treasury income (each side)</div><div class="value surplus">+${fmtGdp(gain * 1e6)}</div></div>
       ${cd ? `<div class="warn-box">⏳ You dealt with ${escapeHtml(tName)} recently &mdash; ${cd} more world ${plural(cd, 'turn', 'turns')}.</div>` : ''}
+      ${shut ? `<div class="warn-box">\u{1F6AB} No deal. ${oneWay
+        ? `${escapeHtml(tName)} does not recognise you as a country, and a trade agreement is a signature between two governments.`
+        : `You do not recognise ${escapeHtml(tName)} as a country. Recognise them from their card and the table is open.`}</div>` : ''}
       <div class="btn-row">
         <button class="btn ghost" id="a-back">Back</button>
-        <button class="btn go" id="a-go" ${flows.length && !cd ? '' : 'disabled'}>Sign trade deal</button>
+        <button class="btn go" id="a-go" ${flows.length && !cd && !shut ? '' : 'disabled'}>Sign trade deal</button>
       </div>
     `);
     document.getElementById('a-back').onclick = () => { A.pending = null; setSelectOutline(nationOutline(A.nid)); renderTradePrompt(); };
-    document.getElementById('a-go').onclick = () => flows.length && !cd && confirmTrade(tid, gain);
+    document.getElementById('a-go').onclick = () => flows.length && !cd && !shut && confirmTrade(tid, gain);
   }
 
   function confirmTrade(tid, gain) {
@@ -1004,5 +1063,6 @@ const Actions = (function () {
     annexCooldownLeft, annexCost,
     tradeCooldownLeft, nationTradeCapacityFor, hasExportAccess, exportFlows, applyCapacity,
     releaseCooldownLeft, startReleaseWith,
+    recognise,
   };
 })();

@@ -126,6 +126,7 @@ const Sim = (function () {
     Game.reset();
     Ledger.reset();
     Relations.reset();
+    Recognition.reset();
     Coalitions.reset();
     Colors.reset();
     World.setTurn(0);

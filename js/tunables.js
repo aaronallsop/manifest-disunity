@@ -1098,6 +1098,21 @@ export const SCHEMA = {
     label: 'Relations: we broke away from them',
     doc: 'Directed, and only one way: the breakaway resents the state it left. The parent\u2019s own feeling about the secession is carried by the Areas it lost, which Authority already reads.',
   },
+  'rel.magLost': {
+    v: -0.30, min: -1, max: 1, step: 0.01, group: 'Relations',
+    label: 'Relations: they walked out on us',
+    doc: 'THE OTHER HALF OF A SECESSION, added in M7.8. The breakaway\u2019s resentment was recorded from the start; the parent\u2019s was not, on the grounds that Authority already reads the Areas it lost \u2014 which was true until recognition made the parent\u2019s own opinion the thing the rest of the continent waits on. A parent with no recorded feeling recognised its own breakaway as readily as a stranger would, and the pivot the system is built around never happened.',
+  },
+  'rel.magRecognised': {
+    v: 0.20, min: -1, max: 1, step: 0.01, group: 'Relations',
+    label: 'Relations: they recognised us',
+    doc: 'What a new state feels toward whoever went first. Bigger than a trade deal and smaller than being handed ground, because acknowledging a country costs the acknowledger something and gives the acknowledged everything.',
+  },
+  'rel.magBetrayed': {
+    v: -0.16, min: -1, max: 1, step: 0.01, group: 'Relations',
+    label: 'Relations: they recognised our breakaway',
+    doc: 'THE PRICE OF RECOGNISING SOMEBODY ELSE\u2019S REBELS, and the reason recognition is a decision rather than a courtesy. Only charged while the parent still refuses \u2014 once it has given in there is nothing left to resent, and everybody who follows does so free.',
+  },
   'rel.acceptFriend': {
     v: 0.18, min: -1, max: 1, step: 0.01, group: 'Relations',
     label: 'Relations: standing at which a neighbour will take ground you release',
@@ -1107,6 +1122,72 @@ export const SCHEMA = {
     v: 0.35, min: 0, max: 1.5, step: 0.05, group: 'Relations',
     label: 'Relations: how far standing moves a union\u2019s chance',
     doc: 'A nation that likes you is likelier to accept union and one that does not is likelier to fall apart in the attempt. Multiplies the peace chance, so it scales a probability rather than adding to one \u2014 which keeps the result inside [0,1] without a clamp doing the work.',
+  },
+  /* ---------------- recognition ---------------- */
+  'recognition.disposition': {
+    v: 0.22, min: 0, max: 1, step: 0.01, group: 'Recognition',
+    label: 'How ready the world is to accept a new state at all',
+    doc: 'The base every other term moves. At 0.22 a newcomer nobody has an opinion about is recognised by a given nation roughly once every thirteen turns, so a breakaway spends its first years as a pariah unless somebody speaks for it \u2014 which is the problem the system exists to create. Raise it and secession becomes a formality; drop it to zero and only the parent\u2019s decision matters.',
+  },
+  'recognition.rate': {
+    v: 0.28, min: 0, max: 1, step: 0.01, group: 'Recognition',
+    label: 'Most likely a single nation is to recognise another in one turn',
+    doc: 'The scale on the whole decision, so the terms below are a disposition in 0..1 and this is what turns it into a per-turn chance. A cap rather than a speed: even an ideal case takes a few turns to sweep the continent, because fifty capitals do not move on the same day.',
+  },
+  'recognition.wStanding': {
+    v: 0.45, min: -1, max: 1, step: 0.01, group: 'Recognition',
+    label: 'Recognition: weight of what they already think of you',
+    doc: 'Signed, and the largest of the four ordinary terms. Recognition is the cheapest favour a nation can do, so it goes first to states it likes \u2014 and a nation that has taken ground from you will leave you in the cold for a decade.',
+  },
+  'recognition.wKinship': {
+    v: 0.20, min: -1, max: 1, step: 0.01, group: 'Recognition',
+    label: 'Recognition: weight of political kinship',
+    doc: 'Signed, centred on indifference: a government recognises its own kind first and an ideological opposite last. Deliberately smaller than standing, because what a state has DONE to you should outrank what it believes.',
+  },
+  'recognition.wEndurance': {
+    v: 0.25, min: 0, max: 1, step: 0.01, group: 'Recognition',
+    label: 'Recognition: weight of having lasted',
+    doc: 'A state that is still there next year is a fact, whatever anybody thinks of it. This is the term that guarantees the problem is temporary \u2014 without it a hated breakaway with a hostile parent would stay a ghost forever, which is a dead end rather than a difficulty.',
+  },
+  'recognition.ageTurns': {
+    v: 12, min: 1, max: 80, step: 1, group: 'Recognition',
+    label: 'Turns after which a new state is fully established',
+    doc: 'Three years of quarters. Long enough that the early scramble is real and short enough that a survivor is not still explaining itself in the endgame.',
+  },
+  'recognition.wWeight': {
+    v: 0.20, min: 0, max: 1, step: 0.01, group: 'Recognition',
+    label: 'Recognition: weight of being too big to ignore',
+    doc: 'Nobody refuses to deal with a fifth of the continent on principle. Read as a share of the whole board rather than of the roster, so twenty rump states do not add up to a superpower.',
+  },
+  'recognition.weightFull': {
+    v: 0.08, min: 0.005, max: 1, step: 0.005, group: 'Recognition',
+    label: 'Share of the continent that counts as impossible to ignore',
+    doc: 'The opening board\u2019s largest nation is California at 12.7%, so 8% is a genuinely large breakaway \u2014 the Deseret-scale ones \u2014 rather than every fragment that gets a flag.',
+  },
+  'recognition.wParent': {
+    v: 0.40, min: 0, max: 1, step: 0.01, group: 'Recognition',
+    label: 'Recognition: weight of the parent having let go',
+    doc: 'THE PIVOT, and the largest single term. While the state it broke from calls it a rebellion the rest of the continent has a reason to wait; the turn the parent gives in, the queue moves. This is what makes a player\u2019s recognition worth asking for, and what makes refusing one a weapon.',
+  },
+  'recognition.tradeFloor': {
+    v: 0.35, min: 0, max: 1, step: 0.01, group: 'Recognition',
+    label: 'Legitimacy at which the world market pays full price',
+    doc: 'Below this the goods still move, at a smuggler\u2019s discount that shrinks as the world comes round. A hard lock would make an unrecognised landlocked state unplayable and would also be untrue \u2014 what an unrecognised country loses is the margin, not the trade.',
+  },
+  'recognition.smugglingRate': {
+    v: 0.45, min: 0, max: 1, step: 0.01, group: 'Recognition',
+    label: 'Share of the going rate a wholly unrecognised state is paid',
+    doc: 'Less than half, which is a real wound to an economy and not a rounding error \u2014 the number a new state feels every turn until somebody signs.',
+  },
+  'recognition.coalitionFloor': {
+    v: 0.30, min: 0, max: 1, step: 0.01, group: 'Recognition',
+    label: 'Legitimacy needed to take a seat in a coalition',
+    doc: 'A coalition is coordination between governments, and nobody coordinates with a state they do not admit exists. Lower than the trade floor because standing shoulder to shoulder against a common threat is easier than signing a paper.',
+  },
+  'power.influence.wRecognition': {
+    v: 0.35, min: 0, max: 1, step: 0.01, group: 'Power',
+    label: 'Influence: cost of not being recognised',
+    doc: 'SIGNED, AND MEASURED AS A DEFICIT: a fully recognised nation contributes exactly nothing and a wholly unrecognised one loses the full weight. Written the other way round \u2014 a positive term worth 1.0 to everybody who is recognised \u2014 it would have raised every established nation\u2019s Influence by a constant and quietly re-tuned the coalition trigger, which is the mistake the leadership term already made once.',
   },
   /* ---------------- autonomy ---------------- */
   'autonomy.maxShare': {

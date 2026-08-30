@@ -117,6 +117,7 @@ async function init() {
     store.transport = transport; // rail / interstates / Canada-Mexico gateways (transport.json)
     Ledger.reset();
     Relations.reset();
+    Recognition.reset();
     Coalitions.reset();
     Colors.assign(Object.keys(data.states));
     Game.init(data, adjacency, areas, { trade, transport, culture: cultureMode });
@@ -1167,6 +1168,7 @@ function renderNationPanel(nid) {
     </div>
     ${renderNationEconomy(nid)}
     ${renderCoalition(nid)}
+    ${renderRecognition(nid)}
     ${renderStanding(nid)}
     ${renderMilitary(nid)}
     ${renderVictory(nid)}
@@ -1199,6 +1201,8 @@ function renderNationPanel(nid) {
   );
   const goto = panel.querySelector('#goto-current');
   if (goto) goto.onclick = () => { setMode('nations'); select('nation', you()); };
+  const rec = panel.querySelector('#a-recognise');
+  if (rec) rec.onclick = () => Actions.recognise(nid);
 }
 
 /* ------------------------------------------------------------------ */
@@ -1401,6 +1405,48 @@ function renderCoalition(nid) {
         ${Math.round(rec.influence * 100)}% Influence. Encirclement is costing
         <strong>${fmtGdp(flow.encirclement || 0)}</strong> a turn, and their border armies
         stand in the way of anything ${Game.isPlayer(nid) ? 'you' : 'they'} try to take.</div>
+    </div>`;
+}
+
+/*
+ * WHETHER ANYBODY ADMITS THEY EXIST.
+ *
+ * Only ever drawn for a nation founded during play: the fifty-one the game opens
+ * with are recognised by construction, and a row reading "100%" on every card
+ * from turn 0 teaches the player that the number does not mean anything.
+ *
+ * On a rival's card it carries the button, because that is where the question
+ * actually comes up — you are looking at a two-turn-old republic wondering
+ * whether to deal with it. On your own it is the scoreboard of who still will
+ * not, worst first, which is the list you work through.
+ */
+function renderRecognition(nid) {
+  if (typeof Recognition === 'undefined') return '';
+  const rec = Recognition.legitimacy(nid, TUNE);
+  if (!rec || rec.origin) return '';
+  const me = you();
+  const mine = me && me !== nid ? Recognition.recognises(me, nid) : null;
+  const band = rec.value >= 0.6 ? 'good' : rec.value >= 0.3 ? '' : 'bad';
+  const rows = rec.refused.slice(0, 4).map((r) => `
+    <div class="rel-row"><span class="lbl">${escapeHtml(r.name)}</span>
+      <span class="when">${r.nid === rec.parent ? 'calls it a rebellion' : 'will not deal'}</span>
+      <span class="num bad">${Math.round(r.share * 100)}%</span>
+    </div>`).join('');
+  const rate = Recognition.marketRate(nid, TUNE);
+  const cost = rate < 0.999
+    ? `<div class="vic-note">Export income is cut to <strong>${Math.round(rate * 100)}%</strong> of the going
+       rate, no neighbour will sign a bilateral deal, and no coalition will take them in.</div>`
+    : '';
+  const btn = mine === false
+    ? `<div class="btn-row"><button class="btn go" id="a-recognise">\u{1F91D} Recognise ${escapeHtml(Game.getNation(nid).name)}</button></div>`
+    : mine === true ? '<div class="vic-note">You recognise them.</div>' : '';
+  return `
+    <div class="stat rel">
+      <div class="label">Recognition &middot; ${Math.round(rec.value * 100)}% of the continent</div>
+      <div class="rel-band ${band}">${escapeHtml(rec.summary)}</div>
+      ${rows}
+      ${cost}
+      ${btn}
     </div>`;
 }
 

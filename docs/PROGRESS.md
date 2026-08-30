@@ -302,7 +302,15 @@ Done in the order **M3.4 -> M3.1 -> M3.2 -> M3.3**, because the plan lists M3.4'
       charge all fall out of one hash — so a flag survives a save without being in one and
       cannot drift from the nation. Two countries may not share a name: the first cut minted
       the Fairfax Federation twice.
-- [ ] **M7.8** Recognition / legitimacy.
+- [x] **M7.8** Recognition / legitimacy — `js/recognition.js`. One scalar and one matrix:
+      `recognises(A,B)` is stored only where it is not the default, so the fifty-one founding
+      states cost nothing and the matrix is empty on turn 0. An unrecognised state cannot sign a
+      bilateral deal, cannot take a coalition seat, is paid a smuggler’s rate on the world market
+      and carries a SIGNED deficit on Influence. The parent’s recognition is the pivot — the
+      largest single term in the decision every other capital is making — and a RELEASED state is
+      recognised by its parent from the first day, which is the cleanest difference between the
+      two ways a nation can be born. Also here: `Game.nationWeight`, one definition of how much a
+      nation counts for, replacing three copies of the same blend.
 - [ ] **M7.9** Migration.
 - [ ] **M7.10** Elections.
 - [ ] **M7.11** Projection range off the transport network.
@@ -315,7 +323,7 @@ Done in the order **M3.4 -> M3.1 -> M3.2 -> M3.3**, because the plan lists M3.4'
 *(Updated as work proceeds — what is done, what is next, what was learned that is not yet
 written down elsewhere.)*
 
-**M0-M5 complete.** 700 tests green at `tests/run.html` in ~114s,
+**M0-M5 complete.** 725 tests green at `tests/run.html` in ~120s,
 `build/validate.py` reports 0 errors, and the game loads, plays and saves with a clean console.
 `DESIGN.md` rewritten at the M5 close: section 4.1 is the four power stocks, section 7 is movements,
 sentiment and two-tier secession, section 7.6 is the ledger, the simulator, the dashboard and the
@@ -336,7 +344,7 @@ Performance, measured on the real map rather than predicted: a world turn 24.7 -
 phases 12.4 -> 2.8 ms, political drift 8.0 -> 2.0 ms, a 50-turn simulator run 1,237 -> 466 ms. The
 columnar store is 173 KB and the adjacency graph 43.5 KB.
 
-Next: **M7.8** (recognition / legitimacy — an unrecognised breakaway cannot sign trade deals or join coalitions).
+Next: **M7.9** (migration — people move along the QoL gradient, weighted by alignment and network distance).
 
 Open, carried into M2.3: after 21 turns no Area is yet LED by a minority ideology (Rep 1,288 /
 Dem 388 of 1,676). That is the expected shape at 11% organised movements and it is M5's dial to

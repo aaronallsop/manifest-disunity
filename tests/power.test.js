@@ -446,7 +446,7 @@ describe('Influence in the live world', () => {
     const vals = [];
     for (const [, n] of Game.nations) {
       ok(typeof n.influence === 'number' && Number.isFinite(n.influence), `${n.name} has no Influence`);
-      ok(n.why.influence && n.why.influence.inputs.length === 8,
+      ok(n.why.influence && n.why.influence.inputs.length === 9,
         `Influence reported ${n.why.influence.inputs.length} terms`);
       vals.push(n.influence);
     }

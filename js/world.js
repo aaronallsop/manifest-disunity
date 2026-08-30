@@ -721,10 +721,25 @@ const World = (function () {
         }
         rec.nation = best;
         rec.state = 'realized';
-        // Directed, and only one way: the breakaway resents the state it left.
-        // The parent's own feeling is carried by the Areas it lost, which
-        // Authority already reads.
-        if (parentOf) Relations.record(best, parentOf, 'seceded', { scale: 1, tune: tn });
+        /*
+         * BOTH DIRECTIONS, since M7.8. The breakaway resents the state it left,
+         * and the state it left resents having been walked out on — which used
+         * to go unrecorded on the grounds that Authority already reads the Areas
+         * lost. That was true until recognition made the parent's own opinion
+         * the thing the rest of the continent waits on: with no recorded
+         * feeling, a parent recognised its own breakaway as readily as a
+         * stranger would, and the pivot the system is built around never
+         * happened.
+         */
+        if (parentOf) {
+          Relations.record(best, parentOf, 'seceded', { scale: 1, tune: tn });
+          Relations.record(parentOf, best, 'lost', { scale: largest.length / 5, tune: tn });
+        }
+        // ...and nobody has recognised them yet. Who they broke from is the
+        // whole early game for a new state, so it is recorded at birth.
+        if (typeof Recognition !== 'undefined') {
+          for (const id of born) Recognition.founded(id, parentOf || null, { turn, tune: tn });
+        }
         TurnSystem.insertAfter(parentOf || best, born);
         const ev = { kind: 'declare', movement: rec.name, nation: best, parent: parentOf,
                      areas: largest.length, born: born.length, turn };
@@ -821,6 +836,9 @@ const World = (function () {
    */
   function begin(tune, only, rng) {
     if (!only) winner = null;
+    // A new world has nobody to vouch for and nobody to refuse: the fifty-one
+    // founding states are recognised by construction, and the matrix is empty.
+    if (!only && typeof Recognition !== 'undefined') Recognition.reset();
     // The opening position is part of the history, or the timeline starts one
     // turn after the game does.
     if (!only && typeof History !== 'undefined') { History.reset(); History.capture(turn); }
@@ -875,6 +893,13 @@ const World = (function () {
       // ...and drop the memories nobody can feel any more, so an append-only
       // list that lives in the save document does not grow without bound.
       Relations.forget(tn);
+      /*
+       * WHO THE WORLD HAS DECIDED TO ADMIT EXISTS. After `forget`, because the
+       * decision reads standing and should read this turn's, and after secession
+       * so a nation founded this turn starts its clock at nought rather than
+       * getting a free roll on the day it declared.
+       */
+      if (typeof Recognition !== 'undefined') Recognition.tick(tn, rng);
       /*
        * CRISES, last, because every trigger reads a stock and the stocks have
        * just been recomputed — an event fired before `phasePower` would be

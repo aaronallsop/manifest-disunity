@@ -95,6 +95,35 @@ const Moves = (function () {
   /* shared preconditions                                               */
   /* ------------------------------------------------------------------ */
 
+  /**
+   * WHO A NEW NATION BROKE AWAY FROM (M7.8).
+   *
+   * Every way a nation can be born has a parent, and recognition turns that
+   * from a piece of colour into the pivot of the newcomer's early game — while
+   * the state it left calls it a rebellion, the rest of the continent waits.
+   * Recorded at every birth site rather than derived afterwards, because the
+   * only place the answer is still knowable is before the ground moves.
+   *
+   * `was` maps Area -> the nation that held it a moment ago, so a collapse that
+   * shatters three countries' ground into four fragments gives each fragment the
+   * parent it actually came out of rather than one shared guess.
+   */
+  function recordBirths(born, was, opts = {}) {
+    if (typeof Recognition === 'undefined') return;
+    for (const id of born) {
+      const n = nationOf(id);
+      if (!n) continue;
+      const tally = {};
+      for (const f of n.counties) {
+        const o = was instanceof Map ? was.get(f) : was;
+        if (o && o !== id) tally[o] = (tally[o] || 0) + 1;
+      }
+      let best = null, bc = 0;
+      for (const k of Object.keys(tally).sort()) if (tally[k] > bc) { best = k; bc = tally[k]; }
+      Recognition.founded(id, best, opts);
+    }
+  }
+
   function cooldown(nid, stamp, key, tune) {
     const n = nationOf(nid);
     if (!n || !Number.isFinite(n[stamp])) return 0;
@@ -207,6 +236,8 @@ const Moves = (function () {
     });
 
     let taken = targets, born = [];
+    // Read before anything moves: after `breakApart` there is nothing to ask.
+    const heldBy = new Map(targets.map((f) => [f, Game.getOwner(f)]));
     Game.batch(() => {
       if (!res.triggered || res.outcome === 'victory') {
         Game.moveCounties(targets, nid, { reason: res.triggered ? 'war' : 'annex' });
@@ -216,6 +247,7 @@ const Moves = (function () {
       } else {
         taken = [];
         born = Game.breakApart(targets, { exclude: nid, reason: 'fragment', rng });
+        recordBirths(born, heldBy, { tune: T(tune) });
       }
       if (res.triggered && res.outcome === 'collapse') {
         /*
@@ -429,6 +461,7 @@ const Moves = (function () {
     const created = Game.batch(() => {
       Game.moveCounties(plan.fallout.defect, target, { silent: true, reason: 'defect' });
       const born = Game.breakApart(plan.fallout.secede, { exclude: nid, reason: 'secede', rng });
+      recordBirths(born, nid, { tune: T(tune) });
       Game.applyCivilWarCost(nid, target, score);
       return born;
     });
@@ -590,6 +623,15 @@ const Moves = (function () {
       Game.breakApart(areas, { exclude: nid, accept: acceptsRelease(nid, tune), reason: 'release', rng }));
     TurnSystem.insertAfter(nid, born);
 
+    /*
+     * LETTING GO IS RECOGNITION (M7.8), and this is the cleanest difference
+     * between the two ways a nation can be born. A state that DECLARED
+     * independence spends its first years as a pariah while the parent calls it
+     * a rebellion; a state that was RELEASED is a country from the first day,
+     * because the only government whose opinion the world is waiting on has
+     * already given it. Nothing else about the two moves says that as plainly.
+     */
+    recordBirths(born, nid, { recognised: true, tune: T(tune) });
     const bornSet = new Set(born);
     let toNew = 0, toNeighbours = 0, refused = 0;
     const thanked = new Map();
@@ -609,6 +651,75 @@ const Moves = (function () {
         + `${toNew} into new nations, ${toNeighbours} to neighbours, ${refused} refused.`,
     });
     return { ...plan, ok: true, born, toNew, toNeighbours, refused, events: [entry] };
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* recognise                                                          */
+  /* ------------------------------------------------------------------ */
+
+  /**
+   * @param intent {type:'recognise', nid, target}
+   *
+   * ADMIT THAT SOMEBODY ELSE IS A COUNTRY. It costs no money and takes no
+   * ground, and it is still a decision, because the state the target broke away
+   * from will hold it against you — going first for somebody else's rebels is
+   * the cheapest favour in the game and the one with the longest memory.
+   *
+   * It matters most when YOU are the parent. Everybody else is waiting to see
+   * whether you will keep calling them a rebellion, and the turn you stop, the
+   * queue moves: that is the `recognition.wParent` term, and it is the largest
+   * single term in the decision fifty other capitals are making.
+   */
+  function planRecognise(intent, tune) {
+    const { nid, target } = intent;
+    const n = nationOf(nid), t2 = nationOf(target);
+    if (!n) return no('That nation no longer exists.');
+    if (!t2) return no('There is no such nation.');
+    if (nid === target) return no('A nation does not need to recognise itself.');
+    if (typeof Recognition === 'undefined') return no('Recognition is not part of this game.');
+    if (Recognition.recognises(nid, target)) return no(`You already recognise ${nameOf(target)}.`);
+
+    const before = Recognition.scalar(target);
+    const share = Game.nationWeight(nid) / Math.max(1e-9, continentWeight() - Game.nationWeight(target));
+    const parent = Recognition.parentOf(target);
+    const angers = parent && parent !== nid && nationOf(parent) && !Recognition.recognises(parent, target)
+      ? parent : null;
+    const effects = [
+      { label: 'Their legitimacy', value: Math.min(1, before + share) - before },
+      { label: 'How they will see you', value: T(tune).get('rel.magRecognised') },
+    ];
+    if (angers) {
+      effects.push({ label: `How ${nameOf(angers)} will see you`, value: T(tune).get('rel.magBetrayed') });
+    }
+    return {
+      ok: true, reason: null, cost: 0, target, parent: angers, before,
+      unlocks: parent === nid, effects,
+    };
+  }
+
+  /** The whole board's weight, for pricing what one nation's word is worth. */
+  function continentWeight() {
+    let total = 0;
+    for (const [id] of Game.nations) total += Game.nationWeight(id);
+    return total;
+  }
+
+  function resolveRecognise(intent, rng, tune) {
+    const plan = planRecognise(intent, tune);
+    if (!plan.ok) return { ...plan, events: [] };
+    const { nid, target } = intent;
+    Recognition.grant(nid, target, { tune: T(tune) });
+    const after = Recognition.scalar(target);
+    const entry = log({
+      subject: nid, kind: 'recognise', delta: 1, target,
+      terms: [{ name: 'Their legitimacy', value: after, key: 'recognition.tradeFloor' },
+              { name: 'How they will see you', value: T(tune).get('rel.magRecognised'),
+                key: 'rel.magRecognised' }],
+      text: plan.unlocks
+        ? `${nameOf(nid)} recognised ${nameOf(target)}, the state that broke away from it.`
+        : `${nameOf(nid)} recognised ${nameOf(target)}.`,
+    });
+    return { ...plan, ok: true, after, events: [entry] };
   }
 
   /* ------------------------------------------------------------------ */
@@ -676,9 +787,9 @@ const Moves = (function () {
   /* ------------------------------------------------------------------ */
 
   const PLANNERS = { annex: planAnnex, unite: planUnite, release: planRelease, govern: planGovern,
-                    autonomy: planAutonomy };
+                    autonomy: planAutonomy, recognise: planRecognise };
   const RESOLVERS = { annex: resolveAnnex, unite: resolveUnite, release: resolveRelease,
-                      govern: resolveGovern, autonomy: resolveAutonomy };
+                      govern: resolveGovern, autonomy: resolveAutonomy, recognise: resolveRecognise };
 
   /** Pure. Never draws, never rolls, never mutates. */
   function plan(intent, tune) {
@@ -775,6 +886,15 @@ const Moves = (function () {
         if (x.id !== n.gov.rulingIdeology) out.push({ type: 'govern', nid, ideology: x.id });
       }
     }
+    /*
+     * `recognise` IS DELIBERATELY NOT HERE. An AI's recognitions are not a move
+     * competing for the one action it gets each turn — they are `Recognition.tick`,
+     * where every capital makes up its own mind about every newcomer every turn,
+     * priced by standing and kinship and how long the thing has lasted. A nation
+     * that spent its whole turn signing a paper about a three-Area rump would be
+     * a worse opponent, and fifty of them doing it would be an unreadable
+     * newspaper. The player's is a move because the player's is a decision.
+     */
     return out;
   }
 
