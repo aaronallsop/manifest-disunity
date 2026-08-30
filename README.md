@@ -2,7 +2,9 @@
 
 A browser strategy game about the fragmentation and re-formation of the United States. All 51
 states begin as sovereign nations on a real-data county map; movements, secession, trade and war
-take it from there.
+take it from there. Nations remember what has been done to them, gang up on whoever frightens them,
+argue about whether a breakaway is a country at all, hold elections they can lose, and lose people
+to whoever is a better place to live.
 
 **`DESIGN.md` is the single source of truth for what the game is and how it works.** This file
 tells you how to run it and where things live. If the two ever disagree, `DESIGN.md` is right and
@@ -54,17 +56,39 @@ js/geo-ct.js            the one place Connecticut's obsolete counties are normal
 js/boot-globals.js      bridges the ESM modules onto window for the legacy files (ESM)
 
 js/game.js              the model: Areas, nations, ownership, treasury, adjacency
-js/world.js             the world turn: drift, party growth, population, GDP, cleanup
+js/state.js             the columnar Area state: one typed array per field (ESM)
+js/graph.js             the CSR adjacency graph (ESM)
+js/world.js             the world turn: every phase, in order
+js/power.js             the five power stocks and their Why records (ESM)
+js/moves.js             every action as plan/resolve — the rules the AI and the UI share
+js/ai.js                the other fifty nations
 js/civilwar.js          civil-war resolution (pure math)
 js/market.js            the six-sector resource market
-js/parties.js           emergent regional movements
+js/movements.js         emergent regional movements
+js/sentiment.js         how much an Area wants to leave, and why
+js/migration.js         people move along the quality-of-life gradient
+js/military.js          force as an allocation: garrison / border / field
+js/projection.js        how far a nation can act, off the transport network
+js/relations.js         what nations remember about each other
+js/coalitions.js        who the continent is ganging up on, and why
+js/recognition.js       whether anybody admits a new state exists
+js/elections.js         a nation losing its own government
+js/leaders.js           who is in charge, and what they are like
+js/events.js            authored crises with real trade-offs
+js/victory.js           the three ways to win
+js/factions.js          who you can play, and how hard it is
+js/history.js           the map at every turn it has been
+js/identity.js          what a new country calls itself, and its flag
+js/ledger.js            every event, and the terms that caused it
 js/turns.js             turn order
-js/actions.js           Unite / Annex / Trade / Release
+js/actions.js           the action UI: selection, previews, the trade screens
 js/app.js               d3 map, panels, boot
 js/colors.js            nation colours
 js/leaderboard.js       the ranked nation list
 js/mapmodes.js          map colouring modes
-js/saves.js             save/load (format v2)
+js/statedoc.js          the save document: assemble / validate / applyModel (ESM)
+js/saves.js             save/load transport (format v2)
+js/sim.js               the headless simulator
 js/editor.js            the 3-tier map-mode editor
 
 data/                   baked game data (committed) + state.json (not)

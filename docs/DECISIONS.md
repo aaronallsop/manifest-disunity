@@ -1390,3 +1390,228 @@ grant that reapplied there would pay out for reloading.
 And the card names the term, not the tier: "New Mexico's problem is economy — 147bn" and "Wisconsin's
 problem is calm — 53% of the way to a breakaway" are two different games, where twenty cards reading
 "Comfortable" are a list of names with extra words.
+### D116 — Force is derived, and only the allocation is state
+**M6.5a.** `manpower × equipment × doctrine`, read off population, wealth per head and whether the
+state governs well and its people agree with it. Storing an army would be a second model of a
+nation's strength that drifts from the first; deriving it means a nation falling apart gets weaker at
+exactly the moment it needs the army, which is the honest direction for that feedback to run.
+
+What *is* state is where the force points and how ready it is, and readiness follows the allocation
+the way a power stock follows its target — rate-limited, falling faster than it rises. That rate
+limit is the entire cost of changing your mind: without it the three sliders are something you set at
+the moment of use, and a decision you can always take later is not a decision.
+
+**A peacetime army suppresses nobody.** `mil.garrisonFree` is exactly the share the default even
+split leaves at home, so a nation that has made no military decision holds no one down. Without the
+subtraction every nation on the map quietly suppressed its own population from turn zero, which moved
+the secession timeline for a world in which nobody had chosen anything.
+
+### D117 — Autonomy scales the whole grievance rather than subtracting from one term
+**M6.5b.** Self-rule is not "your quality of life improved", it is "this is your government now", so
+it multiplies the grievance instead of discounting one input to it. It is reversible — which is the
+only reason it is not release — capped at `autonomy.maxShare` because a state that governs none of
+itself is not a state, and it costs revenue and Authority rather than liberties, which is what makes
+it a different price for the same relief.
+
+**The flag stores `true` plus a date, not the turn number.** It stored the turn, and turn 0 is
+falsy, so a grant on the first turn of a game silently did nothing.
+
+### D118 — Relations are one append-only list, directed and decaying
+**M7.1.** `{turn, from, to, kind, magnitude}` with `relation(a,b) = base + Σ magnitude·decay^age`.
+Memory, rivalry, gratitude, the coalition trigger and whether a neighbour will accept ground you are
+handing over are all queries over the same list. The alternative is a scalar per pair per feeling,
+which is a matrix that grows with every emotion anybody thinks of and cannot answer "why".
+
+**Directed, not symmetric** — a conqueror is not resented by the ground it took in the way it
+resents the neighbour who stopped it, and symmetric would be one line less code and would delete the
+rivalry. **Decaying, not forgotten** — which is what makes "recently" mean something without anybody
+storing a window, and what keeps a list that lives in the save document bounded.
+
+`witnessed` — a nation minding somebody else's annexation — is the term easiest to leave out and the
+one the coalitions rest on: a conqueror resented only by its victims is resented only by the nations
+least able to do anything about it.
+
+### D119 — Being big is not the crime
+**M7.2.** `threat = size_share × (1 − influence)`. A nation can hold half the map untouched if the
+other half is glad it is there, and a middling one can be surrounded because of how it got there.
+
+It replaces a tier by size rank, and finding 36 measured what that was worth: with the shell fully
+applied California still took 692 Areas on turn 1 and 1,602 of 1,676 by turn 3, with zero civil wars.
+The finding's own recommendation is the shape used — a penalty the leader feels **every turn** rather
+than a multiplier on a roll that rarely happens — so a coalition costs money every turn, standing
+every turn, and puts its members' border armies in the way of the next annexation whether or not
+they are the ones being annexed.
+
+And it is a set of **named nations that each have a reason**, which is what makes it answerable and
+escapable. A rank is neither.
+
+### D120 — War weariness is the aggressor's, and it is a stock
+**M7.3.** Being invaded was already expensive; what had no cost at all was doing the invading, over
+and over, and winning. Weariness is what makes a campaign a campaign rather than a series of
+unrelated rolls.
+
+Its fourth term started as "share of the population under arms" and was wrong in an instructive way:
+force *size* is not a choice in this game — `mil.manpowerShare` is fixed — so that term read as a
+constant for every nation forever, a permanent drag with no lever. The **posture** is chosen every
+turn, so the term is the share of the army in the field, and it is the one place the M6.5 allocation
+costs something at home.
+
+**`power.floor` does not apply to it.** A floor of 0.08 on a stock that means "how tired of war are
+you" says a nation at peace is permanently eight per cent exhausted.
+
+### D121 — A crisis invents no mechanics
+**M7.4.** Every trigger reads a fact some other system already computes and every effect moves a
+number some other system already owns, so `content/events.json` is content and a new crisis is a row.
+A table that could invent mechanics would be a second design living in a data file.
+
+A test checks structurally that no option **dominates** another — beats it on every shared axis while
+costing nothing of its own — because an option that is strictly best is a button wearing a choice's
+clothes.
+
+### D122 — A leader is a thumb on the scale, and every trait pays for what it gives
+**M7.5.** The five stocks already explain themselves term by term, so a leader is one extra named
+line in each stock they touch rather than a mechanism of their own. A test checks structurally that
+no trait is all upside, because a leader who is simply better than another leader is a stat rather
+than a character. (The Steward was, until it caught one.)
+
+Two traits **sum**, so a Hawk paired with a Reformer cancels, and traits are drawn against the
+government's ideology at three to one — a more interesting distribution than either always-on-brand
+or a coin flip.
+
+**And it made `Power.build` learn about signed inputs.** Mapping a modifier of roughly -1..1 onto the
+0..1 an ordinary term wants gives every nation a constant offset and quietly moves the base for
+everybody; three "sits at the base" tests caught it. A Why record also must not seat a leader as a
+side effect of describing one, which the first cut did.
+
+### D123 — The timeline is one baseline and a list of deltas, with a cast
+**M7.6.** Ownership barely moves between two turns, so a full snapshot per turn is a quarter of a
+megabyte of almost entirely repeated numbers. Measured over thirty turns: 13 KB, with a test pinning
+that it stays under a third of the naive size.
+
+**Nations are recorded when they first appear**, name and colour kept after `Game` has forgotten
+them, because half the roster will not exist by the end and a timeline that cannot name the country
+that used to be somewhere is a timeline of grey shapes.
+
+### D124 — A flag is a pure function of the id, and a name is drawn against the ideology
+**M7.7.** Layout, palette and charge all fall out of hashing the nation id, so a flag survives a save
+without being in one, is the same flag everywhere it is drawn, and cannot drift from the nation.
+Nothing is stored and nothing needs migrating.
+
+Names come from `content/names.json` drawn against the **founding ideology**, because the name is the
+first thing the game tells you about a country and it should be true: a Distributist breakaway is a
+Compact and a Nationalist one a Directorate. The county suffix is stripped, because "Cook" is a place
+and not a country.
+
+**Two countries may not share a name.** The first cut minted the Fairfax Federation twice, which is
+not a flavour problem: it is a leaderboard with two identical rows and a newspaper that cannot say
+which one did the thing. Every template is tried, then the generic ones, then the place is qualified
+— "Upper Fairfax Federation" reads as a country where "Fairfax Federation (2)" reads as a bug.
+
+### D125 — Recognition is one scalar and one matrix, and the default is the storage trick
+**M7.8.** The fifty-one founding nations are recognised by everybody always and nothing is written
+down for them; only a nation born during play needs a row. So the matrix is empty on turn 0, holds a
+handful of sets in a normal game, and never grows to n².
+
+**The parent is the pivot.** Recognition is earned by standing, kinship, endurance and size, and —
+worth more than all of them — by the state you broke away from giving in. Measured: Texas's chance of
+recognising the State of Jefferson was 0.07 a turn while California called it a rebellion and 0.24
+the moment California signed. That is what makes the player's own recognition a move worth having.
+
+This forced a matching change to M7.1: the parent's own feeling about a secession had never been
+recorded, on the grounds that Authority already reads the Areas lost. True until the parent's opinion
+became the thing the rest of the continent waits on — with nothing on record, a parent recognised its
+own breakaway as readily as a stranger would.
+
+**A save that predates the concept says nothing, not "no".** Loading one adopts every nation founded
+in that game as recognised, because the alternative is a save that got worse for having been saved.
+
+**And the Influence term is a deficit** (`legitimacy - 1`), so a recognised nation contributes exactly
+nothing. Written the other way round it would have raised every established nation's Influence by a
+constant and quietly re-tuned the coalition trigger for the whole board.
+
+### D126 — Migration is a gradient along the graph, and arrivals do not join movements
+**M7.9.** Nobody computes the best Area on the continent and walks there; people move toward the
+better Areas next door, in proportion to how much better. Flow along the adjacency graph is what
+makes distance real without a distance calculation.
+
+**Alignment is the term that changes the game**: people move toward people who think as they do, so
+a divided nation sorts itself into homogeneous halves and those halves are the ground a movement
+organises on. Measured in isolation over twelve turns, the average Area's dominant ideology goes
+63.3% → 66.5% while political drift pulls the other way.
+
+**Movements shrink with the people who leave and are diluted by those who arrive.** Membership is
+people; somebody who moved in last quarter is not a member of the local separatist organisation. That
+asymmetry is what makes settlement an answer to secession.
+
+Every flow is computed before any is applied. This is the first phase that writes to its
+**neighbours**, and applying as it went would let the first Area's arrivals decide the second Area's
+departures — the node numbering would decide who moved.
+
+### D127 — An election is the population, adjusted by the record, measured against the world
+**M7.10.** The base is every ideology's share of the nation's people. The government gets one swing
+against it, made of the four things it is answerable for, and that swing is measured **against the
+world mean rather than the middle of the range**: the stocks do not sit around 0.5, so a term centred
+there hands every incumbent alive the same large bonus. With that mistake in place, 284 elections
+over 84 turns turned out three governments and a government holding 39% of its people against a rival
+holding 58% was re-elected. Against the mean it is 56 of 266.
+
+**The schedule is derived, not stored** — `(turn + hash(id)) % term` — so it needs no field in the
+save, no migration and no reset, and fifty-one elections do not land on the same turn.
+
+**A result can be refused only by a government that has already ground its people down.** The
+capacity and the score are the same fact, so nothing new had to be invented to say who may; the price
+is a further shock to the liberties that allowed it. The rule is identical for the player, except
+that the player is asked — it is the one moment in the game where the honest answer and the available
+answer differ.
+
+Losing an election does **not** consume `gov.lastChange`, the cooldown on the appeasement valve: that
+clock means "the last time this government CHOSE a course", and losing a vote is the opposite of
+choosing one.
+
+### D128 — Reach decays from one core, or it does not decay at all
+**M7.11.** The first cut made every seat of government a nation holds a projection source, on the
+reasoning that capturing a capital should extend your reach. Measured, that made the brake a no-op:
+an empire built by conquest captures capitals *by construction*, and one holding 852 of 1,676 Areas
+had twenty-four seats and full reach over every frontier target it had.
+
+So: one source, the government's own seat if it still holds it and otherwise its largest Area. The
+shape that falls out is the interesting one — an empire grows as a blob around its capital and a long
+thin one cannot push at its far end whatever it holds in between.
+
+**A nation always reaches its own soil**, floored after the search so it never feeds the frontier:
+holding and taking are different questions.
+
+**And the distance array is Float64.** Stored as Float32, an accumulated cost is rounded on the way
+in and compared against an unrounded copy on the way out, so Dijkstra discards a node's own heap
+entry as stale — Oregon sat 3.05 from Sacramento by Bellman-Ford and read as unreachable, and 481 of
+944 annexation targets were being refused for a rounding error. It also cost a knob: a home-ground
+discount was added to fix a Texas that could not reach one of its twenty targets, and the cause was
+the rounding. A knob that exists to work around a bug is worse than no knob.
+
+### D129 — The east gets its own separatisms, and Delmarva is the sixth
+**M7.12.** Every movement mechanic runs on an Area being inside somebody's homeland, so Kentucky and
+West Virginia having no homeland at all meant separatism was a western feature of a game that ships
+the whole country. Five movements were authored county by county rather than filtered out of a rule,
+because a homeland is a claim about a place: Franklin, Acadiana, New England Revivalist, Central
+States Union and — beyond the five the plan names — the Delmarva Republic, because the peninsula that
+has petitioned for its own statehood more than once was the only honest way to close Maryland and
+Delaware. A movement that covered them from somewhere else would be a coverage patch wearing a name.
+
+**Franklin and New England Revivalist spawn deterministically**, for the same reason Cascadia and
+Deseret do. The first bake left all six rolling at 0.5 and produced a world with one eastern movement
+in it: an East with no Franklin is not the widened East.
+
+### D130 — The west's own holes, and Cascadia was wrong
+**M7 close.** Closing the east left 179 Areas that could never receive a movement, almost all of them
+western — a flagship slice whose flagship state had 36 of its 58 Areas outside the system. Three more
+real movements close it: California Republic, the Sagebrush Rebellion and the Fifty-First State,
+which eleven Colorado plains counties voted on in November 2013.
+
+**And Cascadia's homeland was the R-leaning inland northwest**, which is not Cascadia: it derived a
+core of Butte and Shasta counties in *California* and Ada and Bannock in *Idaho*, while the test
+alongside it asserted the core was the Portland–Seattle corridor. The documented intent was right and
+the data was wrong. The rural inland it used to hold is already Greater Idaho's and the Northern
+Christian Kingdom's, twice over.
+
+Areas that can never receive a movement: 348 → 278 → 179 → **0**, and the validator warning that has
+stood since M1 is gone.

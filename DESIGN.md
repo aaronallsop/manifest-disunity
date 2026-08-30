@@ -1,7 +1,7 @@
 # Nation States — Design
 
 *The single source of truth for what this game is and how it works, **as it actually is today**.
-Last rewritten at the end of **M6** of `docs/REBUILD-PLAN.md`. If this document and the code
+Last rewritten at the end of **M7** of `docs/REBUILD-PLAN.md`. If this document and the code
 disagree, the document is a bug — say so and fix it.*
 
 *What comes next lives in `docs/REBUILD-PLAN.md`, not here. This file describes the present.*
@@ -15,6 +15,10 @@ pick one of the 51 — the board is built from real 2024 data: population, GDP a
 and play through turns of union, annexation, civil war, trade and politics while the other fifty do
 the same. The question the game asks is whether a country holds together, and it can be answered
 three ways: put the Union back, win the argument, or become the economy the continent runs on.
+
+Nations remember what has been done to them, gang up on whoever frightens them, argue about whether
+a breakaway is a country at all, hold elections they can lose, and lose people to whoever is a
+better place to live.
 
 Nothing is invented where real data exists. Where a figure is not published separately, a grounded
 estimate is apportioned from a real total (so nation-level sums stay correct) and flagged in the UI
@@ -193,29 +197,56 @@ slot until yours comes up again, inside one `Game.batch`, so fifty turns cost th
 repaint. About 22 ms a round with nobody acting, about 244 ms with seventy nations each considering
 fifteen moves.
 
-A world turn runs these phases in a fixed order:
+A world turn runs these phases in a fixed order, over the columnar buffer:
 
 1. **Recompute mixes** — each nation's ideology shares, cached from the start-of-turn snapshot.
 2. **Political drift** — each Area eases toward a blended target over all six ideologies.
-3. **Movement growth** — each movement closes a fraction of the gap to its ceiling.
-4. **Population growth** — everybody grows, movements included.
-5. **Economic growth** — GDP moves, by sector.
-6. **Cleanup** — movements below a floor are removed, and every survivor is clamped to a valid
+3. **Sentiment and movement growth** — each movement closes a fraction of the gap to its own
+   ceiling, against the target §7.2 computes.
+4. **Migration** — people move along the adjacency graph toward Areas that are better for people
+   like them (§7.7). After drift, because somebody migrates as whoever they have just become; before
+   growth, so the babies are born where their parents ended up.
+5. **Population growth** — everybody grows, movements included.
+6. **Economic growth** — GDP moves, by sector and by the population change actually realised.
+7. **Cleanup** — movements below a floor are removed, and every survivor is clamped to a valid
    slice of its own ideology. That clamp is the reconciliation the whole model rests on: drift,
-   growth and war all move `pop[i]` without knowing movements exist.
+   growth, migration and war all move `pop[i]` without knowing movements exist.
 
-Then governments are refreshed, treasuries tick, the market reprices, and **the four power stocks
-recompute** (§4.1) — in that order, and last on purpose: every input the power phase reads is a
-result of *this* turn, so running it earlier would report the previous turn's world with this turn's
-label on it.
+The buffer is then written back, and the rest of the turn runs against the live world in one
+`Game.batch`, in this order and for these reasons:
+
+**secession** (it moves ownership, which the snapshot discipline holds frozen) → **governments
+refreshed** → **military readiness** (a garrison that came up this turn should be holding ground
+down when Civil Liberties are computed at the end of it) → **relations forgotten** (drop what
+nobody can feel any more) → **recognition** (who the world has decided to admit exists) →
+**crises** → **leaders seated** → **elections** → **movement states re-read from the map** →
+**treasuries** → **the market reprices** → **the five power stocks recompute** (§4.1).
+
+The stocks are last on purpose: every input the power phase reads is a result of *this* turn, so
+running it earlier would report the previous turn's world with this turn's label on it. Elections
+run just before them for the mirror-image reason — the four things a government is answerable for
+at the polls are four of the five stocks, and an election held after the recompute would be judging
+the world its own result produced.
+
+Then the turn counter moves, the **map is recorded** for the timeline (after the increment, so a
+frame is stamped with the turn that produced it), and **victory is checked** over every nation.
 
 **Every phase is an integer loop** over the same node numbering the graph uses, reading and writing
-flat columns. The buffer is one `.slice()` per field plus an array of movement bags. Measured on
-the real map: a world turn is 9.3 ms, of which the six phases are 2.8 ms; a 50-turn simulator run
-is 466 ms. Before the conversion those were 24.7 ms, 12.4 ms and 1,237 ms — and, against the
-prediction that the deep copy was the cost, the copy was only 1.9 ms of it. What cost was the
-string keys: political drift alone was 8.0 ms, spent on 9,454 hashed `snap[neighbourFips]` lookups
-per turn. It is the only phase that reads Areas other than the one it writes.
+flat columns. The buffer is one `.slice()` per field plus an array of movement bags. Measured when
+the conversion landed: a world turn went 24.7 ms → 9.3 ms and a 50-turn simulator run 1,237 ms →
+466 ms — and, against the prediction that the deep copy was the cost, the copy was only 1.9 ms of
+it. What cost was the string keys: political drift alone was 8.0 ms, spent on 9,454 hashed
+`snap[neighbourFips]` lookups per turn.
+
+Measured now, with everything M7 added: a headless world turn is **33 ms** (26 ms before the
+movement roster grew from 24 to 32, which is the sentiment matrix getting a third wider), migration
+is 2.4 ms of it, recognition 0.35 ms, and a full round with fifty AI nations acting is about 137 ms.
+
+**Two phases read Areas other than the one they write**, and they are the two that need care.
+Political drift reads its neighbours' mixes. Migration *writes* to its neighbours, which is worse:
+every flow on the board is computed before any is applied, because applying as it goes would let the
+first Area's arrivals decide the second Area's departures and the node numbering would decide who
+moved.
 
 **The phase contract**, precisely:
 
@@ -263,16 +294,29 @@ frozen and the price index is six constants.
 
 ---
 
-## 4.1 Power: four stocks, and their working
+## 4.1 Power: five stocks, and their working
 
-Every nation carries four numbers, recomputed once per world turn in `phasePower` and stored:
+Every nation carries five numbers, recomputed once per world turn in `phasePower` and stored:
 
 | Stock | What it measures | Rises with | Falls with |
 | --- | --- | --- | --- |
-| **Authority** | how firmly a state holds its own ground | age, tenure, wars won, solvency, cohesion | territory lost, occupation, overreach |
-| **Influence** | how much the rest of the world listens | economic weight, trade reach, alignment abroad | conquest × (1 + influence), blitz pace, occupation |
+| **Authority** | how firmly a state holds its own ground | age, tenure, wars won, solvency, cohesion | territory lost, occupation, overreach, self-rule granted |
+| **Influence** | how much the rest of the world listens | economic weight, trade reach, alignment abroad | conquest × (1 + influence), blitz pace, occupation, a coalition against you, not being recognised |
 | **Quality of life** | how well it feeds, treats and pays its people | food security, healthcare, prosperity | fiscal strain |
-| **Civil liberties** | how freely it lets people disagree | alignment at home, government type, prosperity | a divided people, occupation |
+| **Civil liberties** | how freely it lets people disagree | alignment at home, government type, prosperity | a divided people, occupation, a garrison at home |
+| **War weariness** | what a decade of fighting costs at home | wars fought, ground taken, civil wars | peace, and only peace |
+
+**War weariness is the one that runs the other way**, and it is the only stock with a floor of zero
+rather than of `power.floor`: a nation at peace is not eight per cent exhausted. It rises with
+fighting, decays with quiet, and it is read by Quality of Life, by Civil Liberties and by the
+electorate — which is what makes it a political fact rather than a mood.
+
+**Every leader puts a thumb on five of these** (§6.6), as a *signed* term. Signed matters: mapping a
+modifier of roughly -1..1 onto the 0..1 an ordinary term wants gives every nation a constant offset
+and quietly moves the base for everybody, which is a mistake three "sits at the base" tests caught
+the first time it was made. **Recognition** is signed for the same reason and measured as a
+*deficit* — `legitimacy - 1`, so a recognised nation contributes exactly nothing and a pariah loses
+the whole weight.
 
 ### The Why record
 
@@ -351,11 +395,15 @@ Liberties 0.60–0.84.**
 ### What is not in them yet
 
 **A term arrives here when the thing it measures does**, which is why the list keeps shrinking. M6.5
-brought the military, so Civil Liberties gained a *Garrison* term and Authority a *Self-rule* one —
-the two prices the M6 valves charge. Authority's design list still names failed suppressions and
-coalition pressure; Influence's names treaties honoured and broken, and aid given. Those mechanics do
-not exist yet (coalitions and relations are M7), and adding placeholder terms would mean tuning the
-real terms against constants of zero and re-tuning everything when they arrive.
+brought the military, so Civil Liberties gained a *Garrison* term and Authority a *Self-rule* one.
+M7 brought the rest of the list it used to name: Influence has a *Coalition* term (§6.5) and a
+*Recognition* one, all five stocks have a *Leadership* term (§6.6), and war weariness became a stock
+of its own rather than a term inside somebody else's.
+
+What is left is **treaties honoured and broken, and aid given** — Influence's last two design terms.
+Neither mechanic exists: there is no treaty object and no transfer of money between nations, and
+adding placeholder terms would mean tuning the real ones against constants of zero and re-tuning
+everything when they arrive.
 
 ---
 
@@ -487,9 +535,20 @@ exists. A contiguous block large enough to stand alone becomes a new nation; any
 its nearest neighbour, **never you**. The panel shows what the handover saves: the per-Area upkeep
 and, on foreign ground, the superlinear occupation surcharge.
 
+### Recognise
+Admit that a nation founded during play is a country (§6.5). It costs no money, takes no ground and
+does **not** end your turn — charging a nation's one action for a diplomatic signature would price
+it at the same rate as a war. What it costs is with whoever they broke away from.
+
+It is deliberately **not** on the AI's candidate list: an AI's recognitions are the world making up
+its mind one pair at a time, priced by standing and kinship and how long the thing has lasted, not a
+move competing for the one action it gets each turn. A nation that spent its whole turn signing a
+paper about a three-Area rump would be a worse opponent.
+
 ### Counties mode
 Selecting an Area shows what the acting nation can do with it — release it if it is theirs, annex
-from it if it is not — and when neither is possible, the reason why.
+from it if it is not — and when neither is possible, the reason why: including, since M7.11, that it
+is simply out of reach.
 
 ### Autonomy
 
@@ -612,17 +671,182 @@ omission but the shape of the capstone.
 
 ---
 
+## 6.4 Reach: how far a nation can actually act
+
+**Anti-snowball brake #3, and the only one of the three that is a limit rather than a price.** The
+coalition and the cost of occupation make expansion expensive; this makes it impossible. Past a
+certain distance from the place a nation governs from — measured along the network rather than
+across the map — there is no amount of money that buys the ground.
+
+Reach is a bounded Dijkstra from **one** place: the government's own seat if it still holds it,
+otherwise its largest Area, because a government that has lost its capital sits in its largest city.
+Cost accumulates per Area entered and reach is `decay^cost`, so it falls smoothly and there is no
+ring on the map.
+
+**One source, and that is the whole design.** The first cut made every seat of government a nation
+holds a source, on the reasoning that capturing a capital should extend your reach — and that made
+the brake a no-op, because an empire built by conquest captures capitals *by construction*. A nation
+holding 852 of the 1,676 Areas had twenty-four seats, full reach over every frontier target it had,
+and no limit of any kind. Reach has to decay from a **core** or it does not decay at all. The shape
+that falls out of one core is the interesting one: an empire grows as a blob around its capital, and
+a long thin one cannot push at its far end whatever it holds in between.
+
+**The network is what the baked rail and interstate data finally does something with.** Entering an
+Area costs 1.0 across open country, 0.72 along an interstate, 0.58 where there is rail and 0.34
+through a rail hub — of which there are seventy-six in the entire country, so holding one is worth a
+war. Foreign ground costs 2.2× whatever it costs, which is most of what makes a distant war hard.
+
+Reach does three things with one number: it **prices** an annexation (up to +1.6× at the edge), it
+**weakens the army** that fights for it, and past `proj.minReach` it **refuses** the move. All three
+come off the same record, so the panel explains the refusal with the number that priced the attempt.
+A nation always reaches its own soil — holding and taking are different questions, and the floor
+that says so is applied after the search so it never feeds the frontier.
+
+Measured across empire sizes, projecting from one capital: the worst of the 944 opening targets sits
+at 0.31 reach, a 270-Area empire's worst frontier at 0.23, a 517-Area empire's at 0.13 and a
+660-Area one's at 0.10. At a limit of 0.18 the opening board is untouched, the far corners start
+being refused past a quarter of the continent, and a single-capital empire stalls around a third of
+it.
+
+---
+
+## 6.5 Diplomacy: memory, coalitions, and who is admitted to exist
+
+**One append-only list, and everything else falls out of it.**
+
+```
+{ turn, from, to, kind, magnitude }
+relation(a, b) = base + Σ magnitude · decay^(now - turn)
+```
+
+Memory, rivalry, gratitude, "they annexed us three turns ago", the coalition trigger, whether a
+neighbour will accept ground you are trying to hand over — all of it is a query over the same list.
+Before M7.1 there was no inter-nation state of any kind and the save format had nowhere to put one.
+The alternative is a scalar per pair per feeling, which is a matrix that grows with every emotion
+anybody thinks of and cannot answer "why".
+
+It is **directed** — how A feels about B is not how B feels about A, and making it symmetric would
+be one line less code and would delete the rivalry. It is **decaying**, so an annexation is most of
+a grievance the year it happens and background noise a decade later, which is what makes "recently"
+mean something without anybody storing a window. And it is a **Why record**: `between(a, b)` returns
+the entries that made the number, dated.
+
+### Coalitions
+
+```
+threat(n) = size_share(n) × (1 − influence(n))
+```
+
+**Being big is not the crime.** A nation can hold half the map and go untouched if the other half is
+glad it is there, and a nation can be middling and surrounded because of how it got there. Influence
+is the stock the rest of the game already spends on being tolerable, and this is what finally makes
+spending it worth something.
+
+What it replaced was a size-rank tier that handed the top tenth a multiplier on a roll that rarely
+happened: with it fully applied, California still took 692 Areas on turn 1 and 1,602 of 1,676 by
+turn 3, with zero civil wars. A coalition instead costs its target **money every turn**, standing
+every turn, and puts its members' border armies in the way of the next annexation whether or not
+they are the ones being annexed. And it is a set of **named nations that each have a reason**, read
+off the relations list — which is what makes it answerable ("Idaho, Nevada and Oregon, and here is
+what you did to them") and escapable, which a rank never is.
+
+Members are nations that resent the target *or* border it — the second is what stops a conqueror
+being safe simply because it has not got round to its neighbours yet — and pressure is the
+coalition's **share of the continent**, not its head count, because twenty rump states lining up
+against a superpower is a sentence rather than a constraint.
+
+### Recognition
+
+**One scalar and one matrix.** `recognises(A, B)` is a directed fact stored only where it is not the
+default, and `legitimacy(B)` is the share of the continent, by weight, that recognises B. The
+fifty-one nations the game opens with are recognised by everybody always and nothing is written down
+for them, so the matrix is empty on turn 0 and never grows to n².
+
+Until M7.8 a nation born on turn 14 was, the instant it existed, a peer of the fifty states it broke
+out of. That is the one thing secession is not. **What it costs to be a pariah**, four ways: no
+bilateral trade with anyone who does not recognise you, a smuggler's rate on the world market, no
+seat in a coalition, and a signed deficit on Influence. The market is a haircut rather than a lock,
+because refusing external trade outright would make an unrecognised landlocked state unplayable and
+would also be untrue — what an unrecognised country loses is the margin, not the trade.
+
+Recognition is **earned every turn**, by standing, kinship, having lasted and being too big to
+ignore — and, worth more than all of them, by **the state you broke away from giving in**. Measured
+in a played game: Texas's chance of recognising the State of Jefferson was 0.07 a turn while
+California called it a rebellion and 0.24 the moment California signed; Jefferson went from 14%
+recognition to 100% in twelve turns. That is what makes the player's own recognition a move worth
+having and refusing one a weapon.
+
+And it is the cleanest difference between the two ways a nation can be born: a state that
+**declared** independence spends its first years as a pariah, and one that was **released** is a
+country from the first day, because the only government the world was waiting on has already spoken.
+
+---
+
+## 6.6 Politics: leaders, crises and elections
+
+**A leader is a thumb on the scale, deliberately small.** One named person per nation, two traits
+drawn against the government's ideology, and a signed modifier on each of the five stocks plus a
+small pull on the war roll. Two traits sum, so a Hawk paired with a Reformer cancels. A new
+government is a new person — changing course and keeping the same face is the version of that which
+means nothing.
+
+**Crises** are authored in `content/events.json`: a trigger over the stocks, two or three options
+with real trade-offs, and a closed vocabulary of effects so an option can only do things the model
+already knows how to do. Before M7.4 a six-second auto-clearing toast was the entire narrative
+surface.
+
+### Elections
+
+Every nation votes every `election.termTurns`, on a schedule **staggered by a hash of its id and
+stored nowhere** — a derived schedule needs no field in the save, no migration and no reset, and
+fifty-one elections do not land on the same turn.
+
+The base is the population: every ideology's share of the nation's people, which is the number the
+map already carries. The government in office gets **one swing** against it, made of the four things
+it is answerable for — Quality of Life, Authority, Civil Liberties and War weariness — plus its
+leader.
+
+**Measured against the world mean, not against the middle of the range**, and that is the difference
+between a system that works and one that does not. The stocks do not sit around 0.5; a settled board
+runs Quality of Life in the eighties, so a term centred on 0.5 hands every incumbent alive the same
+large bonus, which is not a record but a thumb on the scale for whoever happens to be in office.
+With that mistake in place, 284 elections over 84 turns turned out three governments and a
+government holding 39% of its people against a rival holding 58% was re-elected. Against the mean it
+is 56 of 266, and California switched to the minority ideology is predicted to lose 50–47.
+
+This is what stops an ideology being a **costume**. The appeasement valve (§7.4) let
+a government pick an ideology and keep it forever: the popular plurality was tracked every turn, but
+only for a nation that had never deliberately chosen, and "it chose; it keeps its choice" locked
+everybody else in for the rest of the game. A government changes hands at an election now, and
+nowhere else.
+
+**And an election can be stolen.** A government whose Civil Liberties have already fallen below
+`election.stealBelow` is, by definition, a state that can refuse a result — the capacity and the
+score are the same fact, so nothing new had to be invented to say who may. The price is a further
+shock to the liberties that allowed it, applied to the stock so it decays rather than being undone
+by the next recompute: suppression buys you this term and buys the grievance that takes the next
+one. The rule is identical for the player, except that the player is **asked**.
+
+---
+
 ## 7. Movements, sentiment and secession
 
-Twenty-four regional movements spawn **once, at setup**, from `data/parties.json` (baked by
-`build_parties.py`, whose region table is the authored content). Every state has at least one
-movement homeland — Alaska, Arizona, Colorado, Hawaii and New Mexico had none, leaving 348 Areas
-permanently outside the system. Greater Idaho and the State of Jefferson are deterministic; the
-rest roll a spawn chance. Each rolls a spawn chance and a
+Thirty-two regional movements spawn **once, at setup**, from `data/parties.json` (baked by
+`build_parties.py`, whose region table is the authored content). **Every Area in the country is
+inside somebody's homeland** — 348 Areas were outside the system when five whole states had no
+movement at all, 278 after M1.13 closed those, 179 after M7.12 gave the east five of its own, and
+zero since the M7 close filled the western interior. That matters because being in a homeland is
+what makes an Area capable of sentiment, grievance and secession at all: a gap in this table is a
+region of the map where the central mechanic of the game cannot happen.
+
+Six are **deterministic** — Cascadia, Deseret, Greater Idaho and Jefferson in the west, Franklin and
+the New England Revivalists in the east — because a run that happens to have no Deseret in it is not
+the scenario, and an East with no Franklin is not the widened East. The rest roll a spawn chance.
+Each rolls a spawn chance and a
 per-Area share; the new movement takes its rolled share **plus** the Area's entire "Other" share,
 and the remaining parties shrink proportionally so counts still sum exactly to the population.
 
-**Every movement carries an ideology** (`build_parties.py` maps all 24), and seeding it converts
+**Every movement carries an ideology** (`build_parties.py` maps all 32), and seeding it converts
 population from the *other* ideologies into its own — so a movement's arrival moves the Area on the
 axes, and its members are people who hold that ideology and are also organised. See §3.1.
 
@@ -645,10 +869,16 @@ started with, to 2.2e-16.
 
 - **homeland** — every Area it *can* exist in. Geography decides where.
 - **core** — the Areas it must all hold to declare. **Derived** in the bake as the smallest set of
-  homeland Areas holding 60% of its people, never fewer than three. Hand-authoring twenty-four county
+  homeland Areas holding 60% of its people, never fewer than three. Hand-authoring thirty-two county
   lists is data entry that goes stale the moment `areas.json` is re-baked; the derivation is the
   principled reading of "heartland" and produces the right answers by construction — Deseret's core
-  is the Wasatch Front (4 Areas of 41), Cascadia's is the Portland–Seattle corridor (25 of 164).
+  is the Wasatch Front (4 Areas of 41), Cascadia's is the Portland–Seattle corridor.
+
+  The Cascadia example was, for three milestones, a claim the data contradicted: its homeland was
+  the R-leaning inland northwest, so its derived core was Butte and Shasta counties in *California*
+  and Ada and Bannock in *Idaho*. The homeland is the wet side of the mountains now and the core
+  comes out Multnomah, Clackamas, King and Pierce — a documented intent and a bake that disagreed
+  with it, which is the failure mode this whole document exists to catch.
 - **seed** — where it actually started, which is its core. Everything else in the homeland is ground
   it has to win, and that gap is the room the diffusion term works in.
 - **growthCap** — its own ceiling, 0.25 for a nuisance and 0.60 for a country in waiting. One number
@@ -658,8 +888,12 @@ started with, to 2.2e-16.
   set by an event. A machine written by events goes stale the first time one is missed: a movement
   whose nation is conquered would stay `realized` forever.
 
-Cascadia, Deseret, Greater Idaho and Jefferson are **deterministic** — they are the spine of the West
-slice, and a run that happens to have no Deseret in it is not the scenario.
+**The authored regions are real politics.** Deseret, Greater Idaho, the State of Jefferson and the
+Sagebrush Rebellion in the west; Franklin — the state that actually existed from 1784 to 1788,
+across what are now five state lines — Acadiana's twenty-two parishes, the Second Vermont Republic's
+descendants, the Delmarva peninsula's repeated statehood petitions and the eleven Colorado plains
+counties that voted on secession in November 2013. A movement invented for coverage would be a
+homeland wearing a name.
 
 ### 7.2 Sentiment
 
@@ -678,7 +912,7 @@ target      = clamp01( base * (grievance + pull) - suppression )
 **`base` is multiplicative**, and that is the design rule made mechanical: *geography defines where a
 movement can exist; ideology defines how strong it is there*. Misgovern a Democratic Socialist city
 and you do not get Deseret, you get somebody else. Additive grievance would let bad government alone
-produce any movement anywhere, collapsing twenty-four regional factions into one national discontent
+produce any movement anywhere, collapsing thirty-two regional factions into one national discontent
 meter.
 
 **`pull` is the diffusion term**, read from the CSR graph and from `snap` — never from `next`, which
@@ -745,10 +979,14 @@ on the day it was founded.
   the majority you had.
 
   Guarded by a mandate threshold, a treasury cost scaled by how far you move on the axes, and an
-  Authority hit applied to the **stock** rather than the target. And **a nation that has chosen keeps
-  its choice**: `refreshGovernments` tracks the plurality only for nations that have never
-  intervened, so changing course is a commitment rather than a toggle — and a government can end up
-  badly out of step with its own people, which is exactly the pressure the model exists to express.
+  Authority hit applied to the **stock** rather than the target.
+
+  **And you answer for it at the next election** (§6.6). Until M7.10 a nation that had chosen kept
+  its choice forever — the popular plurality was tracked every turn, but only for a nation that had
+  never intervened, so changing course once made you immune to your own people for the rest of the
+  game. That is what made an ideology a costume. A government changes hands at an election now and
+  nowhere else, which turns "badly out of step with its own people" from a pressure the model
+  expresses into a bill it presents.
 - **Autonomy** (§6 and M6.5b) is the third and the one a player reaches for when they still intend
   to keep the place — which is most of the time, and was exactly the case the game had no move for.
 - **A garrison** (§6.1) is the fourth, and the only one that answers the movement with force rather
@@ -771,7 +1009,44 @@ existed there was nothing to read and this hook could not have been written.
 
 ---
 
-## 7.6 Instrumentation: the ledger, the simulator, the dashboard
+### 7.6 Migration: people move
+
+Until M7.9 Quality of Life was a number on a card. A nation could grind its people into the ground
+and the only consequence was a worse number; population was fixed to the ground it started on and
+grew there forever, so the political map could change only by a border moving.
+
+**A gradient, not a destination.** Nobody computes the best Area on the continent and walks there;
+people look at the Areas next door and move toward the better ones, in proportion to how much
+better. Flow along the adjacency graph is what makes the result physical — a walled-off paradise does
+not drain the far coast, and distance is real without a single distance calculation.
+
+Four things pull and one pushes:
+
+- **Quality of life** and **civil liberties** — the nation's, so both stocks acquire a demographic
+  price and suppression costs you the people who can leave.
+- **Output per head, here** — which falls as people arrive, and is the brake that stops the
+  continent piling into one Area.
+- **Crowding** — a second and smaller brake.
+- **Alignment** — how close this Area's politics are to the mover's own, and the term that changes
+  the game. People move toward people who think as they do, so a divided nation sorts itself into
+  homogeneous halves over a few decades and those halves are exactly the ground a movement organises
+  on. Measured in isolation over twelve turns, the average Area's dominant ideology goes from 63.3%
+  to 66.5% — a map sorting itself while political drift pulls the other way.
+
+**Movements shrink with the people who leave and are diluted by those who arrive.** Membership is
+people, so when a tenth of an Area's reds leave, a tenth of the red movement goes with them — but
+arrivals deliberately do not join, because somebody who moved in last quarter is not a member of the
+local separatist organisation. That asymmetry is what makes settlement an answer to secession: the
+movement's *share* falls because the denominator grew, which is what happens to a real one.
+
+A border is friction rather than a wall (0.40 of the gradient survives one), so internal sorting is
+the common, invisible case and emigration is the one that gets a line in the panel. And it is where
+expulsion would live, if a later milestone wants it: this system with the source forced rather than
+chosen, not a special-case button with its own arithmetic.
+
+---
+
+## 7.7 Instrumentation: the ledger, the simulator, the dashboard
 
 ### The event ledger
 
@@ -859,6 +1134,18 @@ with no record of what it was tuned against is one nobody can ever change again.
 - **A turn-summary newspaper.** Three to six headlines per round drawn from the
   ledger, ranked by kind and magnitude, replacing a growth line that said the
   same thing every turn.
+- **A card that argues with you.** Every M7 system puts its own Why record on the
+  nation panel and says the same thing the model used: who is aligned against you
+  and what you did to them; how much of the continent admits you exist and who is
+  still refusing; who arrived and who left last turn; what the polls say and which
+  term is carrying the government. On an Area you do not hold: how far your reach
+  extends here, what that multiplies the price by, and what it does to the fight.
+- **Two decisions the model refuses to make for you.** When a movement declares
+  out of your own ground you may go with it; when your own government loses an
+  election and your liberties are low enough that the result could be set aside,
+  you are asked rather than told. The AI takes the same two decisions by rule —
+  the point of asking is that these are the moments where the honest answer and
+  the available answer differ.
 
 ---
 
@@ -873,6 +1160,17 @@ with no record of what it was tuned against is one nobody can ever change again.
 - **Movement state is on the nation panel** beside each movement's share, because a movement at 12%
   that has taken its whole core is a different situation from one at 30% that has not, and the
   percentage alone cannot say which.
+- **Every nation has a flag**, drawn as inline SVG from a hash of its id — layout, palette and
+  charge all fall out of it. A flag is a pure function of who you are, so it survives a save without
+  being in one, it is the same flag in the panel and the leaderboard, and there is no way for it to
+  drift from the nation. New nations get a **name** too, drawn against the founding ideology: a
+  Distributist breakaway is a Compact and a Nationalist one a Directorate, and no two countries may
+  share a name.
+- **A timeline.** One baseline plus per-turn ownership *deltas* (13 KB for thirty turns against
+  ~250 KB naive), with a cast recording every nation's name and colour when it first appears so the
+  scrubber can name countries that no longer exist. The ledger says "the State of Jefferson declared
+  independence, taking 14 Areas"; that is a sentence about a **shape**, and a player who has watched
+  a border move should be able to watch it again.
 - **Seven leaderboard sorts**: population, GDP, ideology, and one per power stock. A stock you can
   only read one nation at a time is half a feature — the interesting question about Authority is
   never "what is California's" but "who is weakest, and who is climbing" — so the power columns
@@ -904,7 +1202,18 @@ which passes just as happily when the original is broken.
 
 Format **version 2**. Every module holding mutable state serializes, and `STATEFUL_MODULES`
 enumerates them so none can be forgotten: the model, turn order, world turn, market, colours, the
-movement roster, the RNG, the tunable overrides and the UI mode. Version 1 saves are **refused**
+movement roster, the ledger, the military, relations, recognition, crises, leaders, the timeline,
+the RNG, the tunable overrides and the UI mode. A test walks that list and fails if a name in it
+does not resolve to a module.
+
+Two shapes are deliberately **not** in the document, because they are derived: a nation's flag
+(a function of its id) and the election schedule (a function of the turn and the id). A derived fact
+needs no migration and cannot come back wrong.
+
+**A document that predates a concept says nothing, not "no".** A save written before recognition
+existed is loaded as a world in which every nation founded during that game *is* recognised —
+because the alternative is retroactively stripping them of their standing, their trade and their
+coalition seat, and a save that gets worse for having been saved is not a save. Version 1 saves are **refused**
 with a message naming what they lack, not migrated — they carry no world turn, no prices, no
 roster, no colour counter and no RNG state, so migrating one means inventing five values and calling
 the result the player's game. A document also carries a **build stamp** (Area count and the
@@ -937,9 +1246,12 @@ server, and the flash says which of the two happened.
 
 ## 11. Testing
 
-`tests/run.html` runs every suite in the browser; **490 tests across 93 suites, all green, in about
-94 seconds** — the M4 suites play tens of thousands of world turns between them, which is the cost of
-testing a model whose interesting behaviour takes forty turns to appear. The files are plain ES modules with no dependencies, written so they run under
+`tests/run.html` runs every suite in the browser; **785 tests, all green, in about 140 seconds** —
+the suites play tens of thousands of world turns between them, which is the cost of testing a model
+whose interesting behaviour takes forty turns to appear. `?only=` filters to a comma-separated list
+of suites while working on one, and **a file that fails to load is a failure**, not a silently
+shorter run: a duplicate `const` in one test file once deleted twenty-two tests while the runner
+reported "all 638 green". The files are plain ES modules with no dependencies, written so they run under
 `node --test` unchanged.
 
 What is pinned: the model invariants (sums, ownership consistency, save round-trip, same-seed
@@ -965,53 +1277,48 @@ Three habits are worth stating, because each was learned by being bitten:
 
 ## 12. What is deliberately not built yet
 
-Listed so nobody mistakes an absence for a bug. Each is a milestone in
-`docs/REBUILD-PLAN.md`.
+Listed so nobody mistakes an absence for a bug. M7 was the last milestone in
+`docs/REBUILD-PLAN.md`, so what follows is no longer a queue with dates on it — it is the honest
+account of where this model stops.
 
-- **Most numbers are still chosen by argument rather than by measurement.** The count has improved:
-  M5.3 tuned `sent.maxRise` against four seeds; M6.3 priced unite and release, raised two cooldowns
-  and `nation.minAreas` against measured sixty-turn games; M6.4 reset all twelve victory targets
-  against a measured eighty-turn game; M6.5 recalibrated military upkeep and the garrison scale
-  twice. That is roughly twenty of about a hundred and eighty sliders with evidence written into
-  their `doc`. The rest are defensible, documented, and untested against play. *(M7)*
+- **Most numbers are still chosen by argument rather than by measurement**, though the count keeps
+  improving and every milestone adds a few: M5.3 tuned `sent.maxRise` against four seeds; M6.3
+  priced unite and release against measured sixty-turn games; M6.4 reset all twelve victory targets;
+  M6.5 recalibrated military upkeep twice; M7 measured the coalition trigger against the opening
+  board, the recognition rate against a played game, the election swing against the world's actual
+  spread of Quality of Life, and the projection limit against four empire sizes. Counting honestly —
+  a `doc` that says "measured" and then gives the number — that is 21 of 298 sliders, and another
+  handful cite a figure without the word. The rest are defensible, documented, and untested against
+  play.
 - **The victory targets are set at two to five times what an AI-only world produces**, on the
   reasoning that a player playing deliberately for eighty turns should substantially outperform a
   deliberately mild AI. That last step is a judgement rather than a measurement, and it is the first
-  thing a real play test should revisit. *(M7)*
-- **The AI never changes course.** `govern` scores zero across every measured run, which means
-  `ai.wMandate` and `gov.changeCost` want a look. The valve exists and nobody uses it. *(M7)*
+  thing a real play test should revisit.
 - **The power stocks are still per NATION**, so sentiment's grievance terms are uniform across
-  everything a nation owns. QoL and liberty satisfaction per **Area** would give the diffusion term
-  a real gradient to run along; the economy bake is already per Area, so that is a change of scope
-  rather than of model. Autonomy and the garrison are the first two things that vary *within* a
-  nation, and they only vary by Area because they are flags rather than stocks. *(M7)*
-- **No coalitions.** The `blueShell` anti-snowball tier ranks by population only; the design wants
-  a coalition triggered on `threat = size_share × (1 - influence)`, so that a beloved unifier is
-  left alone and a feared conqueror gets ganged up on. Authority is still missing its
-  coalition-pressure term and Influence its treaty terms. *(M7)*
-- **No relations between nations of any kind.** No memory, no rivalries, no "they annexed us three
-  turns ago". The design wants one append-only structure —
-  `{turn, from, to, kind, magnitude}` with `relation(a,b) = base + Σ magnitude·decay^(now-turn)` —
-  out of which memory, rivalry and coalition triggers all fall. *(M7)*
-- **No war weariness.** Nothing persists between wars. *(M7)*
-- **No events, no crises, no leaders, no elections, no migration, no recognition, and no timeline.**
-  A six-second toast and the turn-summary newspaper are the whole narrative surface. *(M7)*
-- **New nations get a generated name and no flag.** *(M7)*
-
-- **No `relations` in the state document.** The plan sketches it; there is no data behind it yet,
-  and stubbing an empty array would be inventing a shape before knowing it. The ledger, by contrast,
-  now *is* saved state, and is what a timeline will replay. *(M7)*
-- **Only the West is authored.** East of the MT/WY/CO/NM line the eastern movements (Franklin,
-  Acadiana, New England Revivalist, Central States Union, Great Lakes) have no homelands baked. The
-  full 51-nation map loads and plays; what is missing is separatist content on the eastern half.
-  *(M7, deliberately last — it keeps the Area-merge ambiguity a data question rather than a design
-  one.)*
+  everything a nation owns. Quality of life and liberty satisfaction per **Area** would give the
+  diffusion term a real gradient to run along, and would give migration a much sharper one; the
+  economy bake is already per Area, so it is a change of scope rather than of model. Autonomy and
+  the garrison are the only two things that vary *within* a nation, and they vary only because they
+  are flags rather than stocks.
+- **No treaties and no aid.** Influence's design list still names "treaties honoured and broken" and
+  "aid given", and neither mechanic exists: there is no treaty object and no transfer of money
+  between nations. Recognition is the first thing in the game that is a standing diplomatic fact
+  rather than an event, and a treaty would be the second.
+- **Trade is still a UI flow rather than a Move.** Every other action goes through
+  `Moves.plan`/`resolve` and is therefore something the AI can consider; trade lives in
+  `js/actions.js`, so fifty nations never trade with each other. The trade *rules* are model code
+  and tested; what is missing is the planner that would let an AI use them.
+- **A leader is a modifier and a name.** No succession crises, no factions inside a government, no
+  relationship between two leaders. The trait table is twelve entries deep and the effect vocabulary
+  is five stocks and a war roll.
+- **Migration does not cross a border it has no reason to cross.** It reads the gradient between
+  adjacent Areas, so a diaspora cannot form on the far side of the continent and a refugee flow out
+  of a collapsing state goes next door rather than to the best place available. That is the right
+  first model and the wrong final one.
 - **The Area merge plan has not been re-baked.** `build_areas.py` is now deterministic and caps an
-  Area at 8 counties, but the shipped `areas.json` still contains a 22-county Area. Adopting the
-  new plan moves 10 of 483 Area primaries, which is a data migration across `economy.json`, both
-  map modes and every save. `build/validate.py` warns about it on every run. *(next legitimate
-  rebake)*
+  Area at 8 counties, but the shipped `areas.json` still contains a 22-county Area. Adopting the new
+  plan moves 10 of 483 Area primaries, which is a data migration across `economy.json`, both map
+  modes, every authored homeland and every save. `build/validate.py` warns about it on every run.
+  *(next legitimate rebake)*
 - **`county_neighbors.json` is a pre-2015 Census vintage** with ~100 FIPS that no longer exist. It
   feeds the display-only "Neighbors" row; the simulation reads `adjacency.json`, which is current.
-- **278 of 1,676 Areas still have no movement homeland.** Every *state* is covered; the remaining
-  gaps are within states. *(M4.1 authors the rest)*

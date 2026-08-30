@@ -357,6 +357,9 @@ Done in the order **M3.4 -> M3.1 -> M3.2 -> M3.3**, because the plan lists M3.4'
       mountains now, and its core is the Portland-Seattle corridor the tests always said it was.
       Areas that can never receive a movement: 179 → **0**, and the validator warning that has stood
       since M1 is gone.
+- [x] **M7 close (b)** `DESIGN.md` rewritten for a game with diplomacy, elections, migration and a
+      limit on how far anybody can reach; `README.md`'s module map brought up to date; and
+      `docs/DECISIONS.md` given the fifteen entries M6.5 through M7.12 never got.
 
 ---
 
@@ -386,7 +389,18 @@ Performance, measured on the real map rather than predicted: a world turn 24.7 -
 phases 12.4 -> 2.8 ms, political drift 8.0 -> 2.0 ms, a 50-turn simulator run 1,237 -> 466 ms. The
 columnar store is 173 KB and the adjacency graph 43.5 KB.
 
-Next: the **M7 close (b)** — the DESIGN.md rewrite.
+**M0–M7 complete.** Every numbered task in `docs/REBUILD-PLAN.md` is done. 785 tests green at
+`tests/run.html`, `build/validate.py` reports 0 errors and 2 warnings (both of them data-vintage
+notes with no fix that is not a re-bake), and the game loads, plays, saves and resumes with a
+clean console. `DESIGN.md` was rewritten at the M7 close: §4.1 is five stocks, §6.4 is reach,
+§6.5 is relations, coalitions and recognition, §6.6 is leaders, crises and elections, §7.6 is
+migration, and §12 is now an account of where the model stops rather than a queue.
+`docs/DECISIONS.md` carries D116–D130 for M6.5 through the close.
+
+What a next pass would take up, in the order the evidence argues for it: **per-Area power
+stocks** (the one structural gap left, and the thing that would give migration and the diffusion
+term a real gradient), **trade as a Move** so the AI can use rules it already has, and a **play
+test against the victory targets**, which are the largest un-measured judgement in the game.
 
 Open, carried into M2.3: after 21 turns no Area is yet LED by a minority ideology (Rep 1,288 /
 Dem 388 of 1,676). That is the expected shape at 11% organised movements and it is M5's dial to
