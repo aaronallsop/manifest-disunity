@@ -196,6 +196,73 @@ export const SCHEMA = {
     doc: 'How much a fast rate of acquisition costs. See overreachK.',
   },
 
+  /* ---- Influence ---------------------------------------------------------
+   * Promoted from the ad-hoc, stateless version `evalTransit` has been computing
+   * inline per trade dialog since M1 - relative economic size and political
+   * alignment - generalised from "against this one partner" to "against the
+   * world" and given somewhere to persist.
+   */
+  'power.influence.base': {
+    v: 0.25, min: 0, max: 1, step: 0.01, group: 'Power',
+    label: 'Influence: base',
+    doc: 'Where a nation sits with every input at zero: no economy, no trade relations, nobody aligned with it. Lower than Authority\'s base, because a state has authority over its own people by existing and influence over anyone else only by earning it.',
+  },
+  'power.influence.gdpShareK': {
+    v: 0.06, min: 0.005, max: 0.5, step: 0.005, group: 'Power',
+    label: 'Influence: economic-weight half-point',
+    doc: 'Share of world GDP at which the economic-weight term is half its maximum. 0.06 is about twice what the largest opening nation holds, so the term has room to grow into as the map consolidates rather than opening saturated.',
+  },
+  'power.influence.partnersK': {
+    v: 5, min: 1, max: 50, step: 1, group: 'Power',
+    label: 'Influence: trade-reach half-point',
+    doc: 'Live trade relations at which the reach term is half its maximum. Read from tradeCooldown, which already records who you do business with - a second relations table could disagree with the one the trade screens read.',
+  },
+  'power.influence.conquestK': {
+    v: 14, min: 1, max: 200, step: 1, group: 'Power',
+    label: 'Influence: conquest half-point',
+    doc: 'Areas taken recently, SCALED BY (1 + your current influence), at which the conquest term is half its maximum. The scaling is the design\'s context-dependent cost: a superpower annexing a neighbour pays more in reputation than an unknown does, because it had more to spend.',
+  },
+  'power.influence.paceFree': {
+    v: 0.2, min: 0, max: 5, step: 0.05, group: 'Power',
+    label: 'Influence: tolerated expansion rate',
+    doc: 'Areas per turn the world shrugs at. Lower than Authority\'s paceFree: your own institutions can digest expansion faster than your neighbours will forgive it.',
+  },
+  'power.influence.paceK': {
+    v: 0.6, min: 0.05, max: 10, step: 0.05, group: 'Power',
+    label: 'Influence: blitz half-point',
+    doc: 'Areas per turn above the tolerated rate at which the blitz term is half its maximum.',
+  },
+  'power.influence.wEconomy': {
+    v: 0.30, min: -1, max: 1, step: 0.01, group: 'Power',
+    label: 'Influence: weight of economic weight',
+    doc: 'How much a large economy buys you a hearing. The largest positive weight: soft power follows the money.',
+  },
+  'power.influence.wReach': {
+    v: 0.18, min: -1, max: 1, step: 0.01, group: 'Power',
+    label: 'Influence: weight of trade reach',
+    doc: 'How much having live trade relations with many nations raises your standing.',
+  },
+  'power.influence.wAlignment': {
+    v: 0.22, min: -1, max: 1, step: 0.01, group: 'Power',
+    label: 'Influence: weight of alignment',
+    doc: 'How much it helps that the rest of the world thinks like you, weighted by their size. Being ideologically close to California is worth more than being close to Wyoming, which is what soft power means.',
+  },
+  'power.influence.wConquest': {
+    v: -0.34, min: -1, max: 1, step: 0.01, group: 'Power',
+    label: 'Influence: weight of conquest',
+    doc: 'What taking ground costs you abroad. The largest weight in either direction, and the one that scales with what you already had.',
+  },
+  'power.influence.wBlitz': {
+    v: -0.20, min: -1, max: 1, step: 0.01, group: 'Power',
+    label: 'Influence: weight of blitz pace',
+    doc: 'What taking ground FAST costs, on top of taking it at all.',
+  },
+  'power.influence.wOccupation': {
+    v: -0.14, min: -1, max: 1, step: 0.01, group: 'Power',
+    label: 'Influence: weight of occupation',
+    doc: 'What holding foreign soil costs abroad. Smaller than the Authority penalty: occupation is a heavier drain on your own institutions than on your reputation, where the annexation itself did the damage.',
+  },
+
   'nation.historyWindow': {
     v: 20, min: 4, max: 80, step: 1, group: 'Nations',
     label: 'Territorial memory, in turns',

@@ -330,3 +330,196 @@ describe('Authority in the live world', () => {
     }
   });
 });
+
+describe('Influence', () => {
+  /*
+   * Influence is promoted, not invented: `evalTransit` in actions.js has been
+   * computing an ad-hoc, stateless version of relative economic size and
+   * political alignment inline per trade dialog since M1, recomputing it every
+   * time and throwing it away. What is new here is that it persists, that it
+   * covers the world rather than one partner, and that taking ground costs it.
+   */
+  const iBlank = (over = {}) => ({
+    turn: 0, gdpShare: 0, alignment: 0, partners: 0,
+    areas: 10, occupied: 0, gains: [], previous: null, ...over,
+  });
+
+  it('a nation with no economy, no partners and no friends sits at the base', async () => {
+    await bootWorld({ seed: SEED });
+    close(Pw.influence(iBlank(), T()).value, T().get('power.influence.base'), 1e-9);
+  });
+
+  it('starts lower than Authority, because standing abroad has to be earned', async () => {
+    await bootWorld({ seed: SEED });
+    ok(T().get('power.influence.base') < T().get('power.authority.base'),
+      'a nation has authority over its own people by existing, and influence over anyone else only by earning it');
+  });
+
+  it('names every term with a real tunable and a note', async () => {
+    await bootWorld({ seed: SEED });
+    const r = Pw.influence(iBlank(), T());
+    const labels = r.inputs.map((i) => i.label);
+    for (const want of ['Economic weight', 'Reach', 'Alignment', 'Conquest', 'Blitz', 'Occupation']) {
+      ok(labels.includes(want), `Influence does not report "${want}"`);
+    }
+    for (const i of r.inputs) {
+      ok(T().peek(i.key) !== undefined, `"${i.label}" names unknown tunable ${i.key}`);
+      ok(i.note && i.note.length > 5, `"${i.label}" has no note`);
+    }
+  });
+
+  it('economy, reach and alignment each raise it', async () => {
+    await bootWorld({ seed: SEED });
+    const base = Pw.influence(iBlank(), T()).value;
+    ok(Pw.influence(iBlank({ gdpShare: 0.2 }), T()).value > base, 'a big economy did not help');
+    ok(Pw.influence(iBlank({ partners: 10 }), T()).value > base, 'trade reach did not help');
+    ok(Pw.influence(iBlank({ alignment: 1 }), T()).value > base, 'a world that agrees with you did not help');
+  });
+
+  it('conquest costs MORE to a nation that already had standing — the (1 + influence) rule', async () => {
+    /*
+     * The design's context-dependent scaling. A superpower annexing a neighbour
+     * pays more in reputation than an unknown does, because it had more to
+     * spend. Compared on the CONTRIBUTION rather than the value, because the two
+     * nations start from different places and their totals are not comparable.
+     */
+    await bootWorld({ seed: SEED });
+    const gains = [{ turn: 5, areas: 8, reason: 'annex' }];
+    const nobody = Pw.influence(iBlank({ turn: 6, gains, previous: 0.1 }), T());
+    const power = Pw.influence(iBlank({ turn: 6, gains, previous: 0.9 }), T());
+    const cN = nobody.inputs.find((i) => i.label === 'Conquest').contribution;
+    const cP = power.inputs.find((i) => i.label === 'Conquest').contribution;
+    ok(cP < cN, `the same annexation cost the superpower ${cP.toFixed(4)} and the unknown ${cN.toFixed(4)}`);
+    // and the raw input shows the scaling explicitly
+    close(power.inputs.find((i) => i.label === 'Conquest').raw, 8 * 1.9, 1e-9);
+    close(nobody.inputs.find((i) => i.label === 'Conquest').raw, 8 * 1.1, 1e-9);
+  });
+
+  it('a brand-new nation scales conquest by 1, not by 1 + nothing', async () => {
+    await bootWorld({ seed: SEED });
+    const r = Pw.influence(iBlank({ turn: 6, gains: [{ turn: 5, areas: 4, reason: 'annex' }], previous: null }), T());
+    close(r.inputs.find((i) => i.label === 'Conquest').raw, 4, 1e-9,
+      'a null previous influence produced NaN or the wrong multiplier');
+    ok(Number.isFinite(r.value));
+  });
+
+  it('taking ground fast costs on top of taking it at all', async () => {
+    await bootWorld({ seed: SEED });
+    const slow = Pw.influence(iBlank({ turn: 40, previous: 0.5,
+      gains: [{ turn: 39, areas: 4, reason: 'annex' }] }), T());
+    const fast = Pw.influence(iBlank({ turn: 40, previous: 0.5,
+      gains: Array.from({ length: 10 }, (_, i) => ({ turn: 30 + i, areas: 4, reason: 'annex' })) }), T());
+    ok(fast.inputs.find((i) => i.label === 'Blitz').contribution < 0, 'a blitz cost nothing');
+    equal(slow.inputs.find((i) => i.label === 'Blitz').contribution, 0,
+      'one annexation in ten turns counted as a blitz');
+    /*
+     * Compared on the TARGET, not the value. Both nations are falling fast
+     * enough to hit `maxFall` in the same turn, so their post-limit values are
+     * identical (0.42 measured) — which is the anti-spiral guarantee doing
+     * exactly its job, and a nice demonstration that a test written against the
+     * value would have been asserting the rate limiter rather than the term.
+     */
+    ok(fast.target < slow.target,
+      `a ten-turn blitz targets ${fast.target.toFixed(3)} against ${slow.target.toFixed(3)} for one annexation`);
+    close(fast.value, slow.value, 1e-12,
+      'both should be pinned at the same maxFall this turn; the rate limit is not binding');
+    close(fast.value, 0.5 - T().get('power.maxFall'), 1e-12);
+  });
+
+  it('the world tolerates expansion less readily than your own institutions do', async () => {
+    await bootWorld({ seed: SEED });
+    ok(T().get('power.influence.paceFree') < T().get('power.authority.paceFree'),
+      'your neighbours forgive expansion faster than your own state can digest it');
+  });
+
+  it('is rate-limited like every other stock', async () => {
+    await bootWorld({ seed: SEED });
+    const r = Pw.influence(iBlank({ gdpShare: 0.5, alignment: 1, partners: 20, previous: 0.1 }), T());
+    ok(r.target > r.value, 'the record does not show where it is heading');
+    close(r.value, 0.1 + T().get('power.maxRise'), 1e-9, 'Influence jumped to its target');
+  });
+});
+
+describe('Influence in the live world', () => {
+  it('every nation has one, in a spread', async () => {
+    await bootWorld({ seed: SEED });
+    const vals = [];
+    for (const [, n] of Game.nations) {
+      ok(typeof n.influence === 'number' && Number.isFinite(n.influence), `${n.name} has no Influence`);
+      ok(n.why.influence && n.why.influence.inputs.length === 6);
+      vals.push(n.influence);
+    }
+    const min = Math.min(...vals), max = Math.max(...vals);
+    ok(max - min > 0.02, `every nation opened between ${min.toFixed(3)} and ${max.toFixed(3)}`);
+  });
+
+  it('the big economies lead it', async () => {
+    await bootWorld({ seed: SEED });
+    const byInfluence = [...Game.nations.values()].sort((a, b) => b.influence - a.influence);
+    const byGdp = [...Game.nations.keys()]
+      .map((id) => ({ id, gdp: Game.nationDemographics(id).gdp }))
+      .sort((a, b) => b.gdp - a.gdp);
+    const topGdp = new Set(byGdp.slice(0, 8).map((r) => r.id));
+    const hits = byInfluence.slice(0, 8).filter((n) => topGdp.has(n.id)).length;
+    ok(hits >= 5, `only ${hits} of the eight most influential nations are in the top eight economies`);
+  });
+
+  it('the world context is computed once, not once per nation', async () => {
+    await bootWorld({ seed: SEED });
+    const ctx = Power.worldContext();
+    equal(ctx.rows.length, Game.nations.size);
+    let sum = 0;
+    for (const r of ctx.rows) sum += r.gdp;
+    close(ctx.gdp, sum, 1e-6, 'the world GDP total does not match its own rows');
+    const ca = Power.gatherInfluence('06', 0, T(), ctx);
+    close(ca.gdpShare, Game.nationDemographics('06').gdp / ctx.gdp, 1e-12);
+  });
+
+  it('alignment is the pairwise trade-panel number, generalised to the world', async () => {
+    await bootWorld({ seed: SEED });
+    const ctx = Power.worldContext();
+    const worst = Ideology.affinity('green', 'yellow');
+    for (const nid of ['06', '48', '49', '10']) {
+      const a = Power.gatherInfluence(nid, 0, T(), ctx).alignment;
+      ok(a > 0 && a < 1, `${nid}'s alignment is ${a}, outside the open interval`);
+      ok(a > worst, `${nid} is less aligned with the whole world than the two furthest ideologies are`);
+    }
+  });
+
+  it('conquering the map costs Influence while it builds Authority', async () => {
+    /*
+     * The two stocks must be able to disagree — that is the whole reason there
+     * are two of them. A nation that conquers its neighbours gets more secure at
+     * home and less listened to abroad.
+     */
+    const { rng } = await bootWorld({ seed: SEED });
+    for (let i = 0; i < 3; i++) World.advanceTurn(T(), rng);
+    const nid = '06';
+    const i0 = Game.getNation(nid).influence;
+    for (let t = 0; t < 14; t++) {
+      const targets = [...Game.annexTargets(nid)].slice(0, 5);
+      if (targets.length) Game.moveCounties(targets, nid, { reason: 'war' });
+      World.advanceTurn(T(), rng);
+    }
+    const n = Game.getNation(nid);
+    ok(n.influence < i0,
+      `Influence went ${i0.toFixed(3)} -> ${n.influence.toFixed(3)} after conquering everything in reach`);
+    const conquest = n.why.influence.inputs.find((i) => i.label === 'Conquest');
+    ok(conquest.contribution < -0.05, `conquest contributed only ${conquest.contribution.toFixed(4)}`);
+    ok(n.authority > T().get('power.floor'), 'Authority collapsed too; the two stocks are not independent');
+  });
+
+  it('survives a save round-trip as a stock', async () => {
+    const { rng } = await bootWorld({ seed: SEED });
+    for (let i = 0; i < 6; i++) World.advanceTurn(T(), rng);
+    Game.moveCounties([...Game.getNation('32').counties].slice(0, 5), '06', { reason: 'annex' });
+    World.advanceTurn(T(), rng);
+    const want = new Map([...Game.nations].map(([id, n]) => [id, n.influence]));
+    const doc = JSON.parse(JSON.stringify(Game.serialize()));
+    await bootWorld({ seed: 777 });
+    Game.loadState(doc);
+    for (const [id, v] of want) {
+      close(Game.getNation(id).influence, v, 1e-12, `${id}'s Influence was recomputed instead of restored`);
+    }
+  });
+});

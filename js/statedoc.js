@@ -124,7 +124,7 @@ export function applyModel(doc) {
   // rather than leaving them null and letting every reader guard for it. A
   // document that HAS them keeps them, stocks included, because the whole point
   // of a stock is that it remembers.
-  World.begin(window.TUNE, (n) => n.authority == null);
+  World.begin(window.TUNE, (n) => n.authority == null || n.influence == null);
   return { rng };
 }
 

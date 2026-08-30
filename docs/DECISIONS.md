@@ -682,3 +682,39 @@ measured, a single six-Area war scored +0.047 on wars won against −0.060 on ov
 **winning a war lowered Authority**, which is not a position anyone would defend. `power.authority.
 paceFree` (0.35 Areas/turn) is the rate a state absorbs without strain; only what is taken above it
 counts as overreach. The test that caught it is the one that says a won war must raise Authority.
+
+### D70 — Influence was promoted out of `evalTransit`, not invented
+**M3.2.** The review's own note says the trade/transit negotiation "already computes an ad-hoc,
+stateless version of it that should be promoted" — relative economic size, political alignment and
+need, recomputed inline per dialog and thrown away, so nothing outside the trade panel could read it
+and nothing persisted between turns. The two size and alignment terms here are that math,
+generalised from "against this one partner" to "against the world": economic weight is GDP as a
+share of the world's, and alignment is the GDP-weighted mean affinity between this nation's
+political centroid and every other's. `need` stays in `evalTransit`, because it is a fact about one
+deal rather than about a nation.
+
+Trade reach reads `nation.tradeCooldown`, which already records who a nation does business with. A
+second relations table would be a second source of truth that could disagree with the one the trade
+screens read — the D54 mistake in a new place.
+
+### D71 — `(1 + influence)` is why Influence is the one stock that is its own input
+**M3.2.** The plan asks for `annexations * (1 + influence)`, and it is the mechanism behind the
+design's context-dependent cost: a superpower annexing a neighbour pays more in reputation than an
+unknown does, **because it had more to spend**. Measured, the same eight-Area annexation costs a
+0.9-influence nation 1.7× what it costs a 0.1-influence one.
+
+That makes Influence the only stock whose own value feeds its target, which is also exactly why the
+rate limit (D68) is not optional here — the feedback would otherwise run away in both directions. A
+nation with a null previous Influence scales by 1 rather than by `1 + nothing`: a brand-new state
+has no reputation to spend.
+
+Verified live and it is the behaviour the whole milestone is for: California conquering from 58 to
+118 Areas over 12 turns went **Authority 0.501 → 0.515** and **Influence 0.666 → 0.148**. Secure at
+home, a pariah abroad. Two stocks that can disagree is the entire reason there are two.
+
+### D72 — One renderer for every Why record
+**M3.2.** `renderAuthority` became `renderWhy(label, record)` the moment there were two stocks, and
+the nation panel calls it twice. Two near-identical renderers is how the two drift — one gains a
+trajectory arrow, the other does not; one starts hiding near-zero terms, the other keeps them — and
+a player then has to learn that the same kind of number is presented two ways. Influence gets the
+warm end of the palette against Authority's cool one, which is the only thing that differs.

@@ -135,7 +135,8 @@ const Game = (function () {
     const n = {
       annexed: [],
       lost: [],
-      authority: null,   // a power STOCK (js/power.js); null until first computed
+      authority: null,   // power STOCKS (js/power.js); null until first computed
+      influence: null,
       ...props,
       gov: makeGov(props.gov),
       _counties: new Set(),
@@ -1157,6 +1158,7 @@ const Game = (function () {
       annexed: n.annexed.map((e) => ({ ...e })),
       lost: n.lost.map((e) => ({ ...e })),
       authority: n.authority,
+      influence: n.influence,
       // -Infinity does not survive JSON; null means "has never annexed".
       lastAnnexTurn: Number.isFinite(n.lastAnnexTurn) ? n.lastAnnexTurn : null,
       lastReleaseTurn: Number.isFinite(n.lastReleaseTurn) ? n.lastReleaseTurn : null,
@@ -1202,6 +1204,7 @@ const Game = (function () {
         annexed: Array.isArray(n.annexed) ? n.annexed.map((e) => ({ ...e })) : [],
         lost: Array.isArray(n.lost) ? n.lost.map((e) => ({ ...e })) : [],
         authority: n.authority == null ? null : n.authority,
+        influence: n.influence == null ? null : n.influence,
         founded: n.founded || 0,
         homeSt: n.homeSt || modalState(live),
         lastAnnexTurn: n.lastAnnexTurn == null ? -Infinity : n.lastAnnexTurn,

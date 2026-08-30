@@ -450,12 +450,22 @@ const World = (function () {
    */
   function phasePower(tune, turn, only) {
     const tn = T(tune);
+    // The world facts Influence is measured against, computed ONCE. Alignment is
+    // O(nations^2) and `nationDemographics` is a full scan of a nation's Areas,
+    // so asking 51 times inside 51 loops is 51 passes over the whole map for a
+    // number that does not change between them.
+    const ctx = Power.worldContext();
     for (const [nid, n] of Game.nations) {
       if (only && !only(n)) continue;
-      const why = Power.authority(Power.gatherAuthority(nid, turn), tn);
-      n.authority = why.value;
       n.why = n.why || {};
-      n.why.authority = why;
+      const auth = Power.authority(Power.gatherAuthority(nid, turn), tn);
+      n.authority = auth.value;
+      n.why.authority = auth;
+      // Influence reads `n.influence` as its own input (the (1 + influence)
+      // scaling), so it is assigned after the record is built, not before.
+      const infl = Power.influence(Power.gatherInfluence(nid, turn, tn, ctx), tn);
+      n.influence = infl.value;
+      n.why.influence = infl;
     }
   }
 

@@ -117,7 +117,10 @@ Done in the order **M3.4 -> M3.1 -> M3.2 -> M3.3**, because the plan lists M3.4'
       record — nothing recomputed. Measured at turn 0: Authority spreads 0.399 (Montana) to 0.559
       (DC) across 51 nations; by turn 11 California reads 65% with solvency +13.8, cohesion +9.4,
       wars won +6.0 against overreach −2.7 and occupation −2.4.
-- [ ] **M3.2** Influence.
+- [x] **M3.2** Influence, promoted out of `evalTransit`'s stateless inline version (D70), with the
+      `(1 + influence)` conquest scaling that makes it the one stock that is its own input (D71).
+      Measured live: California conquering 58 -> 118 Areas over 12 turns went Authority 0.501 ->
+      0.515 and Influence 0.666 -> 0.148. One renderer serves both stocks (D72).
 - [ ] **M3.3** QoL (food/health as needs) + Civil Liberties.
 - [ ] **M3.5** All four cached once per turn and surfaced in the nation panel.
 

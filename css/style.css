@@ -189,6 +189,9 @@ main { flex: 1 1 auto; display: flex; min-height: 0; }
   background: var(--line); margin: 8px 0 6px; }
 .auth-bar span { display: block; height: 100%; border-radius: 4px;
   background: linear-gradient(90deg, #8a5cf5, #3b6fe0); transition: width .3s ease; }
+/* Influence is soft power, so it gets the warm end of the palette against
+   Authority's cool one - two stocks that can and should disagree. */
+.auth-bar.influence span { background: linear-gradient(90deg, #e8862d, #e3c229); }
 .auth-summary { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
 .auth-drift { font-size: 12px; font-weight: 500; margin-left: 6px; }
 .auth-drift.up { color: #3bb273; }

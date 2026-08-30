@@ -236,6 +236,95 @@ function authoritySummary(value, inputs) {
   return `${band}: ${(up || down).label.toLowerCase()} dominates`;
 }
 
+
+/* ------------------------------------------------------------------ */
+/* Influence                                                           */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Soft power: how much the rest of the world listens to you.
+ *
+ *   influence = f(economic weight, reach, alignment)
+ *             - f(conquest x (1 + influence), blitz pace, occupation)
+ *
+ * PROMOTED, NOT INVENTED. `evalTransit` in actions.js has been computing an
+ * ad-hoc, stateless version of exactly this since M1 — relative economic size,
+ * political alignment and need — recomputed inline per dialog and thrown away,
+ * so nothing outside the trade panel could read it and nothing persisted between
+ * turns. The two size and alignment terms here are that math, generalised from
+ * "against this one partner" to "against the world" and given somewhere to live.
+ * `need` stays in `evalTransit`, because it is a fact about one deal rather than
+ * about a nation.
+ *
+ * THE (1 + influence) SCALING IS THE POINT. The design asks for a cost that
+ * depends on standing: a superpower annexing a neighbour pays more in reputation
+ * than an unknown does, because it had more to spend. That falls out of scaling
+ * the conquest term by `1 + previous`, and it means Influence is the one stock
+ * whose *own* value is an input — which is also why it must be rate-limited, or
+ * the feedback runs away in either direction.
+ *
+ * WHAT IS NOT HERE YET. The plan also names QoL rank, civil liberties, treaties
+ * honoured and broken, and aid given. QoL and liberties arrive in M3.3 and are
+ * added as terms then; treaties and aid need mechanics that do not exist (M6).
+ * Same rule as Authority: a term arrives when the thing it measures does.
+ *
+ * @param a {turn, gdpShare, alignment, partners, areas, occupied,
+ *           gains: [{turn, areas, reason}], previous}
+ */
+export function influence(a, tune) {
+  const window = tune.get('nation.historyWindow');
+  const gains = (a.gains || []).filter((e) => a.turn - e.turn <= window);
+  const takenAreas = gains.reduce((s, e) => s + e.areas, 0);
+  const pace = window > 0 ? takenAreas / window : 0;
+  const excess = Math.max(0, pace - tune.get('power.influence.paceFree'));
+  const occupation = a.areas > 0 ? (a.occupied || 0) / a.areas : 0;
+
+  /*
+   * The cost of conquest scales with the standing you already had. `previous` is
+   * null on the first turn of a nation's life, and a brand-new nation has no
+   * reputation to spend, so it scales by 1 rather than by 1 + nothing.
+   */
+  const standing = 1 + (a.previous == null ? 0 : a.previous);
+  const conquest = takenAreas * standing;
+
+  const terms = [
+    { label: 'Economic weight', raw: a.gdpShare || 0,
+      norm: saturate(a.gdpShare || 0, tune.get('power.influence.gdpShareK')),
+      key: 'power.influence.wEconomy', note: 'share of world GDP' },
+    { label: 'Reach', raw: a.partners || 0,
+      norm: saturate(a.partners || 0, tune.get('power.influence.partnersK')),
+      key: 'power.influence.wReach', note: 'nations you have live trade relations with' },
+    { label: 'Alignment', raw: a.alignment || 0, norm: clamp01(a.alignment || 0),
+      key: 'power.influence.wAlignment',
+      note: 'how close the rest of the world is to you politically, weighted by their size' },
+    { label: 'Conquest', raw: conquest,
+      norm: saturate(conquest, tune.get('power.influence.conquestK')),
+      key: 'power.influence.wConquest',
+      note: 'Areas taken recently, scaled by the standing you had to spend' },
+    { label: 'Blitz', raw: pace, norm: saturate(excess, tune.get('power.influence.paceK')),
+      key: 'power.influence.wBlitz', note: 'Areas taken per turn beyond a pace the world tolerates' },
+    { label: 'Occupation', raw: occupation, norm: clamp01(occupation),
+      key: 'power.influence.wOccupation', note: 'share of held ground that is foreign soil' },
+  ];
+
+  const record = build(tune.get('power.influence.base'), terms, tune, influenceSummary);
+  record.target = record.value;
+  record.value = step(a.previous, record.value, tune);
+  return record;
+}
+
+function influenceSummary(value, inputs) {
+  const band = value >= 0.75 ? 'Commanding' : value >= 0.55 ? 'Respected'
+    : value >= 0.35 ? 'Heard' : value >= 0.18 ? 'Marginal' : 'Ignored';
+  const ranked = inputs.filter((i) => Math.abs(i.contribution) > 1e-9)
+    .sort((a, b) => Math.abs(b.contribution) - Math.abs(a.contribution));
+  const up = ranked.find((i) => i.contribution > 0);
+  const down = ranked.find((i) => i.contribution < 0);
+  if (!up && !down) return band;
+  if (up && down) return `${band}: ${up.label.toLowerCase()} carries it, ${down.label.toLowerCase()} costs`;
+  return `${band}: ${(up || down).label.toLowerCase()} dominates`;
+}
+
 /* ------------------------------------------------------------------ */
 /* the adapter — the one place this file reads the live model          */
 /* ------------------------------------------------------------------ */
@@ -247,7 +336,7 @@ function authoritySummary(value, inputs) {
  * named function rather than inline reads so that the M5 simulator can swap it
  * for a snapshot reader without touching the model.
  */
-export function gatherAuthority(nid, turn) {
+export function gatherAuthority(nid, turn) {  // tune-free: reads only model facts
   const n = Game.getNation(nid);
   if (!n) return null;
   const d = Game.nationDemographics(nid);
@@ -267,4 +356,70 @@ export function gatherAuthority(nid, turn) {
   };
 }
 
-export default { clamp01, ramp, saturate, centred, build, step, authority, gatherAuthority };
+
+/**
+ * The world facts every nation's Influence is measured against, computed ONCE.
+ *
+ * Alignment is O(nations^2) if each nation asks the world about itself, and
+ * `nationDemographics` is a full scan of that nation's Areas — so asking 51
+ * times inside 51 loops is 51 full passes over the map per turn for a number
+ * that does not change between them. Built once and handed to every gather.
+ */
+export function worldContext() {
+  const rows = [];
+  let gdp = 0;
+  for (const [nid] of Game.nations) {
+    const d = Game.nationDemographics(nid);
+    rows.push({ nid, gdp: d.gdp, mix: d.mix });
+    gdp += d.gdp;
+  }
+  return { rows, gdp };
+}
+
+/**
+ * Assemble Influence's inputs for one nation.
+ *
+ * `alignment` is the GDP-weighted mean affinity between this nation's political
+ * centroid and everyone else's — the generalisation of the pairwise `rel` that
+ * `evalTransit` computes for a single trade partner. Weighted by size because
+ * being ideologically close to California is worth more than being close to
+ * Wyoming, which is what "soft power" means.
+ */
+export function gatherInfluence(nid, turn, tune, ctx) {
+  const n = Game.getNation(nid);
+  if (!n) return null;
+  const world = ctx || worldContext();
+  const self = world.rows.find((r) => r.nid === nid);
+  if (!self) return null;
+
+  let weighted = 0, weight = 0;
+  for (const other of world.rows) {
+    if (other.nid === nid || other.gdp <= 0) continue;
+    weighted += other.gdp * Ideology.mixAffinity(self.mix, other.mix);
+    weight += other.gdp;
+  }
+
+  // Trade partners inside the memory window: `tradeCooldown` is partner -> the
+  // world turn of the last deal, which is already a record of who you do
+  // business with. Reusing it beats inventing a second relations table that
+  // could disagree with the one the trade screens read.
+  const recent = tune.get('nation.historyWindow');
+  let partners = 0;
+  for (const k in n.tradeCooldown || {}) if (turn - n.tradeCooldown[k] <= recent) partners++;
+
+  return {
+    turn,
+    gdpShare: world.gdp > 0 ? self.gdp / world.gdp : 0,
+    alignment: weight > 0 ? weighted / weight : 0,
+    partners,
+    areas: n.counties.size,
+    occupied: Game.occupiedCount(nid),
+    gains: n.annexed,
+    previous: n.influence,
+  };
+}
+
+export default {
+  clamp01, ramp, saturate, centred, build, step,
+  authority, gatherAuthority, influence, gatherInfluence, worldContext,
+};
