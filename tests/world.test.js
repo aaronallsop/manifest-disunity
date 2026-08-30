@@ -11,7 +11,7 @@
  * county growth base, so members of a regional party never reproduced.
  */
 import { describe, it, ok, equal, notEqual, close } from './harness.js';
-import { bootWorld, totalCountyPop, recPop } from './world-fixture.js';
+import { bootWorld, totalCountyPop, recPop, bufPop } from './world-fixture.js';
 
 const SEED = 20260829;
 const T = () => window.TUNE;
@@ -143,12 +143,19 @@ describe('Phase discipline', () => {
   it('ownership is snapshotted for the whole turn', async () => {
     await bootWorld({ seed: SEED });
     const owners = World.snapshotOwners();
-    equal(Object.keys(owners).length, Object.keys(Game.county).length);
-    for (const f in Game.county) equal(owners[f], Game.getOwner(f));
-    // and moving a county afterwards does not change the frozen copy
+    equal(owners.length, Object.keys(Game.county).length);
+    // it is a copy of the ownership COLUMN: nation indices, keyed by node
+    for (const f in Game.county) {
+      const nid = Game.getOwner(f);
+      equal(owners[Game.nodeOf(f)] >= 0, !!nid, `${f} owner presence disagrees`);
+    }
+    // and moving an Area afterwards does not change the frozen copy
     const some = [...Game.nations.get('49').counties].slice(0, 2);
+    const node = Game.nodeOf(some[0]);
+    const was = owners[node];
     Game.moveCounties(some, '16');
-    equal(owners[some[0]], '49', 'the ownership snapshot tracked a live move');
+    equal(owners[node], was, 'the ownership snapshot tracked a live move');
+    ok(Game.state().owner[node] !== was, 'the live column did not record the move');
   });
 
   it('movement growth is independent of key insertion order', async () => {
@@ -169,18 +176,16 @@ describe('Phase discipline', () => {
     ok(pair, 'no two spawned movements share an ideology; cannot test order independence');
     const A = pair[0], B = pair[1];
 
-    const build = (first, second) => {
-      const rec = { pop: c.pop.slice(), gdp: c.gdp, mov: {} };
-      rec.mov[first] = pop * 0.10;
-      rec.mov[second] = pop * 0.10;
-      return rec;
-    };
+    const node = Game.nodeOf(f);
     const run = (first, second) => {
-      const snap = { [f]: build(first, second) };
-      const nxt = { [f]: { pop: snap[f].pop.slice(), gdp: snap[f].gdp, mov: { ...snap[f].mov } } };
+      const snap = World.buffer(), nxt = World.buffer();
+      for (let i = 0; i < snap.n; i++) { snap.mov[i] = {}; nxt.mov[i] = {}; }
+      snap.mov[node][first] = pop * 0.10;
+      snap.mov[node][second] = pop * 0.10;
+      nxt.mov[node] = { ...snap.mov[node] };
       World.phaseMovementGrowth(snap, nxt, T());
-      const p = recPop(nxt[f]);
-      return { a: nxt[f].mov[A] / p, b: nxt[f].mov[B] / p };
+      const p = bufPop(nxt, node);
+      return { a: nxt.mov[node][A] / p, b: nxt.mov[node][B] / p };
     };
     const ab = run(A, B), ba = run(B, A);
     close(ab.a, ba.a, 1e-12, `${A} settled differently depending on key order`);
@@ -188,24 +193,71 @@ describe('Phase discipline', () => {
     close(ab.a, ab.b, 1e-12, 'two identical movements settled at different shares');
   });
 
+  it('population growth leaves every movement its exact share of its own ideology', async () => {
+    /*
+     * The reason movements grow at all is phaseMovementGrowth; growth must be
+     * NEUTRAL for them — a movement's members reproduce like everyone else and
+     * it ends the turn holding the same fraction of its ideology it started
+     * with. The old code rescaled each movement by `pop[i] / before`, where
+     * `before` was reconstructed as
+     *
+     *     pop[i] - growth * (wNat * nationShare + (1 - wNat) * pop[i] / here)
+     *
+     * with `pop[i]` already grown, so the share it subtracted was not the share
+     * it had added and `before` was not the pre-growth count. Movements
+     * therefore drifted against their own ideology by about 0.01% a turn, which
+     * compounds: 14.345% of the country organised at turn 10 against a correct
+     * 14.343%, and 19.939% against 19.936% by turn 30. Small, wrong, and
+     * invisible without measuring it.
+     */
+    await bootWorld({ seed: 4242 });
+    const N = Ideology.count();
+    const owners = World.snapshotOwners();
+    const snap = World.buffer(), nxt = World.buffer();
+    const shares = (buf) => {
+      const out = {};
+      for (let i = 0; i < buf.n; i++) {
+        for (const m in buf.mov[i]) {
+          const k = Movements.ideologyIndexOf(m);
+          if (k < 0) continue;
+          const p = buf.pop[i * N + k];
+          if (p > 0) out[`${i}|${m}`] = buf.mov[i][m] / p;
+        }
+      }
+      return out;
+    };
+    const before = shares(snap);
+    World.phasePopulationGrowth(snap, nxt, T(), owners);
+    const after = shares(nxt);
+
+    let worst = 0, worstKey = null, checked = 0;
+    for (const k in before) {
+      if (!(k in after)) continue;
+      checked++;
+      const d = Math.abs(after[k] - before[k]);
+      if (d > worst) { worst = d; worstKey = k; }
+    }
+    ok(checked > 1000, `only ${checked} movement placements to test with`);
+    ok(worst < 1e-12,
+      `${worstKey} moved ${worst.toExponential(3)} of its ideology purely from population growth`);
+  });
+
   it('every phase conserves the Area total it is not meant to change', async () => {
     const { rng } = await bootWorld({ seed: 4242 });
     const owners = World.snapshotOwners();
-    const snap = {}, nxt = {};
-    for (const f in Game.county) {
-      const c = Game.county[f];
-      snap[f] = { pop: c.pop.slice(), mov: { ...c.mov }, gdp: c.gdp };
-      nxt[f] = { pop: c.pop.slice(), mov: { ...c.mov }, gdp: c.gdp };
-    }
-    const before = {};
-    for (const f in snap) before[f] = recPop(snap[f]);
+    const snap = World.buffer(), nxt = World.buffer();
+    const before = [];
+    for (let i = 0; i < snap.n; i++) before[i] = bufPop(snap, i);
 
     const mixes = World.phaseRecomputeMixes(snap, nxt, owners);
     World.phasePoliticalDrift(snap, nxt, mixes, T(), owners, rng);
-    for (const f in nxt) close(recPop(nxt[f]), before[f], 1e-6, `drift changed the population of ${f}`);
-
+    for (let i = 0; i < nxt.n; i++) {
+      close(bufPop(nxt, i), before[i], 1e-6, `drift changed the population of ${nxt.idAt(i)}`);
+    }
     World.phaseMovementGrowth(snap, nxt, T());
-    for (const f in nxt) close(recPop(nxt[f]), before[f], 1e-6, `movement growth changed the population of ${f}`);
+    for (let i = 0; i < nxt.n; i++) {
+      close(bufPop(nxt, i), before[i], 1e-6, `movement growth changed the population of ${nxt.idAt(i)}`);
+    }
   });
 
   it('phaseCleanup keeps every movement a valid slice of its ideology', async () => {

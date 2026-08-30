@@ -481,3 +481,38 @@ of a border therefore resolved on a traversal detail, which is a replay divergen
 cause, of exactly the kind D47 removed from the graph. Ties now break on the lower nation index and
 on the alphabetically first state FIPS respectively: facts about the world rather than about how it
 was walked.
+
+### D56 — The snapshot was NOT the bottleneck; the string keys were
+**M2.3c.** The plan justifies columnar state with "advanceTurn deep-copies every record twice per
+turn — about 117k property writes before any math". Measured on the real world, that copy is
+**1.9 ms of a 24.7 ms turn**, 7.3%. What actually cost was the string keys: with the six phases
+timed individually, `phasePoliticalDrift` alone was **8.0 ms of the 12.4 ms** the phases spent
+between them, and what it spends it on is 9,454 hashed `snap[neighbourFips]` lookups per turn plus
+an aliased `Game.anchorOf(f)` per Area — it is the only phase that reads Areas other than the one it
+writes.
+
+So the conversion was aimed at the neighbour walk rather than at the allocation. Every phase is now
+an integer loop over the same node numbering the graph uses, and the buffer is the columns plus one
+array of movement bags. Measured after: drift 8.0 → 2.0 ms, all six phases 12.4 → 2.8 ms,
+`advanceTurn` 24.7 → 9.3 ms, a 50-turn simulator run 1,237 → 466 ms, and the test suite (which runs
+several hundred turns) 41.4 → 10.5 s. The remaining 6.5 ms of a turn is `tickTreasuries`,
+`Market.update` and the single emit — M5's problem if the dashboard needs it, and now the visible
+majority rather than a rounding error.
+
+The lesson is not that the plan was wrong to want columnar state; it is right, and it is what made
+the index loops possible. It is that the reason given for it was not the reason it pays.
+
+### D57 — A latent bug in the movement rescale, found by rewriting the phase
+**M2.3c.** `phasePopulationGrowth` grows each ideology and then rescales each movement by
+`pop[i] / before` so that a movement keeps exactly its share of its own ideology — growth is meant
+to be neutral for movements, since their members reproduce like everyone else. It reconstructed
+`before` as `pop[i] - growth * (wNat * nationShare + (1 - wNat) * pop[i] / here)` — using the
+**already-grown** `pop[i]` in the share it subtracted, so the share it took back was not the share it
+had added and `before` was not the pre-growth count. Every movement drifted against its own ideology
+by roughly 0.01% a turn, which compounds: 14.345% of the country organised at turn 10 against a
+correct 14.343%, 19.939% against 19.936% by turn 30.
+
+The rewrite keeps the share it actually applied and subtracts that, which is exact to 2.2e-16 across
+1,691 movement placements. Verified the fix is the ONLY behavioural change in the conversion by
+running the previous commit and the new one from the same seed for 30 turns: population and GDP
+agree to every digit printed, and the only divergence is the movement head count.

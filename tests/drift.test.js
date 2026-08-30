@@ -145,20 +145,16 @@ describe('Political drift', () => {
       before[f] = t;
     }
     const owners = World.snapshotOwners();
-    const snap = {}, nxt = {};
-    for (const f in Game.county) {
-      const c = Game.county[f];
-      snap[f] = { pop: c.pop.slice(), mov: { ...c.mov }, gdp: c.gdp };
-      nxt[f] = { pop: c.pop.slice(), mov: { ...c.mov }, gdp: c.gdp };
-    }
+    const snap = World.buffer(), nxt = World.buffer();
     const mixes = World.phaseRecomputeMixes(snap, nxt, owners);
     World.phasePoliticalDrift(snap, nxt, mixes, T(), owners, rng);
-    for (const f in nxt) {
-      const v = nxt[f];
+    const N = Ideology.count();
+    for (let i = 0; i < nxt.n; i++) {
+      const f = nxt.idAt(i);
       let tot = 0;
-      for (let i = 0; i < v.pop.length; i++) {
-        ok(v.pop[i] >= 0, `${f} ${Ideology.idAt(i)} went negative under noise`);
-        tot += v.pop[i];
+      for (let k = 0; k < N; k++) {
+        ok(nxt.pop[i * N + k] >= 0, `${f} ${Ideology.idAt(k)} went negative under noise`);
+        tot += nxt.pop[i * N + k];
       }
       close(tot, before[f], 1e-6, `drift changed the population of ${f}`);
     }

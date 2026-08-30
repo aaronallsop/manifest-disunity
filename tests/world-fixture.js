@@ -95,6 +95,14 @@ export function totalNationPop() {
 }
 
 /** Population of one Area record without going through the public accessor. */
+export function bufPop(buf, i) {
+  const N = Ideology.count();
+  let t = 0;
+  for (let k = 0; k < N; k++) t += buf.pop[i * N + k];
+  return t;
+}
+
+/** Population of one Area record without going through the public accessor. */
 export function recPop(c) {
   let t = 0;
   for (let i = 0; i < c.pop.length; i++) t += c.pop[i];

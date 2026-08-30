@@ -37,15 +37,55 @@ const World = (function () {
 
   // Tunables come in per call; the live game passes the session TUNE.
   const T = (tune) => tune || window.TUNE;
-
-  /** fips -> owning nation id, frozen for the duration of one world turn. */
-  function snapshotOwners() {
-    const out = {};
-    for (const f in Game.county) out[f] = Game.getOwner(f);
-    return out;
+  /**
+   * A turn buffer: the columnar Area state plus the movement bags.
+   *
+   * `snap` and `nxt` used to be two objects of 1,676 records each, rebuilt every
+   * turn, and every phase walked them with `for (const f in nxt)` and looked
+   * neighbours up by FIPS string. Measured, that is not where the time went —
+   * the snapshot itself was 1.9 ms of a 24.7 ms turn — but the STRING KEYS
+   * were: `phasePoliticalDrift` alone was 8.0 ms of the 12.4 ms the six phases
+   * cost between them, and what it spends it on is 9,454 hashed lookups of
+   * `snap[neighbourFips]` per turn plus an aliased `Game.anchorOf(f)` per Area.
+   *
+   * So a buffer is now the columns (one `.slice()` each) and one array of
+   * movement bags indexed by node, and every phase is an integer loop over the
+   * same node numbering the graph uses. `mov` stays a sparse name->count object
+   * per Area until M4 replaces it with the (Area x movement) sentiment matrix,
+   * at which point it becomes another column and this comment gets shorter.
+   */
+  function buffer() {
+    const area = Game.state().clone();
+    const mov = new Array(area.n);
+    for (let i = 0; i < area.n; i++) mov[i] = { ...Game.county[area.idAt(i)].mov };
+    return {
+      n: area.n, area, mov,
+      pop: area.pop, gdp: area.gdp, anchor: area.anchor,
+      idAt: (i) => area.idAt(i),
+      indexOf: (id) => area.indexOf(id),
+    };
   }
 
-  /** Total population of a snapshot/next record. */
+  /**
+   * Owning nation INDEX per Area node, frozen for one world turn.
+   *
+   * Ownership is immutable today because no phase moves an Area, but M4's
+   * continuous defection changes that, and a phase reading live ownership
+   * mid-turn would see its predecessor's moves.
+   */
+  function snapshotOwners() {
+    return Game.state().owner.slice();
+  }
+
+  /** Total population of one Area in a buffer. */
+  function bufPop(buf, i, N) {
+    const base = i * N;
+    let t = 0;
+    for (let k = 0; k < N; k++) t += buf.pop[base + k];
+    return t;
+  }
+
+  /** Total population of a snapshot/next record, for the record-shaped callers. */
   const recPop = (c) => {
     let t = 0;
     for (let i = 0; i < c.pop.length; i++) t += c.pop[i];
@@ -53,8 +93,20 @@ const World = (function () {
   };
 
   /**
-   * Each nation's ideology SHARES (percent), from the start-of-turn snapshot.
-   * Drift reads this cache, never a mix influenced by already-drifted Areas.
+   * Movement name -> ideology index, resolved once per phase rather than once
+   * per (Area, movement) pair. `Movements.ideologyIndexOf` is a two-map walk and
+   * the inner loops hit it about 30,000 times a turn.
+   */
+  function movementIdeologies() {
+    const out = Object.create(null);
+    for (const name of Movements.getSpawned()) out[name] = Movements.ideologyIndexOf(name);
+    return out;
+  }
+
+  /**
+   * Each nation's ideology SHARES (percent), from the start-of-turn snapshot,
+   * indexed by nation index. Drift reads this cache, never a mix influenced by
+   * already-drifted Areas.
    *
    * This replaced `phaseRecomputeLeans`, which produced a {d,g,o} triple and a
    * D-or-R letter that ignored every emergent movement.
@@ -62,17 +114,17 @@ const World = (function () {
   function phaseRecomputeMixes(snap, nxt, owners) {
     const own = owners || snapshotOwners();
     const N = Ideology.count();
-    const totals = {};
-    for (const f in snap) {
-      const o = own[f];
-      if (!o) continue;
+    const totals = [];
+    for (let i = 0; i < snap.n; i++) {
+      const o = own[i];
+      if (o < 0) continue;
       let t = totals[o];
-      if (!t) t = totals[o] = new Array(N).fill(0);
-      const c = snap[f];
-      for (let i = 0; i < N; i++) t[i] += c.pop[i];
+      if (!t) t = totals[o] = new Float64Array(N);
+      const base = i * N;
+      for (let k = 0; k < N; k++) t[k] += snap.pop[base + k];
     }
-    const out = {};
-    for (const k in totals) out[k] = Ideology.shares(totals[k]);
+    const out = [];
+    for (let o = 0; o < totals.length; o++) if (totals[o]) out[o] = Ideology.shares(totals[o]);
     return out;
   }
 
@@ -102,6 +154,11 @@ const World = (function () {
    *     is a gradient a movement can diffuse along rather than salt-and-pepper;
    *   - the NOISE gives the deviation a non-zero stationary variance instead of
    *     a fixed point it converges onto exactly.
+   *
+   * This is the most expensive phase in the game by a factor of eight, and the
+   * reason is the neighbour term: it is the only phase that reads Areas other
+   * than the one it is writing. Walking the CSR rows takes it from 8.0 ms to
+   * the numbers in PROGRESS.md.
    */
   function phasePoliticalDrift(snap, nxt, mixes, tune, owners, rng) {
     const tn = T(tune);
@@ -113,27 +170,28 @@ const World = (function () {
     const jitter = rng ? rng.stream('drift') : null;
     const own = owners || snapshotOwners();
     const N = Ideology.count();
-    const nbrMix = new Array(N);
-    const cur = new Array(N);
+    const g = Game.graph();
+    const start = g.start, list = g.list;
+    const nbrMix = new Float64Array(N);
+    const cur = new Float64Array(N);
 
-    for (const f in nxt) {
+    for (let f = 0; f < nxt.n; f++) {
       const o = own[f];
-      const lean = o && mixes[o];
+      const lean = o >= 0 ? mixes[o] : null;
       if (!lean) continue;
-      const c = snap[f];
-      const pop = recPop(c);
+      const base = f * N;
+      let pop = 0;
+      for (let k = 0; k < N; k++) pop += snap.pop[base + k];
       if (!pop) continue;
-      const anchor = Game.anchorOf(f) || lean;
 
       // Neighbour mean, population-weighted, read from SNAP so the gradient is
       // computed against start-of-turn values and phase order cannot skew it.
       let nw = 0;
       nbrMix.fill(0);
       if (wNbr > 0) {
-        for (const nb of Game.countyNeighbors(f)) {
-          const s2 = snap[nb];
-          if (!s2) continue;
-          for (let i = 0; i < N; i++) { nbrMix[i] += s2.pop[i]; nw += s2.pop[i]; }
+        for (let e = start[f]; e < start[f + 1]; e++) {
+          const nb = list[e] * N;
+          for (let k = 0; k < N; k++) { const v = snap.pop[nb + k]; nbrMix[k] += v; nw += v; }
         }
       }
       const hasNbr = nw > 0;
@@ -142,18 +200,18 @@ const World = (function () {
       const wO = wOwner + (hasNbr ? 0 : wNbr);
 
       let tot = 0;
-      for (let i = 0; i < N; i++) {
-        const target = wO * lean[i]
-          + wAnchor * anchor[i]
-          + (hasNbr ? wNbr * (nbrMix[i] / nw) * 100 : 0);
-        let v = (c.pop[i] / pop) * 100;
+      for (let k = 0; k < N; k++) {
+        const target = wO * lean[k]
+          + wAnchor * snap.anchor[base + k]
+          + (hasNbr ? wNbr * (nbrMix[k] / nw) * 100 : 0);
+        let v = (snap.pop[base + k] / pop) * 100;
         v += step * (target - v);
         if (jitter && noise > 0) v = Math.max(0, v + (jitter.random() * 2 - 1) * noise);
-        cur[i] = v;
+        cur[k] = v;
         tot += v;
       }
       if (!tot) continue;
-      for (let i = 0; i < N; i++) nxt[f].pop[i] = (cur[i] / tot) * pop;
+      for (let k = 0; k < N; k++) nxt.pop[base + k] = (cur[k] / tot) * pop;
     }
   }
 
@@ -177,43 +235,46 @@ const World = (function () {
     const ceiling = T(tune).get('world.partyCeiling');
     const stepFrac = T(tune).get('world.partyStep');
     const N = Ideology.count();
+    const ideologyOf = movementIdeologies();
+    const target = new Float64Array(N);
 
-    for (const f in nxt) {
-      const s = snap[f];
-      const names = Object.keys(s.mov);
+    for (let f = 0; f < nxt.n; f++) {
+      const sMov = snap.mov[f];
+      const names = Object.keys(sMov);
       if (!names.length) continue;
-      const spop = recPop(s);
-      const c = nxt[f];
-      const pop = recPop(c);
+      const base = f * N;
+      let spop = 0, pop = 0;
+      for (let k = 0; k < N; k++) { spop += snap.pop[base + k]; pop += nxt.pop[base + k]; }
       if (!spop || !pop) continue;
 
       // What each movement wants to gain, as a share of the Area.
       const gains = {};
       let totalGain = 0;
       for (const name of names) {
-        const cur = s.mov[name] / spop;
-        const g = Math.max(0, stepFrac * (ceiling - cur));
+        const g = Math.max(0, stepFrac * (ceiling - sMov[name] / spop));
         gains[name] = g;
         totalGain += g;
       }
       if (totalGain <= 0) continue;
 
       // Convert from the ideologies the movements do NOT belong to.
-      const target = new Array(N).fill(0);
+      target.fill(0);
       for (const name in gains) {
-        const i = Movements.ideologyIndexOf(name);
+        const i = ideologyOf[name];
         if (i >= 0) target[i] += gains[name];
       }
       let donor = 0;
-      for (let i = 0; i < N; i++) if (!target[i]) donor += c.pop[i];
-      const want = totalGain * pop;
-      const take = Math.min(want, donor);
+      for (let k = 0; k < N; k++) if (!target[k]) donor += nxt.pop[base + k];
+      const take = Math.min(totalGain * pop, donor);
       if (take > 0 && donor > 0) {
-        const k = 1 - take / donor;
-        for (let i = 0; i < N; i++) if (!target[i]) c.pop[i] *= k;
-        for (let i = 0; i < N; i++) if (target[i]) c.pop[i] += take * (target[i] / totalGain);
+        const scale = 1 - take / donor;
+        for (let k = 0; k < N; k++) {
+          if (target[k]) nxt.pop[base + k] += take * (target[k] / totalGain);
+          else nxt.pop[base + k] *= scale;
+        }
       }
-      for (const name in gains) c.mov[name] = (c.mov[name] || 0) + gains[name] * pop;
+      const nMov = nxt.mov[f];
+      for (const name in gains) nMov[name] = (nMov[name] || 0) + gains[name] * pop;
     }
   }
 
@@ -239,37 +300,43 @@ const World = (function () {
     const wNat = tn.get('world.growthMixNationWeight');
     const own = owners || snapshotOwners();
     const N = Ideology.count();
+    const ideologyOf = movementIdeologies();
 
-    const natTotals = {}; // owner -> {mix[N], total}, from this turn's snapshot
-    for (const f in snap) {
+    // owner index -> {mix[N], total}, from this turn's snapshot
+    const natMix = [], natTotal = [];
+    for (let f = 0; f < snap.n; f++) {
       const o = own[f];
-      if (!o) continue;
-      let t = natTotals[o];
-      if (!t) t = natTotals[o] = { mix: new Array(N).fill(0), total: 0 };
-      const c = snap[f];
-      for (let i = 0; i < N; i++) { t.mix[i] += c.pop[i]; t.total += c.pop[i]; }
+      if (o < 0) continue;
+      let m = natMix[o];
+      if (!m) { m = natMix[o] = new Float64Array(N); natTotal[o] = 0; }
+      const base = f * N;
+      for (let k = 0; k < N; k++) { const v = snap.pop[base + k]; m[k] += v; natTotal[o] += v; }
     }
 
-    for (const f in nxt) {
+    const share = new Float64Array(N);
+    for (let f = 0; f < nxt.n; f++) {
       const o = own[f];
-      const t = o && natTotals[o];
-      if (!t || !t.total) continue;
+      const m = o >= 0 ? natMix[o] : null;
+      if (!m || !natTotal[o]) continue;
       // per-Area counts from nxt (post-drift, post-movement, so phases compose);
       // the nation mix still comes from snap.
-      const c = nxt[f];
-      const here = recPop(c);
+      const base = f * N;
+      let here = 0;
+      for (let k = 0; k < N; k++) here += nxt.pop[base + k];
       if (!here) continue;
       const growth = here * r;
-      for (let i = 0; i < N; i++) {
-        const share = wNat * (t.mix[i] / t.total) + (1 - wNat) * (c.pop[i] / here);
-        c.pop[i] += growth * share;
+      const tot = natTotal[o];
+      for (let k = 0; k < N; k++) {
+        share[k] = wNat * (m[k] / tot) + (1 - wNat) * (nxt.pop[base + k] / here);
+        nxt.pop[base + k] += growth * share[k];
       }
       // Movements keep their share of their own ideology.
-      for (const m in c.mov) {
-        const i = Movements.ideologyIndexOf(m);
-        if (i < 0) continue;
-        const before = c.pop[i] - growth * (wNat * (t.mix[i] / t.total) + (1 - wNat) * (c.pop[i] / here));
-        if (before > 0) c.mov[m] *= c.pop[i] / before;
+      const nMov = nxt.mov[f];
+      for (const name in nMov) {
+        const i = ideologyOf[name];
+        if (i === undefined || i < 0) continue;
+        const before = nxt.pop[base + i] - growth * share[i];
+        if (before > 0) nMov[name] *= nxt.pop[base + i] / before;
       }
     }
   }
@@ -286,32 +353,41 @@ const World = (function () {
    * market prices move at all: with one uniform rate the global sector mix is
    * frozen and the price index is six constants.
    */
+  let sectorCache = null, sectorCacheFor = null;
+  function sectorFactors(state, sectorMult) {
+    const econ = typeof MapModes !== 'undefined' ? MapModes.getEconomy() : null;
+    // The economy bake is static for the life of a world, so this is computed
+    // once rather than once per turn. Keyed on the doc identity AND the tunable,
+    // because M5 drags the sector multipliers on a live world.
+    const key = econ ? sectorMult.join(',') : null;
+    if (sectorCache && sectorCacheFor === key && sectorCache.length === state.n) return sectorCache;
+    const out = new Float64Array(state.n).fill(1);
+    if (econ) {
+      for (let i = 0; i < state.n; i++) {
+        const a = econ.areas[state.idAt(i)];
+        if (!a) continue;
+        let total = 0, weighted = 0;
+        for (let k = 0; k < a.v.length; k++) { total += a.v[k]; weighted += a.v[k] * (sectorMult[k] ?? 1); }
+        if (total > 0) out[i] = weighted / total;
+      }
+    }
+    sectorCache = out;
+    sectorCacheFor = key;
+    return out;
+  }
   function phaseEconomicGrowth(snap, nxt, tune) {
     const tn = T(tune);
     const base = tn.get('world.gdpGrowth');
     const coupling = tn.get('world.gdpGrowthPopCoupling');
-    const sectorMult = tn.get('world.sectorGrowth');
-    const econ = typeof MapModes !== 'undefined' ? MapModes.getEconomy() : null;
+    const sector = sectorFactors(snap.area, tn.get('world.sectorGrowth'));
+    const N = Ideology.count();
 
-    const mixCache = new Map();
-    function sectorFactor(f) {
-      if (!econ) return 1;
-      let m = mixCache.get(f);
-      if (m !== undefined) return m;
-      const a = econ.areas[f];
-      if (!a) { mixCache.set(f, 1); return 1; }
-      let total = 0, weighted = 0;
-      for (let i = 0; i < a.v.length; i++) { total += a.v[i]; weighted += a.v[i] * (sectorMult[i] ?? 1); }
-      m = total > 0 ? weighted / total : 1;
-      mixCache.set(f, m);
-      return m;
-    }
-
-    for (const f in nxt) {
-      const s = snap[f], c = nxt[f];
-      const before = recPop(s);
-      const popRate = before > 0 ? recPop(c) / before - 1 : 0;
-      c.gdp = s.gdp * (1 + base * sectorFactor(f) + coupling * popRate);
+    for (let f = 0; f < nxt.n; f++) {
+      const b = f * N;
+      let was = 0, now = 0;
+      for (let k = 0; k < N; k++) { was += snap.pop[b + k]; now += nxt.pop[b + k]; }
+      const popRate = was > 0 ? now / was - 1 : 0;
+      nxt.gdp[f] = snap.gdp[f] * (1 + base * sector[f] + coupling * popRate);
     }
   }
 
@@ -332,24 +408,29 @@ const World = (function () {
   function phaseCleanup(snap, nxt, tune) {
     const floor = T(tune).get('world.partyFloor');
     const N = Ideology.count();
-    for (const f in nxt) {
-      const c = nxt[f];
-      const pop = recPop(c);
+    const ideologyOf = movementIdeologies();
+    const byIdeology = new Float64Array(N);
+
+    for (let f = 0; f < nxt.n; f++) {
+      const mov = nxt.mov[f];
+      let any = false;
+      for (const m in mov) { any = true; break; }
+      if (!any) continue;
+      const base = f * N;
+      let pop = 0;
+      for (let k = 0; k < N; k++) pop += nxt.pop[base + k];
       if (!pop) continue;
-      for (const m in c.mov) {
-        if (c.mov[m] / pop < floor) delete c.mov[m];
+
+      byIdeology.fill(0);
+      for (const m in mov) {
+        const i = ideologyOf[m];
+        if (i === undefined || i < 0 || mov[m] / pop < floor) { delete mov[m]; continue; }
+        byIdeology[i] += mov[m];
       }
-      // clamp each ideology's movements to what that ideology actually holds
-      const byIdeology = new Array(N).fill(0);
-      for (const m in c.mov) {
-        const i = Movements.ideologyIndexOf(m);
-        if (i >= 0) byIdeology[i] += c.mov[m];
-        else delete c.mov[m];
-      }
-      for (let i = 0; i < N; i++) {
-        if (byIdeology[i] <= c.pop[i]) continue;
-        const k = c.pop[i] / byIdeology[i];
-        for (const m in c.mov) if (Movements.ideologyIndexOf(m) === i) c.mov[m] *= k;
+      for (let k = 0; k < N; k++) {
+        if (byIdeology[k] <= nxt.pop[base + k]) continue;
+        const scale = nxt.pop[base + k] / byIdeology[k];
+        for (const m in mov) if (ideologyOf[m] === k) mov[m] *= scale;
       }
     }
   }
@@ -357,12 +438,8 @@ const World = (function () {
   function advanceTurn(tune, rng) {
     const tn = T(tune);
     const owners = snapshotOwners();
-    const snap = {}, nxt = {};
-    for (const f in Game.county) {
-      const c = Game.county[f];
-      snap[f] = { pop: c.pop.slice(), mov: { ...c.mov }, gdp: c.gdp };
-      nxt[f] = { pop: c.pop.slice(), mov: { ...c.mov }, gdp: c.gdp };
-    }
+    const snap = buffer(), nxt = buffer();
+
     const mixes = phaseRecomputeMixes(snap, nxt, owners); // start-of-turn ideology cache
     phasePoliticalDrift(snap, nxt, mixes, tn, owners, rng);
     phaseMovementGrowth(snap, nxt, tn);
@@ -374,10 +451,15 @@ const World = (function () {
     // directly and never emitted, so any driver other than the one button left
     // the UI stale (finding 19). Batch it and emit exactly once, from here.
     Game.batch(() => {
-      for (const f in nxt) {
-        const c = Game.county[f], v = nxt[f];
-        c.pop = v.pop; c.mov = v.mov; c.gdp = v.gdp;
-      }
+      // The whole result lands in two memcpys plus the movement bags, and
+      // `copyFrom` writes INTO the live columns rather than swapping them, so
+      // every outstanding Area view stays valid. `owner` is deliberately not
+      // copied back: no phase moves an Area, and when M4's defection does, it
+      // will go through Game.moveCounties so the derived index stays right.
+      const live = Game.state();
+      live.pop.set(nxt.pop);
+      live.gdp.set(nxt.gdp);
+      for (let i = 0; i < nxt.n; i++) Game.county[nxt.idAt(i)].mov = nxt.mov[i];
       Game.tickTreasuries(); // income minus maintenance, on this turn's updated GDP
       Market.update(tn);     // reprice every resource from live supply vs demand
       Game.touch({ values: true });
@@ -393,6 +475,8 @@ const World = (function () {
     serialize: () => ({ turn }),
     loadState: (s) => { turn = (s && s.turn) | 0; },
     snapshotOwners,
+    buffer,
+    recPop,
     phaseRecomputeMixes,
     phasePoliticalDrift,
     phaseMovementGrowth,

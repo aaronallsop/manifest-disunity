@@ -78,8 +78,11 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done
         `Game.county[f]` is a live view over the columns, so no caller changed. Measured: the whole
         country is 173 KB in four columns, a full-state `clone()` is 0.068 ms, and the test suite
         (which boots the world ~270 times) fell from 41.4s to 27.6s. Float64 not Float32 (D51).
-  - [ ] **M2.3c** `advanceTurn` snapshots the store instead of building 1,676 object literals
-        twice a turn; the five phases become index loops.
+  - [x] **M2.3c** `advanceTurn` snapshots the store; all six phases are integer loops over the
+        graph's node numbering. Measured: drift 8.0 -> 2.0 ms, all phases 12.4 -> 2.8 ms,
+        `advanceTurn` 24.7 -> 9.3 ms, a 50-turn sim run 1,237 -> 466 ms, the suite 41.4 -> 10.5 s.
+        The snapshot itself was never the cost (D56); the string-keyed neighbour walk was. Fixed a
+        latent movement-rescale bug the rewrite exposed (D57).
   - [x] **M2.3b** Ownership stored once: `state.owner` (Int16Array of nation index) is the truth and
         `nation.counties` is a derived Set refilled on an ownership epoch (D54). `moveCounties` went
         from three writes per Area to one. Two tie-breaks made canonical on the way (D55).
