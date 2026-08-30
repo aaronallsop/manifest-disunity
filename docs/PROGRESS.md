@@ -127,7 +127,9 @@ Done in the order **M3.4 -> M3.1 -> M3.2 -> M3.3**, because the plan lists M3.4'
       units, not from real-world figures (D74). One pass per nation instead of six full scans:
       phasePower 4.51 -> 2.32 ms (D76). Turn-0 bands: Authority 0.44-0.56, Influence 0.45-0.66,
       QoL 0.55-0.98, Liberties 0.60-0.84.
-- [ ] **M3.5** All four cached once per turn and surfaced in the nation panel.
+- [x] **M3.5** All four cached once per turn in `phasePower` and surfaced twice: the nation panel
+      renders each Why record in full, and the leaderboard gains a sort per stock with a heat colour
+      and a trend arrow, because a stock you can only read one nation at a time is half a feature.
 
 ## M4 — West vertical slice
 
@@ -174,9 +176,9 @@ Done in the order **M3.4 -> M3.1 -> M3.2 -> M3.3**, because the plan lists M3.4'
 *(Updated as work proceeds — what is done, what is next, what was learned that is not yet
 written down elsewhere.)*
 
-**M0, M1 and M2 complete.** 301 tests green at `tests/run.html` in ~17s (41s before the columnar
-conversion), `build/validate.py` reports 0 errors, and the game loads, plays and saves with a clean
-console. `DESIGN.md` rewritten at the M2 close to describe the game as it actually is.
+**M0, M1, M2 and M3 complete.** 382 tests across 66 suites green at `tests/run.html` in ~24s,
+`build/validate.py` reports 0 errors, and the game loads, plays and saves with a clean console.
+`DESIGN.md` rewritten at the M3 close, including a new section 4.1 on the four power stocks.
 
 Verified end to end at the M2 close: fresh boot -> world turns driven through the real Pass button
 -> autosave to `data/state.json` -> reload the page -> resumed at the same turn, population, seed
@@ -188,7 +190,7 @@ Performance, measured on the real map rather than predicted: a world turn 24.7 -
 phases 12.4 -> 2.8 ms, political drift 8.0 -> 2.0 ms, a 50-turn simulator run 1,237 -> 466 ms. The
 columnar store is 173 KB and the adjacency graph 43.5 KB.
 
-Next: **M3.1** (`js/power.js`: the Why-record convention, then Authority).
+Next: **M4.1** (`js/movements.js`: the Movement record, and the West slice's homelands).
 
 Open, carried into M2.3: after 21 turns no Area is yet LED by a minority ideology (Rep 1,288 /
 Dem 388 of 1,676). That is the expected shape at 11% organised movements and it is M5's dial to

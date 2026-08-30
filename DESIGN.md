@@ -1,7 +1,7 @@
 # Nation States — Design
 
 *The single source of truth for what this game is and how it works, **as it actually is today**.
-Last rewritten at the end of **M2** of `docs/REBUILD-PLAN.md`. If this document and the code
+Last rewritten at the end of **M3** of `docs/REBUILD-PLAN.md`. If this document and the code
 disagree, the document is a bug — say so and fix it.*
 
 *What comes next lives in `docs/REBUILD-PLAN.md`, not here. This file describes the present.*
@@ -103,9 +103,15 @@ which is what makes the lines coincide with the fills.
   `Int32Array`. Neighbour rows are sorted by index, so neighbour order is a property of the graph
   rather than of the key order of the file that described it — which used to decide `argmax` ties
   and component traversal, and so used to make a re-bake a silent replay divergence.
-- **Nations carry**: a name, a colour, a treasury, a government type, a founding turn, a home state
-  (`homeSt` — ground that is not theirs is *occupied*), an annexation clock, a release clock and a
-  per-partner trade cooldown.
+- **Nations carry**: a name, a colour, a treasury, a **government** (`{type, rulingIdeology,
+  since}`), a founding turn, a home state (`homeSt` — ground that is not theirs is *occupied*), a
+  **territorial memory** (`annexed[]` and `lost[]`, trimmed to a 20-turn window), four **power
+  stocks** with their working attached, an annexation clock, a release clock and a per-partner trade
+  cooldown.
+- **Every territorial change is recorded at one choke point.** Annex, unite, release, civil-war
+  fragmentation and nation creation all flow through `moveCounties`, which stamps the turn, the
+  counterparty, the Area count and the reason on both sides. Instrumenting the five callers
+  separately is how one of them ends up not doing it.
 - **Every model constant is a named tunable.** `js/tunables.js` holds all of them with a label, a
   doc line and a slider range; `TUNE.get(key)` records every read, and `TUNE.trace(fn)` returns the
   exact set of keys a computation touched. Authored overrides live in `content/tunables.json`.
@@ -190,7 +196,10 @@ A world turn runs these phases in a fixed order:
    slice of its own ideology. That clamp is the reconciliation the whole model rests on: drift,
    growth and war all move `pop[i]` without knowing movements exist.
 
-Then treasuries tick and the market reprices.
+Then governments are refreshed, treasuries tick, the market reprices, and **the four power stocks
+recompute** (§4.1) — in that order, and last on purpose: every input the power phase reads is a
+result of *this* turn, so running it earlier would report the previous turn's world with this turn's
+label on it.
 
 **Every phase is an integer loop** over the same node numbering the graph uses, reading and writing
 flat columns. The buffer is one `.slice()` per field plus an array of movement bags. Measured on
@@ -243,6 +252,101 @@ GDP grows at a base rate multiplied by the Area's **sector mix** (IT compounds f
 agriculture slowest) plus a share of its realised population growth. The sector differential is
 what makes relative market prices move at all: with one uniform rate the global sector mix is
 frozen and the price index is six constants.
+
+---
+
+## 4.1 Power: four stocks, and their working
+
+Every nation carries four numbers, recomputed once per world turn in `phasePower` and stored:
+
+| Stock | What it measures | Rises with | Falls with |
+| --- | --- | --- | --- |
+| **Authority** | how firmly a state holds its own ground | age, tenure, wars won, solvency, cohesion | territory lost, occupation, overreach |
+| **Influence** | how much the rest of the world listens | economic weight, trade reach, alignment abroad | conquest × (1 + influence), blitz pace, occupation |
+| **Quality of life** | how well it feeds, treats and pays its people | food security, healthcare, prosperity | fiscal strain |
+| **Civil liberties** | how freely it lets people disagree | alignment at home, government type, prosperity | a divided people, occupation |
+
+### The Why record
+
+`js/power.js` returns, for every stock:
+
+```js
+{ value: 0.62, target: 0.71, raw: 0.83, base: 0.30,
+  inputs: [ { label: 'Cohesion', raw: 0.71, norm: 0.71, weight: 0.20,
+              contribution: 0.142, key: 'power.authority.wCohesion',
+              note: 'how ideologically united the population is' }, ... ],
+  summary: 'Secure: solvency carries it, overreach drags' }
+```
+
+**Nothing downstream recomputes anything.** The nation panel renders this array; the leaderboard's
+four power sorts read the stored value; the summary is built from the same `inputs` the panel shows,
+so it cannot disagree with the numbers beside it. Each row carries the `key` of the tunable that
+moves it, which is what makes M5's slider dashboard a rendering job rather than a modelling one.
+
+It also changes what a test can assert: `tests/power.test.js` checks **contributions** — that losing
+ground outweighs taking it, that overreach is what stops conquest being a pure Authority engine —
+so a formula change that happens to preserve a total still fails the test that cared about the term.
+
+**Normalise before weighting.** Every input is mapped to 0–1 by a named curve (`ramp` for quantities
+with a natural "enough", `saturate` for unbounded counts with diminishing returns) *before* its
+weight applies, so weights are comparable and a slider means the same kind of thing everywhere.
+
+### The stock discipline
+
+```
+value = max(floor, clamp01(previous + clamp(target - previous, -maxFall, +maxRise)))
+```
+
+**The change is rate-limited, not the value**, and the difference is the whole anti-death-spiral
+guarantee. Clamping the value to a minimum leaves the *pressure* unbounded, so the moment the clamp
+relaxes the nation falls off a cliff — the clamp hides the problem. Limiting the change means a
+catastrophic turn costs `maxFall` and a collapse takes a decade: long enough to be a story, and long
+enough to be recoverable. `maxFall` (0.08) is larger than `maxRise` (0.05), because standing is
+easier to lose than to build. A stock with no previous value opens **at** its target rather than
+climbing from the floor.
+
+The `target` is kept beside the rate-limited `value`, so the panel can say *"51% — heading for 64%"*.
+A nation visibly on its way up or down for a dozen turns is more useful to a player than the
+instantaneous number.
+
+### What each stock is really for
+
+**Authority and Influence must be able to disagree** — that is the entire reason there are two.
+Measured: California conquering from 58 to 118 Areas over twelve turns went **Authority 0.501 →
+0.515** and **Influence 0.666 → 0.148**. Secure at home, a pariah abroad. The `(1 + influence)`
+scaling on conquest is what makes the cost depend on standing: a superpower annexing a neighbour
+pays more in reputation than an unknown does, because it had more to spend.
+
+**Food is a need, not a sector.** A share of output is a fact about an economy, not about whether
+anyone eats: food security is production **per person** against a per-person requirement, so the same
+harvest feeds a small nation and starves a large one. And food can be **bought** — a share of GDP is
+redirectable to imports, because without that term the model says the District of Columbia starves,
+which is a claim about a model that confused growing food with having food. Healthcare has no sector
+and is not faked as one; it is bought out of income.
+
+Food is deliberately near-saturated at peace — the honest thing to say about the 2024 United States
+is that it feeds itself — and is the term that **collapses under stress**. Healthcare and prosperity
+carry the peacetime variance.
+
+**Civil liberties hinges on alignment at home**, which is why it could not be written before the
+government carried a ruling ideology: a state governing people who broadly agree with it has no
+reason to restrict them. Measured as the population-weighted affinity between each Area's mix and the
+ruling ideology — weighted over Areas, not read off the nation's aggregate mix, because a nation
+split red/blue has a centroid resembling neither and would read as aligned with a centre party nobody
+supports. "A divided people" is a separate term from alignment: uniformly mildly-opposed and
+evenly-split-into-two-camps are the same alignment and different problems, and only cohesion tells
+them apart.
+
+Turn-0 bands across the 51 nations: **Authority 0.44–0.56, Influence 0.45–0.66, QoL 0.55–0.98,
+Liberties 0.60–0.84.**
+
+### What is not in them yet
+
+Authority's design list also names failed suppressions, coalition pressure and military readiness;
+Influence's names treaties honoured and broken, and aid given. None of those mechanics exist —
+suppression is M4, coalitions and the military are M6 — and adding placeholder terms would mean
+tuning the real terms against constants of zero and re-tuning everything when they arrive. **A term
+arrives here when the thing it measures does.**
 
 ---
 
@@ -403,6 +507,10 @@ beside it runs every turn and is load-bearing. The code says so at both.
   Economy — each with a legend. Political colours each Area by its **leading ideology** and the
   panel shows the full six-way stacked bar with a derived coalition line and the nation's position
   on the two axes.
+- **Seven leaderboard sorts**: population, GDP, ideology, and one per power stock. A stock you can
+  only read one nation at a time is half a feature — the interesting question about Authority is
+  never "what is California's" but "who is weakest, and who is climbing" — so the power columns
+  carry a red-amber-green heat and a trend arrow, read straight off the stored record.
 - **Rendering is decoupled from mutation.** `Game.emit` carries a reason —
   `{ownership, values, roster}` — and the renderer skips the border re-mesh when ownership did not
   move and skips the recolor when the active map mode does not depend on what changed.
@@ -463,9 +571,9 @@ server, and the flash says which of the two happened.
 
 ## 11. Testing
 
-`tests/run.html` runs every suite in the browser; **301 tests, all green, in about 17 seconds**
-(41 seconds before the columnar conversion, on a suite that boots the world some three hundred
-times). The files are plain ES modules with no dependencies, written so they run under
+`tests/run.html` runs every suite in the browser; **382 tests across 66 suites, all green, in about
+24 seconds** (41 seconds before the columnar conversion, on a suite that boots the world some four
+hundred times). The files are plain ES modules with no dependencies, written so they run under
 `node --test` unchanged.
 
 What is pinned: the model invariants (sums, ownership consistency, save round-trip, same-seed
@@ -499,8 +607,11 @@ Listed so nobody mistakes an absence for a bug. Each is a milestone in
   turns the map is still Republican or Democrat everywhere. That is the expected shape at ~20%
   organised and it is M5's dial to turn, but it is the number to watch: a map where four of the six
   ideologies can never take an Area is a map with two ideologies and four decorations. *(M4.2, M5)*
-- **No county-level sentiment, no two-tier secession, no Authority / Influence / QoL / Civil
-  Liberties.** *(M3, M4)*
+- **No Area-level sentiment and no two-tier secession.** The four power stocks are per NATION.
+  M4.2's grievance wants QoL and liberty satisfaction per **Area** — the economy bake is already per
+  Area, so that is a change of scope rather than of model. *(M4)*
+- **No suppression, no coalitions, no military.** Which is why Authority is missing its failed-
+  suppression and coalition-pressure terms and Influence its treaty terms. *(M4, M6)*
 - **No player identity, no AI, no win or lose condition.** You operate all 51 seats, and a nation
   conquered out of existence disappears without comment. *(M6)*
 - **No event ledger.** An action's only output is a six-second toast, so there is nothing for a
