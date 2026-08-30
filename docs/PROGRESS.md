@@ -91,7 +91,7 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done
       edges / 43.5 KB of flat Int32Array; a full graph sweep is 7.7x faster than the already-memoized
       string path it replaces (0.042 ms vs 0.325 ms). Found and fixed five missing road bridges
       (D49): Michigan, New York, Rhode Island and Virginia all started in two disconnected pieces.
-- [ ] **M2.5** One state document (`data/state.json`); editor round-trip via the server.
+- [x] **M2.5** One state document (`data/state.json`); editor round-trip via the server.
   - [x] **M2.5a** `js/statedoc.js` — assemble/validate/applyModel, DOM-free, so the suite runs the
         REAL load path instead of the hand-written copy it had been testing (D58). `data/state.json`
         is autosaved every world turn and resumed at boot (D59); the round-trip test now goes
@@ -155,15 +155,21 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done
 *(Updated as work proceeds — what is done, what is next, what was learned that is not yet
 written down elsewhere.)*
 
-**M0, M1 and M2.1-M2.2 complete.** 229 tests green at `tests/run.html`, `build/validate.py`
-reports 0 errors, and the game loads, plays and saves with a clean console. Verified end to end at
-M2.2: fresh boot -> 21 world turns driven through the real Pass button (1,071 nation turns) ->
-population 340.1M -> 419.2M, GDP 39.7T, organised-movement share 5.8% -> 11.0%, Utah's Conservative
-Nationalist bloc 13.2% -> 21.5% as Deseret organises -> snapshot -> three more world turns ->
-apply the snapshot, and the world came back bit-identical across all six ideology totals, GDP,
-movement head counts, the movement roster and every Area's owner. Zero console errors.
+**M0, M1 and M2 complete.** 301 tests green at `tests/run.html` in ~17s (41s before the columnar
+conversion), `build/validate.py` reports 0 errors, and the game loads, plays and saves with a clean
+console. `DESIGN.md` rewritten at the M2 close to describe the game as it actually is.
 
-Next: **M2.3** (columnar state: typed arrays, ownership stored once).
+Verified end to end at the M2 close: fresh boot -> world turns driven through the real Pass button
+-> autosave to `data/state.json` -> reload the page -> resumed at the same turn, population, seed
+and borders -> map editor -> Open published -> Cultural (1,676 unassigned becomes 0 assigned) ->
+add a region -> Publish -> `content/cultural.json` came back with the new region and all 1,676
+assignments, with no download anywhere in the loop.
+
+Performance, measured on the real map rather than predicted: a world turn 24.7 -> 9.3 ms, the six
+phases 12.4 -> 2.8 ms, political drift 8.0 -> 2.0 ms, a 50-turn simulator run 1,237 -> 466 ms. The
+columnar store is 173 KB and the adjacency graph 43.5 KB.
+
+Next: **M3.1** (`js/power.js`: the Why-record convention, then Authority).
 
 Open, carried into M2.3: after 21 turns no Area is yet LED by a minority ideology (Rep 1,288 /
 Dem 388 of 1,676). That is the expected shape at 11% organised movements and it is M5's dial to
