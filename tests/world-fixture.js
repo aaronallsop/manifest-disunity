@@ -36,8 +36,11 @@ export function loadData() {
       get('../data/transport.json', null),
       get('../content/cultural.json', null),
       get('../content/ideologies.json', null),
-    ]).then(([data, adjacency, areas, partyDefs, economy, neighbors, trade, transport, culture, ideologies]) => ({
-      data, adjacency, areas, partyDefs, economy, neighbors, trade, transport, culture, ideologies,
+      get('../content/tunables.json', null),
+    ]).then(([data, adjacency, areas, partyDefs, economy, neighbors, trade, transport, culture,
+              ideologies, tunables]) => ({
+      data, adjacency, areas, partyDefs, economy, neighbors, trade, transport, culture,
+      ideologies, tunables,
     }));
   }
   return dataPromise;
@@ -59,7 +62,14 @@ export async function bootWorld(opts = {}) {
   World.setTurn(0);
   Market.loadState(null);
 
+  /*
+   * The AUTHORED overrides, applied the way app.js applies them. Without this
+   * the suite validates a differently-tuned world than the one that ships, which
+   * is the D50 mistake in a new place — and M5.3's tuning pass is exactly the
+   * kind of change that would silently stop being tested.
+   */
   const tune = opts.tune || window.TUNE;
+  if (raw.tunables && !opts.tune) tune.load(raw.tunables.values || raw.tunables);
   const rng = RNG.create(seed);
 
   Ideology.load(raw.ideologies);

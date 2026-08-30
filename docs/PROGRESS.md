@@ -170,8 +170,14 @@ Done in the order **M3.4 -> M3.1 -> M3.2 -> M3.3**, because the plan lists M3.4'
       array reference rather than a second calculation. Wired into annex, civil war, both unite
       outcomes, release, changing course and both tiers of secession — and a nation ceasing to exist
       is an event now rather than a silent `Map.delete`.
-- [ ] **M5.2** Developer dashboard.
-- [ ] **M5.3** 50-turn step-through simulator.
+- [x] **M5.2** `dev.html`: 142 sliders generated from the TUNE schema, live charts, verdict cards
+      for the questions each earlier milestone asked once, and the ledger rendered with its terms
+      and slider keys expanded (D95).
+- [x] **M5.3** `js/sim.js`, driving the REAL game rather than a model of it (D94). A 50-turn run is
+      1.7s. **The West is tuned** (D96): `sent.maxRise` 0.035 -> 0.014 moves the first secession from
+      turn 9 to turns 22-29 across four seeds with nothing else materially changing. Found and fixed
+      the declaration fizzle by reading the log (D97), and made the fixture load the authored tuning
+      (D98).
 - [ ] **M5.4** Player-facing explanation (clocks, newspaper, Pressure mode, fog).
 
 ## M6 — Agency

@@ -142,11 +142,18 @@ describe('Changing course', () => {
     const beforeAlign = live.why.liberties.inputs.find((i) => i.label === 'Alignment at home').norm;
 
     const d = Game.nationDemographics(nid);
-    const yellow = Ideology.index('yellow');
-    if (d.mix[yellow] / d.pop < T().get('gov.changeMinShare')) return; // nothing grew; nothing to appease
+    // Whatever has grown enough to be worth appeasing and is not already in
+    // power. With the M5.3 tuning Utah's plurality may already have BECOME
+    // Conservative Nationalist by now, in which case switching to it is a no-op.
+    const cur = live.gov.rulingIdeology;
+    const pick = Ideology.all()
+      .map((x, i) => ({ id: x.id, share: d.mix[i] / d.pop }))
+      .filter((o) => o.id !== cur && o.share >= T().get('gov.changeMinShare'))
+      .sort((a, b) => b.share - a.share)[0];
+    if (!pick) return; // nothing grew enough; nothing to appease
     live.treasury = 1e15;
 
-    const done = Game.changeRulingIdeology(nid, 'yellow');
+    const done = Game.changeRulingIdeology(nid, pick.id);
     ok(done.ok, `appeasement was refused: ${done.message}`);
     World.advanceTurn(T(), rng);
     const now = Game.getNation(nid);

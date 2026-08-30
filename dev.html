@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Nation States — tuning dashboard</title>
+<link rel="stylesheet" href="css/style.css" />
+<style>
+  /* The dashboard is a developer tool, so it gets a denser layout than the game
+     and no animation: a slider drag re-runs 50 turns, and anything that eases
+     makes it feel slower than it is. */
+  body { margin: 0; background: var(--bg); color: var(--text); font-family: inherit; }
+  .dev-wrap { display: grid; grid-template-columns: 340px 1fr; height: 100vh; }
+  .dev-side { overflow-y: auto; border-right: 1px solid var(--line); padding: 14px; }
+  .dev-main { overflow-y: auto; padding: 16px 20px; }
+  .dev-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 10px; }
+  .dev-head h1 { font-size: 18px; margin: 0; }
+  .dev-head .sub { color: var(--muted); font-size: 12px; }
+  .dev-run { display: flex; gap: 8px; align-items: center; margin: 10px 0 14px; flex-wrap: wrap; }
+  .dev-run input[type=number] { width: 68px; }
+  .dev-group { margin-bottom: 14px; }
+  .dev-group > summary { cursor: pointer; font-weight: 600; font-size: 12px;
+    text-transform: uppercase; letter-spacing: .05em; color: var(--muted); padding: 4px 0; }
+  .dev-tune { display: grid; grid-template-columns: 1fr 54px; gap: 4px 8px;
+    align-items: center; padding: 5px 0; border-top: 1px solid var(--line); }
+  .dev-tune label { font-size: 12px; grid-column: 1 / -1; }
+  .dev-tune label .k { color: var(--muted); font-size: 10px; display: block; }
+  .dev-tune input[type=range] { width: 100%; }
+  .dev-tune .val { font-size: 11px; text-align: right; font-variant-numeric: tabular-nums; }
+  .dev-tune.changed label { color: #e3c229; }
+  .dev-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 8px; margin-bottom: 16px; }
+  .dev-card { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 9px 11px; }
+  .dev-card .l { font-size: 10px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+  .dev-card .v { font-size: 17px; font-weight: 700; margin-top: 2px; }
+  .dev-card.warn { border-color: #e8862d; }
+  .dev-card.bad { border-color: #e0483b; }
+  .chart { margin-bottom: 18px; }
+  .chart h3 { font-size: 12px; margin: 0 0 4px; text-transform: uppercase;
+    letter-spacing: .05em; color: var(--muted); }
+  .chart svg { display: block; width: 100%; height: 130px; background: var(--panel);
+    border: 1px solid var(--line); border-radius: 6px; }
+  .dev-log { font-size: 12px; max-height: 260px; overflow-y: auto; }
+  .dev-log .row { padding: 4px 0; border-top: 1px solid var(--line); }
+  .dev-log .t { color: var(--muted); font-variant-numeric: tabular-nums; margin-right: 6px; }
+  .dev-log .terms { color: var(--muted); font-size: 11px; margin-top: 2px; }
+  .busy { opacity: .5; pointer-events: none; }
+</style>
+</head>
+<body>
+<div class="dev-wrap">
+  <aside class="dev-side">
+    <div class="dev-head"><h1>Tuning</h1></div>
+    <div class="dev-run">
+      <button class="btn go" id="run">Run</button>
+      <label class="sub">turns <input type="number" id="turns" value="50" min="1" max="300" /></label>
+      <label class="sub">seed <input type="number" id="seed" value="20260829" /></label>
+    </div>
+    <div class="dev-run">
+      <button class="btn ghost" id="reset">Reset overrides</button>
+      <button class="btn ghost" id="copy">Copy as JSON</button>
+    </div>
+    <div id="tunes"></div>
+  </aside>
+
+  <main class="dev-main">
+    <div class="dev-head">
+      <h1 id="title">Nation States — 50-turn simulator</h1>
+      <span class="sub" id="status">idle</span>
+    </div>
+    <div class="dev-cards" id="cards"></div>
+    <div id="charts"></div>
+    <h3 style="font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)">
+      What happened</h3>
+    <div class="dev-log" id="log"></div>
+  </main>
+</div>
+
+<script src="lib/d3.v7.min.js"></script>
+<script src="lib/topojson-client.min.js"></script>
+<script src="js/colors.js"></script>
+<script src="js/movements.js"></script>
+<script src="js/game.js"></script>
+<script src="js/civilwar.js"></script>
+<script src="js/mapmodes.js"></script>
+<script src="js/turns.js"></script>
+<script src="js/ledger.js"></script>
+<script src="js/sentiment.js"></script>
+<script src="js/world.js"></script>
+<script src="js/market.js"></script>
+<script src="js/sim.js"></script>
+<script type="module" src="js/boot-globals.js"></script>
+
+<script type="module">
+import { SCHEMA, groups } from './js/tunables.js';
+
+/*
+ * THE DASHBOARD IS A RENDERER, not a second model.
+ *
+ * Every slider is generated from the TUNE schema — label, range, step and doc
+ * all come from the same declaration the engine reads — so a tunable added in
+ * js/tunables.js appears here with no work, and one renamed cannot leave a
+ * stale control behind. That is the return on M0.4 putting every constant in
+ * one schema with metadata rather than in a bag of numbers.
+ *
+ * A run uses a CLONE of the tunables with the overrides applied, so exploring
+ * never touches the game the player is in.
+ */
+const overrides = {};
+let busy = false;
+
+const el = (id) => document.getElementById(id);
+const fmt = (v) => (typeof v === 'number'
+  ? (Math.abs(v) >= 1000 ? v.toFixed(0) : Math.abs(v) >= 1 ? v.toFixed(2) : v.toFixed(3))
+  : String(v));
+
+/* ---- sliders, generated from the schema ---- */
+function buildTunes() {
+  const byGroup = {};
+  for (const [key, def] of Object.entries(SCHEMA)) {
+    if (def.kind === 'object' || Array.isArray(def.v)) continue;  // not a slider
+    (byGroup[def.group || 'Other'] = byGroup[def.group || 'Other'] || []).push([key, def]);
+  }
+  const order = ['Sentiment', 'Secession', 'Power', 'Quality of life', 'World', 'Civil war',
+                 'Nations', 'Economy', 'Trade', 'Market', 'Annex', 'Other'];
+  const names = Object.keys(byGroup).sort((a, b) => {
+    const ia = order.indexOf(a), ib = order.indexOf(b);
+    return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib) || a.localeCompare(b);
+  });
+
+  el('tunes').innerHTML = names.map((g) => `
+    <details class="dev-group" ${['Sentiment', 'Secession'].includes(g) ? 'open' : ''}>
+      <summary>${g} <span style="opacity:.6">(${byGroup[g].length})</span></summary>
+      ${byGroup[g].map(([key, def]) => `
+        <div class="dev-tune" data-key="${key}">
+          <label title="${(def.doc || '').replace(/"/g, '&quot;')}">${def.label || key}
+            <span class="k">${key}</span></label>
+          <input type="range" min="${def.min}" max="${def.max}" step="${def.step}" value="${def.v}" />
+          <span class="val">${fmt(def.v)}</span>
+        </div>`).join('')}
+    </details>`).join('');
+
+  el('tunes').querySelectorAll('.dev-tune').forEach((row) => {
+    const key = row.dataset.key;
+    const input = row.querySelector('input');
+    const out = row.querySelector('.val');
+    input.oninput = () => {
+      const v = Number(input.value);
+      out.textContent = fmt(v);
+      if (v === SCHEMA[key].v) delete overrides[key]; else overrides[key] = v;
+      row.classList.toggle('changed', key in overrides);
+    };
+    // Re-run on release rather than on every pixel of the drag: a run is ~600ms
+    // and firing one per input event would queue dozens.
+    input.onchange = () => run();
+  });
+}
+
+/* ---- charts ---- */
+const CHARTS = [
+  { key: 'authority', label: 'Authority (min / median / max)', band: true, dom: [0, 1] },
+  { key: 'influence', label: 'Influence', band: true, dom: [0, 1] },
+  { key: 'qol', label: 'Quality of life', band: true, dom: [0, 1] },
+  { key: 'liberties', label: 'Civil liberties', band: true, dom: [0, 1] },
+  { key: 'movementPeak', label: 'Strongest movement share', band: true, dom: [0, 1] },
+  { key: 'movementReach', label: 'Movement reach (share of homeland held)', band: true, dom: [0, 1] },
+  { key: 'nations', label: 'Nations', band: false },
+  { key: 'politicalSpread', label: 'Within-nation political spread (M1.6 watch)', band: false },
+];
+
+function drawCharts(series) {
+  el('charts').innerHTML = CHARTS.map((c) => `
+    <div class="chart"><h3>${c.label}</h3><svg viewBox="0 0 600 130" preserveAspectRatio="none"></svg></div>`).join('');
+  const svgs = el('charts').querySelectorAll('svg');
+  CHARTS.forEach((c, i) => drawOne(svgs[i], series, c));
+}
+
+function drawOne(node, series, spec) {
+  const svg = d3.select(node);
+  const W = 600, H = 130, P = 6;
+  const x = d3.scaleLinear().domain([0, series.length - 1]).range([P, W - P]);
+  const vals = spec.band
+    ? series.flatMap((s) => [s[spec.key].min, s[spec.key].max])
+    : series.map((s) => s[spec.key]);
+  const dom = spec.dom || [Math.min(0, d3.min(vals)), d3.max(vals) * 1.05 || 1];
+  const y = d3.scaleLinear().domain(dom).range([H - P, P]);
+
+  if (spec.band) {
+    svg.append('path')
+      .attr('d', d3.area().x((d, i) => x(i)).y0((d) => y(d[spec.key].min)).y1((d) => y(d[spec.key].max))(series))
+      .attr('fill', 'rgba(59,111,224,.22)');
+    svg.append('path')
+      .attr('d', d3.line().x((d, i) => x(i)).y((d) => y(d[spec.key].med))(series))
+      .attr('fill', 'none').attr('stroke', '#3b6fe0').attr('stroke-width', 1.6);
+  } else {
+    svg.append('path')
+      .attr('d', d3.line().x((d, i) => x(i)).y((d) => y(d[spec.key]))(series))
+      .attr('fill', 'none').attr('stroke', '#33a852').attr('stroke-width', 1.6);
+  }
+  // the floor line, because "does anything sit on the floor" is the question
+  if (spec.dom) {
+    const floor = window.TUNE ? window.TUNE.peek('power.floor') : 0.08;
+    svg.append('line').attr('x1', P).attr('x2', W - P).attr('y1', y(floor)).attr('y2', y(floor))
+      .attr('stroke', '#e0483b').attr('stroke-dasharray', '3 3').attr('opacity', .5);
+  }
+}
+
+/* ---- the verdict cards ---- */
+function drawCards(sum) {
+  const card = (l, v, cls) => `<div class="dev-card ${cls || ''}"><div class="l">${l}</div><div class="v">${v}</div></div>`;
+  el('cards').innerHTML = [
+    card('Nations', sum.nations, sum.nationsLost > 6 ? 'warn' : ''),
+    card('Secessions', sum.secessions, sum.secessions === 0 ? 'warn' : ''),
+    card('First secession', sum.firstSecessionTurn == null ? 'never' : `turn ${sum.firstSecessionTurn}`,
+      sum.firstSecessionTurn != null && sum.firstSecessionTurn < 12 ? 'bad' : ''),
+    card('Defections', sum.defections),
+    card('Nations lost', sum.nationsLost),
+    card('Organised', sum.organised),
+    card('Movement reach', sum.reachSpan),
+    card('Political spread', sum.spread, sum.spreadCollapsed ? 'bad' : ''),
+    card('Authority floor', sum.authorityFloor.toFixed(3),
+      sum.authorityFloor <= (window.TUNE ? window.TUNE.peek('power.floor') : 0.08) + 1e-9 ? 'bad' : ''),
+    card('Influence floor', sum.influenceFloor.toFixed(3),
+      sum.influenceFloor <= (window.TUNE ? window.TUNE.peek('power.floor') : 0.08) + 1e-9 ? 'warn' : ''),
+  ].join('');
+}
+
+/* ---- the log: the ledger, with its terms expanded ---- */
+function drawLog(events) {
+  const rows = events.filter((e) => e.text && e.kind !== 'power').slice(-60).reverse();
+  el('log').innerHTML = rows.length ? rows.map((e) => `
+    <div class="row"><span class="t">t${e.turn}</span>${e.text}
+      ${e.terms ? `<div class="terms">${e.terms
+        .map((t) => `${t.name} ${t.value >= 0 ? '+' : ''}${fmt(t.value)}${t.key ? ` <span style="opacity:.6">(${t.key})</span>` : ''}`)
+        .join(' &middot; ')}</div>` : ''}
+    </div>`).join('') : '<div class="row" style="color:var(--muted)">Nothing happened.</div>';
+}
+
+/* ---- run ---- */
+async function run() {
+  if (busy) return;
+  busy = true;
+  document.body.classList.add('busy');
+  el('status').textContent = 'running…';
+  const t0 = performance.now();
+  try {
+    const res = await Sim.run({
+      seed: Number(el('seed').value) || 0,
+      turns: Number(el('turns').value) || 50,
+      overrides: { ...overrides },
+    });
+    drawCards(res.summary);
+    drawCharts(res.series);
+    drawLog(res.events);
+    const n = Object.keys(overrides).length;
+    el('status').textContent = `${res.turns} turns in ${Math.round(performance.now() - t0)} ms`
+      + (n ? ` · ${n} override${n === 1 ? '' : 's'}` : '');
+  } catch (err) {
+    el('status').textContent = `failed: ${err.message}`;
+    console.error(err);
+  } finally {
+    busy = false;
+    document.body.classList.remove('busy');
+  }
+}
+
+el('run').onclick = run;
+el('reset').onclick = () => {
+  for (const k of Object.keys(overrides)) delete overrides[k];
+  buildTunes();
+  run();
+};
+el('copy').onclick = () => {
+  const json = JSON.stringify(overrides, null, 2);
+  navigator.clipboard?.writeText(json);
+  el('status').textContent = `copied ${Object.keys(overrides).length} overrides — paste into content/tunables.json`;
+};
+
+buildTunes();
+run();
+window.__DEV__ = { run, overrides, Sim };
+</script>
+</body>
+</html>

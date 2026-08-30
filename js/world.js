@@ -638,9 +638,41 @@ const World = (function () {
       for (const rec of Movements.all()) {
         if (rec.state !== 'declared') continue;
         const claim = (byMovement.get(rec.name) || []).map((r) => r.f);
-        if (claim.length < tn.get('nation.minAreas')) continue;
+        /*
+         * A movement declares when it can hold A COUNTRY, not when it has
+         * enough Areas somewhere.
+         *
+         * Testing the total claim let a movement declare on four scattered
+         * Areas, which `breakApart` then split into pieces: measured at seed
+         * 777, the State of Jefferson "declared independence taking 4 Areas" and
+         * came into being with TWO, was absorbed eight turns later, and
+         * re-declared at turn 29 with fourteen. The first declaration was a
+         * fizzle that cost a movement its moment.
+         *
+         * Requiring the largest CONNECTED piece to be viable is the honest
+         * reading of the same rule, and it costs one components() call on a set
+         * the phase has already assembled.
+         */
+        const pieces = Game.components(new Set(claim), null).sort((a, b) => b.length - a.length);
+        if (!pieces.length) continue;
+        const largest = pieces[0];
+        /*
+         * Declared with the largest CONNECTED piece, and only if that piece can
+         * stand on its own as a matter of TERRITORY — the population escape in
+         * `breakApart` exists for civil-war fragments, which is a different
+         * situation from founding a country on purpose.
+         *
+         * Measured at seed 777 before this: the State of Jefferson "declared
+         * independence taking 4 Areas" and came into being with TWO, because the
+         * four were in pieces of {2,1,1} and the outliers were folded into
+         * neighbours. It was absorbed eight turns later and re-declared at turn
+         * 29 with fourteen. Declaring with what you can actually hold makes the
+         * claimed and founded numbers agree by construction, and the outliers
+         * still arrive later through tier 1.
+         */
+        if (largest.length < tn.get('nation.minAreas')) continue;
 
-        const born = Game.breakApart(claim, { exclude: null, reason: 'declare' });
+        const born = Game.breakApart(largest, { exclude: null, reason: 'declare' });
         if (!born.length) continue;
 
         // The largest new nation carries the movement's name and identity; any
@@ -664,18 +696,18 @@ const World = (function () {
         }
         rec.nation = best;
         rec.state = 'realized';
-        TurnSystem.insertAfter(Game.getOwner(claim[0]) || best, born);
+        TurnSystem.insertAfter(Game.getOwner(largest[0]) || best, born);
         const ev = { kind: 'declare', movement: rec.name, nation: best,
-                     areas: claim.length, born: born.length, turn };
+                     areas: largest.length, born: born.length, turn };
         events.push(ev);
         // The explanation is the one the model already computed for the Area the
         // movement is strongest in — no second calculation, and it names the
         // exact factors that got it over the line.
         const why = Sentiment.explain(rec.core[0], rec.name, tn);
         Ledger.append({
-          turn, phase: 'secession', subject: best, kind: 'declare', delta: claim.length,
-          text: `${rec.name} declared independence, taking ${claim.length} `
-            + `${claim.length === 1 ? 'Area' : 'Areas'}.`,
+          turn, phase: 'secession', subject: best, kind: 'declare', delta: largest.length,
+          text: `${rec.name} declared independence, taking ${largest.length} `
+            + `${largest.length === 1 ? 'Area' : 'Areas'}.`,
           terms: Ledger.termsOf(why), movement: rec.name,
         });
       }

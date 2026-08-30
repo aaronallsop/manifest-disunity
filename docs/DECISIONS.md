@@ -998,3 +998,70 @@ made**; and `refreshGovernments` moves it whenever the population shifts a plura
 hand a player a free reset for something they did not do. `gov.lastChange` is null until a
 deliberate change and is the only thing the cooldown reads. Third instance of the same lesson as D66
 and D88: when two quantities look like the same clock, they are usually two clocks.
+
+### D94 — The simulator drives the real game, not a model of it
+**M5.3.** `Sim.run` boots the same `Game.init` the page boots and calls the same `World.advanceTurn`
+the Pass button calls. That is the only arrangement in which **tuning the simulator tunes the game**.
+A separate lightweight model that "captures the essentials" would be a fourth implementation of the
+world after the model, the tests and the explanation layer — and it would be the one everybody
+trusted, because it is the one with the graphs.
+
+The cost is that a run leaves the live modules holding that world, which is fine for a dev page and
+is asserted rather than assumed: the suite checks that after a run, `World.getTurn()`, the roster and
+the live movement shares are the ones the series reports.
+
+Two things fell out of building it. `SimData` fetches **absolute** paths, because the simulator is
+driven from `/dev.html` and from `/tests/run.html` and a relative path resolves against the page —
+the suite silently fetched `/tests/data/game-data.json`, took the fallback, and threw one layer
+later. And `TuneMeta` never exposed `createTune`, so `TuneMeta.createTune ? … : window.TUNE` fell
+through to the live tunables and **every dashboard slider mutated the session it was modelling** —
+caught by the test written for exactly that, which is the best possible outcome for a test.
+
+### D95 — The dashboard is a renderer, generated from the schema
+**M5.2.** Every one of its 142 sliders is built from `SCHEMA` — label, range, step and doc all come
+from the same declaration the engine reads — so a tunable added in `js/tunables.js` appears with no
+work and one renamed cannot leave a stale control behind. That is the return on M0.4 putting every
+constant in one schema *with metadata* rather than in a bag of numbers.
+
+The verdict cards are the questions a tuning pass actually asks, computed rather than eyeballed:
+first-secession turn, the two death-spiral floors, the M1.6 political-spread collapse, the movement
+reach span. Each is a question an earlier milestone asked once; the dashboard asks all of them every
+run, so a regression in any of them is visible while tuning something else.
+
+### D96 — The tuning pass: `sent.maxRise` 0.035 → 0.014
+**M5.3.** The plan says "tune the West with it before going further", and the first run said why: at
+the schema default the three deterministic western movements all declared by **turn 8, 9 and 10** —
+the West fell apart before a player had learned the board, and three separate crises arrived as one
+event.
+
+`sent.maxRise` turned out to be a clean, near-orthogonal pacing dial. Measured across four seeds:
+0.035 → first secession t9, 0.024 → t13, 0.018 → t17, **0.014 → t22–t29**, with the organised share,
+the movement reach span and the within-nation political spread all essentially unchanged. At 0.010
+the pacing is better still but movements start failing to arrive at all — Greater Idaho never
+declares — so 0.014 is the last value before the game loses content.
+
+Written to `content/tunables.json` with the measurement that justifies it, because a tuned number
+with no record of what it was tuned against is a number nobody can ever change again.
+
+### D97 — A movement declares with the ground it can actually hold
+**M5.3.** Found by reading the simulator's own event log rather than by a test. A movement declared
+on all its over-threshold Areas, and `breakApart` then split them: at seed 777 the State of Jefferson
+*"declared independence, taking 4 Areas"* and **came into being with two**, because the four were in
+pieces of {2,1,1} and the outliers were folded into neighbours. It was absorbed eight turns later and
+re-declared at turn 29 with fourteen. The first declaration was a fizzle that cost a movement its
+moment, and the claimed and founded numbers in the log disagreed.
+
+The claim is now the largest *connected* piece, and it must clear `nation.minAreas` as a matter of
+territory — the population escape in `breakApart` exists for civil-war fragments, which is a
+different situation from founding a country on purpose. The two numbers now agree by construction,
+and the outliers still arrive later through tier 1.
+
+Worth keeping: a movement whose country is destroyed and which then re-declares bigger is **not** a
+bug. Seed 777 reads as Greater Idaho revolting at t28, being crushed at t29, and returning at t30
+with seventeen Areas. That is a story.
+
+### D98 — The test fixture loads the authored tuning
+**M5.3.** `tests/world-fixture.js` applied the schema defaults and never read `content/tunables.json`,
+so the suite validated a differently-tuned world than the one that ships — and M5.3's tuning pass is
+exactly the kind of change that would have silently stopped being tested. Same mistake as D50, in a
+new place, and worth stating as a rule: **anything the game loads at boot, the fixture loads too.**

@@ -28,7 +28,11 @@ import * as Power from './power.js';
 
 window.RNG = RNG;
 window.TUNE = createTune();
-window.TuneMeta = { describe, groups, SCHEMA };
+// createTune is on here because the simulator needs to build a CLONE of the
+// tunables to explore in. It was missing, so `TuneMeta.createTune ? ... :
+// window.TUNE` silently fell through to the live set and every dashboard slider
+// mutated the session it was supposed to be modelling.
+window.TuneMeta = { describe, groups, SCHEMA, createTune };
 window.GeoCT = GeoCT;
 window.Counts = Counts;
 window.Ideology = Ideology;
