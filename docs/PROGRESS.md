@@ -142,7 +142,11 @@ Done in the order **M3.4 -> M3.1 -> M3.2 -> M3.3**, because the plan lists M3.4'
       now actually deterministic.
 
 - [ ] **M4.1** `js/movements.js`.
-- [ ] **M4.2** `phaseSentiment` with all six factors.
+- [x] **M4.2** `phaseSentiment` with all six factors, replacing `phaseMovementGrowth`. Sentiment is
+      the movement's share itself (D81); the explanation is the calculation, recomputed not stored
+      (D82); movements seed their core so the diffusion term has somewhere to carry them (D83); and
+      the model discriminates, with a test demanding something lose ground (D84). Measured at turn
+      45: Deseret spreads 4 -> 41 Areas and DECLARES, 1 declared / 7 armed / 6 rising / 3 latent.
 - [ ] **M4.3** Two-tier secession (+ `MIN_NATION` re-derivation, `exclude` fix).
 - [ ] **M4.4** The two cheapest release valves.
 - [ ] **M4.5** Sentiment-scaled occupation cost.

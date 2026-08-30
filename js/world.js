@@ -216,69 +216,147 @@ const World = (function () {
   }
 
   /*
-   * Movements gain ground: each closes `partyStep` of the gap to its per-Area
-   * ceiling, converting people from every OTHER ideology into its own.
+   * SENTIMENT: what share of each Area each movement holds, and why.
    *
-   * The gain is computed from the SNAPSHOT share, so it eases in and never
-   * exceeds the ceiling. All gains are computed BEFORE any is applied: applying
-   * them one at a time made the result depend on the insertion order of the
-   * movement names, so two identically-seeded movements in one Area settled 0.08
-   * share points apart — a replay-breaking source of nondeterminism with no
-   * modelled cause.
+   *   target = clamp01( base * (grievance + pull) - suppression )
    *
-   * M4.2 replaces the fixed ceiling with sentiment: a movement's target becomes
-   * a function of ideological affinity, quality of life, liberty, the power of
-   * the nation holding it, and the pull of neighbouring Areas that already
-   * carry it.
+   * This replaced `phaseMovementGrowth`, which closed a fixed fraction of the
+   * gap to a fixed ceiling — so every movement in every Area climbed the same
+   * curve toward the same number, and the only thing that distinguished Deseret
+   * from the Anarcho-Capitalists was where each had been planted. Nothing about
+   * how a place was governed changed anything, and nothing spread.
+   *
+   * Three properties carry the design:
+   *
+   *   BASE IS MULTIPLICATIVE. An Area that does not share the ideology cannot be
+   *   radicalised into that movement no matter how badly it is governed —
+   *   *geography defines where a movement can exist; ideology defines how strong
+   *   it is there*. Additive grievance would let bad government alone produce any
+   *   movement anywhere, collapsing twenty-four regional factions into one
+   *   national discontent meter.
+   *
+   *   PULL IS THE DIFFUSION TERM, and it is the whole reason a movement can now
+   *   reach an Area it was never seeded in. Read from the CSR graph and from
+   *   SNAP, never from `next`: reading `next` would let a movement spread across
+   *   the whole map in one turn in whatever order the loop happened to run.
+   *
+   *   THE CHANGE IS RATE-LIMITED, NOT THE VALUE — the same discipline as the
+   *   power stocks, and the specific fix for a runaway spiral. A region takes
+   *   years to turn.
+   *
+   * SENTIMENT IS THE SHARE ITSELF. `mov[name]` is the head count a movement has
+   * organised and its share of the Area is exactly what sentiment means; keeping
+   * both would be two representations of one fact needing two stacked rate
+   * limits. So this phase moves `mov` toward the target and the save carries
+   * nothing new.
+   *
+   * People converted into a movement come from the ideologies it does NOT belong
+   * to, so the Area's total is unchanged and `mov` stays a valid slice of
+   * `pop[ideologyOf(name)]`.
    */
-  function phaseMovementGrowth(snap, nxt, tune) {
+  function phaseSentiment(snap, nxt, tune, owners, ctx) {
     const tn = T(tune);
-    const stepFrac = tn.get('world.partyStep');
-    // Per-movement ceilings (M4.1), resolved once rather than per Area.
-    const capOf = {};
-    for (const m of Movements.getSpawned()) capOf[m] = Movements.capOf(m, tn);
+    const rise = tn.get('sent.maxRise');
+    const fall = tn.get('sent.maxFall');
+    const floor = tn.get('sent.floor');
     const N = Ideology.count();
     const ideologyOf = movementIdeologies();
-    const target = new Float64Array(N);
+    const sctx = ctx || Sentiment.context(owners, tn);
+    const movements = sctx.movements;
+    if (!movements.length) return;
+
+    const own = owners || snapshotOwners();
+    const g = Game.graph();
+    const start = g.start, list = g.list;
+    const gain = new Float64Array(N);
+
+    /*
+     * Neighbour shares are read from SNAP for every (Area, movement) pair before
+     * anything is written, which is what makes the diffusion order-independent.
+     * One pass over the graph rather than one per movement.
+     */
+    const M = movements.length;
+    const share = new Float64Array(nxt.n * M);   // snap share, per Area per movement
+    const pops = new Float64Array(nxt.n);
+    for (let f = 0; f < nxt.n; f++) {
+      const base = f * N;
+      let pop = 0;
+      for (let k = 0; k < N; k++) pop += snap.pop[base + k];
+      pops[f] = pop;
+      if (pop <= 0) continue;
+      const sMov = snap.mov[f];
+      for (let m = 0; m < M; m++) {
+        const held = sMov[movements[m]];
+        if (held) share[f * M + m] = held / pop;
+      }
+    }
 
     for (let f = 0; f < nxt.n; f++) {
-      const sMov = snap.mov[f];
-      const names = Object.keys(sMov);
-      if (!names.length) continue;
+      const o = own[f];
+      const nation = o >= 0 ? sctx.byNation[o] : null;
+      if (!nation) continue;
       const base = f * N;
-      let spop = 0, pop = 0;
-      for (let k = 0; k < N; k++) { spop += snap.pop[base + k]; pop += nxt.pop[base + k]; }
-      if (!spop || !pop) continue;
+      let pop = 0;
+      for (let k = 0; k < N; k++) pop += nxt.pop[base + k];
+      if (pop <= 0) continue;
 
-      // What each movement wants to gain, as a share of the Area.
-      const gains = {};
+      const dominant = Ideology.dominantIndex(snap.pop.subarray(base, base + N));
+      if (dominant < 0) continue;
+      const affinities = sctx.affinity[dominant];
+      const occupied = sctx.occupied ? sctx.occupied[f] : 0;
+
+      gain.fill(0);
       let totalGain = 0;
-      for (const name of names) {
-        const ceiling = capOf[name] == null ? tn.get('world.partyCeiling') : capOf[name];
-        const g = Math.max(0, stepFrac * (ceiling - sMov[name] / spop));
-        gains[name] = g;
-        totalGain += g;
-      }
-      if (totalGain <= 0) continue;
+      const nMov = nxt.mov[f];
 
-      // Convert from the ideologies the movements do NOT belong to.
-      target.fill(0);
-      for (const name in gains) {
+      for (let m = 0; m < M; m++) {
+        const name = movements[m];
+        const rec = sctx.homelands[m];
+        // Geography first: a movement cannot appear outside its homeland at all,
+        // whatever the pull from across the border says.
+        if (rec && !rec.has(f)) { if (nMov[name]) delete nMov[name]; continue; }
+
+        let neighbourSum = 0;
+        for (let e = start[f]; e < start[f + 1]; e++) neighbourSum += share[list[e] * M + m];
+
+        const want = Sentiment.target({
+          base: affinities[m],
+          qol: nation.qol,
+          liberties: nation.liberties,
+          nationPower: nation.power,
+          authority: nation.authority,
+          neighbourSum,
+          occupied,
+          cap: sctx.caps[m],
+        }, tn).value;
+
+        const cur = share[f * M + m];
+        const delta = want - cur;
+        let next = cur + (delta > 0 ? Math.min(delta, rise) : Math.max(delta, -fall));
+        if (next < floor) next = 0;
+
+        if (next <= 0) { if (nMov[name]) delete nMov[name]; continue; }
         const i = ideologyOf[name];
-        if (i >= 0) target[i] += gains[name];
+        if (i === undefined || i < 0) { delete nMov[name]; continue; }
+        const grow = Math.max(0, next - cur);
+        if (grow > 0) { gain[i] += grow; totalGain += grow; }
+        nMov[name] = next * pop;
       }
-      let donor = 0;
-      for (let k = 0; k < N; k++) if (!target[k]) donor += nxt.pop[base + k];
-      const take = Math.min(totalGain * pop, donor);
-      if (take > 0 && donor > 0) {
-        const scale = 1 - take / donor;
-        for (let k = 0; k < N; k++) {
-          if (target[k]) nxt.pop[base + k] += take * (target[k] / totalGain);
-          else nxt.pop[base + k] *= scale;
+
+      // Convert the growth out of the ideologies none of the growing movements
+      // belong to, so the Area's total is unchanged.
+      if (totalGain > 0) {
+        let donor = 0;
+        for (let k = 0; k < N; k++) if (!gain[k]) donor += nxt.pop[base + k];
+        const take = Math.min(totalGain * pop, donor);
+        if (take > 0 && donor > 0) {
+          const scale = 1 - take / donor;
+          for (let k = 0; k < N; k++) {
+            if (gain[k]) nxt.pop[base + k] += take * (gain[k] / totalGain);
+            else nxt.pop[base + k] *= scale;
+          }
         }
       }
-      const nMov = nxt.mov[f];
-      for (const name in gains) nMov[name] = (nMov[name] || 0) + gains[name] * pop;
     }
   }
 
@@ -508,7 +586,7 @@ const World = (function () {
 
     const mixes = phaseRecomputeMixes(snap, nxt, owners); // start-of-turn ideology cache
     phasePoliticalDrift(snap, nxt, mixes, tn, owners, rng);
-    phaseMovementGrowth(snap, nxt, tn);
+    phaseSentiment(snap, nxt, tn, owners);
     phasePopulationGrowth(snap, nxt, tn, owners);
     phaseEconomicGrowth(snap, nxt, tn); // after popGrowth: reads the realised change
     phaseCleanup(snap, nxt, tn);
@@ -531,6 +609,7 @@ const World = (function () {
       // phase was moving its population, so the answer would depend on when you
       // asked. Stored also gives `gov.since` a meaning, which Authority reads.
       Game.refreshGovernments(turn + 1);
+      Movements.refreshStates(tn); // derived from the map, so it follows the writeback
       Game.tickTreasuries(); // income minus maintenance, on this turn's updated GDP
       Market.update(tn);     // reprice every resource from live supply vs demand
       phasePower(tn, turn + 1); // last: every input it reads is a result of this turn
@@ -553,7 +632,7 @@ const World = (function () {
     recPop,
     phaseRecomputeMixes,
     phasePoliticalDrift,
-    phaseMovementGrowth,
+    phaseSentiment,
     phasePopulationGrowth,
     phaseEconomicGrowth,
     phaseCleanup,

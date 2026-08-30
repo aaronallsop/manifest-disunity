@@ -158,7 +158,7 @@ describe('Phase discipline', () => {
     ok(Game.state().owner[node] !== was, 'the live column did not record the move');
   });
 
-  it('movement growth is independent of key insertion order', async () => {
+  it('sentiment is independent of movement key insertion order', async () => {
     // Two movements of the SAME ideology and the same size in one Area must
     // settle identically. Applying their gains one at a time made the result
     // depend on insertion order, worth 0.08 share points — replay-breaking
@@ -183,9 +183,9 @@ describe('Phase discipline', () => {
       snap.mov[node][first] = pop * 0.10;
       snap.mov[node][second] = pop * 0.10;
       nxt.mov[node] = { ...snap.mov[node] };
-      World.phaseMovementGrowth(snap, nxt, T());
+      World.phaseSentiment(snap, nxt, T(), World.snapshotOwners());
       const p = bufPop(nxt, node);
-      return { a: nxt.mov[node][A] / p, b: nxt.mov[node][B] / p };
+      return { a: (nxt.mov[node][A] || 0) / p, b: (nxt.mov[node][B] || 0) / p };
     };
     const ab = run(A, B), ba = run(B, A);
     close(ab.a, ba.a, 1e-12, `${A} settled differently depending on key order`);
@@ -210,7 +210,12 @@ describe('Phase discipline', () => {
      * 14.343%, and 19.939% against 19.936% by turn 30. Small, wrong, and
      * invisible without measuring it.
      */
-    await bootWorld({ seed: 4242 });
+    const { rng } = await bootWorld({ seed: 4242 });
+    // Movements now seed only their CORES (M4.2), so at turn 0 there are ~190
+    // placements rather than ~1,700. Let the diffusion term spread them first,
+    // both to test the property on a realistic map and to keep the sample big
+    // enough that a regression in one movement could not hide in it.
+    for (let i = 0; i < 25; i++) World.advanceTurn(T(), rng);
     const N = Ideology.count();
     const owners = World.snapshotOwners();
     const snap = World.buffer(), nxt = World.buffer();
@@ -237,7 +242,11 @@ describe('Phase discipline', () => {
       const d = Math.abs(after[k] - before[k]);
       if (d > worst) { worst = d; worstKey = k; }
     }
-    ok(checked > 1000, `only ${checked} movement placements to test with`);
+    // The guard exists so a regression in one movement cannot hide in a tiny
+    // sample; several hundred is ample. It was 1,000 when every movement seeded
+    // its whole homeland, which is a number about the old regime rather than
+    // about what this test needs.
+    ok(checked > 500, `only ${checked} movement placements to test with`);
     ok(worst < 1e-12,
       `${worstKey} moved ${worst.toExponential(3)} of its ideology purely from population growth`);
   });
@@ -254,9 +263,9 @@ describe('Phase discipline', () => {
     for (let i = 0; i < nxt.n; i++) {
       close(bufPop(nxt, i), before[i], 1e-6, `drift changed the population of ${nxt.idAt(i)}`);
     }
-    World.phaseMovementGrowth(snap, nxt, T());
+    World.phaseSentiment(snap, nxt, T(), owners);
     for (let i = 0; i < nxt.n; i++) {
-      close(bufPop(nxt, i), before[i], 1e-6, `movement growth changed the population of ${nxt.idAt(i)}`);
+      close(bufPop(nxt, i), before[i], 1e-6, `sentiment changed the population of ${nxt.idAt(i)}`);
     }
   });
 

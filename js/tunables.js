@@ -359,6 +359,67 @@ export const SCHEMA = {
     doc: 'Occupied ground is governed under different rules, and those rules leak home. The largest negative weight.',
   },
 
+  /* ---- Sentiment (M4.2) ---------------------------------------------------
+   * target = clamp01( base * (grievance + pull) - suppression ), where base is
+   * the affinity between the Area's leading ideology and the movement's.
+   *
+   * BASE IS MULTIPLICATIVE: an Area that does not share the ideology cannot be
+   * radicalised into that movement however badly it is governed. Misgovern a
+   * Democratic Socialist city and you do not get Deseret, you get somebody else.
+   * The four grievance weights are therefore a budget: they sum to what a
+   * perfectly-aligned, perfectly-misgoverned Area could reach before pull.
+   */
+  'sent.wQol': {
+    v: 0.22, min: -1, max: 1, step: 0.01, group: 'Sentiment',
+    label: 'Sentiment: weight of poor quality of life',
+    doc: 'How much a badly-served population organises against its government. The largest grievance weight: hunger and untreated illness move people who politics alone would not.',
+  },
+  'sent.wLiberty': {
+    v: 0.20, min: -1, max: 1, step: 0.01, group: 'Sentiment',
+    label: 'Sentiment: weight of lost liberties',
+    doc: 'How much a repressive state drives people into organised opposition.',
+  },
+  'sent.wPower': {
+    v: 0.14, min: -1, max: 1, step: 0.01, group: 'Sentiment',
+    label: 'Sentiment: weight of a weak nation',
+    doc: 'How much the weakness of the nation holding an Area invites secession. A superpower is not left; a rump state is.',
+  },
+  'sent.wAuthority': {
+    v: 0.18, min: -1, max: 1, step: 0.01, group: 'Sentiment',
+    label: 'Sentiment: weight of weak authority',
+    doc: 'How much a state that cannot hold its own ground encourages the attempt. Distinct from raw power: a small nation can be firmly governed and a large one falling apart.',
+  },
+  'sent.wPull': {
+    v: 0.42, min: -1, max: 2, step: 0.01, group: 'Sentiment',
+    label: 'Sentiment: weight of neighbouring strength',
+    doc: 'THE DIFFUSION TERM, which did not exist before M4.2 - a movement could only ever be where it was planted. Weighted above any single grievance because a movement spreads along a frontier: what makes a region go is that the next valley has already gone.',
+  },
+  'sent.pullScale': {
+    v: 0.9, min: 0.05, max: 10, step: 0.05, group: 'Sentiment',
+    label: 'Sentiment: neighbour pull scale',
+    doc: 'The k in tanh(k * sum of neighbouring shares). tanh so one committed neighbour matters a great deal and the tenth matters little: a movement spreads along a frontier, it does not multiply by how many friends it already has.',
+  },
+  'sent.wSuppression': {
+    v: -0.30, min: -1, max: 1, step: 0.01, group: 'Sentiment',
+    label: 'Sentiment: weight of suppression',
+    doc: 'What an occupying garrison takes off the target. Subtracted AFTER the ideological multiplier, because a garrison holds ground down whatever the population thinks of it. Until M6 gives the player a military, occupation is the only garrison the model has.',
+  },
+  'sent.maxRise': {
+    v: 0.035, min: 0.001, max: 0.5, step: 0.001, group: 'Sentiment',
+    label: 'Sentiment: maximum rise per turn',
+    doc: 'The most a movement can gain in one Area in one turn. THE CHANGE IS RATE-LIMITED, NOT THE VALUE - the same discipline as the power stocks, and the specific fix for a runaway spiral. A region takes years to turn.',
+  },
+  'sent.maxFall': {
+    v: 0.05, min: 0.001, max: 0.5, step: 0.001, group: 'Sentiment',
+    label: 'Sentiment: maximum fall per turn',
+    doc: 'The most a movement can lose in one Area in one turn. Larger than the rise: organising is slower than collapsing.',
+  },
+  'sent.floor': {
+    v: 0.004, min: 0, max: 0.2, step: 0.001, group: 'Sentiment',
+    label: 'Sentiment: extinction floor',
+    doc: 'Below this share a movement is gone from an Area rather than lingering at a millionth of a percent. Distinct from world.partyFloor, which cleans up after the growth phase.',
+  },
+
   /* ---- Secession (M4.3) --------------------------------------------------- */
   'secession.countyThreshold': {
     v: 0.40, min: 0.05, max: 1, step: 0.01, group: 'Secession',

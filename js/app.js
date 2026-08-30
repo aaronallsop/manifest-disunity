@@ -1190,13 +1190,25 @@ function renderPolitics(obj, estRec) {
     .map((r) => `<span class="k custom" style="--kc:${r.x.color}">${escapeHtml(r.x.name)} ${r.pct.toFixed(1)}%</span>`)
     .join('');
 
-  // Organised movements, named, inside the ideology they belong to.
+  /*
+   * Organised movements, named, inside the ideology they belong to — and their
+   * STATE, which is the one thing a player needs in order to see a secession
+   * coming rather than being told about it after the fact. A movement at 12%
+   * that has taken its whole core is a different situation from one at 30% that
+   * has not, and the percentage alone cannot say which.
+   */
   const movs = Object.entries(obj.movementPct || obj.movements || {})
     .filter(([, v]) => v >= 0.05)
     .sort((a, b) => b[1] - a[1]);
   const movHtml = movs.length
     ? `<div class="mov-line"><span class="label-inline">Organised movements</span>${movs
-        .map(([name, v]) => `<span class="k custom" style="--kc:${Movements.colorOf(name)}">${escapeHtml(name)} ${v.toFixed(1)}%</span>`)
+        .map(([name, v]) => {
+          const rec = Movements.get(name);
+          const st = rec && rec.state && rec.state !== 'latent'
+            ? `<i class="mov-state s-${rec.state}">${rec.state}</i>` : '';
+          return `<span class="k custom" style="--kc:${Movements.colorOf(name)}">`
+            + `${escapeHtml(name)} ${v.toFixed(1)}%${st}</span>`;
+        })
         .join('')}</div>`
     : '';
 

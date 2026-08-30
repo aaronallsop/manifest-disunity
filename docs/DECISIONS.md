@@ -838,3 +838,54 @@ Also: the plan names **Cascadia, Deseret, Greater Idaho and Jefferson** as the d
 but only Greater Idaho and Jefferson carried `chance: 1.0` — Cascadia and Deseret were still rolling
 0.5, so half the spine of the West slice was absent from half of all runs. Caught by the test that
 boots five different seeds and demands all four.
+
+### D81 — Sentiment IS the movement's share, not a second number beside it
+**M4.2.** The plan writes `sent[a][m] += clamp(target - sent[a][m], ...)` as if sentiment were a new
+quantity. But `area.mov[name]` is already the head count a movement has organised, and its share of
+the Area is exactly what "sentiment" means — so keeping both would be **two representations of one
+fact** (the D54 mistake) and would stack two rate limits on top of each other: sentiment easing
+toward its target, then the share easing toward sentiment.
+
+So `phaseSentiment` moves `mov` directly toward the six-factor target. One quantity, one rate limit,
+and **nothing new goes in the save** — sentiment persists exactly as `mov` always has. It also means
+the M4.3 secession threshold and the movement state machine read the same number the panel prints.
+
+### D82 — The explanation is the calculation, recomputed rather than stored
+**M4.2.** The plan says "store each factor's raw contribution alongside the result". At 1,676 Areas
+x 17 movements x 6 factors that is ~170,000 objects allocated *every turn* for data nobody has asked
+for — and the phase would throw all of it away.
+
+`Sentiment.target(inputs, tune, collect)` takes a flag: the phase passes false and gets the number,
+`Sentiment.explain(area, movement)` passes true and gets the rows. **One implementation, the same
+expressions in the same order**, so the explanation cannot become a second drifting model of the
+model — which is exactly what a separately-written "why" panel would be. Measured cost of the flag:
+the sentiment phase went 3.71 → 2.97 ms.
+
+The test that keeps it honest reconstructs the printed total from the printed factors:
+`raw === base * Σ(grievance + pull) + suppression`. If the two ever diverge, the arithmetic that
+produced the number and the arithmetic that explained it are no longer the same.
+
+### D83 — A movement seeds its CORE, not its whole homeland
+**M4.2.** Setup planted every homeland Area at once, which meant a movement began at its full
+geographic extent. Measured over 60 turns with the new diffusion term in place, **every movement's
+Area count was unchanged from turn 0** — Deseret 41 → 41, A Free Texas 104 → 104 — while only the
+shares moved. `pull` was computing correctly and doing nothing observable, because there was nothing
+left for it to reach.
+
+A movement now starts where its people are — its derived core — and everything else in its homeland
+is ground it has to win. That is what makes the distinction between `seed` and `homeland` mean
+something, and it is what a frontier needs in order to be a frontier. Measured after: Deseret spreads
+4 → 41 Areas over 60 turns and takes 4/4 of its core; A Free Texas 11 → 104; the New Confederacy
+100 → 536.
+
+Worth recording that this was **a bug in the seeding, found by measuring the new mechanic rather than
+by testing it**. The diffusion term passed every unit test it had while being globally inert.
+
+### D84 — The model has to discriminate, so a test demands that something LOSES ground
+**M4.2.** A model in which everything rises is a model with one dial wearing six labels. The suite
+therefore asserts not only that several movements gain ground over 60 turns but that **at least one
+loses it**. Measured on the real map: Cascadia's peak share falls 0.176 → 0.109 and El Paso United's
+0.166 → 0.075, because both sit in well-governed places whose leading ideology is a poor match — the
+multiplicative `base` doing precisely the job it exists for. Meanwhile Deseret runs to its cap.
+
+Turn-45 spread across 17 movements: 1 declared, 7 armed, 6 rising, 3 latent.

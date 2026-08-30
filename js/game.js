@@ -1308,6 +1308,15 @@ const Game = (function () {
     nearestNation,
     blueShell,
     epoch: () => epoch,
+    /** Nation id -> its integer index in the ownership column. */
+    nationIndexOf,
+    /** Is this Area foreign soil to whoever holds it? */
+    isOccupied: (f) => {
+      const c = county[cid(f)];
+      const nid = ownerIdAt(nodeOf(f));
+      const n = nid && nations.get(nid);
+      return !!(c && n && c.st !== n.homeSt);
+    },
     refreshGovernments,
     /** Territorial events inside the memory window, newest last. */
     historyOf: (nid) => { const n = nations.get(nid); return n ? { annexed: n.annexed, lost: n.lost } : null; },

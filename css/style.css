@@ -194,6 +194,15 @@ main { flex: 1 1 auto; display: flex; min-height: 0; }
 .auth-bar.influence span { background: linear-gradient(90deg, #e8862d, #e3c229); }
 .auth-bar.quality span { background: linear-gradient(90deg, #33a852, #3bb273); }
 .auth-bar.civil span { background: linear-gradient(90deg, #00b5ad, #33a852); }
+/* A movement's state, beside its share. Escalating warmth, because the states
+   are ordered and the player should be able to scan for the hot one. */
+.mov-state { font-style: normal; font-size: 10px; text-transform: uppercase;
+  letter-spacing: .04em; margin-left: 5px; padding: 1px 4px; border-radius: 3px;
+  background: rgba(255,255,255,.09); }
+.mov-state.s-rising { color: #e3c229; }
+.mov-state.s-armed { color: #e8862d; }
+.mov-state.s-declared { color: #e0483b; background: rgba(224,72,59,.16); }
+.mov-state.s-realized { color: #3bb273; }
 .auth-summary { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
 .auth-drift { font-size: 12px; font-weight: 500; margin-left: 6px; }
 .auth-drift.up { color: #3bb273; }

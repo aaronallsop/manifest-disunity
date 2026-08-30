@@ -122,8 +122,23 @@ const Movements = (function () {
           unresolved.slice(0, 8));
       }
 
+      /*
+       * SEED THE CORE, NOT THE WHOLE HOMELAND.
+       *
+       * Setup used to plant every homeland Area at once, which meant a movement
+       * began at its full geographic extent and the M4.2 diffusion term had
+       * nowhere to carry it — measured over 60 turns, every movement's Area
+       * count was unchanged from turn 0 (Deseret 41 -> 41, A Free Texas
+       * 104 -> 104) while only the shares moved. `pull` was doing nothing
+       * observable because there was nothing left to reach.
+       *
+       * A movement now starts where its people are — its core — and everything
+       * else in the homeland is ground it has to win. That is what makes the
+       * distinction between `seed` and `homeland` mean something, and it is what
+       * a frontier needs in order to be a frontier.
+       */
       const seed = [];
-      for (const f of areas) {
+      for (const f of core) {
         const c = Game.county[f];
         let total = 0;
         for (let i = 0; i < c.pop.length; i++) total += c.pop[i];
@@ -147,6 +162,7 @@ const Movements = (function () {
         c.mov[name] = (c.mov[name] || 0) + held;
         if (held > 0) seed.push(f);
       }
+      void areas; // resolved above for `coverage` and the homeland record
 
       live[name] = {
         id: def.id || name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
