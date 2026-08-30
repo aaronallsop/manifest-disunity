@@ -1,7 +1,7 @@
 # Nation States — Design
 
 *The single source of truth for what this game is and how it works, **as it actually is today**.
-Last rewritten at the end of **M5** of `docs/REBUILD-PLAN.md`. If this document and the code
+Last rewritten at the end of **M6** of `docs/REBUILD-PLAN.md`. If this document and the code
 disagree, the document is a bug — say so and fix it.*
 
 *What comes next lives in `docs/REBUILD-PLAN.md`, not here. This file describes the present.*
@@ -11,8 +11,10 @@ disagree, the document is a bug — say so and fix it.*
 ## 1. Premise
 
 A browser strategy game set in a scenario where **every U.S. state becomes its own nation**. You
-start on a board of 51 nations built from real 2024 data — population, GDP and presidential vote —
-and play through turns of union, annexation, civil war, trade and politics.
+pick one of the 51 — the board is built from real 2024 data: population, GDP and presidential vote —
+and play through turns of union, annexation, civil war, trade and politics while the other fifty do
+the same. The question the game asks is whether a country holds together, and it can be answered
+three ways: put the Union back, win the argument, or become the economy the continent runs on.
 
 Nothing is invented where real data exists. Where a figure is not published separately, a grounded
 estimate is apportioned from a real total (so nation-level sums stay correct) and flagged in the UI
@@ -181,9 +183,15 @@ people (exact). `shares` are percentages, 0–100. `affinity` and `cohesion` are
 
 ## 4. The turn
 
-**One clock.** A full cycle of nation turns is one **world turn**. There is no separate "advance
-the world" button in normal play — `completeTurn()` drives `World.advanceTurn()` on the round
-boundary. (`?dev=1` exposes a manual step control, which is what the M5 simulator grows out of.)
+**One clock.** A full cycle of nation turns is one **world turn**, and `TurnSystem.advance` owns
+that boundary. It used to be owned by `completeTurn()` in the renderer, which was survivable while a
+human took all fifty-one seats and stopped being so the moment most turns were not taken by a human
+at all. (`?dev=1` exposes a manual step control, which is what the M5 simulator grows out of.)
+
+**You take one seat.** Ending your turn runs the other fifty headlessly — `AI.sweep` plays every
+slot until yours comes up again, inside one `Game.batch`, so fifty turns cost the renderer one
+repaint. About 22 ms a round with nobody acting, about 244 ms with seventy nations each considering
+fifteen moves.
 
 A world turn runs these phases in a fixed order:
 
@@ -342,11 +350,12 @@ Liberties 0.60–0.84.**
 
 ### What is not in them yet
 
-Authority's design list also names failed suppressions, coalition pressure and military readiness;
-Influence's names treaties honoured and broken, and aid given. None of those mechanics exist —
-suppression is M4, coalitions and the military are M6 — and adding placeholder terms would mean
-tuning the real terms against constants of zero and re-tuning everything when they arrive. **A term
-arrives here when the thing it measures does.**
+**A term arrives here when the thing it measures does**, which is why the list keeps shrinking. M6.5
+brought the military, so Civil Liberties gained a *Garrison* term and Authority a *Self-rule* one —
+the two prices the M6 valves charge. Authority's design list still names failed suppressions and
+coalition pressure; Influence's names treaties honoured and broken, and aid given. Those mechanics do
+not exist yet (coalitions and relations are M7), and adding placeholder terms would mean tuning the
+real terms against constants of zero and re-tuning everything when they arrive.
 
 ---
 
@@ -373,6 +382,23 @@ treasury delta crosses into deficit around 110 occupied Areas.
 ## 6. Actions
 
 One action per nation per turn. Each ends the turn.
+
+**`plan` and `resolve`, and one plan function with two callers.** `Moves.plan(intent, tune)` is pure
+— no RNG, no DOM, no mutation — and returns a **Preview**: `{ok, reason, cost, effects[]}`. The UI
+renders it and then calls `Moves.resolve(intent, rng, tune)`; the AI plans over its candidates,
+scores the previews, and resolves the winner. Being the *same* function is what stops the human's
+preview and the AI's model from ever disagreeing about what an action does — and a disagreement
+there is unfalsifiable from inside the game, because each side only ever sees its own answer.
+
+`reason` is a **sentence**, not a code, so the UI prints it and the AI filters on `ok` without
+either re-translating. `Moves.legal(nid)` is the candidate list: every move a nation could make,
+deliberately unscored, because scoring is policy and lives in `js/ai.js`.
+
+**Every action costs something, and that was not true until M6.3.** Fifty nations playing every turn
+is a fuzzer pointed at rules only a human had ever exercised, and it went straight for the two that
+were free: a union had no cooldown and no price (35 of 53 nations opened by proposing one, and 51
+nations became 18 by turn 20), and a release had no price, which makes territory freely convertible
+into stability (51 nations became 135). Both now have a price and a clock.
 
 ### Unite
 Merge an adjacent nation into yours. A peace roll decides: on success the two become one; on
@@ -464,6 +490,125 @@ and, on foreign ground, the superlinear occupation surcharge.
 ### Counties mode
 Selecting an Area shows what the acting nation can do with it — release it if it is theirs, annex
 from it if it is not — and when neither is possible, the reason why.
+
+### Autonomy
+
+Grant an Area self-rule. It stays yours on the map and mostly stops being yours on the ledger:
+it keeps most of what it raises (`autonomy.taxShare`), and a government that has handed a third of
+its territory to local rule commands less than one that has not. In exchange it **scales the whole
+grievance** rather than subtracting from one term of it — the answer self-rule gives is not "your
+quality of life improved" but "this is your government now".
+
+It is **reversible**, which is the whole reason it is not release, and capped at
+`autonomy.maxShare`, because a state that governs none of itself is not a state.
+
+---
+
+## 6.1 Force, as an allocation
+
+No unit counters, no stacks, no map tokens. One number for how much a nation can bring to bear, and
+one decision about where it points:
+
+| | buys | pays in |
+|---|---|---|
+| **Garrison** | quiet at home | civil liberties |
+| **Border** | being expensive to attack | the field army you did not raise |
+| **Field** | your own attacks landing | the garrison you did not station |
+
+**Force is derived** — `manpower × equipment × doctrine`, from population, wealth per head, and
+whether the state governs well and its people agree with it. So nothing about it drifts out of step
+with the rest of the model, and a nation falling apart gets weaker at exactly the moment it needs
+the army, which is the honest direction for that feedback to run.
+
+**What is state is the allocation and the readiness**, and readiness follows the allocation the way
+a power stock follows its target: rate-limited, falling faster than it rises. That rate limit is the
+entire cost of changing your mind — without it the three sliders are something you set at the moment
+of use, and a decision you can always take later is not a decision. Measured: a one-turn switch to
+Field reaches under 60% of a standing posture.
+
+**It is on the books every turn**, charged on force rather than on where the force points, because
+you do not save money by pointing the army elsewhere.
+
+**The three answers to a restless Area** are the point of the whole system, and they are different
+prices for the same relief: garrison it (liberties), grant it autonomy (revenue and Authority,
+reversible), or release it (the Area). A peacetime army suppresses nothing —
+`mil.garrisonFree` is exactly the share the default even split leaves at home, so a nation that has
+made no military decision holds nobody down.
+
+---
+
+## 6.2 Who you are, and how it ends
+
+**You are one nation.** Before M6.2, `grep -rni "player\b" js/*.js` returned zero hits across
+thirteen modules and the only gate on acting was "is it this nation's turn", which the human
+satisfied fifty-one times a round. That is upstream of every balance complaint in the review: if you
+control both the aggressor and the victim then an annexation is not a risk, it is a transfer between
+two of your own accounts, and every anti-snowball device in the game is a speed bump you route
+around by taking the other nation's turn.
+
+`Game.getPlayer()` is an **id**, and it keeps naming a nation that has died — `playerNation()` is
+the one that returns null. Losing has to be something the game can say out loud.
+
+**Choosing a faction.** All 51 are playable, rated from the opening position by the functions the
+game already uses (size, economy, cohesion, `AI.strain`, and how many neighbours are smaller). The
+tiers are **proportions of the field** rather than fixed thresholds, because the question a new
+player is asking is "which of these is the gentle one". A harder start gets a larger opening
+treasury — **money, not territory and not a rule change**, because every faction has to play the
+same continent or the rating is describing a world nobody else is in.
+
+**Three ways to win**, evaluated over every nation once per world turn, as a table of rows rather
+than as code paths:
+
+- **Reunification of the Union** — the seats of government, half the people, half the economy, and
+  floors under *both* power stocks.
+- **Ideological Dominance** — govern well, be heard, and watch the continent come round.
+- **Economic Supremacy** — be the economy the continent runs on, and rich per head as well as in
+  total.
+
+**The Influence floor in the capstone is the whole design.** Without it the shortest path to winning
+is conquering the continent — the strategy the rest of the game spends its time punishing. With it,
+a conqueror can hold every acre and still be unable to close. A seat you do *not* own counts toward
+Reunification if the holder governs as you do and your Influence exceeds theirs by a margin: a
+beloved hegemon reunifies through nations it never invaded, and a feared one takes every capital by
+hand.
+
+**Going with the breakaway.** When a movement declares out of your own ground you may become it
+rather than go down with the parent — offered after the declaration, so you decide knowing what
+actually left, and *before* the defeat check, because the case worth having is the one where the
+breakaway takes everything.
+
+---
+
+## 6.3 The other fifty nations
+
+`AI.deliberate(nid)` walks `Moves.legal`, prices each candidate with `Moves.plan`, and scores the
+**Preview** — the same object the player's panel renders. There is no second model of the world.
+
+The score is a **Why record** in the shape `js/power.js` and `js/sentiment.js` already produce,
+because "why did Texas attack me" is a question the game has to be able to answer. It does *not* go
+through `Power.build`, which clamps to [0, 1] because a stock cannot be negative; a score has to be
+able to be, or the difference between a bad move and a catastrophic one disappears exactly where it
+matters.
+
+Every term is a **share of the acting nation**, which is what lets one set of weights serve a
+two-Area rump and a sixty-Area giant. A prize is worth its odds — a union's gain is discounted by
+its own probability, and there is deliberately no separate term for the odds, because rewarding
+likelihood alone scores a coin-flip over a tiny neighbour as highly as one over a giant.
+
+**Posture is derived, not stored.** One number — strain, the peak movement share across the nation's
+own ground, which is what the pressure map already paints — and two multipliers. A secure nation
+expands; a fraying one consolidates. No personality is assigned at setup, so a nation's character
+follows its situation and can change back. Posture is read off each term's **stance**
+(`expand` / `hold`), not its sign: shedding a seditious Area is a positive term a fraying nation
+should want *more* of, and reading the sign gets the release valve exactly backwards.
+
+**Softmax, not argmax.** Always taking the best move makes fifty similarly-placed nations behave
+identically and makes the whole AI solvable once a player knows the weights.
+
+**And it knows the game can be won.** A *Closing* term reads the binding requirement of the victory
+the nation is nearest and asks how far this move moves that one number — scoring only what a
+territorial move can actually shift. Nothing an annexation does moves Influence, which is not an
+omission but the shape of the capstone.
 
 ---
 
@@ -584,7 +729,7 @@ The ground a nation is *born* holding is not ground it *took*: conquest is filte
 (`annex` and `war` only), or a movement declaring with 39 Areas is scored as having blitzed 39 Areas
 on the day it was founded.
 
-### 7.4 The two release valves
+### 7.4 The release valves
 
 - **Voluntary release** now needs a **recipient, not a target**. A neighbour accepts a fragment if it
   is politically compatible, if the two nations have a live trade relationship, or if it is small
@@ -604,6 +749,13 @@ on the day it was founded.
   its choice**: `refreshGovernments` tracks the plurality only for nations that have never
   intervened, so changing course is a commitment rather than a toggle — and a government can end up
   badly out of step with its own people, which is exactly the pressure the model exists to express.
+- **Autonomy** (§6 and M6.5b) is the third and the one a player reaches for when they still intend
+  to keep the place — which is most of the time, and was exactly the case the game had no move for.
+- **A garrison** (§6.1) is the fourth, and the only one that answers the movement with force rather
+  than with a concession. It is the one that makes the next movement.
+
+  The four are the same relief at four prices, which is the point: liberties, revenue and Authority,
+  the Area itself, or your own government's identity.
 
 ### 7.5 Occupation costs more where it is resented
 
@@ -816,22 +968,44 @@ Three habits are worth stating, because each was learned by being bitten:
 Listed so nobody mistakes an absence for a bug. Each is a milestone in
 `docs/REBUILD-PLAN.md`.
 
-- **Only one number has been tuned.** M5.3 fixed the pacing of secession (`sent.maxRise`) because it
-  was the one visibly wrong thing. The other 141 sliders are still at values chosen by argument
-  rather than by measurement — defensible, documented, and untested against play. *(M7)*
+- **Most numbers are still chosen by argument rather than by measurement.** The count has improved:
+  M5.3 tuned `sent.maxRise` against four seeds; M6.3 priced unite and release, raised two cooldowns
+  and `nation.minAreas` against measured sixty-turn games; M6.4 reset all twelve victory targets
+  against a measured eighty-turn game; M6.5 recalibrated military upkeep and the garrison scale
+  twice. That is roughly twenty of about a hundred and eighty sliders with evidence written into
+  their `doc`. The rest are defensible, documented, and untested against play. *(M7)*
+- **The victory targets are set at two to five times what an AI-only world produces**, on the
+  reasoning that a player playing deliberately for eighty turns should substantially outperform a
+  deliberately mild AI. That last step is a judgement rather than a measurement, and it is the first
+  thing a real play test should revisit. *(M7)*
+- **The AI never changes course.** `govern` scores zero across every measured run, which means
+  `ai.wMandate` and `gov.changeCost` want a look. The valve exists and nobody uses it. *(M7)*
 - **The power stocks are still per NATION**, so sentiment's grievance terms are uniform across
   everything a nation owns. QoL and liberty satisfaction per **Area** would give the diffusion term
   a real gradient to run along; the economy bake is already per Area, so that is a change of scope
-  rather than of model. *(M7)*
-- **No suppression, no coalitions, no military.** Which is why Authority is missing its failed-
-  suppression and coalition-pressure terms, Influence its treaty terms, and sentiment's suppression
-  term reads occupation because occupation is the only garrison the model has. *(M6)*
-- **No player identity, no AI, no win or lose condition.** You operate every seat, and a nation
-  conquered out of existence disappears without comment. *(M6)*
+  rather than of model. Autonomy and the garrison are the first two things that vary *within* a
+  nation, and they only vary by Area because they are flags rather than stocks. *(M7)*
+- **No coalitions.** The `blueShell` anti-snowball tier ranks by population only; the design wants
+  a coalition triggered on `threat = size_share × (1 - influence)`, so that a beloved unifier is
+  left alone and a feared conqueror gets ganged up on. Authority is still missing its
+  coalition-pressure term and Influence its treaty terms. *(M7)*
+- **No relations between nations of any kind.** No memory, no rivalries, no "they annexed us three
+  turns ago". The design wants one append-only structure —
+  `{turn, from, to, kind, magnitude}` with `relation(a,b) = base + Σ magnitude·decay^(now-turn)` —
+  out of which memory, rivalry and coalition triggers all fall. *(M7)*
+- **No war weariness.** Nothing persists between wars. *(M7)*
+- **No events, no crises, no leaders, no elections, no migration, no recognition, and no timeline.**
+  A six-second toast and the turn-summary newspaper are the whole narrative surface. *(M7)*
+- **New nations get a generated name and no flag.** *(M7)*
 
-- **No `relations` or `history` in the state document.** The plan sketches both; neither has any
-  data behind it yet, and stubbing empty arrays would be inventing a shape before knowing it.
-  *(M3, M6)*
+- **No `relations` in the state document.** The plan sketches it; there is no data behind it yet,
+  and stubbing an empty array would be inventing a shape before knowing it. The ledger, by contrast,
+  now *is* saved state, and is what a timeline will replay. *(M7)*
+- **Only the West is authored.** East of the MT/WY/CO/NM line the eastern movements (Franklin,
+  Acadiana, New England Revivalist, Central States Union, Great Lakes) have no homelands baked. The
+  full 51-nation map loads and plays; what is missing is separatist content on the eastern half.
+  *(M7, deliberately last — it keeps the Area-merge ambiguity a data question rather than a design
+  one.)*
 - **The Area merge plan has not been re-baked.** `build_areas.py` is now deterministic and caps an
   Area at 8 counties, but the shipped `areas.json` still contains a 22-county Area. Adopting the
   new plan moves 10 of 483 Area primaries, which is a data migration across `economy.json`, both
