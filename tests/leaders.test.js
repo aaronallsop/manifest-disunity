@@ -187,12 +187,22 @@ describe('Changing one', () => {
       'nobody wrote down that somebody new took office');
   });
 
-  it('a term runs out', async () => {
+  it('a term runs out — at the election, since M7.10', async () => {
+    /*
+     * This used to be a free-running timer inside `Leaders.tick`, and it was an
+     * admitted placeholder: the interesting version of a leader leaving is a
+     * government losing a vote it wanted to win. The term limit still exists and
+     * is still `leader.termTurns`, but it is checked when the party is returned
+     * to office rather than by a clock nobody is watching.
+     */
     const { rng } = await bootWorld({ seed: SEED });
     const nid = '06';
     const was = Leaders.all()[nid].name;
     World.setTurn(T().get('leader.termTurns') + 1);
     Leaders.tick(T(), rng);
+    equal(Leaders.all()[nid].name, was, 'a bare timer is still retiring people');
+    const res = Elections.hold(nid, T(), rng);
+    if (res.changed) return; // a government that lost is a new person anyway
     ok(Leaders.all()[nid].name !== was, 'a leader served past the end of their term');
     equal(Leaders.all()[nid].since, World.getTurn());
   });

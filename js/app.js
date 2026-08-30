@@ -186,6 +186,8 @@ async function init() {
     // the pointer.
     AI.sweep(TUNE, store.rng);
 
+    // The player settles their own election result; see offerElection.
+    World.setElectionDefer((nid) => Game.isPlayer(nid));
     Leaderboard.refresh();
     renderTurnBanner();
     select('nation', you());
@@ -892,6 +894,10 @@ function completeTurn() {
    * for defeat first is precisely how you never get asked.
    */
   if (offerSwitch(mark, name)) return;
+  // ...and if the player's own government was turned out and could refuse it,
+  // that is their decision and nobody else's. After the switch offer, because
+  // losing an election matters less than losing the country.
+  if (offerElection()) return;
   if (swept.playerGone) {
     /*
      * The nation you were playing no longer exists. M6.4 makes this a defeat
@@ -1049,6 +1055,60 @@ function passTurn() {
  * movement takes ground FROM YOU, which is the situation the review names, and
  * it costs you everything the parent still holds.
  */
+/*
+ * YOU LOST THE ELECTION.
+ *
+ * The model always concedes for the player: `World.setElectionDefer` keeps their
+ * result out of the automatic hands so that this can ask. It is the one moment
+ * in the game where the honest answer and the available answer differ, and the
+ * price of the second is named on the card rather than discovered afterwards.
+ *
+ * Offered only when it is actually available — a country with its liberties
+ * intact cannot simply ignore a vote, and a government that has ground them down
+ * far enough can. The capacity and the score are the same fact, which is why
+ * nothing new had to be invented to decide who may.
+ */
+function offerElection() {
+  const me = you();
+  if (!me || typeof Elections === 'undefined' || !Elections.pending(me)) return false;
+  if (!Elections.canSteal(me, TUNE)) return false;
+  const n = Game.getNation(me);
+  const took = Ideology.byId(n.gov.rulingIdeology);
+  const kept = Ideology.byId(n.gov.lostFrom);
+  const hit = TUNE.get('election.stealLibertiesHit');
+  const el = document.getElementById('endscreen');
+  const card = el.querySelector('.end-card');
+  card.innerHTML = `
+    <div class="end-kicker">The count</div>
+    <h2><span class="dot" style="background:${took.color}"></span>${escapeHtml(took.name)} won the election</h2>
+    <p class="end-sub">${escapeHtml(n.name)} has voted your government out. The
+      ${escapeHtml(kept.name)} administration can stand down &mdash; or it can set the result aside.
+      Civil liberties here are already low enough that it would hold.</p>
+    <div class="end-terms">
+      <div class="end-term met"><span class="lbl">Concede</span>
+        <span class="val">You govern as ${escapeHtml(took.name)}</span></div>
+      <div class="end-term"><span class="lbl">Refuse the result</span>
+        <span class="val">Civil liberties &minus;${Math.round(hit * 100)} points</span></div>
+    </div>
+    <div class="end-btns">
+      <button class="btn" id="el-concede">Concede</button>
+      <button class="btn go" id="el-steal">Refuse the result</button>
+    </div>`;
+  el.classList.add('show');
+  const close = () => el.classList.remove('show');
+  document.getElementById('el-concede').onclick = () => { close(); select('nation', me); };
+  document.getElementById('el-steal').onclick = () => {
+    close();
+    const r = Elections.steal(me, TUNE, store.rng);
+    if (!r.ok) return flash(escapeHtml(r.reason), 'warn');
+    Game.touch({ values: true });
+    flash(`\u{1F5F3} <strong>${escapeHtml(n.name)}</strong> set the result aside &mdash; the `
+      + `${escapeHtml(kept.name)} government stays, and civil liberties fell.`, 'warn');
+    select('nation', me);
+  };
+  return true;
+}
+
 function offerSwitch(mark, parentName) {
   const me = you();
   if (!me) return false;
@@ -1169,6 +1229,7 @@ function renderNationPanel(nid) {
     </div>
     ${renderNationEconomy(nid)}
     ${renderCoalition(nid)}
+    ${renderElection(nid)}
     ${renderMigration(nid)}
     ${renderRecognition(nid)}
     ${renderStanding(nid)}
@@ -1407,6 +1468,41 @@ function renderCoalition(nid) {
         ${Math.round(rec.influence * 100)}% Influence. Encirclement is costing
         <strong>${fmtGdp(flow.encirclement || 0)}</strong> a turn, and their border armies
         stand in the way of anything ${Game.isPlayer(nid) ? 'you' : 'they'} try to take.</div>
+    </div>`;
+}
+
+/*
+ * THE NEXT ELECTION, AND WHAT THE POLLS SAY.
+ *
+ * The share the government would take if the vote were held today, and the
+ * swing that made it that number rather than the raw popular share — which is
+ * the difference between "your people disagree with you" and "your people
+ * disagree with you and will vote you out over it".
+ */
+function renderElection(nid) {
+  if (typeof Elections === 'undefined') return '';
+  const res = Elections.poll(nid, TUNE);
+  if (!res) return '';
+  const turns = Elections.nextFor(nid, TUNE);
+  const rows = res.terms.filter((t) => Math.abs(t.contribution) > 0.005).slice(0, 3).map((t) => `
+    <div class="rel-row"><span class="lbl">${escapeHtml(t.label)}</span>
+      <span class="when">${escapeHtml(t.note || '')}</span>
+      <span class="num ${t.contribution < 0 ? 'bad' : 'good'}">${t.contribution >= 0 ? '+' : ''}${t.contribution.toFixed(2)}</span>
+    </div>`).join('');
+  const standing = res.ranked.slice(0, 3).map((r) => `
+    <div class="rel-row"><span class="lbl">${escapeHtml(r.name)}${r.incumbent ? ' &middot; in office' : ''}</span>
+      <span class="num ${r.incumbent ? (res.change ? 'bad' : 'good') : ''}">${Math.round(r.share * 100)}%</span>
+    </div>`).join('');
+  return `
+    <div class="stat rel">
+      <div class="label">Election &middot; ${turns === 0 ? 'today' : `in ${turns} ${turns === 1 ? 'turn' : 'turns'}`}</div>
+      <div class="rel-band ${res.change ? 'bad' : 'good'}">${escapeHtml(res.summary)}</div>
+      ${standing}
+      ${rows}
+      ${res.change && Elections.canSteal(nid, TUNE)
+        ? `<div class="vic-note">Civil liberties here are low enough that the result could be set
+           aside, at the cost of ${Math.round(TUNE.get('election.stealLibertiesHit') * 100)} more points of them.</div>`
+        : ''}
     </div>`;
 }
 

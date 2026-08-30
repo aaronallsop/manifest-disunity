@@ -320,7 +320,15 @@ Done in the order **M3.4 -> M3.1 -> M3.2 -> M3.3**, because the plan lists M3.4'
       (0.40) rather than a wall. Movements shrink with the people who leave and are DILUTED by
       the people who arrive, which makes settlement an answer to secession. Every flow is
       computed before any is applied, or the node numbering would decide who moved.
-- [ ] **M7.10** Elections.
+- [x] **M7.10** Elections — `js/elections.js`. Every nation votes every `election.termTurns`, on a
+      schedule STAGGERED by a hash of its id and stored nowhere. The base is the population; the
+      government in office gets one swing made of the four things it is answerable for, measured
+      AGAINST THE WORLD MEAN rather than against 0.5 — the stocks sit in the eighties, so centring
+      on the middle of the range handed every incumbent alive the same large bonus and 284
+      elections produced three changes of government. This replaces `refreshGovernments` tracking
+      the plurality every turn and “it chose; it keeps its choice” locking in anybody who ever
+      used the appeasement valve. A government whose Civil Liberties are already below
+      `election.stealBelow` may refuse the result and pay in more of them; the player is asked.
 - [ ] **M7.11** Projection range off the transport network.
 - [ ] **M7.12** Widen east.
 
@@ -331,7 +339,7 @@ Done in the order **M3.4 -> M3.1 -> M3.2 -> M3.3**, because the plan lists M3.4'
 *(Updated as work proceeds — what is done, what is next, what was learned that is not yet
 written down elsewhere.)*
 
-**M0-M5 complete.** 741 tests green at `tests/run.html` in ~180s,
+**M0-M5 complete.** 762 tests green at `tests/run.html` in ~130s,
 `build/validate.py` reports 0 errors, and the game loads, plays and saves with a clean console.
 `DESIGN.md` rewritten at the M5 close: section 4.1 is the four power stocks, section 7 is movements,
 sentiment and two-tier secession, section 7.6 is the ledger, the simulator, the dashboard and the
@@ -352,7 +360,7 @@ Performance, measured on the real map rather than predicted: a world turn 24.7 -
 phases 12.4 -> 2.8 ms, political drift 8.0 -> 2.0 ms, a 50-turn simulator run 1,237 -> 466 ms. The
 columnar store is 173 KB and the adjacency graph 43.5 KB.
 
-Next: **M7.10** (elections — let a drifting nation lose its own government, replacing the `leader.termTurns` placeholder).
+Next: **M7.11** (projection range off the transport network — anti-snowball brake #3).
 
 Open, carried into M2.3: after 21 turns no Area is yet LED by a minority ideology (Rep 1,288 /
 Dem 388 of 1,676). That is the expected shape at 11% organised movements and it is M5's dial to

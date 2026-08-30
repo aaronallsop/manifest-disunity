@@ -114,6 +114,17 @@ const Game = (function () {
       // null = never deliberately changed course, which is not the same as
       // "changed course on turn 0" (see changeRulingIdeology).
       lastChange: g.lastChange == null ? null : g.lastChange,
+      /*
+       * The turn an election was lost, and to whom it was lost FROM (M7.10).
+       *
+       * Carried through `makeGov` explicitly, like everything else here: `gov`
+       * is serialized wholesale with a spread and rebuilt through this function,
+       * so a field that is not named here is silently dropped by a save — which
+       * would reopen a game with the result already conceded and the choice
+       * gone.
+       */
+      lostAt: g.lostAt == null ? null : g.lostAt,
+      lostFrom: g.lostFrom == null ? null : g.lostFrom,
     };
   }
 
@@ -1245,14 +1256,27 @@ const Game = (function () {
     // government to the last turn of the old one.
     const turn = asOf == null ? worldTurn() : asOf;
     for (const [, n] of nations) {
-      if (n.gov.lastChange != null) continue;   // it chose; it keeps its choice
+      /*
+       * ONLY A NATION THAT HAS NO GOVERNMENT AT ALL (M7.10).
+       *
+       * This used to track the popular plurality every turn for any nation that
+       * had never deliberately changed course, and lock in anybody who had:
+       * "it chose; it keeps its choice". Both halves were wrong. The first is a
+       * government that silently becomes whatever its people are, which is not a
+       * government; the second is the costume problem the elections milestone
+       * exists to fix — change hats once to defuse a secession and never answer
+       * for it again.
+       *
+       * A government changes hands at an election now, and nowhere else. What is
+       * left here is the founding case: a nation that has just come into being
+       * out of a collapse holds nothing yet, and takes the politics of the
+       * ground it stands on.
+       */
+      if (n.gov.rulingIdeology != null) continue;
       const bloc = rulingBloc(n.counties);
       if (bloc < 0) continue;
-      const id = Ideology.idAt(bloc);
-      if (n.gov.rulingIdeology !== id) {
-        n.gov.rulingIdeology = id;
-        n.gov.since = turn;
-      }
+      n.gov.rulingIdeology = Ideology.idAt(bloc);
+      n.gov.since = turn;
     }
   }
 
@@ -1286,7 +1310,7 @@ const Game = (function () {
     const from = Ideology.index(n.gov.rulingIdeology);
     if (to === from) return { ok: false, message: 'That is already your governing ideology.' };
 
-    const turn = worldTurn();
+    const turn = opts.asOf == null ? worldTurn() : opts.asOf;
     /*
      * The cooldown runs from the last DELIBERATE change, not from `gov.since`.
      *
@@ -1318,11 +1342,25 @@ const Game = (function () {
         + `${Math.round(n.treasury / 1e9)}bn.` };
     }
 
-    n.treasury -= cost;
+    /*
+     * AN ELECTION IS NOT A REBRANDING (M7.10). The cost buys belief in a course
+     * a government CHOSE; a government that lost a vote did not choose anything
+     * and has no bill to pay, and charging one would take money out of the
+     * treasury of a party that is no longer in office.
+     */
+    if (!opts.free) n.treasury -= cost;
     const wasId = Ideology.idAt(from);
     n.gov.rulingIdeology = ideologyId;
     n.gov.since = turn;
-    n.gov.lastChange = turn;
+    /*
+     * AN ELECTION IS NOT A DELIBERATE CHANGE (M7.10). `lastChange` is the clock
+     * the cooldown runs from and it means "the last time this government CHOSE a
+     * course" — losing a vote is the opposite of choosing one, and stamping it
+     * here charged a government for a decision its electorate made: measured, a
+     * player who lost an election could not use the appeasement valve for two
+     * turns afterwards, which is exactly the turn they most need it.
+     */
+    if (!opts.free) n.gov.lastChange = turn;
     /*
      * A NEW GOVERNMENT IS A NEW GOVERNMENT (M7.5). Changing course and keeping
      * the same person in the chair is the version of this that means nothing;
@@ -1334,11 +1372,15 @@ const Game = (function () {
     }
     Ledger.append({
       turn, phase: 'action', subject: nid, kind: 'govern', delta: distance,
-      text: `${n.name} changed course from ${Ideology.nameAt(from)} to ${Ideology.byId(ideologyId).name}.`,
+      text: opts.reason === 'election'
+        ? `${n.name} changed hands: ${Ideology.byId(ideologyId).name} replaced ${Ideology.nameAt(from)}.`
+        : opts.reason === 'steal'
+          ? `${n.name} put ${Ideology.byId(ideologyId).name} back in office.`
+          : `${n.name} changed course from ${Ideology.nameAt(from)} to ${Ideology.byId(ideologyId).name}.`,
       terms: [
         { name: 'Support for the new course', value: share, key: 'gov.changeMinShare' },
         { name: 'Distance moved on the axes', value: distance, key: null },
-        { name: 'Cost', value: -cost, key: 'gov.changeCost' },
+        { name: 'Cost', value: opts.free ? 0 : -cost, key: 'gov.changeCost' },
         { name: 'Authority', value: -T('gov.changeAuthorityHit') * distance, key: 'gov.changeAuthorityHit' },
       ],
       from: wasId, to: ideologyId,
@@ -1350,7 +1392,8 @@ const Game = (function () {
       n.authority = Math.max(T('power.floor'), n.authority - T('gov.changeAuthorityHit') * distance);
     }
     emit({ values: true });
-    return { ok: true, from: Ideology.idAt(from), to: ideologyId, cost, share, distance };
+    return { ok: true, from: Ideology.idAt(from), to: ideologyId,
+             cost: opts.free ? 0 : cost, share, distance };
   }
 
   /**

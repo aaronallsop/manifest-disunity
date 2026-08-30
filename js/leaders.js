@@ -146,23 +146,22 @@ const Leaders = (function () {
   /* ------------------------------------------------------------------ */
 
   /**
-   * Once a turn: seat anybody missing, and retire anybody whose term is up.
+   * Once a turn: seat anybody who has nobody.
    *
-   * The term limit is a placeholder for elections (M7.8) and deliberately a
-   * plain one — the interesting version is a nation losing a government it
-   * wanted to keep, and that needs a vote rather than a timer.
+   * THE TERM LIMIT USED TO LIVE HERE, as a free-running timer and an admitted
+   * placeholder for elections. M7.10 took it: a leader is replaced when their
+   * government changes hands, and a party that wins again after `leader.termTurns`
+   * in office fields a new face. Both of those are decided at the election,
+   * because a nation losing a government it wanted to keep is the interesting
+   * version and a timer cannot tell that story.
    */
   function tick(tune, rng) {
     if (!defs) return { seated: 0, replaced: 0 };
     const t = tune || window.TUNE;
-    const term = t.get('leader.termTurns');
-    let seated = 0, replaced = 0;
+    let seated = 0;
+    const replaced = 0;
     for (const [nid] of Game.nations) {
-      if (!seats[nid]) { if (of(nid, rng, t)) seated++; continue; }
-      if (term > 0 && World.getTurn() - seats[nid].since >= term) {
-        replace(nid, rng, t, 'term');
-        replaced++;
-      }
+      if (!seats[nid]) { if (of(nid, rng, t)) seated++; }
     }
     // A seat belonging to a nation that no longer exists is not a seat.
     for (const nid of Object.keys(seats)) if (!Game.nations.has(nid)) delete seats[nid];

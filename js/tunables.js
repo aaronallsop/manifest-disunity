@@ -1189,6 +1189,52 @@ export const SCHEMA = {
     label: 'Influence: cost of not being recognised',
     doc: 'SIGNED, AND MEASURED AS A DEFICIT: a fully recognised nation contributes exactly nothing and a wholly unrecognised one loses the full weight. Written the other way round \u2014 a positive term worth 1.0 to everybody who is recognised \u2014 it would have raised every established nation\u2019s Influence by a constant and quietly re-tuned the coalition trigger, which is the mistake the leadership term already made once.',
   },
+  /* ---------------- elections ---------------- */
+  'election.termTurns': {
+    v: 16, min: 2, max: 80, step: 1, group: 'Elections',
+    label: 'Turns between elections',
+    doc: 'Four years of quarters. The schedule is STAGGERED by a hash of the nation id and stored nowhere \u2014 fifty-one elections landing on the same turn is a newspaper nobody reads, and a derived schedule needs no field in the save, no migration and no reset.',
+  },
+  'election.wRecord': {
+    v: 0.45, min: 0, max: 3, step: 0.05, group: 'Elections',
+    label: 'Election: weight of the government\u2019s record',
+    doc: 'Quality of Life, centred, as a multiplier on the incumbent\u2019s own share. The largest of the five, because it is the one the player spends every other lever on: a government that delivered survives an electorate that disagrees with it, and one that did not, does not.',
+  },
+  'election.wOrder': {
+    v: 0.25, min: 0, max: 3, step: 0.05, group: 'Elections',
+    label: 'Election: weight of Authority',
+    doc: 'A government that can govern is worth keeping. Deliberately smaller than the record: order without living standards holds an election, it does not win one.',
+  },
+  'election.wLiberties': {
+    v: 0.25, min: 0, max: 3, step: 0.05, group: 'Elections',
+    label: 'Election: weight of Civil Liberties',
+    doc: 'And a government that leans on people is not. The other half of the suppression bargain: a garrison buys quiet this decade and votes against you the next.',
+  },
+  'election.wWeariness': {
+    v: 0.45, min: 0, max: 3, step: 0.05, group: 'Elections',
+    label: 'Election: weight of war weariness',
+    doc: 'The bill for a decade of fighting, arriving at the one moment a population can present it. This is what makes weariness a political stock rather than a mood.',
+  },
+  'election.wLeader': {
+    v: 0.20, min: 0, max: 3, step: 0.05, group: 'Elections',
+    label: 'Election: weight of who is in charge',
+    doc: 'Borrowed from the leader\u2019s Influence modifier, because the traits that campaign well are the ones that carry standing abroad \u2014 the Orator, the Populist, the Idealist. One number describing one person beats a second that could disagree with it.',
+  },
+  'election.spread': {
+    v: 0.15, min: 0.01, max: 1, step: 0.01, group: 'Elections',
+    label: 'How far above the world average counts as a full-marks record',
+    doc: 'Every term in the vote is measured AGAINST THE WORLD MEAN rather than against the middle of its range, because the stocks do not sit around 0.5 — a settled board runs Quality of Life in the eighties, and centring on 0.5 hands every incumbent alive the same large bonus. This is the distance from the mean that saturates a term: 15 points of Quality of Life clear of the average is a government nobody turns out.',
+  },
+  'election.stealBelow': {
+    v: 0.32, min: 0, max: 1, step: 0.01, group: 'Elections',
+    label: 'Civil Liberties below which a result can be refused',
+    doc: 'A government whose liberties have already fallen this far IS a state that can ignore a vote \u2014 the capacity and the score are the same fact, so nothing new has to be invented to say who may. On the opening board every nation is far above it; a state gets here by holding its own people down for years.',
+  },
+  'election.stealLibertiesHit': {
+    v: 0.12, min: 0, max: 1, step: 0.01, group: 'Elections',
+    label: 'Civil Liberties lost by refusing a result',
+    doc: 'Applied to the STOCK rather than to its target, so it is a shock that decays over several turns rather than a number the next recompute undoes. The loop the whole game runs on, in its tightest form: suppression buys you this term and buys the grievance that takes the next one.',
+  },
   /* ---------------- migration ---------------- */
   'migration.rate': {
     v: 0.030, min: 0, max: 0.5, step: 0.005, group: 'Migration',

@@ -848,6 +848,13 @@ const World = (function () {
     phasePower(T(tune), turn, only);
   }
 
+  /*
+   * Who settles their own election result. The live game passes a predicate
+   * naming the player; everything else leaves it null and resolves in full.
+   */
+  let electionDefer = null;
+  let lastElections = [];
+
   function advanceTurn(tune, rng) {
     const tn = T(tune);
     const owners = snapshotOwners();
@@ -918,8 +925,21 @@ const World = (function () {
        * asking about last turn's world.
        */
       if (typeof Events !== 'undefined' && Events.loaded()) Events.tick(tn, rng);
-      // ...and seat anybody without a leader, and retire anybody whose term is up.
+      // ...and seat anybody without a leader.
       if (typeof Leaders !== 'undefined' && Leaders.loaded()) Leaders.tick(tn, rng);
+      /*
+       * WHOEVER IS DUE AT THE POLLS (M7.10). After the stocks of last turn and
+       * before this turn's are computed, because the four things a government is
+       * answerable for are the four stocks and an election held after
+       * `phasePower` would be judging the world its own result produced.
+       *
+       * `electionDefer` is how the live game keeps the player's own result open
+       * for them to settle; a headless world has none and every government that
+       * can refuse a result, does.
+       */
+      if (typeof Elections !== 'undefined') {
+        lastElections = Elections.tick(tn, rng, { defer: electionDefer, asOf: turn + 1 });
+      }
       Movements.refreshStates(tn); // derived from the map, so it follows the writeback
       Game.tickTreasuries(); // income minus maintenance, on this turn's updated GDP
       Market.update(tn);     // reprice every resource from live supply vs demand
@@ -972,6 +992,9 @@ const World = (function () {
     phasePower,
     /** What secession did on the last world turn, for the UI and M5's ledger. */
     getLastEvents: () => lastEvents,
+    /** What happened at the polls on the last world turn. */
+    getLastElections: () => lastElections,
+    setElectionDefer: (fn) => { electionDefer = fn || null; },
     buffer,
     recPop,
     phaseRecomputeMixes,

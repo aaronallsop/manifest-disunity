@@ -178,13 +178,21 @@ describe('Government', () => {
       'this test no longer exercises a near-tie');
   });
 
-  it('changes only when the bloc actually changes, and stamps when', async () => {
+  it('follows the bloc AT AN ELECTION, and not before (M7.10)', async () => {
+    /*
+     * This used to assert that one world turn was enough: `refreshGovernments`
+     * tracked the popular plurality every turn for any nation that had never
+     * deliberately changed course. Elections took that job, and the difference is
+     * the whole milestone — a government that silently becomes whatever its
+     * people are is not a government, and it is what let an ideology be a
+     * costume. The bloc still wins; it wins on polling day.
+     */
     const { rng } = await bootWorld({ seed: SEED });
     for (let i = 0; i < 3; i++) World.advanceTurn(T(), rng);
     const n = Game.getNation('49');
-    equal(n.gov.since, 0, 'Utah\'s government was re-dated by turns that changed nothing');
+    equal(n.gov.since, 0, 'Utah government was re-dated by turns that changed nothing');
 
-    // force a different bloc and advance one turn
+    // force a different bloc
     const YELLOW = Ideology.index('yellow');
     for (const f of n.counties) {
       const c = Game.county[f];
@@ -194,8 +202,17 @@ describe('Government', () => {
       c.pop[YELLOW] = pop;
       c.mov = {};
     }
+    const was = Game.getNation('49').gov.rulingIdeology;
+    ok(Elections.nextFor('49', T()) > 0, 'Utah votes today; this test needs a turn in hand');
     World.advanceTurn(T(), rng);
-    equal(Game.getNation('49').gov.rulingIdeology, 'yellow', 'the government did not follow the bloc');
+    equal(Game.getNation('49').gov.rulingIdeology, was,
+      'the government changed hands without an election');
+    // ...and now run to polling day.
+    for (let i = 0; i <= Elections.termOf(T()); i++) {
+      World.advanceTurn(T(), rng);
+      if (Game.getNation('49').gov.rulingIdeology !== was) break;
+    }
+    equal(Game.getNation('49').gov.rulingIdeology, 'yellow', 'the election did not follow the bloc');
     equal(Game.getNation('49').gov.since, World.getTurn(), 'the change was not dated');
   });
 
