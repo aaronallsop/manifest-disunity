@@ -894,6 +894,11 @@ export const SCHEMA = {
     label: 'AI: score below which a nation passes',
     doc: 'The bar a move must clear to be worth doing at all. Above zero on purpose: a nation that acts every single turn because something scored 0.001 is both unrealistic and exhausting to play against.',
   },
+  'ai.wVictory': {
+    v: 1.30, min: 0, max: 4, step: 0.05, group: 'AI',
+    label: 'AI: weight of closing on a victory condition',
+    doc: 'How much a nation wants the ONE requirement currently holding back the victory it is nearest. The heaviest single weight, deliberately: without it the AI does not know the conditions exist and the human wins by default the moment they read the table, which is not an opponent but a scoreboard with nobody else on it. It only scores requirements a territorial move can actually shift \u2014 nothing an annexation does moves Influence, which is exactly the shape of the capstone and the reason a conqueror stalls.',
+  },
   'ai.temperature': {
     v: 0.22, min: 0, max: 2, step: 0.01, group: 'AI',
     label: 'AI: decision temperature',

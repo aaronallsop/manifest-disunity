@@ -272,6 +272,48 @@ const AI = (function () {
     }
 
     /*
+     * CLOSING. What this move does for the victory the nation is nearest.
+     *
+     * Without it the AI does not know the conditions exist, and the human wins
+     * by default the moment they read the table — which is not an opponent, it
+     * is a scoreboard with nobody else on it.
+     *
+     * It reads the BINDING requirement of the nation's closest condition (the
+     * worst-lagging term, which is what `progress` already reports) and asks how
+     * far this move moves that one number. Only the requirements a territorial
+     * move can actually shift score anything: taking a capital advances
+     * Reunification, taking people or economy advances all three by different
+     * amounts, and nothing an annexation does moves Influence directly — which
+     * is precisely the shape of the capstone and the reason a conqueror stalls.
+     */
+    if (ctx && ctx.goal && ctx.goal.binding) {
+      const b = ctx.goal.binding;
+      let progress = 0, note = null;
+      if (b.label === 'Seats of government') {
+        let seats = 0;
+        for (const f of (preview.targets || [])) if (Victory.isSeat(f)) seats++;
+        if (intent.type === 'unite' && preview.target) {
+          for (const f of Game.getNation(preview.target).counties) if (Victory.isSeat(f)) seats++;
+        }
+        if (seats) {
+          progress = seats / Math.max(1, b.target * (ctx.world ? ctx.world.seats : 51));
+          note = `${seats} seat${seats === 1 ? '' : 's'} of government`;
+        }
+      } else if (b.label === 'Share of the people' && ctx.world && ctx.world.pop > 0) {
+        progress = dPop * odds / ctx.world.pop / Math.max(1e-6, b.target);
+        note = 'toward the share of the people you need';
+      } else if ((b.label === 'Share of the economy' || b.label.startsWith('GDP per head'))
+                 && ctx.world && ctx.world.gdp > 0) {
+        progress = dGdp * odds / ctx.world.gdp / Math.max(1e-6, b.target);
+        note = 'toward the share of the economy you need';
+      }
+      if (progress) {
+        terms.push(term(`Closing: ${b.label.toLowerCase()}`, 'ai.wVictory',
+          progress, progress, 'expand', note));
+      }
+    }
+
+    /*
      * POSTURE. One number, two multipliers: a nation close to losing an Area
      * discounts every gain and inflates every risk. That is the whole difference
      * between a secure nation that expands and a fraying one that consolidates,
@@ -345,6 +387,22 @@ const AI = (function () {
     const t = tune || window.TUNE;
     const out = [];
     const ctx = { demo: Game.nationDemographics(nid), strain: strain(nid, t) };
+    /*
+     * The victory it is nearest, and the one requirement holding it back.
+     * Computed once per nation per turn rather than per candidate: `progress`
+     * walks every condition and every term, and there are fifteen candidates.
+     */
+    if (typeof Victory !== 'undefined' && Victory.loaded()) {
+      const world = Victory.context(t);
+      const rows = Victory.progress(nid, t, world);
+      const goal = rows.reduce((a, r) => (r.progress > a.progress ? r : a), rows[0]);
+      if (goal) {
+        goal.binding = goal.terms.filter((x) => !x.met)
+          .sort((a, b) => a.progress - b.progress)[0] || null;
+        ctx.goal = goal;
+      }
+      ctx.world = { pop: world.pop, gdp: world.gdp, seats: 51 };
+    }
     for (const intent of Moves.legal(nid, {}, t)) {
       const preview = Moves.plan(intent, t);
       if (!preview.ok) continue;

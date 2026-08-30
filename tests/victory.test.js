@@ -330,3 +330,49 @@ describe('Who you play', () => {
     for (const k of Object.keys(before)) equal(after[k], before[k], `rating changed ${k}`);
   });
 });
+
+describe('Going with the breakaway', () => {
+  it('a declaration records who lost the ground', async () => {
+    /*
+     * The model half of M6.5c. The seat is offered to the parent and to nobody
+     * else, and after `breakApart` there is no longer anything to ask — so the
+     * owner is read before the ground moves and carried on the event.
+     */
+    const { rng } = await bootWorld({ seed: SEED });
+    let found = null;
+    for (let i = 0; i < 60 && !found; i++) {
+      World.advanceTurn(T(), rng);
+      found = Ledger.ofKind('declare')[0] || null;
+    }
+    ok(found, 'sixty turns produced no declaration');
+    ok(found.parent, 'the declaration does not say which nation lost the ground');
+    ok(found.nation && Game.getNation(found.nation), 'the declaration names no live nation');
+    ok(found.parent !== found.nation, 'a nation declared independence from itself');
+  });
+
+  it('the seat can move to it, and the world carries on', async () => {
+    const { rng } = await bootWorld({ seed: SEED });
+    let d = null;
+    for (let i = 0; i < 60 && !d; i++) {
+      World.advanceTurn(T(), rng);
+      d = Ledger.ofKind('declare')[0] || null;
+    }
+    if (!d) return;
+    /*
+     * The parent may not have survived its own breakaway — which is the case
+     * the switch exists for, and the reason the offer is made before the defeat
+     * screen rather than after it.
+     */
+    if (Game.getNation(d.parent)) {
+      Game.setPlayer(d.parent);
+      equal(Game.getPlayer(), d.parent);
+    }
+    // Going with them is exactly this, which is the point of M6.2's seat.
+    ok(Game.setPlayer(d.nation), 'the breakaway could not be taken up');
+    equal(Game.getPlayer(), d.nation);
+    equal(TurnSystem.seat(d.nation), true, 'the new nation has no slot in the order');
+    equal(TurnSystem.currentId(), d.nation);
+    World.advanceTurn(T(), rng);
+    ok(Game.getNation(Game.getPlayer()), 'the world did not survive the switch');
+  });
+});

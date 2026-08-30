@@ -235,7 +235,7 @@ Done in the order **M3.4 -> M3.1 -> M3.2 -> M3.3**, because the plan lists M3.4'
       2-5x what an AI-only world produces on the reasoning that a deliberate player outperforms a
       deliberately mild AI, which is a judgement rather than a measurement and the first thing a real
       play test should revisit.
-- [ ] **M6.5** Faction-switch, military, remaining valves. Split, because it is three systems:
+- [x] **M6.5** Faction-switch, military, remaining valves. Split, because it is four systems:
       - [x] **M6.5a** `js/military.js` — force as an allocation across Garrison / Border / Field,
             derived from population, wealth per head and how well the state governs. Readiness lags
             the allocation (the whole cost of changing your mind); upkeep is charged on force, not on
@@ -248,10 +248,14 @@ Done in the order **M3.4 -> M3.1 -> M3.2 -> M3.3**, because the plan lists M3.4'
             for free. Offered to the AI beside release over the same ground, so the choice turns on
             the prices. Also here: `Sim.run({ai:false})` for the two suites that ask about the world
             engine's pacing rather than about anybody's choices — 265 of the suite's 412 seconds.
-      - [ ] **M6.5c** Faction-switch — become the breakaway rather than go down with the parent.
-      - [ ] **M6.5d** The AI plays toward a victory condition. Flagged at the end of M6.4 as the most
-            valuable thing left in the milestone: today the human wins by default once they know the
-            table.
+      - [x] **M6.5c** Faction-switch. The declaration event carries `parent`, read before `breakApart`
+            moves the ground; the offer is made after the declaration (so you decide knowing what
+            actually left) and BEFORE the defeat check, which is the case the review names — the
+            breakaway that takes everything.
+      - [x] **M6.5d** The AI plays toward a victory condition: a Closing term on the binding
+            requirement of the condition it is nearest, scoring only what a territorial move can
+            actually shift. Nothing an annexation does moves Influence, which is the shape of the
+            capstone rather than an omission.
 
 ## M7 — Depth and widen
 

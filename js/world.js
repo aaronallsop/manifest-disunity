@@ -683,6 +683,10 @@ const World = (function () {
          */
         if (largest.length < tn.get('nation.minAreas')) continue;
 
+        // WHO LOST THE GROUND, read before it moves. The M6.5 faction switch
+        // offers the seat to the parent and nobody else, and after breakApart
+        // there is no longer anything to ask.
+        const parentOf = Game.getOwner(largest[0]);
         const born = Game.breakApart(largest, { exclude: null, reason: 'declare' });
         if (!born.length) continue;
 
@@ -707,8 +711,8 @@ const World = (function () {
         }
         rec.nation = best;
         rec.state = 'realized';
-        TurnSystem.insertAfter(Game.getOwner(largest[0]) || best, born);
-        const ev = { kind: 'declare', movement: rec.name, nation: best,
+        TurnSystem.insertAfter(parentOf || best, born);
+        const ev = { kind: 'declare', movement: rec.name, nation: best, parent: parentOf,
                      areas: largest.length, born: born.length, turn };
         events.push(ev);
         // The explanation is the one the model already computed for the Area the
@@ -720,6 +724,7 @@ const World = (function () {
           text: `${rec.name} declared independence, taking ${largest.length} `
             + `${largest.length === 1 ? 'Area' : 'Areas'}.`,
           terms: Ledger.termsOf(why), movement: rec.name,
+          nation: best, parent: parentOf,
         });
       }
 

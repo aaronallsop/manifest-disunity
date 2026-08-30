@@ -866,6 +866,15 @@ function completeTurn() {
   if (World.getTurn() > beforeTurn) SaveManager.autosave();
   newspaper(mark, World.getTurn() - beforeTurn);
   renderTurnBanner();
+  /*
+   * A movement broke out of your own ground: you may go with it (M6.5c).
+   *
+   * Offered BEFORE the defeat check, and that ordering is the feature. The case
+   * the review actually names is the one where the breakaway takes everything —
+   * "become the breakaway instead of going down with the parent" — and checking
+   * for defeat first is precisely how you never get asked.
+   */
+  if (offerSwitch(mark, name)) return;
   if (swept.playerGone) {
     /*
      * The nation you were playing no longer exists. M6.4 makes this a defeat
@@ -979,6 +988,78 @@ function passTurn() {
   if (Actions.isActive()) return;
   completeTurn();
 }
+
+/*
+ * GO WITH THEM.
+ *
+ * When a movement declares independence out of your own ground, you may become
+ * the breakaway instead of going down with the parent. The review asks for this
+ * and M6.2's seat concept is what makes it a one-line model change: a faction is
+ * a nation id, and switching is `Game.setPlayer`.
+ *
+ * Offered AFTER the declaration rather than as a standing intent, and that is
+ * the design: you decide knowing how much ground actually left, which nation it
+ * became and what you have left — a promise made three turns earlier would be a
+ * bet, and this is a choice.
+ *
+ * It is not an escape hatch from every bad position: it is offered only when a
+ * movement takes ground FROM YOU, which is the situation the review names, and
+ * it costs you everything the parent still holds.
+ */
+function offerSwitch(mark, parentName) {
+  const me = you();
+  if (!me) return false;
+  const born = Ledger.after(mark)
+    .filter((e) => e.kind === 'declare' && e.parent === me && Game.getNation(e.nation));
+  if (!born.length) return false;
+  // The biggest breakaway, if a bad turn produced more than one.
+  const pick = born.sort((a, b) => (b.delta || 0) - (a.delta || 0))[0];
+  const child = Game.getNation(pick.nation);
+  const parent = Game.getNation(me);           // null when it took everything
+  const wasCalled = parent ? parent.name : (parentName || store.playerName || 'your nation');
+  const el = document.getElementById('endscreen');
+  const card = el.querySelector('.end-card');
+  card.innerHTML = `
+    <div class="end-kicker">Independence</div>
+    <h2><span class="dot" style="background:${child.color}"></span>${escapeHtml(child.name)} has declared</h2>
+    <p class="end-sub">${escapeHtml(pick.text)}
+      ${parent
+        ? `You are ${escapeHtml(wasCalled)}, and you have ${parent.counties.size} `
+          + `${parent.counties.size === 1 ? 'Area' : 'Areas'} left. You may go with them instead.`
+        : `It took everything ${escapeHtml(wasCalled)} had. There is nothing left to stay for `
+          + '&mdash; but there is somewhere to go.'}</p>
+    <div class="end-terms">
+      <div class="end-term met"><span class="lbl">${escapeHtml(child.name)}</span>
+        <span class="val">${child.counties.size} Areas &middot; ${fmtPop(Game.nationDemographics(child.id).pop)}</span></div>
+      ${parent ? `<div class="end-term"><span class="lbl">${escapeHtml(wasCalled)}</span>
+        <span class="val">${parent.counties.size} Areas &middot; ${fmtPop(Game.nationDemographics(me).pop)}</span></div>` : ''}
+    </div>
+    <div class="end-btns">
+      ${parent ? `<button class="btn" id="sw-stay">Stay with ${escapeHtml(wasCalled)}</button>` : ''}
+      <button class="btn go" id="sw-go">Go with ${escapeHtml(child.name)}</button>
+    </div>`;
+  el.classList.add('show');
+  const close = () => el.classList.remove('show');
+  const stay = document.getElementById('sw-stay');
+  if (stay) stay.onclick = () => { close(); select('nation', me); };
+  document.getElementById('sw-go').onclick = () => {
+    close();
+    Game.setPlayer(child.id);
+    store.playerName = child.name;
+    TurnSystem.seat(child.id);
+    Ledger.append({
+      phase: 'action', subject: child.id, kind: 'govern', delta: child.counties.size,
+      text: `You left ${wasCalled} and took up the cause of ${child.name}.`,
+    });
+    renderTurnBanner();
+    Leaderboard.refresh();
+    setMode('nations');
+    select('nation', child.id);
+    flash(`\u{1F91D} You are now <strong>${escapeHtml(child.name)}</strong>.`, 'good');
+  };
+  return true;
+}
+
 
 /* ------------------------------------------------------------------ */
 /* info panel                                                          */

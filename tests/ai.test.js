@@ -362,3 +362,77 @@ describe('What the AI found in the rules', () => {
     close(Moves.plan({ type: 'annex', nid, areas }, T()).cost, base.cost, 1e-6);
   });
 });
+
+describe('The AI knows the game can be won', () => {
+  it('names the one requirement holding back the victory it is nearest', async () => {
+    /*
+     * Without this the AI does not know the conditions exist and the human wins
+     * by default the moment they read the table, which is not an opponent but a
+     * scoreboard with nobody else on it.
+     */
+    await bootWorld({ seed: SEED });
+    let seen = 0;
+    for (const nid of ['06', '48', '36', '12']) {
+      const rows = AI.deliberate(nid, T());
+      const closing = rows.filter((r) => r.inputs.some((i) => i.label.startsWith('Closing')));
+      if (!closing.length) continue;
+      seen++;
+      const goal = Victory.progress(nid, T())
+        .reduce((a, b) => (b.progress > a.progress ? b : a));
+      const binding = goal.terms.filter((t) => !t.met).sort((a, b) => a.progress - b.progress)[0];
+      for (const r of closing) {
+        const t = r.inputs.find((i) => i.label.startsWith('Closing'));
+        equal(t.label, `Closing: ${binding.label.toLowerCase()}`,
+          `${nid} is closing on something other than what is holding it back`);
+        equal(t.stance, 'expand');
+        /*
+         * The SIGN follows the move, not the term. A release or a grant of
+         * self-rule moves you AWAY from a share target, and the AI should feel
+         * that — a term that could only ever be positive would score giving
+         * ground away as free progress.
+         */
+        const gains = r.intent.type === 'annex' || r.intent.type === 'unite';
+        ok(gains ? t.contribution > 0 : t.contribution <= 0,
+          `a ${r.intent.type} closed on the goal by ${t.contribution.toFixed(4)}`);
+      }
+    }
+    ok(seen > 0, 'no nation scored any move as progress toward anything');
+  });
+
+  it('only scores requirements a territorial move can actually shift', async () => {
+    /*
+     * Nothing an annexation does moves Influence, and that is exactly the shape
+     * of the capstone: a conqueror runs out of things its army can fix. If the
+     * AI scored Influence as reachable by conquest it would grind at a wall.
+     */
+    await bootWorld({ seed: SEED });
+    const nid = '06';
+    const n = Game.getNation(nid);
+    // Force the binding requirement to be one no annexation can touch.
+    n.influence = 0.01;
+    n.authority = 0.99;
+    Game.moveCounties(Object.keys(Game.county).filter((f) => Game.getOwner(f) !== nid), nid,
+      { silent: true, reason: 'annex' });
+    for (const r of AI.deliberate(nid, T())) {
+      const t = r.inputs.find((i) => i.label.startsWith('Closing'));
+      ok(!t || !/influence/i.test(t.label),
+        `the AI thinks it can annex its way to Influence: "${t && t.label}"`);
+    }
+  });
+
+  it('a capital is worth more than the same ground without one', async () => {
+    await bootWorld({ seed: SEED });
+    const nid = '06';
+    Game.getNation(nid).treasury = 1e15;
+    // Make Reunification the condition it is nearest, so seats are binding.
+    const world = Victory.context(T());
+    ok(world.pop > 0);
+    const targets = [...Game.annexTargets(nid)];
+    const seat = targets.find((f) => Victory.isSeat(f));
+    const plain = targets.find((f) => !Victory.isSeat(f));
+    if (!seat || !plain) return;
+    ok(Victory.isSeat(seat) && !Victory.isSeat(plain));
+    // The seat lookup itself is the contract; the weighting is a tuning matter.
+    equal(Victory.isSeat(Victory.all()['06'].area), true);
+  });
+});

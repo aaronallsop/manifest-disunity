@@ -54,6 +54,7 @@ const Victory = (function () {
   function load(doc) {
     const rows = (doc && doc.capitals) || {};
     capitals = {};
+    seatSet = null;
     for (const [st, rec] of Object.entries(rows)) {
       const area = Game.areaIdOf(rec.fips);
       if (!Game.county[area]) continue;
@@ -64,6 +65,14 @@ const Victory = (function () {
 
   const loaded = () => !!capitals;
   const all = () => capitals || {};
+
+  /** Is this Area somebody's seat of government? Built once, read constantly. */
+  let seatSet = null;
+  function isSeat(areaId) {
+    if (!capitals) return false;
+    if (!seatSet) seatSet = new Set(Object.values(capitals).map((r) => r.area));
+    return seatSet.has(Game.areaIdOf(areaId));
+  }
 
   /* ------------------------------------------------------------------ */
   /* the seats                                                          */
@@ -298,5 +307,5 @@ const Victory = (function () {
     return limit ? rows.slice(0, limit) : rows;
   }
 
-  return { load, loaded, all, seats, progress, check, standings, context, CONDITIONS };
+  return { load, loaded, all, isSeat, seats, progress, check, standings, context, CONDITIONS };
 })();
