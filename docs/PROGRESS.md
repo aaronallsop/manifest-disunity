@@ -71,7 +71,17 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done
       counts; movements are a slice of their own ideology, not a seventh bucket. Measured: world
       population still exactly 340,110,988 at load; red+blue 96.0% before movement seeding; all
       1,676 Areas tagged with one of 20 cultural regions; 229 tests green.
-- [ ] **M2.3** Columnar state (typed arrays); ownership stored once.
+- [ ] **M2.3** Columnar state (typed arrays); ownership stored once. Split, because the two halves
+      are independent and each ships playable on its own:
+  - [x] **M2.3a** `js/state.js`: the columnar store + a field REGISTRY, so `clone()` is one
+        `.slice()` per array and no phase can add a field that `serialize` silently drops.
+        `Game.county[f]` is a live view over the columns, so no caller changed. Measured: the whole
+        country is 173 KB in four columns, a full-state `clone()` is 0.068 ms, and the test suite
+        (which boots the world ~270 times) fell from 41.4s to 27.6s. Float64 not Float32 (D51).
+  - [ ] **M2.3c** `advanceTurn` snapshots the store instead of building 1,676 object literals
+        twice a turn; the five phases become index loops.
+  - [ ] **M2.3b** Ownership stored once: `Int16Array owner` is the truth, `nation.counties` becomes
+        a derived index rebuilt on an ownership epoch rather than a hand-synced second copy.
 - [x] **M2.4** CSR adjacency graph, built once (`js/graph.js`), done BEFORE M2.3 because it builds
       the `fips -> int` Area index the columnar arrays need (D46). 1,676 nodes / 9,454 directed
       edges / 43.5 KB of flat Int32Array; a full graph sweep is 7.7x faster than the already-memoized

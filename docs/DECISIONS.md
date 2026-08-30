@@ -421,3 +421,38 @@ already drifted: it published RNG, TUNE, Counts and Ideology but not GeoCT. A su
 against a different set of globals than the page can pass while the game is broken, which is the
 one thing a test harness must never do. It now imports `../js/boot-globals.js` and gets whatever
 the game gets, by construction.
+
+### D51 — Float64, not the plan's Float32, for population and GDP
+**M2.3a.** The plan says `Float32Array`. That is wrong for these two fields and right for the ones
+M3 and M4 add. Float32 carries a 24-bit mantissa, so it represents integers exactly only up to
+16,777,216 — and this game's invariants are exact ones: world population is 340,110,988 and a save
+round-trip has to reproduce the state bit for bit (which is what replay, the M5 simulator and M2.5's
+state document all rest on). A single Area survives Float32 today, since the largest is Los Angeles
+at 9.8M, but the sums do not, and GDP at ~1.5e11 per Area would be quantised to the nearest ~16,000
+dollars. So the rule is **Float64 for quantities (people, money), Float32 for bounded 0–1 scores** —
+M3's food/health/IT and liberties, M4's 1,676 x 22 sentiment matrix — where seven significant digits
+is far more precision than a designed score carries meaning. Measured cost of the choice: the whole
+store is 173 KB.
+
+### D52 — `Game.county[f]` stays an object; its numbers become views onto the columns
+**M2.3a.** `c.pop[2]`, `c.gdp += x` and `c.pop = v.pop` appear in about a hundred places above the
+model, and none of them should have to know where the bytes live. So the record keeps its shape and
+`pop`, `anchor` and `gdp` become accessors. `pop` and `anchor` hand back a **cached** `subarray`
+view for that Area, so a read in a hot loop allocates nothing and a write through it writes the
+column; `slice()` still detaches, which is what every snapshot in the model relies on. This is only
+sound because the columns are allocated once per world and never replaced — `clone()` builds a
+separate object with its own view cache, and loading a save writes *into* the arrays. Two traps
+found by writing the tests: assigning a record's own mix to itself (`cc.pop = cc.pop`, which
+`loadState` did) zeroed the Area before copying from it, and creating the views before seeding them
+from the pre-view records silently discarded every dollar of GDP in the country.
+
+### D53 — One field registry, because "remember to update three lists" is not a fix
+**M2.3a.** The actual bug was not that Areas were objects. It was that `Game.serialize` enumerated
+an Area's fields by hand and `World.advanceTurn`'s snapshot and writeback enumerated them again, so
+a field a phase added was dropped by **both** — it would work for one turn, vanish at the writeback,
+and reappear at its default with no error anywhere. M3 adds five fields per Area and M4 adds a value
+per (Area, movement) pair, so that is not hypothetical. `FIELDS` in `js/state.js` is now the only
+list: `clone()`, `copyFrom()`, `bytes()` and the save path all iterate it. The test that matters is
+the one that adds a field at runtime and clones — nothing in `clone()` mentions it by name, and it
+survives. Fields carry `save: false` when they are derived from immutable baked data (`anchor`), so
+the registry stays honest without putting 80 KB of reproducible numbers in every save.

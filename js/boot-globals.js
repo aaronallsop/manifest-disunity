@@ -22,6 +22,7 @@ import * as GeoCT from './geo-ct.js';
 import * as Counts from './counts.js';
 import * as Ideology from './ideology.js';
 import * as Graph from './graph.js';
+import { AreaState, FIELDS } from './state.js';
 
 window.RNG = RNG;
 window.TUNE = createTune();
@@ -30,3 +31,5 @@ window.GeoCT = GeoCT;
 window.Counts = Counts;
 window.Ideology = Ideology;
 window.Graph = Graph;
+window.AreaState = AreaState;
+window.StateFields = FIELDS;

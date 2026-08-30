@@ -29,6 +29,7 @@ const Game = (function () {
   const alias = {}; // merged member county fips -> its Area id
   const cid = (f) => alias[f] || f;
   let adjacency = null;
+  let state = null;   // the columnar Area store (js/state.js)
   let seq = 0;
   let originalNationCount = 0; // the leader tier is a share of THIS, not of the survivors
   const listeners = [];
@@ -50,6 +51,7 @@ const Game = (function () {
     nations.clear();
     owner.clear();
     graph = null;
+    state = null;
     maritimeLinks = null;
     adjacency = null;
     tradeData = null;
@@ -89,6 +91,7 @@ const Game = (function () {
   function init(data, adj, areasDef, extras) {
     adjacency = adj;
     graph = null;
+    state = null;
     tradeData = (extras && extras.trade) || null;
     transportData = (extras && extras.transport) || null;
     const regionOf = regionIndexFrom((extras && extras.culture) || null);
@@ -142,6 +145,17 @@ const Game = (function () {
     }
 
     /*
+     * Stage 2b: the ONE index. Every Area gets a node number here, and the graph
+     * and the columnar state are both keyed on it, so "node 412" means the same
+     * Area in the adjacency walk and in `state.pop`. Built before stage 3
+     * because stage 3 writes populations, and populations now live in a column.
+     */
+    const ids = Object.keys(county);
+    buildGraph(ids);
+    state = new AreaState(ids, { mixWidth: N });
+    for (let i = 0; i < ids.length; i++) county[ids[i]] = makeView(ids[i], i, county[ids[i]]);
+
+    /*
      * Stage 3: map onto the six ideologies. R -> red, D -> blue, and OTHER split
      * across the remaining four BY REGION.
      *
@@ -174,9 +188,9 @@ const Game = (function () {
       const total = c.raw.d + c.raw.g + c.raw.o;
       // scale = the share total, so countsFromShares treats these as weights
       const split = Counts.countsFromShares(total, shares, total || 1);
-      c.pop = new Array(N);
-      for (let i = 0; i < N; i++) c.pop[i] = split[i] || 0;
-      c.anchor = Ideology.shares(c.pop);
+      const pop = c.pop;
+      for (let i = 0; i < N; i++) pop[i] = split[i] || 0;
+      c.anchor = Ideology.shares(pop);
       delete c.raw;
     }
     for (const [st, s] of Object.entries(data.states)) {
@@ -195,14 +209,62 @@ const Game = (function () {
       if (n) { n.counties.add(fips); owner.set(fips, c.st); }
     }
     originalNationCount = nations.size;
-    // Built last: every Area record and every merged-member alias must exist
-    // before the graph can resolve a member county to the Area that absorbed it.
-    buildGraph();
     // Open the books with a few turns of income banked. Without this the treasury
     // is zero at turn 0 and every priced action is unaffordable until several
     // world turns have passed, which reads as a broken action menu, not as scarcity.
     const bank = T('econ.startingTreasuryTurns') * T('econ.taxRate');
     for (const [nid, n] of nations) n.treasury = demographics(n.counties).gdp * bank;
+  }
+
+  /**
+   * An Area record, backed by the columns.
+   *
+   * `Game.county[f]` is read and written in a hundred places above the model —
+   * `c.pop[2]`, `c.gdp += x`, `c.pop = v.pop` — and none of them should have to
+   * know that the storage is now flat. So the record keeps its shape and its
+   * numeric fields become accessors onto the columns. `pop` and `anchor` hand
+   * back the CACHED subarray view for that Area, so a read in a hot loop
+   * allocates nothing and a write through it writes the state.
+   *
+   * The fields that are not numbers per Area stay plain properties: `name` and
+   * `st` are strings, `counties` is the merged member list, `attrs` is the
+   * extension bag, and `mov` is a sparse name->count map. `mov` becomes the
+   * `Float32Array sentiment` matrix in M4, when there is a value for every
+   * (Area, movement) pair rather than only for the ones that were seeded.
+   */
+  function makeView(id, i, rec) {
+    const v = {
+      name: rec.name,
+      st: rec.st,
+      mov: rec.mov,
+      attrs: rec.attrs,
+      raw: rec.raw,          // dropped at the end of init
+      node: i,               // its index in the graph and in every column
+    };
+    if (rec.counties) v.counties = rec.counties;
+    Object.defineProperty(v, 'pop', {
+      enumerable: true,
+      get: () => state.slot('pop', i),
+      set: (src) => { const s = state.slot('pop', i); if (src === s) return; s.fill(0); s.set(src); },
+    });
+    Object.defineProperty(v, 'anchor', {
+      enumerable: true,
+      get: () => state.slot('anchor', i),
+      set: (src) => { const s = state.slot('anchor', i); if (src === s) return; s.fill(0); s.set(src); },
+    });
+    Object.defineProperty(v, 'gdp', {
+      enumerable: true,
+      get: () => state.gdp[i],
+      set: (x) => { state.gdp[i] = x; },
+    });
+    // Seed the columns from whatever the plain record already held. Stages 1 and
+    // 2 run before the columns exist, so GDP is summed onto the record; without
+    // this line the view is created over a zeroed column and every dollar in the
+    // country is silently discarded at the moment the record becomes a view.
+    if (rec.gdp) state.gdp[i] = rec.gdp;
+    if (rec.pop) v.pop = rec.pop;
+    if (rec.anchor) v.anchor = rec.anchor;
+    return v;
   }
 
   /* ---- per-Area reads ---- */
@@ -302,8 +364,7 @@ const Game = (function () {
    * FIPS), but everything inside walks integer indices.
    */
   let graph = null;
-  function buildGraph() {
-    const ids = Object.keys(county);
+  function buildGraph(ids) {
     graph = Graph.build(ids, (a) => {
       const out = [];
       for (const m of county[a]?.counties || [a])
@@ -858,7 +919,8 @@ const Game = (function () {
     // quota error rather than failing silently. Empty ext/attrs bags ARE omitted,
     // which is free.
     for (const [f, c] of Object.entries(county)) {
-      const rec = { p: c.pop.slice(), gdp: c.gdp };
+      // Array.from, not .slice(): a Float64Array stringifies to {"0":..,"1":..}.
+      const rec = { p: Array.from(c.pop), gdp: c.gdp };
       for (const m in c.mov) { rec.m = { ...c.mov }; break; }
       for (const k in c.attrs) { rec.a = { ...c.attrs }; break; }
       counties[f] = rec;
@@ -882,8 +944,14 @@ const Game = (function () {
       if (!cc) { dropped++; continue; }
       // A save written before the ideology model carried d/g/o + e{}; it is
       // refused by SaveManager on the version stamp, so only `p` is read here.
-      cc.pop = Array.isArray(c.p) ? c.p.slice() : cc.pop;
-      cc.mov = { ...(c.m || {}) }; cc.attrs = { ...(c.a || {}) }; cc.gdp = c.gdp;
+      // Guarded: `cc.pop` is now a view onto the column, and assigning it to
+      // itself would zero the column before copying from it.
+      if (Array.isArray(c.p)) cc.pop = c.p;
+      cc.mov = { ...(c.m || {}) };
+      cc.gdp = c.gdp;
+      // MERGED, not replaced: attrs also holds values derived from the bake at
+      // init (attrs.culture), and a save is allowed not to carry those.
+      cc.attrs = { ...cc.attrs, ...(c.a || {}) };
     }
     nations.clear();
     owner.clear();
@@ -953,8 +1021,10 @@ const Game = (function () {
     dominantOf,
     areaPop: (f) => { const c = county[cid(f)]; return c ? areaPop(c) : 0; },
     countyNeighbors,
-    /** The CSR graph itself, for index-space callers (M2.3's phases, the tests). */
+    /** The CSR graph itself, for index-space callers (the phases, the tests). */
     graph: () => graph,
+    /** The columnar store. `Game.state().pop[node * 6 + i]` is the flat path. */
+    state: () => state,
     nodeOf,
     nationMask,
     adjacentNations,
