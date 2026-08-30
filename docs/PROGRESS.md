@@ -291,7 +291,10 @@ Done in the order **M3.4 -> M3.1 -> M3.2 -> M3.3**, because the plan lists M3.4'
       paired with a Reformer cancels. A new government is a new person. Also here: `Power.build`
       learned about SIGNED inputs (mapping a modifier through `centred` gave every nation a constant
       offset), and a Why record no longer seats a leader as a side effect of describing one.
-- [ ] **M7.6** Map-history timeline.
+- [x] **M7.6** Map-history timeline — `js/history.js`. One baseline plus per-turn ownership DELTAS
+      (13 KB for thirty turns against ~250 KB naive), a cast recording every nation's name and colour
+      when it first appears so the timeline can name countries that no longer exist, and a scrubber
+      that repaints the map and lists that turn's standings and news.
 - [ ] **M7.7** Names and flags for new nations.
 - [ ] **M7.8** Recognition / legitimacy.
 - [ ] **M7.9** Migration.
@@ -327,7 +330,7 @@ Performance, measured on the real map rather than predicted: a world turn 24.7 -
 phases 12.4 -> 2.8 ms, political drift 8.0 -> 2.0 ms, a 50-turn simulator run 1,237 -> 466 ms. The
 columnar store is 173 KB and the adjacency graph 43.5 KB.
 
-Next: **M7.6** (map-history timeline — replay the ledger, which is already saved state).
+Next: **M7.7** (names and flags for new nations — ideology-flavoured name templates and a procedural SVG flag).
 
 Open, carried into M2.3: after 21 turns no Area is yet LED by a minority ideology (Rep 1,288 /
 Dem 388 of 1,676). That is the expected shape at 11% organised movements and it is M5's dial to

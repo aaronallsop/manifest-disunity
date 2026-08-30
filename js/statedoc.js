@@ -74,6 +74,7 @@ export function assemble(session = {}) {
     relations: Relations.serialize(),
     events: Events.serialize(),
     leaders: Leaders.serialize(),
+    history: History.serialize(),
     ledger: Ledger.serialize(),
     // only deliberate overrides, so a schema change is not baked into a save
     tune: window.TUNE.diff(),
@@ -131,6 +132,7 @@ export function applyModel(doc) {
   Relations.loadState(doc.relations);
   Events.loadState(doc.events);
   Leaders.loadState(doc.leaders);
+  History.loadState(doc.history);
   // A pre-M3 document carries no power stocks; seed the nations that have none
   // rather than leaving them null and letting every reader guard for it. A
   // document that HAS them keeps them, stocks included, because the whole point
@@ -141,6 +143,6 @@ export function applyModel(doc) {
 }
 
 /** Every module a document must round-trip, for the "nothing was forgotten" test. */
-export const STATEFUL_MODULES = ['Game', 'TurnSystem', 'World', 'Market', 'Colors', 'Movements', 'Ledger', 'Military', 'Relations', 'Events', 'Leaders'];
+export const STATEFUL_MODULES = ['Game', 'TurnSystem', 'World', 'Market', 'Colors', 'Movements', 'Ledger', 'Military', 'Relations', 'Events', 'Leaders', 'History'];
 
 export default { VERSION, buildStamp, assemble, validate, applyModel, STATEFUL_MODULES };

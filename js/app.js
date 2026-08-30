@@ -770,6 +770,10 @@ function wireControls() {
   document.querySelectorAll('.color-toggle button').forEach((btn) => {
     btn.addEventListener('click', () => setColorMode(btn.dataset.color));
   });
+  document.getElementById('btn-timeline').addEventListener('click', () => {
+    if (Actions.isActive()) return flash('Finish or cancel the current action first.', 'warn');
+    if (timelineTurn == null) openTimeline(); else closeTimeline();
+  });
   document.getElementById('btn-editor').addEventListener('click', () => {
     // The editor takes click priority over an in-flight action, and exiting it
     // leaves that action's stale Sets live (finding 48). Gate it.
@@ -1192,6 +1196,88 @@ function renderNationPanel(nid) {
   );
   const goto = panel.querySelector('#goto-current');
   if (goto) goto.onclick = () => { setMode('nations'); select('nation', you()); };
+}
+
+/* ------------------------------------------------------------------ */
+/* the timeline                                                        */
+/* ------------------------------------------------------------------ */
+
+/*
+ * THE MAP, AT EVERY TURN IT HAS BEEN.
+ *
+ * The ledger already says "the State of Jefferson declared independence, taking
+ * 14 Areas", and that is a sentence about a SHAPE. A player who has spent an
+ * hour watching a border move should be able to see it move again — and it is
+ * the only way to answer "when did that happen" for anything the newspaper
+ * scrolled past.
+ *
+ * Painting is done straight onto the paths rather than through `MapModes`,
+ * because the timeline is showing a world that is not the current one and
+ * teaching every map mode about a second source of ownership would be a large
+ * change for one view. `close()` puts the live colours back by asking the
+ * renderer to do what it always does.
+ */
+let timelineTurn = null;
+
+function paintHistory(turn) {
+  const owners = History.ownersAt(turn);
+  if (!owners) return;
+  const g = Game.graph();
+  if (!g) return;
+  const byArea = new Map();
+  for (let i = 0; i < g.n; i++) byArea.set(g.idAt(i), History.colorOf(owners[i]));
+  store.countyPaths.attr('fill', (d) => byArea.get(Game.areaIdOf(d.id)) || '#c9ced6');
+}
+
+function renderTimeline() {
+  const el = document.getElementById('timeline');
+  if (timelineTurn == null) { el.classList.remove('show'); return; }
+  const lo = History.first(), hi = History.lastTurn();
+  const t = Math.max(lo, Math.min(hi, timelineTurn));
+  const board = History.standingsAt(t).slice(0, 6);
+  const news = Ledger.forTurn(t).filter((e) => e.text);
+  el.innerHTML = `
+    <div class="tl-bar">
+      <button class="tl-btn" id="tl-back">&#9664;</button>
+      <input type="range" id="tl-scrub" min="${lo}" max="${hi}" step="1" value="${t}">
+      <button class="tl-btn" id="tl-fwd">&#9654;</button>
+      <span class="tl-turn">World turn <strong>${t}</strong> of ${hi}</span>
+      <button class="tl-btn tl-close" id="tl-close">Back to now</button>
+    </div>
+    <div class="tl-body">
+      <div class="tl-board">
+        ${board.map((r) => `<div class="tl-row">
+          <span class="dot" style="background:${r.color || '#c9ced6'}"></span>
+          <span class="nm">${escapeHtml(r.name || 'unknown')}</span>
+          <span class="num">${r.areas}</span></div>`).join('')}
+      </div>
+      <div class="tl-news">
+        ${news.length
+          ? news.slice(0, 8).map((e) => `<div class="tl-item">${escapeHtml(e.text)}</div>`).join('')
+          : '<div class="tl-item quiet">Nothing anybody wrote down.</div>'}
+      </div>
+    </div>`;
+  el.classList.add('show');
+  paintHistory(t);
+
+  const go = (n) => { timelineTurn = Math.max(lo, Math.min(hi, n)); renderTimeline(); };
+  document.getElementById('tl-back').onclick = () => go(t - 1);
+  document.getElementById('tl-fwd').onclick = () => go(t + 1);
+  document.getElementById('tl-scrub').oninput = (ev) => go(Number(ev.target.value));
+  document.getElementById('tl-close').onclick = closeTimeline;
+}
+
+function openTimeline() {
+  if (!History.count()) return flash('Nothing has happened yet.', 'warn');
+  timelineTurn = History.lastTurn();
+  renderTimeline();
+}
+
+function closeTimeline() {
+  timelineTurn = null;
+  document.getElementById('timeline').classList.remove('show');
+  // Put the live colours back by asking the renderer for the world as it is.
+  recolor();
 }
 
 /*

@@ -821,6 +821,9 @@ const World = (function () {
    */
   function begin(tune, only, rng) {
     if (!only) winner = null;
+    // The opening position is part of the history, or the timeline starts one
+    // turn after the game does.
+    if (!only && typeof History !== 'undefined') { History.reset(); History.capture(turn); }
     // Everybody has a leader before the first stock is computed, so the
     // Leadership term is never reading an empty chair on turn 0.
     if (typeof Leaders !== 'undefined' && Leaders.loaded()) Leaders.tick(T(tune), rng || null);
@@ -887,6 +890,13 @@ const World = (function () {
       Game.touch({ values: true });
     });
     turn += 1;
+    /*
+     * The map, as it stands at the end of this turn (M7.6). After the increment,
+     * so a frame is stamped with the turn that produced it; and after everything
+     * that could move a border, because a frame taken mid-turn is a map that
+     * never existed.
+     */
+    if (typeof History !== 'undefined') History.capture(turn);
     /*
      * HAS ANYBODY WON. After the stocks, because two of the three conditions
      * have floors under Authority and Influence and reading them before
