@@ -219,8 +219,11 @@ describe('The phase', () => {
     const { rng } = await bootWorld({ seed: SEED });
     for (let i = 0; i < 60; i++) World.advanceTurn(T(), rng);
     Movements.refreshStates(T());
+    // 'declared' is transient: the secession phase turns a declared movement
+    // into a realized one on the same turn it fires, so the durable observable
+    // is that SOMETHING got all the way through.
     const states = Movements.all().map((r) => r.state);
-    ok(states.includes('declared'),
+    ok(states.includes('declared') || states.includes('realized'),
       `after 60 turns no movement has taken its core; states are ${[...new Set(states)]}`);
   });
 });

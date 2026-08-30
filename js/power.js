@@ -210,6 +210,14 @@ export function authority(a, tune) {
       key: 'power.authority.wSolvency', note: 'turns of upkeep the treasury covers' },
     { label: 'Cohesion', raw: a.cohesion || 0, norm: clamp01(a.cohesion || 0),
       key: 'power.authority.wCohesion', note: 'how ideologically united the population is' },
+    /*
+     * A new nation's honeymoon (M4.3), decaying over its remaining turns. It is
+     * a TERM rather than a patch on the value so that a player looking at a
+     * young country can see exactly why its Authority is where it is, and watch
+     * the reason expire.
+     */
+    { label: 'Honeymoon', raw: a.honeymoon || 0, norm: clamp01(a.honeymoon || 0),
+      key: 'power.authority.wHoneymoon', note: 'goodwill toward a government that just won independence' },
     { label: 'Territory lost', raw: lostAreas, norm: saturate(lostAreas, tune.get('power.authority.lossesK')),
       key: 'power.authority.wLosses', note: 'Areas lost, recently' },
     { label: 'Occupation', raw: occupation, norm: clamp01(occupation),
@@ -511,6 +519,16 @@ export function worldContext() {
  * distance computations a turn for a **six-element lookup table**. It is
  * computed once here and the Area loop becomes arithmetic.
  */
+/**
+ * Which territorial gains count as conquest.
+ *
+ * Filtering on the REASON rather than on "was this the turn you were founded"
+ * is the robust form: a nation created by a declaration of independence takes
+ * its founding ground through `moveCounties` like everything else, and comparing
+ * turn stamps to detect that only works while two independent clocks agree.
+ */
+const CONQUEST = new Set(['annex', 'war']);
+
 export function nationFacts(nid, tune) {
   const n = Game.getNation(nid);
   if (!n) return null;
@@ -545,8 +563,24 @@ export function nationFacts(nid, tune) {
     alignment = weight > 0 ? weighted / weight : 0;
   }
 
+  /*
+   * THE GROUND A NATION IS BORN HOLDING IS NOT GROUND IT TOOK.
+   *
+   * `createNation` grants its founding territory through `moveCounties`, which
+   * records it as an acquisition — correctly, because that is what the ledger is
+   * for. But Authority and Influence read those records as conquest, so a
+   * movement that declared independence with 39 Areas was scored as having
+   * blitzed 39 Areas on the day it was founded: measured, Deseret opened with
+   * Overreach at -0.123 and Influence pinned at the 0.08 floor, for taking
+   * nothing from anyone that it had not already been living in.
+   *
+   * Filtered once here rather than in each stock, so the two cannot disagree
+   * about what counts as a conquest.
+   */
+  const gains = (n.annexed || []).filter((e) => CONQUEST.has(e.reason));
+
   return {
-    nid, n, d, flow,
+    nid, n, d, flow, gains,
     pop: d.pop,
     gdp: d.gdp,
     perCapita: d.pop > 0 ? d.gdp / d.pop : 0,
@@ -563,8 +597,15 @@ export function nationFacts(nid, tune) {
 export function gatherAuthority(facts, turn) {
   if (!facts) return null;
   const { n, flow } = facts;
+  // The honeymoon decays linearly to nothing as its turns run out.
+  const left = (n.honeymoonUntil || 0) - turn;
+  const span = window.TUNE.get('secession.honeymoonTurns');
+  const honeymoon = left > 0 && span > 0
+    ? window.TUNE.get('secession.honeymoonAuthority') * Math.min(1, left / span) : 0;
+
   return {
     turn,
+    honeymoon,
     founded: n.founded,
     since: n.gov ? n.gov.since : 0,
     cohesion: facts.cohesion,
@@ -572,7 +613,7 @@ export function gatherAuthority(facts, turn) {
     upkeep: flow ? flow.maintenance : 0,
     areas: facts.areas,
     occupied: facts.occupied,
-    gains: n.annexed,
+    gains: facts.gains,
     losses: n.lost,
     previous: n.authority,
   };
@@ -615,7 +656,7 @@ export function gatherInfluence(facts, turn, tune, ctx) {
     partners,
     areas: facts.areas,
     occupied: facts.occupied,
-    gains: n.annexed,
+    gains: facts.gains,
     previous: n.influence,
   };
 }

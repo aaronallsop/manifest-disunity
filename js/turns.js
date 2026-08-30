@@ -30,6 +30,18 @@ const TurnSystem = (function () {
     rng = r;
     order = shuffle([...ids]);
     ptr = 0;
+    /*
+     * THE TURN ORDER FOLLOWS THE ROSTER, and it hears about it itself.
+     *
+     * This sync used to live in app.js's change handler — which meant it ran in
+     * the live page and nowhere else, so anything headless drifted: a nation
+     * pruned by a defection or a civil war kept its slot and would be handed
+     * turns after it had ceased to exist. The M5 simulator runs headless by
+     * definition, so the renderer is exactly the wrong owner for a model
+     * invariant. Game.reset() clears its listeners, so this registers once per
+     * world.
+     */
+    Game.onChange((reason) => { if (reason.roster) sync(); });
     round = 1;
     currentRemoved = false;
     wrapped = false;

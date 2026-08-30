@@ -889,3 +889,58 @@ loses it**. Measured on the real map: Cascadia's peak share falls 0.176 → 0.10
 multiplicative `base` doing precisely the job it exists for. Meanwhile Deseret runs to its cap.
 
 Turn-45 spread across 17 movements: 1 declared, 7 armed, 6 rising, 3 latent.
+
+### D85 — Tier 1 cannot make a country; only tier 2 can
+**M4.3.** The plan says an over-threshold Area "defects to `m`'s realised nation, **or becomes
+independent if there is none**". The second half is wrong at this threshold: at 0.40 with caps up to
+0.60, dozens of Areas sit over the line simultaneously, and letting each go independent on its own
+turns the map to confetti.
+
+So the two tiers get genuinely distinct jobs. **Declaring is how a movement becomes a country;
+defecting is how that country grows.** Tier 1 moves an Area only to a movement that already has a
+nation, only along that nation's frontier, and only `secession.maxPerTurn` Areas a turn taken
+strongest-first. Single-Area independence was already refused downstream by `nation.minAreas`, so
+nothing is lost.
+
+### D86 — Independence has a grace period and a price, opposite in sign and different in duration
+**M4.3.** A nation founded this turn has no age, no tenure and no reserves — **every other Authority
+term reads zero** — so without a honeymoon it would be the weakest government on the board on the day
+of its founding and would immediately start shedding the Areas that just fought to join it. The
+honeymoon is a decaying Authority *term*, not a patch on the value, so a player can see exactly why a
+young country is holding together and watch the reason expire.
+
+Against it, a one-off proportional GDP cut: institutions, contracts and trade routes break at once.
+Proportional through `boostGdp`, not an even split, so it does not flatten the economic map M1.7
+spent a fix un-flattening. Without the cost, declaring independence would be free.
+
+### D87 — Conquest is a REASON, not a date
+**M4.3.** `createNation` grants a new nation its founding territory through `moveCounties`, which
+records it as an acquisition — correctly, because that is what the ledger is for. But Authority and
+Influence read those records as conquest, so **a movement declaring independence with 39 Areas was
+scored as having blitzed 39 Areas on the day it was born**: measured, Deseret opened with Overreach
+at −0.123 and Influence pinned at the 0.08 floor, for taking nothing from anyone it had not already
+been living in.
+
+The first fix compared `e.turn !== n.founded`, which worked only while two independent clocks agreed
+and broke the moment a test called the phase directly. Filtering on the reason — only `annex` and
+`war` are conquest — needs no clock at all, and lives in `nationFacts` so the two stocks cannot
+disagree about what counts.
+
+### D88 — One clock, again: `phaseSecession` reads the world's counter rather than being handed one
+**M4.3.** The phase took a `turn` argument while `moveCounties` independently read the same value
+through `Game`'s own accessor. Two sources for "what turn is it" agree exactly as long as every
+caller remembers to pass the right one — and they disagreed the first time a test called the phase
+directly, stamping the event with one turn and the territorial history with another. The phase now
+reads the module's counter, which is what `moveCounties` reads too. Same lesson as D66.
+
+### D89 — `silent` suppresses the render, not the fact
+**M4.3.** `moveCounties(..., {silent: true})` skipped its `emit` entirely — including the `roster`
+bit that says a nation has ceased to exist. Every silent caller is inside `batch()`, where emits are
+merged anyway, so the flag was not saving a render; it was **dropping a model event**. Measured:
+Alaska lost its last Area to a defection on turn 34, was pruned from the roster, and was still in the
+turn order six turns later being handed turns as a nation that did not exist.
+
+The related half: that sync lived in `app.js`'s change handler, so it ran in the live page and
+nowhere else — and the M5 simulator is headless by definition. `TurnSystem` now registers for roster
+changes itself at `begin()`, which makes the renderer's involvement unnecessary and the invariant
+impossible to miss.

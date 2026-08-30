@@ -180,6 +180,11 @@ export const SCHEMA = {
     label: 'Authority: weight of cohesion',
     doc: 'How much an ideologically united population strengthens the state. The largest positive weight, because a state governing people who agree with each other is the easiest state to govern.',
   },
+  'power.authority.wHoneymoon': {
+    v: 0.22, min: -1, max: 1, step: 0.01, group: 'Power',
+    label: 'Authority: weight of the independence honeymoon',
+    doc: 'How much goodwill a government that has just won independence enjoys. Large enough to carry a newborn nation - which has no age, no tenure and no reserves - past the moment when every other term reads zero.',
+  },
   'power.authority.wLosses': {
     v: -0.30, min: -1, max: 1, step: 0.01, group: 'Power',
     label: 'Authority: weight of territory lost',
@@ -430,6 +435,27 @@ export const SCHEMA = {
     v: 0.20, min: 0.01, max: 1, step: 0.01, group: 'Secession',
     label: 'Movement "rising" mark',
     doc: 'Peak Area share at which a movement stops being latent and starts being visible. Purely descriptive - it changes what the UI says, not what the model does - but it is the point at which a player should be able to see a problem coming.',
+  },
+
+  'secession.maxPerTurn': {
+    v: 3, min: 0, max: 50, step: 1, group: 'Secession',
+    label: 'Areas that may defect per turn',
+    doc: 'How many Areas can change hands to a movement in one world turn, taken strongest-first. At a 0.40 threshold and caps up to 0.60, dozens of Areas sit over the line at once; letting each leave separately turns the map to confetti. Declaring is how a movement becomes a country, defecting is how that country grows.',
+  },
+  'secession.honeymoonTurns': {
+    v: 4, min: 0, max: 40, step: 1, group: 'Secession',
+    label: 'Honeymoon length, in turns',
+    doc: 'How long a newly independent nation enjoys the benefit of the doubt. Without it a newborn state has no age, no tenure and no reserves, so it reads as the weakest government on the board on the day of its founding and immediately starts shedding the Areas that just fought to join it.',
+  },
+  'secession.honeymoonAuthority': {
+    v: 0.9, min: 0, max: 1, step: 0.01, group: 'Secession',
+    label: 'Honeymoon strength',
+    doc: 'The normalised value of the honeymoon term in Authority while it lasts, decaying to zero as it runs out. A population that just got what it wanted grants its new government real standing, briefly.',
+  },
+  'secession.transitionGdpLoss': {
+    v: 0.12, min: 0, max: 0.8, step: 0.01, group: 'Secession',
+    label: 'Cost of independence, as a share of GDP',
+    doc: 'Institutions, contracts and trade routes all break at once. Deliberately opposite in sign and shorter in duration than the honeymoon: without the cost, declaring independence is free.',
   },
 
   'nation.historyWindow': {

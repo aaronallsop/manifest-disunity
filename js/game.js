@@ -819,7 +819,20 @@ const Game = (function () {
     }
 
     const removed = pruneEmpty();
+    /*
+     * `silent` suppresses the RENDER, not the FACT.
+     *
+     * A nation ceasing to exist is a model event, and the turn order has to hear
+     * about it however the caller wanted the map drawn. It did not: every silent
+     * caller is inside `batch()`, so the roster bit was simply dropped, and a
+     * nation whose last Area defected kept its slot and went on being handed
+     * turns. Measured: Alaska lost 02110 to Alaskan Independence on turn 34 and
+     * was still in the order six turns later.
+     *
+     * Inside a batch this merges into the one pending emit, so it costs nothing.
+     */
     if (!silent) emit({ ownership: true, roster: removed > 0 });
+    else if (removed > 0) emit({ roster: true });
   }
   function mergeInto(intoId, fromId) {
     batch(() => {
@@ -1178,6 +1191,7 @@ const Game = (function () {
       id: n.id, name: n.name, color: n.color, origin: n.origin, treasury: n.treasury,
       gov: { ...n.gov },
       founded: n.founded, homeSt: n.homeSt,
+      honeymoonUntil: n.honeymoonUntil || 0,
       annexed: n.annexed.map((e) => ({ ...e })),
       lost: n.lost.map((e) => ({ ...e })),
       authority: n.authority,
@@ -1234,6 +1248,7 @@ const Game = (function () {
         liberties: n.liberties == null ? null : n.liberties,
         founded: n.founded || 0,
         homeSt: n.homeSt || modalState(live),
+        honeymoonUntil: n.honeymoonUntil || 0,
         lastAnnexTurn: n.lastAnnexTurn == null ? -Infinity : n.lastAnnexTurn,
         lastReleaseTurn: n.lastReleaseTurn == null ? -Infinity : n.lastReleaseTurn,
         tradeCooldown: { ...(n.tradeCooldown || {}) },

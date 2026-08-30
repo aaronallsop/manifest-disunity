@@ -483,7 +483,7 @@ function onGameChange(reason) {
   const r = reason || { ownership: true, values: true, roster: true };
   gameChangeCount++;
 
-  if (r.roster) TurnSystem.sync();
+  // (the turn order syncs itself: TurnSystem registers for roster changes)
   if (r.ownership) {
     store.outlineCache.clear();
     store.hoverKey = null; // the cached hover outline is now stale

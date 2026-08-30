@@ -147,7 +147,16 @@ Done in the order **M3.4 -> M3.1 -> M3.2 -> M3.3**, because the plan lists M3.4'
       (D82); movements seed their core so the diffusion term has somewhere to carry them (D83); and
       the model discriminates, with a test demanding something lose ground (D84). Measured at turn
       45: Deseret spreads 4 -> 41 Areas and DECLARES, 1 declared / 7 armed / 6 rising / 3 latent.
-- [ ] **M4.3** Two-tier secession (+ `MIN_NATION` re-derivation, `exclude` fix).
+- [x] **M4.3** Two-tier secession. Tier 2 declares and creates the nation; tier 1 grows it along its
+      frontier, rate-limited (D85). Independence carries a decaying Authority honeymoon against a
+      proportional GDP cost (D86). Three bugs found: conquest read as a date rather than a reason
+      (D87), a second clock in the phase (D88), and `silent` dropping the roster event so a dead
+      nation kept its turn slot (D89).
+      **M4 ACCEPTANCE MET**: 50 turns produced three unscripted breakaways — Alaskan Independence
+      t6, Greater Idaho t8, Deseret t10 — grown by 70 defections to 23, 17 and 39 Areas.
+
+      *Watch in M5:* all three declare by turn 10, which is fast. The plan tunes the West with the
+      simulator and this is the first number to point it at.
 - [ ] **M4.4** The two cheapest release valves.
 - [ ] **M4.5** Sentiment-scaled occupation cost.
 

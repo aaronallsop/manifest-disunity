@@ -34,6 +34,8 @@
  */
 const World = (function () {
   let turn = 0;
+  let lastEvents = [];   // what secession did on the most recent turn
+  const getTurn = () => turn;
 
   // Tunables come in per call; the live game passes the session TUNE.
   const T = (tune) => tune || window.TUNE;
@@ -563,6 +565,154 @@ const World = (function () {
     }
   }
 
+
+  /*
+   * SECESSION, in two tiers.
+   *
+   *   TIER 2, discrete: a movement whose CORE is entirely over the threshold
+   *   DECLARES. Its over-threshold Areas break away as a new nation, through the
+   *   Game.breakApart + TurnSystem.insertAfter machinery that already existed
+   *   for civil wars — which is why this task is mostly wiring rather than
+   *   mechanism.
+   *
+   *   TIER 1, continuous: once that nation exists, further Areas that cross the
+   *   threshold defect to it, a few per turn.
+   *
+   * WHY TIER 1 CANNOT MAKE A NATION ON ITS OWN. The plan says an over-threshold
+   * Area "defects to m's realised nation, or becomes independent if there is
+   * none". Independence for a single Area is already refused downstream —
+   * `breakApart` folds any chunk under `nation.minAreas` into its neighbour —
+   * but the more important reason is that at a 0.40 threshold and caps up to
+   * 0.60, dozens of Areas sit over the line at once. Letting each leave
+   * separately turns the map to confetti. Declaring is how a movement becomes a
+   * country; defecting is how that country grows. The two tiers get distinct
+   * jobs, which is the point of there being two.
+   *
+   * RATE-LIMITED, like everything else that could run away: at most
+   * `secession.maxPerTurn` Areas change hands this way in a world turn, taken
+   * strongest-first so the result does not depend on iteration order.
+   */
+  function phaseSecession(tune, rng) {
+    /*
+     * The turn is read from this module's own counter rather than passed in,
+     * because `moveCounties` independently reads it through `Game.worldTurn()`
+     * — and two sources for "what turn is it" agree only as long as every caller
+     * remembers to pass the right one. They disagreed the moment a test called
+     * this function directly, which stamped the event with one turn and the
+     * territorial history with another.
+     */
+    const turn = getTurn();
+    const tn = T(tune);
+    const threshold = tn.get('secession.countyThreshold');
+    const budget = tn.get('secession.maxPerTurn');
+    const events = [];
+    Movements.refreshStates(tn);
+
+    // Every (Area, movement) over the line, strongest first. Ties break on the
+    // Area id, so two Areas at an identical share resolve the same way twice.
+    const ready = [];
+    for (const rec of Movements.all()) {
+      for (const f of rec.homeland) {
+        const c = Game.county[f];
+        if (!c) continue;
+        const held = c.mov[rec.name] || 0;
+        if (held <= 0) continue;
+        let pop = 0;
+        for (let i = 0; i < c.pop.length; i++) pop += c.pop[i];
+        if (pop <= 0) continue;
+        const share = held / pop;
+        if (share >= threshold) ready.push({ f, rec, share });
+      }
+    }
+    ready.sort((a, b) => b.share - a.share || (a.f < b.f ? -1 : 1));
+    if (!ready.length) return events;
+
+    const byMovement = new Map();
+    for (const r of ready) {
+      if (!byMovement.has(r.rec.name)) byMovement.set(r.rec.name, []);
+      byMovement.get(r.rec.name).push(r);
+    }
+
+    Game.batch(() => {
+      /* ---- tier 2: declarations ---- */
+      for (const rec of Movements.all()) {
+        if (rec.state !== 'declared') continue;
+        const claim = (byMovement.get(rec.name) || []).map((r) => r.f);
+        if (claim.length < tn.get('nation.minAreas')) continue;
+
+        const born = Game.breakApart(claim, { exclude: null, reason: 'declare' });
+        if (!born.length) continue;
+
+        // The largest new nation carries the movement's name and identity; any
+        // other fragments are collateral and keep their generated names.
+        let best = born[0], bestSize = 0;
+        for (const id of born) {
+          const n = Game.getNation(id);
+          if (n && n.counties.size > bestSize) { best = id; bestSize = n.counties.size; }
+        }
+        const nation = Game.getNation(best);
+        if (nation) {
+          nation.name = rec.name;
+          nation.gov.rulingIdeology = rec.ideology;
+          nation.gov.since = turn;
+          applyIndependence(nation, tn, turn);
+        }
+        rec.nation = best;
+        rec.state = 'realized';
+        TurnSystem.insertAfter(Game.getOwner(claim[0]) || best, born);
+        events.push({ kind: 'declare', movement: rec.name, nation: best,
+                      areas: claim.length, born: born.length, turn });
+      }
+
+      /* ---- tier 1: defections to a movement that already has a country ---- */
+      let spent = 0;
+      for (const r of ready) {
+        if (spent >= budget) break;
+        const nid = r.rec.nation;
+        if (!nid || !Game.getNation(nid)) continue;      // nothing to defect TO
+        const owner = Game.getOwner(r.f);
+        if (!owner || owner === nid) continue;
+        // Only along the frontier: a movement's country grows by absorbing the
+        // ground next to it, not by teleporting to the far side of the map.
+        let touches = false;
+        for (const nb of Game.countyNeighbors(r.f)) if (Game.getOwner(nb) === nid) { touches = true; break; }
+        if (!touches) continue;
+        Game.moveCounties([r.f], nid, { silent: true, reason: 'defect' });
+        events.push({ kind: 'defect', movement: r.rec.name, nation: nid,
+                      area: r.f, from: owner, share: r.share, turn });
+        spent++;
+      }
+    });
+
+    if (events.length) Movements.refreshStates(tn);
+    return events;
+  }
+
+  /*
+   * The cost and the grace period of becoming a country.
+   *
+   * A new state gets a HONEYMOON — a few turns of extra Authority, because a
+   * population that just got what it wanted gives its government the benefit of
+   * the doubt — set against the real cost of transition: institutions, contracts
+   * and trade routes all break at once, so GDP takes an immediate hit.
+   *
+   * The two are deliberately opposite in sign and different in duration. Without
+   * the honeymoon a newborn nation has no age, no tenure and no reserves, so it
+   * would read as the weakest state on the board on the day of its founding and
+   * immediately start shedding the Areas that just fought to join it. Without
+   * the cost, declaring independence would be free.
+   */
+  function applyIndependence(nation, tune, turn) {
+    nation.honeymoonUntil = turn + tune.get('secession.honeymoonTurns');
+    nation.founded = turn;
+    const loss = tune.get('secession.transitionGdpLoss');
+    // boostGdp spreads proportionally, so a negative amount is a proportional
+    // CUT: every Area of the new state loses the same fraction, which is what
+    // "the institutions broke" means. An even split would flatten the economic
+    // map that M1.7 spent a fix un-flattening.
+    if (loss > 0) Game.boostGdp(nation.id, -Game.nationDemographics(nation.id).gdp * loss);
+  }
+
   /**
    * Seed the power stocks for a world that has just been built or loaded.
    *
@@ -608,6 +758,14 @@ const World = (function () {
       // live would mean a nation's government changed in the middle of whichever
       // phase was moving its population, so the answer would depend on when you
       // asked. Stored also gives `gov.since` a meaning, which Authority reads.
+      /*
+       * Secession runs AFTER the writeback, not as a phase inside it: it moves
+       * ownership, and the snap/nxt discipline is built on ownership being
+       * frozen for the turn. It runs BEFORE the power stocks so that a nation
+       * born this turn gets its first Authority reading, and before treasuries
+       * so it pays its own bills from the moment it exists.
+       */
+      lastEvents = phaseSecession(tn, rng);
       Game.refreshGovernments(turn + 1);
       Movements.refreshStates(tn); // derived from the map, so it follows the writeback
       Game.tickTreasuries(); // income minus maintenance, on this turn's updated GDP
@@ -627,7 +785,10 @@ const World = (function () {
     loadState: (s) => { turn = (s && s.turn) | 0; },
     snapshotOwners,
     begin,
+    phaseSecession,
     phasePower,
+    /** What secession did on the last world turn, for the UI and M5's ledger. */
+    getLastEvents: () => lastEvents,
     buffer,
     recPop,
     phaseRecomputeMixes,
