@@ -325,37 +325,158 @@ function influenceSummary(value, inputs) {
   return `${band}: ${(up || down).label.toLowerCase()} dominates`;
 }
 
+
 /* ------------------------------------------------------------------ */
-/* the adapter — the one place this file reads the live model          */
+/* Quality of Life                                                     */
 /* ------------------------------------------------------------------ */
 
 /**
- * Assemble Authority's inputs for one nation from the live game.
+ * How well a nation feeds, treats and pays its people.
  *
- * Everything above this line is pure. This function is the seam, and it is a
- * named function rather than inline reads so that the M5 simulator can swap it
- * for a snapshot reader without touching the model.
+ *   qol = f(food security, healthcare, prosperity) - f(fiscal strain)
+ *
+ * FOOD IS A NEED, NOT A SECTOR. That is the whole instruction: the six-sector
+ * economy already reports Agriculture as a share of output, but a share of
+ * output is a fact about an economy, not about whether anyone eats. What matters
+ * is production PER PERSON against a per-person requirement — so the same
+ * agricultural output feeds a small nation and starves a large one, which is not
+ * something a sector share can express.
+ *
+ * AND FOOD CAN BE BOUGHT. A nation covers the requirement out of its own fields
+ * OR out of its wallet: `qol.foodImportShare` of GDP is treated as redirectable
+ * to imports. Without that term the model says the District of Columbia starves,
+ * which is not a claim about the world — it is a claim about a model that
+ * confused growing food with having food. The mechanic that falls out is the
+ * right one: agriculture or money, and a nation with neither is in trouble.
+ *
+ * HEALTHCARE has no sector, so it is not faked as one. It is bought out of
+ * income, and GDP per capita against a per-capita requirement is the honest
+ * proxy — the same one the real world's health outcomes track closely.
+ *
+ * PER NATION, FOR NOW. M4.2's grievance wants QoL per AREA, and the economy bake
+ * is already per Area, so that refinement is a change of scope rather than of
+ * model. What is here is what M3 asked for: one number per nation, cached once a
+ * turn, with its working attached.
+ *
+ * @param a {pop, gdp, agriculture, treasuryDelta, income, previous}
  */
-export function gatherAuthority(nid, turn) {  // tune-free: reads only model facts
-  const n = Game.getNation(nid);
-  if (!n) return null;
-  const d = Game.nationDemographics(nid);
-  const flow = Game.treasuryFlow(nid);
-  return {
-    turn,
-    founded: n.founded,
-    since: n.gov ? n.gov.since : 0,
-    cohesion: d.cohesion,
-    treasury: n.treasury,
-    upkeep: flow ? flow.maintenance : 0,
-    areas: n.counties.size,
-    occupied: Game.occupiedCount(nid),
-    gains: n.annexed,
-    losses: n.lost,
-    previous: n.authority,
-  };
+export function qol(a, tune) {
+  const pop = a.pop || 0;
+  const perCap = pop > 0 ? a.gdp / pop : 0;
+
+  // Dollars of food-equivalent available per person per year: what the fields
+  // produce, plus the share of income a nation can redirect to imports.
+  const foodSupply = (a.agriculture || 0) + (a.gdp || 0) * tune.get('qol.foodImportShare');
+  const foodCover = pop > 0 ? (foodSupply / pop) / tune.get('qol.foodPerCapita') : 0;
+
+  const healthCover = perCap / tune.get('qol.healthPerCapita');
+
+  // Fiscal strain: a deficit measured against income, because a $1bn shortfall
+  // means something different to Wyoming and to California.
+  const strain = a.income > 0 ? Math.max(0, -(a.treasuryDelta || 0)) / a.income : 0;
+
+  const terms = [
+    { label: 'Food security', raw: foodCover, norm: clamp01(foodCover),
+      key: 'qol.wFood', note: 'domestic agriculture plus affordable imports, against the per-person requirement' },
+    { label: 'Healthcare', raw: healthCover, norm: clamp01(healthCover),
+      key: 'qol.wHealth', note: 'income per person against the per-person cost of care' },
+    { label: 'Prosperity', raw: perCap, norm: ramp(perCap, tune.get('qol.prosperityFull')),
+      key: 'qol.wProsperity', note: 'GDP per person' },
+    { label: 'Fiscal strain', raw: strain, norm: saturate(strain, tune.get('qol.strainK')),
+      key: 'qol.wStrain', note: 'this turn\'s deficit as a share of income' },
+  ];
+
+  const record = build(tune.get('qol.base'), terms, tune, qolSummary);
+  record.target = record.value;
+  record.value = step(a.previous, record.value, tune);
+  return record;
 }
 
+function qolSummary(value, inputs) {
+  const band = value >= 0.75 ? 'Comfortable' : value >= 0.55 ? 'Decent'
+    : value >= 0.35 ? 'Getting by' : value >= 0.18 ? 'Hard' : 'Desperate';
+  const food = inputs.find((i) => i.label === 'Food security');
+  if (food && food.norm < 0.6) return `${band}: people are going hungry`;
+  const ranked = inputs.filter((i) => Math.abs(i.contribution) > 1e-9)
+    .sort((a, b) => Math.abs(b.contribution) - Math.abs(a.contribution));
+  const down = ranked.find((i) => i.contribution < 0);
+  const up = ranked.find((i) => i.contribution > 0);
+  if (down) return `${band}: ${down.label.toLowerCase()} is the drag`;
+  return up ? `${band}: ${up.label.toLowerCase()} carries it` : band;
+}
+
+/* ------------------------------------------------------------------ */
+/* Civil Liberties                                                     */
+/* ------------------------------------------------------------------ */
+
+/**
+ * How freely a state lets its people disagree with it.
+ *
+ *   liberties = f(alignment at home, government type, prosperity)
+ *             - f(occupation, dissent under a divided population)
+ *
+ * ALIGNMENT AT HOME IS THE HINGE, and it is why this could not be written before
+ * `gov.rulingIdeology` existed. A state governing people who broadly agree with
+ * it has no reason to restrict them; a state governing a population half of
+ * which sits at the far end of both axes is under constant pressure to. That
+ * pressure is measured as the population-weighted mean affinity between each
+ * Area's political mix and the ruling ideology — the same `affinity` function
+ * that drives everything else, pointed inward.
+ *
+ * The DIVIDED term is separate from alignment and is not a duplicate of it: a
+ * nation can be uniformly mildly-opposed (low alignment, high cohesion) or
+ * evenly split into two camps that agree with the government equally little
+ * (same alignment, low cohesion). The second is the harder one to govern
+ * liberally, and only cohesion can tell them apart.
+ *
+ * WHAT THIS FEEDS. M4.2's grievance reads `1 - liberty_satisfaction` as one of
+ * its factors, so this number is an input to whether people organise against
+ * their government — which is the mechanism the whole West slice is built on.
+ *
+ * @param a {alignment, cohesion, perCapita, areas, occupied, govType, previous}
+ */
+export function liberties(a, tune) {
+  const tolerance = tune.get('qol.govTolerance');
+  const govTol = tolerance[a.govType] != null ? tolerance[a.govType] : tolerance.Republic;
+  const occupation = a.areas > 0 ? (a.occupied || 0) / a.areas : 0;
+  const divided = 1 - clamp01(a.cohesion || 0);
+
+  const terms = [
+    { label: 'Alignment at home', raw: a.alignment || 0, norm: clamp01(a.alignment || 0),
+      key: 'liberty.wAlignment',
+      note: 'how close the governed population sits to the governing ideology' },
+    { label: 'Government', raw: govTol, norm: clamp01(govTol),
+      key: 'liberty.wGovernment', note: 'how much dissent this form of government tolerates' },
+    { label: 'Prosperity', raw: a.perCapita || 0,
+      norm: ramp(a.perCapita || 0, tune.get('qol.prosperityFull')),
+      key: 'liberty.wProsperity', note: 'GDP per person; comfortable states restrict less' },
+    { label: 'A divided people', raw: divided, norm: divided,
+      key: 'liberty.wDivided',
+      note: 'how split the population is, apart from how far it sits from the government' },
+    { label: 'Occupation', raw: occupation, norm: clamp01(occupation),
+      key: 'liberty.wOccupation', note: 'share of held ground governed as occupied territory' },
+  ];
+
+  const record = build(tune.get('liberty.base'), terms, tune, libertySummary);
+  record.target = record.value;
+  record.value = step(a.previous, record.value, tune);
+  return record;
+}
+
+function libertySummary(value, inputs) {
+  const band = value >= 0.75 ? 'Free' : value >= 0.55 ? 'Open'
+    : value >= 0.35 ? 'Constrained' : value >= 0.18 ? 'Repressive' : 'Police state';
+  const ranked = inputs.filter((i) => Math.abs(i.contribution) > 1e-9)
+    .sort((a, b) => Math.abs(b.contribution) - Math.abs(a.contribution));
+  const down = ranked.find((i) => i.contribution < 0);
+  const up = ranked.find((i) => i.contribution > 0);
+  if (up && down) return `${band}: ${up.label.toLowerCase()} holds, ${down.label.toLowerCase()} presses`;
+  return ranked.length ? `${band}: ${ranked[0].label.toLowerCase()} decides it` : band;
+}
+
+/* ------------------------------------------------------------------ */
+/* the adapter — the one place this file reads the live model          */
+/* ------------------------------------------------------------------ */
 
 /**
  * The world facts every nation's Influence is measured against, computed ONCE.
@@ -363,7 +484,7 @@ export function gatherAuthority(nid, turn) {  // tune-free: reads only model fac
  * Alignment is O(nations^2) if each nation asks the world about itself, and
  * `nationDemographics` is a full scan of that nation's Areas — so asking 51
  * times inside 51 loops is 51 full passes over the map per turn for a number
- * that does not change between them. Built once and handed to every gather.
+ * that does not change between them.
  */
 export function worldContext() {
   const rows = [];
@@ -377,17 +498,97 @@ export function worldContext() {
 }
 
 /**
- * Assemble Influence's inputs for one nation.
+ * Everything the four stocks need about ONE nation, read in a single pass.
  *
- * `alignment` is the GDP-weighted mean affinity between this nation's political
- * centroid and everyone else's — the generalisation of the pairwise `rel` that
- * `evalTransit` computes for a single trade partner. Weighted by size because
- * being ideologically close to California is worth more than being close to
- * Wyoming, which is what "soft power" means.
+ * The four `gather*` functions each used to ask the model for what they needed,
+ * which meant `nationDemographics` four times and `treasuryFlow` twice per
+ * nation per turn — and each of those is a full scan of that nation's Areas. The
+ * power phase measured 4.51 ms of an 8.12 ms turn, more than the six world
+ * phases put together, for numbers that cannot change between the four calls.
+ *
+ * The other half of that cost was the home-alignment loop asking
+ * `Ideology.affinity(i, ruling)` per ideology per Area — about ten thousand
+ * distance computations a turn for a **six-element lookup table**. It is
+ * computed once here and the Area loop becomes arithmetic.
  */
-export function gatherInfluence(nid, turn, tune, ctx) {
+export function nationFacts(nid, tune) {
   const n = Game.getNation(nid);
   if (!n) return null;
+  const d = Game.nationDemographics(nid);
+  const flow = Game.treasuryFlow(nid);
+  const surplus = typeof Market !== 'undefined' ? Market.nationSurplus(nid, tune) : null;
+
+  // Home alignment: how close the governed population sits to the governing
+  // ideology, population-weighted over the nation's own Areas.
+  //
+  // Weighted over AREAS rather than computed from the nation's aggregate mix,
+  // and the two are different numbers: a nation split into a red half and a blue
+  // half has an aggregate centroid sitting between them that resembles neither,
+  // and would read as moderately aligned with a centre-governing party that in
+  // fact nobody supports.
+  const ruling = n.gov ? Ideology.index(n.gov.rulingIdeology) : -1;
+  let alignment = 0;
+  if (ruling >= 0) {
+    const N = Ideology.count();
+    const affTo = new Array(N);
+    for (let i = 0; i < N; i++) affTo[i] = Ideology.affinity(i, ruling);
+    let weighted = 0, weight = 0;
+    for (const f of n.counties) {
+      const c = Game.county[f];
+      if (!c) continue;
+      let pop = 0, a = 0;
+      for (let i = 0; i < N; i++) { pop += c.pop[i]; a += c.pop[i] * affTo[i]; }
+      if (pop <= 0) continue;
+      weighted += a;      // already population-weighted: a is sum(pop_i * aff_i)
+      weight += pop;
+    }
+    alignment = weight > 0 ? weighted / weight : 0;
+  }
+
+  return {
+    nid, n, d, flow,
+    pop: d.pop,
+    gdp: d.gdp,
+    perCapita: d.pop > 0 ? d.gdp / d.pop : 0,
+    cohesion: d.cohesion,
+    // nationSurplus reports $M; everything else here is dollars.
+    agriculture: surplus ? surplus.prod[0] * 1e6 : 0,
+    areas: n.counties.size,
+    occupied: Game.occupiedCount(nid),
+    alignment,
+  };
+}
+
+/** Authority's inputs, from one nation's facts. */
+export function gatherAuthority(facts, turn) {
+  if (!facts) return null;
+  const { n, flow } = facts;
+  return {
+    turn,
+    founded: n.founded,
+    since: n.gov ? n.gov.since : 0,
+    cohesion: facts.cohesion,
+    treasury: n.treasury,
+    upkeep: flow ? flow.maintenance : 0,
+    areas: facts.areas,
+    occupied: facts.occupied,
+    gains: n.annexed,
+    losses: n.lost,
+    previous: n.authority,
+  };
+}
+
+/**
+ * Influence's inputs. `alignment` here is the GDP-weighted mean affinity between
+ * this nation's political centroid and every OTHER nation's — the
+ * generalisation of the pairwise `rel` that `evalTransit` computes for a single
+ * trade partner. Weighted by size because being ideologically close to
+ * California is worth more than being close to Wyoming, which is what soft power
+ * means. It is a different number from `facts.alignment`, which points inward.
+ */
+export function gatherInfluence(facts, turn, tune, ctx) {
+  if (!facts) return null;
+  const { nid, n } = facts;
   const world = ctx || worldContext();
   const self = world.rows.find((r) => r.nid === nid);
   if (!self) return null;
@@ -412,14 +613,53 @@ export function gatherInfluence(nid, turn, tune, ctx) {
     gdpShare: world.gdp > 0 ? self.gdp / world.gdp : 0,
     alignment: weight > 0 ? weighted / weight : 0,
     partners,
-    areas: n.counties.size,
-    occupied: Game.occupiedCount(nid),
+    areas: facts.areas,
+    occupied: facts.occupied,
     gains: n.annexed,
     previous: n.influence,
   };
 }
 
+/**
+ * QoL's inputs. Agriculture comes from `Market.nationSurplus`, which is the
+ * single definition of production in the game — reading the baked economy
+ * directly here would be the second economy that M1 spent a fix removing.
+ */
+export function gatherQol(facts, turn) {
+  if (!facts) return null;
+  const { n, flow } = facts;
+  return {
+    turn,
+    pop: facts.pop,
+    gdp: facts.gdp,
+    agriculture: facts.agriculture,
+    treasuryDelta: flow ? flow.delta : 0,
+    income: flow ? flow.income : 0,
+    previous: n.qol,
+  };
+}
+
+/** Civil Liberties' inputs. `alignment` points INWARD — see `nationFacts`. */
+export function gatherLiberties(facts, turn) {
+  if (!facts) return null;
+  const { n } = facts;
+  return {
+    turn,
+    alignment: facts.alignment,
+    cohesion: facts.cohesion,
+    perCapita: facts.perCapita,
+    areas: facts.areas,
+    occupied: facts.occupied,
+    govType: n.gov ? n.gov.type : 'Republic',
+    previous: n.liberties,
+  };
+}
+
 export default {
   clamp01, ramp, saturate, centred, build, step,
-  authority, gatherAuthority, influence, gatherInfluence, worldContext,
+  worldContext, nationFacts,
+  authority, gatherAuthority,
+  influence, gatherInfluence,
+  qol, gatherQol,
+  liberties, gatherLiberties,
 };

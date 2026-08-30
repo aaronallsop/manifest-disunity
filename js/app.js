@@ -917,7 +917,8 @@ function renderTreasury(nid) {
 function renderAuthority(nid) {
   const n = Game.getNation(nid);
   if (!n || !n.why) return '';
-  return renderWhy('Authority', n.why.authority) + renderWhy('Influence', n.why.influence);
+  return renderWhy('Authority', n.why.authority) + renderWhy('Influence', n.why.influence)
+    + renderWhy('Quality of life', n.why.qol) + renderWhy('Civil liberties', n.why.liberties);
 }
 
 /** One renderer for every power stock, so no two can drift apart on screen. */
@@ -945,7 +946,7 @@ function renderWhy(label, why) {
   return `<div class="stat">
     <div class="label">${escapeHtml(label)}</div>
     <div class="value">${pct}%${arrow}</div>
-    <div class="auth-bar ${label.toLowerCase()}"><span style="width:${pct}%"></span></div>
+    <div class="auth-bar ${label.split(' ')[0].toLowerCase()}"><span style="width:${pct}%"></span></div>
     <div class="auth-summary">${escapeHtml(why.summary)}</div>
     ${rows}
   </div>`;

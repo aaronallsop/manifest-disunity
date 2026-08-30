@@ -718,3 +718,68 @@ the nation panel calls it twice. Two near-identical renderers is how the two dri
 trajectory arrow, the other does not; one starts hiding near-zero terms, the other keeps them — and
 a player then has to learn that the same kind of number is presented two ways. Influence gets the
 warm end of the palette against Authority's cool one, which is the only thing that differs.
+
+### D73 — Food is a need, and it can be bought
+**M3.3.** The instruction was "food and healthcare as *needs*, not just sectors", and the distinction
+is the whole term: a share of output is a fact about an economy, not about whether anyone eats. Food
+security is production **per person** against a per-person requirement, so the same harvest feeds a
+small nation and starves a large one — which a sector share cannot express.
+
+The second half matters as much. A nation covers the requirement out of its fields **or out of its
+wallet**: `qol.foodImportShare` of GDP is treated as redirectable to imports. Without that term the
+model says the District of Columbia starves, which is not a claim about the world — it is a claim
+about a model that confused growing food with having food. The mechanic that falls out is the right
+one: agriculture or money, and a nation with neither is in trouble.
+
+Healthcare has no sector in the six-sector economy and is **not faked as one**. It is bought out of
+income, and GDP per head against a per-head requirement is the honest proxy — the one real health
+outcomes track most closely.
+
+### D74 — The QoL requirements are calibrated in the model's units, from measurement
+**M3.3.** The first values were picked from real-world figures ($1,100/person of food, $22,000 of
+income for full healthcare) and every nation on the board maxed all three terms: 45 of 51 read QoL
+0.95+, so M4's grievance — which is `1 - qol` — would have been 0.03 everywhere and the factor would
+have been inert. A stat where every nation reads the same carries no information.
+
+The reason is that the model's "Agriculture" is a template-apportioned share of GDP, not real farm
+revenue, so it runs an order of magnitude above farm-gate value. Measured across the 51 opening
+nations: agriculture $3,392–$26,212 per head (median $6,995); GDP $53,751–$262,439 per head (median
+$77,684). The requirements were then set from those numbers rather than from the real world.
+
+Overshot once on the way, which is worth recording: at 12,000 no nation on the board fully fed
+itself, which is a strange thing for the model to say about a country that exports food. Settled at
+8,000, and the reason is a design position rather than a number — **food should be near-saturated at
+peace and is the term that COLLAPSES under stress**. A term reading 0.95 at peace and 0.3 after a war
+is doing its job; one reading 0.7 at peace is miscalibrated. Healthcare and prosperity carry the
+peacetime variance instead. Final bands at turn 0: Authority 0.44–0.56, Influence 0.45–0.66, QoL
+0.55–0.98, Liberties 0.60–0.84.
+
+### D75 — Civil Liberties measures alignment at home, and division separately from distance
+**M3.3.** The hinge is why this could not be written before `gov.rulingIdeology` existed: a state
+governing people who broadly agree with it has no reason to restrict them, and a state governing a
+population sitting at the far end of both axes is under constant pressure to. That is the
+population-weighted affinity between each Area's mix and the ruling ideology — the same `affinity`
+function that drives everything else, pointed inward.
+
+**Weighted over Areas, not read off the nation's aggregate mix**, and the two are genuinely different
+numbers: a nation split into a red half and a blue half has an aggregate centroid sitting between
+them that resembles neither, and would read as moderately aligned with a centre-governing party that
+in fact nobody supports.
+
+The "divided people" term is **not** a duplicate of alignment. A nation can be uniformly
+mildly-opposed (low alignment, high cohesion) or split into two camps that agree with the government
+equally little (same alignment, low cohesion). The second is far harder to govern liberally, and only
+cohesion tells them apart — which is what the test isolates by holding alignment fixed.
+
+### D76 — One pass per nation, because four gathers meant six full scans
+**M3.3.** Each of the four `gather*` functions asked the model for what it needed, which was
+`nationDemographics` four times and `treasuryFlow` twice per nation per turn — and each of those is a
+full scan of that nation's Areas. Measured, the power phase was **4.51 ms of an 8.12 ms turn**, more
+than the six world phases put together, for numbers that cannot change between the four calls. The
+other half of the cost was the home-alignment loop calling `Ideology.affinity(i, ruling)` per
+ideology per Area: about ten thousand distance computations a turn for what is a **six-element lookup
+table**.
+
+`Power.nationFacts(nid, tune)` reads everything once and the four gathers take it. Measured after:
+**2.32 ms**, and the suite went 30.2s → 23.7s. Same lesson as `worldContext` one task earlier, and
+the same lesson as the drift phase in M2.3c: the cost is almost never the arithmetic.

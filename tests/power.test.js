@@ -471,7 +471,7 @@ describe('Influence in the live world', () => {
     let sum = 0;
     for (const r of ctx.rows) sum += r.gdp;
     close(ctx.gdp, sum, 1e-6, 'the world GDP total does not match its own rows');
-    const ca = Power.gatherInfluence('06', 0, T(), ctx);
+    const ca = Power.gatherInfluence(Power.nationFacts('06', T()), 0, T(), ctx);
     close(ca.gdpShare, Game.nationDemographics('06').gdp / ctx.gdp, 1e-12);
   });
 
@@ -480,7 +480,7 @@ describe('Influence in the live world', () => {
     const ctx = Power.worldContext();
     const worst = Ideology.affinity('green', 'yellow');
     for (const nid of ['06', '48', '49', '10']) {
-      const a = Power.gatherInfluence(nid, 0, T(), ctx).alignment;
+      const a = Power.gatherInfluence(Power.nationFacts(nid, T()), 0, T(), ctx).alignment;
       ok(a > 0 && a < 1, `${nid}'s alignment is ${a}, outside the open interval`);
       ok(a > worst, `${nid} is less aligned with the whole world than the two furthest ideologies are`);
     }
@@ -520,6 +520,290 @@ describe('Influence in the live world', () => {
     Game.loadState(doc);
     for (const [id, v] of want) {
       close(Game.getNation(id).influence, v, 1e-12, `${id}'s Influence was recomputed instead of restored`);
+    }
+  });
+});
+
+describe('Quality of Life', () => {
+  /*
+   * The instruction was "food and healthcare as NEEDS, not just sectors". A
+   * share of output is a fact about an economy; what matters is production per
+   * PERSON against a per-person requirement, so the same agricultural output
+   * feeds a small nation and starves a large one. These tests are mostly about
+   * that distinction.
+   */
+  const qBlank = (over = {}) => ({
+    turn: 0, pop: 1e6, gdp: 0, agriculture: 0,
+    treasuryDelta: 0, income: 1e9, previous: null, ...over,
+  });
+  // Comfortably above the requirement, in the model's units: see qol.foodPerCapita.
+  const fed = (over = {}) => qBlank({ agriculture: 1e6 * 12000, gdp: 1e6 * 90000, ...over });
+
+  it('a nation with no food and no money sits at the base', async () => {
+    await bootWorld({ seed: SEED });
+    close(Pw.qol(qBlank(), T()).value, T().get('qol.base'), 1e-9);
+  });
+
+  it('food is measured PER PERSON, not as a share of output', async () => {
+    await bootWorld({ seed: SEED });
+    const ag = 1e6 * 12000;            // enough for a million people
+    const small = Pw.qol(qBlank({ pop: 1e6, agriculture: ag }), T());
+    const large = Pw.qol(qBlank({ pop: 20e6, agriculture: ag }), T());
+    const fSmall = small.inputs.find((i) => i.label === 'Food security');
+    const fLarge = large.inputs.find((i) => i.label === 'Food security');
+    equal(fSmall.norm, 1, 'a well-fed nation is not reading as fed');
+    ok(fLarge.norm < 0.2,
+      `the same harvest fed twenty times the people (${fLarge.norm.toFixed(3)}); ` +
+      'food is being read as a share of output rather than as a need');
+  });
+
+  it('food can be BOUGHT — the District of Columbia does not starve', async () => {
+    /*
+     * Without the import term the model says every nation that does not farm is
+     * hungry, which is not a claim about the world; it is a claim about a model
+     * that confused growing food with having food.
+     */
+    await bootWorld({ seed: SEED });
+    const rich = Pw.qol(qBlank({ pop: 1e6, agriculture: 0, gdp: 1e6 * 500000 }), T());
+    const poor = Pw.qol(qBlank({ pop: 1e6, agriculture: 0, gdp: 1e6 * 60000 }), T());
+    ok(rich.inputs.find((i) => i.label === 'Food security').norm > 0.9,
+      'a rich nation with no farms went hungry');
+    ok(poor.inputs.find((i) => i.label === 'Food security').norm < 0.4,
+      'a poor nation with no farms is somehow fed');
+    // agriculture OR money; neither is fatal
+    ok(rich.value > poor.value);
+  });
+
+  it('hunger gets its own sentence, because nothing else matters as much', async () => {
+    await bootWorld({ seed: SEED });
+    const hungry = Pw.qol(qBlank({ pop: 50e6, agriculture: 1e6 * 100, gdp: 50e6 * 5000 }), T());
+    ok(/hungry/i.test(hungry.summary), `the summary of a starving nation reads "${hungry.summary}"`);
+    ok(T().get('qol.wFood') >= T().get('qol.wHealth'), 'food does not outweigh healthcare');
+  });
+
+  it('healthcare is bought out of income, not faked as a seventh sector', async () => {
+    await bootWorld({ seed: SEED });
+    const poor = Pw.qol(fed({ gdp: 1e6 * 20000 }), T());
+    const rich = Pw.qol(fed({ gdp: 1e6 * 200000 }), T());
+    const hPoor = poor.inputs.find((i) => i.label === 'Healthcare');
+    const hRich = rich.inputs.find((i) => i.label === 'Healthcare');
+    ok(hRich.contribution > hPoor.contribution, 'income did not buy healthcare');
+    equal(hRich.norm, 1, 'a rich nation cannot fully fund care');
+  });
+
+  it('a deficit costs, measured against income rather than in dollars', async () => {
+    await bootWorld({ seed: SEED });
+    const balanced = Pw.qol(fed({ treasuryDelta: 0, income: 1e10 }), T());
+    const small = Pw.qol(fed({ treasuryDelta: -1e9, income: 1e10 }), T());   // 10% of income
+    const big = Pw.qol(fed({ treasuryDelta: -1e9, income: 2e9 }), T());      // 50% of income
+    ok(small.value < balanced.value, 'a deficit was free');
+    ok(big.value < small.value,
+      'the same dollar deficit cost a small economy no more than a large one');
+    equal(balanced.inputs.find((i) => i.label === 'Fiscal strain').contribution, 0);
+  });
+
+  it('a surplus is not a bonus — only shortfall counts', async () => {
+    await bootWorld({ seed: SEED });
+    const a = Pw.qol(fed({ treasuryDelta: 0 }), T()).value;
+    const b = Pw.qol(fed({ treasuryDelta: 5e9 }), T()).value;
+    close(a, b, 1e-12, 'running a surplus improved daily life, which is not what the term measures');
+  });
+
+  it('a nation with no people produces no NaN', async () => {
+    await bootWorld({ seed: SEED });
+    const r = Pw.qol(qBlank({ pop: 0, gdp: 0, income: 0 }), T());
+    ok(Number.isFinite(r.value), `an empty nation produced ${r.value}`);
+  });
+});
+
+describe('Civil Liberties', () => {
+  const lBlank = (over = {}) => ({
+    turn: 0, alignment: 0, cohesion: 1, perCapita: 0,
+    areas: 10, occupied: 0, govType: 'Republic', previous: null, ...over,
+  });
+
+  it('names every term with a real tunable and a note', async () => {
+    await bootWorld({ seed: SEED });
+    const r = Pw.liberties(lBlank(), T());
+    const labels = r.inputs.map((i) => i.label);
+    for (const want of ['Alignment at home', 'Government', 'Prosperity',
+                        'A divided people', 'Occupation']) {
+      ok(labels.includes(want), `Civil Liberties does not report "${want}"`);
+    }
+    for (const i of r.inputs) {
+      ok(T().peek(i.key) !== undefined, `"${i.label}" names unknown tunable ${i.key}`);
+      ok(i.note && i.note.length > 5, `"${i.label}" has no note`);
+    }
+  });
+
+  it('governing people who agree with you is what lets you govern them lightly', async () => {
+    await bootWorld({ seed: SEED });
+    const aligned = Pw.liberties(lBlank({ alignment: 1 }), T()).value;
+    const opposed = Pw.liberties(lBlank({ alignment: 0 }), T()).value;
+    ok(aligned > opposed, 'a state governing people who agree with it is no freer');
+    ok(T().get('liberty.wAlignment') >= T().get('liberty.wGovernment'),
+      'alignment is not the hinge it is documented to be');
+  });
+
+  it('a DIVIDED people is a separate pressure from a distant one', async () => {
+    /*
+     * The two are genuinely different situations and only cohesion tells them
+     * apart: a nation uniformly mildly-opposed (low alignment, high cohesion)
+     * versus one split into two camps that agree with the government equally
+     * little (same alignment, low cohesion). The second is far harder to govern
+     * liberally.
+     */
+    await bootWorld({ seed: SEED });
+    const united = Pw.liberties(lBlank({ alignment: 0.5, cohesion: 1 }), T());
+    const split = Pw.liberties(lBlank({ alignment: 0.5, cohesion: 0 }), T());
+    equal(united.inputs.find((i) => i.label === 'Alignment at home').contribution,
+      split.inputs.find((i) => i.label === 'Alignment at home').contribution,
+      'the two cases differ on alignment; the test is not isolating cohesion');
+    ok(split.value < united.value,
+      'an evenly split population is as easy to govern liberally as a united one');
+  });
+
+  it('occupation is the largest single cost — occupied ground is governed differently', async () => {
+    await bootWorld({ seed: SEED });
+    const home = Pw.liberties(lBlank({ areas: 50, occupied: 0 }), T());
+    const empire = Pw.liberties(lBlank({ areas: 50, occupied: 45 }), T());
+    ok(empire.value < home.value, 'occupation was free');
+    ok(Math.abs(T().get('liberty.wOccupation')) >= Math.abs(T().get('liberty.wDivided')),
+      'occupation weighs less than internal division');
+  });
+
+  it('an unknown government type falls back rather than producing NaN', async () => {
+    await bootWorld({ seed: SEED });
+    const r = Pw.liberties(lBlank({ govType: 'Technocracy' }), T());
+    ok(Number.isFinite(r.value), `an unlisted government produced ${r.value}`);
+    close(r.inputs.find((i) => i.label === 'Government').raw,
+      T().get('qol.govTolerance').Republic, 1e-12, 'the fallback is not the Republic rate');
+  });
+});
+
+describe('QoL and Liberties in the live world', () => {
+  it('every nation has both, in a spread', async () => {
+    await bootWorld({ seed: SEED });
+    const q = [], l = [];
+    for (const [, n] of Game.nations) {
+      ok(Number.isFinite(n.qol), `${n.name} has no QoL`);
+      ok(Number.isFinite(n.liberties), `${n.name} has no Civil Liberties`);
+      ok(n.why.qol && n.why.liberties, `${n.name} has values with no explanation`);
+      q.push(n.qol); l.push(n.liberties);
+    }
+    ok(Math.max(...q) - Math.min(...q) > 0.03,
+      `QoL spans only ${(Math.max(...q) - Math.min(...q)).toFixed(3)}`);
+    ok(Math.max(...l) - Math.min(...l) > 0.03,
+      `Liberties span only ${(Math.max(...l) - Math.min(...l)).toFixed(3)}`);
+  });
+
+  it('a peacetime board is fed, and food is what collapses under stress', async () => {
+    /*
+     * Food is deliberately near-saturated at peace: the honest thing for the
+     * model to say about the 2024 United States is that it feeds itself. What
+     * makes the term earn its weight is not variance at turn 0 but how far it
+     * FALLS when an economy is taken apart — a term reading 0.95 at peace and
+     * 0.3 after a war is doing its job.
+     */
+    await bootWorld({ seed: SEED });
+    const foodOf = (nid) => Game.getNation(nid).why.qol.inputs
+      .find((i) => i.label === 'Food security').norm;
+    const hungry = [];
+    for (const [nid, n] of Game.nations) {
+      if (foodOf(nid) < 0.6) hungry.push(`${n.name} ${foodOf(nid).toFixed(2)}`);
+    }
+    equal(hungry.length, 0, `${hungry.length} nations open hungry at peace: ${hungry.slice(0, 6)}`);
+
+    // now take an economy apart and watch the same term move
+    const nid = '19'; // Iowa
+    const before = foodOf(nid);
+    for (const f of Game.getNation(nid).counties) Game.county[f].gdp *= 0.06;
+    World.begin(T());
+    const after = foodOf(nid);
+    ok(after < 0.5,
+      `stripping 94% of an economy moved food security only ${before.toFixed(2)} -> ${after.toFixed(2)}; ` +
+      'the term cannot express a famine');
+  });
+
+  it('home alignment is weighted over AREAS, not read off the aggregate mix', async () => {
+    /*
+     * A nation split into a red half and a blue half has an aggregate centroid
+     * sitting between them that resembles neither — and would read as
+     * moderately aligned with a centre-governing party that in fact nobody
+     * supports. The two numbers must differ on such a nation.
+     */
+    await bootWorld({ seed: SEED });
+    const nid = '48'; // Texas: large, and not politically uniform
+    const facts = Power.nationFacts(nid, T());
+    const n = Game.getNation(nid);
+    const ruling = Ideology.index(n.gov.rulingIdeology);
+    const d = Game.nationDemographics(nid);
+    let aggregate = 0;
+    for (let i = 0; i < d.mix.length; i++) aggregate += (d.mix[i] / d.pop) * Ideology.affinity(i, ruling);
+    // for the aggregate-share form these coincide; what must NOT coincide is the
+    // centroid form, which is what a naive implementation would have used
+    const centroidForm = Ideology.affinity(d.centroid, ruling);
+    ok(Math.abs(facts.alignment - centroidForm) > 1e-6,
+      'home alignment matches the centroid shortcut; a split nation would read as moderate');
+    close(facts.alignment, aggregate, 1e-9,
+      'the per-Area weighting does not reduce to the population-weighted share form');
+  });
+
+  it('conquest costs liberties as well as influence', async () => {
+    const { rng } = await bootWorld({ seed: SEED });
+    for (let i = 0; i < 3; i++) World.advanceTurn(T(), rng);
+    const nid = '06';
+    const l0 = Game.getNation(nid).liberties;
+    for (let t = 0; t < 12; t++) {
+      const targets = [...Game.annexTargets(nid)].slice(0, 5);
+      if (targets.length) Game.moveCounties(targets, nid, { reason: 'war' });
+      World.advanceTurn(T(), rng);
+    }
+    const n = Game.getNation(nid);
+    ok(n.liberties < l0,
+      `Civil Liberties went ${l0.toFixed(3)} -> ${n.liberties.toFixed(3)} while conquering`);
+    ok(n.why.liberties.inputs.find((i) => i.label === 'Occupation').contribution < 0);
+  });
+
+  it('all four stocks survive a save round-trip', async () => {
+    const { rng } = await bootWorld({ seed: SEED });
+    for (let i = 0; i < 6; i++) World.advanceTurn(T(), rng);
+    const want = new Map([...Game.nations].map(([id, n]) =>
+      [id, [n.authority, n.influence, n.qol, n.liberties]]));
+    const doc = JSON.parse(JSON.stringify(Game.serialize()));
+    await bootWorld({ seed: 777 });
+    Game.loadState(doc);
+    for (const [id, vals] of want) {
+      const n = Game.getNation(id);
+      const now = [n.authority, n.influence, n.qol, n.liberties];
+      for (let i = 0; i < 4; i++) {
+        close(now[i], vals[i], 1e-12, `${id} stock ${i} was recomputed instead of restored`);
+      }
+    }
+  });
+
+  it('the four stocks are not the same number wearing four hats', async () => {
+    const { rng } = await bootWorld({ seed: SEED });
+    for (let i = 0; i < 8; i++) World.advanceTurn(T(), rng);
+    // Rank every nation on each stock; if two rankings agree everywhere, one of
+    // the two measures is redundant.
+    const ids = [...Game.nations.keys()];
+    const rank = (get) => {
+      const order = ids.slice().sort((a, b) => get(Game.getNation(b)) - get(Game.getNation(a)));
+      return new Map(order.map((id, i) => [id, i]));
+    };
+    const stocks = {
+      authority: rank((n) => n.authority), influence: rank((n) => n.influence),
+      qol: rank((n) => n.qol), liberties: rank((n) => n.liberties),
+    };
+    const names = Object.keys(stocks);
+    for (let a = 0; a < names.length; a++) {
+      for (let b = a + 1; b < names.length; b++) {
+        let same = 0;
+        for (const id of ids) if (stocks[names[a]].get(id) === stocks[names[b]].get(id)) same++;
+        ok(same < ids.length,
+          `${names[a]} and ${names[b]} rank all ${ids.length} nations identically; one is redundant`);
+      }
     }
   });
 });

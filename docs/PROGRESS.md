@@ -121,7 +121,12 @@ Done in the order **M3.4 -> M3.1 -> M3.2 -> M3.3**, because the plan lists M3.4'
       `(1 + influence)` conquest scaling that makes it the one stock that is its own input (D71).
       Measured live: California conquering 58 -> 118 Areas over 12 turns went Authority 0.501 ->
       0.515 and Influence 0.666 -> 0.148. One renderer serves both stocks (D72).
-- [ ] **M3.3** QoL (food/health as needs) + Civil Liberties.
+- [x] **M3.3** QoL with food and healthcare as NEEDS rather than sectors, and food buyable as well
+      as growable (D73); Civil Liberties hinged on alignment at home, with division measured
+      separately from distance (D75). Requirements calibrated from measurement in the model's own
+      units, not from real-world figures (D74). One pass per nation instead of six full scans:
+      phasePower 4.51 -> 2.32 ms (D76). Turn-0 bands: Authority 0.44-0.56, Influence 0.45-0.66,
+      QoL 0.55-0.98, Liberties 0.60-0.84.
 - [ ] **M3.5** All four cached once per turn and surfaced in the nation panel.
 
 ## M4 — West vertical slice

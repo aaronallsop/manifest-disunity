@@ -458,14 +458,26 @@ const World = (function () {
     for (const [nid, n] of Game.nations) {
       if (only && !only(n)) continue;
       n.why = n.why || {};
-      const auth = Power.authority(Power.gatherAuthority(nid, turn), tn);
+      // Everything the four stocks need about this nation, read in ONE pass.
+      const facts = Power.nationFacts(nid, tn);
+      if (!facts) continue;
+
+      const auth = Power.authority(Power.gatherAuthority(facts, turn), tn);
       n.authority = auth.value;
       n.why.authority = auth;
       // Influence reads `n.influence` as its own input (the (1 + influence)
       // scaling), so it is assigned after the record is built, not before.
-      const infl = Power.influence(Power.gatherInfluence(nid, turn, tn, ctx), tn);
+      const infl = Power.influence(Power.gatherInfluence(facts, turn, tn, ctx), tn);
       n.influence = infl.value;
       n.why.influence = infl;
+
+      const q = Power.qol(Power.gatherQol(facts, turn), tn);
+      n.qol = q.value;
+      n.why.qol = q;
+
+      const lib = Power.liberties(Power.gatherLiberties(facts, turn), tn);
+      n.liberties = lib.value;
+      n.why.liberties = lib;
     }
   }
 

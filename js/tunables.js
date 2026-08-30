@@ -263,6 +263,102 @@ export const SCHEMA = {
     doc: 'What holding foreign soil costs abroad. Smaller than the Authority penalty: occupation is a heavier drain on your own institutions than on your reputation, where the annexation itself did the damage.',
   },
 
+  /* ---- Quality of Life ---------------------------------------------------
+   * Food and healthcare as NEEDS rather than sectors. A share of output is a
+   * fact about an economy; what matters is production per person against a
+   * per-person requirement, so the same agricultural output feeds a small nation
+   * and starves a large one.
+   */
+  'qol.base': {
+    v: 0.20, min: 0, max: 1, step: 0.01, group: 'Quality of life',
+    label: 'QoL: base',
+    doc: 'Where a nation sits with no food, no income and no reserves. Low on purpose: unlike Authority, nothing about quality of life is free.',
+  },
+  'qol.foodPerCapita': {
+    v: 8000, min: 500, max: 60000, step: 500, group: 'Quality of life',
+    label: 'Food required per person per year',
+    doc: 'CALIBRATED IN THE UNITS THE MODEL USES, NOT IN REAL DOLLARS. The economy bake treats Agriculture as a template-apportioned share of GDP rather than as real farm revenue, so it runs an order of magnitude above farm-gate value: measured across the 51 opening nations it is $3,392 to $26,212 per head, median $6,995. Against the original $1,100 every nation was trivially fed and the term carried no information. 8,000 leaves a peacetime board mostly fed - which is the honest thing to say about the 2024 United States - and makes food the term that COLLAPSES when a war or an occupation takes an economy apart. A term that reads 0.95 at peace and 0.3 after a war is doing its job; one that reads 0.7 at peace is miscalibrated.',
+  },
+  'qol.foodImportShare': {
+    v: 0.02, min: 0, max: 0.5, step: 0.005, group: 'Quality of life',
+    label: 'Share of GDP redirectable to food imports',
+    doc: 'FOOD CAN BE BOUGHT. Without this term the model says the District of Columbia starves, which is not a claim about the world - it is a claim about a model that confused growing food with having food. The mechanic it creates is the right one: agriculture or money, and a nation with neither is in trouble. At 0.02 a median nation buys about a fifth of its requirement and a rich one with no fields buys roughly half.',
+  },
+  'qol.healthPerCapita': {
+    v: 110000, min: 1000, max: 500000, step: 1000, group: 'Quality of life',
+    label: 'Income per person for full healthcare',
+    doc: 'GDP per head at which a nation can fund care for everyone. Healthcare has no sector in the six-sector economy and is not faked as one; it is bought out of income, which is the proxy real health outcomes track most closely. Measured spread across the opening nations is $53,751 (Mississippi) to $262,439 (DC), median $77,684, so 110,000 puts the median at 0.71 rather than saturating every state at 1.',
+  },
+  'qol.prosperityFull': {
+    v: 250000, min: 5000, max: 1000000, step: 5000, group: 'Quality of life',
+    label: 'Income per person for full prosperity credit',
+    doc: 'GDP per head past which more money stops improving daily life. Well above the healthcare bar, because being fed and treated comes before being rich, and because prosperity should be the term that is hard to max: only the richest nation on the board approaches it.',
+  },
+  'qol.strainK': {
+    v: 0.25, min: 0.01, max: 3, step: 0.01, group: 'Quality of life',
+    label: 'QoL: fiscal-strain half-point',
+    doc: 'Deficit as a share of income at which the strain term is half its maximum. Measured against income, because a $1bn shortfall means something different to Wyoming and to California.',
+  },
+  'qol.wFood': {
+    v: 0.34, min: -1, max: 1, step: 0.01, group: 'Quality of life',
+    label: 'QoL: weight of food security',
+    doc: 'The largest weight, and the only one whose shortfall gets its own sentence in the summary. Nothing else about a nation matters much to someone who is not eating.',
+  },
+  'qol.wHealth': {
+    v: 0.24, min: -1, max: 1, step: 0.01, group: 'Quality of life',
+    label: 'QoL: weight of healthcare',
+  doc: 'How much being able to fund care raises daily life.',
+  },
+  'qol.wProsperity': {
+    v: 0.20, min: -1, max: 1, step: 0.01, group: 'Quality of life',
+    label: 'QoL: weight of prosperity', doc: 'How much general income raises daily life beyond food and care.',
+  },
+  'qol.wStrain': {
+    v: -0.22, min: -1, max: 1, step: 0.01, group: 'Quality of life',
+    label: 'QoL: weight of fiscal strain',
+    doc: 'How much a government running a deficit costs the people it governs - services are what get cut.',
+  },
+
+  /* ---- Civil Liberties ---------------------------------------------------
+   * Could not be written before gov.rulingIdeology existed: the whole measure is
+   * how far the governed sit from the governing, which needs both halves.
+   */
+  'liberty.base': {
+    v: 0.22, min: 0, max: 1, step: 0.01, group: 'Quality of life',
+    label: 'Liberties: base',
+    doc: 'Where liberties sit before the government, the population or the economy is taken into account.',
+  },
+  'qol.govTolerance': {
+    v: { Republic: 0.85 }, kind: 'object', group: 'Quality of life',
+    label: 'Dissent a government tolerates, by type',
+    doc: 'How much disagreement each form of government permits, 0..1. One entry until M6 gives the player a government to choose; the lookup falls back to Republic, so adding a type is the whole change - the same shape as econ.govMaintenance.',
+  },
+  'liberty.wAlignment': {
+    v: 0.34, min: -1, max: 1, step: 0.01, group: 'Quality of life',
+    label: 'Liberties: weight of alignment at home',
+    doc: 'THE HINGE. A state governing people who broadly agree with it has no reason to restrict them; a state governing a population sitting at the far end of both axes is under constant pressure to. Measured as the population-weighted affinity between each Area mix and the ruling ideology.',
+  },
+  'liberty.wGovernment': {
+    v: 0.26, min: -1, max: 1, step: 0.01, group: 'Quality of life',
+    label: 'Liberties: weight of government type',
+    doc: 'How much the form of government itself decides how free people are.',
+  },
+  'liberty.wProsperity': {
+    v: 0.12, min: -1, max: 1, step: 0.01, group: 'Quality of life',
+    label: 'Liberties: weight of prosperity',
+    doc: 'How much a comfortable population is governed more lightly.',
+  },
+  'liberty.wDivided': {
+    v: -0.20, min: -1, max: 1, step: 0.01, group: 'Quality of life',
+    label: 'Liberties: weight of a divided people',
+    doc: 'NOT a duplicate of alignment. A nation can be uniformly mildly-opposed (low alignment, high cohesion) or evenly split into two camps that agree with the government equally little (same alignment, low cohesion). The second is far harder to govern liberally, and only cohesion tells them apart.',
+  },
+  'liberty.wOccupation': {
+    v: -0.24, min: -1, max: 1, step: 0.01, group: 'Quality of life',
+    label: 'Liberties: weight of occupation',
+    doc: 'Occupied ground is governed under different rules, and those rules leak home. The largest negative weight.',
+  },
+
   'nation.historyWindow': {
     v: 20, min: 4, max: 80, step: 1, group: 'Nations',
     label: 'Territorial memory, in turns',
