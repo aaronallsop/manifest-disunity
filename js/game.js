@@ -43,6 +43,15 @@ const Game = (function () {
    * release, civil war) and reads are frequent, so that is one O(n) rebuild per
    * mutation, not per read.
    */
+  /*
+   * THE CLOCK. Territorial history is stamped with the world turn, and
+   * `moveCounties` had no way to read it: `World.turn` is a module-private
+   * counter and world.js loads AFTER game.js, so a top-level read is not
+   * available and a call is only safe inside a function body. One accessor,
+   * defensive about load order, rather than the same guard at four call sites.
+   */
+  const worldTurn = () => (typeof World !== 'undefined' && World.getTurn ? World.getTurn() : 0);
+
   const nationIdList = [];            // nation index -> nation id
   const nationIdx = new Map();        // nation id -> nation index
   let ownerEpoch = 0, derivedEpoch = -1;
@@ -72,15 +81,90 @@ const Game = (function () {
     }
     derivedEpoch = ownerEpoch;
   }
-  /** Build a nation record whose `counties` is a view of the ownership column. */
+  /**
+   * The government of a nation.
+   *
+   * `gov` was the string 'Republic', used as a lookup key into a maintenance
+   * table with one entry — so it was a constant wearing a variable's clothes.
+   * It is now a record, because M3 needs two things out of it that a string
+   * cannot carry: the TYPE (which sets the maintenance rate and, in M3.3, how
+   * much dissent the state tolerates) and the RULING IDEOLOGY (which is what
+   * "aligned vs misaligned population" is measured against).
+   *
+   * `rulingIdeology` is null until a nation has a population to read — it is
+   * derived, refreshed once per turn, and stored so that a nation that changes
+   * hands does not silently change government on the same tick that its
+   * demographics move.
+   */
+  /**
+   * @param spec a type string (a new nation), or a stored gov record (a load).
+   *
+   * `since` is READ FROM THE SPEC when there is one. Stamping it with the
+   * current turn on every construction meant a load re-dated every government in
+   * the world to the turn the save was opened, so a save round-trip was not the
+   * identity and Authority's "how long has this ideology held power" was reset
+   * by the act of loading.
+   */
+  function makeGov(spec) {
+    const g = typeof spec === 'string' ? { type: spec } : (spec || {});
+    return {
+      type: g.type || 'Republic',
+      rulingIdeology: g.rulingIdeology == null ? null : g.rulingIdeology,
+      since: g.since == null ? worldTurn() : g.since,   // when this ideology took power
+    };
+  }
+
+  /**
+   * Build a nation record whose `counties` is a view of the ownership column.
+   *
+   * HISTORY. Authority is a function of age, of ground held without losing it,
+   * and of what a nation has taken and lost — and none of that could be computed
+   * because the record had seven fields and no memory. Every territorial change
+   * in the game flows through `moveCounties`, and it recorded nothing.
+   *
+   *   founded   world turn the nation came into being
+   *   annexed[] {turn, from, areas} — one entry per acquisition
+   *   lost[]    {turn, to, areas}   — one entry per loss
+   *
+   * They are event LISTS rather than counters because Authority weights recent
+   * events more than old ones, and a counter cannot be windowed after the fact.
+   * The lists are bounded (see `remember`), because a save is a document and an
+   * 80-turn game must not carry an unbounded one.
+   */
   function makeNation(props) {
-    const n = { ...props, _counties: new Set() };
+    const n = {
+      annexed: [],
+      lost: [],
+      ...props,
+      gov: makeGov(props.gov),
+      _counties: new Set(),
+    };
     Object.defineProperty(n, 'counties', {
       enumerable: true,
       get() { refreshCounties(); return n._counties; },
     });
     nationIndexOf(n.id);
     return n;
+  }
+
+  /**
+   * Append a territorial event, keeping only the recent window.
+   *
+   * Authority reads a window, not the whole history, so the tail is dead weight
+   * in every save and every turn's recompute. `nation.historyWindow` turns of
+   * events is what is kept; the running totals survive the trim, because
+   * "has this nation ever lost ground" is a different question from "has it lost
+   * ground lately" and both get asked.
+   */
+  function remember(n, list, entry) {
+    list.push(entry);
+    const window = T('nation.historyWindow');
+    const cutoff = entry.turn - window;
+    if (list.length > 1 && list[0].turn < cutoff) {
+      let i = 0;
+      while (i < list.length && list[i].turn < cutoff) i++;
+      list.splice(0, i);
+    }
   }
   const cid = (f) => alias[f] || f;
   let adjacency = null;
@@ -267,6 +351,10 @@ const Game = (function () {
       if (nations.has(st)) setOwnerNode(i, st);
     }
     originalNationCount = nations.size;
+    // NOT refreshGovernments() here: `init` is not the end of world
+    // construction. Movement seeding runs next and converts population between
+    // ideologies, and in a state as close as Wisconsin that flips the answer.
+    // `Parties.setup` refreshes when it is done moving people.
     // Open the books with a few turns of income banked. Without this the treasury
     // is zero at turn 0 and every priced action is unaffordable until several
     // world turns have passed, which reads as a broken action menu, not as scarcity.
@@ -692,20 +780,47 @@ const Game = (function () {
     }
   }
 
-  function moveCounties(fipsList, toId, { silent } = {}) {
+  /**
+   * THE ONE CHOKE POINT for territorial change — annex, unite, release, civil
+   * war fragmentation and nation creation all land here — which is why the
+   * history is recorded here and nowhere else. Instrumenting the four callers
+   * separately is how one of them ends up not doing it.
+   */
+  function moveCounties(fipsList, toId, { silent, reason } = {}) {
     const to = nations.get(toId);
     if (!to) return;
+    const turn = worldTurn();
+    const from = new Map(); // previous owner id -> how many Areas it lost
+
     // One write per Area, to one array. The old version also had to delete from
     // the losing nation's Set and add to the winner's, which is the hand-sync
     // that made ownership two facts instead of one.
-    for (const f of fipsList) setOwnerNode(nodeOf(f), toId);
+    for (const f of fipsList) {
+      const node = nodeOf(f);
+      if (node < 0) continue;
+      const prev = ownerIdAt(node);
+      if (prev === toId) continue;   // a no-op move is not an event
+      if (prev != null) from.set(prev, (from.get(prev) || 0) + 1);
+      setOwnerNode(node, toId);
+    }
+
+    if (from.size) {
+      let gained = 0;
+      for (const [prevId, count] of from) {
+        gained += count;
+        const loser = nations.get(prevId);
+        if (loser) remember(loser, loser.lost, { turn, to: toId, areas: count, reason });
+      }
+      remember(to, to.annexed, { turn, from: [...from.keys()], areas: gained, reason });
+    }
+
     const removed = pruneEmpty();
     if (!silent) emit({ ownership: true, roster: removed > 0 });
   }
   function mergeInto(intoId, fromId) {
     batch(() => {
       const from = nations.get(fromId);
-      if (from) moveCounties([...from.counties], intoId, { silent: true });
+      if (from) moveCounties([...from.counties], intoId, { silent: true, reason: 'unite' });
       emit({ ownership: true, roster: true });
     });
   }
@@ -724,18 +839,19 @@ const Game = (function () {
     return best;
   }
 
-  function createNation(name, countyIds, { color, silent, founded } = {}) {
+  function createNation(name, countyIds, opts = {}) {
+    const { color, silent, founded } = opts;
     const id = 'n' + ++seq;
     nations.set(id, makeNation({
       id, name, color: color || Colors.newColor(), origin: false,
       treasury: 0, gov: 'Republic',
-      founded: founded == null ? (typeof World !== 'undefined' ? World.getTurn() : 0) : founded,
+      founded: founded == null ? worldTurn() : founded,
       homeSt: modalState(countyIds),
       lastAnnexTurn: -Infinity,
       lastReleaseTurn: -Infinity,
       tradeCooldown: {},
     }));
-    moveCounties(countyIds, id, { silent: true });
+    moveCounties(countyIds, id, { silent: true, reason: opts.reason || 'secede' });
     if (!silent) emit({ ownership: true, roster: true });
     return id;
   }
@@ -762,7 +878,7 @@ const Game = (function () {
     // small fragments join their nearest nation; only truly isolated ones become nations
     for (const comp of small) {
       const near = nearestNationForGroup(comp, exclude);
-      if (near) moveCounties(comp, near, { silent: true });
+      if (near) moveCounties(comp, near, { silent: true, reason: 'fragment' });
       else created.push(createNation(nameForCounty(largestCounty(comp)), comp, { silent: true }));
     }
     pruneEmpty();
@@ -927,6 +1043,35 @@ const Game = (function () {
     return { ...acc, total };
   }
 
+  /**
+   * Refresh every nation's ruling ideology from its own population.
+   *
+   * Derived, but STORED, and refreshed at exactly one point in the turn. Reading
+   * it live would mean a nation's government changed in the middle of a phase
+   * that was busy moving its population around, so "who is in power" would
+   * depend on when you asked. Stored also gives `gov.since` a meaning: how long
+   * this ideology has held power, which is one of Authority's inputs.
+   *
+   * A nation with no population keeps whatever it had rather than dropping to
+   * null; losing your last Area is a different event from having no politics.
+   */
+  function refreshGovernments(asOf) {
+    // The turn is passed in from the world loop, because the refresh happens
+    // while turn N is being RESOLVED and the government it produces is the one
+    // that governs turn N+1. Stamping `worldTurn()` there would date a new
+    // government to the last turn of the old one.
+    const turn = asOf == null ? worldTurn() : asOf;
+    for (const [, n] of nations) {
+      const bloc = rulingBloc(n.counties);
+      if (bloc < 0) continue;
+      const id = Ideology.idAt(bloc);
+      if (n.gov.rulingIdeology !== id) {
+        n.gov.rulingIdeology = id;
+        n.gov.since = turn;
+      }
+    }
+  }
+
   /* ---- treasury: income (from GDP) minus maintenance, ticked once per world turn ---- */
   function treasuryFlow(nid) {
     const n = nations.get(nid);
@@ -944,7 +1089,7 @@ const Game = (function () {
     const surcharge = occ ? occ * base * Math.pow(occ / ref, T('econ.occupationAlpha')) : 0;
 
     const administration = n.counties.size * base;
-    const maintenance = gdp * (gov[n.gov] ?? gov.Republic) + administration + surcharge;
+    const maintenance = gdp * (gov[n.gov.type] ?? gov.Republic) + administration + surcharge;
     return { income, maintenance, administration, occupation: surcharge, occupied: occ, delta: income - maintenance };
   }
   function tickTreasuries() {
@@ -1005,8 +1150,11 @@ const Game = (function () {
     }
     const nats = [];
     for (const [, n] of nations) nats.push({
-      id: n.id, name: n.name, color: n.color, origin: n.origin, treasury: n.treasury, gov: n.gov,
+      id: n.id, name: n.name, color: n.color, origin: n.origin, treasury: n.treasury,
+      gov: { ...n.gov },
       founded: n.founded, homeSt: n.homeSt,
+      annexed: n.annexed.map((e) => ({ ...e })),
+      lost: n.lost.map((e) => ({ ...e })),
       // -Infinity does not survive JSON; null means "has never annexed".
       lastAnnexTurn: Number.isFinite(n.lastAnnexTurn) ? n.lastAnnexTurn : null,
       lastReleaseTurn: Number.isFinite(n.lastReleaseTurn) ? n.lastReleaseTurn : null,
@@ -1045,7 +1193,12 @@ const Game = (function () {
       if (!live.length) continue;
       nations.set(n.id, makeNation({
         id: n.id, name: n.name, color: n.color, origin: n.origin,
-        treasury: n.treasury || 0, gov: n.gov || 'Republic',
+        treasury: n.treasury || 0,
+        // A pre-M3 document carries `gov` as the string 'Republic'; makeGov
+        // takes either shape.
+        gov: n.gov,
+        annexed: Array.isArray(n.annexed) ? n.annexed.map((e) => ({ ...e })) : [],
+        lost: Array.isArray(n.lost) ? n.lost.map((e) => ({ ...e })) : [],
         founded: n.founded || 0,
         homeSt: n.homeSt || modalState(live),
         lastAnnexTurn: n.lastAnnexTurn == null ? -Infinity : n.lastAnnexTurn,
@@ -1056,6 +1209,11 @@ const Game = (function () {
     }
     seq = snap.seq || 0;
     originalNationCount = snap.originalNationCount || nations.size;
+    // A pre-M3 document carries no ruling ideology; derive one rather than
+    // leaving every nation ungoverned. A document that HAS one keeps it,
+    // including `since` — deriving over the top would re-date every government
+    // in the world to the turn the save was opened.
+    for (const [, n] of nations) if (!n.gov.rulingIdeology) { refreshGovernments(); break; }
     if (dropped || orphans) {
       console.warn(`Game.loadState: ${dropped} unknown Area records and ${orphans} orphan ownership entries were skipped.`);
     }
@@ -1117,6 +1275,9 @@ const Game = (function () {
     nearestNation,
     blueShell,
     epoch: () => epoch,
+    refreshGovernments,
+    /** Territorial events inside the memory window, newest last. */
+    historyOf: (nid) => { const n = nations.get(nid); return n ? { annexed: n.annexed, lost: n.lost } : null; },
     moveCounties,
     mergeInto,
     createNation,

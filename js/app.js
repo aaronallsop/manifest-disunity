@@ -891,7 +891,7 @@ function renderTreasury(nid) {
     ? `<div class="geo-row"><span>Occupation &middot; ${flow.occupied} foreign ${flow.occupied === 1 ? 'Area' : 'Areas'}</span>
         <strong class="deficit">&minus;${fmtGdp(flow.occupation)}</strong></div>`
     : '';
-  return `<div class="stat"><div class="label">Treasury &middot; ${escapeHtml(n.gov)}</div>
+  return `<div class="stat"><div class="label">Treasury &middot; ${escapeHtml(n.gov.type)}</div>
     <div class="value">${bal}</div>
     <div class="geo-row"><span>Per turn (income &minus; maintenance)</span>${sign(flow.delta)}</div>
     <div class="geo-row"><span>Income ${fmtGdp(flow.income)} &middot; administration ${fmtGdp(flow.administration)}</span></div>

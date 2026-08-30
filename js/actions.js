@@ -149,7 +149,7 @@ const Actions = (function () {
       const plan = planSplinter(S, tid);
       // One render for the whole fallout, not four.
       const created = Game.batch(() => {
-        Game.moveCounties(plan.defect, tid, { silent: true });
+        Game.moveCounties(plan.defect, tid, { silent: true, reason: 'defect' });
         const born = Game.breakApart(plan.secede);
         Game.applyCivilWarCost(S, tid, score); // remnant bleeds population; GDP flows to the target
         return born;
@@ -819,12 +819,12 @@ const Actions = (function () {
     // Every branch below is a multi-step mutation; batch() collapses each to one
     // render instead of two or three full border meshes and leaderboard rebuilds.
     if (!res.triggered) {
-      Game.moveCounties(chosen, nid);
+      Game.moveCounties(chosen, nid, { reason: 'annex' });
       msg = `Annexed <strong>${chosen.length}</strong> ${plural(chosen.length, 'county', 'counties')} peacefully. ${bill}`;
       kind = 'good';
     } else if (res.outcome === 'victory') {
       Game.batch(() => {
-        Game.moveCounties(chosen, nid);
+        Game.moveCounties(chosen, nid, { reason: 'war' });
         chargeVictims(victimTally, chosen.length, nid, res.score);
       });
       msg = `${cwLine(res)} <strong>Complete victory!</strong> All ${chosen.length} counties annexed. ${bill}`;
@@ -832,7 +832,7 @@ const Actions = (function () {
     } else if (res.outcome === 'partial') {
       const taken = partialSubset(nid, chosen, res.score);
       Game.batch(() => {
-        Game.moveCounties(taken, nid);
+        Game.moveCounties(taken, nid, { reason: 'war' });
         chargeVictims(victimTally, chosen.length, nid, Math.round(res.score / 2));
       });
       msg = `${cwLine(res)} <strong>Partial victory.</strong> Held ${taken.length} of ${chosen.length} counties &mdash; a connected front from your border. ${bill}`;

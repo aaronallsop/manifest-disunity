@@ -115,6 +115,15 @@ const Movements = (function () {
       }
     }
     clampMovements();
+    /*
+     * Seeding CONVERTED population between ideologies, so who is in power may
+     * have changed. Announced here rather than left to the caller: `Game.init`
+     * used to compute governments at the end of its own run, which is before
+     * this function has moved anybody — and in Wisconsin, a 49.6/48.7 state, a
+     * single movement seeding flipped the answer. A save round-trip then
+     * disagreed with the live game about who governed.
+     */
+    Game.refreshGovernments();
     return spawned;
   }
 

@@ -93,7 +93,12 @@ export const SCHEMA = {
   'econ.govMaintenance': {
     v: { Republic: 0.015 }, kind: 'object', group: 'Economy',
     label: 'Government maintenance rate',
-    doc: 'Maintenance cost per turn as a share of GDP, by government type.',
+    doc: 'Maintenance cost per turn as a share of GDP, by government type. One entry until M6 gives the player a government to choose; the lookup falls back to Republic for anything unlisted, so adding a type here is the whole change.',
+  },
+  'nation.historyWindow': {
+    v: 20, min: 4, max: 80, step: 1, group: 'Nations',
+    label: 'Territorial memory, in turns',
+    doc: 'How many turns of annexations and losses a nation remembers. Authority weights recent events over old ones, so it reads a window rather than a lifetime total - and a counter cannot be windowed after the fact, which is why the record is a list. Older entries are trimmed, because a save is a document and an 80-turn game must not carry an unbounded one.',
   },
   'econ.areaUpkeep': {
     v: 40e6, min: 0, max: 2e8, step: 1e6, group: 'Economy',

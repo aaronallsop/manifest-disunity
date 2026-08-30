@@ -105,10 +105,17 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` done
 
 ## M3 — Power
 
+Done in the order **M3.4 -> M3.1 -> M3.2 -> M3.3**, because the plan lists M3.4's contents under
+"Prerequisites this milestone must add" and Authority cannot be computed before them (D64).
+
+- [x] **M3.4** Nation history (`founded`, `annexed[]`, `lost[]`) recorded at the one territorial
+      choke point, bounded to a 20-turn window (D65); `gov` is now `{type, rulingIdeology, since}`,
+      derived but stored and refreshed once per turn (D66). 29 red / 22 blue governments at turn 0,
+      matching the 2024 map.
 - [ ] **M3.1** `js/power.js` Why-record convention + Authority.
 - [ ] **M3.2** Influence.
 - [ ] **M3.3** QoL (food/health as needs) + Civil Liberties.
-- [ ] **M3.4** Nation history (`founded`, `annexed[]`, `lost[]`), `gov.rulingIdeology`, caching.
+- [ ] **M3.5** All four cached once per turn and surfaced in the nation panel.
 
 ## M4 — West vertical slice
 

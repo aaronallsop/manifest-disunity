@@ -460,6 +460,11 @@ const World = (function () {
       live.pop.set(nxt.pop);
       live.gdp.set(nxt.gdp);
       for (let i = 0; i < nxt.n; i++) Game.county[nxt.idAt(i)].mov = nxt.mov[i];
+      // Who is in power, refreshed at exactly one point in the turn. Reading it
+      // live would mean a nation's government changed in the middle of whichever
+      // phase was moving its population, so the answer would depend on when you
+      // asked. Stored also gives `gov.since` a meaning, which Authority reads.
+      Game.refreshGovernments(turn + 1);
       Game.tickTreasuries(); // income minus maintenance, on this turn's updated GDP
       Market.update(tn);     // reprice every resource from live supply vs demand
       Game.touch({ values: true });

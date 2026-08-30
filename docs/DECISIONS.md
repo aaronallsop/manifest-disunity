@@ -591,3 +591,44 @@ exist. Added, with the same `NAME_RE` guard as GET and PUT, returning `{ok, exis
 something that is not there is a success rather than an error. `content/test-*.json` is gitignored
 as the second line of defence, and the content suite's last test now asserts that it has cleaned up
 after itself and that the four committed documents are untouched.
+
+### D64 — M3.4 was done first, because the plan files its own prerequisites under it
+**M3.4.** The plan numbers Authority as M3.1 and "Nation history + `gov.rulingIdeology`" as M3.4,
+but its own prose files those under *"Prerequisites this milestone must add"* — Authority is a
+function of age, of what a nation has taken and lost, and of who governs it, and none of that
+existed. So the order is M3.4 → M3.1 → M3.2 → M3.3. Same kind of call as D46, same reason: the
+plan's task numbering is a table of contents, not a dependency graph.
+
+### D65 — History is a bounded list of events, not a pair of counters
+**M3.4.** Authority weights recent gains and losses more than old ones, and **a counter cannot be
+windowed after the fact**. So a nation carries `annexed[]` and `lost[]` of `{turn, from|to, areas,
+reason}`, trimmed to `nation.historyWindow` (20 turns). The `reason` is on the record because
+Authority should not weigh a war won like a peaceful annexation, or either like a release.
+
+Recorded at **one choke point**. Every territorial change in the game — annex, unite, release,
+civil-war fragmentation, nation creation — flows through `moveCounties`, and instrumenting the five
+callers separately is exactly how one of them ends up not doing it. The tests drive each caller and
+check the record rather than calling `moveCounties` five times, because it is the *coverage* of the
+choke point that is the property under test.
+
+### D66 — `gov` becomes a record, and the government is derived but stored
+**M3.4.** `gov: 'Republic'` was a string used as a lookup key into a maintenance table with one
+entry — a constant wearing a variable's clothes. It is now `{type, rulingIdeology, since}`.
+
+Stored rather than computed on read, and refreshed at exactly one point in the turn. Reading it live
+would mean a nation's government changed in the middle of whichever phase was busy moving its
+population, so "who is in power" would depend on when you asked. Storing it is also what gives
+`since` a meaning — how long this ideology has held power — which is one of Authority's inputs.
+
+Two bugs found by writing the tests, both about *when*:
+
+- `Game.init` refreshed at the end of its own run, which is **not** the end of world construction:
+  `Parties.setup` runs next and converts population between ideologies. Wisconsin is 49.6/48.7, and
+  one movement seeding flipped it — so the live game and a save round-trip disagreed about who
+  governed it. `Parties.setup` now refreshes when it has finished moving people.
+- The refresh runs while turn N is being *resolved*, but the government it produces is the one that
+  governs turn N+1, so the world loop passes the effective turn in. Stamping `worldTurn()` there
+  dated every new government to the last turn of the government it replaced. And on a load,
+  `makeGov` stamped `since` with the current turn instead of reading it back, so opening a save
+  re-dated every government in the world — which the round-trip test caught as a straight identity
+  failure.
