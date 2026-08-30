@@ -783,3 +783,58 @@ table**.
 `Power.nationFacts(nid, tune)` reads everything once and the four gathers take it. Measured after:
 **2.32 ms**, and the suite went 30.2s → 23.7s. Same lesson as `worldContext` one task earlier, and
 the same lesson as the drift phase in M2.3c: the cost is almost never the arithmetic.
+
+### D77 — Two prerequisite bugs in the existing secession machinery, fixed before building on it
+**M4.0.** The plan flags both under M4.3; doing them first means M4.3 is only the new mechanic.
+
+`confirmUniteAttempt` called `Game.breakApart(plan.secede)` with **no `exclude`**. Without it, a
+seceding fragment too small to stand alone rejoins its *nearest* nation — which, for a chunk that has
+just torn itself out of S and is surrounded by S, is S. So a failed union quietly handed the
+aggressor back the ground that had just rebelled against it, and **the smaller the rebellion the more
+reliably it was undone**.
+
+`nation.minPop` was in the schema and read by nothing — a slider that does nothing, which is worse
+than no slider. A breakaway now stands alone on Areas **or** on population, whichever it clears
+first, because Area count is a poor proxy for viability once Areas range from one county to eight:
+two Areas holding four million people between them is a country, and five holding thirty thousand is
+not. (`nation.minAreas` had already been re-derived at Area scale in M1, so that half of the plan's
+note was done.)
+
+### D78 — A movement's core is DERIVED, not hand-authored
+**M4.1.** The core is the set of Areas a movement must all hold before it can declare (M4.3 tier 2),
+so it decides how hard declaring is. Hand-authoring twenty-four county lists is data entry that goes
+stale the moment `areas.json` is re-baked — the same class of problem as the 48.2% of authored
+references M1.13 found silently discarded.
+
+Instead the bake derives it: **the smallest set of homeland Areas that between them hold 60% of the
+homeland's population**, ranked by population with the FIPS as a deterministic tie-break. That is the
+principled reading of "heartland" — a movement declares when it holds the places its people actually
+live — and it produces the right answers by construction: Deseret's core is the Wasatch Front (4
+Areas of 41), Cascadia's is the Portland–Seattle corridor (25 of 164).
+
+With a floor of **three**, because three homelands (El Paso United, Hawaiian Sovereignty, the Sonoran
+Republic) are dominated by a single metro and derived a one-Area core. A movement that declares
+independence the moment one Area turns is not a movement, it is a switch.
+
+### D79 — The movement state machine is READ from the map, never set by events
+**M4.1.** `latent → rising → armed → declared → realized` is derived every turn from what the
+movement actually holds: peak Area share against the secession thresholds, core coverage, and whether
+its nation is on the board. It is a *description*, not a driver.
+
+A state machine that is written by events goes stale the first time an event is missed — most
+obviously, a movement whose nation is conquered out of existence would stay `realized` for the rest
+of the game. Deriving it costs one pass over each movement's homeland and cannot disagree with the
+map. The test that matters creates a nation, checks `realized`, merges it away, and checks the
+movement notices.
+
+### D80 — Per-movement growth caps replace the single global ceiling
+**M4.1.** `world.partyCeiling` applied one number to every movement, so the only difference between
+the Anarcho-Capitalists and Deseret was where they started. `growthCap` is authored per movement
+(0.25 for a nuisance, 0.60 for a country in waiting) with the global as the fallback, which is what
+makes "this is a fringe that stays fringe" and "this is a country in waiting" different *facts*
+rather than the same fact at different times.
+
+Also: the plan names **Cascadia, Deseret, Greater Idaho and Jefferson** as the deterministic four,
+but only Greater Idaho and Jefferson carried `chance: 1.0` — Cascadia and Deseret were still rolling
+0.5, so half the spine of the West slice was absent from half of all runs. Caught by the test that
+boots five different seeds and demands all four.

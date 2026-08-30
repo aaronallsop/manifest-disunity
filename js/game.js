@@ -873,17 +873,38 @@ const Game = (function () {
   // a small nation anyway).
   function breakApart(countyIds, opts = {}) {
     const exclude = opts.exclude || null; // a nation new fragments must not join (e.g. a failed aggressor)
+    const reason = opts.reason || 'secede';
     const comps = components(new Set(countyIds), null).sort((a, b) => b.length - a.length);
+    const minAreas = T('nation.minAreas');
+    const minPop = T('nation.minPop');
+
+    /*
+     * A chunk stands alone on AREAS **or** on POPULATION.
+     *
+     * `nation.minPop` was in the schema and read by nothing — a slider that did
+     * nothing, which is worse than no slider. It matters because Area count is a
+     * poor proxy for whether a breakaway is viable once Areas range from one
+     * county to eight: two Areas holding 4 million people between them is a
+     * country, and five holding 30,000 is not. Both thresholds are cheap, so the
+     * chunk qualifies on either.
+     */
+    const viable = (comp) => {
+      if (comp.length >= minAreas) return true;
+      let pop = 0;
+      for (const f of comp) pop += countyPop(f);
+      return pop >= minPop;
+    };
+
     const created = [], small = [];
     for (const comp of comps) {
-      if (comp.length >= T('nation.minAreas')) created.push(createNation(nameForCounty(largestCounty(comp)), comp, { silent: true }));
+      if (viable(comp)) created.push(createNation(nameForCounty(largestCounty(comp)), comp, { silent: true, reason }));
       else small.push(comp);
     }
     // small fragments join their nearest nation; only truly isolated ones become nations
     for (const comp of small) {
       const near = nearestNationForGroup(comp, exclude);
       if (near) moveCounties(comp, near, { silent: true, reason: 'fragment' });
-      else created.push(createNation(nameForCounty(largestCounty(comp)), comp, { silent: true }));
+      else created.push(createNation(nameForCounty(largestCounty(comp)), comp, { silent: true, reason }));
     }
     pruneEmpty();
     emit({ ownership: true, roster: true });

@@ -21,6 +21,7 @@ Utah + SE Idaho + Elko NV; Great Lakes / Absaroka / tech hubs are hand lists.
 
 import json
 import os
+import re
 
 SPAWN_CHANCE = 0.5          # default probability each party spawns at setup
 SHARE_RANGE = [0.00, 0.20]  # initial county share range X (modest; growth later)
@@ -132,14 +133,19 @@ IDEOLOGY = {
 
 REGIONS = {
     "Christian Nationalism":     {"states": SOUTH, "min_pop": 100_000},
-    "Cascadian Separatists":     {"states": ["41", "53", "16", "30"], "lean": "R", "fips": NORTHERN_CA},
+    # chance 1.0: the plan names Cascadia, Deseret, Greater Idaho and Jefferson
+    # as the DETERMINISTIC four. They are the spine of the West slice, and a run
+    # that happens to have no Deseret in it is not the scenario. Only Greater
+    # Idaho and Jefferson carried the flag; these two were still rolling 0.5.
+    "Cascadian Separatists":     {"states": ["41", "53", "16", "30"], "lean": "R",
+                                  "fips": NORTHERN_CA, "chance": 1.0},
     "New England United":        {"states": NEW_ENGLAND},
     "Anarcho-Capitalist":        {"mt_interior": True},
     "Libertarians":              {"states": GREAT_PLAINS},
     "Blue-Collar Populist":      {"states": ["39", "26", "18", "17", "55", "42"]},
     "Techno-Autocrat":           {"fips": TECH_HUBS},
     "A Free Texas":              {"states": ["48"]},
-    "Deseret":                   {"states": ["49"], "fips": DESERET_FIPS},
+    "Deseret":                   {"states": ["49"], "fips": DESERET_FIPS, "chance": 1.0},
     "New Confederacy":           {"states": CONFEDERACY},
     "Great Lakes Free Trade":    {"fips": GREAT_LAKES},
     "New Absaroka":              {"fips": ABSAROKA},
@@ -161,10 +167,86 @@ REGIONS = {
     "Sonoran Republic":          {"fips": SONORAN},
     "Rio Grande Union":          {"fips": RIO_GRANDE},
 }
+
+# ============================ MOVEMENT CHARACTER =============================
+# M4.1 gives a Movement more than a homeland and an ideology.
+#
+#   type       what KIND of thing this is. It decides nothing mechanical yet;
+#              M6's AI reads it to know what a movement will negotiate over, and
+#              the UI reads it to say what the thing on the map IS.
+#   growthCap  the ceiling on its share of any one Area, replacing the single
+#              global world.partyCeiling. A fringe movement should stay fringe:
+#              one number per movement is what makes "the Anarcho-Capitalists
+#              are a nuisance" and "Deseret is a country in waiting" different
+#              facts rather than the same fact at different times.
+#   goals      what it actually wants, in its own words. Authored flavour today,
+#              M6 negotiation hooks tomorrow. A movement with no stated goal is
+#              one the player has no way to satisfy.
+#
+# The DETERMINISTIC four the plan names - Cascadia, Deseret, Greater Idaho,
+# Jefferson - carry chance 1.0 in REGIONS above and the highest caps here: they
+# are the spine of the West slice and a scenario that sometimes has no Deseret
+# in it is not the scenario.
+CHARACTER = {
+    # name:                          (type, growthCap, [goals])
+    "Cascadian Separatists":         ("separatist", 0.55, ["independence", "environmental sovereignty"]),
+    "Deseret":                       ("theocratic-separatist", 0.60, ["independence", "religious autonomy"]),
+    "Greater Idaho":                 ("irredentist", 0.50, ["annex eastern Oregon", "rural self-rule"]),
+    "State of Jefferson":            ("separatist", 0.50, ["statehood", "rural self-rule"]),
+    "New Absaroka":                  ("separatist", 0.40, ["statehood", "resource rights"]),
+    "Native American Confederation": ("indigenous", 0.45, ["sovereignty", "land restoration"]),
+
+    "Christian Nationalism":         ("ideological", 0.45, ["religious government", "moral law"]),
+    "New Confederacy":               ("separatist", 0.45, ["independence", "states rights"]),
+    "A Free Texas":                  ("separatist", 0.50, ["independence", "border control"]),
+    "Northern Christian Kingdom":    ("theocratic-separatist", 0.40, ["religious government", "independence"]),
+    "Alaskan Independence":          ("separatist", 0.45, ["independence", "resource royalties"]),
+    "Hawaiian Sovereignty":          ("indigenous", 0.45, ["sovereignty", "land restoration"]),
+    "Sonoran Republic":              ("separatist", 0.40, ["independence", "water rights"]),
+    "Rio Grande Union":              ("separatist", 0.40, ["independence", "open border"]),
+    "Front Range Republic":          ("separatist", 0.35, ["independence", "urban self-rule"]),
+    "El Paso United":                ("autonomist", 0.35, ["regional autonomy", "cross-border trade"]),
+
+    "New England United":            ("autonomist", 0.35, ["regional federation", "social democracy"]),
+    "Eastern Progressives":          ("ideological", 0.35, ["social democracy", "civil liberties"]),
+    "Great Lakes Free Trade":        ("economic", 0.30, ["free trade bloc", "water compact"]),
+    "Blue-Collar Populist":          ("ideological", 0.35, ["industrial policy", "tariffs"]),
+    "The Farmers Union":             ("economic", 0.30, ["farm price supports", "rural credit"]),
+    "Libertarians":                  ("ideological", 0.30, ["minimal government", "free markets"]),
+    "Anarcho-Capitalist":            ("ideological", 0.25, ["abolish the state", "free markets"]),
+    "Techno-Autocrat":               ("ideological", 0.30, ["technocracy", "network states"]),
+}
+DEFAULT_TYPE = "ideological"
+DEFAULT_CAP = 0.35
+
+# A movement DECLARES (M4.3 tier 2) when every Area in its CORE has crossed the
+# sentiment threshold, so the core decides how hard that is. Rather than
+# hand-authoring twenty-four county lists - which is data entry that goes stale
+# the moment areas.json is re-baked - the core is DERIVED: the smallest set of
+# homeland Areas that between them hold CORE_SHARE of the homeland's population.
+#
+# That is the principled reading of "heartland": a movement declares when it
+# holds the places its people actually live. It produces the right answers by
+# construction - Deseret's core is the Wasatch Front, Cascadia's is the
+# Portland-Seattle corridor - and it re-derives itself whenever the map does.
+CORE_SHARE = 0.60
+# ...but never fewer than this many places. Some homelands are dominated by a
+# single metro - El Paso United, Hawaiian Sovereignty and the Sonoran Republic
+# all derived a ONE-county core - and a movement that declares independence the
+# moment one Area turns is not a movement, it is a switch.
+CORE_MIN = 3
+
 # ============================ END EDITABLE TABLE ================================
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 DATA = os.path.join(HERE, "..", "data")
+
+
+def slug(name):
+    """A stable machine id. Movements are keyed by display name today; the id is
+    what M6's saves and the AI should reference, because a display name is a
+    thing you rename."""
+    return re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-")
 
 
 def main():
@@ -194,18 +276,50 @@ def main():
                     and all(n[:2] == "30" for n in adj.get(f, []))}
         return sorted(f for f in out if f in counties)
 
+    def core_of(homeland):
+        """The smallest set of homeland counties holding CORE_SHARE of its people.
+
+        Sorted by population descending, with the fips as a tie-break so the
+        result does not depend on dict order - the same determinism rule as
+        build_areas.py's merge tie-breaks.
+        """
+        ranked = sorted(homeland, key=lambda f: (-(counties[f].get("pop") or 0), f))
+        total = sum((counties[f].get("pop") or 0) for f in homeland)
+        if total <= 0:
+            return sorted(homeland)
+        want, acc, core = total * CORE_SHARE, 0, []
+        for f in ranked:
+            core.append(f)
+            acc += counties[f].get("pop") or 0
+            if acc >= want and len(core) >= CORE_MIN:
+                break
+        return sorted(core)
+
     defs = {}
     for name, rule in REGIONS.items():
         ideology = rule.get("ideology") or IDEOLOGY.get(name)
         if not ideology:
             raise SystemExit(f'"{name}" has no ideology - add it to the IDEOLOGY table')
+        kind, cap, goals = CHARACTER.get(name, (DEFAULT_TYPE, DEFAULT_CAP, []))
+        homeland = resolve(rule)
+        core = core_of(homeland)
         defs[name] = {
+            "id": slug(name),
             "chance": rule.get("chance", SPAWN_CHANCE),
             "share": rule.get("share", SHARE_RANGE),
             "ideology": ideology,
-            "counties": resolve(rule),
+            "type": kind,
+            "growthCap": cap,
+            "goals": goals,
+            "counties": homeland,
+            "core": core,
         }
-        print(f"{name:32} {ideology:7} {len(defs[name]['counties']):>5} counties")
+        print(f"{name:32} {ideology:7} {kind:22} cap {cap:.2f} "
+              f"{len(homeland):>5} counties, core {len(core):>4}")
+
+    missing = [n for n in REGIONS if n not in CHARACTER]
+    if missing:
+        print(f"\nWARN: no CHARACTER entry, defaulted: {', '.join(missing)}")
 
     out_path = os.path.join(DATA, "parties.json")
     with open(out_path, "w", encoding="utf-8") as f:

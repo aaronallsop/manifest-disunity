@@ -133,6 +133,14 @@ Done in the order **M3.4 -> M3.1 -> M3.2 -> M3.3**, because the plan lists M3.4'
 
 ## M4 — West vertical slice
 
+- [x] **M4.0** Prerequisites in the existing machinery, which the plan files under M4.3: the missing
+      `exclude` in the unite-failure secession, and `nation.minPop` wired in as an OR against
+      `minAreas` (D77).
+- [x] **M4.1** `js/movements.js` replaces `js/parties.js`. The record gains a machine id, a type, a
+      derived core (D78), the seed it started from, a per-movement growth cap (D80) and a state
+      machine read off the map rather than set by events (D79). All four plan-named movements are
+      now actually deterministic.
+
 - [ ] **M4.1** `js/movements.js`.
 - [ ] **M4.2** `phaseSentiment` with all six factors.
 - [ ] **M4.3** Two-tier secession (+ `MIN_NATION` re-derivation, `exclude` fix).

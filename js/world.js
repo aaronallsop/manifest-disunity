@@ -232,8 +232,11 @@ const World = (function () {
    * carry it.
    */
   function phaseMovementGrowth(snap, nxt, tune) {
-    const ceiling = T(tune).get('world.partyCeiling');
-    const stepFrac = T(tune).get('world.partyStep');
+    const tn = T(tune);
+    const stepFrac = tn.get('world.partyStep');
+    // Per-movement ceilings (M4.1), resolved once rather than per Area.
+    const capOf = {};
+    for (const m of Movements.getSpawned()) capOf[m] = Movements.capOf(m, tn);
     const N = Ideology.count();
     const ideologyOf = movementIdeologies();
     const target = new Float64Array(N);
@@ -251,6 +254,7 @@ const World = (function () {
       const gains = {};
       let totalGain = 0;
       for (const name of names) {
+        const ceiling = capOf[name] == null ? tn.get('world.partyCeiling') : capOf[name];
         const g = Math.max(0, stepFrac * (ceiling - sMov[name] / spop));
         gains[name] = g;
         totalGain += g;

@@ -150,7 +150,15 @@ const Actions = (function () {
       // One render for the whole fallout, not four.
       const created = Game.batch(() => {
         Game.moveCounties(plan.defect, tid, { silent: true, reason: 'defect' });
-        const born = Game.breakApart(plan.secede);
+        /*
+         * `exclude: S` is load-bearing and was missing. Without it, a seceding
+         * fragment too small to stand alone rejoins its NEAREST nation — which,
+         * for a chunk that just tore itself out of S and is surrounded by S, is
+         * S. So the failed union quietly handed the aggressor back the ground
+         * that had just rebelled against it, and the smaller the rebellion the
+         * more reliably it was undone.
+         */
+        const born = Game.breakApart(plan.secede, { exclude: S, reason: 'secede' });
         Game.applyCivilWarCost(S, tid, score); // remnant bleeds population; GDP flows to the target
         return born;
       });

@@ -359,6 +359,18 @@ export const SCHEMA = {
     doc: 'Occupied ground is governed under different rules, and those rules leak home. The largest negative weight.',
   },
 
+  /* ---- Secession (M4.3) --------------------------------------------------- */
+  'secession.countyThreshold': {
+    v: 0.40, min: 0.05, max: 1, step: 0.01, group: 'Secession',
+    label: 'Area secession threshold',
+    doc: 'The share of an Area a movement must organise before that Area will leave. Also what "armed" means for a movement state, and what every Area in a core must clear before the movement can declare.',
+  },
+  'secession.risingThreshold': {
+    v: 0.20, min: 0.01, max: 1, step: 0.01, group: 'Secession',
+    label: 'Movement "rising" mark',
+    doc: 'Peak Area share at which a movement stops being latent and starts being visible. Purely descriptive - it changes what the UI says, not what the model does - but it is the point at which a player should be able to see a problem coming.',
+  },
+
   'nation.historyWindow': {
     v: 20, min: 4, max: 80, step: 1, group: 'Nations',
     label: 'Territorial memory, in turns',
@@ -620,7 +632,7 @@ export const SCHEMA = {
   'nation.minPop': {
     v: 250000, min: 0, max: 5e6, step: 10000, group: 'Nations',
     label: 'Minimum population for a new nation',
-    doc: 'Alternative threshold: a chunk qualifies on Areas OR population.',
+    doc: 'A breakaway chunk stands alone on Areas OR on population, whichever it clears first. Area count is a poor proxy for viability once Areas range from one county to eight: two Areas holding four million people between them is a country, and five holding thirty thousand is not.',
   },
   'annex.budgetAreas': {
     v: 3, min: 1, max: 50, step: 1, group: 'Annexation',
