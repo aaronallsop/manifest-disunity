@@ -856,6 +856,18 @@ const World = (function () {
     const mixes = phaseRecomputeMixes(snap, nxt, owners); // start-of-turn ideology cache
     phasePoliticalDrift(snap, nxt, mixes, tn, owners, rng);
     phaseSentiment(snap, nxt, tn, owners);
+    /*
+     * PEOPLE MOVE (M7.9), between drift and growth.
+     *
+     * After drift, because somebody migrates as whoever they have just become
+     * rather than as who they were last year; before growth, so the babies are
+     * born where their parents ended up. It reads `snap` for every flow and
+     * writes into `nxt`, like every other phase — but unlike the others it
+     * writes to its NEIGHBOURS, so the whole board's flows are computed before
+     * any are applied. Order-dependence there would mean the node numbering
+     * decided who moved.
+     */
+    if (typeof Migration !== 'undefined') Migration.step(snap, nxt, tn, owners);
     phasePopulationGrowth(snap, nxt, tn, owners);
     phaseEconomicGrowth(snap, nxt, tn); // after popGrowth: reads the realised change
     phaseCleanup(snap, nxt, tn);

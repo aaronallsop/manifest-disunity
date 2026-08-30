@@ -1189,6 +1189,67 @@ export const SCHEMA = {
     label: 'Influence: cost of not being recognised',
     doc: 'SIGNED, AND MEASURED AS A DEFICIT: a fully recognised nation contributes exactly nothing and a wholly unrecognised one loses the full weight. Written the other way round \u2014 a positive term worth 1.0 to everybody who is recognised \u2014 it would have raised every established nation\u2019s Influence by a constant and quietly re-tuned the coalition trigger, which is the mistake the leadership term already made once.',
   },
+  /* ---------------- migration ---------------- */
+  'migration.rate': {
+    v: 0.030, min: 0, max: 0.5, step: 0.005, group: 'Migration',
+    label: 'Most of an Area\u2019s people who may leave in one turn',
+    doc: 'A CAP, not a speed: nobody empties an Area in a quarter however bad it is, and the number that actually moves is this scaled by how much better it is next door. At 3% a strong gradient shifts about an eighth of a population a decade, which is fast enough to see on the map and slow enough that a bad decade is recoverable.',
+  },
+  'migration.threshold': {
+    v: 0.015, min: 0, max: 0.5, step: 0.005, group: 'Migration',
+    label: 'How much better next door has to be before anybody goes',
+    doc: 'Nobody uproots for a rounding error. Without a floor every Area exchanges a trickle with every neighbour every turn, which is a great deal of arithmetic that says nothing and a population map that shimmers.',
+  },
+  'migration.gradientFull': {
+    v: 0.30, min: 0.02, max: 2, step: 0.01, group: 'Migration',
+    label: 'The gradient that counts as an outright exodus',
+    doc: 'The summed advantage of the better neighbours at which the per-turn cap applies in full. Measured against the opening board, where the spread between the best and worst Area a mover can reach is around 0.2 \u2014 so 0.30 means an ordinary gradient moves a fraction of the cap and it takes a genuinely bad nation next to a genuinely good one to move the maximum.',
+  },
+  'migration.wQol': {
+    v: 0.40, min: 0, max: 1, step: 0.01, group: 'Migration',
+    label: 'Migration: weight of the nation\u2019s quality of life',
+    doc: 'THE TERM THAT MAKES QoL PHYSICAL. Before this it was a number on a card: a nation could grind its people down and the only consequence was a worse number. The largest weight, because it is the one the rest of the game already spends money on.',
+  },
+  'migration.wLiberties': {
+    v: 0.20, min: 0, max: 1, step: 0.01, group: 'Migration',
+    label: 'Migration: weight of civil liberties',
+    doc: 'So suppression has a demographic price as well as a political one: a garrison buys quiet, and the people who can leave do.',
+  },
+  'migration.wProsperity': {
+    v: 0.25, min: 0, max: 1, step: 0.01, group: 'Migration',
+    label: 'Migration: weight of output per head',
+    doc: 'Measured HERE rather than nationally, and it is the brake on the whole system: GDP does not move with people, so every arrival lowers the number that attracted them. Without it the continent piles into one Area and stays there.',
+  },
+  'migration.prosperityK': {
+    v: 60000, min: 1000, max: 500000, step: 1000, group: 'Migration',
+    label: 'Output per head that reads as half-attractive',
+    doc: 'The opening board averages about $73,000 a head, so 60,000 puts a typical Area a little above the midpoint and leaves room above and below for the spread to matter.',
+  },
+  'migration.wAlignment': {
+    v: 0.35, min: 0, max: 1, step: 0.01, group: 'Migration',
+    label: 'Migration: weight of living among your own kind',
+    doc: 'THE TERM THAT CHANGES THE GAME. People move toward people who think as they do, so a divided nation sorts itself into homogeneous halves over a few decades \u2014 and the halves are exactly the ground a movement organises on. It is also what makes settlement an answer to secession: pour your own people into a separatist region and the movement\u2019s SHARE falls even though its membership has not.',
+  },
+  'migration.wCrowding': {
+    v: 0.15, min: 0, max: 1, step: 0.01, group: 'Migration',
+    label: 'Migration: how much a full Area puts people off',
+    doc: 'A second brake beside prosperity, and a smaller one. Cities are attractive; the point of the term is not to say otherwise but to stop nine million people arriving in the one Area with the best numbers.',
+  },
+  'migration.crowdK': {
+    v: 600000, min: 10000, max: 20000000, step: 10000, group: 'Migration',
+    label: 'Population at which an Area reads as half-full',
+    doc: 'The board averages 203,000 people an Area, so 600,000 leaves ordinary Areas barely crowded and bites on the handful that hold a city.',
+  },
+  'migration.borderFriction': {
+    v: 0.40, min: 0, max: 1, step: 0.05, group: 'Migration',
+    label: 'How much of a gradient survives crossing a national border',
+    doc: 'THE WHOLE OF \u201cNETWORK DISTANCE\u201d BEYOND ADJACENCY. A border is friction and not a wall: internal sorting is the fast, common, invisible kind of movement and emigration is a nation losing people to a rival, which ought to be rare enough to be worth a line in the panel.',
+  },
+  'migration.minPop': {
+    v: 200, min: 0, max: 100000, step: 50, group: 'Migration',
+    label: 'Smallest group that bothers to move',
+    doc: 'Below this the arithmetic costs more than the answer is worth, and a fractional person moving between two empty Areas is not a migration.',
+  },
   /* ---------------- autonomy ---------------- */
   'autonomy.maxShare': {
     v: 0.3, min: 0, max: 1, step: 0.01, group: 'Autonomy',

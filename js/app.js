@@ -118,6 +118,7 @@ async function init() {
     Ledger.reset();
     Relations.reset();
     Recognition.reset();
+    Migration.reset();
     Coalitions.reset();
     Colors.assign(Object.keys(data.states));
     Game.init(data, adjacency, areas, { trade, transport, culture: cultureMode });
@@ -1168,6 +1169,7 @@ function renderNationPanel(nid) {
     </div>
     ${renderNationEconomy(nid)}
     ${renderCoalition(nid)}
+    ${renderMigration(nid)}
     ${renderRecognition(nid)}
     ${renderStanding(nid)}
     ${renderMilitary(nid)}
@@ -1409,6 +1411,38 @@ function renderCoalition(nid) {
 }
 
 /*
+ * WHO ARRIVED AND WHO LEFT.
+ *
+ * The net figure leads, because that is the one that answers "is this a place
+ * people want to live", and the two lists under it are why it is that number.
+ * Cross-border flows are named and internal movement is one line: within a
+ * nation people shuffling one county over is the common case and not news,
+ * while ten thousand people leaving for Nevada is something you did.
+ */
+function renderMigration(nid) {
+  if (typeof Migration === 'undefined') return '';
+  const r = Migration.report(nid);
+  if (!r || (!r.net && !r.left && !r.came)) return '';
+  const sign = (v) => (v >= 0 ? '+' : '\u2212') + fmtPop(Math.abs(v));
+  const row = (x, dir) => `
+    <div class="rel-row"><span class="lbl">${escapeHtml(x.name)}</span>
+      <span class="when">${dir}</span>
+      <span class="num ${dir === 'arrived from' ? 'good' : 'bad'}">${fmtPop(x.people)}</span>
+    </div>`;
+  const rows = r.into.slice(0, 2).map((x) => row(x, 'arrived from'))
+    .concat(r.out.slice(0, 2).map((x) => row(x, 'left for'))).join('');
+  return `
+    <div class="stat rel">
+      <div class="label">Migration &middot; last turn</div>
+      <div class="rel-band ${r.net > 0 ? 'good' : r.net < 0 ? 'bad' : ''}">${sign(r.net)} people</div>
+      ${rows}
+      ${r.internal > 1 ? `<div class="vic-note">Another <strong>${fmtPop(r.internal)}</strong> moved between
+        Areas inside ${Game.isPlayer(nid) ? 'your own' : 'their own'} borders — churn that cancels in the
+        figure above and sorts the map underneath it.</div>` : ''}
+    </div>`;
+}
+
+/*
  * WHETHER ANYBODY ADMITS THEY EXIST.
  *
  * Only ever drawn for a nation founded during play: the fifty-one the game opens
@@ -1617,6 +1651,34 @@ function renderPressure(fips) {
   return `<div class="stat"><div class="label">Pressure</div>${body}</div>`;
 }
 
+/*
+ * WHY ANYBODY WOULD LIVE HERE (M7.9).
+ *
+ * Migration happens between Areas, so this is the level it has to be explained
+ * at — a nation-level number would say a place people leave is a place people
+ * leave without ever saying which places or why. Read for the Area's OWN
+ * majority, because "would somebody like the people already here want to stay"
+ * is the question that decides whether this Area empties.
+ */
+function renderLivability(fips) {
+  if (typeof Migration === 'undefined') return '';
+  const pol = Game.areaPolitics(fips);
+  if (!pol || !pol.dominantId) return '';
+  const why = Migration.explain(fips, pol.dominantId, TUNE);
+  if (!why) return '';
+  const rows = why.inputs.slice(0, 3).map((i) => `
+    <div class="rel-row"><span class="lbl">${escapeHtml(i.label)}</span>
+      <span class="when">${escapeHtml(i.note || '')}</span>
+      <span class="num ${i.contribution < 0 ? 'bad' : 'good'}">${i.contribution >= 0 ? '+' : ''}${i.contribution.toFixed(2)}</span>
+    </div>`).join('');
+  return `
+    <div class="stat rel">
+      <div class="label">Somewhere to live &middot; ${Math.round(why.value * 100)}%</div>
+      <div class="rel-band ${why.value >= 0.5 ? 'good' : why.value < 0.3 ? 'bad' : ''}">${escapeHtml(why.summary)}</div>
+      ${rows}
+    </div>`;
+}
+
 function renderCountyPanel(fips) {
   const rec = store.data.counties[fips];
   const ownerId = Game.getOwner(fips);
@@ -1639,6 +1701,7 @@ function renderCountyPanel(fips) {
       <div class="label">Political leaning</div>
       ${renderPolitics(pol, rec)}
     </div>
+    ${renderLivability(fips)}
     ${renderPressure(fips)}
     ${renderAreaActions(fips, ownerId)}
     ${renderEconomy(fips)}

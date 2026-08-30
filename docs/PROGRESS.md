@@ -311,7 +311,15 @@ Done in the order **M3.4 -> M3.1 -> M3.2 -> M3.3**, because the plan lists M3.4'
       recognised by its parent from the first day, which is the cleanest difference between the
       two ways a nation can be born. Also here: `Game.nationWeight`, one definition of how much a
       nation counts for, replacing three copies of the same blend.
-- [ ] **M7.9** Migration.
+- [x] **M7.9** Migration — `js/migration.js`, a phase between drift and growth. People move along
+      the adjacency graph toward Areas that are better for people like them: quality of life and
+      civil liberties (the nation’s), output per head and crowding (the Area’s), and alignment —
+      which is the term that changes the game, because a divided nation sorts itself into
+      homogeneous halves and those halves are the ground a movement organises on. A gradient, not
+      a destination, so distance is real without a distance calculation; a border is friction
+      (0.40) rather than a wall. Movements shrink with the people who leave and are DILUTED by
+      the people who arrive, which makes settlement an answer to secession. Every flow is
+      computed before any is applied, or the node numbering would decide who moved.
 - [ ] **M7.10** Elections.
 - [ ] **M7.11** Projection range off the transport network.
 - [ ] **M7.12** Widen east.
@@ -323,7 +331,7 @@ Done in the order **M3.4 -> M3.1 -> M3.2 -> M3.3**, because the plan lists M3.4'
 *(Updated as work proceeds — what is done, what is next, what was learned that is not yet
 written down elsewhere.)*
 
-**M0-M5 complete.** 725 tests green at `tests/run.html` in ~120s,
+**M0-M5 complete.** 741 tests green at `tests/run.html` in ~180s,
 `build/validate.py` reports 0 errors, and the game loads, plays and saves with a clean console.
 `DESIGN.md` rewritten at the M5 close: section 4.1 is the four power stocks, section 7 is movements,
 sentiment and two-tier secession, section 7.6 is the ledger, the simulator, the dashboard and the
@@ -344,7 +352,7 @@ Performance, measured on the real map rather than predicted: a world turn 24.7 -
 phases 12.4 -> 2.8 ms, political drift 8.0 -> 2.0 ms, a 50-turn simulator run 1,237 -> 466 ms. The
 columnar store is 173 KB and the adjacency graph 43.5 KB.
 
-Next: **M7.9** (migration — people move along the QoL gradient, weighted by alignment and network distance).
+Next: **M7.10** (elections — let a drifting nation lose its own government, replacing the `leader.termTurns` placeholder).
 
 Open, carried into M2.3: after 21 turns no Area is yet LED by a minority ideology (Rep 1,288 /
 Dem 388 of 1,676). That is the expected shape at 11% organised movements and it is M5's dial to

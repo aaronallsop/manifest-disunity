@@ -88,7 +88,17 @@ describe('No price ratchet', () => {
     // ratios must change, not just the level
     const ratioBefore = before[0] / before[5];
     const ratioAfter = after[0] / after[5];
-    ok(Math.abs(ratioAfter / ratioBefore - 1) > 0.1,
+    /*
+     * 5%, and it was 10% before M7.9 put people on the move. Migration
+     * redistributes where population growth lands, and GDP growth is coupled to
+     * realised population growth, so labour moving between Areas averages out
+     * part of the sectoral divergence that separates the prices. Measured over
+     * 100 turns: Agriculture/IT moves 1.95 -> 2.08 where it used to move
+     * further. What this test guards is unchanged and still true — with one
+     * uniform growth rate the mix is frozen and every price is a constant — and
+     * the threshold is calibration, not the claim.
+     */
+    ok(Math.abs(ratioAfter / ratioBefore - 1) > 0.05,
       `Agriculture/IT went ${ratioBefore.toFixed(2)} -> ${ratioAfter.toFixed(2)}; ` +
       'with one uniform growth rate the mix is frozen and every price is a constant');
   });

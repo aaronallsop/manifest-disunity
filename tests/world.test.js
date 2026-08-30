@@ -106,9 +106,22 @@ describe('Economic growth', () => {
     const sectorFactor = weighted / total;
 
     const before = Game.countyGdp(f);
+    const beforePop = Game.countyPop(f);
     World.advanceTurn(T());
-    close(Game.countyGdp(f) / before - 1, base * sectorFactor + coupling * popRate, 1e-6,
-      'GDP growth is not base x sectorFactor + coupling x population growth');
+    /*
+     * REALISED population growth, measured, and not the tunable rate.
+     *
+     * The two were the same number for every Area until M7.9: births were the
+     * only thing that moved a population, so `world.popGrowth` was a valid
+     * stand-in for what an Area actually realised. Migration is the second
+     * thing, and an Area that lost people to a neighbour realises less than the
+     * rate — which is the coupling doing exactly what the title of this test
+     * says it does, so the fix is to measure rather than to assume.
+     */
+    const realised = Game.countyPop(f) / beforePop - 1;
+    ok(Math.abs(realised - popRate) > 1e-9, 'nobody migrated, so this is not testing what it says');
+    close(Game.countyGdp(f) / before - 1, base * sectorFactor + coupling * realised, 1e-6,
+      'GDP growth is not base x sectorFactor + coupling x realised population growth');
     ok(Math.abs(sectorFactor - 1) > 0.01,
       'Los Angeles has a sector-neutral mix; pick a different Area for this test');
   });
