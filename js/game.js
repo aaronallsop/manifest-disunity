@@ -1460,6 +1460,7 @@ const Game = (function () {
       influence: n.influence,
       qol: n.qol,
       liberties: n.liberties,
+      weariness: n.weariness,
       // -Infinity does not survive JSON; null means "has never annexed".
       lastAnnexTurn: Number.isFinite(n.lastAnnexTurn) ? n.lastAnnexTurn : null,
       lastReleaseTurn: Number.isFinite(n.lastReleaseTurn) ? n.lastReleaseTurn : null,
@@ -1510,6 +1511,7 @@ const Game = (function () {
         influence: n.influence == null ? null : n.influence,
         qol: n.qol == null ? null : n.qol,
         liberties: n.liberties == null ? null : n.liberties,
+        weariness: n.weariness == null ? null : n.weariness,
         founded: n.founded || 0,
         homeSt: n.homeSt || modalState(live),
         honeymoonUntil: n.honeymoonUntil || 0,

@@ -272,7 +272,11 @@ Done in the order **M3.4 -> M3.1 -> M3.2 -> M3.3**, because the plan lists M3.4'
       annex cost, the civil-war multiplier and the union chance all changed at once. Two legacy tests
       rewritten: they pinned properties of a size tier that no longer exists, and the concern behind
       them — "the anti-snowball weakens as the snowball grows" — is now tested directly.
-- [ ] **M7.3** War weariness.
+- [x] **M7.3** War weariness — a fifth power stock, `Power.weariness`. Separate wars, ground taken by
+      force, occupied ground, and the share of the army in the field. Felt in QoL and in sentiment, so
+      a long campaign becomes a secession problem. The aggressor's, not the victim's. The "in the
+      field" term replaced "share under arms", which could not vary because force size is not a
+      choice.
 - [ ] **M7.4** Events and crises.
 - [ ] **M7.5** Leaders with light traits.
 - [ ] **M7.6** Map-history timeline.
@@ -311,7 +315,7 @@ Performance, measured on the real map rather than predicted: a world turn 24.7 -
 phases 12.4 -> 2.8 ms, political drift 8.0 -> 2.0 ms, a 50-turn simulator run 1,237 -> 466 ms. The
 columnar store is 173 KB and the adjacency graph 43.5 KB.
 
-Next: **M7.3** (war weariness — continuous warfare raises sentiment and lowers QoL across the aggressor's own nation; nothing persists between wars today).
+Next: **M7.4** (events and crises — 2-3 options with real tradeoffs; a toast and the newspaper are the whole narrative surface today).
 
 Open, carried into M2.3: after 21 turns no Area is yet LED by a minority ideology (Rep 1,288 /
 Dem 388 of 1,676). That is the expected shape at 11% organised movements and it is M5's dial to

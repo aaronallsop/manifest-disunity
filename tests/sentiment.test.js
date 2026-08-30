@@ -246,7 +246,10 @@ describe('The explanation', () => {
       ok(why, `no explanation for ${f}`);
       equal(why.area, f);
       equal(why.movement, 'Deseret');
-      ok(why.inputs.length === 6, `${f}: ${why.inputs.length} factors reported, expected 6`);
+      // Six until M7.3 added war weariness, the second place a long campaign is
+      // felt at home. The count is asserted rather than inferred so that a term
+      // added without a reason is a failing test rather than a silent widening.
+      ok(why.inputs.length === 7, `${f}: ${why.inputs.length} factors reported, expected 7`);
       // the reported contributions really do add up to the reported total
       let sum = 0;
       for (const i of why.inputs) if (i.label !== 'Suppression') sum += i.contribution;

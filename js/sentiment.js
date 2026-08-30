@@ -75,6 +75,16 @@ const Sentiment = (function () {
       'sent.wPower', 'how little weight the nation holding this Area carries');
     grievance += term('Weak authority', a.authority, 1 - clamp01(a.authority),
       'sent.wAuthority', 'how loosely the state holds its own ground');
+    /*
+     * WAR WEARINESS (M7.3), the second place a long campaign is felt at home and
+     * the one that turns it into a secession problem.
+     *
+     * Fed the value DIRECTLY rather than `1 - value` like its neighbours here,
+     * because weariness already measures how badly things are going: a rested
+     * state gives a movement nothing, an exhausted one hands it an argument.
+     */
+    grievance += term('War weariness', a.weariness || 0, clamp01(a.weariness || 0),
+      'sent.wWeariness', "what the state's own wars are costing the people at home");
 
     // PULL — the diffusion term. tanh so that one committed neighbour matters a
     // lot and the tenth matters little: a movement spreads along a frontier, it
@@ -189,6 +199,7 @@ const Sentiment = (function () {
         qol: n.qol == null ? 0.5 : n.qol,
         liberties: n.liberties == null ? 0.5 : n.liberties,
         authority: n.authority == null ? 0.5 : n.authority,
+        weariness: n.weariness == null ? 0 : n.weariness,
         // "How powerful is the nation holding me": its share of the largest
         // nation's weight. A weak state invites secession; a superpower does not.
         power: maxWeight > 0 ? clamp01(w / maxWeight) : 0,
@@ -272,6 +283,7 @@ const Sentiment = (function () {
       nationPower: nation ? nation.power : 0.5,
       authority: nation ? nation.authority : 0.5,
       neighbourSum,
+      weariness: (Game.getNation(Game.getOwner(areaId)) || {}).weariness || 0,
       occupied: Game.isOccupied ? Game.isOccupied(areaId) : false,
       autonomous: Game.isAutonomous ? Game.isAutonomous(areaId) : false,
       /*

@@ -336,6 +336,7 @@ const World = (function () {
           liberties: nation.liberties,
           nationPower: nation.power,
           authority: nation.authority,
+          weariness: nation.weariness,
           neighbourSum,
           occupied,
           autonomous,
@@ -573,6 +574,15 @@ const World = (function () {
       const lib = Power.liberties(Power.gatherLiberties(facts, turn), tn);
       n.liberties = lib.value;
       n.why.liberties = lib;
+
+      /*
+       * Weariness LAST, and QoL reads the previous turn's value on purpose: a
+       * stock that fed itself within one turn would compound. Every other stock
+       * here follows the same rule.
+       */
+      const wear = Power.weariness(Power.gatherWeariness(facts, turn), tn);
+      n.weariness = wear.value;
+      n.why.weariness = wear;
     }
   }
 

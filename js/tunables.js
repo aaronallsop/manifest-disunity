@@ -924,6 +924,52 @@ export const SCHEMA = {
     label: 'Union cooldown (turns)',
     doc: 'World turns after an attempted union before a nation may propose another. Unite was the ONE action in the game with no clock on it \u2014 annex, release and changing course all have one \u2014 so a nation could re-roll the same union every turn until it landed, which makes any probability under 100% equal to 100% given enough turns. Found by the M6.3 AI on its first run: 35 of 53 nations opened by proposing a union.',
   },
+  /* ---------------- war weariness ---------------- */
+  'power.weariness.base': {
+    v: 0, min: 0, max: 1, step: 0.01, group: 'Power',
+    label: 'War weariness: base',
+    doc: 'A nation at peace is not tired. Every point of weariness is something it did.',
+  },
+  'power.weariness.wWars': {
+    v: 0.40, min: 0, max: 1.5, step: 0.05, group: 'Power',
+    label: 'War weariness: weight of wars fought',
+    doc: 'SEPARATE wars, not Areas \u2014 the heaviest term, because starting a fourth war is a different thing from widening the first. Nothing persisted between wars before M7.3: a nation could fight every turn for forty turns and the only trace was a treasury line.',
+  },
+  'power.weariness.warsK': {
+    v: 3, min: 0.5, max: 30, step: 0.5, group: 'Power',
+    label: 'War weariness: wars at which the term is half',
+    doc: 'Three wars inside the history window is a country that has been fighting for years.',
+  },
+  'power.weariness.wAreas': {
+    v: 0.20, min: 0, max: 1.5, step: 0.05, group: 'Power',
+    label: 'War weariness: weight of ground taken by force',
+    doc: 'Widening a war costs less than starting another one, but it is not free.',
+  },
+  'power.weariness.areasK': {
+    v: 14, min: 1, max: 200, step: 1, group: 'Power',
+    label: 'War weariness: Areas at which the term is half',
+    doc: 'Fourteen Areas taken by force inside the history window is a campaign rather than a border adjustment. Paired with wAreas, which is deliberately half the weight of wWars: widening a war costs less than starting another one.',
+  },
+  'power.weariness.wOccupation': {
+    v: 0.30, min: 0, max: 1.5, step: 0.05, group: 'Power',
+    label: 'War weariness: weight of occupied ground',
+    doc: 'The war that does not end. Occupation is already expensive in money and Authority; this is what it costs the people holding it down.',
+  },
+  'power.weariness.wDeployed': {
+    v: 0.30, min: 0, max: 1.5, step: 0.05, group: 'Power',
+    label: 'War weariness: weight of an army in the field',
+    doc: 'AN ARMY IN THE FIELD, not an army. Force size is not a choice here — mil.manpowerShare is fixed, so force/pop reads as a constant for every nation forever: a term carrying no information and a permanent drag with no lever. The POSTURE is chosen every turn, and an expeditionary army is a burden in a way a border garrison is not. This is the one place the M6.5 allocation costs something at home, and it makes "everything to Field" a decision with a price rather than a free preparation.',
+  },
+  'qol.wWeariness': {
+    v: -0.30, min: -1, max: 0, step: 0.01, group: 'Power',
+    label: 'QoL: weight of war weariness',
+    doc: 'The first place a tired country feels it: the young are elsewhere, the budget is elsewhere, and the years are going somewhere other than into anybody\u2019s life.',
+  },
+  'sent.wWeariness': {
+    v: 0.22, min: -1, max: 1, step: 0.01, group: 'Sentiment',
+    label: 'Sentiment: weight of the state\u2019s own war weariness',
+    doc: 'Positive like every other grievance weight in this block, and unlike them it is fed the value DIRECTLY rather than 1 - value, because weariness already measures how badly things are going. A rested state gives a movement nothing; an exhausted one hands it an argument it did not have. The second place a long campaign is felt at home, and the one that turns it into a secession problem.',
+  },
   /* ---------------- what nations remember ---------------- */
   'rel.base': {
     v: 0, min: -1, max: 1, step: 0.05, group: 'Relations',

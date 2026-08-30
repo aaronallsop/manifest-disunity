@@ -1503,7 +1503,14 @@ function renderAuthority(nid) {
   const n = Game.getNation(nid);
   if (!n || !n.why) return '';
   return renderWhy('Authority', n.why.authority) + renderWhy('Influence', n.why.influence)
-    + renderWhy('Quality of life', n.why.qol) + renderWhy('Civil liberties', n.why.liberties);
+    + renderWhy('Quality of life', n.why.qol) + renderWhy('Civil liberties', n.why.liberties)
+    /*
+     * The fifth stock, and shown only when there is something to show: a nation
+     * at peace has no war weariness, and a row that reads 0% every turn for the
+     * forty turns before anybody fights teaches a player to stop looking at it.
+     */
+    + ((n.why.weariness && n.why.weariness.value > 0.02)
+      ? renderWhy('War weariness', n.why.weariness) : '');
 }
 
 /** One renderer for every power stock, so no two can drift apart on screen. */

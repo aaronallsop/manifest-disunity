@@ -404,6 +404,13 @@ export function qol(a, tune) {
       key: 'qol.wProsperity', note: 'GDP per person' },
     { label: 'Fiscal strain', raw: strain, norm: saturate(strain, tune.get('qol.strainK')),
       key: 'qol.wStrain', note: 'this turn\'s deficit as a share of income' },
+    /*
+     * WAR WEARINESS (M7.3). The first place a tired country feels it: the young
+     * are elsewhere, the budget is elsewhere, and the years are going somewhere
+     * other than into anybody's life.
+     */
+    { label: 'War weariness', raw: a.weariness || 0, norm: clamp01(a.weariness || 0),
+      key: 'qol.wWeariness', note: 'what continuous war is costing at home' },
   ];
 
   const record = build(tune.get('qol.base'), terms, tune, qolSummary);
@@ -455,6 +462,89 @@ function qolSummary(value, inputs) {
  *
  * @param a {alignment, cohesion, perCapita, areas, occupied, govType, previous}
  */
+/**
+ * WAR WEARINESS — the fifth stock, and the only one that measures what a nation
+ * is doing to ITSELF.
+ *
+ * Nothing persisted between wars before M7.3: a nation could fight every turn
+ * for forty turns and the only trace was a treasury line. Weariness is what
+ * makes a war campaign a campaign rather than a series of unrelated rolls — it
+ * accumulates while you fight, decays while you do not, and it is felt at home
+ * in the two places a tired country would feel it: quality of life falls, and
+ * every movement in your own ground gets an argument it did not have.
+ *
+ * IT IS THE AGGRESSOR'S. Being invaded is already expensive — you lose Areas,
+ * Authority reads the losses, and sentiment reads the occupation. What had no
+ * cost at all was doing the invading, over and over, and winning.
+ *
+ * A STOCK, so it uses the same rate-limited `step` as the other four: a nation
+ * does not become exhausted in one turn and does not recover in one either, and
+ * that lag is the whole point — the bill arrives while you are still fighting.
+ */
+export function weariness(a, tune) {
+  const window = tune.get('nation.historyWindow');
+  const recent = (a.gains || []).filter((e) => a.turn - e.turn <= window);
+  const wars = recent.filter((e) => e.reason === 'war');
+  const warAreas = wars.reduce((s, e) => s + e.areas, 0);
+  const occupation = a.areas > 0 ? (a.occupied || 0) / a.areas : 0;
+  /*
+   * AN ARMY IN THE FIELD, not an army. Force size is not a choice in this game —
+   * `mil.manpowerShare` is fixed, so `force / pop` varies only with equipment
+   * and doctrine and reads as a constant 0.05-0.10 for every nation forever,
+   * which is a term carrying no information and a permanent drag with no lever.
+   *
+   * The POSTURE is chosen, every turn, and an expeditionary army is a burden in
+   * a way a border garrison is not: this is the one place the M6.5 allocation
+   * costs something at home, and it is what makes "everything to Field" a
+   * decision with a price rather than a free preparation.
+   */
+  const deployed = clamp01(a.deployed || 0);
+
+  const terms = [
+    { label: 'Wars fought', raw: wars.length,
+      norm: saturate(wars.length, tune.get('power.weariness.warsK')),
+      key: 'power.weariness.wWars', note: 'separate wars started, recently' },
+    { label: 'Ground taken by force', raw: warAreas,
+      norm: saturate(warAreas, tune.get('power.weariness.areasK')),
+      key: 'power.weariness.wAreas', note: 'Areas taken in those wars' },
+    { label: 'Occupation', raw: occupation, norm: clamp01(occupation),
+      key: 'power.weariness.wOccupation', note: 'share of held ground that is somebody else\u2019s' },
+    { label: 'In the field', raw: deployed, norm: deployed,
+      key: 'power.weariness.wDeployed', note: 'share of the army posted abroad rather than at home' },
+  ];
+
+  const record = build(tune.get('power.weariness.base'), terms, tune, wearinessSummary);
+  record.target = record.value;
+  record.value = step(a.previous, record.value, tune);
+  return record;
+}
+
+function wearinessSummary(value, inputs) {
+  const band = value >= 0.7 ? 'Exhausted' : value >= 0.45 ? 'Weary'
+    : value >= 0.2 ? 'Strained' : 'Rested';
+  const ranked = inputs.filter((i) => Math.abs(i.contribution) > 1e-9)
+    .sort((a, b) => Math.abs(b.contribution) - Math.abs(a.contribution));
+  return ranked.length ? `${band}: ${ranked[0].label.toLowerCase()} weighs heaviest` : band;
+}
+
+export function gatherWeariness(facts, turn) {
+  if (!facts) return null;
+  const { n } = facts;
+  return {
+    turn,
+    pop: facts.pop,
+    areas: facts.areas,
+    occupied: facts.occupied,
+    // NOT `facts.gains`, which is filtered to conquest reasons only — that is
+    // the right filter here too, and it is the same one Authority reads.
+    gains: facts.gains,
+    deployed: typeof Military !== 'undefined'
+      ? (() => { const s = Military.state(n.id); return s ? s.alloc.field * s.ready.field : 0; })()
+      : 0,
+    previous: n.weariness,
+  };
+}
+
 export function liberties(a, tune) {
   const tolerance = tune.get('qol.govTolerance');
   const govTol = tolerance[a.govType] != null ? tolerance[a.govType] : tolerance.Republic;
@@ -698,6 +788,7 @@ export function gatherQol(facts, turn) {
     agriculture: facts.agriculture,
     treasuryDelta: flow ? flow.delta : 0,
     income: flow ? flow.income : 0,
+    weariness: n.weariness || 0,
     previous: n.qol,
   };
 }

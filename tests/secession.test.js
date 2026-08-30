@@ -310,7 +310,7 @@ describe('The M4 acceptance', () => {
     const why = Sentiment.explain(
       Game.getNation(d.nation) ? [...Game.getNation(d.nation).counties][0] : null, d.movement, T());
     if (why) {
-      ok(why.inputs.length === 6, 'the reason is not legible: no factor breakdown');
+      ok(why.inputs.length === 7, 'the reason is not legible: no factor breakdown');
       ok(why.summary && why.summary.length > 10);
     }
   });
