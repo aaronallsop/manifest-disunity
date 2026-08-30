@@ -40,7 +40,7 @@ const Ledger = (function () {
    */
   const KINDS = [
     'annex', 'war', 'unite', 'defect', 'declare', 'fragment', 'release',
-    'govern', 'trade', 'found', 'died', 'power', 'won',
+    'govern', 'trade', 'found', 'died', 'power', 'won', 'autonomy',
   ];
 
   /**
@@ -103,7 +103,7 @@ const Ledger = (function () {
    * than a routine six-Area annexation, and only the magnitude knows that.
    */
   const WEIGHT = { won: 1000, declare: 100, died: 90, unite: 70, war: 60, found: 55, annex: 40,
-                   govern: 35, release: 30, defect: 25, fragment: 20, trade: 10, power: 5 };
+                   govern: 35, release: 30, autonomy: 28, defect: 25, fragment: 20, trade: 10, power: 5 };
 
   /**
    * Rank a set of entries and keep the few most worth a headline.

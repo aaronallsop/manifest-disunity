@@ -431,6 +431,69 @@ const Moves = (function () {
     };
   }
 
+  /**
+   * @param intent {type:'autonomy', nid, areas:[fips], grant?:boolean}
+   *
+   * THE OTHER VALVE. Garrison and autonomy are the same trade run in opposite
+   * directions: one buys quiet with troops and pays in civil liberties, the
+   * other buys it with self-rule and pays in revenue and in Authority. Release
+   * is the third and the most final — it gives the ground away.
+   *
+   * A grant is REVERSIBLE, unlike a release, and that is the whole reason to
+   * have both: autonomy is what you offer a region you still intend to keep.
+   */
+  function planAutonomy(intent, tune) {
+    const { nid, areas = [], grant = true } = intent;
+    const n = nationOf(nid);
+    if (!n) return no('That nation no longer exists.');
+    const cd = cooldown(nid, 'lastAutonomyTurn', 'autonomy.cooldownTurns', tune);
+    if (cd > 0) return no(`The last settlement is still being negotiated — ${cd} more world ${cd === 1 ? 'turn' : 'turns'}.`);
+    if (!areas.length) return no('Nothing selected.');
+    const budget = T(tune).get('autonomy.budgetAreas');
+    if (areas.length > budget) return no(`You may settle at most ${budget} Areas at once.`);
+    for (const f of areas) {
+      if (!n.counties.has(f)) return no('You do not hold that Area.');
+      if (Game.isAutonomous(f) === !!grant) {
+        return no(grant ? 'That Area already governs itself.' : 'That Area does not govern itself.');
+      }
+    }
+    const held = Game.autonomousCount(nid);
+    const after = grant ? held + areas.length : held - areas.length;
+    const cap = Math.floor(n.counties.size * T(tune).get('autonomy.maxShare'));
+    if (grant && after > cap) {
+      return no(`A state that governs none of itself is not a state: at most ${cap} of your `
+        + `${n.counties.size} Areas may be autonomous, and ${held} already are.`);
+    }
+    const d = Game.demographics(areas);
+    const forgone = d.gdp * T(tune).get('econ.taxRate') * (1 - T(tune).get('autonomy.taxShare'));
+    return {
+      ok: true, reason: null, cost: 0, targets: areas, grant, forgone,
+      effects: [
+        { label: 'Areas governing themselves', value: grant ? areas.length : -areas.length },
+        { label: 'Revenue', value: grant ? -forgone : forgone },
+        { label: 'Grievance answered', value: (grant ? 1 : -1) * T(tune).get('autonomy.sentimentRelief') },
+      ],
+    };
+  }
+
+  function resolveAutonomy(intent, rng, tune) {
+    const plan = planAutonomy(intent, tune);
+    if (!plan.ok) return { ...plan, events: [] };
+    const { nid } = intent;
+    const changed = Game.setAutonomy(plan.targets, plan.grant);
+    nationOf(nid).lastAutonomyTurn = World.getTurn();
+    const entry = log({
+      subject: nid, kind: 'autonomy', delta: plan.grant ? changed : -changed,
+      terms: [{ name: 'Revenue given up', value: -plan.forgone, key: 'autonomy.taxShare' },
+              { name: 'Grievance answered', value: T(tune).get('autonomy.sentimentRelief'),
+                key: 'autonomy.sentimentRelief' }],
+      text: plan.grant
+        ? `${nameOf(nid)} granted self-rule to ${changed} ${areaWord(changed)}.`
+        : `${nameOf(nid)} took back direct rule over ${changed} ${areaWord(changed)}.`,
+    });
+    return { ...plan, ok: true, changed, events: [entry] };
+  }
+
   /** @param intent {type:'release', nid, areas:[fips]} */
   function planRelease(intent, tune) {
     const { nid, areas = [] } = intent;
@@ -566,8 +629,10 @@ const Moves = (function () {
   /* the front door                                                     */
   /* ------------------------------------------------------------------ */
 
-  const PLANNERS = { annex: planAnnex, unite: planUnite, release: planRelease, govern: planGovern };
-  const RESOLVERS = { annex: resolveAnnex, unite: resolveUnite, release: resolveRelease, govern: resolveGovern };
+  const PLANNERS = { annex: planAnnex, unite: planUnite, release: planRelease, govern: planGovern,
+                    autonomy: planAutonomy };
+  const RESOLVERS = { annex: resolveAnnex, unite: resolveUnite, release: resolveRelease,
+                      govern: resolveGovern, autonomy: resolveAutonomy };
 
   /** Pure. Never draws, never rolls, never mutates. */
   function plan(intent, tune) {
@@ -637,6 +702,28 @@ const Moves = (function () {
         .map((x) => x[0]);
       if (worst.length) out.push({ type: 'release', nid, areas: worst });
     }
+
+    /*
+     * Autonomy over the same ground, canonicalised the same way. It is offered
+     * beside release rather than instead of it because they are different
+     * answers to the same problem — one keeps the Area and one does not — and
+     * the choice between them is exactly what the scorer is for.
+     */
+    if (!cooldown(nid, 'lastAutonomyTurn', 'autonomy.cooldownTurns', tune)) {
+      const cap = Math.floor(n.counties.size * T(tune).get('autonomy.maxShare'));
+      const room = cap - Game.autonomousCount(nid);
+      if (room > 0) {
+        const budget = Math.min(T(tune).get('autonomy.budgetAreas'), room);
+        const worst = [...n.counties]
+          .filter((f) => !Game.isAutonomous(f))
+          .map((f) => [f, Sentiment.pressure(f)])
+          .filter((x) => x[1] > 0)
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, budget)
+          .map((x) => x[0]);
+        if (worst.length) out.push({ type: 'autonomy', nid, areas: worst, grant: true });
+      }
+    }
     if (!opts.skipGovern) {
       for (const x of Ideology.all()) {
         if (x.id !== n.gov.rulingIdeology) out.push({ type: 'govern', nid, ideology: x.id });
@@ -649,5 +736,6 @@ const Moves = (function () {
     plan, resolve, legal,
     planSplinter, partialSubset, acceptsRelease,
     annexCost, annexCooldownLeft, releaseCooldownLeft, uniteCooldownLeft,
+    autonomyCooldownLeft: (nid, tune) => cooldown(nid, 'lastAutonomyTurn', 'autonomy.cooldownTurns', tune),
   };
 })();

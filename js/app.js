@@ -1234,6 +1234,18 @@ function renderCountyPanel(fips) {
     ${renderEstNote(rec)}
     ${renderSources('county')}
   `;
+  const auto = panel.querySelector('#area-autonomy');
+  if (auto) auto.onclick = () => {
+    if (auto.hasAttribute('disabled')) return;
+    const nid = you();
+    const grant = !Game.isAutonomous(fips);
+    const r = Moves.resolve({ type: 'autonomy', nid, areas: [fips], grant }, store.rng, TUNE);
+    if (!r.ok) return flash(escapeHtml(r.reason), 'warn');
+    flash(`${grant ? '\u{1F932}' : '\u{1F3DB}\u{FE0F}'} <strong>${escapeHtml(Game.nameForCounty(fips))}</strong> `
+      + `${grant ? 'now governs itself' : 'is back under direct rule'}. `
+      + `${grant ? 'Revenue' : 'Recovered'} <strong>${fmtGdp(r.forgone)}</strong> / turn.`, '');
+    select('county', fips);
+  };
   const rel = panel.querySelector('#area-release');
   if (rel) rel.onclick = () => { setMode('nations'); Actions.startReleaseWith(ownerId, fips); };
   const goAnnex = panel.querySelector('#area-annex');
@@ -1256,10 +1268,21 @@ function renderAreaActions(fips, ownerId) {
     const why = last ? 'This is your last Area.'
       : rcd > 0 ? `The last handover is still being arranged &mdash; ${rcd} more world ${rcd === 1 ? 'turn' : 'turns'}.`
         : '';
+    /*
+     * THE THREE ANSWERS TO A RESTLESS AREA, side by side, because the choice
+     * between them is the decision: garrison it (elsewhere, on the nation
+     * panel), let it govern itself, or let it go. Autonomy is the reversible
+     * one, which is why it is a toggle here rather than a one-way button.
+     */
+    const auto = Game.isAutonomous(fips);
+    const plan = Moves.plan({ type: 'autonomy', nid: actor, areas: [fips], grant: !auto }, TUNE);
     return `<div class="actions">
-      <div class="label">Yours &middot; ${escapeHtml(me.name)}</div>
+      <div class="label">Yours &middot; ${escapeHtml(me.name)}${auto ? ' &middot; governs itself' : ''}</div>
       <div class="geo-row"><span>Upkeep${occupied ? ' &middot; occupied ground' : ''}</span>
         <strong class="deficit">${fmtGdp(-upkeep)} / turn</strong></div>
+      <button class="act" id="area-autonomy" ${plan.ok ? '' : 'disabled'}>
+        ${auto ? '🏛️ Take back direct rule' : '🤲 Grant self-rule'}</button>
+      ${plan.ok ? '' : `<div class="locked-note">${escapeHtml(plan.reason)}</div>`}
       <button class="act" id="area-release" ${why ? 'disabled' : ''}>🕊️ Release this Area</button>
       ${why ? `<div class="locked-note">${why}</div>` : ''}
     </div>`;

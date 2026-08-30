@@ -376,6 +376,7 @@ const Game = (function () {
         lastAnnexTurn: -Infinity,
         lastReleaseTurn: -Infinity,
         lastUniteTurn: -Infinity,
+        lastAutonomyTurn: -Infinity,
         tradeCooldown: {}, // partner key -> world turn of the last deal
       }));
     }
@@ -906,6 +907,7 @@ const Game = (function () {
       lastAnnexTurn: -Infinity,
       lastReleaseTurn: -Infinity,
       lastUniteTurn: -Infinity,
+      lastAutonomyTurn: -Infinity,
       tradeCooldown: {},
     }));
     moveCounties(countyIds, id, { silent: true, reason: opts.reason || 'secede' });
@@ -1310,7 +1312,19 @@ const Game = (function () {
     if (!n) return null;
     const gdp = demographics(n.counties).gdp;
     const gov = T('econ.govMaintenance');
-    const income = gdp * T('econ.taxRate');
+    /*
+     * SELF-RULE KEEPS MOST OF WHAT IT RAISES. The revenue side of the autonomy
+     * valve: an Area that governs itself is still yours on the map and mostly
+     * not yours on the ledger, which is what makes granting it a real cost
+     * rather than a free way to keep somewhere quiet.
+     */
+    let autonomousGdp = 0;
+    for (const f of n.counties) {
+      const c = county[f];
+      if (c && c.attrs && c.attrs.autonomy) autonomousGdp += countyGdp(f);
+    }
+    const forgone = autonomousGdp * T('econ.taxRate') * (1 - T('autonomy.taxShare'));
+    const income = gdp * T('econ.taxRate') - forgone;
     const base = T('econ.areaUpkeep');
 
     /*
@@ -1354,7 +1368,7 @@ const Game = (function () {
     const army = typeof Military !== 'undefined' ? Military.upkeep(nid) : 0;
     const maintenance = gdp * (gov[n.gov.type] ?? gov.Republic) + administration + surcharge + army;
     return { income, maintenance, administration, occupation: surcharge, army, occupied: occ,
-             delta: income - maintenance };
+             autonomy: forgone, delta: income - maintenance };
   }
   function tickTreasuries() {
     for (const [nid, n] of nations) n.treasury += treasuryFlow(nid).delta;
@@ -1428,6 +1442,7 @@ const Game = (function () {
       lastAnnexTurn: Number.isFinite(n.lastAnnexTurn) ? n.lastAnnexTurn : null,
       lastReleaseTurn: Number.isFinite(n.lastReleaseTurn) ? n.lastReleaseTurn : null,
       lastUniteTurn: Number.isFinite(n.lastUniteTurn) ? n.lastUniteTurn : null,
+      lastAutonomyTurn: Number.isFinite(n.lastAutonomyTurn) ? n.lastAutonomyTurn : null,
       tradeCooldown: { ...n.tradeCooldown },
       counties: [...n.counties],
     });
@@ -1479,6 +1494,7 @@ const Game = (function () {
         lastAnnexTurn: n.lastAnnexTurn == null ? -Infinity : n.lastAnnexTurn,
         lastReleaseTurn: n.lastReleaseTurn == null ? -Infinity : n.lastReleaseTurn,
         lastUniteTurn: n.lastUniteTurn == null ? -Infinity : n.lastUniteTurn,
+        lastAutonomyTurn: n.lastAutonomyTurn == null ? -Infinity : n.lastAutonomyTurn,
         tradeCooldown: { ...(n.tradeCooldown || {}) },
       }));
       for (const f of live) setOwnerNode(nodeOf(f), n.id);
@@ -1510,6 +1526,40 @@ const Game = (function () {
     // it; future data (region tags, resources, terrain, ...) goes in .attrs.
     area: (id) => county[cid(id)],
     areaAttrs: (id) => county[cid(id)]?.attrs,
+    /** Does this Area govern itself? Stored in `attrs`, so it saves for free. */
+    isAutonomous: (id) => !!(county[cid(id)] && county[cid(id)].attrs
+      && county[cid(id)].attrs.autonomy),
+    /** How many of a nation's Areas govern themselves. */
+    autonomousCount: (nid) => {
+      const n = nations.get(nid);
+      if (!n) return 0;
+      let k = 0;
+      for (const f of n.counties) { const c = county[f]; if (c && c.attrs && c.attrs.autonomy) k++; }
+      return k;
+    },
+    /** Grant or revoke, and say how many actually changed. */
+    setAutonomy: (ids, on) => {
+      let changed = 0;
+      for (const id of ids) {
+        const c = county[cid(id)];
+        if (!c) continue;
+        const had = !!(c.attrs && c.attrs.autonomy);
+        if (had === !!on) continue;
+        if (!c.attrs) c.attrs = {};
+        /*
+         * `true`, not the turn. Storing the world turn read as autonomous
+         * everywhere except turn ZERO, where it is 0 and falsy — so a grant made
+         * on the opening turn silently did nothing, and every reader agreed with
+         * every other reader that it had not happened. The turn is kept beside
+         * it, where nothing tests it for truth.
+         */
+        if (on) { c.attrs.autonomy = true; c.attrs.autonomySince = worldTurn(); }
+        else { delete c.attrs.autonomy; delete c.attrs.autonomySince; }
+        changed++;
+      }
+      if (changed) emit({ values: true });
+      return changed;
+    },
     areaIdOf: cid,
     areaCounties: (id) => county[cid(id)]?.counties || [cid(id)],
     anchorOf: (id) => county[cid(id)]?.anchor,

@@ -139,6 +139,19 @@ const Sim = (function () {
     TurnSystem.begin([...Game.nations.keys()], rng);
     World.begin(tune);
 
+    /*
+     * `ai: false` runs the world with every nation passing.
+     *
+     * The default is to PLAY, because a dashboard that measures a world nobody
+     * plays measures the wrong world. But some questions are about the world
+     * ENGINE and the AI is a confound in them rather than the subject — the
+     * M5.3 pacing verdicts are about how fast sentiment moves, and fifty nations
+     * annexing each other while you ask is noise. Those callers say so, in the
+     * call, which is also how the suite got back the four minutes it had spent
+     * simulating an AI it was not asking about.
+     */
+    const prevPolicy = opts.ai === false ? AI.setPolicy(AI.pass) : null;
+    try {
     const series = [sample(0)];
     for (let t = 1; t <= turns; t++) {
       /*
@@ -154,6 +167,7 @@ const Sim = (function () {
     }
 
     return { seed, turns, series, summary: summarise(series), events: Ledger.all().slice() };
+    } finally { if (prevPolicy) AI.setPolicy(prevPolicy); }
   }
 
   /**

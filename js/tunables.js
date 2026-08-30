@@ -914,6 +914,37 @@ export const SCHEMA = {
     label: 'Union cooldown (turns)',
     doc: 'World turns after an attempted union before a nation may propose another. Unite was the ONE action in the game with no clock on it \u2014 annex, release and changing course all have one \u2014 so a nation could re-roll the same union every turn until it landed, which makes any probability under 100% equal to 100% given enough turns. Found by the M6.3 AI on its first run: 35 of 53 nations opened by proposing a union.',
   },
+  /* ---------------- autonomy ---------------- */
+  'autonomy.maxShare': {
+    v: 0.3, min: 0, max: 1, step: 0.01, group: 'Autonomy',
+    label: 'Most of your ground that may be autonomous',
+    doc: 'A state that governs none of itself is not a state. The cap is what stops autonomy being a way to keep every Area quiet at once \u2014 it is a valve for the places that are actually going, not a policy for the whole country.',
+  },
+  'autonomy.budgetAreas': {
+    v: 3, min: 1, max: 20, step: 1, group: 'Autonomy',
+    label: 'Areas that may be granted autonomy at once',
+    doc: 'One decision at a time, like every other territorial action.',
+  },
+  'autonomy.cooldownTurns': {
+    v: 6, min: 0, max: 40, step: 1, group: 'Autonomy',
+    label: 'Turns between grants',
+    doc: 'A settlement is negotiated, not announced. Also stops a nation autonomising its way out of a crisis in one round.',
+  },
+  'autonomy.taxShare': {
+    v: 0.55, min: 0, max: 1, step: 0.05, group: 'Autonomy',
+    label: 'Share of an autonomous Area\u2019s tax you still collect',
+    doc: 'THE PRICE, and it is money rather than force: an Area governing itself keeps most of what it raises. Garrison and autonomy are the same trade run in opposite directions \u2014 one buys quiet with troops and pays in liberties, the other buys it with self-rule and pays in revenue and reach.',
+  },
+  'autonomy.sentimentRelief': {
+    v: 0.45, min: 0, max: 1, step: 0.05, group: 'Autonomy',
+    label: 'How much self-rule takes out of the grievance',
+    doc: 'Applied to the whole grievance rather than to one term, because the answer autonomy gives is not "your quality of life improved" but "this is your government now".',
+  },
+  'power.authority.wAutonomy': {
+    v: -0.18, min: -1, max: 0, step: 0.01, group: 'Power',
+    label: 'Authority: weight of ground that governs itself',
+    doc: 'What autonomy costs the state, beyond the revenue: a government that has handed a third of its territory to local rule commands less than one that has not. Smaller than the occupation weight, because this was a decision rather than a defeat.',
+  },
   /* ---------------- force ---------------- */
   'liberty.wGarrison': {
     v: -0.35, min: -1, max: 0, step: 0.01, group: 'Power',

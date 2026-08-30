@@ -15,6 +15,7 @@
  */
 import { describe, it, ok, equal, close } from './harness.js';
 import { bootWorld } from './world-fixture.js';
+import * as RNG from '../js/rng.js';
 
 const SEED = 20260829;
 const T = () => window.TUNE;
@@ -342,5 +343,148 @@ describe('Occupation costs more where it is resented (M4.5)', () => {
     const flow = Game.treasuryFlow('49');
     equal(flow.occupied, 0);
     equal(flow.occupation, 0, 'a nation was charged for occupying itself');
+  });
+});
+
+/*
+ * M6.5b — the last valve, and the one that keeps the ground.
+ *
+ * There are three answers to an Area that is organising against you, and the
+ * whole point is that they are different PRICES for the same relief:
+ *
+ *   garrison   press it down.        Pays in civil liberties.
+ *   autonomy   let it govern itself. Pays in revenue and in Authority. Reversible.
+ *   release    let it go.            Pays in the Area.
+ *
+ * Autonomy is the one that was missing, and it is the one a player reaches for
+ * when they still intend to keep the place — which is most of the time, and was
+ * exactly the case the game had no move for.
+ */
+describe('Autonomy: the valve that keeps the ground', () => {
+  it('answers the grievance rather than one term of it', async () => {
+    /*
+     * Scales the whole grievance, because the answer self-rule gives is not
+     * "your quality of life improved" but "this is your government now". It is
+     * also what stops autonomy and a garrison stacking into a free answer.
+     */
+    const { rng } = await bootWorld({ seed: SEED });
+    for (let i = 0; i < 4; i++) World.advanceTurn(T(), rng);
+    let best = null, bv = 0;
+    for (const rec of Movements.all()) {
+      for (const f of rec.homeland) {
+        const o = Game.getOwner(f);
+        if (!o) continue;
+        const w = Sentiment.explain(f, rec.name, T());
+        if (w && w.value > bv) { bv = w.value; best = [o, f, rec.name]; }
+      }
+    }
+    ok(best && bv > 0.05, `no movement has meaningful sentiment anywhere (best ${bv})`);
+    const [nid, area, mv] = best;
+    const before = Sentiment.explain(area, mv, T()).value;
+    equal(Game.setAutonomy([area], true), 1);
+    const after = Sentiment.explain(area, mv, T()).value;
+    ok(after < before, `self-rule did not lower the target (${before.toFixed(3)} -> ${after.toFixed(3)})`);
+    // ...and taking it back puts the grievance straight back.
+    Game.setAutonomy([area], false);
+    close(Sentiment.explain(area, mv, T()).value, before, 1e-9,
+      'revoking self-rule did not restore the grievance');
+  });
+
+  it('the flag survives turn zero, where the turn number is falsy', async () => {
+    /*
+     * The first cut stored the world turn as the flag, so a grant made on turn
+     * ZERO stored 0 and read as false everywhere — silently, because every
+     * reader agreed with every other reader that it had not happened.
+     */
+    await bootWorld({ seed: SEED });
+    equal(World.getTurn(), 0);
+    const nid = '49';
+    const f = [...Game.getNation(nid).counties][0];
+    Game.setAutonomy([f], true);
+    equal(Game.isAutonomous(f), true, 'a grant on turn 0 did not stick');
+    equal(Game.autonomousCount(nid), 1);
+  });
+
+  it('costs revenue, and the ledger line says how much', async () => {
+    await bootWorld({ seed: SEED });
+    const nid = '49';
+    const areas = [...Game.getNation(nid).counties].slice(0, 2);
+    const before = Game.treasuryFlow(nid).income;
+    const p = Moves.plan({ type: 'autonomy', nid, areas, grant: true }, T());
+    ok(p.ok, p.reason);
+    const r = Moves.resolve({ type: 'autonomy', nid, areas, grant: true }, RNG.create(1), T());
+    equal(r.changed, 2);
+    const flow = Game.treasuryFlow(nid);
+    ok(flow.income < before, 'self-rule cost no revenue');
+    close(before - flow.income, flow.autonomy, 1e-6, 'the forgone revenue is not reported');
+    close(flow.autonomy, p.forgone, 1e-6, 'the bill did not match the quote');
+    equal(Ledger.ofKind('autonomy').length, 1);
+  });
+
+  it('and costs Authority, because a state that governs less commands less', async () => {
+    await bootWorld({ seed: SEED });
+    const nid = '49';
+    const auth = () => Power.authority(Power.gatherAuthority(Power.nationFacts(nid, T()), 1), T());
+    const before = auth().target;
+    Game.setAutonomy([...Game.getNation(nid).counties].slice(0, 6), true);
+    const after = auth();
+    ok(after.target < before, `self-rule cost no Authority (${before.toFixed(4)} -> ${after.target.toFixed(4)})`);
+    const t = after.inputs.find((i) => i.label === 'Self-rule');
+    ok(t && t.contribution < 0, 'the Authority record does not name self-rule as the reason');
+  });
+
+  it('a state that governs none of itself is not a state', async () => {
+    await bootWorld({ seed: SEED });
+    const nid = '06';
+    const own = [...Game.getNation(nid).counties];
+    const cap = Math.floor(own.length * T().get('autonomy.maxShare'));
+    Game.setAutonomy(own.slice(0, cap), true);
+    const more = Moves.plan({ type: 'autonomy', nid, areas: own.slice(cap, cap + 1), grant: true }, T());
+    equal(more.ok, false, 'a nation autonomised past its own cap');
+    ok(/at most/.test(more.reason), `the refusal reads "${more.reason}"`);
+  });
+
+  it('is reversible, which is the whole reason it is not release', async () => {
+    await bootWorld({ seed: SEED });
+    const nid = '49';
+    const areas = [...Game.getNation(nid).counties].slice(0, 2);
+    Moves.resolve({ type: 'autonomy', nid, areas, grant: true }, RNG.create(1), T());
+    Game.getNation(nid).lastAutonomyTurn = -Infinity;   // past the cooldown
+    const back = Moves.resolve({ type: 'autonomy', nid, areas, grant: false }, RNG.create(1), T());
+    ok(back.ok, back.reason);
+    equal(Game.autonomousCount(nid), 0);
+    for (const f of areas) equal(Game.getOwner(f), nid, 'the Area left when it was only meant to be governed back');
+  });
+
+  it('a settlement is negotiated, not announced', async () => {
+    await bootWorld({ seed: SEED });
+    const nid = '49';
+    const own = [...Game.getNation(nid).counties];
+    Moves.resolve({ type: 'autonomy', nid, areas: own.slice(0, 1), grant: true }, RNG.create(1), T());
+    ok(Moves.autonomyCooldownLeft(nid, T()) > 0, 'a grant started no cooldown');
+    const again = Moves.plan({ type: 'autonomy', nid, areas: own.slice(1, 2), grant: true }, T());
+    equal(again.ok, false, 'a nation settled twice in one turn');
+  });
+
+  it('the AI is offered it beside release, and the difference is the price', async () => {
+    const { rng } = await bootWorld({ seed: SEED });
+    for (let i = 0; i < 15; i++) World.advanceTurn(T(), rng);
+    let seen = 0;
+    for (const [nid] of Game.nations) {
+      const moves = Moves.legal(nid, {}, T());
+      const a = moves.find((m) => m.type === 'autonomy');
+      const r = moves.find((m) => m.type === 'release');
+      if (!a || !r) continue;
+      seen++;
+      const sa = AI.score(a, Moves.plan(a, T()), T());
+      const sr = AI.score(r, Moves.plan(r, T()), T());
+      if (!sa || !sr) continue;
+      ok(sa.inputs.some((i) => i.label === 'Grievance answered'),
+        'autonomy is scored with no relief term at all');
+      ok(sr.inputs.some((i) => i.label === 'Sedition shed'),
+        'release is scored with no relief term at all');
+      if (seen >= 4) break;
+    }
+    ok(seen > 0, 'no nation was offered both valves');
   });
 });

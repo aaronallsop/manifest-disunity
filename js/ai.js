@@ -233,6 +233,38 @@ const AI = (function () {
         soonest == null ? 'no movement is arriving' : `soonest breakaway in ${soonest} turns`));
     }
 
+    if (intent.type === 'autonomy') {
+      /*
+       * The same relief term release gets, and deliberately the same weight:
+       * the two moves answer the same problem and the choice between them should
+       * turn on their PRICES, not on the AI liking one more. Release loses the
+       * people and the ground; autonomy loses the revenue and some Authority and
+       * keeps both. The generic price terms above already carry that difference.
+       */
+      const areas = intent.areas || [];
+      let sum = 0, soonest = null;
+      for (const f of areas) {
+        let bestClock = 0;
+        const c = Game.county[Game.areaIdOf(f)];
+        for (const m in (c ? c.mov : {})) {
+          const cl = Sentiment.clock(f, m, tune);
+          if (!cl || cl.turns == null) continue;
+          const v = 1 / (1 + cl.turns);
+          if (v > bestClock) bestClock = v;
+          if (soonest == null || cl.turns < soonest) soonest = cl.turns;
+        }
+        sum += bestClock;
+      }
+      const mean = (areas.length ? sum / areas.length : 0) * st;
+      terms.push(term('Grievance answered', 'ai.wRelief', mean, mean, 'hold',
+        soonest == null ? 'no movement is arriving' : `soonest breakaway in ${soonest} turns`));
+      // The revenue it costs, as a share of what the nation makes.
+      const flow = Game.treasuryFlow(intent.nid);
+      const income = flow ? Math.max(1, flow.income) : 1;
+      terms.push(term('Revenue given up', 'ai.wPrice', preview.forgone,
+        -(preview.forgone || 0) / income, 'hold'));
+    }
+
     if (intent.type === 'govern') {
       const now = d.pop > 0 ? d.mix[Ideology.index(n.gov.rulingIdeology)] / d.pop : 0;
       terms.push(term('Mandate', 'ai.wMandate', preview.share, preview.share - now, 'hold'));

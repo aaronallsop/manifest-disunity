@@ -102,7 +102,17 @@ const Sentiment = (function () {
       'sent.wSuppression', a.occupied ? 'occupying force stationed here' : 'garrison stationed here');
 
     const base = clamp01(a.base);
-    const raw = base * (grievance + pull) + suppression; // suppression's weight is negative
+    /*
+     * SELF-RULE ANSWERS THE GRIEVANCE, not one term of it.
+     *
+     * A garrison presses the number down from outside; autonomy takes the
+     * argument away. The answer it gives is not "your quality of life improved"
+     * but "this is your government now", so it scales the whole grievance rather
+     * than adding another subtraction beside suppression — which is also what
+     * stops the two valves stacking into a free answer when used together.
+     */
+    const selfRule = a.autonomous ? tune.get('autonomy.sentimentRelief') : 0;
+    const raw = base * (grievance * (1 - selfRule) + pull) + suppression; // suppression's weight is negative
     let value = clamp01(raw);
     if (a.cap != null) value = Math.min(value, a.cap);
 
@@ -182,9 +192,16 @@ const Sentiment = (function () {
     });
     const g = Game.graph();
     const occupied = new Uint8Array(g ? g.n : 0);
-    if (g) for (let i = 0; i < g.n; i++) occupied[i] = Game.isOccupied(g.idAt(i)) ? 1 : 0;
+    const autonomous = new Uint8Array(g ? g.n : 0);
+    if (g) {
+      for (let i = 0; i < g.n; i++) {
+        const id = g.idAt(i);
+        occupied[i] = Game.isOccupied(id) ? 1 : 0;
+        autonomous[i] = Game.isAutonomous(id) ? 1 : 0;
+      }
+    }
 
-    return { byNation, movements, affinity, caps, homelands, occupied, owners };
+    return { byNation, movements, affinity, caps, homelands, occupied, autonomous, owners };
   }
 
   /**
@@ -225,6 +242,7 @@ const Sentiment = (function () {
       authority: nation ? nation.authority : 0.5,
       neighbourSum,
       occupied: Game.isOccupied ? Game.isOccupied(areaId) : false,
+      autonomous: Game.isAutonomous ? Game.isAutonomous(areaId) : false,
       garrison: (ctx.byNation[Game.nationIndexOf(Game.getOwner(areaId))] || {}).garrison || 0,
       cap: ctx.caps[mi],
       current: pop > 0 ? (c.mov[movementName] || 0) / pop : 0,

@@ -242,8 +242,12 @@ Done in the order **M3.4 -> M3.1 -> M3.2 -> M3.3**, because the plan lists M3.4'
             where it points. Suppression stops being a boolean and becomes a trade: quiet in the
             sentiment phase, paid for in Civil Liberties. The war roll reads the force ratio, and the
             annexation preview reports it so the human and the AI see one number.
-      - [ ] **M6.5b** Autonomy grants — the other valve. Buy quiet by giving up control rather than
-            by force.
+      - [x] **M6.5b** Autonomy grants — the other valve, and the one that keeps the ground. Scales
+            the whole grievance rather than one term of it; costs revenue and Authority; reversible,
+            which is the whole reason it is not release. Stored in the Area's `attrs`, so it saves
+            for free. Offered to the AI beside release over the same ground, so the choice turns on
+            the prices. Also here: `Sim.run({ai:false})` for the two suites that ask about the world
+            engine's pacing rather than about anybody's choices — 265 of the suite's 412 seconds.
       - [ ] **M6.5c** Faction-switch — become the breakaway rather than go down with the parent.
       - [ ] **M6.5d** The AI plays toward a victory condition. Flagged at the end of M6.4 as the most
             valuable thing left in the milestone: today the human wins by default once they know the

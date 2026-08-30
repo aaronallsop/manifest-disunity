@@ -313,6 +313,7 @@ const World = (function () {
       if (dominant < 0) continue;
       const affinities = sctx.affinity[dominant];
       const occupied = sctx.occupied ? sctx.occupied[f] : 0;
+      const autonomous = sctx.autonomous ? sctx.autonomous[f] : 0;
       const garrison = nation.garrison || 0;
 
       gain.fill(0);
@@ -337,6 +338,7 @@ const World = (function () {
           authority: nation.authority,
           neighbourSum,
           occupied,
+          autonomous,
           garrison,
           cap: sctx.caps[m],
         }, tn).value;

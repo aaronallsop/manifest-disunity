@@ -222,6 +222,9 @@ export function authority(a, tune) {
       key: 'power.authority.wLosses', note: 'Areas lost, recently' },
     { label: 'Occupation', raw: occupation, norm: clamp01(occupation),
       key: 'power.authority.wOccupation', note: 'share of held ground that is foreign soil' },
+    { label: 'Self-rule', raw: a.autonomous || 0,
+      norm: a.areas > 0 ? clamp01((a.autonomous || 0) / a.areas) : 0,
+      key: 'power.authority.wAutonomy', note: 'share of held ground that governs itself' },
     { label: 'Overreach', raw: pace, norm: saturate(excess, tune.get('power.authority.overreachK')),
       key: 'power.authority.wOverreach', note: 'Areas taken per turn beyond what a state can digest' },
   ];
@@ -621,6 +624,7 @@ export function gatherAuthority(facts, turn) {
     upkeep: flow ? flow.maintenance : 0,
     areas: facts.areas,
     occupied: facts.occupied,
+    autonomous: Game.autonomousCount(facts.nid),
     gains: facts.gains,
     losses: n.lost,
     previous: n.authority,

@@ -57,8 +57,8 @@ describe('The simulator', () => {
 
   it('an override actually changes the outcome', async () => {
     // ...and the test above is therefore about isolation, not about inertness.
-    const fast = await Sim.run({ seed: 20260829, turns: 40, overrides: { 'sent.maxRise': 0.05 } });
-    const slow = await Sim.run({ seed: 20260829, turns: 40, overrides: { 'sent.maxRise': 0.004 } });
+    const fast = await Sim.run({ seed: 20260829, turns: 40, ai: false, overrides: { 'sent.maxRise': 0.05 } });
+    const slow = await Sim.run({ seed: 20260829, turns: 40, ai: false, overrides: { 'sent.maxRise': 0.004 } });
     ok(fast.summary.secessions >= slow.summary.secessions,
       `a fivefold slower sentiment produced as many secessions (${fast.summary.secessions} vs ${slow.summary.secessions})`);
     ok(fast.series[40].organisedPct > slow.series[40].organisedPct,
@@ -118,16 +118,21 @@ describe('What a sample says', () => {
   });
 });
 
+/*
+ * Also `ai: false`: these are the verdict cards from the M5 tuning pass, and
+ * every one of them asks about the world engine rather than about anybody's
+ * choices. See the note above `The tuned pacing of the world engine`.
+ */
 describe('The summary answers the questions a tuning pass asks', () => {
   it('names the first secession, or says there was none', async () => {
-    const quiet = await Sim.run({ seed: 20260829, turns: 12, overrides: { 'sent.maxRise': 0.0011 } });
+    const quiet = await Sim.run({ seed: 20260829, turns: 12, ai: false, overrides: { 'sent.maxRise': 0.0011 } });
     equal(quiet.summary.firstSecessionTurn, null, 'something seceded with sentiment barely moving');
-    const loud = await Sim.run({ seed: 20260829, turns: 40, overrides: { 'sent.maxRise': 0.06 } });
+    const loud = await Sim.run({ seed: 20260829, turns: 40, ai: false, overrides: { 'sent.maxRise': 0.06 } });
     ok(loud.summary.firstSecessionTurn > 0, 'nothing seceded even with sentiment racing');
   });
 
   it('watches the death-spiral floors', async () => {
-    const r = await Sim.run({ seed: 20260829, turns: 40 });
+    const r = await Sim.run({ seed: 20260829, turns: 40, ai: false });
     const floor = T().peek('power.floor');
     ok(r.summary.authorityFloor >= floor - 1e-9, 'Authority went below its own floor');
     ok(r.summary.influenceFloor >= floor - 1e-9, 'Influence went below its own floor');
@@ -136,21 +141,33 @@ describe('The summary answers the questions a tuning pass asks', () => {
   });
 
   it('watches the M1.6 political-spread collapse', async () => {
-    const r = await Sim.run({ seed: 20260829, turns: 60 });
+    const r = await Sim.run({ seed: 20260829, turns: 60, ai: false });
     equal(r.summary.spreadCollapsed, false,
       `the within-nation political spread collapsed (${r.summary.spread}); ` +
       'the Area grid has flattened into a nation-level scalar again');
   });
 
   it('reports the reach span, so "nothing is spreading" is visible', async () => {
-    const r = await Sim.run({ seed: 20260829, turns: 60 });
+    const r = await Sim.run({ seed: 20260829, turns: 60, ai: false });
     ok(/\d+%-\d+%/.test(r.summary.reachSpan), `the reach span reads "${r.summary.reachSpan}"`);
     const [lo, hi] = r.summary.reachSpan.split('-').map((x) => parseInt(x, 10));
     ok(hi > lo, 'every movement reached exactly the same share of its homeland');
   });
 });
 
-describe('The tuned pacing', () => {
+/*
+ * THESE RUN WITH `ai: false`, and the reason is worth stating: they are about
+ * the world ENGINE's pacing — how fast sentiment moves, when a movement can hold
+ * a country — and fifty nations annexing each other while you ask is noise
+ * rather than the subject. It is also four minutes of the suite's runtime spent
+ * simulating an AI these particular questions do not involve.
+ *
+ * What the AI does to the pacing is measured too, and it is a real effect: the
+ * first secession moves from turns 22-29 to 39-44 once nations start disturbing
+ * each other's movement cores. That belongs in tests/ai.test.js, where the AI is
+ * the subject.
+ */
+describe('The tuned pacing of the world engine', () => {
   it('the first secession lands after a player has had time to learn the board', async () => {
     /*
      * The M5.3 acceptance: "tune the West with it before going further." At the
@@ -160,7 +177,7 @@ describe('The tuned pacing', () => {
      * result of that pass.
      */
     for (const seed of [20260829, 1, 4242]) {
-      const r = await Sim.run({ seed, turns: 80 });
+      const r = await Sim.run({ seed, turns: 80, ai: false });
       const t = r.summary.firstSecessionTurn;
       ok(t === null || t >= 15,
         `at seed ${seed} the first secession is turn ${t}; the West falls apart before the player moves`);
@@ -170,7 +187,7 @@ describe('The tuned pacing', () => {
   });
 
   it('and the game still has content: something declares, and something does not', async () => {
-    const r = await Sim.run({ seed: 20260829, turns: 80 });
+    const r = await Sim.run({ seed: 20260829, turns: 80, ai: false });
     ok(r.summary.secessions >= 1, 'eighty turns and nobody left');
     const states = r.summary.states;
     ok(states.realized > 0, 'no movement got a country');
@@ -186,7 +203,7 @@ describe('The tuned pacing', () => {
      * eight turns later, and re-declared with fourteen. The claimed and founded
      * counts now agree by construction.
      */
-    const r = await Sim.run({ seed: 777, turns: 60 });
+    const r = await Sim.run({ seed: 777, turns: 60, ai: false });
     const declares = r.events.filter((e) => e.kind === 'declare');
     ok(declares.length > 0);
     for (const d of declares) {
