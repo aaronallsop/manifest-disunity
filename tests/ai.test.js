@@ -204,7 +204,14 @@ describe('A round is a round', () => {
       const out = AI.round(T(), rng);
       equal(World.getTurn() - before, 1, 'a round did not advance the world exactly once');
       equal(out.rounds, 1);
-      ok(out.turns <= seats + 1, `${out.turns} turns for a ${seats}-seat order`);
+      /*
+       * Measured against the order the round ENDS with: an action that splinters
+       * a nation inserts the newborns behind their parent, so a round can
+       * legitimately play more seats than existed when it started.
+       */
+      const ended = TurnSystem.snapshot().order.length;
+      ok(out.turns <= Math.max(seats, ended) + 1,
+        `${out.turns} turns for an order of ${seats} that ended at ${ended}`);
     }
   });
 

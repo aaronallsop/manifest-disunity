@@ -1043,12 +1043,28 @@ function renderNationPanel(nid) {
       ${renderPolitics(demo)}
     </div>
     ${renderNationEconomy(nid)}
+    ${renderMilitary(nid)}
     ${renderVictory(nid)}
     ${renderExportAccess(nid)}
 
     ${actionsHtml}
     ${renderSources('nation')}
   `;
+  /*
+   * The three military sliders always sum to 1: moving one takes the difference
+   * out of the other two in proportion, which is what `Military.allocate` does
+   * anyway. Re-rendering the whole panel on every drag would fight the slider,
+   * so only the numbers beside them are updated until the drag ends.
+   */
+  panel.querySelectorAll('.mil-set').forEach((el) => {
+    const commit = () => {
+      const alloc = {};
+      panel.querySelectorAll('.mil-set').forEach((x) => { alloc[x.dataset.role] = Number(x.value); });
+      Military.allocate(nid, alloc);
+      Game.touch({ values: true });
+    };
+    el.addEventListener('change', commit);
+  });
   panel.querySelectorAll('.act').forEach((b) =>
     b.addEventListener('click', () => {
       if (b.hasAttribute('disabled')) return;
@@ -1058,6 +1074,45 @@ function renderNationPanel(nid) {
   );
   const goto = panel.querySelector('#goto-current');
   if (goto) goto.onclick = () => { setMode('nations'); select('nation', you()); };
+}
+
+/*
+ * WHERE YOUR ARMY POINTS.
+ *
+ * Three sliders and no unit counters. The readiness bar beside each is the
+ * point: it lags the allocation, so the panel shows you what you HAVE as well as
+ * what you have asked for, and the gap between them is the cost of having
+ * changed your mind. Without showing readiness the sliders would look free.
+ */
+function renderMilitary(nid) {
+  const p = Military.posture(nid, TUNE);
+  if (!p) return '';
+  const mine = Game.isPlayer(nid);
+  const rows = Military.ROLES.map((r) => {
+    const label = r[0].toUpperCase() + r.slice(1);
+    const ready = Math.round(p.ready[r] * 100);
+    const want = Math.round(p.alloc[r] * 100);
+    return `
+      <div class="mil-row">
+        <span class="lbl">${label}</span>
+        ${mine ? `<input type="range" class="mil-set" data-role="${r}" min="0" max="100" step="5" value="${want}">`
+          : `<span class="bar"><i style="width:${want}%"></i></span>`}
+        <span class="num">${ready}%<span class="ask">${ready === want ? '' : ` &rarr; ${want}%`}</span></span>
+      </div>`;
+  }).join('');
+  const note = {
+    garrison: 'holds your own ground down, and costs civil liberties',
+    border: 'makes you expensive to attack',
+    field: 'makes your own attacks land',
+  };
+  return `
+    <div class="stat mil">
+      <div class="label">Armed forces &middot; ${Math.round(p.force.manpower / 1000)}k</div>
+      <div class="mil-note">${escapeHtml(p.force.summary)}. Upkeep <strong>${fmtGdp(p.upkeep)}</strong> / turn.</div>
+      ${rows}
+      ${mine ? `<div class="mil-note">Garrison ${escapeHtml(note.garrison)}. Border ${escapeHtml(note.border)}.
+        Field ${escapeHtml(note.field)}. Readiness follows slowly &mdash; a posture is worth more than a reaction.</div>` : ''}
+    </div>`;
 }
 
 /*

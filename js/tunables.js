@@ -914,6 +914,72 @@ export const SCHEMA = {
     label: 'Union cooldown (turns)',
     doc: 'World turns after an attempted union before a nation may propose another. Unite was the ONE action in the game with no clock on it \u2014 annex, release and changing course all have one \u2014 so a nation could re-roll the same union every turn until it landed, which makes any probability under 100% equal to 100% given enough turns. Found by the M6.3 AI on its first run: 35 of 53 nations opened by proposing a union.',
   },
+  /* ---------------- force ---------------- */
+  'liberty.wGarrison': {
+    v: -0.35, min: -1, max: 0, step: 0.01, group: 'Power',
+    label: 'Civil liberties: weight of a garrison at home',
+    doc: 'What suppression costs. A garrison buys quiet in the sentiment phase and pays for it here, in the stock that feeds the grievance driving the next movement — without which suppression is a free answer to secession and the whole valve is a button you would always press.',
+  },
+  'mil.manpowerShare': {
+    v: 0.004, min: 0, max: 0.05, step: 0.0005, group: 'Military',
+    label: 'Share of the population under arms',
+    doc: 'Four in a thousand. Roughly a peacetime standing force: enough that a large nation fields a large army and a small one cannot bluff, without turning the game into a mobilisation race.',
+  },
+  'mil.equipmentHalf': {
+    v: 60000, min: 1000, max: 400000, step: 1000, group: 'Military',
+    label: 'GDP per head at which equipment is half',
+    doc: 'Equipment SATURATES rather than scaling: the difference between a poor nation and a middling one is most of the story, and the difference between a rich one and a very rich one is very little of it. A linear term would make California\u2019s army twelve times Wyoming\u2019s before a single soldier was counted.',
+  },
+  'mil.doctrineFloor': {
+    v: 0.35, min: 0, max: 1, step: 0.01, group: 'Military',
+    label: 'Doctrine floor',
+    doc: 'A state with no authority and a population that agrees with nothing still fields something. Without a floor, a nation in crisis loses its army at the exact moment the model wants it to have a hard choice about using it.',
+  },
+  'mil.wAuthority': {
+    v: 0.6, min: 0, max: 1.5, step: 0.05, group: 'Military',
+    label: 'Doctrine: weight of Authority',
+    doc: 'The machinery \u2014 whether the state can actually get people into uniform and keep them there.',
+  },
+  'mil.wCohesion': {
+    v: 0.4, min: 0, max: 1.5, step: 0.05, group: 'Military',
+    label: 'Doctrine: weight of a people that agrees with itself',
+    doc: 'The willingness. A divided population fields a divided army.',
+  },
+  'mil.upkeepPerHead': {
+    v: 35000, min: 0, max: 1000000, step: 5000, group: 'Military',
+    label: 'Upkeep per soldier-equivalent, per turn ($)',
+    doc: 'Charged on FORCE rather than on the allocation, because the allocation is where an army points and not how big it is \u2014 you do not save money by pointing it somewhere else. This is what makes "how much force" a question rather than "as much as possible". Calibrated: at 120,000 the army ate the whole of Ohio’s opening surplus and every nation on the map ran a deficit from turn one. At 35,000 it is about a third of what a state has spare, which is a real bill rather than a death sentence.',
+  },
+  'mil.readyRise': {
+    v: 0.06, min: 0, max: 1, step: 0.01, group: 'Military',
+    label: 'Readiness gained per turn',
+    doc: 'THE COST OF CHANGING YOUR MIND. Without a rate limit the allocation is three sliders you set at the moment of use \u2014 everything to Field on the turn you invade, everything to Garrison on the turn a movement crosses the line \u2014 and a decision you can always take later is not a decision.',
+  },
+  'mil.readyFall': {
+    v: 0.12, min: 0, max: 1, step: 0.01, group: 'Military',
+    label: 'Readiness lost per turn',
+    doc: 'Faster than it is gained: an army stood down is stood down immediately, and an army worked up takes seasons.',
+  },
+  'mil.garrisonFree': {
+    v: 0.111, min: 0, max: 1, step: 0.005, group: 'Military',
+    label: 'Share of force that garrisons without suppressing',
+    doc: 'A peacetime army holds nobody down. Set to exactly the share the default even split leaves at home (a third of the force at a third readiness), so a nation that has made no military decision suppresses nothing \u2014 without it, every nation on the map quietly held its own population down from turn zero and the secession timeline moved for a world in which nobody had chosen anything.',
+  },
+  'mil.garrisonHalf': {
+    v: 200, min: 10, max: 50000, step: 25, group: 'Military',
+    label: 'Garrison per Area at which suppression is half',
+    doc: 'PER AREA, which is what stops a large empire suppressing everything at once: a garrison spread over sixty Areas is not the garrison of a nation with four, and that is exactly the difference between an occupier who can hold a province and one stretched across a continent. Calibrated against the force the model actually produces: Ohio fields 18,700 across 63 Areas, so a full garrison is roughly 300 per Area. At the first guess of 1,200 the term read 0.027 and suppression did nothing at all.',
+  },
+  'mil.warSwing': {
+    v: 0.45, min: 0, max: 1.5, step: 0.05, group: 'Military',
+    label: 'How far force moves a war',
+    doc: 'The swing between total superiority and total inferiority, applied to the civil-war score (where low is a win for the attacker). At 0.45 a prepared army roughly halves the score it would otherwise face and an unprepared one adds half again \u2014 large enough to be worth planning for, small enough that the dice still decide.',
+  },
+  'mil.suppressLiberty': {
+    v: 0.35, min: 0, max: 2, step: 0.05, group: 'Military',
+    label: 'Civil liberties lost to a full garrison',
+    doc: 'THE PRICE OF HOLDING PEOPLE DOWN, and the reason suppression is a trade rather than a free answer to secession: a garrison buys quiet now and buys the grievance that feeds the next movement.',
+  },
   /* ---------------- who you play ---------------- */
   'start.wSize': {
     v: 1.0, min: 0, max: 3, step: 0.05, group: 'Start',

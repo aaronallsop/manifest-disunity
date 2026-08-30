@@ -235,7 +235,19 @@ Done in the order **M3.4 -> M3.1 -> M3.2 -> M3.3**, because the plan lists M3.4'
       2-5x what an AI-only world produces on the reasoning that a deliberate player outperforms a
       deliberately mild AI, which is a judgement rather than a measurement and the first thing a real
       play test should revisit.
-- [ ] **M6.5** Faction-switch, military, remaining valves.
+- [ ] **M6.5** Faction-switch, military, remaining valves. Split, because it is three systems:
+      - [x] **M6.5a** `js/military.js` — force as an allocation across Garrison / Border / Field,
+            derived from population, wealth per head and how well the state governs. Readiness lags
+            the allocation (the whole cost of changing your mind); upkeep is charged on force, not on
+            where it points. Suppression stops being a boolean and becomes a trade: quiet in the
+            sentiment phase, paid for in Civil Liberties. The war roll reads the force ratio, and the
+            annexation preview reports it so the human and the AI see one number.
+      - [ ] **M6.5b** Autonomy grants — the other valve. Buy quiet by giving up control rather than
+            by force.
+      - [ ] **M6.5c** Faction-switch — become the breakaway rather than go down with the parent.
+      - [ ] **M6.5d** The AI plays toward a victory condition. Flagged at the end of M6.4 as the most
+            valuable thing left in the milestone: today the human wins by default once they know the
+            table.
 
 ## M7 — Depth and widen
 

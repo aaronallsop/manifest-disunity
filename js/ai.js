@@ -274,6 +274,35 @@ const AI = (function () {
   /* ------------------------------------------------------------------ */
 
   /**
+   * WHERE THIS NATION POINTS ITS ARMY, decided from its own situation.
+   *
+   * Not an intent, and deliberately not part of the move list: an allocation is
+   * a standing posture rather than a turn's action, and readiness is
+   * rate-limited precisely so that it cannot be spent as one. It is set every
+   * turn, and the rate limit means it takes several turns to mean anything —
+   * which is the same reason it is worth setting early.
+   *
+   * The shape is the same argument the score uses: strain says hold, and a
+   * nation whose best move is an annexation wants the army pointed at it.
+   */
+  function allocate(nid, tune, best) {
+    const t = tune || window.TUNE;
+    const st = strain(nid, t);
+    const attacking = best && best.intent && best.intent.type === 'annex' ? 1 : 0;
+    const occupied = Game.occupiedCount(nid);
+    const areas = Math.max(1, Game.getNation(nid).counties.size);
+    /*
+     * Three pulls, and none of them is a new tunable: ground you are holding
+     * against its will wants a garrison, ground you are about to take wants a
+     * field army, and everything else is border. A nation with no crisis and no
+     * plan sits mostly on its border, which is what a peacetime army does.
+     */
+    const garrison = 0.15 + 0.55 * Math.max(st, occupied / areas);
+    const field = 0.15 + 0.45 * attacking;
+    return Military.allocate(nid, { garrison, field, border: Math.max(0.1, 1 - garrison - field) });
+  }
+
+  /**
    * Every move this nation could make, scored, best first.
    *
    * Exposed because it is the honest answer to "why did Texas do that", and
@@ -357,6 +386,9 @@ const AI = (function () {
   function takeTurn(nid, tune, rng) {
     if (!Game.getNation(nid)) return { nid, intent: null, result: null };
     const intent = chooseMove(nid, tune, rng);
+    // The army is pointed every turn, whether or not anything else happens: a
+    // posture is not an action and a nation that passes still has one.
+    allocate(nid, tune, intent ? { intent } : null);
     if (!intent) return { nid, intent: null, result: null };
     /*
      * A move the policy proposed but the rules refuse is a PASS, not an
@@ -456,5 +488,5 @@ const AI = (function () {
     return out;
   }
 
-  return { chooseMove, setPolicy, deliberate, score, strain, pass, takeTurn, sweep, round };
+  return { chooseMove, setPolicy, deliberate, score, strain, allocate, pass, takeTurn, sweep, round };
 })();

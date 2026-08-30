@@ -83,10 +83,23 @@ const Sentiment = (function () {
     const pull = term('Neighbours', a.neighbourSum, Math.tanh(k * (a.neighbourSum || 0)),
       'sent.wPull', 'how strongly the surrounding Areas already hold this movement');
 
-    // SUPPRESSION — subtracted after the multiplier, because a garrison holds
-    // ground down whatever the population thinks of it.
-    const suppression = term('Suppression', a.occupied ? 1 : 0, a.occupied ? 1 : 0,
-      'sent.wSuppression', 'occupying force stationed here');
+    /*
+     * SUPPRESSION — subtracted after the multiplier, because a garrison holds
+     * ground down whatever the population thinks of it.
+     *
+     * It was a BOOLEAN until M6.5: occupied ground was held down and everything
+     * else was not, so the only way to answer a rising movement was to give the
+     * ground away. It is now `Military.garrisonPressure`, which is continuous,
+     * costs money every turn, and costs Civil Liberties — which feed the
+     * grievance that makes the next movement. A garrison buys quiet now and
+     * pays for it later, and that is the trade the term exists to offer.
+     *
+     * Occupied ground still counts on its own: a foreign garrison is not the
+     * same thing as a domestic one, and the model already knew that.
+     */
+    const held = Math.max(a.occupied ? 1 : 0, a.garrison || 0);
+    const suppression = term('Suppression', held, held,
+      'sent.wSuppression', a.occupied ? 'occupying force stationed here' : 'garrison stationed here');
 
     const base = clamp01(a.base);
     const raw = base * (grievance + pull) + suppression; // suppression's weight is negative
@@ -138,6 +151,10 @@ const Sentiment = (function () {
         // "How powerful is the nation holding me": its share of the largest
         // nation's weight. A weak state invites secession; a superpower does not.
         power: maxWeight > 0 ? clamp01(w / maxWeight) : 0,
+        // How hard this nation is holding its own ground down (M6.5). Computed
+        // once per nation per turn rather than per Area, because it is a
+        // property of the nation and its Area count, not of the Area.
+        garrison: typeof Military !== 'undefined' ? Military.garrisonPressure(nid, tune) : 0,
       };
     }
 
@@ -208,6 +225,7 @@ const Sentiment = (function () {
       authority: nation ? nation.authority : 0.5,
       neighbourSum,
       occupied: Game.isOccupied ? Game.isOccupied(areaId) : false,
+      garrison: (ctx.byNation[Game.nationIndexOf(Game.getOwner(areaId))] || {}).garrison || 0,
       cap: ctx.caps[mi],
       current: pop > 0 ? (c.mov[movementName] || 0) / pop : 0,
     }, t, true);   // collect: this IS the explanation

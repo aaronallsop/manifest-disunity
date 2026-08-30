@@ -1345,8 +1345,16 @@ const Game = (function () {
     }
 
     const administration = n.counties.size * base;
-    const maintenance = gdp * (gov[n.gov.type] ?? gov.Republic) + administration + surcharge;
-    return { income, maintenance, administration, occupation: surcharge, occupied: occ, delta: income - maintenance };
+    /*
+     * AND THE ARMY IS ON THE BOOKS (M6.5). Charged on force rather than on where
+     * that force points, which is what makes "how much" a question rather than
+     * "as much as possible" — and what makes a nation that has overspent on
+     * troops feel it in every other decision it takes.
+     */
+    const army = typeof Military !== 'undefined' ? Military.upkeep(nid) : 0;
+    const maintenance = gdp * (gov[n.gov.type] ?? gov.Republic) + administration + surcharge + army;
+    return { income, maintenance, administration, occupation: surcharge, army, occupied: occ,
+             delta: income - maintenance };
   }
   function tickTreasuries() {
     for (const [nid, n] of nations) n.treasury += treasuryFlow(nid).delta;

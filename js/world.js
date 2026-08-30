@@ -313,6 +313,7 @@ const World = (function () {
       if (dominant < 0) continue;
       const affinities = sctx.affinity[dominant];
       const occupied = sctx.occupied ? sctx.occupied[f] : 0;
+      const garrison = nation.garrison || 0;
 
       gain.fill(0);
       let totalGain = 0;
@@ -336,6 +337,7 @@ const World = (function () {
           authority: nation.authority,
           neighbourSum,
           occupied,
+          garrison,
           cap: sctx.caps[m],
         }, tn).value;
 
@@ -831,6 +833,10 @@ const World = (function () {
        */
       lastEvents = phaseSecession(tn, rng);
       Game.refreshGovernments(turn + 1);
+      // Readiness follows the allocation, rate-limited. Before the power stocks,
+      // because a garrison that came up this turn should be holding ground down
+      // when Civil Liberties are computed at the end of it.
+      Military.tick(tn);
       Movements.refreshStates(tn); // derived from the map, so it follows the writeback
       Game.tickTreasuries(); // income minus maintenance, on this turn's updated GDP
       Market.update(tn);     // reprice every resource from live supply vs demand

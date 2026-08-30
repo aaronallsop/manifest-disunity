@@ -127,6 +127,8 @@ const Moves = (function () {
 
     const shell = Game.blueShell(nid);
     const cost = annexCost(targets, shell, tune);
+    const against = [...new Set(targets.map((f) => Game.getOwner(f)).filter((o) => o && o !== nid))];
+    const forceMult = Military.warMultiplier(nid, against, tune);
     const affordable = n.treasury >= cost;
 
     const before = Game.nationDemographics(nid);
@@ -138,12 +140,15 @@ const Moves = (function () {
       ok: affordable,
       reason: affordable ? null
         : `Mobilising costs ${Math.round(cost / 1e9)}bn and the treasury holds ${Math.round(Math.max(0, n.treasury) / 1e9)}bn.`,
-      cost, shell, targets, war,
+      cost, shell, targets, war, forceMult,
       effects: [
         { label: 'Areas', value: targets.length },
         { label: 'Population', value: added.pop },
         { label: 'GDP', value: added.gdp },
         { label: 'Civil war', value: war.triggered ? 1 : 0 },
+        // Below 1 when your Field beats their Border. The human sees it as
+        // "your army is ready"; the AI scores it. Same number.
+        { label: 'Force', value: forceMult },
       ],
     };
   }
@@ -168,8 +173,16 @@ const Moves = (function () {
     const before = Game.nationDemographics(nid);
     const added = Game.demographics(targets);
     const after = Game.demographics([...n.counties, ...targets]);
-    const res = CivilWar.resolve(before, added, after,
-      { scoreMult: 1 + (plan.shell || 0), rng, tune: T(tune) });
+    /*
+     * The blue-shell surcharge AND the force ratio. `scoreMult` scales the
+     * civil-war score, where low is a win for the attacker — so a prepared
+     * Field army makes the same annexation go better and an unprepared one makes
+     * it go worse. Before M6.5 the only input to a war was how big you were.
+     */
+    const res = CivilWar.resolve(before, added, after, {
+      scoreMult: (1 + (plan.shell || 0)) * Military.warMultiplier(nid, Object.keys(victims), tune),
+      rng, tune: T(tune),
+    });
 
     let taken = targets, born = [];
     Game.batch(() => {

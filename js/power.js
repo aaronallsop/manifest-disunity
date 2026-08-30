@@ -463,6 +463,14 @@ export function liberties(a, tune) {
       note: 'how split the population is, apart from how far it sits from the government' },
     { label: 'Occupation', raw: occupation, norm: clamp01(occupation),
       key: 'liberty.wOccupation', note: 'share of held ground governed as occupied territory' },
+    /*
+     * THE PRICE OF HOLDING PEOPLE DOWN. A garrison buys quiet in the sentiment
+     * phase and pays for it here, in the stock that feeds the grievance driving
+     * the next movement. Without this, suppression is a free answer to secession
+     * and the whole valve is a button you would always press.
+     */
+    { label: 'Garrison', raw: a.garrison || 0, norm: clamp01(a.garrison || 0),
+      key: 'liberty.wGarrison', note: 'troops stationed among your own people' },
   ];
 
   const record = build(tune.get('liberty.base'), terms, tune, libertySummary);
@@ -691,6 +699,7 @@ export function gatherLiberties(facts, turn) {
     perCapita: facts.perCapita,
     areas: facts.areas,
     occupied: facts.occupied,
+    garrison: typeof Military !== 'undefined' ? Military.garrisonPressure(facts.nid) : 0,
     govType: n.gov ? n.gov.type : 'Republic',
     previous: n.liberties,
   };

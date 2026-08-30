@@ -530,3 +530,13 @@ svg.hide-clines .area-borders { display: block; }
 .tier-punishing { color: #d99a5b; }
 .tier-testing { color: #cfc46a; }
 .tier-comfortable { color: #6fbf73; }
+
+/* ---- where the army points ------------------------------------------ */
+.mil .mil-row { display: flex; align-items: center; gap: 8px; font-size: 12px; padding: 2px 0; }
+.mil .mil-row .lbl { width: 62px; color: var(--muted); }
+.mil .mil-row .bar { flex: 1; height: 6px; background: var(--panel-bg-2); border-radius: 3px; overflow: hidden; }
+.mil .mil-row .bar i { display: block; height: 100%; background: var(--accent); }
+.mil .mil-row input[type=range] { flex: 1; accent-color: var(--accent); }
+.mil .mil-row .num { width: 74px; text-align: right; font-variant-numeric: tabular-nums; }
+.mil .mil-row .ask { color: var(--muted); }
+.mil .mil-note { font-size: 11px; color: var(--muted); line-height: 1.5; margin: 4px 0 6px; }
