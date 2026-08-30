@@ -1,7 +1,7 @@
 # Nation States — Design
 
 *The single source of truth for what this game is and how it works, **as it actually is today**.
-Last rewritten at the end of **M3** of `docs/REBUILD-PLAN.md`. If this document and the code
+Last rewritten at the end of **M4** of `docs/REBUILD-PLAN.md`. If this document and the code
 disagree, the document is a bug — say so and fix it.*
 
 *What comes next lives in `docs/REBUILD-PLAN.md`, not here. This file describes the present.*
@@ -467,7 +467,7 @@ from it if it is not — and when neither is possible, the reason why.
 
 ---
 
-## 7. Emergent movements
+## 7. Movements, sentiment and secession
 
 Twenty-four regional movements spawn **once, at setup**, from `data/parties.json` (baked by
 `build_parties.py`, whose region table is the authored content). Every state has at least one
@@ -492,10 +492,130 @@ depend on the insertion order of the movement names. Population growth is **neut
 movements: they grow with their ideology and end the turn holding exactly the fraction of it they
 started with, to 2.2e-16.
 
-**Known limitation, by design, until M4:** a movement can only ever exist where it spawned. There
-is no diffusion term, so nothing spreads. The *floor* in `phaseCleanup` is correspondingly inert —
-under growth-only dynamics the smallest reachable share is above it — though the ideology clamp
-beside it runs every turn and is load-bearing. The code says so at both.
+### 7.1 What a Movement is
+
+```
+{ id, name, ideology, type, homeland[], core[], seed[], growthCap, goals[], sponsor, state }
+```
+
+- **homeland** — every Area it *can* exist in. Geography decides where.
+- **core** — the Areas it must all hold to declare. **Derived** in the bake as the smallest set of
+  homeland Areas holding 60% of its people, never fewer than three. Hand-authoring twenty-four county
+  lists is data entry that goes stale the moment `areas.json` is re-baked; the derivation is the
+  principled reading of "heartland" and produces the right answers by construction — Deseret's core
+  is the Wasatch Front (4 Areas of 41), Cascadia's is the Portland–Seattle corridor (25 of 164).
+- **seed** — where it actually started, which is its core. Everything else in the homeland is ground
+  it has to win, and that gap is the room the diffusion term works in.
+- **growthCap** — its own ceiling, 0.25 for a nuisance and 0.60 for a country in waiting. One number
+  per movement is what makes "a fringe that stays fringe" and "a country in waiting" different facts
+  rather than the same fact at different times.
+- **state** — `latent → rising → armed → declared → realized`, **read off the map every turn**, never
+  set by an event. A machine written by events goes stale the first time one is missed: a movement
+  whose nation is conquered would stay `realized` forever.
+
+Cascadia, Deseret, Greater Idaho and Jefferson are **deterministic** — they are the spine of the West
+slice, and a run that happens to have no Deseret in it is not the scenario.
+
+### 7.2 Sentiment
+
+```
+base        = affinity(the Area's leading ideology, the movement's)          0..1
+grievance   = w_qol   * (1 - quality of life)
+            + w_lib   * (1 - civil liberties)
+            + w_power * (1 - how powerful the nation holding it is)
+            + w_auth  * (1 - that nation's authority)
+pull        = w_nbr   * tanh(k * SUM over neighbours of their share)
+suppression = w_sup   * garrison pressure
+
+target      = clamp01( base * (grievance + pull) - suppression )
+```
+
+**`base` is multiplicative**, and that is the design rule made mechanical: *geography defines where a
+movement can exist; ideology defines how strong it is there*. Misgovern a Democratic Socialist city
+and you do not get Deseret, you get somebody else. Additive grievance would let bad government alone
+produce any movement anywhere, collapsing twenty-four regional factions into one national discontent
+meter.
+
+**`pull` is the diffusion term**, read from the CSR graph and from `snap` — never from `next`, which
+would let a movement cross the map in one turn in whatever order the loop ran. `tanh` so that one
+committed neighbour matters a great deal and the tenth matters little: a movement spreads along a
+frontier, it does not multiply by how many friends it already has.
+
+**The change is rate-limited, not the value** — the same discipline as the power stocks. A region
+takes years to turn.
+
+**Sentiment is the share itself.** `mov[name]` is already the head count a movement has organised and
+its share of the Area is exactly what sentiment means; a second quantity beside it would be two
+representations of one fact needing two stacked rate limits. Nothing new goes in the save.
+
+**The explanation is the calculation.** `Sentiment.target()` takes a `collect` flag: the phase passes
+false and gets the number, `Sentiment.explain(area, movement)` passes true and gets the six rows.
+One implementation, the same expressions in the same order, so the "why did Salt Lake jump?" answer
+can never be a second drifting model of the model. Storing the factors instead would be ~170,000
+objects a turn thrown away.
+
+Measured over 60 turns: Deseret spreads from its 4-Area core to all 41 of its homeland and runs to
+its 0.60 cap; A Free Texas 11 → 104; the New Confederacy 100 → 536. And the model **discriminates** —
+Cascadia's peak *falls* 0.176 → 0.109 and El Paso United's 0.166 → 0.075, because both sit in
+well-governed places whose leading ideology is a poor match. A suite test demands that at least one
+movement lose ground, because a model in which everything rises is one dial wearing six labels.
+
+### 7.3 Secession, in two tiers
+
+- **Tier 2, discrete.** A movement whose core is *entirely* over `secession.countyThreshold`
+  **declares**: its over-threshold Areas break away as a nation, through the `Game.breakApart` +
+  `TurnSystem.insertAfter` machinery that already existed for civil wars.
+- **Tier 1, continuous.** Once that nation exists, further Areas that cross the threshold **defect**
+  to it along its frontier, at most a few a turn.
+
+The two tiers have deliberately distinct jobs: **declaring is how a movement becomes a country;
+defecting is how that country grows.** Letting tier 1 create nations too — which the plan allows —
+turns the map to confetti, because at a 0.40 threshold with caps up to 0.60 dozens of Areas sit over
+the line at once.
+
+**Independence has a grace period and a price**, opposite in sign and different in duration. A nation
+founded this turn has no age, no tenure and no reserves, so *every* other Authority term reads zero:
+without a honeymoon it would be the weakest government on the board on the day of its founding and
+would immediately start shedding the Areas that just fought to join it. The honeymoon is a decaying
+Authority **term**, so a player can watch the reason expire. Against it, a proportional GDP cut —
+institutions, contracts and trade routes all break at once.
+
+The ground a nation is *born* holding is not ground it *took*: conquest is filtered by **reason**
+(`annex` and `war` only), or a movement declaring with 39 Areas is scored as having blitzed 39 Areas
+on the day it was founded.
+
+### 7.4 The two release valves
+
+- **Voluntary release** now needs a **recipient, not a target**. A neighbour accepts a fragment if it
+  is politically compatible, if the two nations have a live trade relationship, or if it is small
+  enough that any territory beats ceasing to exist. One that refuses does not receive, and the Areas
+  stay where they were. Without the guardrail, releasing counties is a way to *dump* them: hand a
+  hostile neighbour three Areas full of a movement it cannot govern and you have exported your
+  secession problem for free.
+- **Change course (appeasement)** switches `gov.rulingIdeology`, and needed almost no machinery
+  because Civil Liberties is already a function of how far the governed sit from the governing.
+  Nobody wrote "calms the aligned region and angers another" — it is what the existing terms say.
+  Measured, Oklahoma switching Republican → Democrat: alignment at home **0.9338 → 0.6683**, civil
+  liberties **0.733 → 0.653**. Which also shows it is a real trade: appeasing a minority alienates
+  the majority you had.
+
+  Guarded by a mandate threshold, a treasury cost scaled by how far you move on the axes, and an
+  Authority hit applied to the **stock** rather than the target. And **a nation that has chosen keeps
+  its choice**: `refreshGovernments` tracks the plurality only for nations that have never
+  intervened, so changing course is a commitment rather than a toggle — and a government can end up
+  badly out of step with its own people, which is exactly the pressure the model exists to express.
+
+### 7.5 Occupation costs more where it is resented
+
+```
+upkeep(a) = base * (1 + w * hostility(a)) * (1 + n_occupied^alpha)
+```
+
+Two multipliers doing two jobs. The **count** term is superlinear, so past a point conquest stops
+paying for itself whatever the locals think — 25 occupied Areas doubles their upkeep, 100 costs ~5×,
+400 costs ~24×. The **hostility** term is per Area, read straight off the strongest organised movement
+share, and it is what makes *which* ground you took matter as much as how much. Before sentiment
+existed there was nothing to read and this hook could not have been written.
 
 ---
 
@@ -507,6 +627,9 @@ beside it runs every turn and is load-bearing. The code says so at both.
   Economy — each with a legend. Political colours each Area by its **leading ideology** and the
   panel shows the full six-way stacked bar with a derived coalition line and the nation's position
   on the two axes.
+- **Movement state is on the nation panel** beside each movement's share, because a movement at 12%
+  that has taken its whole core is a different situation from one at 30% that has not, and the
+  percentage alone cannot say which.
 - **Seven leaderboard sorts**: population, GDP, ideology, and one per power stock. A stock you can
   only read one nation at a time is half a feature — the interesting question about Authority is
   never "what is California's" but "who is weakest, and who is climbing" — so the power columns
@@ -571,9 +694,9 @@ server, and the flash says which of the two happened.
 
 ## 11. Testing
 
-`tests/run.html` runs every suite in the browser; **382 tests across 66 suites, all green, in about
-24 seconds** (41 seconds before the columnar conversion, on a suite that boots the world some four
-hundred times). The files are plain ES modules with no dependencies, written so they run under
+`tests/run.html` runs every suite in the browser; **447 tests across 80 suites, all green, in about
+73 seconds** — the M4 suites play tens of thousands of world turns between them, which is the cost of
+testing a model whose interesting behaviour takes forty turns to appear. The files are plain ES modules with no dependencies, written so they run under
 `node --test` unchanged.
 
 What is pinned: the model invariants (sums, ownership consistency, save round-trip, same-seed
@@ -602,17 +725,17 @@ Three habits are worth stating, because each was learned by being bitten:
 Listed so nobody mistakes an absence for a bug. Each is a milestone in
 `docs/REBUILD-PLAN.md`.
 
-- **Movements cannot spread.** A movement exists only where it spawned; there is no diffusion
-  term. The four minority ideologies therefore hold ground but do not yet *lead* an Area — after 30
-  turns the map is still Republican or Democrat everywhere. That is the expected shape at ~20%
-  organised and it is M5's dial to turn, but it is the number to watch: a map where four of the six
-  ideologies can never take an Area is a map with two ideologies and four decorations. *(M4.2, M5)*
-- **No Area-level sentiment and no two-tier secession.** The four power stocks are per NATION.
-  M4.2's grievance wants QoL and liberty satisfaction per **Area** — the economy bake is already per
-  Area, so that is a change of scope rather than of model. *(M4)*
+- **Nothing is tuned yet.** The West breaks apart *fast*: measured, three movements declare by turn
+  10 and the map is at 53 nations by turn 40. That is the whole reason M5 comes next — "tune the West
+  with it" — and it is the first number the simulator should be pointed at. *(M5.3)*
+- **The power stocks are still per NATION**, so sentiment's grievance terms are uniform across
+  everything a nation owns. QoL and liberty satisfaction per **Area** would give the diffusion term
+  a real gradient to run along; the economy bake is already per Area, so that is a change of scope
+  rather than of model. *(M7)*
 - **No suppression, no coalitions, no military.** Which is why Authority is missing its failed-
-  suppression and coalition-pressure terms and Influence its treaty terms. *(M4, M6)*
-- **No player identity, no AI, no win or lose condition.** You operate all 51 seats, and a nation
+  suppression and coalition-pressure terms, Influence its treaty terms, and sentiment's suppression
+  term reads occupation because occupation is the only garrison the model has. *(M6)*
+- **No player identity, no AI, no win or lose condition.** You operate every seat, and a nation
   conquered out of existence disappears without comment. *(M6)*
 - **No event ledger.** An action's only output is a six-second toast, so there is nothing for a
   phase to append to and nothing to write a turn summary from. *(M5.1)*

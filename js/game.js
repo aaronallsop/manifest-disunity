@@ -1229,6 +1229,25 @@ const Game = (function () {
     return { ok: true, from: Ideology.idAt(from), to: ideologyId, cost, share, distance };
   }
 
+  /**
+   * How hostile an Area is to whoever holds it, 0..1.
+   *
+   * The strongest organised movement's share of it. A movement IS opposition to
+   * the state that governs the Area — that is what M4.1 made them — so the share
+   * it has organised is the readiest measure of how expensive the place is to
+   * sit on. Nothing new is stored: this reads the sentiment M4.2 already keeps.
+   */
+  function hostility(f) {
+    const c = county[cid(f)];
+    if (!c) return 0;
+    let pop = 0;
+    for (let i = 0; i < c.pop.length; i++) pop += c.pop[i];
+    if (pop <= 0) return 0;
+    let worst = 0;
+    for (const m in c.mov) { const s = c.mov[m] / pop; if (s > worst) worst = s; }
+    return worst > 1 ? 1 : worst;
+  }
+
   /* ---- treasury: income (from GDP) minus maintenance, ticked once per world turn ---- */
   function treasuryFlow(nid) {
     const n = nations.get(nid);
@@ -1238,12 +1257,36 @@ const Game = (function () {
     const income = gdp * T('econ.taxRate');
     const base = T('econ.areaUpkeep');
 
-    // Occupation is SUPERLINEAR in how much foreign ground you sit on, so past a
-    // point conquest stops paying for itself. Anti-snowball brake #2: holding 25
-    // occupied Areas doubles their upkeep, 100 costs ~5x, 400 costs ~24x.
+    /*
+     * OCCUPATION COSTS MORE WHERE IT IS RESENTED (M4.5).
+     *
+     *   upkeep(a) = base * (1 + hostility(a)) * (1 + n_occupied^alpha)
+     *
+     * Two independent multipliers doing two different jobs. The COUNT term is
+     * superlinear, so past a point conquest stops paying for itself whatever the
+     * locals think — anti-snowball brake #2, and holding 25 occupied Areas
+     * doubles their upkeep, 100 costs ~5x, 400 costs ~24x. The HOSTILITY term is
+     * per Area, and it is what makes *which* ground you took matter as much as
+     * how much: sitting on a place that is 50% organised against you is not the
+     * same expense as sitting on a place that shrugged.
+     *
+     * Hostility is read straight off the sentiment the model already maintains —
+     * the strongest movement share in that Area — so this is one helper and no
+     * new state. Before M4.2 there was no sentiment to read and the hook could
+     * not have been written.
+     */
     const occ = occupiedCount(nid);
     const ref = T('econ.occupationRef');
-    const surcharge = occ ? occ * base * Math.pow(occ / ref, T('econ.occupationAlpha')) : 0;
+    const countMult = occ ? Math.pow(occ / ref, T('econ.occupationAlpha')) : 0;
+    let surcharge = 0;
+    if (occ) {
+      const w = T('econ.occupationHostility');
+      for (const f of n.counties) {
+        const c = county[f];
+        if (!c || c.st === n.homeSt) continue;      // its own soil is not occupied
+        surcharge += base * (1 + w * hostility(f)) * countMult;
+      }
+    }
 
     const administration = n.counties.size * base;
     const maintenance = gdp * (gov[n.gov.type] ?? gov.Republic) + administration + surcharge;
@@ -1405,6 +1448,7 @@ const Game = (function () {
     treasuryFlow,
     tickTreasuries,
     occupiedCount,
+    hostility,
     rulingBloc,
     earn,
     areaExport,

@@ -509,6 +509,11 @@ export const SCHEMA = {
     label: 'Occupation cost exponent',
     doc: 'Superlinear exponent on the number of occupied Areas, so conquest stops paying for itself. Anti-snowball brake #2.',
   },
+  'econ.occupationHostility': {
+    v: 1.6, min: 0, max: 10, step: 0.1, group: 'Economy',
+    label: 'How much local hostility multiplies occupation upkeep',
+    doc: 'upkeep(a) = base * (1 + this * hostility(a)) * (1 + n^alpha), where hostility is the strongest organised movement share in that Area. The COUNT term is what stops conquest paying for itself at scale; this term is what makes WHICH ground you took matter as much as how much. Sitting on a place 50% organised against you is not the same expense as sitting on one that shrugged. Before M4.2 there was no sentiment to read and the hook could not have been written.',
+  },
   'econ.occupationRef': {
     v: 25, min: 1, max: 500, step: 1, group: 'Economy',
     label: 'Occupation reference size (Areas)',

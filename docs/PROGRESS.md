@@ -162,10 +162,9 @@ Done in the order **M3.4 -> M3.1 -> M3.2 -> M3.3**, because the plan lists M3.4'
       recomputing rather than anything scripted (D91). Two bugs: the refresh stomping a deliberate
       choice (D92) and the cooldown reading the wrong clock (D93). Measured live, Oklahoma
       Republican -> Democrat: alignment at home 0.93 -> 0.67, liberties 0.73 -> 0.65.
-- [ ] **M4.5** Sentiment-scaled occupation cost.
-
-## M5 — Instrumentation
-
+- [x] **M4.5** Occupation upkeep scaled by local hostility: `base * (1 + w*hostility) * (1 + n^alpha)`.
+      The count term is the anti-snowball brake; the hostility term is what makes WHICH ground you
+      took matter as much as how much. One helper, no new state — it reads the sentiment M4.2 keeps.
 - [ ] **M5.1** The event ledger.
 - [ ] **M5.2** Developer dashboard.
 - [ ] **M5.3** 50-turn step-through simulator.
@@ -201,9 +200,15 @@ Done in the order **M3.4 -> M3.1 -> M3.2 -> M3.3**, because the plan lists M3.4'
 *(Updated as work proceeds — what is done, what is next, what was learned that is not yet
 written down elsewhere.)*
 
-**M0, M1, M2 and M3 complete.** 382 tests across 66 suites green at `tests/run.html` in ~24s,
+**M0-M4 complete.** 447 tests across 80 suites green at `tests/run.html` in ~73s,
 `build/validate.py` reports 0 errors, and the game loads, plays and saves with a clean console.
-`DESIGN.md` rewritten at the M3 close, including a new section 4.1 on the four power stocks.
+`DESIGN.md` rewritten at the M4 close: section 4.1 is the four power stocks, section 7 is movements,
+sentiment and two-tier secession.
+
+Verified at the M4 close: 40 world turns through the real Pass button produced three unscripted
+breakaways (Deseret 39 Areas, Alaskan Independence 23, Greater Idaho 17), movement states spread
+across all five values, Deseret paying $288M a turn to occupy 12 Areas beyond its homeland, and the
+turn order in sync with the roster at 53.
 
 Verified end to end at the M2 close: fresh boot -> world turns driven through the real Pass button
 -> autosave to `data/state.json` -> reload the page -> resumed at the same turn, population, seed
@@ -215,7 +220,7 @@ Performance, measured on the real map rather than predicted: a world turn 24.7 -
 phases 12.4 -> 2.8 ms, political drift 8.0 -> 2.0 ms, a 50-turn simulator run 1,237 -> 466 ms. The
 columnar store is 173 KB and the adjacency graph 43.5 KB.
 
-Next: **M4.1** (`js/movements.js`: the Movement record, and the West slice's homelands).
+Next: **M5.1** (the event ledger — one append-only structure serving four features).
 
 Open, carried into M2.3: after 21 turns no Area is yet LED by a minority ideology (Rep 1,288 /
 Dem 388 of 1,676). That is the expected shape at 11% organised movements and it is M5's dial to

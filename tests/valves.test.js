@@ -259,3 +259,81 @@ describe('Releasing counties has a recipient, not a target', () => {
     ok(desperate >= 1, 'the desperate threshold is off, so this valve has no floor');
   });
 });
+
+describe('Occupation costs more where it is resented (M4.5)', () => {
+  it('hostility is the strongest organised movement in an Area', async () => {
+    await bootWorld({ seed: SEED });
+    const rec = Movements.get('Deseret');
+    const f = rec.core[0];
+    const c = Game.county[f];
+    let pop = 0;
+    for (let i = 0; i < c.pop.length; i++) pop += c.pop[i];
+    close(Game.hostility(f), (c.mov.Deseret || 0) / pop, 1e-9);
+    // an Area nobody has organised is not hostile
+    const quiet = Object.keys(Game.county).find((x) => Object.keys(Game.county[x].mov).length === 0);
+    if (quiet) equal(Game.hostility(quiet), 0);
+    equal(Game.hostility('nowhere'), 0, 'an unknown Area should be 0, not NaN');
+  });
+
+  it('two nations holding the same amount of foreign ground pay differently', async () => {
+    /*
+     * The point of the term: WHICH ground you took matters as much as how much.
+     * Same count, same alpha, different local hostility.
+     */
+    await bootWorld({ seed: SEED });
+    const take = (nid, from, n) => {
+      const areas = [...Game.getNation(from).counties].slice(0, n);
+      Game.moveCounties(areas, nid, { reason: 'annex' });
+      return areas;
+    };
+    const calm = take('16', '30', 6);   // Idaho takes Montana
+    const angry = take('49', '32', 6);  // Utah takes Nevada
+    // make the second batch hostile and the first quiet
+    for (const f of calm) Game.county[f].mov = {};
+    const idx = Movements.ideologyIndexOf('Deseret');
+    for (const f of angry) {
+      const c = Game.county[f];
+      let pop = 0;
+      for (let i = 0; i < c.pop.length; i++) pop += c.pop[i];
+      let others = 0;
+      for (let i = 0; i < c.pop.length; i++) if (i !== idx) others += c.pop[i];
+      const take2 = Math.min(pop * 0.5, others);
+      const k = others > 0 ? 1 - take2 / others : 1;
+      for (let i = 0; i < c.pop.length; i++) if (i !== idx) c.pop[i] *= k;
+      c.pop[idx] += take2;
+      c.mov = { Deseret: pop * 0.5 };
+    }
+
+    const quietBill = Game.treasuryFlow('16').occupation;
+    const angryBill = Game.treasuryFlow('49').occupation;
+    equal(Game.treasuryFlow('16').occupied, Game.treasuryFlow('49').occupied,
+      'the two nations do not hold the same amount of foreign ground; the test proves nothing');
+    ok(angryBill > quietBill * 1.3,
+      `six quiet Areas cost ${Math.round(quietBill / 1e6)}M and six hostile ones ` +
+      `${Math.round(angryBill / 1e6)}M; hostility is not reaching the bill`);
+  });
+
+  it('is still superlinear in the count, whatever the locals think', async () => {
+    await bootWorld({ seed: SEED });
+    const per = (n) => {
+      const areas = [...Game.getNation('32').counties].concat([...Game.getNation('41').counties]).slice(0, n);
+      Game.moveCounties(areas, '06', { reason: 'annex' });
+      for (const f of areas) Game.county[f].mov = {};   // hold hostility at zero
+      const flow = Game.treasuryFlow('06');
+      return flow.occupied ? flow.occupation / flow.occupied : 0;
+    };
+    const few = per(4);
+    await bootWorld({ seed: SEED });
+    const many = per(24);
+    ok(many > few * 1.5,
+      `per-Area occupation cost went ${Math.round(few / 1e6)}M at 4 Areas to ${Math.round(many / 1e6)}M at 24; ` +
+      'the anti-snowball brake is linear');
+  });
+
+  it('a nation holding only its own soil pays no occupation at all', async () => {
+    await bootWorld({ seed: SEED });
+    const flow = Game.treasuryFlow('49');
+    equal(flow.occupied, 0);
+    equal(flow.occupation, 0, 'a nation was charged for occupying itself');
+  });
+});
