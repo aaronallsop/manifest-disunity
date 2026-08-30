@@ -29,8 +29,10 @@ describe('The movement definitions', () => {
   it('every one carries an id, a type, a cap, goals, a homeland and a core', async () => {
     const { raw } = await bootWorld({ seed: SEED });
     const defs = raw.partyDefs;
-    // 24 through M7.11, and 29 since M7.12 gave the east five of its own.
-    equal(Object.keys(defs).length, 29);
+    // 24 through M7.11; 29 when M7.12 gave the east five of its own; 32 at the
+    // M7 close, when the west's own holes were filled and the last Area that
+    // could never receive a movement was closed.
+    equal(Object.keys(defs).length, 32);
     for (const [name, d] of Object.entries(defs)) {
       ok(/^[a-z0-9-]+$/.test(d.id), `"${name}" has no machine id (got ${d.id})`);
       ok(d.type && d.type.length > 3, `"${name}" has no type`);

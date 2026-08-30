@@ -89,7 +89,11 @@ SONORAN = ["04019", "04023", "04003", "04027", "04021", "04012", "04013", "04007
 # Rio Grande Union: the New Mexico corridor from Las Cruces to Taos.
 RIO_GRANDE = ["35001", "35049", "35035", "35029", "35017", "35023", "35051",
               "35053", "35061", "35057", "35007", "35033", "35047", "35043",
-              "35039", "35055"]
+              "35039", "35055",
+              # Las Cruces and Los Alamos sit on the same river as the rest of
+              # it and were the last two Areas in the country that could never
+              # receive a movement.
+              "35013", "35028"]
 
 
 # ---- M7.12: widen east ----------------------------------------------------
@@ -195,6 +199,55 @@ GREAT_LAKES_EAST = ["36003", "36007", "36009", "36011", "36013", "36015", "36017
 # with the Pennsylvania side rather than with anything on the shore.
 NJ_HIGHLANDS = ["34019", "34037", "34041"]
 
+
+# ---- M7 close: the rest of the map ----------------------------------------
+# M7.12 closed the east and left 179 Areas that could never receive a movement,
+# almost all of them western: California outside the far north, Colorado outside
+# the Front Range, and Nevada entire. The flagship slice of the game had a
+# flagship state with 36 of its 58 Areas outside the movement system.
+#
+# The Sagebrush Rebellion: the counties where most of the ground belongs to the
+# federal government and has since before the state existed. Nevada entire, the
+# Colorado high country, the Arizona strip, the Utah desert and the New Mexico
+# west. A real and named western politics since 1979.
+SAGEBRUSH = ["04001", "04005", "04007", "04009", "04011", "04015", "04017", "04025", "08003",
+             "08007", "08015", "08019", "08021", "08023", "08027", "08029", "08033", "08037",
+             "08043", "08045", "08047", "08049", "08051", "08053", "08055", "08057", "08065",
+             "08067", "08071", "08077", "08079", "08081", "08083", "08085", "08091", "08093",
+             "08097", "08103", "08105", "08107", "08109", "08111", "08113", "08117", "08119",
+             "35003", "35006", "35031", "49001", "49003", "49009", "49013", "49015", "49017",
+             "49019", "49023", "49025", "49027", "49031", "49033", "49037", "49045", "49047",
+             "49055", "41017"]
+
+
+# Little Texas: the Llano Estacado counties of eastern New Mexico, which are
+# oil, cattle and Texan in everything but the state line. They join A Free Texas
+# rather than getting a movement of their own, because that is what they are.
+LITTLE_TEXAS = ["35005", "35009", "35011", "35015", "35019", "35021", "35025", "35027", "35035",
+                "35037", "35041", "35057", "35059"]
+
+
+# Cascadia, as it actually is. The homeland was `states 41/53/16/30 + lean R`,
+# which is not Cascadia at all: it made the movement the dry inland northwest
+# and derived a core of Butte, Humboldt and Shasta counties in CALIFORNIA and
+# Ada and Bannock in IDAHO. The real thing is the wet side of the mountains —
+# the Willamette and Puget lowlands and the northern California coast — and the
+# rural inland it used to hold is already Greater Idaho's and the Northern
+# Christian Kingdom's, twice over.
+CASCADIA_WEST = ["41003", "41005", "41007", "41009", "41011", "41015", "41019", "41027",
+                 "41029", "41033", "41039", "41041", "41043", "41047", "41051", "41053",
+                 "41057", "41067", "41071", "53009", "53011", "53015", "53027", "53029",
+                 "53031", "53033", "53035", "53041", "53045", "53049", "53053", "53055",
+                 "53057", "53059", "53061", "53067", "53069", "53073", "53075"]
+
+
+# The Hudson and Mohawk valleys and Staten Island, plus the three commuter
+# counties between the New Jersey and Maryland metros that sat under the
+# Eastern Progressives' population floor.
+NY_VALLEY = ["24027", "34021", "34035", "36001", "36021", "36027", "36035", "36039", "36057",
+             "36071", "36079", "36083", "36085", "36087", "36091", "36093", "36095", "36105",
+             "36111", "36113", "36115"]
+
 # ---- IDEOLOGY: every movement sits somewhere on the two axes -------------
 # The six ideologies are authored in content/ideologies.json. A movement is not
 # an ideology - it is an organised faction that HAS one (see REBUILD-PLAN M4.1:
@@ -238,6 +291,9 @@ IDEOLOGY = {
     "New England Revivalist":        "green",
     "Central States Union":          "orange",
     "Delmarva Republic":             "yellow",
+    "California Republic":           "green",
+    "Sagebrush Rebellion":           "red",
+    "Fifty-First State":             "yellow",
 }
 
 REGIONS = {
@@ -246,15 +302,14 @@ REGIONS = {
     # as the DETERMINISTIC four. They are the spine of the West slice, and a run
     # that happens to have no Deseret in it is not the scenario. Only Greater
     # Idaho and Jefferson carried the flag; these two were still rolling 0.5.
-    "Cascadian Separatists":     {"states": ["41", "53", "16", "30"], "lean": "R",
-                                  "fips": NORTHERN_CA, "chance": 1.0},
+    "Cascadian Separatists":     {"fips": CASCADIA_WEST + NORTHERN_CA, "chance": 1.0},
     "New England United":        {"states": NEW_ENGLAND},
     "Anarcho-Capitalist":        {"mt_interior": True},
     "Libertarians":              {"states": GREAT_PLAINS},
-    "Blue-Collar Populist":      {"states": ["39", "26", "18", "17", "55", "42"],
+    "Blue-Collar Populist":      {"states": ["39", "26", "18", "17", "55", "42", "27", "19"],
                                   "fips": NJ_HIGHLANDS},
     "Techno-Autocrat":           {"fips": TECH_HUBS},
-    "A Free Texas":              {"states": ["48"]},
+    "A Free Texas":              {"states": ["48"], "fips": LITTLE_TEXAS},
     "Deseret":                   {"states": ["49"], "fips": DESERET_FIPS, "chance": 1.0},
     "New Confederacy":           {"states": CONFEDERACY},
     "Great Lakes Free Trade":    {"fips": GREAT_LAKES + GREAT_LAKES_EAST},
@@ -263,7 +318,8 @@ REGIONS = {
     "Northern Christian Kingdom": {"states": ["41", "53"], "lean": "R",
                                    "fips_states": ["16", "30", "56"]},
     "The Farmers Union":         {"states": GREAT_PLAINS + MIDWEST, "max_pop": 100_000},
-    "Eastern Progressives":      {"states": EAST_COAST, "min_pop": 500_000},
+    "Eastern Progressives":      {"states": EAST_COAST, "min_pop": 500_000,
+                                  "fips": NY_VALLEY},
 
     # --- M1.13f: the five states with no coverage, plus the three movements
     #     docs/REBUILD-PLAN.md M4.1 names. Deterministic movements (Cascadia,
@@ -289,6 +345,14 @@ REGIONS = {
     "New England Revivalist":    {"fips": NE_REVIVAL, "chance": 1.0},
     "Central States Union":      {"fips": CENTRAL_STATES},
     "Delmarva Republic":         {"fips": DELMARVA},
+
+    # --- M7 close: the west's own holes. California independence is a real
+    #     movement with a real name; the Sagebrush Rebellion has been a western
+    #     politics since 1979; and eleven Colorado plains counties actually
+    #     voted on secession in November 2013.
+    "California Republic":       {"states": ["06"]},
+    "Sagebrush Rebellion":       {"states": ["32"], "fips": SAGEBRUSH},
+    "Fifty-First State":         {"states": ["08"], "lean": "R"},
 }
 
 # ============================ MOVEMENT CHARACTER =============================
@@ -347,6 +411,10 @@ CHARACTER = {
     "New England Revivalist":        ("separatist", 0.45, ["independence", "town meeting sovereignty"]),
     "Central States Union":          ("economic", 0.35, ["a river compact", "industrial policy"]),
     "Delmarva Republic":             ("separatist", 0.35, ["statehood", "watermen's rights"]),
+
+    "California Republic":           ("separatist", 0.45, ["independence", "a Pacific republic"]),
+    "Sagebrush Rebellion":           ("autonomist", 0.35, ["return the federal land", "county supremacy"]),
+    "Fifty-First State":             ("separatist", 0.40, ["statehood", "an end to Denver's rules"]),
 }
 DEFAULT_TYPE = "ideological"
 DEFAULT_CAP = 0.35

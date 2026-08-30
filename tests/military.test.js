@@ -187,8 +187,19 @@ describe('What the force does', () => {
     full(nid, 'garrison');
     const held = Sentiment.explain(area, mv, T());
     const libAfter = Power.liberties(Power.gatherLiberties(Power.nationFacts(nid, T()), 1), T());
-    ok(held.value < quiet.value,
-      `a full garrison did not lower the target (${quiet.value.toFixed(3)} -> ${held.value.toFixed(3)})`);
+    /*
+     * RAW, not the clamped value. The sentiment target has a ceiling, and this
+     * test picks the Area where a movement is STRONGEST — so once the content
+     * grew (M7.12), the strongest Area on the board was one whose raw target
+     * sat above the ceiling both before and after a garrison, and the test read
+     * 0.500 -> 0.500 while the model was moving 0.558 -> 0.472 underneath it.
+     * The claim is about what suppression does to the target; the ceiling is a
+     * different rule, with its own test.
+     */
+    ok(held.raw < quiet.raw,
+      `a full garrison did not lower the target (${quiet.raw.toFixed(3)} -> ${held.raw.toFixed(3)})`);
+    ok(held.inputs.some((i) => i.label === 'Suppression' && i.contribution < 0),
+      'the Why record does not name the garrison that lowered it');
     ok(libAfter.target < libBefore.target,
       `a full garrison cost no liberties (${libBefore.target.toFixed(3)} -> ${libAfter.target.toFixed(3)})`);
   });

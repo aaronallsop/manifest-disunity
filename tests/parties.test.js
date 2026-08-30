@@ -209,13 +209,15 @@ describe('Party spawn coverage', () => {
     }
     const live = Object.keys(Game.county);
     const orphans = live.filter((f) => !reachable.has(f));
-    // 278 before M7.12, 179 after, and what is left is the empty western
-    // interior rather than a whole region of the map.
-    ok(orphans.length <= 185,
-      `${orphans.length} of ${live.length} Areas can never receive a movement`);
-    const east = orphans.filter((f) => Number(f.slice(0, 2)) >= 21 && !['27', '19'].includes(f.slice(0, 2))
-      && !['32', '35', '41', '53', '49', '56', '30', '38', '46', '31', '40', '48'].includes(f.slice(0, 2)));
-    ok(east.length < 25, `${east.length} eastern Areas are still outside the movement system`);
+    /*
+     * 278 before M7.12, 179 after the east, and ZERO at the M7 close. Every
+     * Area on the board is inside somebody's homeland, which is what makes
+     * sentiment, grievance and two-tier secession a property of the map rather
+     * than of the half of it that happened to be authored.
+     */
+    equal(orphans.length, 0,
+      `${orphans.length} of ${live.length} Areas can never receive a movement: `
+      + `${orphans.slice(0, 6).join(', ')}`);
   });
 
   it('an eastern movement actually organises in a played game', async () => {

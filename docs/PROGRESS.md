@@ -348,6 +348,15 @@ Done in the order **M3.4 -> M3.1 -> M3.2 -> M3.3**, because the plan lists M3.4'
       was a western feature. Areas that can never receive a movement: 278 → 179, and what is left
       is the empty western interior. Franklin and New England Revivalist spawn deterministically,
       for the same reason Deseret and Cascadia do.
+- [x] **M7 close (a)** The rest of the map — three more movements and one correction, so that every
+      Area in the country can receive a movement: **California Republic**, the **Sagebrush Rebellion**
+      (the federal-land counties, a western politics since 1979) and the **Fifty-First State** (the
+      eleven Colorado plains counties that actually voted on secession in 2013). **Cascadia was
+      wrong**: its homeland was the R-leaning inland northwest, which gave the flagship movement of
+      the West slice a core in Butte and Shasta counties in CALIFORNIA. It is the wet side of the
+      mountains now, and its core is the Portland-Seattle corridor the tests always said it was.
+      Areas that can never receive a movement: 179 → **0**, and the validator warning that has stood
+      since M1 is gone.
 
 ---
 
@@ -377,7 +386,7 @@ Performance, measured on the real map rather than predicted: a world turn 24.7 -
 phases 12.4 -> 2.8 ms, political drift 8.0 -> 2.0 ms, a 50-turn simulator run 1,237 -> 466 ms. The
 columnar store is 173 KB and the adjacency graph 43.5 KB.
 
-Next: the **M7 close** — the western half of the movement-coverage gap, then the DESIGN.md rewrite.
+Next: the **M7 close (b)** — the DESIGN.md rewrite.
 
 Open, carried into M2.3: after 21 turns no Area is yet LED by a minority ideology (Rep 1,288 /
 Dem 388 of 1,676). That is the expected shape at 11% organised movements and it is M5's dial to
