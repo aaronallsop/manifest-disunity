@@ -924,6 +924,32 @@ export const SCHEMA = {
     label: 'Union cooldown (turns)',
     doc: 'World turns after an attempted union before a nation may propose another. Unite was the ONE action in the game with no clock on it \u2014 annex, release and changing course all have one \u2014 so a nation could re-roll the same union every turn until it landed, which makes any probability under 100% equal to 100% given enough turns. Found by the M6.3 AI on its first run: 35 of 53 nations opened by proposing a union.',
   },
+  /* ---------------- crises ---------------- */
+  'events.maxPerTurn': {
+    v: 3, min: 0, max: 20, step: 1, group: 'Events',
+    label: 'Crises the world may produce in one turn',
+    doc: 'Across the whole roster. Three is enough that the newspaper has something in it most turns and few enough that a crisis is still an event rather than the weather.',
+  },
+  'events.cooldownTurns': {
+    v: 8, min: 0, max: 60, step: 1, group: 'Events',
+    label: 'Turns before the same nation faces another crisis',
+    doc: 'A country that has a crisis every turn is not having crises.',
+  },
+  'events.repeatTurns': {
+    v: 30, min: 0, max: 200, step: 1, group: 'Events',
+    label: 'Turns before the SAME crisis can recur',
+    doc: 'Longer than the general cooldown, so a nation cycles through its problems rather than reliving one.',
+  },
+  'events.memoryTurns': {
+    v: 4, min: 0, max: 40, step: 1, group: 'Events',
+    label: 'How recently something must have happened to trigger a crisis about it',
+    doc: 'For triggers that read the ledger rather than a stock \u2014 a neighbour ceasing to exist is news for a few turns and history after that.',
+  },
+  'events.comfortableRunway': {
+    v: 12, min: 1, max: 100, step: 1, group: 'Events',
+    label: 'Turns of upkeep at which a nation stops wanting money',
+    doc: 'Used only when an AI weighs a crisis option: a nation with a year of reserves values cash at nothing, one with two turns of it values cash above everything.',
+  },
   /* ---------------- war weariness ---------------- */
   'power.weariness.base': {
     v: 0, min: 0, max: 1, step: 0.01, group: 'Power',
@@ -1175,6 +1201,11 @@ export const SCHEMA = {
     doc: 'Paid once, at the start, scaled by how hard the start is: a Brutal opening gets most of this, a Comfortable one gets almost none. MONEY, deliberately, and not territory or a rule change \u2014 every faction has to play the same continent or the difficulty rating is describing a world nobody else is in. Money buys time, which is exactly what a hard opening is short of.',
   },
   /* ---------------- how a game ends ---------------- */
+  'win.warnAt': {
+    v: 0.8, min: 0, max: 1, step: 0.01, group: 'Victory',
+    label: 'Progress at which a nation\u2019s approach is reported',
+    doc: 'The newspaper names anybody this close to a victory condition. Without it the end of the game arrives with no build-up \u2014 measured in play: Delaware won Ideological Dominance on turn 30 and the first the player heard of it was the end screen. A game you can lose without seeing it coming is one you cannot play against.',
+  },
   'win.graceTurns': {
     v: 12, min: 0, max: 80, step: 1, group: 'Victory',
     label: 'Turns before anyone can win',
@@ -1216,9 +1247,9 @@ export const SCHEMA = {
     doc: 'THE DESIGN OF THE CAPSTONE. Without it the shortest path to winning is conquering the continent \u2014 the strategy the rest of the game spends its time punishing. With it, a conqueror can hold every acre and still be unable to close, and has to spend the late game being tolerable. Set just under the 0.53 ceiling Influence actually reaches, because it IS meant to be the binding constraint: this is the term a conqueror fails.',
   },
   'win.ideoSway': {
-    v: 0.55, min: 0, max: 1, step: 0.01, group: 'Victory',
-    label: 'Ideological Dominance: share of Areas holding your ideology',
-    doc: 'Measured over EVERY Area on the map, not only your own: this is a victory of argument, and it is won on other people\u2019s ground. Above the 0.45 that political drift produces unaided by turn 80 - a target the map reaches on its own is a victory won by accident.',
+    v: 0.52, min: 0, max: 1, step: 0.01, group: 'Victory',
+    label: 'Ideological Dominance: share of the continent holding your ideology',
+    doc: 'Measured over every PERSON on the continent, not every Area \u2014 land does not vote. Counting Areas made this a fact about American geography rather than an achievement: 80.7% of counties hold a red plurality on turn ZERO, so the requirement was met by every red-governing nation before anybody did anything, and it eroded from there, which is exactly backwards for a victory. By head the continent opens at red 0.484 / blue 0.467 \u2014 the real national split \u2014 and drifts DOWN to 0.445 over sixty turns as the six-ideology model spreads it out. So 0.52 is above anything the map produces on its own and within reach of a nation that governs and grows toward it.',
   },
   'win.ideoAuthority': {
     v: 0.7, min: 0, max: 1, step: 0.01, group: 'Victory',

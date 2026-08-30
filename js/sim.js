@@ -135,6 +135,8 @@ const Sim = (function () {
     Game.init(raw.data, raw.adjacency, raw.areas,
       { trade: raw.trade, transport: raw.transport, culture: raw.culture });
     if (raw.capitals) Victory.load(raw.capitals);
+    Events.reset();
+    if (raw.eventDefs) Events.load(raw.eventDefs);
     Movements.setup(raw.partyDefs, rng);
     MapModes.init(raw.data);
     if (raw.economy) { MapModes.setEconomy(raw.economy); Market.update(tune); }
@@ -233,10 +235,11 @@ const SimData = (function () {
       get('/data/county_trade.json', null), get('/data/transport.json', null),
       get('/content/cultural.json', null), get('/content/ideologies.json', null),
       get('/content/tunables.json', null), get('/content/capitals.json', null),
+      get('/content/events.json', null),
     ]).then(([data, adjacency, areas, partyDefs, economy, trade, transport, culture,
-              ideologies, tunables, capitals]) =>
+              ideologies, tunables, capitals, eventDefs]) =>
       ({ data, adjacency, areas, partyDefs, economy, trade, transport, culture,
-         ideologies, tunables, capitals }));
+         ideologies, tunables, capitals, eventDefs }));
     return promise;
   }
   return { load };

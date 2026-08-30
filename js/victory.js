@@ -175,20 +175,24 @@ const Victory = (function () {
     per.sort((a, b) => a - b);
     const median = per.length ? per[Math.floor(per.length / 2)] : 0;
     /*
-     * Which ideology each Area actually holds, for the sway term.
+     * WHO HOLDS WHICH IDEOLOGY, BY HEAD — not by Area.
      *
-     * `Game.dominantOf` takes a COLLECTION of Area ids, not one — passing the
-     * string iterated its characters and returned nothing that matched any
-     * nation's government, so Ideological Dominance read 0.000 for all 107
-     * nations and could not be won at all.
+     * Counting Areas made Ideological Dominance a fact about American geography
+     * rather than an achievement: 80.7% of counties hold a red plurality on turn
+     * ZERO, so the sway requirement was met by every red-governing nation before
+     * anybody did anything, and the condition eroded from there — it was easiest
+     * at the start and got harder, which is exactly backwards for a victory.
+     *
+     * Land does not vote; people do. By head the continent opens near its actual
+     * split, and moving it is what winning an argument means.
      */
     const byIdeology = new Array(Ideology.count()).fill(0);
+    const N = Ideology.count();
     let areas = 0;
-    const one = [null];
     for (const f in Game.county) {
-      one[0] = f;
-      const dom = Game.dominantOf(one);
-      if (dom >= 0) { byIdeology[dom]++; areas++; }
+      const c = Game.county[f];
+      if (!c) continue;
+      for (let i = 0; i < N; i++) { byIdeology[i] += c.pop[i]; areas += c.pop[i]; }
     }
     ctxCache = { pop, gdp, median, rows, byIdeology, areas };
     ctxEpoch = epoch;
@@ -231,9 +235,12 @@ const Victory = (function () {
       evaluate(nid, ctx, t) {
         const n = Game.getNation(nid);
         const mine = Ideology.index(n.gov && n.gov.rulingIdeology);
+        // `areas` is the total head count now, not a count of Areas. The name is
+        // kept because it is what the field means to every other reader: the
+        // denominator the ideology tally is a share OF.
         const sway = ctx.areas > 0 && mine >= 0 ? ctx.byIdeology[mine] / ctx.areas : 0;
         return [
-          need('Areas holding your ideology', sway, t.get('win.ideoSway'), 'win.ideoSway'),
+          need('People holding your ideology', sway, t.get('win.ideoSway'), 'win.ideoSway'),
           need('Authority', n.authority || 0, t.get('win.ideoAuthority'), 'win.ideoAuthority'),
           need('Influence', n.influence || 0, t.get('win.ideoInfluence'), 'win.ideoInfluence'),
         ];

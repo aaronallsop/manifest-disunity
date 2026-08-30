@@ -98,6 +98,7 @@
     <script src="../js/military.js"></script>
     <script src="../js/relations.js"></script>
     <script src="../js/coalitions.js"></script>
+    <script src="../js/events.js"></script>
     <script src="../js/actions.js"></script>
     <!-- The editor owns the content round-trip (M2.5b), which is model-level:
          publish, list and import are fetch calls, not painting. -->
@@ -132,7 +133,7 @@
         const canonical = await import('./harness.js');
         canonical.reset();
 
-        const suiteFiles = ['./rng.test.js', './tunables.test.js', './ideology.test.js', './graph.test.js', './state.test.js', './content.test.js', './nation.test.js', './power.test.js', './invariants.test.js', './saves.test.js', './batching.test.js', './parties.test.js', './movements.test.js', './sentiment.test.js', './secession.test.js', './valves.test.js', './ledger.test.js', './sim.test.js', './explain.test.js', './moves.test.js', './player.test.js', './ai.test.js', './victory.test.js', './military.test.js', './relations.test.js', './coalitions.test.js', './weariness.test.js', './geo-ct.test.js', './civilwar.test.js', './annex.test.js', './world.test.js', './drift.test.js', './distribution.test.js', './market.test.js', './trade.test.js', './release.test.js', './counts.test.js'];
+        const suiteFiles = ['./rng.test.js', './tunables.test.js', './ideology.test.js', './graph.test.js', './state.test.js', './content.test.js', './nation.test.js', './power.test.js', './invariants.test.js', './saves.test.js', './batching.test.js', './parties.test.js', './movements.test.js', './sentiment.test.js', './secession.test.js', './valves.test.js', './ledger.test.js', './sim.test.js', './explain.test.js', './moves.test.js', './player.test.js', './ai.test.js', './victory.test.js', './military.test.js', './relations.test.js', './coalitions.test.js', './weariness.test.js', './events.test.js', './geo-ct.test.js', './civilwar.test.js', './annex.test.js', './world.test.js', './drift.test.js', './distribution.test.js', './market.test.js', './trade.test.js', './release.test.js', './counts.test.js'];
         /*
          * `?only=ai,secession` loads just those files. The suite crossed four
          * minutes in M6.3, because half a dozen of its suites now play tens of
@@ -151,10 +152,25 @@
           note.innerHTML = `<h2>Filtered: ${esc(chosen.join(', '))}</h2>`;
           out.appendChild(note);
         }
+        /*
+         * A SUITE THAT WILL NOT LOAD IS A FAILING RUN.
+         *
+         * This drew a red row and then carried on, and `__TEST_RESULTS__` was
+         * assembled from the harness — which never heard of the file — so a
+         * syntax error in one suite silently deleted every test in it and the
+         * run still reported "All 638 tests green". Measured: exactly that
+         * happened to tests/ai.test.js in M7.4, and the only reason it was
+         * noticed was a passing count that looked five short.
+         *
+         * A missing suite is worse than a failing one, because a failing one
+         * tells you.
+         */
+        const loadErrors = [];
         for (const f of chosen) {
           try {
             await import(f + bust);
           } catch (err) {
+            loadErrors.push({ file: f, error: String((err && err.stack) || err) });
             const div = document.createElement('div');
             div.className = 'suite';
             div.innerHTML = `<h2>${esc(f)}</h2><div class="t fail"><span class="mark">✗</span>
@@ -186,6 +202,20 @@
           }
         });
 
+        /*
+         * Fold the load failures into the result BEFORE anything reads it, so
+         * every consumer — the banner, the pills, and whatever is driving the
+         * page — sees one number that means "is this build good".
+         */
+        res.failed += loadErrors.length;
+        res.loadErrors = loadErrors;
+        if (loadErrors.length) {
+          res.suites.unshift({
+            name: 'Suites that would not load',
+            tests: loadErrors.map((e) => ({ name: e.file, status: 'fail', error: e.error, ms: 0 })),
+          });
+        }
+
         window.__TEST_RESULTS__ = res;
         summary.innerHTML =
           `<span class="pill pass">${res.passed} passed</span>` +
@@ -194,8 +224,9 @@
           `<span class="pill time">${(res.durationMs / 1000).toFixed(2)}s</span>`;
         banner.className = res.failed ? 'fail' : 'pass';
         banner.textContent = res.failed
-          ? `${res.failed} failing test${res.failed === 1 ? '' : 's'}.`
-          : `All ${res.passed} tests green.`;
+          ? `${res.failed} failing test${res.failed === 1 ? '' : 's'}`
+            + (loadErrors.length ? `, including ${loadErrors.length} suite(s) that would not load.` : '.')
+          : `All ${res.passed} tests green, across ${chosen.length} files.`;
         applyFilter();
       }
 

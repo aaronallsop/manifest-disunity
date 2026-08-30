@@ -861,6 +861,12 @@ const World = (function () {
       // ...and drop the memories nobody can feel any more, so an append-only
       // list that lives in the save document does not grow without bound.
       Relations.forget(tn);
+      /*
+       * CRISES, last, because every trigger reads a stock and the stocks have
+       * just been recomputed — an event fired before `phasePower` would be
+       * asking about last turn's world.
+       */
+      if (typeof Events !== 'undefined' && Events.loaded()) Events.tick(tn, rng);
       Movements.refreshStates(tn); // derived from the map, so it follows the writeback
       Game.tickTreasuries(); // income minus maintenance, on this turn's updated GDP
       Market.update(tn);     // reprice every resource from live supply vs demand

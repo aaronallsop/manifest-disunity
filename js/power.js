@@ -130,8 +130,16 @@ function defaultSummary(value, inputs) {
  * can be under 0.4 of sustained downward pressure and still hold the floor,
  * which is what stops "already losing" from being the same as "cannot recover".
  */
-export function step(previous, target, tune) {
-  const floor = tune.get('power.floor');
+export function step(previous, target, tune, floorOverride) {
+  /*
+   * `power.floor` exists to stop a DEATH SPIRAL: an Authority of zero makes
+   * everything worse which makes Authority lower, and a nation can never climb
+   * out. War weariness runs the other way — a floor there means a nation at
+   * peace is permanently eight per cent exhausted, paying quality of life and
+   * feeding every movement in its ground for a war it never fought. So the
+   * floor is a parameter, and weariness passes zero.
+   */
+  const floor = floorOverride == null ? tune.get('power.floor') : floorOverride;
   const rise = tune.get('power.maxRise');
   const fall = tune.get('power.maxFall');
   if (previous == null) return Math.max(floor, clamp01(target));
@@ -515,7 +523,7 @@ export function weariness(a, tune) {
 
   const record = build(tune.get('power.weariness.base'), terms, tune, wearinessSummary);
   record.target = record.value;
-  record.value = step(a.previous, record.value, tune);
+  record.value = step(a.previous, record.value, tune, 0);
   return record;
 }
 

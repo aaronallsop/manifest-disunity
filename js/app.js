@@ -74,7 +74,7 @@ const getJSON = (path, fallback) =>
 
 async function init() {
   try {
-    const [topo, data, ctGeo, adjacency, neighbors, partyDefs, trade, areas, geoMode, economy, transport, cultureMode, tunables, ideologies, capitals] = await Promise.all([
+    const [topo, data, ctGeo, adjacency, neighbors, partyDefs, trade, areas, geoMode, economy, transport, cultureMode, tunables, ideologies, capitals, eventDefs] = await Promise.all([
       getJSON('data/counties-10m.json'),
       getJSON('data/game-data.json'),
       getJSON('data/ct-planning-regions.geojson'),
@@ -90,6 +90,7 @@ async function init() {
       getJSON('content/tunables.json', null),
       getJSON('content/ideologies.json', null),
       getJSON('content/capitals.json', null),
+      getJSON('content/events.json', null),
     ]);
     // The six ideologies, before anything reads a political value.
     Ideology.load(ideologies);
@@ -127,6 +128,8 @@ async function init() {
     // counties are merged into a larger Area, and a raw FIPS lookup would miss
     // them silently (the M1.13 trap).
     if (capitals) Victory.load(capitals);
+    Events.reset();
+    if (eventDefs) Events.load(eventDefs);
     TurnSystem.begin([...Game.nations.keys()], store.rng);
     choosePlayer();
     World.begin(TUNE); // seed the power stocks for the world just built
@@ -889,6 +892,9 @@ function completeTurn() {
     return showEnd(null);
   }
   if (won) return showEnd(won);
+  // A crisis is waiting for an answer, and it is the only thing in this game
+  // that stops to ask one (M7.4).
+  if (typeof Events !== 'undefined' && Events.waiting() && showCrisis()) return;
   const next = you();
   if (next && Game.getNation(next)) { setMode('nations'); select('nation', next); }
   else deselect();
@@ -975,6 +981,28 @@ const fmtTerm = (v) => (v > 1.0001 ? `${v.toFixed(2)}\u00d7` : `${Math.round(v *
  */
 function newspaper(mark, turnsPassed) {
   const heads = Ledger.rank(Ledger.after(mark), 6);
+  /*
+   * AND WHO IS CLOSING IN.
+   *
+   * Not a ledger entry, because it is a standing state of the world rather than
+   * something that happened this turn — but it belongs in the same place, at the
+   * top, because it is the most important thing on the page when it is true.
+   *
+   * Without it the end of the game arrives with no build-up: measured in play,
+   * Delaware won Ideological Dominance on turn 30 and the first the player heard
+   * of it was the end screen. A game you can lose without seeing it coming is
+   * one you cannot play against.
+   */
+  let alarm = '';
+  if (typeof Victory !== 'undefined' && Victory.loaded()) {
+    const bar = TUNE.peek('win.warnAt');
+    const close = Victory.standings(TUNE, 3).filter((r) => r.best.progress >= bar);
+    if (close.length) {
+      alarm = close.map((r) => `<div class="head-line alarm">\u26A0 ${escapeHtml(r.name)} is `
+        + `${Math.round(r.best.progress * 100)}% of the way to ${escapeHtml(r.best.label)}`
+        + `${Game.isPlayer(r.nid) ? ' \u2014 that is you' : ''}.</div>`).join('');
+    }
+  }
   const growth = Math.round(TUNE.peek('world.popGrowth') * 1000) / 10;
   const body = heads.length
     ? heads.map((h) => `<div class="head-line">${escapeHtml(h.text)}</div>`).join('')
@@ -983,7 +1011,8 @@ function newspaper(mark, turnsPassed) {
   const head = turnsPassed
     ? `\u{1F4F0} <strong>World turn ${World.getTurn()}</strong>`
     : '\u{1F4F0} <strong>Meanwhile</strong>';
-  flash(head + body, heads.some((h) => h.kind === 'declare' || h.kind === 'died') ? 'bad' : '');
+  flash(head + alarm + body,
+    alarm || heads.some((h) => h.kind === 'declare' || h.kind === 'died') ? 'bad' : '');
 }
 
 function passTurn() {
@@ -1159,6 +1188,69 @@ function renderNationPanel(nid) {
   );
   const goto = panel.querySelector('#goto-current');
   if (goto) goto.onclick = () => { setMode('nations'); select('nation', you()); };
+}
+
+/*
+ * A CRISIS, and the first thing in this game that asks the player a question.
+ *
+ * Two or three options, each with a real cost, and no option that is simply
+ * correct — buy the grain and pay for it, ration it and pay in liberties, or do
+ * nothing and pay in sentiment. An option that is strictly best is a button, and
+ * a button is not a decision.
+ *
+ * The effects are shown BEFORE the choice, in the same plain terms the panel
+ * uses everywhere else, because a decision made without knowing the price is a
+ * guess. What is not shown is which one the game thinks you should take.
+ */
+function showCrisis() {
+  const q = Events.waiting();
+  if (!q) return false;
+  const n = Game.getNation(q.nid);
+  if (!n) return false;
+  const el = document.getElementById('endscreen');
+  const card = el.querySelector('.end-card');
+  const label = {
+    treasuryShare: 'Treasury', authority: 'Authority', influence: 'Influence',
+    qol: 'Quality of life', liberties: 'Civil liberties', weariness: 'War weariness',
+    sentiment: 'Separatist feeling', standing: 'How the neighbours see you',
+  };
+  // Two of these are bad when they rise, so the colour follows the MEANING and
+  // not the sign — a green "+4% war weariness" would be a lie in a tooltip.
+  const worseWhenUp = { weariness: true, sentiment: true };
+  const fx = (effects) => Object.entries(effects || {}).map(([k, v]) => {
+    const good = worseWhenUp[k] ? v < 0 : v > 0;
+    const shown = k === 'treasuryShare'
+      ? `${v > 0 ? '+' : '\u2212'}${Math.abs(Math.round(v * 100))}% of a year's income`
+      : `${v > 0 ? '+' : '\u2212'}${Math.abs(v * 100).toFixed(1)}`;
+    return `<span class="fx ${good ? 'good' : 'bad'}">${escapeHtml(label[k] || k)} ${shown}</span>`;
+  }).join(' ');
+
+  card.innerHTML = `
+    <div class="end-kicker">World turn ${World.getTurn()}</div>
+    <h2><span class="dot" style="background:${n.color}"></span>${escapeHtml(q.event.title)}</h2>
+    <p class="end-sub">${escapeHtml(String(q.event.text || '').replace(/\{NATION\}/g, n.name))}</p>
+    <div class="crisis-opts">
+      ${q.event.options.map((o, i) => `
+        <button class="crisis-opt" data-i="${i}">
+          <span class="co-label">${escapeHtml(o.label)}</span>
+          ${o.note ? `<span class="co-note">${escapeHtml(o.note)}</span>` : ''}
+          <span class="co-fx">${fx(o.effects)}</span>
+        </button>`).join('')}
+    </div>`;
+  el.classList.add('show');
+  card.querySelectorAll('.crisis-opt').forEach((b) => {
+    b.onclick = () => {
+      const opt = q.event.options[Number(b.dataset.i)];
+      el.classList.remove('show');
+      const res = Events.answer(opt.label, TUNE);
+      if (res) flash(`\u{1F4DC} <strong>${escapeHtml(q.event.title)}</strong> \u2014 ${escapeHtml(opt.label)}.`, '');
+      Leaderboard.refresh();
+      renderTurnBanner();
+      setMode('nations');
+      select('nation', q.nid);
+    };
+  });
+  return true;
 }
 
 /*

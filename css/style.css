@@ -552,3 +552,16 @@ svg.hide-clines .area-borders { display: block; }
 .rel .rel-row .num.bad { color: var(--bad, #d1706a); }
 .rel .rel-row .num.good { color: var(--good, #6fbf73); }
 .coal .rel-band.bad { font-weight: 600; }
+
+/* ---- a crisis ------------------------------------------------------- */
+.crisis-opts { display: flex; flex-direction: column; gap: 8px; }
+.crisis-opt { text-align: left; background: var(--panel-bg-2); border: 1px solid var(--line); border-radius: 10px; padding: 11px 13px; color: var(--text); cursor: pointer; display: flex; flex-direction: column; gap: 4px; }
+.crisis-opt:hover { border-color: var(--accent); }
+.crisis-opt .co-label { font-weight: 600; font-size: 14px; }
+.crisis-opt .co-note { font-size: 12px; color: var(--muted); line-height: 1.45; }
+.crisis-opt .co-fx { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; }
+.crisis-opt .fx { font-size: 11px; padding: 1px 6px; border-radius: 999px; background: var(--bg); }
+.crisis-opt .fx.good { color: var(--good, #6fbf73); }
+.crisis-opt .fx.bad { color: var(--bad, #d1706a); }
+
+.head-line.alarm { color: var(--accent); font-weight: 600; }

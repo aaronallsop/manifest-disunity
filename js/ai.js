@@ -417,12 +417,27 @@ const AI = (function () {
     if (typeof Victory !== 'undefined' && Victory.loaded()) {
       const world = Victory.context(t);
       const rows = Victory.progress(nid, t, world);
-      const goal = rows.reduce((a, r) => (r.progress > a.progress ? r : a), rows[0]);
-      if (goal) {
-        goal.binding = goal.terms.filter((x) => !x.met)
-          .sort((a, b) => a.progress - b.progress)[0] || null;
-        ctx.goal = goal;
+      for (const r of rows) {
+        r.binding = r.terms.filter((x) => !x.met).sort((a, b) => a.progress - b.progress)[0] || null;
       }
+      /*
+       * THE VICTORY IT CAN BEST ADVANCE, not merely the one it is nearest.
+       *
+       * `progress` is the worst term, so the condition a nation is NEAREST is
+       * often one whose binding requirement no territorial move can shift — an
+       * Authority floor, or the share of the continent holding your ideology.
+       * Targeting that leaves the AI with no victory drive at all, which is the
+       * silence this term was added to break: measured after the sway fix, not
+       * one nation on the map scored a single move as progress toward anything.
+       *
+       * So: prefer a condition whose binding requirement is ACTIONABLE, and
+       * among those take the nearest. Fall back to the nearest overall, in which
+       * case no Closing term fires and the AI simply plays for position — which
+       * is the honest answer when nothing it can do advances what it wants.
+       */
+      const doable = rows.filter((r) => r.binding && ACTIONABLE.has(r.binding.label));
+      const pool = doable.length ? doable : rows;
+      ctx.goal = pool.reduce((a, r) => (r.progress > a.progress ? r : a), pool[0]) || null;
       ctx.world = { pop: world.pop, gdp: world.gdp, seats: 51 };
     }
     for (const intent of Moves.legal(nid, {}, t)) {
@@ -488,6 +503,20 @@ const AI = (function () {
   const pass = () => null;
 
   const chooseMove = (nid, tune, rng) => policy(nid, tune, rng);
+
+  /**
+   * The victory requirements a territorial move can actually shift.
+   *
+   * Everything else — the Authority and Influence floors, quality of life, the
+   * share of the continent holding your ideology — is moved by governing rather
+   * than by taking, and an AI that scored an annexation as progress toward one
+   * of them would grind at a wall. That NOTHING an annexation does moves
+   * Influence is the shape of the capstone, not an omission.
+   */
+  const ACTIONABLE = new Set([
+    'Seats of government', 'Share of the people', 'Share of the economy',
+    'GDP per head, against the median nation',
+  ]);
 
   /**
    * Take one nation's turn. Does NOT advance the turn order — the caller owns

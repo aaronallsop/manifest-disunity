@@ -377,9 +377,20 @@ describe('The AI knows the game can be won', () => {
       const closing = rows.filter((r) => r.inputs.some((i) => i.label.startsWith('Closing')));
       if (!closing.length) continue;
       seen++;
-      const goal = Victory.progress(nid, T())
-        .reduce((a, b) => (b.progress > a.progress ? b : a));
-      const binding = goal.terms.filter((t) => !t.met).sort((a, b) => a.progress - b.progress)[0];
+      /*
+       * The condition it can best ADVANCE, not merely the one it is nearest:
+       * `progress` is the worst term, so the nearest is often one whose binding
+       * requirement no territorial move can shift. See `ACTIONABLE` in js/ai.js.
+       */
+      const bindingOf = (r) => r.terms.filter((t) => !t.met).sort((a, b) => a.progress - b.progress)[0];
+      const conds = Victory.progress(nid, T());
+      const doable = conds.filter((r) => bindingOf(r) && [
+        'Seats of government', 'Share of the people', 'Share of the economy',
+        'GDP per head, against the median nation',
+      ].includes(bindingOf(r).label));
+      const pool = doable.length ? doable : conds;
+      const goal = pool.reduce((a, b) => (b.progress > a.progress ? b : a));
+      const binding = bindingOf(goal);
       for (const r of closing) {
         const t = r.inputs.find((i) => i.label.startsWith('Closing'));
         equal(t.label, `Closing: ${binding.label.toLowerCase()}`,

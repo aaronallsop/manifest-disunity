@@ -38,10 +38,11 @@ export function loadData() {
       get('../content/ideologies.json', null),
       get('../content/tunables.json', null),
       get('../content/capitals.json', null),
+      get('../content/events.json', null),
     ]).then(([data, adjacency, areas, partyDefs, economy, neighbors, trade, transport, culture,
-              ideologies, tunables, capitals]) => ({
+              ideologies, tunables, capitals, eventDefs]) => ({
       data, adjacency, areas, partyDefs, economy, neighbors, trade, transport, culture,
-      ideologies, tunables, capitals,
+      ideologies, tunables, capitals, eventDefs,
     }));
   }
   return dataPromise;
@@ -80,6 +81,8 @@ export async function bootWorld(opts = {}) {
   Game.init(raw.data, raw.adjacency, raw.areas,
     { trade: raw.trade, transport: raw.transport, culture: raw.culture });
   if (raw.capitals) Victory.load(raw.capitals);
+  Events.reset();
+  if (raw.eventDefs) Events.load(raw.eventDefs);
   const spawned = spawnParties ? Parties.setup(raw.partyDefs, rng) : Parties.setup({}, rng);
   MapModes.init(raw.data);
   if (raw.economy) {

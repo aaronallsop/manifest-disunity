@@ -277,7 +277,14 @@ Done in the order **M3.4 -> M3.1 -> M3.2 -> M3.3**, because the plan lists M3.4'
       a long campaign becomes a secession problem. The aggressor's, not the victim's. The "in the
       field" term replaced "share under arms", which could not vary because force size is not a
       choice.
-- [ ] **M7.4** Events and crises.
+- [x] **M7.4** Events and crises — `content/events.json` (12 authored) and `js/events.js`. Triggers
+      read facts the model already computes; effects move numbers other systems already own; a test
+      checks no option dominates another. The AI answers from its own shortfalls; the player's is
+      left pending. *Turned up in play:* Ideological Dominance counted Areas and 80.7% of counties
+      are red on turn 0, so it was won before anybody moved — it counts people now, and the
+      newspaper warns when anybody is within 80% of a condition. Also: the test runner now FAILS on a
+      suite that will not load (a syntax error had silently deleted 22 tests while the run read
+      green), and `power.floor` no longer applies to war weariness.
 - [ ] **M7.5** Leaders with light traits.
 - [ ] **M7.6** Map-history timeline.
 - [ ] **M7.7** Names and flags for new nations.
@@ -315,7 +322,7 @@ Performance, measured on the real map rather than predicted: a world turn 24.7 -
 phases 12.4 -> 2.8 ms, political drift 8.0 -> 2.0 ms, a 50-turn simulator run 1,237 -> 466 ms. The
 columnar store is 173 KB and the adjacency graph 43.5 KB.
 
-Next: **M7.4** (events and crises — 2-3 options with real tradeoffs; a toast and the newspaper are the whole narrative surface today).
+Next: **M7.5** (leaders with light traits — the least blocked system in the whole analysis, and cheap personality).
 
 Open, carried into M2.3: after 21 turns no Area is yet LED by a minority ideology (Rep 1,288 /
 Dem 388 of 1,676). That is the expected shape at 11% organised movements and it is M5's dial to
