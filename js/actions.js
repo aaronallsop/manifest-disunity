@@ -94,13 +94,13 @@ const Actions = (function () {
   }
 
   function confirmGovern(nid, ideologyId) {
-    const res = Game.changeRulingIdeology(nid, ideologyId);
-    if (!res.ok) return flash(escapeHtml(res.message), 'warn');
+    const r = Moves.resolve({ type: 'govern', nid, ideology: ideologyId }, store.rng);
+    if (!r.ok) return flash(escapeHtml(r.reason), 'warn');
     A = null;
     clearVisuals();
     flash(`\u{1F5F3} <strong>${escapeHtml(Game.getNation(nid).name)}</strong> now governs as `
       + `<strong>${escapeHtml(Ideology.byId(ideologyId).name)}</strong>, at a cost of `
-      + `${fmtGdp(res.cost)} and its standing.`, '');
+      + `${fmtGdp(r.cost)} and its standing.`, '');
     completeTurn();
   }
 
@@ -154,91 +154,32 @@ const Actions = (function () {
   }
 
   /*
-   * Plan (no mutation): who defects to T, who secedes, who stays with S.
+   * ONE DEFINITION EACH, in js/moves.js.
    *
-   * Membership is decided by AFFINITY on the two axes, not by a matching letter.
-   * The old rule was `Game.leanOf(c).lean === Tlean` — with two letters, "leans
-   * the same way as the target" and "leans differently from me" partitioned the
-   * map cleanly, and when S and T happened to share a letter the whole border
-   * region defected to a politically identical neighbour for no reason.
-   *
-   * With six ideologies the question is how CLOSE an Area is to each side:
-   *   defect — closer to T than to S, and touching T
-   *   secede — far from S, and cut off from T
-   *   remnant — everyone else
+   * These sat here as well until M6.3, which is how the preview a human
+   * reads and the preview the AI scores could have come to disagree — and a
+   * disagreement there is unfalsifiable from inside the game, because each side
+   * only ever sees its own answer. They are kept as local names because the
+   * panel code below reads better for it, not because there is a second version.
    */
-  function planSplinter(S, T) {
-    const sMix = Game.nationDemographics(S).mix;
-    const tMix = Game.nationDemographics(T).mix;
-    const sCentre = Ideology.centroid(sMix), tCentre = Ideology.centroid(tMix);
-    const threshold = TUNE.get('war.splinterAffinity');
-    const Sc = [...Game.getNation(S).counties];
-    const touchesT = (c) => Game.countyNeighbors(c).some((nb) => Game.getOwner(nb) === T);
+  const annexCost = (chosen, shell) => Moves.annexCost(chosen, shell);
+  const annexCooldownLeft = (nid) => Moves.annexCooldownLeft(nid);
+  const releaseCooldownLeft = (nid) => Moves.releaseCooldownLeft(nid);
 
-    const toS = {}, toT = {};
-    for (const c of Sc) {
-      const p = Game.areaPolitics(c);
-      const centre = p ? p.centroid : sCentre;
-      toS[c] = Ideology.affinity(centre, sCentre);
-      toT[c] = Ideology.affinity(centre, tCentre);
-    }
-    const defect = Sc.filter((c) => toT[c] > toS[c] && touchesT(c));
-    const defectSet = new Set(defect);
-    const rest = Sc.filter((c) => !defectSet.has(c));
-    const secede = rest.filter((c) => toS[c] < threshold && !touchesT(c));
-    const seceded = new Set(secede);
-    const remnant = rest.filter((c) => !seceded.has(c));
-    return { defect, secede, remnant };
-  }
-
-  // Roll for the union: peaceful merge, or a splinter civil war (with fallout).
   function confirmUniteAttempt(tid) {
     const S = A.nid;
-    const P = A.chance;
     const Sname = Game.getNation(S).name;
     const Tname = Game.getNation(tid).name;
     A = null;
     clearVisuals();
-    if (store.rng.stream('unite').chance(P)) {
-      const gained = Game.getNation(tid).counties.size;
-      Game.mergeInto(S, tid);
-      Ledger.append({
-        phase: 'action', subject: S, kind: 'unite', delta: gained,
-        text: `${Tname} united into ${Game.getNation(S).name}.`,
-        terms: [{ name: 'Chance of a peaceful union', value: P, key: 'war.unitePeaceBase' }],
-        absorbed: tid,
-      });
-      flash(`🤝 <strong>${escapeHtml(Tname)}</strong> united into <strong>${escapeHtml(Game.getNation(S).name)}</strong>.`, 'good');
+    const r = Moves.resolve({ type: 'unite', nid: S, target: tid }, store.rng);
+    if (!r.ok) return flash(escapeHtml(r.reason), 'warn');
+    if (r.peaceful) {
+      flash(`\u{1F91D} <strong>${escapeHtml(Tname)}</strong> united into <strong>${escapeHtml(Game.getNation(S).name)}</strong>.`, 'good');
     } else {
-      const score = CivilWar.uniteSeverity(P, TUNE);
-      const plan = planSplinter(S, tid);
-      // One render for the whole fallout, not four.
-      const created = Game.batch(() => {
-        Game.moveCounties(plan.defect, tid, { silent: true, reason: 'defect' });
-        /*
-         * `exclude: S` is load-bearing and was missing. Without it, a seceding
-         * fragment too small to stand alone rejoins its NEAREST nation — which,
-         * for a chunk that just tore itself out of S and is surrounded by S, is
-         * S. So the failed union quietly handed the aggressor back the ground
-         * that had just rebelled against it, and the smaller the rebellion the
-         * more reliably it was undone.
-         */
-        const born = Game.breakApart(plan.secede, { exclude: S, reason: 'secede' });
-        Game.applyCivilWarCost(S, tid, score); // remnant bleeds population; GDP flows to the target
-        return born;
-      });
-      TurnSystem.insertAfter(S, created);
-      Ledger.append({
-        phase: 'action', subject: S, kind: 'unite', delta: -(plan.defect.length + plan.secede.length),
-        text: `${Sname}'s bid to unite ${Tname} failed and the union fell apart: `
-          + `${plan.defect.length} Areas defected and ${created.length} new nations broke away.`,
-        terms: [{ name: 'Chance of a peaceful union', value: P, key: 'war.unitePeaceBase' },
-                { name: 'Severity', value: score, key: 'war.pointsScale' }],
-        target: tid, failed: true,
-      });
-      const parts = [`${plan.defect.length} counties defected to <strong>${escapeHtml(Tname)}</strong>`];
-      if (created.length) parts.push(`${created.length} new ${plural(created.length, 'nation', 'nations')} broke away`);
-      flash(`⚔️ <strong>${escapeHtml(Sname)}</strong>'s bid to unite <strong>${escapeHtml(Tname)}</strong> sparked a civil war! ${parts.join('; ')}.`, 'bad');
+      const parts = [`${r.fallout.defect.length} counties defected to <strong>${escapeHtml(Tname)}</strong>`];
+      if (r.created.length) parts.push(`${r.created.length} new ${plural(r.created.length, 'nation', 'nations')} broke away`);
+      flash(`\u2694\uFE0F <strong>${escapeHtml(Sname)}</strong>'s bid to unite <strong>${escapeHtml(Tname)}</strong> sparked a civil war! ${parts.join('; ')}.`, 'bad');
     }
     completeTurn();
   }
@@ -255,13 +196,20 @@ const Actions = (function () {
   }
 
   function renderUnitePreview(tid) {
+    /*
+     * The SAME plan the AI scores. It used to recompute the chance here from
+     * CivilWar directly and describe the fallout in prose — "cut-off regions
+     * break away" — while `planSplinter` had the actual count in hand. The
+     * player was the only participant in this game not told how many Areas were
+     * at stake.
+     */
+    const plan = Moves.plan({ type: 'unite', nid: A.nid, target: tid });
     const me = Game.nationDemographics(A.nid);
-    const them = Game.nationDemographics(tid);
     const tName = Game.getNation(tid).name;
     const combined = Game.demographics([...Game.getNation(A.nid).counties, ...Game.getNation(tid).counties]);
-    const shell = Game.blueShell(A.nid);
-    const P = CivilWar.unitePeaceChance(me, them, shell, TUNE);
+    const P = plan.chance;
     A.chance = P;
+    const atRisk = plan.fallout.defect.length + plan.fallout.secede.length;
     const pct = Math.round(P * 100);
     const risky = P < 0.5;
     const flip = me.dominant >= 0 && combined.dominant >= 0 && me.dominant !== combined.dominant;
@@ -276,8 +224,9 @@ const Actions = (function () {
       <div class="stat"><div class="label">Combined GDP</div><div class="value">${fmtGdp(combined.gdp)}</div></div>
       <div class="stat"><div class="label">Combined political leaning</div>${renderPolitics(combined)}</div>
       ${flip ? `<div class="warn-box">⚠️ Flips your leading ideology ${leanName(me.dominant)} &rarr; ${leanName(combined.dominant)} &mdash; lowers the odds.</div>` : ''}
-      <div class="warn-box">On failure your nation fractures: border counties defect to <strong>${escapeHtml(tName)}</strong>,
-        cut-off regions break away, and you lose population &amp; GDP.</div>
+      <div class="warn-box">On failure <strong>${atRisk}</strong> of your own ${plural(atRisk, 'Area', 'Areas')} leave:
+        ${plan.fallout.defect.length} defect to <strong>${escapeHtml(tName)}</strong>,
+        ${plan.fallout.secede.length} break away as new nations, and you lose population &amp; GDP.</div>
       <div class="btn-row">
         <button class="btn ghost" id="a-back">Back</button>
         <button class="btn go ${risky ? 'danger' : ''}" id="a-go">${risky ? 'Risk it' : 'Propose union'}</button>
@@ -706,20 +655,6 @@ const Actions = (function () {
    * Flat per Area plus a per-head term, so swallowing a metro Area costs more
    * than swallowing empty ground. The leader tier pays a surcharge.
    */
-  function annexCost(chosen, shell) {
-    const pop = chosen.length ? Game.demographics(chosen).pop : 0;
-    const base = chosen.length * TUNE.get('annex.costPerArea') + pop * TUNE.get('annex.costPopScale');
-    return base * (1 + TUNE.get('annex.shellCostMult') * (shell || 0));
-  }
-
-  /** Turns until this nation may annex again; 0 when it is ready. */
-  function annexCooldownLeft(nid) {
-    const n = Game.getNation(nid);
-    if (!n || !Number.isFinite(n.lastAnnexTurn)) return 0;
-    const wait = TUNE.get('annex.cooldownTurns');
-    return Math.max(0, wait - (World.getTurn() - n.lastAnnexTurn));
-  }
-
   function startAnnex(nid) {
     const me = Game.nationDemographics(nid);
     const cd = annexCooldownLeft(nid);
@@ -862,188 +797,55 @@ const Actions = (function () {
    * victim meant a 180-Area annexation off 14 nations cost 13 of them nothing:
    * no population loss, no GDP transfer, no acknowledgement.
    */
-  function chargeVictims(tally, total, winnerId, score) {
-    for (const [oid, count] of Object.entries(tally)) {
-      if (!Game.getNation(oid)) continue;
-      Game.applyCivilWarCost(oid, winnerId, Math.round(score * (count / total)));
-    }
-  }
-
+  /*
+   * UI ONLY, from M6.3. Everything this used to do — paying, rolling, moving
+   * Areas, charging the losers, writing the ledger — is `Moves.resolve`, which
+   * is also what the AI calls. Two implementations of "what an annexation does",
+   * one reachable by a human and one by the other fifty nations, is the exact
+   * disagreement M6.1 exists to prevent; this file kept its copy until M6.3 made
+   * the second caller real.
+   */
   function confirmAnnex() {
     if (!A.chosen.size) return;
     const nid = A.nid;
     const chosen = [...A.chosen];
     const me = Game.getNation(nid);
+    const r = Moves.resolve({ type: 'annex', nid, areas: chosen }, store.rng);
+    if (!r.ok) return flash(`\u26d4 <strong>${escapeHtml(me.name)}</strong> \u2014 ${escapeHtml(r.reason)}`, 'bad');
 
-    // Pay first. Game.spend was exported with zero call sites; this is the first
-    // action in the game that costs anything.
-    const cost = annexCost(chosen, A.shell);
-    if (!Game.spend(nid, cost)) {
-      flash(`\u26d4 <strong>${escapeHtml(me.name)}</strong> cannot afford to mobilise (${fmtGdp(cost)} needed, ${fmtGdp(Math.max(0, me.treasury))} in the treasury).`, 'bad');
-      return;
-    }
-    me.lastAnnexTurn = World.getTurn();
-
-    // Who is losing ground, and how much of the contested set is theirs.
-    const victimTally = {};
-    chosen.forEach((f) => { const o = Game.getOwner(f); if (o && o !== nid) victimTally[o] = (victimTally[o] || 0) + 1; });
-    let victim = null, vc = -1;
-    for (const [o, c] of Object.entries(victimTally)) if (c > vc) { victim = o; vc = c; }
-
-    const before = Game.nationDemographics(nid);
-    const added = Game.demographics(chosen);
-    const after = Game.demographics([...Game.getNation(nid).counties, ...chosen]);
-    const res = CivilWar.resolve(before, added, after, { scoreMult: 1 + (A.shell || 0), rng: store.rng, tune: TUNE });
-    const bill = `<span class="deal-cost">Cost ${fmtGdp(cost)}.</span>`;
-
-    let msg, kind;
-    /*
-     * The civil-war roll IS the explanation, and it already exists: dice, points
-     * and the flip magnitude are what `CivilWar.resolve` returned. Logging them
-     * as `terms` costs one array literal and turns the six-second toast into a
-     * permanent, inspectable account of why the annexation went the way it did.
-     */
-    const warTerms = res.triggered ? [
-      { name: 'Dice', value: res.diceCount, key: 'war.dicePerFlipPoint' },
-      { name: 'Roll', value: res.diceSum, key: 'war.diceSides' },
-      { name: 'Points', value: res.points, key: 'war.pointsScale' },
-      { name: 'Flip magnitude', value: res.flipMagnitude, key: 'war.diceFlipFloor' },
-      { name: 'Score', value: res.score, key: 'war.victoryBand' },
-    ] : null;
-    // Every branch below is a multi-step mutation; batch() collapses each to one
-    // render instead of two or three full border meshes and leaderboard rebuilds.
-    if (!res.triggered) {
-      Game.moveCounties(chosen, nid, { reason: 'annex' });
-      msg = `Annexed <strong>${chosen.length}</strong> ${plural(chosen.length, 'county', 'counties')} peacefully. ${bill}`;
-      kind = 'good';
-    } else if (res.outcome === 'victory') {
-      Game.batch(() => {
-        Game.moveCounties(chosen, nid, { reason: 'war' });
-        chargeVictims(victimTally, chosen.length, nid, res.score);
-      });
-      msg = `${cwLine(res)} <strong>Complete victory!</strong> All ${chosen.length} counties annexed. ${bill}`;
-      kind = 'good';
-    } else if (res.outcome === 'partial') {
-      const taken = partialSubset(nid, chosen, res.score);
-      Game.batch(() => {
-        Game.moveCounties(taken, nid, { reason: 'war' });
-        chargeVictims(victimTally, chosen.length, nid, Math.round(res.score / 2));
-      });
-      msg = `${cwLine(res)} <strong>Partial victory.</strong> Held ${taken.length} of ${chosen.length} counties &mdash; a connected front from your border. ${bill}`;
-      kind = taken.length ? 'good' : 'warn';
-    } else {
-      // Report what actually happened territorially. A selection smaller than
-      // nation.minAreas cannot form a breakaway, so its fragments go to their
-      // nearest neighbour - which, with the attacker excluded, is usually the
-      // nation that already owned them. That is the right OUTCOME (the defender
-      // holds) and the wrong MESSAGE: the old text claimed the counties
-      // "scattered and were absorbed by neighboring nations" when nothing moved.
-      const ownersBefore = new Map(chosen.map((f) => [f, Game.getOwner(f)]));
-      const bornIds = Game.batch(() => {
-        const ids = fragment(chosen, nid);
-        Game.applyCivilWarCost(nid, null, res.score); // the failed aggressor bleeds population
-        return ids;
-      });
-      TurnSystem.insertAfter(victim || nid, bornIds);
-      const born = bornIds.length;
-      let changed = 0;
-      for (const [f, was] of ownersBefore) if (Game.getOwner(f) !== was) changed++;
-      msg = born
-        ? `${cwLine(res)} <strong>The union fell apart!</strong> The ${chosen.length} counties splintered into ${born} new ${plural(born, 'nation', 'nations')}. ${bill}`
-        : changed
-          ? `${cwLine(res)} <strong>The offensive collapsed.</strong> ${changed} of ${chosen.length} counties changed hands in the chaos &mdash; none of them yours. ${bill}`
-          : `${cwLine(res)} <strong>The offensive collapsed.</strong> The defenders held every county, and your own people paid for it. ${bill}`;
-      kind = 'bad';
-    }
     A = null;
     restoreColorMode();
     clearVisuals();
-    Ledger.append({
-      phase: 'action', subject: nid, kind: res.triggered ? 'war' : 'annex',
-      delta: chosen.length,
-      text: res.triggered
-        ? `${Game.getNation(nid) ? Game.getNation(nid).name : nid} fought a civil war over `
-          + `${chosen.length} ${chosen.length === 1 ? 'Area' : 'Areas'} — ${String(res.outcome).replace('_', ' ')}.`
-        : `${Game.getNation(nid) ? Game.getNation(nid).name : nid} annexed ${chosen.length} `
-          + `${chosen.length === 1 ? 'Area' : 'Areas'} peacefully.`,
-      terms: warTerms, outcome: res.triggered ? res.outcome : 'peaceful',
-      from: res.fromIdeology, to: res.toIdeology,
-    });
+
+    const res = r.res;
+    const bill = `<span class="deal-cost">Cost ${fmtGdp(r.cost)}.</span>`;
+    let msg, kind;
+    if (!res.triggered) {
+      msg = `Annexed <strong>${chosen.length}</strong> ${plural(chosen.length, 'county', 'counties')} peacefully. ${bill}`;
+      kind = 'good';
+    } else if (res.outcome === 'victory') {
+      msg = `${cwLine(res)} <strong>Complete victory!</strong> All ${chosen.length} counties annexed. ${bill}`;
+      kind = 'good';
+    } else if (res.outcome === 'partial') {
+      msg = `${cwLine(res)} <strong>Partial victory.</strong> Held ${r.taken.length} of ${chosen.length} counties &mdash; a connected front from your border. ${bill}`;
+      kind = r.taken.length ? 'good' : 'warn';
+    } else {
+      /*
+       * Report what actually happened territorially. A selection smaller than
+       * nation.minAreas cannot form a breakaway, so its fragments go to their
+       * nearest neighbour — which, with the attacker excluded, is usually the
+       * nation that already owned them. That is the right OUTCOME (the defender
+       * holds) and the wrong MESSAGE: the old text claimed the counties
+       * "scattered and were absorbed by neighboring nations" when nothing moved.
+       */
+      const born = r.born.length;
+      msg = born
+        ? `${cwLine(res)} <strong>The union fell apart!</strong> The ${chosen.length} counties splintered into ${born} new ${plural(born, 'nation', 'nations')}. ${bill}`
+        : `${cwLine(res)} <strong>The offensive collapsed.</strong> The defenders held, and your own people paid for it. ${bill}`;
+      kind = 'bad';
+    }
     flash(msg, kind);
     completeTurn();
-  }
-
-  /*
-   * Partial victory: the CONTIGUOUS, border-adjacent share of the contested
-   * Areas that the score lets you hold.
-   *
-   * The old rule kept only Areas matching the attacker's own lean - which, for a
-   * war triggered BY a party flip, is empty by construction: a flip means the
-   * annexed bloc leans the other way. That is what a "partial victory" was:
-   * "Held 0 of 1 counties", while the victim still bled population and handed
-   * over 2-20% of its GDP to an attacker that gained nothing.
-   *
-   * Now the front advances from the attacker's own border through the contested
-   * set, breadth-first, and stops when the score's allowance runs out. A partial
-   * victory is always a real, connected gain.
-   */
-  function partialSubset(nid, chosen, score) {
-    if (!chosen.length) return [];
-    const pool = new Set(chosen);
-    const want = Math.max(1, Math.round(CivilWar.partialKeepFraction(score, TUNE) * chosen.length));
-
-    // Seed: contested Areas touching the attacker, largest first, so the hold is
-    // the militarily meaningful part rather than whatever the Set iterates to.
-    const seeds = chosen
-      .filter((f) => Game.countyNeighbors(f).some((nb) => Game.getOwner(nb) === nid))
-      .sort((a, b) => Game.countyPop(b) - Game.countyPop(a));
-    // A selection is grown from the attacker's frontier, so there is always at
-    // least one seed; fall back to the largest contested Area if that ever fails.
-    if (!seeds.length) seeds.push(Game.largestCounty(chosen));
-
-    const held = new Set();
-    const queue = [...seeds];
-    while (queue.length && held.size < want) {
-      const cur = queue.shift();
-      if (held.has(cur) || !pool.has(cur)) continue;
-      held.add(cur);
-      for (const nb of Game.countyNeighbors(cur)) if (pool.has(nb) && !held.has(nb)) queue.push(nb);
-    }
-    return [...held];
-  }
-
-  // Fall apart: chosen counties break into new nations (>=10 counties each); small
-  // fragments join their nearest neighbor — never the failed aggressor.
-  function fragment(chosen, attackerId) {
-    return Game.breakApart(chosen, { exclude: attackerId });
-  }
-
-  /* ================================================================= */
-  /* RELEASE                                                           */
-  /* ================================================================= */
-  /*
-   * Let territory go.
-   *
-   * This is the first of the design's five release valves and the reason
-   * Counties mode exists: a nation that has over-extended can shed the ground
-   * that is costing it more than it earns — occupation upkeep is superlinear
-   * (M1.4), so the marginal Area of a sprawling empire is genuinely expensive —
-   * and a nation whose politics have drifted away from a region can let it go
-   * before that region takes the decision itself.
-   *
-   * It is the annex machinery inverted: the same selection loop over YOUR OWN
-   * Areas, terminating in Game.breakApart(chosen, {exclude: nid}) — which
-   * already existed and already worked. The exclude is load-bearing: without it
-   * a fragment too small to stand alone rejoins the nation that just released it.
-   *
-   * M4.4 adds the guardrail from the design (the recipient must accept, be at war
-   * with you, or be in a deal with you) so you cannot dump counties on a rival to
-   * game their sentiment.
-   */
-  function releaseCooldownLeft(nid) {
-    const n = Game.getNation(nid);
-    if (!n || !Number.isFinite(n.lastReleaseTurn)) return 0;
-    return Math.max(0, TUNE.get('release.cooldownTurns') - (World.getTurn() - n.lastReleaseTurn));
   }
 
   function startRelease(nid) {
@@ -1142,81 +944,30 @@ const Actions = (function () {
     document.getElementById('a-go').onclick = confirmRelease;
   }
 
-  /**
-   * Will `recipient` accept a released fragment from `giver`?
-   *
-   * Three ways in, matching the design: the fragment is politically compatible
-   * with the recipient, or the two nations have a live trade relationship, or
-   * the recipient is small enough that any territory is worth having. A neighbour
-   * that satisfies none of them declines, and the Areas stay where they were.
-   */
-  function acceptsRelease(giver) {
-    return (recipient, comp) => {
-      const r = Game.getNation(recipient);
-      if (!r) return false;
-      const them = Game.nationDemographics(recipient);
-      const it = Game.demographics(new Set(comp));
-      if (Ideology.mixAffinity(them.mix, it.mix) >= TUNE.get('release.acceptAffinity')) return true;
-      // A standing deal is consent enough: you are already doing business.
-      const g = Game.getNation(giver);
-      if (g && g.tradeCooldown && g.tradeCooldown[recipient] != null) return true;
-      // And a nation with almost nothing takes what it is offered.
-      return r.counties.size <= TUNE.get('release.desperateAreas');
-    };
-  }
-
   function confirmRelease() {
     if (!A.chosen.size) return;
     const nid = A.nid;
     const chosen = [...A.chosen];
-    const me = Game.getNation(nid);
-    const name = me.name;
-    const ownersBefore = new Map(chosen.map((f) => [f, Game.getOwner(f)]));
-
-    me.lastReleaseTurn = World.getTurn();
-    // exclude: nid — otherwise a fragment too small to stand alone is handed
-    // straight back to the nation that just released it.
-    // accept: the design's guardrail. Without it, releasing counties is a way to
-    // DUMP them on a rival — hand a hostile neighbour three Areas full of a
-    // movement it cannot govern and you have exported your secession problem for
-    // free.
-    const born = Game.batch(() => Game.breakApart(chosen, { exclude: nid, accept: acceptsRelease(nid) }));
-    TurnSystem.insertAfter(nid, born);
-
-    // Count where each released Area actually ended up, rather than inferring it:
-    // breakApart can hand a fragment too small to stand alone to a nation it just
-    // created, so nation sizes are not a reliable proxy.
-    const bornSet = new Set(born);
-    let toNewNations = 0, toNeighbours = 0, stayed = 0;
-    for (const [f, was] of ownersBefore) {
-      const now = Game.getOwner(f);
-      if (now === was) stayed++;
-      else if (bornSet.has(now)) toNewNations++;
-      else toNeighbours++;
-    }
+    const name = Game.getNation(nid).name;
+    const r = Moves.resolve({ type: 'release', nid, areas: chosen }, store.rng);
+    if (!r.ok) return flash(escapeHtml(r.reason), 'warn');
 
     A = null;
     clearVisuals();
-    Ledger.append({
-      phase: 'action', subject: nid, kind: 'release', delta: -chosen.length,
-      text: `${name} released ${chosen.length} ${chosen.length === 1 ? 'Area' : 'Areas'}: `
-        + `${toNewNations} into new nations, ${toNeighbours} to neighbours, ${stayed} refused.`,
-      terms: [{ name: 'Refused by every neighbour', value: stayed, key: 'release.acceptAffinity' }],
-      born: born.length,
-    });
     const parts = [];
-    if (born.length) {
-      parts.push(`${toNewNations} ${plural(toNewNations, 'Area', 'Areas')} became ` +
-        `${born.length} new ${plural(born.length, 'nation', 'nations')} ` +
-        `(<strong>${born.map((id) => escapeHtml(Game.getNation(id).name)).join('</strong>, <strong>')}</strong>)`);
+    if (r.born.length) {
+      parts.push(`${r.toNew} ${plural(r.toNew, 'Area', 'Areas')} became ` +
+        `${r.born.length} new ${plural(r.born.length, 'nation', 'nations')} ` +
+        `(<strong>${r.born.map((id) => escapeHtml(Game.getNation(id) ? Game.getNation(id).name : id)).join('</strong>, <strong>')}</strong>)`);
     }
-    if (toNeighbours) parts.push(`${toNeighbours} ${plural(toNeighbours, 'Area', 'Areas')} joined neighbouring nations`);
-    if (stayed) parts.push(`${stayed} had nowhere to go and stayed`);
-    flash(`\u{1F54A}\u{FE0F} <strong>${escapeHtml(name)}</strong> released ${chosen.length} ` +
-      `${plural(chosen.length, 'Area', 'Areas')}: ${parts.join('; ') || 'nothing changed hands'}.`, 'good');
+    if (r.toNeighbours) parts.push(`${r.toNeighbours} ${plural(r.toNeighbours, 'Area', 'Areas')} joined neighbouring nations`);
+    if (r.refused) parts.push(`${r.refused} had nowhere to go and stayed`);
+    flash(`\u{1F54A}\uFE0F <strong>${escapeHtml(name)}</strong> released ${chosen.length} `
+      + `${plural(chosen.length, 'Area', 'Areas')}: ${parts.join('; ')}.`,
+      r.refused === chosen.length ? 'warn' : '');
     completeTurn();
   }
-  /* ---- panel/util helpers ---- */
+
   function setPanel(html) { document.getElementById('panel').innerHTML = html; }
   function actionHead(title, n) {
     return `<div class="card-head"><span class="swatch" style="background:${n.color}"></span><h2>${escapeHtml(n.name)}</h2></div>

@@ -193,13 +193,18 @@ describe('Moves.legal — the AI\'s candidate list', () => {
     ok(moves.length > 3, `only ${moves.length} legal moves`);
     for (const m of moves) {
       equal(m.nid, '06');
-      ok(['annex', 'unite', 'govern'].includes(m.type), `unexpected move type ${m.type}`);
+      ok(['annex', 'unite', 'govern', 'release'].includes(m.type), `unexpected move type ${m.type}`);
       if (m.type === 'annex') {
         ok(m.areas.length > 0 && m.areas.length <= T().get('annex.budgetAreas'));
         for (const f of m.areas) ok(!Game.getNation('06').counties.has(f), 'offered to annex its own Area');
       }
       if (m.type === 'unite') ok(m.target !== '06', 'offered to unite with itself');
       if (m.type === 'govern') ok(m.ideology !== Game.getNation('06').gov.rulingIdeology);
+      if (m.type === 'release') {
+        ok(m.areas.length > 0 && m.areas.length < Game.getNation('06').counties.size,
+          'offered to release everything it had');
+        for (const f of m.areas) ok(Game.getNation('06').counties.has(f), 'offered to release ground it does not hold');
+      }
     }
   });
 

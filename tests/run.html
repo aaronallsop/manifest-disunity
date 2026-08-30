@@ -127,8 +127,26 @@
         const canonical = await import('./harness.js');
         canonical.reset();
 
-        const suiteFiles = ['./rng.test.js', './tunables.test.js', './ideology.test.js', './graph.test.js', './state.test.js', './content.test.js', './nation.test.js', './power.test.js', './invariants.test.js', './saves.test.js', './batching.test.js', './parties.test.js', './movements.test.js', './sentiment.test.js', './secession.test.js', './valves.test.js', './ledger.test.js', './sim.test.js', './explain.test.js', './moves.test.js', './player.test.js', './geo-ct.test.js', './civilwar.test.js', './annex.test.js', './world.test.js', './drift.test.js', './distribution.test.js', './market.test.js', './trade.test.js', './release.test.js', './counts.test.js'];
-        for (const f of suiteFiles) {
+        const suiteFiles = ['./rng.test.js', './tunables.test.js', './ideology.test.js', './graph.test.js', './state.test.js', './content.test.js', './nation.test.js', './power.test.js', './invariants.test.js', './saves.test.js', './batching.test.js', './parties.test.js', './movements.test.js', './sentiment.test.js', './secession.test.js', './valves.test.js', './ledger.test.js', './sim.test.js', './explain.test.js', './moves.test.js', './player.test.js', './ai.test.js', './geo-ct.test.js', './civilwar.test.js', './annex.test.js', './world.test.js', './drift.test.js', './distribution.test.js', './market.test.js', './trade.test.js', './release.test.js', './counts.test.js'];
+        /*
+         * `?only=ai,secession` loads just those files. The suite crossed four
+         * minutes in M6.3, because half a dozen of its suites now play tens of
+         * thousands of AI turns, and a suite you cannot run a slice of is a
+         * suite you stop running. The full set is still the default and still
+         * what a milestone closes on.
+         */
+        const wanted = (new URLSearchParams(location.search).get('only') || '')
+          .split(',').map((x) => x.trim()).filter(Boolean);
+        const chosen = wanted.length
+          ? suiteFiles.filter((f) => wanted.some((w) => f.includes(w)))
+          : suiteFiles;
+        if (wanted.length) {
+          const note = document.createElement('div');
+          note.className = 'suite';
+          note.innerHTML = `<h2>Filtered: ${esc(chosen.join(', '))}</h2>`;
+          out.appendChild(note);
+        }
+        for (const f of chosen) {
           try {
             await import(f + bust);
           } catch (err) {

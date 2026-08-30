@@ -197,7 +197,26 @@ Done in the order **M3.4 -> M3.1 -> M3.2 -> M3.3**, because the plan lists M3.4'
       ("Douglas County left Greater Idaho for State of Jefferson", and back the next turn). Real, and
       now visible because the interval newspaper reports both halves. Belongs with M7's relations
       work or a defection hysteresis tunable; not fixed here.
-- [ ] **M6.3** AI.
+- [x] **M6.3** AI. `js/ai.js` scores `Moves.plan` previews with a signed Why record; posture is
+      derived from strain rather than assigned (D105). Sixteen `TUNE.ai.*` weights. Fifty nations
+      playing every turn turned out to be a fuzzer pointed at the rules and found four holes: unite
+      had no cooldown and no price, release had no price, `nation.minAreas` sat below
+      `release.budgetAreas`, and both remaining cooldowns were 1 (D106). Also fixed on the way: the
+      ledger writes lived in the UI so 50 of 51 nations acted invisibly, and `Moves` read
+      `window.TUNE` so no dashboard slider could reach an action rule (D107); the simulator stepped
+      the world instead of playing it (D108); the pressure fog read a `store.player` that never
+      existed (D110). `actions.js` 1246 -> 997 lines and finally UI-only.
+
+      **Measured**, three seeds x 60 turns: 51 nations -> 55 / 79 / 74, first secession t39-44,
+      declarations 6 / 3 / 2, defections 22-39, 249-290 annexations, 38-41 civil wars, 2-8 unions,
+      7-18 releases. Playing Ohio and passing 40 turns: 51 -> 72 nations, Ohio eaten from 63 Areas to
+      48, 244 ms per round with ~70 nations acting, zero console errors.
+
+      **Left open, deliberately:** (a) the AI never changes course - `govern: 0` across every run, so
+      `ai.wMandate` / `gov.changeCost` want a look in a tuning pass; (b) first secession moved from
+      t22-29 (the M5 pass, no AI) to t39-44, because AI annexations disturb movement cores - arguably
+      better, since the player gets time to learn the board, but it is a change to a deliberately
+      tuned number; (c) the suite crossed four minutes, hence `tests/run.html?only=<names>`.
 - [ ] **M6.4** Faction selection and win conditions.
 - [ ] **M6.5** Faction-switch, military, remaining valves.
 
@@ -244,7 +263,7 @@ Performance, measured on the real map rather than predicted: a world turn 24.7 -
 phases 12.4 -> 2.8 ms, political drift 8.0 -> 2.0 ms, a 50-turn simulator run 1,237 -> 466 ms. The
 columnar store is 173 KB and the adjacency graph 43.5 KB.
 
-Next: **M6.3** (`js/ai.js` scoring `plan()` outputs — fill in the policy the M6.2 seam calls).
+Next: **M6.4** (faction selection, difficulty tiers, `checkEndConditions()`, three win archetypes, the Reunification capstone, conditional vassals, elimination as an event).
 
 Open, carried into M2.3: after 21 turns no Area is yet LED by a minority ideology (Rep 1,288 /
 Dem 388 of 1,676). That is the expected shape at 11% organised movements and it is M5's dial to

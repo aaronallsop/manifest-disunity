@@ -375,6 +375,7 @@ const Game = (function () {
         homeSt: st,        // its own soil; anything else it holds is OCCUPIED
         lastAnnexTurn: -Infinity,
         lastReleaseTurn: -Infinity,
+        lastUniteTurn: -Infinity,
         tradeCooldown: {}, // partner key -> world turn of the last deal
       }));
     }
@@ -904,6 +905,7 @@ const Game = (function () {
       homeSt: modalState(countyIds),
       lastAnnexTurn: -Infinity,
       lastReleaseTurn: -Infinity,
+      lastUniteTurn: -Infinity,
       tradeCooldown: {},
     }));
     moveCounties(countyIds, id, { silent: true, reason: opts.reason || 'secede' });
@@ -1417,6 +1419,7 @@ const Game = (function () {
       // -Infinity does not survive JSON; null means "has never annexed".
       lastAnnexTurn: Number.isFinite(n.lastAnnexTurn) ? n.lastAnnexTurn : null,
       lastReleaseTurn: Number.isFinite(n.lastReleaseTurn) ? n.lastReleaseTurn : null,
+      lastUniteTurn: Number.isFinite(n.lastUniteTurn) ? n.lastUniteTurn : null,
       tradeCooldown: { ...n.tradeCooldown },
       counties: [...n.counties],
     });
@@ -1467,6 +1470,7 @@ const Game = (function () {
         honeymoonUntil: n.honeymoonUntil || 0,
         lastAnnexTurn: n.lastAnnexTurn == null ? -Infinity : n.lastAnnexTurn,
         lastReleaseTurn: n.lastReleaseTurn == null ? -Infinity : n.lastReleaseTurn,
+        lastUniteTurn: n.lastUniteTurn == null ? -Infinity : n.lastUniteTurn,
         tradeCooldown: { ...(n.tradeCooldown || {}) },
       }));
       for (const f of live) setOwnerNode(nodeOf(f), n.id);

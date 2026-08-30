@@ -123,6 +123,23 @@ const TurnSystem = (function () {
     return { next, roundEnded, round };
   }
 
+  /**
+   * Put the pointer on a nation's slot without anybody playing.
+   *
+   * For the START of a game only. `?play=<nation>` can name a seat anywhere in
+   * the shuffled order, and sweeping the AI to reach it means the world takes a
+   * full round before the human has looked at the map once — with the M6.3
+   * policy live that opened one game with eleven nations already absorbed. The
+   * order is a sequence, not a queue of debts: nobody is owed the turn they
+   * would have had in a game that had not started yet.
+   */
+  function seat(id) {
+    const i = order.indexOf(id);
+    if (i < 0) return false;
+    ptr = i;
+    return true;
+  }
+
   const progress = () => ({ index: ptr + 1, total: order.length, round });
   /** Where a given nation sits in the order, or -1. */
   const indexOf = (id) => order.indexOf(id);
@@ -137,5 +154,5 @@ const TurnSystem = (function () {
     wrapped = false;
   }
 
-  return { begin, currentId, sync, insertAfter, endTurn, advance, progress, indexOf, snapshot, serialize, loadState, setRng: (r) => { rng = r; } };
+  return { begin, currentId, sync, insertAfter, endTurn, advance, seat, progress, indexOf, snapshot, serialize, loadState, setRng: (r) => { rng = r; } };
 })();

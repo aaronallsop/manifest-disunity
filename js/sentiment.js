@@ -252,5 +252,26 @@ const Sentiment = (function () {
     return { turns, target, current: cur, threshold, arriving: true };
   }
 
-  return { target, context, explain, clock, clamp01 };
+  /**
+   * How close an Area is to leaving: the strongest movement's share of its
+   * population, 0..1, against `secession.countyThreshold`.
+   *
+   * One definition, three readers — the pressure map, the AI's posture, and the
+   * AI's release candidate. It lived only inside `MapModes` until M6.3, which
+   * made it a rendering detail that the model then had to re-derive; two
+   * definitions of "about to secede" is exactly the kind of pair that drifts
+   * apart quietly and disagrees only in the cases that matter.
+   */
+  function pressure(areaId) {
+    const c = Game.county[Game.areaIdOf(areaId)];
+    if (!c) return 0;
+    let pop = 0;
+    for (let i = 0; i < c.pop.length; i++) pop += c.pop[i];
+    if (pop <= 0) return 0;
+    let worst = 0;
+    for (const m in c.mov) { const s = c.mov[m] / pop; if (s > worst) worst = s; }
+    return worst;
+  }
+
+  return { target, context, explain, clock, pressure, clamp01 };
 })();

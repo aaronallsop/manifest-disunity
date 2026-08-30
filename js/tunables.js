@@ -759,9 +759,9 @@ export const SCHEMA = {
 
   /* ---------------- nations & annexation ---------------- */
   'nation.minAreas': {
-    v: 3, min: 1, max: 50, step: 1, group: 'Nations',
+    v: 5, min: 1, max: 50, step: 1, group: 'Nations',
     label: 'Minimum Areas for a new nation',
-    doc: 'A contiguous breakaway chunk needs this many Areas to become its own nation. Re-derived at Area scale — 10 was written for counties (M4.3).',
+    doc: 'A contiguous breakaway chunk needs this many Areas to become its own nation. Re-derived at Area scale — 10 was written for counties (M4.3) — and raised from 3 in M6.3, where it turned out to be the number quietly deciding whether the map is a world or confetti: at 3, below release.budgetAreas, EVERY release manufactured a country, and 75 of the 88 nations a fifty-turn game produced were released fragments rather than anything anyone had fought for. Bounded above by the authored movements: cores run from 2 to 5 Areas, so a floor of 7 leaves El Paso United, Alaskan Independence and the Rio Grande Union unable ever to reach the goal they were written to want.',
   },
   'nation.minPop': {
     v: 250000, min: 0, max: 5e6, step: 10000, group: 'Nations',
@@ -794,7 +794,7 @@ export const SCHEMA = {
     doc: 'Extra annex cost multiplier applied in proportion to blue-shell severity.',
   },
   'annex.cooldownTurns': {
-    v: 1, min: 0, max: 20, step: 1, group: 'Annexation',
+    v: 4, min: 0, max: 20, step: 1, group: 'Annexation',
     label: 'Annex cooldown (turns)',
     doc: 'Turns a nation must wait between annexations.',
   },
@@ -806,10 +806,113 @@ export const SCHEMA = {
     label: 'Release budget (Areas / turn)',
     doc: 'Areas a nation can hand over in one turn. Higher than the annex budget on purpose: giving territory away is easier than taking it, and this is the release valve an over-extended nation reaches for when occupation cost outruns income.',
   },
+  'release.costGdpShare': {
+    v: 0.10, min: 0, max: 1, step: 0.01, group: 'Release',
+    label: 'Cost of a handover, as a share of the released ground\u2019s GDP',
+    doc: 'The settlement: assets written off, guarantees, pensions, a border to draw. Release cost NOTHING until M6.3, which made it a machine for converting territory into stability \u2014 and the M6.3 AI found it immediately. Measured over sixty turns at two seeds: with the AI never releasing, 51 nations become 54; at a weight of 0.3, 76; at 0.9, 135. A move that buys safety for free is dominant at any weight, so the answer is a price rather than a smaller appetite.',
+  },
   'release.cooldownTurns': {
-    v: 1, min: 0, max: 20, step: 1, group: 'Release',
+    v: 8, min: 0, max: 20, step: 1, group: 'Release',
     label: 'Release cooldown (turns)',
     doc: 'World turns between handovers, so a nation cannot dissolve itself one Area at a time inside a single round.',
+  },
+  /* ---------------- the AI's opinion ---------------- */
+  /*
+   * These are WEIGHTS ON A PREVIEW, not a second model of the world. The AI
+   * scores exactly the object the player's panel renders, so a move that looks
+   * good to it looks good for reasons the player can read on their own screen.
+   * Everything is a share of the acting nation, which is what lets one set of
+   * weights serve a two-Area rump and a sixty-Area giant.
+   */
+  'ai.wGrowth': {
+    v: 1.00, min: -2, max: 3, step: 0.05, group: 'AI',
+    label: 'AI: weight of population gained',
+    doc: 'How much a nation wants people, as a share of the population it would end up with. The main engine of expansion; set it to 0 and the map stops moving by anyone\u2019s choice.',
+  },
+  'ai.wWealth': {
+    v: 0.70, min: -2, max: 3, step: 0.05, group: 'AI',
+    label: 'AI: weight of GDP gained',
+    doc: 'How much a nation wants money, as a share of the GDP it would end up with. Lower than population because people vote, pay tax and hold ground, and money only does the second.',
+  },
+  'ai.wPrice': {
+    v: 0.80, min: 0, max: 3, step: 0.05, group: 'AI',
+    label: 'AI: aversion to the price',
+    doc: 'How much of the treasury a move costs, as a fraction. Distinct from solvency: this is the reluctance to spend, that is the refusal to go broke.',
+  },
+  'ai.wSolvency': {
+    v: 1.20, min: 0, max: 4, step: 0.05, group: 'AI',
+    label: 'AI: refusal to run out of money',
+    doc: 'Penalty for a move that leaves fewer than ai.runwayTurns of upkeep in the treasury. Heavy, because a bankrupt nation cannot act at all and the game gives it no way back.',
+  },
+  'ai.runwayTurns': {
+    v: 6, min: 0, max: 40, step: 1, group: 'AI',
+    label: 'AI: turns of upkeep to keep in hand',
+    doc: 'How many world turns of maintenance a nation wants left after paying for a move.',
+  },
+  'ai.wWar': {
+    v: 1.10, min: 0, max: 4, step: 0.05, group: 'AI',
+    label: 'AI: aversion to civil war',
+    doc: 'Penalty for an annexation that would trigger one, graded by how far the annexation moves the nation politically \u2014 a flip between neighbouring ideologies is a smaller shock than one across the board.',
+  },
+  'ai.wFit': {
+    v: 0.45, min: -2, max: 2, step: 0.05, group: 'AI',
+    label: 'AI: weight of political fit',
+    doc: 'How much a nation cares whether the people it is taking resemble the people it has. Signed: taking a hostile population is a cost, not merely a smaller benefit.',
+  },
+  'ai.wOccupy': {
+    v: 0.60, min: 0, max: 3, step: 0.05, group: 'AI',
+    label: 'AI: aversion to holding foreign ground',
+    doc: 'Penalty for the share of the resulting nation that would sit outside its home soil. Occupied ground costs Authority and breeds the sentiment that takes it away again.',
+  },
+  'ai.wFallout': {
+    v: 1.30, min: 0, max: 4, step: 0.05, group: 'AI',
+    label: 'AI: aversion to a failed union',
+    doc: 'Penalty for the share of your own Areas that would defect or secede if the union fails. Higher than the aversion to civil war: a failed union costs you ground you already held.',
+  },
+  'ai.wRelief': {
+    v: 0.60, min: 0, max: 4, step: 0.05, group: 'AI',
+    label: 'AI: weight of shedding a seditious Area',
+    doc: 'How much releasing the ground most likely to leave anyway is worth. The valve: without it a fraying nation has no move but to keep expanding, which is exactly the wrong one.',
+  },
+  'ai.wMandate': {
+    v: 0.80, min: 0, max: 3, step: 0.05, group: 'AI',
+    label: 'AI: weight of governing with the majority',
+    doc: 'How much a government values ruling in the name of the largest bloc it has, measured as the support it would gain over the support it holds.',
+  },
+  'ai.wUpheaval': {
+    v: 0.70, min: 0, max: 3, step: 0.05, group: 'AI',
+    label: 'AI: aversion to changing course',
+    doc: 'Penalty for the ideological distance a change of government covers. Keeps a nation from lurching across the board for a point of support.',
+  },
+  'ai.strainPosture': {
+    v: 0.65, min: 0, max: 2, step: 0.05, group: 'AI',
+    label: 'AI: how far strain changes posture',
+    doc: 'A nation close to losing an Area to secession discounts every gain and inflates every risk by this much. One number, two multipliers, and the whole difference between a secure nation that expands and a fraying one that consolidates \u2014 no stored personality, so the posture follows the situation and can change back.',
+  },
+  'ai.actThreshold': {
+    v: 0.10, min: -1, max: 2, step: 0.01, group: 'AI',
+    label: 'AI: score below which a nation passes',
+    doc: 'The bar a move must clear to be worth doing at all. Above zero on purpose: a nation that acts every single turn because something scored 0.001 is both unrealistic and exhausting to play against.',
+  },
+  'ai.temperature': {
+    v: 0.22, min: 0, max: 2, step: 0.01, group: 'AI',
+    label: 'AI: decision temperature',
+    doc: 'Softmax spread over the moves that clear the bar. 0 always takes the best-scoring move, which makes fifty similar nations behave identically and makes the AI solvable. Higher is more surprising and worse at the game.',
+  },
+  'secession.coreShare': {
+    v: 1.0, min: 0.1, max: 1, step: 0.05, group: 'Secession',
+    label: 'Share of its core a movement must hold to declare',
+    doc: 'A movement declares when it holds its HEARTLAND, not when it holds every last piece of it. This was 1.0 by construction \u2014 an AND across the whole core \u2014 which nothing in the game could disturb while the world engine was the only thing moving, and which the M6.3 AI defeated completely: one annexed core Area held every movement below the line, and forty turns produced zero declarations where the same seed without an AI produced two.',
+  },
+  'unite.costGdpShare': {
+    v: 0.08, min: 0, max: 0.5, step: 0.005, group: 'Unite',
+    label: 'Cost of a union, as a share of the target\u2019s GDP',
+    doc: 'What it takes to buy out a government: pensions, guarantees, a settlement its ministers will sign. Unite was the only action in the game that cost NOTHING, which made it strictly better than annexing \u2014 free, no treasury constraint, and it takes a whole nation rather than three Areas. The M6.3 AI played it exactly that way: 81 unions in 25 turns, and 51 nations became 18.',
+  },
+  'unite.cooldownTurns': {
+    v: 8, min: 0, max: 40, step: 1, group: 'Unite',
+    label: 'Union cooldown (turns)',
+    doc: 'World turns after an attempted union before a nation may propose another. Unite was the ONE action in the game with no clock on it \u2014 annex, release and changing course all have one \u2014 so a nation could re-roll the same union every turn until it landed, which makes any probability under 100% equal to 100% given enough turns. Found by the M6.3 AI on its first run: 35 of 53 nations opened by proposing a union.',
   },
   /* ---------------- anti-snowball ---------------- */
   'shell.topShare': {

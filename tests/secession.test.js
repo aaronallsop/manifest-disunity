@@ -23,6 +23,37 @@ import { bootWorld } from './world-fixture.js';
 const SEED = 20260829;
 const T = () => window.TUNE;
 
+/*
+ * A claim big enough to be a country: the core, plus enough of the homeland to
+ * clear `nation.minAreas`.
+ *
+ * Forcing the bare core used to be enough, because the floor was three Areas and
+ * every core cleared it. M6.3 raised the floor — a three-Area country is how a
+ * map turns to confetti — and `phaseSecession`'s own comment has always said the
+ * rule it means to enforce: a movement declares when it can hold A COUNTRY, not
+ * when it has enough Areas somewhere. So the fixture now sets up a claim that
+ * can, which is what these tests were always about.
+ */
+function claim(rec) {
+  /*
+   * Grown by ADJACENCY from the core, not by taking the first few homeland
+   * entries: the declaration rule tests the largest CONNECTED piece of the
+   * claim, so a scattered set of the right size still fails — which is the
+   * rule working, and would have looked like the fixture failing.
+   */
+  const home = new Set(rec.homeland);
+  const out = [...rec.core];
+  const have = new Set(out);
+  const need = window.TUNE.get('nation.minAreas') + 2;
+  for (let i = 0; i < out.length && out.length < need; i++) {
+    for (const nb of Game.countyNeighbors(out[i])) {
+      if (out.length >= need) break;
+      if (home.has(nb) && !have.has(nb)) { out.push(nb); have.add(nb); }
+    }
+  }
+  return out;
+}
+
 /** Push a movement over the threshold in the given Areas. */
 function force(name, areas, share) {
   const idx = Movements.ideologyIndexOf(name);
@@ -79,9 +110,10 @@ describe('Tier 2 — declaration', () => {
   it('the parent records the loss, on the same turn the event names', async () => {
     const { rng } = await bootWorld({ seed: SEED });
     const rec = Movements.get('Deseret');
-    // Only the CORE, so Utah survives to record the loss. Forcing the whole
-    // homeland consumes the parent and there is nobody left holding the ledger.
-    force('Deseret', rec.core, T().get('secession.countyThreshold') + 0.08);
+    // A viable claim but not the whole homeland, so Utah survives to record the
+    // loss. Forcing everything consumes the parent and there is nobody left
+    // holding the ledger.
+    force('Deseret', claim(rec), T().get('secession.countyThreshold') + 0.08);
     const events = World.phaseSecession(T(), rng);
     const declare = events.find((e) => e.kind === 'declare');
     ok(declare);
@@ -97,7 +129,7 @@ describe('Tier 2 — declaration', () => {
 
   it('the new nation joins the turn order', async () => {
     const { rng } = await bootWorld({ seed: SEED });
-    force('Deseret', Movements.get('Deseret').core, T().get('secession.countyThreshold') + 0.08);
+    force('Deseret', claim(Movements.get('Deseret')), T().get('secession.countyThreshold') + 0.08);
     World.phaseSecession(T(), rng);
     equal(TurnSystem.snapshot().order.length, Game.nations.size,
       'the turn order and the roster disagree: a nation either never acts or a dead one still does');
@@ -196,7 +228,7 @@ describe('Tier 1 — defection', () => {
   it('an over-threshold Area next door joins the movement\'s country', async () => {
     const { rng } = await bootWorld({ seed: SEED });
     const rec = Movements.get('Deseret');
-    force('Deseret', rec.core, T().get('secession.countyThreshold') + 0.08);
+    force('Deseret', claim(rec), T().get('secession.countyThreshold') + 0.08);
     World.phaseSecession(T(), rng);
     const nid = Movements.get('Deseret').nation;
     ok(nid && Game.getNation(nid), 'Deseret did not get a country to defect to');
@@ -217,7 +249,7 @@ describe('Tier 1 — defection', () => {
   it('but not from across the map — a country grows along its frontier', async () => {
     const { rng } = await bootWorld({ seed: SEED });
     const rec = Movements.get('Deseret');
-    force('Deseret', rec.core, T().get('secession.countyThreshold') + 0.08);
+    force('Deseret', claim(rec), T().get('secession.countyThreshold') + 0.08);
     World.phaseSecession(T(), rng);
     const nid = Movements.get('Deseret').nation;
     const held = new Set(Game.getNation(nid).counties);
@@ -233,7 +265,7 @@ describe('Tier 1 — defection', () => {
   it('is rate-limited, so the map does not turn to confetti', async () => {
     const { rng } = await bootWorld({ seed: SEED });
     const rec = Movements.get('Deseret');
-    force('Deseret', rec.core, T().get('secession.countyThreshold') + 0.08);
+    force('Deseret', claim(rec), T().get('secession.countyThreshold') + 0.08);
     World.phaseSecession(T(), rng);
     // push the ENTIRE homeland over the line at once
     force('Deseret', rec.homeland, T().get('secession.countyThreshold') + 0.2);

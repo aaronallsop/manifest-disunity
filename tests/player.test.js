@@ -163,32 +163,43 @@ describe('The AI sweep', () => {
   });
 
   it('never runs longer than the order it is sweeping', async () => {
+    /*
+     * Measured against the order the sweep ENDS with, not the one it started
+     * from: an action that splinters a nation inserts the newborns behind their
+     * parent, so a sweep can legitimately play more seats than existed when it
+     * began. What must not happen is running past the wrap.
+     */
     const { rng } = await bootPlaying(null);
-    const n = Game.nations.size;
     for (let i = 0; i < 4; i++) {
       TurnSystem.advance(T(), rng);
       const out = AI.sweep(T(), rng);
-      ok(out.turns < n, `a sweep of a ${n}-nation order took ${out.turns} turns`);
+      const seats = TurnSystem.snapshot().order.length;
+      ok(out.turns <= seats, `a sweep of a ${seats}-nation order took ${out.turns} turns`);
+      ok(!out.exhausted, 'the sweep hit its backstop');
     }
   });
 
-  it('the fifty seats still pass in M6.2, and that is a decision not a bug', async () => {
+  it('the fifty seats do something, now that M6.3 has given them an opinion', async () => {
     /*
-     * The policy is deliberately empty until M6.3: this milestone owns the seam
-     * and the loop, and a scoring function landing in the same commit would hide
-     * whether either works. The world engine still runs every round, so nations
-     * still fragment and movements still declare — what is missing is deliberate
-     * action. When M6.3 lands, this expectation flips and the rest of the file
-     * should not move.
+     * This read `equal(acted, 0)` in M6.2, whose policy was a deliberate pass —
+     * that milestone owned the seam and the loop, and a scoring function landing
+     * in the same commit would have hidden whether either worked. Its comment
+     * said the expectation would flip when M6.3 landed, and the rest of the file
+     * did not move, which is the point.
      */
     const { rng } = await bootPlaying(null);
-    equal(AI.chooseMove(Game.getPlayer(), T(), rng), null);
     let acted = 0;
     for (let i = 0; i < 4; i++) {
       TurnSystem.advance(T(), rng);
       acted += AI.sweep(T(), rng).acted.length;
     }
-    equal(acted, 0);
+    ok(acted > 0, 'four rounds of fifty nations produced no deliberate action at all');
+    // ...and `AI.pass` is still there, because "nobody acts" is a useful control.
+    const prev = AI.setPolicy(AI.pass);
+    try {
+      TurnSystem.advance(T(), rng);
+      equal(AI.sweep(T(), rng).acted.length, 0);
+    } finally { AI.setPolicy(prev); }
   });
 
   it('a policy that proposes an illegal move passes instead of throwing', async () => {

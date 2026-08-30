@@ -181,22 +181,23 @@ const MapModes = (function () {
     { upto: 1.01, color: '#8a4038', label: 'Critical' },
   ];
 
-  /** The strongest movement share in an Area, 0..1. */
-  function pressureOf(fips) {
-    const c = Game.county[Game.areaIdOf(fips)];
-    if (!c) return 0;
-    let pop = 0;
-    for (let i = 0; i < c.pop.length; i++) pop += c.pop[i];
-    if (pop <= 0) return 0;
-    let worst = 0;
-    for (const m in c.mov) { const s = c.mov[m] / pop; if (s > worst) worst = s; }
-    return worst;
-  }
+  /** The strongest movement share in an Area, 0..1. Defined in js/sentiment.js. */
+  const pressureOf = (fips) => Sentiment.pressure(fips);
 
   function pressureColor(fips) {
     const v = pressureOf(fips);
-    const mine = typeof store !== 'undefined' && store.player
-      ? Game.getOwner(Game.areaIdOf(fips)) === store.player : true;
+    /*
+     * FOG. Exact bands for your own ground, calm/rising/critical for everyone
+     * else's — which is what stops the pressure map being an omniscient
+     * targeting overlay for the annex button.
+     *
+     * It read `store.player` until M6.3, and `store.player` never existed: the
+     * whole feature was inert, and silently, because "no player" and "every Area
+     * is yours" take the same branch. It could not have worked before M6.2,
+     * because there was nobody to keep a secret from.
+     */
+    const player = Game.getPlayer();
+    const mine = player == null || Game.getOwner(Game.areaIdOf(fips)) === player;
     const bands = mine ? PRESSURE_BANDS : FOG_BANDS;
     for (const b of bands) if (v <= b.upto) return b.color;
     return bands[bands.length - 1].color;

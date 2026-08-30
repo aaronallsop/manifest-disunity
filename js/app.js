@@ -198,6 +198,9 @@ function choosePlayer() {
     if (!pick) console.warn(`?play=${wanted} names no nation; falling back to the turn order.`);
   }
   Game.setPlayer(pick || TurnSystem.currentId());
+  // ...and start the game on your own slot rather than sweeping the AI round to
+  // reach it. A fresh world has not begun yet; nobody is owed a turn in it.
+  TurnSystem.seat(Game.getPlayer());
 }
 
 /** The nation the human is playing. Null only in a world nobody is playing. */

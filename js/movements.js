@@ -267,7 +267,30 @@ const Movements = (function () {
       rec.nation = null;
       const s = strength(name);
       if (!s) { rec.state = 'latent'; continue; }
-      if (s.coreTotal > 0 && s.coreHeld === s.coreTotal) rec.state = 'declared';
+      /*
+       * A MOVEMENT DECLARES WHEN IT HOLDS ITS HEARTLAND, not when it holds every
+       * last piece of it.
+       *
+       * This tested `coreHeld === coreTotal`, an AND across the whole core, and
+       * it survived four milestones because nothing could disturb a core: the
+       * world engine pushed sentiment up and only up. The M6.3 AI defeated it
+       * outright — one annexed core Area, whose new owner's authority and
+       * liberties pull its sentiment back under the line, holds the whole
+       * movement latent forever. Measured at seed 7: two declarations over forty
+       * turns without an AI, zero with one.
+       *
+       * IT SHIPS AT 1.0 ANYWAY, which is the original rule, because loosening it
+       * turned out to be the wrong lever: a movement's core is SEEDED over the
+       * threshold at setup, so at 0.7 the Cascadian Separatists declared on turn
+       * ZERO with 163 Areas — the all-or-nothing test was the only thing between
+       * the opening position and an instant secession. The declaration drought
+       * was fixed where it was actually caused (unite and release were free, so
+       * the AI churned every border), and declarations came back at turns 39-44
+       * across three seeds with this at 1.0. The knob stays because the
+       * fragility is real and a future tuning pass should be able to reach it.
+       */
+      const need = Math.max(1, Math.ceil(s.coreTotal * t.get('secession.coreShare')));
+      if (s.coreTotal > 0 && s.coreHeld >= need) rec.state = 'declared';
       else if (s.peak >= armed) rec.state = 'armed';
       else if (s.peak >= rising) rec.state = 'rising';
       else rec.state = 'latent';

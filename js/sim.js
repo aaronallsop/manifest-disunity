@@ -140,7 +140,14 @@ const Sim = (function () {
 
     const series = [sample(0)];
     for (let t = 1; t <= turns; t++) {
-      World.advanceTurn(tune, rng);
+      /*
+       * A ROUND, not a world tick. `AI.round` plays every seat and lets
+       * `TurnSystem.advance` take the world over the wrap — the same clock the
+       * Pass button drives. Stepping `World.advanceTurn` directly, which is what
+       * this did until M6.3, measured a map on which no nation ever chose
+       * anything.
+       */
+      AI.round(tune, rng);
       series.push(sample(t));
       if (opts.onTurn) await opts.onTurn(t, series[series.length - 1]);
     }

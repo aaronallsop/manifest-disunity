@@ -1161,3 +1161,138 @@ Marked by **id** rather than by turn because the question is "since I finished m
 the world ticked", and those are two different clocks. It also keeps the player's own action out of
 their own newspaper: they were told what it did when they did it, and an annexation outranks almost
 everything, so re-reporting it would spend the lead slot on news they already have.
+
+### D105 — The AI scores the player's own preview, and its reasoning is a Why record
+**M6.3.** `AI.deliberate(nid)` walks `Moves.legal`, prices each candidate with `Moves.plan`, and
+scores the **Preview** — the same object the human's panel renders. There is no second model of the
+world, so a move that looks good to the AI looks good for reasons the player can read on their own
+screen, and neither side can be right about an action while the other is wrong.
+
+The score comes back in the shape `js/power.js` and `js/sentiment.js` already produce — `{value,
+inputs:[{label, raw, norm, weight, contribution, key}], summary}` — because "why did Texas attack me"
+is a question the game has to be able to answer and the ledger's `termsOf` already knows how to read
+that shape. It does **not** go through `Power.build`, which clamps to [0, 1] because a stock cannot be
+negative; a score has to be able to be, or the difference between a bad move and a catastrophic one
+disappears exactly where it matters.
+
+**Every term is a share of the acting nation.** That is what lets one set of weights serve a two-Area
+rump and a sixty-Area giant without a size table: "a fifth more people" means the same to both.
+
+**A prize is worth its odds.** A union hands over a whole nation, but only `chance` of the time, so
+the growth terms are discounted by the preview's own probability. There is deliberately no separate
+term for the odds: rewarding likelihood on its own scores a coin-flip over a tiny neighbour exactly
+as highly as a coin-flip over a giant one.
+
+**Posture is derived, not stored.** One number — strain, the peak movement share across the nation's
+own ground against the secession threshold, which is what the pressure map already paints — and two
+multipliers. A secure nation expands; a fraying one consolidates. No personality is assigned at
+setup, so a nation's character follows its situation and can change back when the situation does.
+
+Posture is read off each term's **stance** (`expand` / `hold`), not off its sign. Shedding a
+seditious Area is a positive term that a fraying nation should want *more* of; reading posture off
+the sign gets the release valve exactly backwards, and it is invisible until you watch a nation under
+pressure decide to invade someone.
+
+**Softmax, not argmax**, at `ai.temperature`. Always taking the best move makes fifty similarly-placed
+nations behave identically on the same turn and makes the whole AI solvable: once a player knows the
+weights, every future move is known. And a move must clear `ai.actThreshold` — passing is a
+legitimate answer, not a failure to find one.
+
+### D106 — Fifty nations playing every turn is a fuzzer pointed at the rules
+**M6.3.** The plan said an AI "makes losses land on someone". It also plays every rule ten thousand
+times, and it went straight for the two actions that cost nothing.
+
+**Unite had no cooldown and no price** — the only action in the game with neither, and the one that
+can hand over an entire nation. A free re-roll every turn makes any probability under 100% equal to
+100% given enough turns, which is the absence of a rule rather than a balance problem. Measured on
+the first run: 35 of 53 nations opened by proposing a union, and 51 nations became 18 by turn 20. Now
+`unite.cooldownTurns` (charged on the attempt, so a nation cannot walk its border absorbing a
+neighbour a turn) and `unite.costGdpShare` — buying out a government costs a share of what that
+government is worth.
+
+**Release had no price either**, which makes territory freely convertible into stability. Measured
+over sixty turns at two seeds: with the AI never releasing, 51 nations become 54; at a relief weight
+of 0.3, 76; at 0.9, 135. A move that buys safety for free is dominant at *any* weight, so the answer
+is a price (`release.costGdpShare`) rather than a smaller appetite. It has a second effect worth
+having in a game about holding a country together: a nation in real trouble may now be unable to
+afford to let go.
+
+**`nation.minAreas` was 3, below `release.budgetAreas` of 6**, so every release manufactured a
+country: 75 of the 88 nations a fifty-turn game produced were released fragments rather than anything
+anyone had fought for. Raised to 5 — bounded above by the authored movements, whose cores run from 2
+to 5 Areas, so a floor of 7 would leave three of them unable ever to reach the goal they were
+written to want.
+
+**`annex.cooldownTurns` and `release.cooldownTurns` were both 1**, which is no cooldown at all once
+every seat is actually played. Raised to 4 and 8.
+
+None of this was reachable before. A human operating all fifty-one seats was never going to grind the
+same 30% union for ten turns to find out that it always lands eventually.
+
+### D107 — The ledger belongs to the model, and so does the tune
+**M6.3.** Two things `actions.js` had been holding that only ever worked because one human was the
+only thing that acted.
+
+**The ledger writes lived in the UI.** The moment the AI took the other fifty seats, fifty-one
+nations acted and one of them was logged — the newspaper reported nothing but obituaries, because the
+only entry written from inside the model was the one `pruneEmpty` writes when a nation dies. They now
+live in `Moves.resolve*`, which also removes the possibility of two callers describing the same event
+differently. The one exception is `govern`: `Game.changeRulingIdeology` already writes a richer entry
+because the change also moves the Authority stock, so it stays the single owner and `resolveGovern`
+returns its entry.
+
+**`Moves` read `window.TUNE` directly.** Invisible while the only caller was a page with exactly one.
+Then the simulator started driving the AI — `Sim.run` layers overrides onto a *clone* so exploring
+never touches the session — and every slider under Annexation, Unite and Release silently did
+nothing. A dashboard whose sliders move nothing is worse than no dashboard. `plan`, `resolve` and
+`legal` now take the tune explicitly, the same shape `js/world.js` uses.
+
+And `actions.js` finally became what M6.1 said it should be: 1246 lines to 997, with `confirmAnnex`,
+`confirmUniteAttempt`, `confirmRelease` and `confirmGovern` calling `Moves.resolve` and rendering the
+result. The union preview reads `Moves.plan` too, and now tells the player how many of their own
+Areas would leave — a number `planSplinter` had been computing all along and only the AI could see.
+
+### D108 — The simulator plays the game, it does not watch it
+**M6.3.** `Sim.run` stepped `World.advanceTurn` directly, so every verdict card in `dev.html`
+described a map on which nothing deliberate ever happened. That was true of the game at the time and
+stopped being true the moment the AI arrived. It now calls `AI.round`, which plays every seat and
+lets `TurnSystem.advance` take the world over the wrap — the same clock the Pass button drives.
+
+`AI.round` runs until the round **ends**, not for a fixed number of seats: a round that splinters a
+nation inserts the newborns behind their parent, so counting seats stopped one short of the wrap and
+the world never ticked at all on exactly the turns something interesting happened.
+
+`tests/run.html?only=ai,secession` loads a slice of the suite. The full run crossed four minutes in
+M6.3 because half a dozen suites now play tens of thousands of AI turns, and a suite you cannot run
+part of is a suite you stop running.
+
+### D109 — What the declaration drought actually was
+**M6.3.** With the AI on, forty turns produced **zero** declarations of independence where the same
+seed without one produced two. The obvious culprit was `refreshStates`, which required a movement to
+hold **every** Area of its core — an AND across the whole core, which survived four milestones
+because nothing could disturb a core: the world engine pushed sentiment up and only up. One annexed
+core Area holds a movement latent forever.
+
+Loosening it to 70% was the wrong fix, and the test suite said so within a minute: cores are *seeded*
+over the threshold at setup, so at 0.7 the Cascadian Separatists declared on **turn zero** with 163
+Areas. The all-or-nothing rule was the only thing standing between the opening position and an
+instant secession.
+
+The drought was caused elsewhere — unite and release were free, so the AI churned every border — and
+fixing those brought declarations back at turns 39–44 across three seeds with the core rule at 1.0.
+`secession.coreShare` ships at 1.0, which is the original rule, and stays in the schema because the
+fragility is real and a future tuning pass should be able to reach it.
+
+Worth recording as a pattern rather than an incident: **the first explanation for a symptom the AI
+surfaces is usually the rule the AI touched last, and usually wrong.** The AI is a measuring
+instrument; what it measures is everything at once.
+
+### D110 — The fog could not have worked before there was a player
+**M6.3.** `MapModes.pressureColor` chose between exact bands and calm/rising/critical by reading
+`store.player`, and `store.player` never existed — `grep -rni "player\b" js/*.js` returned zero hits
+until M6.2. The whole feature was inert, silently, because "no player" and "every Area is yours" take
+the same branch. It reads `Game.getPlayer()` now.
+
+`Sentiment.pressure` is the one definition of how close an Area is to leaving, moved out of
+`MapModes` where the model then had to re-derive it. Two definitions of "about to secede" is exactly
+the kind of pair that drifts apart quietly and disagrees only in the cases that matter.
