@@ -99,6 +99,14 @@ const Projection = (function () {
   function sources(nid) {
     const n = Game.getNation(nid);
     if (!n) return [];
+    /*
+     * ITS OWN SEAT FIRST (M8.3). A scenario nation is authored with the Area its
+     * government actually sits in, and that is a better answer than the capital
+     * of whichever state most of its ground happens to be in: five successors
+     * out of Texas would otherwise all project from Austin, because Austin is
+     * where `Victory.all()['48']` is.
+     */
+    if (n.seat && n.counties.has(n.seat)) return [n.seat];
     if (typeof Victory !== 'undefined' && Victory.loaded() && n.homeSt) {
       const seat = Victory.all()[n.homeSt];
       if (seat && n.counties.has(seat.area)) return [seat.area];

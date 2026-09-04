@@ -171,11 +171,36 @@ describe('The AI sweep', () => {
      */
     const { rng } = await bootPlaying(null);
     for (let i = 0; i < 4; i++) {
+      const before = TurnSystem.snapshot().order.length;
       TurnSystem.advance(T(), rng);
       const out = AI.sweep(T(), rng);
-      const seats = TurnSystem.snapshot().order.length;
-      ok(out.turns <= seats, `a sweep of a ${seats}-nation order took ${out.turns} turns`);
+      const after = TurnSystem.snapshot().order.length;
+      /*
+       * WHAT "PAST THE WRAP" ACTUALLY MEANS, and M11 is why this had to be said
+       * properly. The comment above covers a sweep that GROWS — a splinter
+       * inserts newborns behind their parent — and the same reasoning covers
+       * one that SHRINKS, because a union or a conquest mid-sweep removes a
+       * seat that had already legitimately played.
+       *
+       * M11 produced the case neither end-point can see: the order grew to 53
+       * and came back to 52, so a correct sweep played 53 slots against a
+       * 52-nation order at both ends. Measured over six rounds after M11:
+       * 51 -> 52 (one born, 51 played), 52 -> 51 (51 played), 48 -> 46 (one
+       * born, 48 played). The peak is not observable from out here, so a count
+       * bound is a proxy the model is entitled to exceed.
+       *
+       * The claim is therefore stated directly: the sweep STOPPED BECAUSE IT
+       * REACHED THE PLAYER, and not because it ran out of patience. That is
+       * what "never runs past the wrap" means, and it is the property the
+       * backstop exists to catch.
+       */
       ok(!out.exhausted, 'the sweep hit its backstop');
+      equal(TurnSystem.currentId(), Game.getPlayer(),
+        `the sweep of a ${before}->${after}-nation order ended somewhere other than the player`);
+      // ...and it is still bounded, by the backstop rather than by a count it
+      // can legitimately pass.
+      ok(out.turns < Game.nations.size * 2 + 16,
+        `a sweep of a ${before}->${after}-nation order took ${out.turns} turns`);
     }
   });
 

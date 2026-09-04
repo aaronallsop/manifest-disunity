@@ -20,7 +20,21 @@
  */
 const SaveManager = (function () {
   const PREFIX = 'ns_save_';
-  const VERSION = 2;
+  /*
+   * FROM StateDoc, not a second copy of the number (M9.6). This file only uses
+   * it to badge an old save "old format" in the load list, which is exactly the
+   * kind of use that goes quietly stale: a version bump in statedoc.js would
+   * leave every save in the list looking current while the loader refused them.
+   *
+   * A FUNCTION, NOT A CONSTANT, and that is not a style choice. `StateDoc` is an
+   * ESM module published onto `window` by `js/boot-globals.js`, which is
+   * `type="module"` and therefore DEFERRED — it has not run when this classic
+   * script is being evaluated. `const VERSION = StateDoc.VERSION` at the top of
+   * an IIFE is a load-time ReferenceError that takes the whole module with it,
+   * which is the trap js/app.js documents at its own top for OLD_CT. Read it
+   * when somebody asks, by which time the bridge exists.
+   */
+  const version = () => StateDoc.VERSION;
   const SERVER_PREFIX = 'save-';
   const AUTOSAVE_NAME = 'Autosave';
 
@@ -93,6 +107,9 @@ const SaveManager = (function () {
       if (cur && Game.getNation(cur)) { setMode('nations'); select('nation', cur); }
       else deselect();
       renderTurnBanner();
+      // The ledger came back with the document; the journal is its surface, and
+      // an unread count carried over from the game we just replaced is a lie.
+      if (typeof Journal !== 'undefined') Journal.reset();
       return { ok: true };
     } catch (err) {
       console.error('load failed, rolling back', err);
@@ -214,15 +231,85 @@ const SaveManager = (function () {
    * when the player actually asks for a save.
    */
   let autosaveInFlight = false, autosavePending = false;
+  /*
+   * THE LIVE DOCUMENT WITHOUT A SERVER (M13.2).
+   *
+   * `data/state.json` is the source of truth when `server.py` is running, and
+   * it is what makes closing the tab safe: the world is written at every turn
+   * boundary and read back at boot. On a STATIC host — which is how a
+   * playtester three time zones away is going to get this — there is no
+   * `/api/state`, so before this the autosave simply did nothing and a tester
+   * who reloaded lost everything since their last manual Save.
+   *
+   * localStorage is the same fallback the named saves already use, and the
+   * measured shape is fine: a turn-3 document is 670 KB of which the ledger is
+   * 47 KB, and writing it costs ~10 ms (4.5 stringify + 5.1 setItem). The part
+   * that grows is the ledger, at roughly 0.2 KB an entry.
+   *
+   * WHICH IS WHY QUOTA IS HANDLED RATHER THAN REPORTED. The ~5 MB budget is
+   * shared with the player's named saves, and a long session's ledger is what
+   * will eventually push it over. On a quota failure the live copy is written
+   * again with its ledger trimmed to the recent past — the game stays
+   * resumable, which is the thing this exists for. The FULL ledger is still in
+   * memory and still goes into the telemetry export, so nothing a playtest
+   * needs is lost; what is lost is old newspaper text after a reload, and that
+   * is the right thing to spend.
+   */
+  const LIVE_KEY = 'ns_live';
+
+  function localLiveWrite(doc) {
+    try {
+      localStorage.setItem(LIVE_KEY, JSON.stringify(doc));
+      return true;
+    } catch (err) {
+      const quota = err && (err.name === 'QuotaExceededError' || err.code === 22 || err.code === 1014);
+      if (!quota) return false;
+      try {
+        // Keep the last few turns of news; the export keeps all of it.
+        const keepFrom = Math.max(0, (doc.meta && doc.meta.turn ? doc.meta.turn : 0) - 10);
+        const trimmed = {
+          ...doc,
+          ledger: doc.ledger && Array.isArray(doc.ledger.entries)
+            ? { ...doc.ledger, entries: doc.ledger.entries.filter((e) => e.turn >= keepFrom) }
+            : doc.ledger,
+        };
+        localStorage.setItem(LIVE_KEY, JSON.stringify(trimmed));
+        if (!liveTrimWarned) {
+          liveTrimWarned = true;
+          flash('\u{1F4BE} Browser storage is nearly full, so the auto-save is keeping only the '
+            + 'last ten turns of the journal. Your game is safe; use <strong>Menu &rarr; Export '
+            + 'this session</strong> before you finish.', 'warn');
+        }
+        return true;
+      } catch (e2) {
+        return false;
+      }
+    }
+  }
+  let liveTrimWarned = false;
+
   async function autosave() {
-    if (!serverOk) return;
     if (autosaveInFlight) { autosavePending = true; return; } // coalesce; never queue
     autosaveInFlight = true;
     try {
       const doc = snapshot({ name: AUTOSAVE_NAME });
-      await fetch('/api/state', { method: 'PUT', body: JSON.stringify(doc) });
-    } catch (e) {
-      serverOk = false;
+      if (serverOk) {
+        try {
+          /*
+           * `r.ok`, NOT merely "it did not throw". A static host answers PUT
+           * with 405 or 501 — a RESPONSE, and `fetch` resolves happily on it.
+           * The first version of this only fell back when the request threw,
+           * so on exactly the host a playtester would be using it wrote
+           * nothing, silently, every turn, and reported success.
+           */
+          const r = await fetch('/api/state', { method: 'PUT', body: JSON.stringify(doc) });
+          if (r.ok) return;
+          serverOk = false;
+        } catch (e) {
+          serverOk = false;   // ...and fall through to the browser
+        }
+      }
+      localLiveWrite(doc);
     } finally {
       autosaveInFlight = false;
       if (autosavePending) { autosavePending = false; autosave(); }
@@ -233,8 +320,14 @@ const SaveManager = (function () {
   async function readLive() {
     try {
       const r = await fetch('/api/state', { cache: 'no-store' });
-      if (!r.ok) return null;               // 404 on a first run is normal
-      return await r.json();
+      if (r.ok) return await r.json();
+      // A 404 on a first run is normal; fall through and ask the browser.
+    } catch (e) {
+      serverOk = false;
+    }
+    try {
+      const raw = localStorage.getItem(LIVE_KEY);
+      return raw ? JSON.parse(raw) : null;
     } catch (e) {
       return null;
     }
@@ -242,7 +335,10 @@ const SaveManager = (function () {
 
   /** Throw the live document away, so the next boot starts a fresh world. */
   async function clearLive() {
+    // BOTH stores, unconditionally. A New game that cleared only the one it
+    // happened to be using would resume out of the other one.
     try { await fetch('/api/state', { method: 'DELETE' }); } catch (e) { /* nothing to clear */ }
+    try { localStorage.removeItem(LIVE_KEY); } catch (e) { /* nothing to clear */ }
   }
 
   async function read(entry) {
@@ -261,12 +357,8 @@ const SaveManager = (function () {
 
   /* ---- modal ------------------------------------------------------ */
 
-  const openModal = (html) => {
-    const m = document.getElementById('modal');
-    m.querySelector('.modal-body').innerHTML = html;
-    m.classList.add('show');
-  };
-  const closeModal = () => document.getElementById('modal').classList.remove('show');
+  /* openModal/closeModal are app.js's; the card is shared with the game menu
+     and with anything else that has to stop the game and ask a question. */
   const done = (t) => { closeModal(); flash(t, 'good'); };
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const msg = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
@@ -326,7 +418,7 @@ const SaveManager = (function () {
       ? saves.map((s, i) => {
           const ts = s.ts ? new Date(s.ts).toLocaleString() : '';
           const where = s.where === 'server' ? 'on disk' : 'browser';
-          const stale = s.v != null && s.v < VERSION ? ' &middot; <em>old format</em>' : '';
+          const stale = s.v != null && s.v < version() ? ' &middot; <em>old format</em>' : '';
           return `<div class="save-row">
             <button class="save-load" data-i="${i}"><strong>${esc(s.name)}</strong><span>${esc(ts)} &middot; ${where}${stale}</span></button>
             <button class="save-del" data-del="${i}" title="Delete">✕</button></div>`;
@@ -360,14 +452,12 @@ const SaveManager = (function () {
     return false;
   }
 
-  document.getElementById('btn-save')?.addEventListener('click', openSave);
-  document.getElementById('btn-load')?.addEventListener('click', openLoad);
-  document.getElementById('modal')?.addEventListener('click', (e) => {
-    if (e.target.id === 'modal' || e.target.hasAttribute('data-close')) closeModal();
-  });
+  /* No header buttons of its own since M8: Save and Load are menu items, and
+     the menu calls openSave/openLoad through the exports below. */
 
   return {
-    openSave, openLoad, apply, snapshot, validate, list, write, read, VERSION,
-    autosave, readLive, clearLive, AUTOSAVE_NAME,
+    openSave, openLoad, apply, snapshot, validate, list, write, read,
+    get VERSION() { return StateDoc.VERSION; },
+    autosave, readLive, clearLive, AUTOSAVE_NAME, blockedByAction,
   };
 })();

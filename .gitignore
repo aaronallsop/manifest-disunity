@@ -20,3 +20,6 @@ data/state.json.tmp
 content/save-*.json
 # Scratch documents written by tests/content.test.js.
 content/test-*.json
+
+# build output (build/package_playtest.py)
+dist/

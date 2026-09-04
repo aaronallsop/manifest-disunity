@@ -42,14 +42,22 @@
  * The field table. `stride: 'mix'` means one value per ideology per Area;
  * a number, or omitted, means one value per Area.
  *
- * `save: false` marks a field that is DERIVED from immutable baked data at load
- * and so does not belong in a save file.
+ * `save: false` marks a field a save file does not carry as an Area column —
+ * either because it is DERIVED from immutable baked data at load (`anchor`) or
+ * because the document already states the same fact somewhere better
+ * (`owner`, which is `nations[].counties`).
  *
- * To add a field: add an entry. That is the whole change.
+ * `saveKey` is the name the field takes IN a document, where it is frozen: the
+ * v2 format writes populations as `p`, and renaming the column must not rename
+ * the key in every save ever written.
+ *
+ * To add a field: add an entry. That is the whole change — since M8.1
+ * `Game.serialize` and `Game.loadState` iterate this table rather than naming
+ * the columns by hand, so a new field is persisted by construction.
  */
 export const FIELDS = [
   {
-    key: 'pop', type: Float64Array, stride: 'mix',
+    key: 'pop', type: Float64Array, stride: 'mix', saveKey: 'p',
     doc: 'People, per ideology. Float64 because the world total is an exact integer invariant.',
   },
   {
@@ -62,9 +70,43 @@ export const FIELDS = [
        + 'Political drift pulls partly toward it, which is what stops every Area collapsing '
        + 'onto one national attractor. Derived from the bake at load, so it is not saved.',
   },
+  /*
+   * PER-AREA QUALITY OF LIFE AND CIVIL LIBERTIES (M12).
+   *
+   * The structural gap DESIGN.md §12 called #1: both were national stocks, so
+   * every Area of a country was exactly as pleasant and exactly as free as
+   * every other, and "the Rust Belt is angry while the coast thrives" was a
+   * sentence the model could not produce. Grievance read one number per nation
+   * and migration pulled toward one number per nation, which is why the
+   * pressure map had no gradient inside a border.
+   *
+   * FLOAT32, not Float64: these are 0..1 stocks read to two decimal places, and
+   * 1,688 Areas x two columns is 13.5 KB at Float32 against 27 KB at Float64
+   * for precision nothing consumes. `pop` and `gdp` are Float64 because a world
+   * population is an exact invariant and a per-Area GDP quantises visibly; a
+   * quality-of-life of 0.6234567 does not.
+   *
+   * SAVED, unlike `anchor`. They are rate-limited stocks with history in them —
+   * an Area held down for ten turns is not the same as one that just changed
+   * hands — so a document that dropped them would reopen with the whole country
+   * at its national average and the gradient gone.
+   */
   {
-    key: 'owner', type: Int16Array, fill: -1,
-    doc: 'Nation index, or -1 for unowned. THE single source of truth for ownership (M2.3b).',
+    key: 'qol', type: Float32Array, fill: -1,
+    doc: 'Quality of life in this Area, 0..1. -1 means "not computed yet", which is how '
+       + 'a newly created or newly conquered Area gets its first reading from the world '
+       + 'rather than climbing to it from zero.',
+  },
+  {
+    key: 'liberties', type: Float32Array, fill: -1,
+    doc: 'Civil liberties in this Area, 0..1. Same -1 convention as qol.',
+  },
+  {
+    key: 'owner', type: Int16Array, fill: -1, save: false,
+    doc: 'Nation index, or -1 for unowned. THE single source of truth for ownership (M2.3b). '
+       + 'Not written as an Area column: a document states ownership once, as each nation\'s '
+       + 'Area list, and a second copy keyed on a nation INDEX would not survive a roster '
+       + 'that loads in a different order.',
   },
 ];
 
@@ -176,6 +218,13 @@ export class AreaState {
   /** Field keys in declaration order; `saved()` is the subset a save carries. */
   keys() { return this.fields.map((f) => f.key); }
   saved() { return this.fields.filter((f) => f.save !== false).map((f) => f.key); }
+  /**
+   * The SPECS a save carries, which is what a serializer needs: the key, the
+   * document name (`saveKey`) and the stride. `saved()` hands back names only,
+   * which is why the save path used to hand-enumerate the columns instead of
+   * asking — and why a field added here was silently dropped by it.
+   */
+  savedFields() { return this.fields.filter((f) => f.save !== false); }
 }
 
 export default { AreaState, FIELDS };

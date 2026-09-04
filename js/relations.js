@@ -80,6 +80,11 @@ const Relations = (function () {
     lost: 'rel.magLost',           // they broke away from us
     recognised: 'rel.magRecognised', // they admitted we are a country
     betrayed: 'rel.magBetrayed',   // they admitted our rebels are a country
+    // M11.2 — the two things a nation can now do FOR another rather than TO it,
+    // and the one it can do to a promise.
+    treatied: 'rel.magTreatied',   // we signed something together
+    aided: 'rel.magAided',         // they paid for something of ours
+    reneged: 'rel.magReneged',     // they broke a pact they had signed with us
   };
 
   const clamp = (x, lo, hi) => (x < lo ? lo : x > hi ? hi : x);
@@ -149,6 +154,8 @@ const Relations = (function () {
     granted: 'handed us ground', traded: 'did business with us',
     seceded: 'we broke away from them', lost: 'they walked out on us',
     recognised: 'recognised us', betrayed: 'recognised our breakaway',
+    treatied: 'signed a pact with us', aided: 'paid for something of ours',
+    reneged: 'tore up a pact they had signed with us',
   };
   const labelOf = (e) => LABELS[e.kind] || e.kind;
 

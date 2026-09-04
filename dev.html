@@ -54,6 +54,11 @@
       <button class="btn go" id="run">Run</button>
       <label class="sub">turns <input type="number" id="turns" value="50" min="1" max="300" /></label>
       <label class="sub">seed <input type="number" id="seed" value="20260829" /></label>
+      <!-- The opening board. Off by default so every verdict this dashboard has
+           ever printed still means what it meant; on, the run measures the
+           shattered continent instead of the fifty-one states. -->
+      <label class="sub" title="Boot the Shattering (content/scenario-shattered.json) instead of 51 intact states">
+        <input type="checkbox" id="scenario" /> shattered</label>
     </div>
     <div class="dev-run">
       <button class="btn ghost" id="reset">Reset overrides</button>
@@ -95,6 +100,7 @@
 <script src="js/military.js"></script>
 <script src="js/projection.js"></script>
 <script src="js/relations.js"></script>
+<script src="js/pacts.js"></script>
 <script src="js/recognition.js"></script>
 <script src="js/coalitions.js"></script>
 <script src="js/events.js"></script>
@@ -102,6 +108,7 @@
 <script src="js/elections.js"></script>
 <script src="js/history.js"></script>
 <script src="js/identity.js"></script>
+<script src="js/scenario.js"></script>
 <script src="js/sim.js"></script>
 <script type="module" src="js/boot-globals.js"></script>
 
@@ -220,15 +227,31 @@ function drawOne(node, series, spec) {
 }
 
 /* ---- the verdict cards ---- */
-function drawCards(sum) {
+/*
+ * RE-BASELINED FOR THE SHATTERED BOARD (M8.8), at seed 20260829 over 50 turns:
+ *
+ *              nations   secessions  first  defections  lost
+ *   baseline   51 -> 52       3        29        6       14
+ *   shattered  61 -> 61       3        29       27       40
+ *
+ * Two things follow. The churn threshold was a flat `> 6`, which was set when
+ * the AI released far less ground and has been orange on every run since: it
+ * warns above roughly 1.5x its own board's measured norm now, which is a
+ * statement about THIS board rather than about a remembered one. And
+ * "first secession" means the same thing on both boards precisely because the
+ * shattering writes no `declare` entries (D-M8e) — on the shattered board it is
+ * the first secession AFTER Deseret, which is the number worth watching.
+ */
+function drawCards(sum, shattered) {
   const card = (l, v, cls) => `<div class="dev-card ${cls || ''}"><div class="l">${l}</div><div class="v">${v}</div></div>`;
+  const churnBar = shattered ? 60 : 21;
   el('cards').innerHTML = [
-    card('Nations', sum.nations, sum.nationsLost > 6 ? 'warn' : ''),
+    card('Nations', sum.nations, sum.nationsLost > churnBar ? 'warn' : ''),
     card('Secessions', sum.secessions, sum.secessions === 0 ? 'warn' : ''),
     card('First secession', sum.firstSecessionTurn == null ? 'never' : `turn ${sum.firstSecessionTurn}`,
       sum.firstSecessionTurn != null && sum.firstSecessionTurn < 12 ? 'bad' : ''),
     card('Defections', sum.defections),
-    card('Nations lost', sum.nationsLost),
+    card('Nations lost', `${sum.nationsLost} of ${sum.opening}`, sum.nationsLost > churnBar ? 'warn' : ''),
     card('Organised', sum.organised),
     card('Movement reach', sum.reachSpan),
     card('Political spread', sum.spread, sum.spreadCollapsed ? 'bad' : ''),
@@ -258,16 +281,19 @@ async function run() {
   el('status').textContent = 'running…';
   const t0 = performance.now();
   try {
+    const shattered = el('scenario').checked;
     const res = await Sim.run({
       seed: Number(el('seed').value) || 0,
       turns: Number(el('turns').value) || 50,
+      scenario: shattered,
       overrides: { ...overrides },
     });
-    drawCards(res.summary);
+    drawCards(res.summary, shattered);
     drawCharts(res.series);
     drawLog(res.events);
     const n = Object.keys(overrides).length;
     el('status').textContent = `${res.turns} turns in ${Math.round(performance.now() - t0)} ms`
+      + (shattered ? ' · shattered' : '')
       + (n ? ` · ${n} override${n === 1 ? '' : 's'}` : '');
   } catch (err) {
     el('status').textContent = `failed: ${err.message}`;
@@ -279,6 +305,7 @@ async function run() {
 }
 
 el('run').onclick = run;
+el('scenario').onchange = run;
 el('reset').onclick = () => {
   for (const k of Object.keys(overrides)) delete overrides[k];
   buildTunes();

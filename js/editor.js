@@ -375,12 +375,17 @@ const Editor = (function () {
   }
 
   /* ---- enter / exit ---- */
+  /*
+   * Neither of these repaints a button label any more. The editor's entry point
+   * is a menu item that is rebuilt from `isActive()` every time the menu opens
+   * (js/menu.js), so there is no long-lived label to keep in sync — and no
+   * getElementById here to throw the day that button is renamed again.
+   */
   function enter() {
     if (!modes) defaults();
     if (!areasByState) buildStateIndex();
     patchLeaderboard();
     active = true;
-    document.getElementById('btn-editor').textContent = 'Exit map editor';
     deselect();
     setMode('counties');
     renderSidebar();
@@ -388,7 +393,6 @@ const Editor = (function () {
   }
   function exit() {
     active = false;
-    document.getElementById('btn-editor').textContent = 'Enter map editor';
     if (typeof Leaderboard !== 'undefined') Leaderboard.refresh();
     recolor();
   }

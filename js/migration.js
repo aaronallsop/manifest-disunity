@@ -47,7 +47,7 @@ const Migration = (function () {
   const nameOf = (nid) => { const n = Game.getNation(nid); return n ? n.name : nid; };
 
   /* What the last turn moved, for the panel and the tests. */
-  let last = { turn: -1, moved: 0, byNation: new Map(), pairs: 0, flows: [], internal: new Map() };
+  let last = { turn: -1, moved: 0, byNation: new Map(), pairs: 0, flows: [], internal: new Map(), clamped: 0 };
 
   /* ------------------------------------------------------------------ */
   /* the pull                                                            */
@@ -74,7 +74,7 @@ const Migration = (function () {
     return build(state || Game.state(), owners || Game.state().owner, tune);
   }
 
-  function reset() { ctxCache = null; ctxEpoch = -1; ctxTurn = -1; last = { turn: -1, moved: 0, byNation: new Map(), pairs: 0, flows: [], internal: new Map() }; }
+  function reset() { ctxCache = null; ctxEpoch = -1; ctxTurn = -1; last = { turn: -1, moved: 0, byNation: new Map(), pairs: 0, flows: [], internal: new Map(), clamped: 0 }; }
 
   function build(state, owners, tune) {
     const t = tune || window.TUNE;
@@ -150,12 +150,40 @@ const Migration = (function () {
      * and turns the inner loop into an array read. Measured: 6.8 ms a turn to
      * 2.4 ms, on a phase that runs inside every world turn of every test.
      */
+    /*
+     * THE COLUMNS, BY NODE INDEX. `AreaState` is built from the graph's ids, so
+     * a node number means the same thing in both and there is no id lookup to
+     * do — which matters here because this loop runs 1,688 times a turn and the
+     * first version of it called an accessor that hashed a string each time.
+     */
+    const liveState = Game.state();
+    const qolCol = liveState ? liveState.qol : null;
+    const libCol = liveState ? liveState.liberties : null;
+    const wLocal = t.get('migration.wLocal');
+
     const value = new Float32Array(n * N);
     for (let f = 0; f < n; f++) {
       const o = owners[f];
       const nat = o >= 0 ? byNation[o] : null;
       if (!nat) continue;
-      const fixed = w.qol * nat.qol + w.liberties * nat.liberties
+      /*
+       * THE PLACE, NOT ONLY THE COUNTRY (M12).
+       *
+       * People move to a PLACE. Before M12 both ends of an internal move read
+       * the same two national numbers, so somebody leaving a poor interior for
+       * a rich coast inside one country was invisible to this model — the
+       * gradient was exactly zero everywhere inside a border, and the only
+       * migration that could happen was emigration.
+       *
+       * Weighted higher than sentiment's blend, because deciding where to live
+       * is a more local question than deciding whether to organise against a
+       * government.
+       */
+      const aq = qolCol ? qolCol[f] : -1;
+      const al = libCol ? libCol[f] : -1;
+      const qol = aq >= 0 ? (1 - wLocal) * nat.qol + wLocal * aq : nat.qol;
+      const lib = al >= 0 ? (1 - wLocal) * nat.liberties + wLocal * al : nat.liberties;
+      const fixed = w.qol * qol + w.liberties * lib
         + w.prosperity * prosperity[f] - w.crowding * crowding[f];
       const base = f * N;
       for (let k = 0; k < N; k++) value[base + k] = clamp01(fixed + w.alignment * align[base + k]);
@@ -293,9 +321,25 @@ const Migration = (function () {
           if (gain[i] > 0) count++;
         }
         if (!count || sum <= 0) continue;
-        // The share that leaves is set by how much better it is next door, up to
-        // the per-turn cap: nobody empties an Area in one quarter, however bad.
-        const leaving = pop * rate * Math.min(1, sum / full);
+        /*
+         * The share that leaves is set by how much better it is next door, up to
+         * the per-turn cap: nobody empties an Area in one quarter, however bad.
+         *
+         * CAPPED AT WHAT IS ACTUALLY THERE (M9.8), and this is a conservation
+         * fix rather than a tidy-up. `pop` is read from `snap`; the delta is
+         * applied to `nxt`, and any earlier phase in the same turn may have
+         * left `nxt` lower. When that happened the apply step's
+         * `Math.max(0, was + d)` clamped the source to zero AFTER the
+         * destinations had already been credited the full share — which does
+         * not lose people, it CREATES them, silently, a few at a time, in the
+         * one phase whose headline invariant is that it conserves.
+         *
+         * Capping here rather than clamping there is what makes it conserve
+         * exactly: the same number that leaves is the number that arrives,
+         * because there is only ever one of it.
+         */
+        const leaving = Math.min(pop * rate * Math.min(1, sum / full),
+          Math.max(0, nxt.pop[base + k]));
         if (leaving <= 0) continue;
         delta[base + k] -= leaving;
         for (let i = 0; i < nb.length && i < gain.length; i++) {
@@ -327,6 +371,13 @@ const Migration = (function () {
      * denominator grew, which is exactly what happens to a real one.
      */
     const totals = new Map();
+    /*
+     * NO SILENT CAPS. The clamp below should now be unreachable — `leaving` is
+     * capped at the source — and `clamped` is how we find out if it ever is
+     * not, rather than discovering it as eleven million extra people in turn
+     * forty. The suite asserts it stays at zero.
+     */
+    let clamped = 0;
     for (let f = 0; f < n; f++) {
       const base = f * N;
       let before = 0, after = 0;
@@ -334,6 +385,7 @@ const Migration = (function () {
         const d = delta[base + k];
         if (d === 0) continue;
         const was = nxt.pop[base + k];
+        if (was + d < 0) clamped += -(was + d);
         const now = Math.max(0, was + d);
         nxt.pop[base + k] = now;
         if (d < 0 && was > 0) scaleMovements(nxt, f, k, now / was);
@@ -367,7 +419,7 @@ const Migration = (function () {
       const nat = ctx.byNation[idx];
       if (nat && people >= 1) internal.set(nat.nid, people);
     }
-    last = { turn: World.getTurn(), moved, byNation: totals, pairs, flows, internal };
+    last = { turn: World.getTurn(), moved, byNation: totals, pairs, flows, internal, clamped };
     return last;
   }
 

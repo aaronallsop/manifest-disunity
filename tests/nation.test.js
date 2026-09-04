@@ -262,3 +262,188 @@ describe('Government', () => {
       'the maintenance rate is not the one the government type names');
   });
 });
+
+/*
+ * M8.1 — home ground is a SET stamped at birth, not a state code.
+ *
+ * `homeSt` is one modal state FIPS and occupation was `area.st !== homeSt`. That
+ * reading breaks in both directions the moment the board is not fifty-one intact
+ * states: several nations born out of one state all read the same `homeSt`, so
+ * one of them holding another's ground pays no occupation anywhere in that
+ * state; and a nation born across a state line counts most of its own founding
+ * soil as occupied — paying the superlinear surcharge, dragging four stocks, and
+ * suppressing its own movement on its own ground.
+ *
+ * MEASURED, on the baseline board at seed 20260829, the change is exactly one
+ * nation. The first divergence from the pre-M8.1 world is world turn 2, and the
+ * only value that differs anywhere in the fingerprint — ownership, population,
+ * GDP, movements and the other fifty-four treasuries all identical — is the
+ * treasury of `n3`, the **Washoe Republic**, founded on turn 1 out of Washoe
+ * County (Nevada) and Placer County (California). Its modal state was `'06'` on
+ * the alphabetical tie-break, so the county it is NAMED AFTER was foreign soil
+ * to it. $274,717,136 before, $275,774,192 after: it stopped paying an
+ * occupier's surcharge to stand in its own capital.
+ *
+ * The refactor IS exact for the fifty-one origin states, which is the whole
+ * baseline board, and the first test below is why: their home set is precisely
+ * the set the old predicate described.
+ */
+describe('Home ground', () => {
+  it('an origin state home ground is exactly its own state, as the old rule said', async () => {
+    await bootWorld({ seed: SEED });
+    for (const [nid, n] of Game.nations) {
+      ok(n.origin, 'the opening board should be origin states only');
+      const want = Object.keys(Game.county).filter((f) => Game.county[f].st === nid);
+      equal(n.home.size, want.length, `${n.name} home ground is not its whole state`);
+      for (const f of want) ok(n.home.has(f), `${n.name} does not count ${f} as home`);
+      // ...and therefore the two predicates agree on every Area it holds, which
+      // is what makes this a refactor on the opening board rather than a change.
+      for (const f of n.counties) {
+        equal(Game.isHomeGround(nid, f), Game.county[f].st === n.homeSt,
+          `${n.name}: the home-ground set disagrees with the old homeSt test at ${f}`);
+      }
+      equal(Game.occupiedCount(nid), 0, `${n.name} opens holding foreign ground`);
+    }
+  });
+
+  it('a nation born across a state line pays no occupation on its founding ground', async () => {
+    await bootWorld({ seed: SEED });
+    /*
+     * Two Areas in two different states, handed over as one founding grant.
+     * Under the old rule one of them was foreign soil to the nation founded on
+     * it — the Washoe Republic case, above.
+     */
+    const a = '32031';                       // Washoe County, Nevada
+    const b = '06061';                       // Placer County, California
+    ok(Game.county[a] && Game.county[b], 'the fixture Areas are not on this map');
+    const id = Game.createNation('Washoe Test', [a, b], { reason: 'secede' });
+    const n = Game.getNation(id);
+
+    equal(n.counties.size, 2);
+    notEqual(Game.county[a].st, Game.county[b].st, 'the two founding Areas are in one state');
+    equal(Game.occupiedCount(id), 0, 'a nation is occupying its own founding ground');
+    equal(Game.isHomeGround(id, a), true);
+    equal(Game.isHomeGround(id, b), true);
+    equal(Game.isOccupied(a), false);
+    equal(Game.isOccupied(b), false);
+    equal(Game.treasuryFlow(id).occupation, 0, 'the occupation surcharge is being charged at home');
+    // The old rule would have called one of them foreign, whichever way the
+    // modal-state tie-break fell.
+    ok(Game.county[a].st !== n.homeSt || Game.county[b].st !== n.homeSt,
+      'this fixture no longer spans two states and proves nothing');
+  });
+
+  it('...and pays it on ground annexed later, however long it holds it', async () => {
+    const { rng } = await bootWorld({ seed: SEED });
+    const a = '32031', b = '06061';
+    const id = Game.createNation('Washoe Test', [a, b], { reason: 'secede' });
+    // A third Area, taken rather than founded on — and taken from inside its own
+    // modal state, so the old rule would have called it home.
+    const taken = Game.countyNeighbors(b).find((f) => Game.county[f]
+      && Game.county[f].st === Game.getNation(id).homeSt && Game.getOwner(f) !== id);
+    ok(taken, 'no neighbouring Area in the home state to annex');
+    Game.moveCounties([taken], id, { silent: true, reason: 'annex' });
+
+    equal(Game.isHomeGround(id, taken), false, 'annexed ground became home ground');
+    equal(Game.occupiedCount(id), 1);
+    ok(Game.treasuryFlow(id).occupation > 0, 'the occupation surcharge is not being charged');
+    equal(Game.county[taken].st, Game.getNation(id).homeSt,
+      'the point of this Area is that the old rule would have called it home');
+
+    // Nothing un-occupies by age: an occupation cost that expired on its own
+    // would be a timer, not a cost.
+    for (let i = 0; i < 6; i++) World.advanceTurn(T(), rng);
+    if (Game.getNation(id) && Game.getNation(id).counties.has(taken)) {
+      equal(Game.isHomeGround(id, taken), false, 'ground became home by being held');
+    }
+  });
+
+  it('home ground survives a save round-trip, and an old document rebuilds it', async () => {
+    await bootWorld({ seed: SEED });
+    const id = Game.createNation('Washoe Test', ['32031', '06061'], { reason: 'secede' });
+    const doc = Game.serialize();
+    const saved = doc.nations.find((n) => n.id === id);
+    deepEqual(saved.home.slice().sort(), ['06061', '32031'], 'the home set is not in the document');
+
+    Game.loadState(JSON.parse(JSON.stringify(doc)));
+    deepEqual([...Game.getNation(id).home].sort(), ['06061', '32031'],
+      'the home set did not survive the round-trip');
+    equal(Game.occupiedCount(id), 0);
+
+    /*
+     * A pre-M8.1 document carries `homeSt` and no set at all. It is rebuilt from
+     * the rule that document was written under — every Area of its modal state —
+     * so an old save keeps behaving exactly as it did when it was saved.
+     */
+    const old = JSON.parse(JSON.stringify(doc));
+    for (const n of old.nations) delete n.home;
+    Game.loadState(old);
+    for (const [nid, n] of Game.nations) {
+      for (const f of n.counties) {
+        equal(n.home.has(f), Game.county[f].st === n.homeSt,
+          `${nid}: the migrated home set does not reproduce the old rule at ${f}`);
+      }
+    }
+  });
+});
+
+/*
+ * M8.1 — the save path walks the field registries rather than naming fields.
+ *
+ * Both halves of `Game.serialize` used to hand-enumerate what they copied, which
+ * is the failure `js/state.js` was written to end one level down: a field added
+ * to the record works for a session, is dropped by the save, and comes back at
+ * its default. It had already happened here (`gov.lostAt` carries a comment
+ * saying so) and `home` is exactly the kind of field it happens to next.
+ */
+describe('The save registries', () => {
+  it('every Area column a document carries round-trips, by construction', async () => {
+    await bootWorld({ seed: SEED });
+    const st = Game.state();
+    const specs = st.savedFields();
+    ok(specs.length >= 2, 'the registry lists no saved columns');
+    ok(!specs.some((s) => s.key === 'anchor'), 'anchor is derived and must not be saved');
+    ok(!specs.some((s) => s.key === 'owner'), 'ownership is stated by nations[].counties, once');
+
+    const doc = Game.serialize();
+    const f = Object.keys(Game.county)[0];
+    const node = Game.county[f].node;
+    for (const spec of specs) {
+      ok(doc.counties[f][spec.saveKey || spec.key] !== undefined,
+        `the document carries no "${spec.key}" for Area ${f}`);
+    }
+    // Perturb every column, reload, and check the document put it back.
+    const before = specs.map((s) => Array.from(st.slot(s.key, node)));
+    for (const s of specs) {
+      const slot = st.slot(s.key, node);
+      for (let i = 0; i < slot.length; i++) slot[i] += 1;
+    }
+    Game.loadState(doc);
+    specs.forEach((s, i) => {
+      deepEqual(Array.from(st.slot(s.key, node)), before[i], `column "${s.key}" did not come back`);
+    });
+  });
+
+  it('every nation field a document carries round-trips, by construction', async () => {
+    await bootWorld({ seed: SEED });
+    const id = Game.createNation('Registry Test', ['32031', '06061'],
+      { reason: 'secede', founded: 3, seat: '32031' });
+    const n = Game.getNation(id);
+    n.treasury = 12345678;
+    n.honeymoonUntil = 9;
+    n.lastAnnexTurn = 2;
+    n.weariness = 0.25;
+
+    const doc = Game.serialize();
+    Game.loadState(JSON.parse(JSON.stringify(doc)));
+    const back = Game.getNation(id);
+    equal(back.treasury, 12345678);
+    equal(back.honeymoonUntil, 9);
+    equal(back.lastAnnexTurn, 2);
+    equal(back.weariness, 0.25);
+    equal(back.seat, '32031', 'the authored seat did not survive the round-trip');
+    equal(back.founded, 3);
+    // -Infinity does not survive JSON and must come back as -Infinity, not null.
+    equal(back.lastUniteTurn, -Infinity);
+  });
+});

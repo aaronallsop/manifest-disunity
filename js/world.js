@@ -138,6 +138,57 @@ const World = (function () {
   }
 
   /*
+   * WHO ELSE IS PAYING FOR THIS COUNTRY'S POLITICS (M11.2).
+   *
+   * A nation taking somebody's aid governs a little like them, and this is
+   * where that becomes true of the map rather than of a number. Each recipient
+   * nation's lean is blended toward its patron's, weighted by how deeply it has
+   * been bought — see js/pacts.js for why one patron at a time and why the
+   * weight decays.
+   *
+   * A BLEND, NOT A FOURTH TERM. The drift target is a weighted average of
+   * owner, anchor and neighbours whose weights sum to one; adding a term means
+   * renormalising three tuned constants and every measurement that rests on
+   * them. Blending the patron INTO the owner's lean changes what "the
+   * government's politics" means for that one nation and nothing else — which
+   * is also the more honest description of a client state.
+   */
+  function applyPatrons(mixes) {
+    if (typeof Pacts === 'undefined' || !Pacts.count) return mixes;
+    /*
+     * `mixes` is indexed by OWNER INDEX, which is `Game.nationIndexOf(nid)` —
+     * assigned on first use and never reused, so it is NOT the roster's
+     * iteration order and a nation that has died leaves a hole. Building the
+     * reverse from the live roster through the same function is the only way
+     * these two agree; the first version of this walked `Game.nations` and
+     * numbered as it went, which silently blends the wrong country's politics
+     * into another the moment anybody is conquered.
+     */
+    const byIndex = [];
+    for (const [nid] of Game.nations) byIndex[Game.nationIndexOf(nid)] = nid;
+
+    // Read every patron BEFORE writing any blend, so a patron who is themselves
+    // somebody's client does not pass the second-hand politics on this turn.
+    const blends = [];
+    for (let o = 0; o < mixes.length; o++) {
+      const lean = mixes[o];
+      const nid = byIndex[o];
+      if (!lean || !nid) continue;
+      const p = Pacts.patronOf(nid);
+      if (!p || !(p.weight > 0.005)) continue;
+      const donor = mixes[Game.nationIndexOf(p.nid)];
+      if (!donor) continue;
+      blends.push([o, lean, donor, p.weight]);
+    }
+    for (const [o, lean, donor, w] of blends) {
+      const blended = new Array(lean.length);
+      for (let k = 0; k < lean.length; k++) blended[k] = (1 - w) * lean[k] + w * donor[k];
+      mixes[o] = blended;
+    }
+    return mixes;
+  }
+
+  /*
    * Ease each Area toward a BLENDED target, over all six ideologies:
    *
    *   target = ownerWeight     * the owner nation's ideology shares
@@ -264,8 +315,18 @@ const World = (function () {
    * `pop[ideologyOf(name)]`.
    */
   function phaseSentiment(snap, nxt, tune, owners, ctx) {
+    /*
+     * The ground's own stocks, by NODE INDEX (M12). `AreaState` is built from
+     * the graph's ids so a node number means the same thing in both, and this
+     * loop runs 1,688 times a turn times the movement count — an id lookup per
+     * read would be the most expensive thing in the phase.
+     */
+    const gState = Game.state();
+    const gQol = gState ? gState.qol : null;
+    const gLib = gState ? gState.liberties : null;
+    const wLocal = T(tune).get('sent.wLocal');
+    const natBlend = 1 - wLocal;
     const tn = T(tune);
-    const rise = tn.get('sent.maxRise');
     const fall = tn.get('sent.maxFall');
     const floor = tn.get('sent.floor');
     const N = Ideology.count();
@@ -273,6 +334,15 @@ const World = (function () {
     const sctx = ctx || Sentiment.context(owners, tn);
     const movements = sctx.movements;
     if (!movements.length) return;
+    /*
+     * THE RISE CAP IS PER MOVEMENT (M8.2). `sent.maxRise` is still the rate the
+     * world moves at; `rises[m]` is that rate times this movement's own
+     * `growthRate`, resolved in `Sentiment.build` so the inner loop is one array
+     * read. Only the rise: falling at a different speed per movement would make
+     * "organising is slower than collapsing" a movement's property rather than
+     * the model's.
+     */
+    const rises = sctx.rises || movements.map(() => tn.get('sent.maxRise'));
 
     const own = owners || snapshotOwners();
     const g = Game.graph();
@@ -314,6 +384,7 @@ const World = (function () {
       const affinities = sctx.affinity[dominant];
       const occupied = sctx.occupied ? sctx.occupied[f] : 0;
       const autonomous = sctx.autonomous ? sctx.autonomous[f] : 0;
+      const boost = sctx.boost ? sctx.boost[f] : 0;
       const garrison = nation.garrison || 0;
 
       gain.fill(0);
@@ -332,21 +403,33 @@ const World = (function () {
 
         const want = Sentiment.target({
           base: affinities[m],
-          qol: nation.qol,
-          liberties: nation.liberties,
+          /*
+           * THE AREA'S OWN, blended with its nation's (M12). This is the model
+           * path; `Sentiment.explain` does the same blend so the Why panel and
+           * the number it explains cannot disagree.
+           *
+           * `-1` means the ground has not been read yet — a brand-new Area on
+           * the turn it is created — and the honest answer then is the nation's
+           * figure rather than zero, which would make every new country the
+           * worst place on the continent for exactly one turn.
+           */
+          qol: gQol && gQol[f] >= 0 ? natBlend * nation.qol + wLocal * gQol[f] : nation.qol,
+          liberties: gLib && gLib[f] >= 0
+            ? natBlend * nation.liberties + wLocal * gLib[f] : nation.liberties,
           nationPower: nation.power,
           authority: nation.authority,
           weariness: nation.weariness,
           neighbourSum,
           occupied,
           autonomous,
+          boost,
           garrison,
           cap: sctx.caps[m],
         }, tn).value;
 
         const cur = share[f * M + m];
         const delta = want - cur;
-        let next = cur + (delta > 0 ? Math.min(delta, rise) : Math.max(delta, -fall));
+        let next = cur + (delta > 0 ? Math.min(delta, rises[m]) : Math.max(delta, -fall));
         if (next < floor) next = 0;
 
         if (next <= 0) { if (nMov[name]) delete nMov[name]; continue; }
@@ -544,6 +627,158 @@ const World = (function () {
    * work" free: nothing has to recompute anything to explain a number, and the
    * `key` on each input names the slider that moves it.
    */
+  /* ------------------------------------------------------------------ */
+  /* the ground itself (M12)                                             */
+  /* ------------------------------------------------------------------ */
+
+  /*
+   * PER-AREA QUALITY OF LIFE AND CIVIL LIBERTIES.
+   *
+   * The structural gap DESIGN.md §12 called #1. Both were national stocks, so
+   * every Area of a country was exactly as pleasant and exactly as free as
+   * every other, grievance had one number per nation to build on, and
+   * migration pulled toward one number per nation — which is why the pressure
+   * map had no gradient inside a border and why "the Rust Belt is angry while
+   * the coast thrives" was a sentence this model could not produce.
+   *
+   * THE SHAPE IS `national stock + what is true HERE`, and not a second full
+   * formula. The national stock already reads everything national — solvency,
+   * the government, war weariness, the leader — and a per-Area version that
+   * re-derived those would be a second implementation of the same quantity,
+   * free to disagree with the number on the panel. What is local is local:
+   *
+   *   quality of life   local wealth against the nation's own median,
+   *                     occupation, self-rule
+   *   civil liberties   the garrison on THIS ground, occupation, self-rule
+   *
+   * The garrison term is the one that most needed to be per-Area. A nation
+   * holding one restive province down was a police state everywhere, because
+   * `Military.garrisonPressure` is a national average — so the province the
+   * troops were actually in was no less free than the capital.
+   *
+   * RATE-LIMITED, like every other stock, and with the same asymmetry: somewhere
+   * is easier to ruin than to build. `-1` in the column means "never computed",
+   * which is how a newly created or newly conquered Area opens AT its reading
+   * rather than climbing to it from zero — the same rule `Power.step` uses for a
+   * null previous value, for the same reason.
+   */
+  function phaseGround(snap, nxt, tune, owners) {
+    const tn = T(tune);
+    const wWealth = tn.get('area.qolWealthWeight');
+    const qOcc = tn.get('area.qolOccupied');
+    const qAuto = tn.get('area.qolAutonomy');
+    const lGar = tn.get('area.libGarrison');
+    const lAuto = tn.get('area.libAutonomy');
+    const lOcc = tn.get('area.libOccupied');
+    const rise = tn.get('area.maxRise');
+    const fall = tn.get('area.maxFall');
+    const own = owners || snapshotOwners();
+
+    const live = Game.state();
+    const qCol = live.qol, lCol = live.liberties;
+    if (!qCol || !lCol) return;   // an older document; the columns arrive on save
+
+    /*
+     * The per-nation half, once. `perCapita` is the nation's MEDIAN Area rather
+     * than its mean, because a mean is dragged by one metropolis and the
+     * question this term asks is "compared with the rest of my own country".
+     */
+    const byIndex = [];
+    for (const [nid] of Game.nations) byIndex[Game.nationIndexOf(nid)] = nid;
+    const percaps = [];              // nation index -> [gdp per head, ...]
+    for (let i = 0; i < nxt.n; i++) {
+      const o = own[i];
+      if (o < 0) continue;
+      const base = i * Ideology.count();
+      let pop = 0;
+      for (let k = 0; k < Ideology.count(); k++) pop += nxt.pop[base + k];
+      if (pop <= 0) continue;
+      (percaps[o] || (percaps[o] = [])).push(nxt.gdp[i] / pop);
+    }
+    const median = [];
+    for (let o = 0; o < percaps.length; o++) {
+      const a = percaps[o];
+      if (!a || !a.length) continue;
+      a.sort((x, y) => x - y);
+      median[o] = a[(a.length / 2) | 0] || 1;
+    }
+    const nat = [];                  // nation index -> {qol, liberties, garrison}
+    for (const [nid] of Game.nations) {
+      const n = Game.getNation(nid);
+      if (!n) continue;
+      nat[Game.nationIndexOf(nid)] = {
+        qol: n.qol == null ? 0.5 : n.qol,
+        liberties: n.liberties == null ? 0.5 : n.liberties,
+        garrison: typeof Military !== 'undefined' ? Military.garrisonPressure(nid, tn) : 0,
+      };
+    }
+
+    const N = Ideology.count();
+    const clamp01 = (x) => (x < 0 ? 0 : x > 1 ? 1 : x);
+    const stepTo = (was, target) => {
+      if (!(was >= 0)) return clamp01(target);     // -1: open at the reading
+      const d = clamp01(target) - was;
+      return clamp01(was + (d > 0 ? Math.min(d, rise) : Math.max(d, -fall)));
+    };
+
+    for (let i = 0; i < nxt.n; i++) {
+      const o = own[i];
+      const id = nxt.idAt(i);
+      const n = o >= 0 ? nat[o] : null;
+      if (!n) continue;
+      let pop = 0;
+      const base = i * N;
+      for (let k = 0; k < N; k++) pop += nxt.pop[base + k];
+      if (pop <= 0) continue;
+
+      const perHead = nxt.gdp[i] / pop;
+      const med = median[o] || perHead || 1;
+      /*
+       * Compressed, and centred on 1: an Area at its nation's median contributes
+       * nothing, one at twice the median contributes a third of the weight, and
+       * one at nothing contributes minus the weight. `x/(1+x)` rather than a
+       * ratio, so a single freak Area cannot dominate the term.
+       */
+      const r = med > 0 ? perHead / med : 1;
+      const wealth = wWealth * ((r - 1) / (1 + Math.abs(r - 1)));
+
+      const occupied = Game.isOccupied ? Game.isOccupied(id) : false;
+      const autonomous = Game.isAutonomous ? Game.isAutonomous(id) : false;
+
+      const qTarget = n.qol + wealth
+        + (occupied ? qOcc : 0) + (autonomous ? qAuto : 0);
+      /*
+       * THE GARRISON, WHERE IT ACTUALLY IS.
+       *
+       * `Military.garrisonPressure` is a national number — how hard a country
+       * is holding its own ground down — and the model has no per-Area garrison
+       * to read, so the first cut of this looked for a `Game.isGarrisoned` that
+       * does not exist. Inventing one would be inventing a mechanic to make a
+       * formula work.
+       *
+       * The honest derivation is already on the board: TROOPS GO WHERE THE
+       * TROUBLE IS. So the national pressure lands on an Area in proportion to
+       * how organised against the government that Area actually is — which is
+       * `Game.hostility`, the strongest movement share there, the same quantity
+       * occupation upkeep is priced on. Occupied ground takes the whole weight
+       * regardless, because an occupier garrisons what it took whether or not
+       * anybody has organised yet.
+       *
+       * The consequence is the one M12 exists for: a nation holding one
+       * restive province down is unfree IN THAT PROVINCE, and no less free than
+       * before in its capital.
+       */
+      const trouble = occupied ? 1
+        : (typeof Game.hostility === 'function' ? Game.hostility(id) : 0);
+      const lTarget = n.liberties
+        + lGar * n.garrison * trouble
+        + (occupied ? lOcc : 0) + (autonomous ? lAuto : 0);
+
+      qCol[i] = stepTo(qCol[i], qTarget);
+      lCol[i] = stepTo(lCol[i], lTarget);
+    }
+  }
+
   function phasePower(tune, turn, only) {
     const tn = T(tune);
     // The world facts Influence is measured against, computed ONCE. Alignment is
@@ -803,15 +1038,33 @@ const World = (function () {
    * immediately start shedding the Areas that just fought to join it. Without
    * the cost, declaring independence would be free.
    */
-  function applyIndependence(nation, tune, turn) {
+  /*
+   * SPLIT IN TWO (M8.6), because a scenario needs one half and not the other.
+   *
+   * The Shattering's Deseret is a breakaway that happened BEFORE turn 0. It
+   * earns the honeymoon — a population that just got what it wanted still gives
+   * its government the benefit of the doubt — and it must not pay the transition
+   * cost, because an economy that opens twelve per cent under its own published
+   * figures reads as a data bug rather than as a story. Bundled, the caller had
+   * to take both or write neither.
+   */
+  function grantHoneymoon(nation, tune, turn) {
+    if (!nation) return;
     nation.honeymoonUntil = turn + tune.get('secession.honeymoonTurns');
     nation.founded = turn;
+  }
+  function transitionCost(nation, tune) {
+    if (!nation) return;
     const loss = tune.get('secession.transitionGdpLoss');
     // boostGdp spreads proportionally, so a negative amount is a proportional
     // CUT: every Area of the new state loses the same fraction, which is what
     // "the institutions broke" means. An even split would flatten the economic
     // map that M1.7 spent a fix un-flattening.
     if (loss > 0) Game.boostGdp(nation.id, -Game.nationDemographics(nation.id).gdp * loss);
+  }
+  function applyIndependence(nation, tune, turn) {
+    grantHoneymoon(nation, tune, turn);
+    transitionCost(nation, tune);
   }
 
   /**
@@ -860,7 +1113,8 @@ const World = (function () {
     const owners = snapshotOwners();
     const snap = buffer(), nxt = buffer();
 
-    const mixes = phaseRecomputeMixes(snap, nxt, owners); // start-of-turn ideology cache
+    // start-of-turn ideology cache, with each client's patron blended in (M11.2)
+    const mixes = applyPatrons(phaseRecomputeMixes(snap, nxt, owners));
     phasePoliticalDrift(snap, nxt, mixes, tn, owners, rng);
     phaseSentiment(snap, nxt, tn, owners);
     /*
@@ -912,6 +1166,9 @@ const World = (function () {
       // ...and drop the memories nobody can feel any more, so an append-only
       // list that lives in the save document does not grow without bound.
       Relations.forget(tn);
+      // ...and the pacts whose other party is gone, and the gratitude that has
+      // run out (M11.2). Beside Relations.forget for the same reason.
+      if (typeof Pacts !== 'undefined') Pacts.tick(tn);
       /*
        * WHO THE WORLD HAS DECIDED TO ADMIT EXISTS. After `forget`, because the
        * decision reads standing and should read this turn's, and after secession
@@ -940,6 +1197,13 @@ const World = (function () {
       if (typeof Elections !== 'undefined') {
         lastElections = Elections.tick(tn, rng, { defer: electionDefer, asOf: turn + 1 });
       }
+      /*
+       * THE GROUND (M12), after the writeback so it reads this turn's
+       * population and output, and before `phasePower` so the national stocks
+       * it blends from are last turn's — the same "read the settled world"
+       * rule every other phase here follows.
+       */
+      phaseGround(null, Game.state(), tn, null);
       Movements.refreshStates(tn); // derived from the map, so it follows the writeback
       Game.tickTreasuries(); // income minus maintenance, on this turn's updated GDP
       Market.update(tn);     // reprice every resource from live supply vs demand
@@ -989,7 +1253,10 @@ const World = (function () {
     snapshotOwners,
     begin,
     phaseSecession,
-    phasePower,
+    phasePower, phaseGround,
+    /** The two halves of becoming a country, separately (M8.6). */
+    grantHoneymoon,
+    transitionCost,
     /** What secession did on the last world turn, for the UI and M5's ledger. */
     getLastEvents: () => lastEvents,
     /** What happened at the polls on the last world turn. */

@@ -462,9 +462,38 @@ svg.hide-clines .area-borders { display: block; }
 .savebar button { background: var(--panel-bg-2); color: var(--text); border: 1px solid var(--line); border-radius: 8px; padding: 8px 12px; font-size: 13px; font-weight: 600; cursor: pointer; }
 .savebar button:hover { border-color: var(--accent); }
 
+/* ---------- the game menu ---------- */
+/* Loud on purpose: it is the only door to New game, and it is competing with
+   eight map-mode toggles for the same eye. */
+.menu-btn { background: var(--accent); color: #1a1206; border-color: var(--accent); padding: 8px 18px; font-size: 13.5px; letter-spacing: .2px; }
+.menu-btn:hover { filter: brightness(1.06); border-color: var(--accent); }
+.menu-where { font-size: 12px; color: var(--muted); margin: -8px 0 12px; }
+.menu-warn { font-size: 12.5px; color: var(--warn, #d9a441); background: rgba(217, 164, 65, .1); border: 1px solid rgba(217, 164, 65, .35); border-radius: 8px; padding: 8px 10px; margin: 0 0 12px; line-height: 1.45; }
+.menu-list { display: flex; flex-direction: column; gap: 6px; }
+.menu-item { display: flex; align-items: flex-start; gap: 11px; text-align: left; width: 100%; background: var(--panel-bg-2); border: 1px solid var(--line); border-radius: 10px; padding: 11px 13px; color: var(--text); cursor: pointer; font: inherit; }
+.menu-item:hover:not(:disabled) { border-color: var(--accent); }
+.menu-item:disabled { opacity: .4; cursor: not-allowed; }
+.menu-item .mi-icon { font-size: 16px; line-height: 1.3; flex: 0 0 auto; }
+.menu-item .mi-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.menu-item .mi-t { font-size: 14px; font-weight: 600; }
+.menu-item .mi-d { font-size: 11.5px; color: var(--muted); line-height: 1.4; }
+
+/* new game */
+.menu-opts { display: flex; flex-direction: column; gap: 6px; margin: 14px 0 4px; }
+.menu-opts .opt { display: flex; align-items: flex-start; gap: 10px; background: var(--panel-bg-2); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; cursor: pointer; }
+.menu-opts .opt:hover { border-color: var(--accent); }
+.menu-opts .opt input { margin: 3px 0 0; accent-color: var(--accent); flex: 0 0 auto; }
+.menu-opts .opt span { display: flex; flex-direction: column; gap: 2px; }
+.menu-opts .opt strong { font-size: 13.5px; font-weight: 600; }
+.menu-opts .opt em { font-size: 11.5px; color: var(--muted); font-style: normal; line-height: 1.4; }
+.menu-field { display: flex; align-items: center; gap: 10px; margin-top: 12px; }
+.menu-field > span { font-size: 12px; color: var(--muted); flex: 0 0 auto; }
+.menu-hint { font-size: 11.5px; color: var(--muted); line-height: 1.45; margin: 7px 0 0; }
+.menu-hint code { background: var(--panel-bg-2); border-radius: 4px; padding: 1px 5px; font-size: 11px; }
+
 #modal { position: fixed; inset: 0; background: rgba(0, 0, 0, .55); display: none; align-items: center; justify-content: center; z-index: 50; }
 #modal.show { display: flex; }
-.modal-card { background: var(--panel-bg); border: 1px solid var(--line); border-radius: 12px; padding: 20px; width: 360px; max-width: 90vw; box-shadow: 0 20px 60px rgba(0, 0, 0, .6); }
+.modal-card { background: var(--panel-bg); border: 1px solid var(--line); border-radius: 12px; padding: 20px; width: 420px; max-width: 90vw; box-shadow: 0 20px 60px rgba(0, 0, 0, .6); }
 .modal-body h3 { margin: 0 0 14px; font-size: 18px; }
 .modal-input { width: 100%; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; color: var(--text); font-size: 14px; box-sizing: border-box; }
 .modal-msg { font-size: 13px; color: var(--muted); margin: 10px 0 0; line-height: 1.5; }
@@ -596,3 +625,190 @@ svg.hide-clines .area-borders { display: block; }
 svg.flag { border-radius: 2px; flex: none; vertical-align: middle; }
 .card-head svg.flag { margin-right: 9px; box-shadow: 0 1px 4px rgba(0,0,0,.4); }
 .lb-row svg.flag { margin-right: 2px; }
+
+/* ---------- the journal: the game's memory (M9.7) ---------- */
+/* Docked below the map, collapsed to one line. The record the toast could not
+   be: nothing here is ever overwritten. */
+#journal {
+  flex: 0 0 auto;
+  border-top: 1px solid var(--line);
+  background: var(--panel-bg);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+#journal.open { flex: 0 0 34vh; }
+@keyframes j-pulse {
+  0% { border-top-color: var(--accent); box-shadow: 0 -6px 18px -6px var(--accent); }
+  100% { border-top-color: var(--line); box-shadow: none; }
+}
+#journal.pulse { animation: j-pulse 1.1s ease-out 1; }
+
+.j-bar {
+  display: flex; align-items: center; gap: 12px; padding: 6px 16px;
+  flex: 0 0 auto; min-width: 0;
+}
+.j-toggle {
+  background: var(--panel-bg-2); color: var(--text); border: 1px solid var(--line);
+  border-radius: 8px; padding: 5px 12px; font-size: 12.5px; font-weight: 600;
+  cursor: pointer; flex: 0 0 auto; display: inline-flex; align-items: center; gap: 7px;
+}
+.j-toggle:hover { border-color: var(--accent); }
+.j-caret { font-size: 10px; color: var(--muted); }
+.j-badge {
+  background: var(--accent); color: #1a1206; border-radius: 999px;
+  font-size: 10.5px; font-weight: 700; padding: 1px 6px; min-width: 17px; text-align: center;
+}
+.j-latest {
+  font-size: 12.5px; color: var(--text); overflow: hidden; text-overflow: ellipsis;
+  white-space: nowrap; min-width: 0; flex: 1 1 auto;
+}
+.j-latest.quiet { color: var(--muted); font-style: italic; }
+
+.j-chips { display: flex; gap: 5px; flex-wrap: wrap; }
+.j-chip {
+  background: transparent; border: 1px solid var(--line); border-radius: 999px;
+  color: var(--muted); font-size: 11.5px; padding: 3px 11px; cursor: pointer;
+}
+.j-chip:hover { color: var(--text); }
+.j-chip.active { background: var(--accent); border-color: var(--accent); color: #1a1206; font-weight: 600; }
+
+.j-list { flex: 1 1 auto; overflow-y: auto; padding: 0 16px 14px; min-height: 0; }
+.j-empty { color: var(--muted); font-size: 12.5px; padding: 14px 2px; font-style: italic; }
+
+/* The newspaper, as a divider rather than a message that arrives and leaves. */
+.j-turn {
+  display: flex; align-items: baseline; gap: 10px; position: sticky; top: 0;
+  background: var(--panel-bg); border-bottom: 1px solid var(--line);
+  padding: 8px 0 6px; margin-top: 10px; z-index: 1;
+}
+.j-turn:first-child { margin-top: 0; }
+.j-tno {
+  font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--accent); flex: 0 0 auto;
+}
+.j-lead { font-size: 12px; color: var(--muted); line-height: 1.45; }
+
+.j-entry {
+  display: flex; align-items: flex-start; gap: 9px; padding: 7px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, .04);
+}
+.j-entry:last-child { border-bottom: none; }
+.j-entry.mine { background: rgba(255, 213, 74, .05); margin: 0 -8px; padding-left: 8px; padding-right: 8px; border-radius: 6px; }
+.j-entry.new .j-text::after {
+  content: 'new'; font-size: 9px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--accent); border: 1px solid var(--accent); border-radius: 3px;
+  padding: 0 4px; margin-left: 7px; vertical-align: 1px;
+}
+.j-dot { width: 8px; height: 8px; border-radius: 2px; margin-top: 6px; flex: 0 0 auto; }
+.j-body { flex: 1 1 auto; min-width: 0; }
+.j-text { font-size: 13px; line-height: 1.5; }
+.j-kind {
+  font-size: 9.5px; letter-spacing: .07em; text-transform: uppercase; color: var(--muted);
+  border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; flex: 0 0 auto; margin-top: 3px;
+}
+
+/* THE WHY ROWS. For a civil war these are the dice — the richest feedback in
+   the game, and until M9.7 it was painted for zero frames. */
+.j-terms { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 3px; }
+.j-term { font-size: 11px; color: var(--muted); display: inline-flex; gap: 5px; }
+.j-tn { opacity: .85; }
+.j-tv { font-variant-numeric: tabular-nums; color: var(--text); }
+.j-tv.pos { color: var(--dem); }
+.j-tv.neg { color: var(--gop); }
+
+/* ---------- the objectives screen (M10.1) ---------- */
+/* Wider than the other modal contents: three conditions with five terms each is
+   a table, and a table in a 420px column is a stack of wrapped labels. */
+#modal.wide .modal-card { width: 620px; }
+.ob-tabs { display: flex; gap: 6px; margin: -6px 0 14px; }
+.ob-tab {
+  background: transparent; border: 1px solid var(--line); border-radius: 999px;
+  color: var(--muted); font-size: 12px; padding: 4px 13px; cursor: pointer;
+}
+.ob-tab:hover { color: var(--text); }
+.ob-tab.active { background: var(--accent); border-color: var(--accent); color: #1a1206; font-weight: 600; }
+.ob-body { max-height: 62vh; overflow-y: auto; padding-right: 4px; }
+.ob-lede { font-size: 13px; color: var(--muted); line-height: 1.55; margin: 0 0 14px; }
+.ob-note { font-size: 12px; color: var(--accent); background: rgba(255,213,74,.08);
+  border: 1px solid rgba(255,213,74,.3); border-radius: 8px; padding: 7px 10px; margin: 0 0 14px; }
+.ob-empty { font-size: 13px; color: var(--muted); font-style: italic; }
+.ob-body h4 { font-size: 12px; letter-spacing: .09em; text-transform: uppercase;
+  color: var(--accent); margin: 20px 0 8px; font-weight: 700; }
+.ob-body h4:first-child { margin-top: 0; }
+
+.ob-cond { background: var(--panel-bg-2); border: 1px solid var(--line); border-radius: 10px;
+  padding: 12px 14px 10px; margin-bottom: 8px; }
+.ob-cond.met { border-color: var(--dem); }
+.ob-head { display: flex; align-items: baseline; gap: 10px; }
+.ob-name { font-size: 15px; font-weight: 600; flex: 1 1 auto; }
+.ob-pct { font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--accent); }
+.ob-pct.met { color: var(--dem); font-size: 11px; letter-spacing: .08em; }
+.ob-blurb { font-size: 12px; color: var(--muted); margin: 3px 0 10px; line-height: 1.5; }
+
+.ob-terms { display: flex; flex-direction: column; gap: 4px; }
+.ob-term { display: flex; align-items: center; gap: 9px; font-size: 12px; cursor: help; }
+.ob-tl { flex: 0 0 180px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ob-term.met .ob-tl { color: var(--text); }
+.ob-term.binding .ob-tl { color: var(--accent); font-weight: 600; }
+.ob-bar { flex: 1 1 auto; height: 6px; background: var(--bg); border-radius: 3px; overflow: hidden; }
+.ob-bar i { display: block; height: 100%; background: var(--muted); border-radius: 3px; }
+.ob-term.met .ob-bar i { background: var(--dem); }
+.ob-term.binding .ob-bar i { background: var(--accent); }
+.ob-tv { flex: 0 0 auto; font-variant-numeric: tabular-nums; font-size: 11.5px; color: var(--muted); }
+.ob-bind { font-size: 11.5px; color: var(--muted); line-height: 1.5; margin: 9px 0 0;
+  border-top: 1px solid var(--line); padding-top: 8px; }
+.ob-bind strong { color: var(--accent); }
+
+.ob-rivals { display: flex; flex-wrap: wrap; gap: 5px 10px; margin: -2px 0 14px; padding-left: 14px; }
+.ob-rival { font-size: 11px; color: var(--muted); display: inline-flex; align-items: center; gap: 5px; }
+.ob-rival.mine { color: var(--accent); }
+.ob-rival .dot { width: 7px; height: 7px; border-radius: 2px; }
+.ob-rival b { font-variant-numeric: tabular-nums; color: var(--text); }
+
+.ob-ref { margin-bottom: 12px; }
+.ob-rt { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+.ob-ref p { font-size: 12px; color: var(--muted); line-height: 1.55; margin: 0 0 4px; }
+.ob-doc { font-size: 11.5px; color: var(--muted); line-height: 1.55; opacity: .85; margin: 0 0 4px; }
+.ob-ideo { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 8px 0 4px; }
+.ob-i { font-size: 11.5px; display: inline-flex; align-items: center; gap: 5px; }
+.ob-i .dot { width: 8px; height: 8px; border-radius: 2px; }
+.ob-i em { font-style: normal; color: var(--muted); font-variant-numeric: tabular-nums; font-size: 10.5px; }
+
+/* ---------- progressive disclosure on the panel (M10.2) ---------- */
+/* Every block keeps its headline; the rows that justify the number fold away.
+   Nothing is hidden that was not already a second read. */
+.stat.folded { position: relative; padding-right: 34px; }
+.stat.folded .stat-detail { display: none; }
+.stat.folded.is-open .stat-detail { display: block; }
+.stat-toggle {
+  position: absolute; top: 8px; right: 6px;
+  background: transparent; border: 1px solid var(--line); border-radius: 6px;
+  color: var(--muted); cursor: pointer; padding: 0 5px; min-width: 22px; height: 20px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 3px;
+  font-size: 12px; line-height: 1;
+}
+.stat-toggle:hover { border-color: var(--accent); color: var(--accent); }
+.st-caret { font-weight: 700; }
+.st-count { font-size: 9px; opacity: .6; font-variant-numeric: tabular-nums; }
+.stat.folded.is-open .stat-toggle { color: var(--accent); border-color: var(--accent); }
+
+/* "Changed this turn" — a mark on the block, not a colour on the number, so it
+   cannot be confused with the up/down the value itself carries. */
+.stat.changed::before {
+  content: ''; position: absolute; left: -10px; top: 10px; width: 3px; height: 14px;
+  background: var(--accent); border-radius: 2px;
+}
+.stat.changed > .label::after {
+  content: 'moved'; font-size: 8.5px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--accent); margin-left: 6px; vertical-align: 1px; opacity: .9;
+}
+
+/* ---------- diplomacy block (M11.2) ---------- */
+.dip-row { flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.btn.dip { flex: 1 1 auto; font-size: 12px; padding: 7px 10px; white-space: nowrap; }
+.btn.dip:disabled { opacity: .4; cursor: not-allowed; }
+
+/* ---------- the telemetry export dialog (M13.2) ---------- */
+.ex-list { margin: 12px 0 4px; border: 1px solid var(--line); border-radius: 8px; padding: 8px 11px; background: var(--panel-bg-2); }
+.ex-list .geo-row { font-size: 12px; }

@@ -168,8 +168,10 @@ const AI = (function () {
 
       let foreign = 0;
       for (const f of (preview.targets || [])) {
-        const c = Game.county[Game.areaIdOf(f)];
-        if (c && c.st !== n.homeSt) foreign++;
+        // Ground you are about to take is occupied unless it is ground you were
+        // founded on and lost — which is the case worth telling apart, and the
+        // reason this reads the home-ground set rather than a state code (M8.1).
+        if (Game.county[Game.areaIdOf(f)] && !Game.isHomeGround(intent.nid, f)) foreign++;
       }
       const endAreas = Math.max(1, n.counties.size + (preview.targets || []).length);
       terms.push(term('Foreign ground', 'ai.wOccupy', foreign,
@@ -294,6 +296,112 @@ const AI = (function () {
     }
 
     /*
+     * TRADE (M11.1). Two terms, because a deal buys two different things.
+     *
+     * The MONEY, normalised against a turn of gross income so that "worth a
+     * third of a quarter's revenue" means the same thing to Wyoming and to
+     * California. Deliberately the smaller weight: a deal is small, safe and
+     * repeatable, and a nation that priced it against an annexation on cash
+     * alone would never take ground again.
+     *
+     * The STANDING, which is what trading is actually for and is worth most
+     * where the relationship is worst. `Relations.score` runs -1..1, so
+     * `(1 - score)/2` is how far there is to travel: a neighbour that already
+     * likes you has little left to buy, and one that does not has everything.
+     * This is the term that makes fifty AI nations generate the `traded`
+     * entries the player used to have a monopoly on.
+     */
+    if (intent.type === 'trade') {
+      const flow = Game.treasuryFlow(intent.nid);
+      const income = flow ? Math.max(1, flow.income) : 1;
+      const gain = (preview.gain || 0) * 1e6;
+      terms.push(term('What it pays', 'ai.wTrade', gain, gain / income, 'hold'));
+      const standing = typeof Relations !== 'undefined'
+        ? Relations.score(intent.target, intent.nid, tune) : 0;
+      const room = Math.max(0, Math.min(1, (1 - standing) / 2));
+      terms.push(term('Who it is with', 'ai.wAmity', standing, room, 'hold',
+        'how much of the relationship there is left to buy'));
+    }
+
+    /*
+     * A PACT (M11.2), priced by EXPOSURE rather than by affection.
+     *
+     * A non-aggression pact is worth what it removes, and what it removes is
+     * the chance that the nation on the other side of it takes your ground. So
+     * the term scales with how much of your border they hold and how much
+     * bigger they are — a pact with the neighbour that could take your capital
+     * is worth a great deal, and one with a rump on the far coast is worth
+     * nothing at all. A nation that valued treaties by warmth would sign only
+     * with the countries it had least to fear.
+     */
+    if (intent.type === 'treaty') {
+      const them = Game.getNation(intent.target);
+      const theirs = them ? Game.nationDemographics(intent.target) : null;
+      const ratio = theirs && d.pop > 0 ? Math.min(3, theirs.pop / Math.max(1, d.pop)) : 0;
+      terms.push(term('What they could do to you', 'ai.wPact', ratio, Math.min(1, ratio / 2), 'hold',
+        'a pact is worth what it takes off the table'));
+    }
+
+    /*
+     * AID (M11.2). Two halves, and the second is why it exists.
+     *
+     * The COST is real money out of the treasury and is scored like any other
+     * price. The PATRONAGE is what it buys — the share of the recipient's
+     * politics the payment moves — and it is worth most to a nation whose
+     * binding victory requirement is the share of the continent holding its
+     * ideology, which is the term M11.2 was written to give a lever to.
+     */
+    if (intent.type === 'aid') {
+      const flow = Game.treasuryFlow(intent.nid);
+      const income = flow ? Math.max(1, flow.income) : 1;
+      terms.push(term('What it costs', 'ai.wPrice', preview.cost, -(preview.cost || 0) / income, 'hold'));
+      const bought = Math.max(0, (preview.wouldBe || 0) - ((preview.patron
+        && preview.patron.nid === intent.nid) ? preview.patron.weight : 0));
+      const chasingSway = ctx && ctx.goal && ctx.goal.binding
+        && ctx.goal.binding.label === 'People holding your ideology';
+      terms.push(term('Politics it buys', 'ai.wPatronage', bought,
+        Math.min(1, bought * (chasingSway ? 4 : 1.5)), 'hold',
+        chasingSway ? 'the only lever on the sway term that is not waiting'
+          : 'a client governs a little more like its patron'));
+    }
+
+    /*
+     * DENIAL (M11.3) — somebody, somewhere, minds that you are about to win.
+     *
+     * The audit's finding was that nothing in the game contests a rival winning
+     * quietly: coalition threat reads `size x (1 - influence)`, and both
+     * non-conquest victories keep Influence high BY CONSTRUCTION, so no
+     * coalition ever forms against them and no AI term read victory proximity
+     * at all. The AI punished conquest three ways and the other two paths zero
+     * ways, which against a human who has read the victory table is an opponent
+     * on one board out of three.
+     *
+     * This scores a move by what it does to the LEADER'S binding requirement
+     * rather than to the scorer's own progress — taking ground off the nation
+     * closing on Reunification is worth doing even when it advances nothing of
+     * yours, and that is exactly the move a human expects to be punished for
+     * leaving open.
+     */
+    if (ctx && ctx.threat && intent.nid !== ctx.threat.nid) {
+      const th = ctx.threat;
+      let deny = 0, why = null;
+      const hits = (intent.type === 'annex' && intent.against === th.nid)
+        || (intent.type === 'unite' && intent.target === th.nid);
+      if (hits) {
+        // Ground taken off the leader is ground they no longer count.
+        const areas = (preview.targets || []).length
+          || (preview.target ? Game.getNation(preview.target).counties.size : 0);
+        deny = Math.min(1, areas / Math.max(1, th.areas * 0.25));
+        why = `${th.name} is ${Math.round(th.progress * 100)}% of the way to ${th.label}`;
+      } else if (intent.type === 'treaty' && intent.target !== th.nid) {
+        // ...and a pact with somebody else is a nation the leader cannot use.
+        deny = 0.25;
+        why = `lining up against ${th.name}`;
+      }
+      if (deny > 0) terms.push(term('Denying the leader', 'ai.wDeny', th.progress, deny, 'hold', why));
+    }
+
+    /*
      * CLOSING. What this move does for the victory the nation is nearest.
      *
      * Without it the AI does not know the conditions exist, and the human wins
@@ -320,6 +428,21 @@ const AI = (function () {
         if (seats) {
           progress = seats / Math.max(1, b.target * (ctx.world ? ctx.world.seats : 51));
           note = `${seats} seat${seats === 1 ? '' : 's'} of government`;
+        }
+      } else if (b.label === 'People holding your ideology') {
+        /*
+         * THE VERB FOR THE SWAY TERM (M11.2). A client's population drifts
+         * toward its patron's ideology every turn the patronage holds, so what
+         * a payment is worth toward this requirement is the share of the
+         * continent it buys a piece of: their head count, times how much of
+         * their politics the money moves.
+         */
+        if (intent.type === 'aid' && ctx.world && ctx.world.pop > 0) {
+          const theirs = Game.nationDemographics(intent.target);
+          const bought = Math.max(0, (preview.wouldBe || 0)
+            - ((preview.patron && preview.patron.nid === intent.nid) ? preview.patron.weight : 0));
+          progress = (theirs.pop * bought) / ctx.world.pop / Math.max(1e-6, b.target);
+          note = 'their people, governing a little more like you';
         }
       } else if (b.label === 'Share of the people' && ctx.world && ctx.world.pop > 0) {
         progress = dPop * odds / ctx.world.pop / Math.max(1e-6, b.target);
@@ -439,6 +562,23 @@ const AI = (function () {
       const pool = doable.length ? doable : rows;
       ctx.goal = pool.reduce((a, r) => (r.progress > a.progress ? r : a), pool[0]) || null;
       ctx.world = { pop: world.pop, gdp: world.gdp, seats: 51 };
+      /*
+       * WHO IS ABOUT TO WIN (M11.3). Computed once per nation per turn beside
+       * the goal, for the same reason: `standings` walks every nation and every
+       * condition, and there are fifteen candidates to score.
+       *
+       * `ai.denyBar` is deliberately below `win.warnAt` — an opponent that only
+       * pushes back once the newspaper starts shouting pushes back too late to
+       * change anything.
+       */
+      const bar = t.get('ai.denyBar');
+      const lead = Victory.standings(t, 1)[0];
+      if (lead && lead.nid !== nid && lead.best.progress >= bar) {
+        const ln = Game.getNation(lead.nid);
+        ctx.threat = { nid: lead.nid, name: ln ? ln.name : lead.nid,
+                       progress: lead.best.progress, label: lead.best.label,
+                       areas: ln ? ln.counties.size : 1 };
+      }
     }
     for (const intent of Moves.legal(nid, {}, t)) {
       const preview = Moves.plan(intent, t);
@@ -505,17 +645,26 @@ const AI = (function () {
   const chooseMove = (nid, tune, rng) => policy(nid, tune, rng);
 
   /**
-   * The victory requirements a territorial move can actually shift.
+   * The victory requirements a MOVE can actually shift.
    *
-   * Everything else — the Authority and Influence floors, quality of life, the
-   * share of the continent holding your ideology — is moved by governing rather
-   * than by taking, and an AI that scored an annexation as progress toward one
-   * of them would grind at a wall. That NOTHING an annexation does moves
-   * Influence is the shape of the capstone, not an omission.
+   * Everything else — the Authority and Influence floors, quality of life — is
+   * moved by governing rather than by acting, and an AI that scored a move as
+   * progress toward one of them would grind at a wall. That NOTHING an
+   * annexation does moves Influence is the shape of the capstone, not an
+   * omission.
+   *
+   * 'PEOPLE HOLDING YOUR IDEOLOGY' JOINED THIS SET IN M11.2, and the reason it
+   * was not here before is the whole audit finding: until aid existed, the only
+   * lever on the sway term was governing well and waiting for the drift to come
+   * to you — "Ideological Dominance is govern-well-and-wait". A nation whose
+   * binding requirement was sway therefore had NO actionable goal, fell through
+   * to the nearest condition overall, and played for position instead. Aid is
+   * the verb, so the goal is now worth having.
    */
   const ACTIONABLE = new Set([
     'Seats of government', 'Share of the people', 'Share of the economy',
     'GDP per head, against the median nation',
+    'People holding your ideology',
   ]);
 
   /**

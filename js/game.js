@@ -144,6 +144,29 @@ const Game = (function () {
    * events more than old ones, and a counter cannot be windowed after the fact.
    * The lists are bounded (see `remember`), because a save is a document and an
    * 80-turn game must not carry an unbounded one.
+   *
+   * HOME GROUND IS A SET, STAMPED AT BIRTH (M8.1).
+   *
+   *   home  every Area this nation counts as its own soil, fixed for its life.
+   *
+   * It used to be one state FIPS — `homeSt` — and occupation was
+   * `area.st !== homeSt`. That reading is wrong the moment more than one nation
+   * is born out of the same state or one nation is born across two: five Texan
+   * successors would all read `'48'`, so one annexing another's capital would
+   * pay no occupation anywhere in Texas, and a nation founded across a state
+   * line would count most of its own founding ground as occupied — paying the
+   * superlinear surcharge, dragging four stocks, and suppressing its own
+   * movement on its own soil. This is the "real occupied flag" the M4.5 comment
+   * on `occupiedCount` promised itself.
+   *
+   * Origin states are stamped with every Area of their state, which is exactly
+   * what the old rule said about them; a nation born in play is stamped with its
+   * founding grant. Ground taken later is never home, and nothing becomes home
+   * by being held long enough — the whole point of an occupation cost is that it
+   * does not expire on its own.
+   *
+   * `homeSt` survives as a DISPLAY fact (the modal state, for labels and the
+   * seat lookup) and no rule reads it.
    */
   function makeNation(props) {
     const n = {
@@ -153,10 +176,16 @@ const Game = (function () {
       influence: null,
       qol: null,
       liberties: null,
+      // Present on every record whether or not anything authored them, so the
+      // shape of a nation does not depend on how it came into being.
+      seat: null,        // the Area its government sits in, if one was authored
+      kind: null,        // 'successor' | 'breakaway' | null — display only
       ...props,
       gov: makeGov(props.gov),
+      home: new Set(),
       _counties: new Set(),
     };
+    for (const f of props.home || []) { const a = cid(f); if (county[a]) n.home.add(a); }
     Object.defineProperty(n, 'counties', {
       enumerable: true,
       get() { refreshCounties(); return n._counties; },
@@ -246,7 +275,25 @@ const Game = (function () {
     epoch = 0;
     shellCache = null;
     shellEpoch = -1;
+    areasByState = null;
     listeners.length = 0;
+  }
+
+  /**
+   * Every live Area of one state, built once per world.
+   *
+   * The founding home ground of an origin nation, and the migration path for a
+   * pre-M8.1 document that carries `homeSt` and no home set. Memoised because
+   * the alternative is 51 sweeps of 1,676 Areas at boot for an answer that is
+   * fixed for the life of the world.
+   */
+  let areasByState = null;
+  function areasOfState(st) {
+    if (!areasByState) {
+      areasByState = {};
+      for (const f in county) (areasByState[county[f].st] || (areasByState[county[f].st] = [])).push(f);
+    }
+    return areasByState[st] || [];
   }
 
   /**
@@ -378,12 +425,14 @@ const Game = (function () {
       c.anchor = Ideology.shares(pop);
       delete c.raw;
     }
+    areasByState = null;   // the Area table has just been rebuilt
     for (const [st, s] of Object.entries(data.states)) {
       nations.set(st, makeNation({
         id: st, name: s.name, color: Colors.forState(st), origin: true,
         treasury: 0, gov: 'Republic',
         founded: 0,        // world turn the nation came into being
-        homeSt: st,        // its own soil; anything else it holds is OCCUPIED
+        homeSt: st,        // the modal state: a display fact, read by no rule
+        home: areasOfState(st),   // its own soil; anything else it holds is OCCUPIED
         lastAnnexTurn: -Infinity,
         lastReleaseTurn: -Infinity,
         lastUniteTurn: -Infinity,
@@ -914,7 +963,7 @@ const Game = (function () {
    * history is recorded here and nowhere else. Instrumenting the four callers
    * separately is how one of them ends up not doing it.
    */
-  function moveCounties(fipsList, toId, { silent, reason } = {}) {
+  function moveCounties(fipsList, toId, { silent, reason, quiet } = {}) {
     const to = nations.get(toId);
     if (!to) return;
     const turn = worldTurn();
@@ -942,7 +991,7 @@ const Game = (function () {
       remember(to, to.annexed, { turn, from: [...from.keys()], areas: gained, reason });
     }
 
-    const removed = pruneEmpty();
+    const removed = pruneEmpty(quiet);
     /*
      * `silent` suppresses the RENDER, not the FACT.
      *
@@ -984,17 +1033,28 @@ const Game = (function () {
     const { color, silent, founded } = opts;
     const id = 'n' + ++seq;
     nations.set(id, makeNation({
-      id, name, color: color || Colors.newColor(), origin: false,
+      id, name, color: color || Colors.newColor(), origin: !!opts.origin,
       treasury: 0, gov: 'Republic',
       founded: founded == null ? worldTurn() : founded,
       homeSt: modalState(countyIds),
+      // THE FOUNDING GRANT IS THE HOME GROUND, whatever states it spans. A
+      // breakaway across a state line is on its own soil in both halves of it.
+      home: countyIds,
+      seat: opts.seat == null ? null : cid(opts.seat),
+      /*
+       * WHAT KIND OF THING THIS IS, for the panel that has to name it.
+       * `origin` alone cannot: a scenario's successor states are recognised by
+       * construction like the fifty-one were, so they carry `origin: true` and
+       * are emphatically not former U.S. states. Display only — no rule reads it.
+       */
+      kind: opts.kind || null,
       lastAnnexTurn: -Infinity,
       lastReleaseTurn: -Infinity,
       lastUniteTurn: -Infinity,
       lastAutonomyTurn: -Infinity,
       tradeCooldown: {},
     }));
-    moveCounties(countyIds, id, { silent: true, reason: opts.reason || 'secede' });
+    moveCounties(countyIds, id, { silent: true, reason: opts.reason || 'secede', quiet: opts.quiet });
     if (!silent) emit({ ownership: true, roster: true });
     return id;
   }
@@ -1007,13 +1067,22 @@ const Game = (function () {
    * It is an event now, which is the cheapest half of the elimination feedback
    * the review asks for.
    */
-  function pruneEmpty() {
+  function pruneEmpty(quiet) {
     refreshCounties();
     let n = 0;
     for (const [id, rec] of nations) {
       if (rec._counties.size !== 0) continue;
       nations.delete(id);
       n++;
+      /*
+       * `quiet` is for SETUP, and only for setup. A scenario dissolves a state
+       * by handing every one of its Areas to a successor, which drains it and
+       * lands here — and a `died` entry on turn 0 would make Sim's `nationsLost`
+       * verdict card read every shattered run as a continent that lost ten
+       * nations before the first turn (D-M8e). The scenario announces the
+       * dissolution in its own voice instead, once, on the opening edition.
+       */
+      if (quiet) continue;
       Ledger.append({
         turn: worldTurn(), phase: 'roster', subject: id, kind: 'died', delta: -1,
         text: `${rec.name} ceased to exist.`,
@@ -1171,18 +1240,29 @@ const Game = (function () {
   const clamp = (x, lo, hi) => Math.max(lo, Math.min(hi, x));
 
   /**
+   * Is this Area part of that nation's own soil?
+   *
+   * THE one definition of home ground, and the only thing anything should ask.
+   * An origin state's soil is every Area of its state; a nation born in play
+   * holds the ground it was founded on. Everything else it holds is occupied.
+   */
+  function isHomeGround(nid, f) {
+    const n = nations.get(nid);
+    return !!(n && n.home && n.home.has(cid(f)));
+  }
+
+  /**
    * Areas a nation holds that are not its own soil.
-   * An origin nation's soil is its state; a nation born from a breakup takes the
-   * state most of its founding Areas sat in. M4.5 replaces this with a real
-   * occupied flag and scales the cost by per-Area hostility.
+   * Read off the home-ground set stamped at birth (M8.1) — the real occupied
+   * flag the M4.5 comment here promised. The cost is scaled by per-Area
+   * hostility in `treasuryFlow`.
    */
   function occupiedCount(nid) {
     const n = nations.get(nid);
     if (!n) return 0;
     let k = 0;
     for (const f of n.counties) {
-      const c = county[f];
-      if (c && c.st !== n.homeSt) k++;
+      if (county[f] && !n.home.has(f)) k++;
     }
     return k;
   }
@@ -1498,7 +1578,7 @@ const Game = (function () {
       const w = T('econ.occupationHostility');
       for (const f of n.counties) {
         const c = county[f];
-        if (!c || c.st === n.homeSt) continue;      // its own soil is not occupied
+        if (!c || n.home.has(f)) continue;          // its own soil is not occupied
         surcharge += base * (1 + w * hostility(f)) * countMult;
       }
     }
@@ -1561,6 +1641,70 @@ const Game = (function () {
   }
 
   /* ---- save / load (plain JSON in, plain JSON out) ---- */
+
+  /*
+   * THE NATION RECORD, AS A TABLE.
+   *
+   * `serialize` and `loadState` each used to name every field by hand, which is
+   * the same failure `js/state.js` exists to prevent one level down: a field
+   * added to the record works perfectly for a session, is dropped by the save,
+   * and reappears at its default when the game is reopened. It has already
+   * happened here — `gov.lostAt` needed a note in `makeGov` saying so — and
+   * M8.1's `home` is exactly the kind of field it happens to next.
+   *
+   * One table, iterated twice.
+   *
+   *   out(value, nation)         what goes into the document
+   *   in(value, doc, liveAreas)  what comes back onto the record
+   *
+   * Both default to identity, so a field with no conversion is one line.
+   * `counties` is deliberately NOT here: ownership is restored by writing the
+   * owner column, not by assigning to a derived getter.
+   */
+  const copyEach = (l) => (Array.isArray(l) ? l.map((e) => ({ ...e })) : []);
+  const nullable = (v) => (v == null ? null : v);
+  // -Infinity does not survive JSON; null means "has never done it".
+  const everOut = (v) => (Number.isFinite(v) ? v : null);
+  const everIn = (v) => (v == null ? -Infinity : v);
+  const NATION_FIELDS = [
+    { key: 'id' },
+    { key: 'name' },
+    { key: 'color' },
+    { key: 'origin' },
+    { key: 'treasury', in: (v) => v || 0 },
+    // A pre-M3 document carries `gov` as the string 'Republic'; makeGov takes
+    // either shape, so the load side is identity.
+    { key: 'gov', out: (v) => ({ ...v }) },
+    { key: 'founded', in: (v) => v || 0 },
+    { key: 'homeSt', in: (v, doc, live) => v || modalState(live) },
+    /*
+     * A document written before M8.1 carries no home set. Rebuild it from the
+     * rule that document was living under — every Area of its modal state —
+     * so an old save keeps behaving exactly as it did when it was written.
+     */
+    { key: 'home',
+      out: (v) => [...v],
+      in: (v, doc, live) => (Array.isArray(v) ? v : areasOfState(doc.homeSt || modalState(live))) },
+    // `null`, not undefined: a nation with no authored seat must serialize the
+    // same way before and after a round-trip, or serialize->load->serialize is
+    // not the identity and the invariant suite says so.
+    { key: 'seat', out: nullable, in: (v) => (v == null ? null : cid(v)) },
+    { key: 'kind', out: nullable, in: nullable },
+    { key: 'honeymoonUntil', out: (v) => v || 0, in: (v) => v || 0 },
+    { key: 'annexed', out: copyEach, in: copyEach },
+    { key: 'lost', out: copyEach, in: copyEach },
+    { key: 'authority', in: nullable },
+    { key: 'influence', in: nullable },
+    { key: 'qol', in: nullable },
+    { key: 'liberties', in: nullable },
+    { key: 'weariness', in: nullable },
+    { key: 'lastAnnexTurn', out: everOut, in: everIn },
+    { key: 'lastReleaseTurn', out: everOut, in: everIn },
+    { key: 'lastUniteTurn', out: everOut, in: everIn },
+    { key: 'lastAutonomyTurn', out: everOut, in: everIn },
+    { key: 'tradeCooldown', out: (v) => ({ ...v }), in: (v) => ({ ...(v || {}) }) },
+  ];
+
   function serialize() {
     const counties = {};
     // LOSSLESS. Rounding populations to 2dp would cut a 30-turn save from ~536 KB
@@ -1571,48 +1715,57 @@ const Game = (function () {
     // store is the server (M0.2), and the localStorage fallback surfaces its
     // quota error rather than failing silently. Empty ext/attrs bags ARE omitted,
     // which is free.
+    //
+    // THE COLUMNS COME FROM THE FIELD REGISTRY (M8.1), not from a hand-written
+    // list here: `js/state.js` says which fields exist, which of them a document
+    // carries and what each is called in one, and this walks that answer.
+    const cols = state.savedFields();
     for (const [f, c] of Object.entries(county)) {
-      // Array.from, not .slice(): a Float64Array stringifies to {"0":..,"1":..}.
-      const rec = { p: Array.from(c.pop), gdp: c.gdp };
+      const i = c.node;
+      const rec = {};
+      for (const spec of cols) {
+        // Array.from, not .slice(): a Float64Array stringifies to {"0":..,"1":..}.
+        rec[spec.saveKey || spec.key] = state.stride[spec.key] === 1
+          ? state.columns[spec.key][i]
+          : Array.from(state.slot(spec.key, i));
+      }
       for (const m in c.mov) { rec.m = { ...c.mov }; break; }
       for (const k in c.attrs) { rec.a = { ...c.attrs }; break; }
       counties[f] = rec;
     }
     const nats = [];
-    for (const [, n] of nations) nats.push({
-      id: n.id, name: n.name, color: n.color, origin: n.origin, treasury: n.treasury,
-      gov: { ...n.gov },
-      founded: n.founded, homeSt: n.homeSt,
-      honeymoonUntil: n.honeymoonUntil || 0,
-      annexed: n.annexed.map((e) => ({ ...e })),
-      lost: n.lost.map((e) => ({ ...e })),
-      authority: n.authority,
-      influence: n.influence,
-      qol: n.qol,
-      liberties: n.liberties,
-      weariness: n.weariness,
-      // -Infinity does not survive JSON; null means "has never annexed".
-      lastAnnexTurn: Number.isFinite(n.lastAnnexTurn) ? n.lastAnnexTurn : null,
-      lastReleaseTurn: Number.isFinite(n.lastReleaseTurn) ? n.lastReleaseTurn : null,
-      lastUniteTurn: Number.isFinite(n.lastUniteTurn) ? n.lastUniteTurn : null,
-      lastAutonomyTurn: Number.isFinite(n.lastAutonomyTurn) ? n.lastAutonomyTurn : null,
-      tradeCooldown: { ...n.tradeCooldown },
-      counties: [...n.counties],
-    });
+    for (const [, n] of nations) {
+      const rec = {};
+      for (const spec of NATION_FIELDS) {
+        rec[spec.key] = spec.out ? spec.out(n[spec.key], n) : n[spec.key];
+      }
+      rec.counties = [...n.counties];
+      nats.push(rec);
+    }
     return { seq, originalNationCount, player, counties, nations: nats };
   }
   function loadState(snap) {
     let dropped = 0;
+    const cols = state.savedFields();
     for (const [f, c] of Object.entries(snap.counties)) {
       const cc = county[f];
       if (!cc) { dropped++; continue; }
+      const i = cc.node;
       // A save written before the ideology model carried d/g/o + e{}; it is
-      // refused by SaveManager on the version stamp, so only `p` is read here.
-      // Guarded: `cc.pop` is now a view onto the column, and assigning it to
-      // itself would zero the column before copying from it.
-      if (Array.isArray(c.p)) cc.pop = c.p;
+      // refused by SaveManager on the version stamp, so only the registry's
+      // keys are read here. A document that omits one leaves it alone.
+      for (const spec of cols) {
+        const v = c[spec.saveKey || spec.key];
+        if (v === undefined) continue;
+        if (state.stride[spec.key] === 1) { state.columns[spec.key][i] = v; continue; }
+        if (!Array.isArray(v)) continue;
+        // Written through the slot, not through the record's accessor: assigning
+        // `cc.pop = cc.pop` would zero the column before copying from it.
+        const slot = state.slot(spec.key, i);
+        slot.fill(0);
+        for (let k = 0; k < Math.min(slot.length, v.length); k++) slot[k] = v[k];
+      }
       cc.mov = { ...(c.m || {}) };
-      cc.gdp = c.gdp;
       // MERGED, not replaced: attrs also holds values derived from the bake at
       // init (attrs.culture), and a save is allowed not to carry those.
       cc.attrs = { ...cc.attrs, ...(c.a || {}) };
@@ -1629,28 +1782,11 @@ const Game = (function () {
       // TypeError three turns later (finding 53).
       const live = n.counties.filter((f) => { if (county[f]) return true; orphans++; return false; });
       if (!live.length) continue;
-      nations.set(n.id, makeNation({
-        id: n.id, name: n.name, color: n.color, origin: n.origin,
-        treasury: n.treasury || 0,
-        // A pre-M3 document carries `gov` as the string 'Republic'; makeGov
-        // takes either shape.
-        gov: n.gov,
-        annexed: Array.isArray(n.annexed) ? n.annexed.map((e) => ({ ...e })) : [],
-        lost: Array.isArray(n.lost) ? n.lost.map((e) => ({ ...e })) : [],
-        authority: n.authority == null ? null : n.authority,
-        influence: n.influence == null ? null : n.influence,
-        qol: n.qol == null ? null : n.qol,
-        liberties: n.liberties == null ? null : n.liberties,
-        weariness: n.weariness == null ? null : n.weariness,
-        founded: n.founded || 0,
-        homeSt: n.homeSt || modalState(live),
-        honeymoonUntil: n.honeymoonUntil || 0,
-        lastAnnexTurn: n.lastAnnexTurn == null ? -Infinity : n.lastAnnexTurn,
-        lastReleaseTurn: n.lastReleaseTurn == null ? -Infinity : n.lastReleaseTurn,
-        lastUniteTurn: n.lastUniteTurn == null ? -Infinity : n.lastUniteTurn,
-        lastAutonomyTurn: n.lastAutonomyTurn == null ? -Infinity : n.lastAutonomyTurn,
-        tradeCooldown: { ...(n.tradeCooldown || {}) },
-      }));
+      const props = {};
+      for (const spec of NATION_FIELDS) {
+        props[spec.key] = spec.in ? spec.in(n[spec.key], n, live) : n[spec.key];
+      }
+      nations.set(n.id, makeNation(props));
       for (const f of live) setOwnerNode(nodeOf(f), n.id);
     }
     seq = snap.seq || 0;
@@ -1728,6 +1864,15 @@ const Game = (function () {
     exportAccess,
     tradeCapacity,
     originalNations: () => originalNationCount,
+    /**
+     * Restate the roster the game opened with.
+     *
+     * For a SCENARIO, which finishes building the opening board after `init` has
+     * already counted it: Reunification measures three quarters of the original
+     * nations and the leaderboard says "of the original N", and both would be
+     * measuring a board that never existed if this stayed at fifty-one.
+     */
+    setOriginalNations: (n) => { originalNationCount = Math.max(0, n | 0); },
     /** The id of the nation the human is playing, or null in a headless world. */
     getPlayer: () => player,
     /** The player's nation record, or null if there is none or it has died. */
@@ -1789,12 +1934,31 @@ const Game = (function () {
     /** Nation id -> its integer index in the ownership column. */
     nationIndexOf,
     /** Is this Area foreign soil to whoever holds it? */
+    /*
+     * THE GROUND'S OWN STOCKS (M12). `-1` means "not computed yet" rather than
+     * "zero", and every caller has to tell the difference — a brand-new Area
+     * reading 0 quality of life would be the worst place on the continent on
+     * the turn it was founded.
+     */
+    areaQol: (f) => {
+      const st = state.qol; const i = st ? state.indexOf(cid(f)) : -1;
+      return i >= 0 ? st[i] : -1;
+    },
+    areaLiberties: (f) => {
+      const st = state.liberties; const i = st ? state.indexOf(cid(f)) : -1;
+      return i >= 0 ? st[i] : -1;
+    },
     isOccupied: (f) => {
-      const c = county[cid(f)];
+      const a = cid(f);
+      const c = county[a];
       const nid = ownerIdAt(nodeOf(f));
       const n = nid && nations.get(nid);
-      return !!(c && n && c.st !== n.homeSt);
+      return !!(c && n && !n.home.has(a));
     },
+    /** Is this Area part of that nation's own founding soil? */
+    isHomeGround,
+    /** A nation's home ground, as a Set of Area ids. Read-only by convention. */
+    homeGround: (nid) => { const n = nations.get(nid); return n ? n.home : null; },
     refreshGovernments,
     changeRulingIdeology,
     /** Territorial events inside the memory window, newest last. */

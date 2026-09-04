@@ -31,6 +31,8 @@ const Actions = (function () {
   }
 
   function cancel() {
+    // ...and what they backed out of. See start().
+    if (A && typeof Telemetry !== 'undefined') Telemetry.note('action-cancel', { d: A.type });
     const nid = A && A.nid;
     A = null;
     restoreColorMode();
@@ -40,6 +42,13 @@ const Actions = (function () {
   }
 
   function start(type, nid) {
+    /*
+     * WHAT THEY OPENED, whether or not they went through with it (M13.2). An
+     * annexation a player opens, looks at and cancels is a decision they
+     * CONSIDERED and rejected — it never reaches the ledger, and it is exactly
+     * the moment a designer wants to see.
+     */
+    if (typeof Telemetry !== 'undefined') Telemetry.note('action-open', { d: type });
     if (type === 'unite') startUnite(nid);
     else if (type === 'annex') startAnnex(nid);
     else if (type === 'trade') startTrade(nid);
@@ -212,6 +221,25 @@ const Actions = (function () {
     const atRisk = plan.fallout.defect.length + plan.fallout.secede.length;
     const pct = Math.round(P * 100);
     const risky = P < 0.5;
+    /*
+     * THE PRICE, WHICH THIS PANEL DID NOT MENTION AT ALL (M9.4).
+     *
+     * Union costs `unite.costGdpShare` of what the other government is worth -
+     * pensions, guarantees, a settlement its ministers will sign - and it is
+     * charged ON THE ATTEMPT, not on success. So the player could be shown a
+     * 30% chance, click "Risk it", lose the roll AND the money, and nothing in
+     * the game had ever told them the second half was coming. The AI has read
+     * `plan.cost` off this same object since M6.3.
+     */
+    const cost = plan.cost || 0;
+    const treasury = Game.getNation(A.nid).treasury;
+    const costHtml = `<div class="stat"><div class="label">Settlement, charged on the attempt</div>
+      <div class="value ${plan.ok ? '' : 'deficit'}">${fmtGdp(cost)}</div>
+      <div class="geo-row"><span>Treasury after</span><strong class="${plan.ok ? 'surplus' : 'deficit'}">${fmtGdp(treasury - cost)}</strong></div>
+      <div class="geo-row"><span>Paid whether the union holds or not.</span></div>
+    </div>`;
+    const refusal = plan.ok ? ''
+      : `<div class="warn-box">\u26d4 ${escapeHtml(plan.reason || 'This union cannot be proposed.')}</div>`;
     const flip = me.dominant >= 0 && combined.dominant >= 0 && me.dominant !== combined.dominant;
     setPanel(`
       ${actionHead('🤝 Unite — preview', Game.getNation(A.nid))}
@@ -220,6 +248,8 @@ const Actions = (function () {
       <div class="chance ${risky ? 'risky' : 'safe'}">
         <span class="chance-num">${pct}%</span><span class="chance-lbl">chance of peaceful union</span>
       </div>
+      ${costHtml}
+      ${refusal}
       <div class="stat"><div class="label">Combined population</div><div class="value">${fmtPop(combined.pop)}</div></div>
       <div class="stat"><div class="label">Combined GDP</div><div class="value">${fmtGdp(combined.gdp)}</div></div>
       <div class="stat"><div class="label">Combined political leaning</div>${renderPolitics(combined)}</div>
@@ -229,7 +259,7 @@ const Actions = (function () {
         ${plan.fallout.secede.length} break away as new nations, and you lose population &amp; GDP.</div>
       <div class="btn-row">
         <button class="btn ghost" id="a-back">Back</button>
-        <button class="btn go ${risky ? 'danger' : ''}" id="a-go">${risky ? 'Risk it' : 'Propose union'}</button>
+        <button class="btn go ${risky ? 'danger' : ''}" id="a-go" ${plan.ok ? '' : 'disabled'}>${risky ? 'Risk it' : 'Propose union'}</button>
       </div>
     `);
     document.getElementById('a-back').onclick = () => { A.pending = null; setSelectOutline(nationOutline(A.nid)); renderUnitePrompt(); };
@@ -648,14 +678,23 @@ const Actions = (function () {
     };
   }
 
+  /*
+   * THE PANEL RENDERS THE PLAN IT RESOLVES (M11.1), like every other action.
+   *
+   * These rules moved into `Moves` this milestone, and the point of moving them
+   * was that the AI could not see them here. Having moved them, the UI has to
+   * read them back from the same place — otherwise there are two
+   * implementations again and the human's is the one that drifts, which is the
+   * failure M6.3 fixed for annexation and M9.4 fixed for its price.
+   */
   function renderTradePreview(tid) {
     const S = A.nid;
     const tName = Game.getNation(tid).name;
-    // Both sides must be able to physically move the goods.
-    const limit = Math.min(nationTradeCapacity(S).total, nationTradeCapacity(tid).total);
-    const res = applyCapacity(tradeFlows(S, tid), limit);
-    const flows = res.flows, total = res.total;
-    const gain = total * TRADE_GAIN(); // FULL rate: a matched deal is the good one
+    const plan = Moves.plan({ type: 'trade', nid: S, target: tid });
+    const flows = plan.flows || [];
+    const total = plan.total || 0;
+    const gain = plan.gain || 0;
+    const res = { capped: plan.capped, total, uncappedTotal: plan.uncappedTotal };
     const cd = tradeCooldownLeft(S, tid);
     /*
      * A DEAL NEEDS TWO GOVERNMENTS. Shown as a refusal on the preview rather
@@ -682,41 +721,77 @@ const Actions = (function () {
       ${shut ? `<div class="warn-box">\u{1F6AB} No deal. ${oneWay
         ? `${escapeHtml(tName)} does not recognise you as a country, and a trade agreement is a signature between two governments.`
         : `You do not recognise ${escapeHtml(tName)} as a country. Recognise them from their card and the table is open.`}</div>` : ''}
+      ${plan.ok || !plan.reason ? '' : `<div class="warn-box">\u26d4 ${escapeHtml(plan.reason)}</div>`}
       <div class="btn-row">
         <button class="btn ghost" id="a-back">Back</button>
-        <button class="btn go" id="a-go" ${flows.length && !cd && !shut ? '' : 'disabled'}>Sign trade deal</button>
+        <button class="btn go" id="a-go" ${plan.ok ? '' : 'disabled'}>Sign trade deal</button>
       </div>
     `);
     document.getElementById('a-back').onclick = () => { A.pending = null; setSelectOutline(nationOutline(A.nid)); renderTradePrompt(); };
-    document.getElementById('a-go').onclick = () => flows.length && !cd && !shut && confirmTrade(tid, gain);
+    document.getElementById('a-go').onclick = () => plan.ok && confirmTrade(tid);
   }
 
-  function confirmTrade(tid, gain) {
+  /*
+   * ...AND THE RESOLVER IS THE MOVE (M11.1). Everything this used to do — pay
+   * both treasuries, set both cooldowns, record the relationship in both
+   * directions, write the ledger, reprice the market — is `Moves.resolveTrade`,
+   * which is also what `AI.act` calls. Two implementations of "what a trade
+   * deal does", one reachable by a human and one by the other fifty nations, is
+   * the exact disagreement the plan/resolve split exists to prevent.
+   */
+  function confirmTrade(tid) {
     const S = A.nid;
     const Sname = Game.getNation(S).name, Tname = Game.getNation(tid).name;
+    const r = Moves.resolve({ type: 'trade', nid: S, target: tid }, store.rng);
+    if (!r.ok) return flash(`\u26d4 ${escapeHtml(r.reason)}`, 'bad');
     A = null;
     clearVisuals();
-    Game.batch(() => {
-      Game.earn(S, gain * 1e6);
-      Game.earn(tid, gain * 1e6);
-      markTraded(S, tid);
-      markTraded(tid, S);
-      /*
-       * Both directions, and the only relations term that accumulates through
-       * ordinary play rather than through violence — which is what lets a
-       * patient nation build standing without taking anything from anybody.
-       */
-      Relations.record(S, tid, 'traded', { tune: TUNE });
-      Relations.record(tid, S, 'traded', { tune: TUNE });
-      Ledger.append({
-        phase: 'action', subject: S, kind: 'trade', delta: gain * 1e6, partner: tid,
-        text: `${Sname} and ${Tname} signed a trade deal worth ${Math.round(gain)}M to each.`,
-      });
-    });
-    Market.update(TUNE); // traded supply moves the prices
-    flash(`\u{1F69B} <strong>${escapeHtml(Sname)}</strong> and <strong>${escapeHtml(Tname)}</strong> signed a trade deal &mdash; both treasuries +${fmtGdp(gain * 1e6)}.`, 'good');
+    flash(`\u{1F69B} <strong>${escapeHtml(Sname)}</strong> and <strong>${escapeHtml(Tname)}</strong> signed a trade deal &mdash; both treasuries +${fmtGdp(r.gain * 1e6)}.`, 'good');
     completeTurn();
   }
+  /* ================================================================= */
+  /* TREATIES AND AID (M11.2)                                          */
+  /* ================================================================= */
+  /*
+   * NO SELECTION FLOW. Both are asked about one named country, which is already
+   * on the screen when the button is there — so there is no map state to hold,
+   * no `A` to set, and nothing to cancel. That is why these two are the
+   * shortest action paths in the file and why they do not go through `start`.
+   */
+  function treaty(nid) {
+    const me = Game.getPlayer();
+    if (!me || blocked()) return;
+    const intent = { type: 'treaty', nid: me, target: nid, kind: 'nonaggression' };
+    const plan = Moves.plan(intent);
+    if (!plan.ok) return flash(`\u26d4 ${escapeHtml(plan.reason)}`, 'warn');
+    const r = Moves.resolve(intent, store.rng);
+    if (!r.ok) return flash(`\u26d4 ${escapeHtml(r.reason)}`, 'bad');
+    flash(`\u{1F4DC} <strong>${escapeHtml(Game.getNation(me).name)}</strong> and `
+      + `<strong>${escapeHtml(Game.getNation(nid).name)}</strong> signed a non-aggression pact.`, 'good');
+    completeTurn();
+  }
+
+  function aid(nid) {
+    const me = Game.getPlayer();
+    if (!me || blocked()) return;
+    const intent = { type: 'aid', nid: me, target: nid };
+    const plan = Moves.plan(intent);
+    if (!plan.ok) return flash(`\u26d4 ${escapeHtml(plan.reason)}`, 'warn');
+    const r = Moves.resolve(intent, store.rng);
+    if (!r.ok) return flash(`\u26d4 ${escapeHtml(r.reason)}`, 'bad');
+    const w = r.patron && r.patron.nid === me ? Math.round(r.patron.weight * 100) : 0;
+    flash(`\u{1F4B0} <strong>${escapeHtml(Game.getNation(me).name)}</strong> sent `
+      + `${fmtGdp(r.cost)} to <strong>${escapeHtml(Game.getNation(nid).name)}</strong>`
+      + (w ? ` &mdash; they now govern <strong>${w}%</strong> like you.` : '.'), 'good');
+    completeTurn();
+  }
+
+  /** Shared guard: neither is available while something else holds the map. */
+  function blocked() {
+    if (isActive()) { flash('Finish or cancel the current action first.', 'warn'); return true; }
+    return false;
+  }
+
   /* ================================================================= */
   /* ANNEX                                                             */
   /* ================================================================= */
@@ -733,21 +808,15 @@ const Actions = (function () {
       return select('nation', nid);
     }
     /*
-     * Untouchable neighbours are decided by SIZE, not by ideology.
-     *
-     * The old rule blocked only same-lean nations that were bigger, which left
-     * every ideological opposite wide open however large it was: Wyoming (0.59M,
-     * $51B) could not touch Montana or Idaho but could chew on Colorado (5.96M,
-     * $558B) freely, every turn, at no risk. A strength gate is what that rule
-     * was clearly reaching for.
+     * Untouchable neighbours are decided by SIZE, not by ideology — and the
+     * rule now lives in `Moves` (M9.3). This function used to be its ONLY
+     * enforcement: `Moves.planAnnex`, `Moves.legal` and therefore the whole AI
+     * played by a looser rulebook than the human clicking the map. What is left
+     * here is the click path's need for the SET, so the map can grey the
+     * blocked nations out before anything is selected.
      */
     const factor = TUNE.get('annex.strongNeighbourFactor');
-    const blocked = new Set();
-    for (const [oid] of Game.nations) {
-      if (oid === nid) continue;
-      const d = Game.nationDemographics(oid);
-      if (d.pop > me.pop * factor && d.gdp > me.gdp * factor) blocked.add(oid);
-    }
+    const blocked = Moves.untouchable(nid);
     const shell = Game.blueShell(nid);
     A = {
       type: 'annex', nid, chosen: new Set(), blocked, before: me, selectable: new Set(), shell,
@@ -820,14 +889,31 @@ const Actions = (function () {
     renderAnnexPanel();
   }
 
+  /*
+   * THE PANEL RENDERS THE PLAN IT WILL RESOLVE (M9.4).
+   *
+   * It used to call `annexCost` itself, and that was the bug: `annexCost` is
+   * the BASE price, and `planAnnex` multiplies it by `Projection.costMultiplier`
+   * before charging. At the edge of reach the shown price understated the
+   * charged price by up to 1.6x - precisely the case M7.11 made central, and
+   * precisely the number the AI could read off `plan` and the human could not.
+   *
+   * Rendering the plan rather than re-deriving it also means the panel now
+   * refuses for every reason the resolver refuses - out of reach, cooldown, the
+   * 4x rule (M9.3) - and says which, before the click rather than after it.
+   */
   function renderAnnexPanel() {
     const n = Game.getNation(A.nid);
+    const chosen = [...A.chosen];
     const added = Game.demographics(A.chosen);
-    const after = Game.demographics([...Game.getNation(A.nid).counties, ...A.chosen]);
-    const assess = A.chosen.size ? CivilWar.assess(A.before, added, after, TUNE) : { triggered: false, reasons: [] };
+    const after = Game.demographics([...n.counties, ...A.chosen]);
+    const plan = chosen.length ? Moves.plan({ type: 'annex', nid: A.nid, areas: chosen }) : null;
+    // `plan.war` IS `CivilWar.assess` over the same three demographics. Asking
+    // it a second way here is exactly how the two would come to disagree.
+    const assess = (plan && plan.war) || { triggered: false, reasons: [] };
     const reasons = assess.reasons || [];
     const ratioPct = Math.round(TUNE.get('war.triggerSizeRatio') * 100);
-    const triggerHtml = A.chosen.size === 0 ? '' : assess.triggered
+    const triggerHtml = !plan ? '' : assess.triggered
       ? `<div class="warn-box">\u2694\ufe0f <strong>This means civil war.</strong> Triggered by:
           ${reasons.includes('flip') ? '<span class="tag">party flip</span>' : ''}
           ${reasons.includes('gdp') ? `<span class="tag">GDP &gt; ${ratioPct}% of yours</span>` : ''}
@@ -835,17 +921,28 @@ const Actions = (function () {
           Outcome decided by dice on confirm.</div>`
       : `<div class="ok-box">\u2713 Peaceful annexation \u2014 no civil war triggered.</div>`;
 
-    const cost = annexCost([...A.chosen], A.shell);
+    // THE CHARGED PRICE, off the plan - reach multiplier included.
+    const cost = plan ? plan.cost : 0;
     const canPay = n.treasury >= cost;
     const afterTreasury = n.treasury - cost;
+    // The reach surcharge, named. It is the whole difference between the base
+    // price and the charged one, and nothing anywhere used to say it existed.
+    const reachPct = plan && plan.reachMult > 1.0001
+      ? Math.round((plan.reachMult - 1) * 100) : 0;
     const costHtml = `<div class="stat"><div class="label">Cost to mobilise</div>
       <div class="value ${canPay ? '' : 'deficit'}">${fmtGdp(cost)}</div>
       <div class="geo-row"><span>Treasury after</span><strong class="${canPay ? 'surplus' : 'deficit'}">${fmtGdp(afterTreasury)}</strong></div>
       ${A.shell ? `<div class="geo-row"><span>Leader surcharge</span><strong>+${Math.round(TUNE.get('annex.shellCostMult') * A.shell * 100)}%</strong></div>` : ''}
+      ${reachPct ? `<div class="geo-row"><span>Distance from your seats of government</span><strong class="deficit">+${reachPct}%</strong></div>` : ''}
+      ${plan && plan.reachWar > 1.0001 ? `<div class="geo-row"><span>&hellip;and your army fights at</span><strong class="deficit">${plan.reachWar.toFixed(2)}&times; the odds against</strong></div>` : ''}
       ${canPay ? '' : '<div class="warn-box">\u26d4 Your treasury cannot pay for this. Drop an Area, or bank another turn of income.</div>'}
     </div>`;
 
-    const blockedGo = !A.chosen.size || !canPay;
+    // A refusal that is not about money gets its own sentence, before the click.
+    const refusal = plan && !plan.ok && canPay
+      ? `<div class="warn-box">\u26d4 ${escapeHtml(plan.reason || 'This annexation is not allowed.')}</div>` : '';
+
+    const blockedGo = !plan || !plan.ok;
     setPanel(`
       ${actionHead('\u2694\ufe0f Annex counties', n)}
       <p class="hint-block">Click <strong>highlighted counties</strong> bordering your nation to add them. Click a chosen
@@ -855,6 +952,7 @@ const Actions = (function () {
         <div class="geo-row"><span>A fixed budget &mdash; not a share of your size, so it does not grow as you do.</span></div>
       </div>
       ${costHtml}
+      ${refusal}
       <div class="stat"><div class="label">Would-be population</div><div class="value">${fmtPop(after.pop)} <span class="delta">${deltaPop(added.pop)}</span></div></div>
       <div class="stat"><div class="label">Would-be GDP</div><div class="value">${fmtGdp(after.gdp)} <span class="delta">${deltaGdp(added.gdp)}</span></div></div>
       <div class="stat"><div class="label">Would-be political leaning</div>${renderPolitics(after)}</div>
@@ -988,10 +1086,31 @@ const Actions = (function () {
     const flowNow = Game.treasuryFlow(A.nid);
     let occupiedGiven = 0;
     for (const f of A.chosen) {
-      const c = Game.area(f);
-      if (c && c.st !== n.homeSt) occupiedGiven++;
+      if (Game.area(f) && !Game.isHomeGround(A.nid, f)) occupiedGiven++;
     }
     const savedAdmin = A.chosen.size * TUNE.get('econ.areaUpkeep');
+
+    /*
+     * ...AND WHAT IT COSTS (M9.4).
+     *
+     * Handing ground over is not free: `release.costGdpShare` of the released
+     * output is a settlement, charged once. This panel showed the savings and
+     * only the savings, so release read as a pure gain - which is precisely
+     * backwards for a valve whose whole design is "relief, at a price". The
+     * price is the reason autonomy and appeasement are different answers to the
+     * same problem rather than worse versions of this one.
+     */
+    const plan = A.chosen.size
+      ? Moves.plan({ type: 'release', nid: A.nid, areas: [...A.chosen] }) : null;
+    const cost = plan ? plan.cost : 0;
+    const settleHtml = plan
+      ? `<div class="stat"><div class="label">Settlement, paid once</div>
+          <div class="value deficit">&minus;${fmtGdp(cost)}</div>
+          <div class="geo-row"><span>Treasury after</span><strong class="${plan.ok ? 'surplus' : 'deficit'}">${fmtGdp(n.treasury - cost)}</strong></div>
+          <div class="geo-row"><span>${Math.round(TUNE.get('release.costGdpShare') * 100)}% of the output you are handing over.</span></div>
+          ${plan.ok ? '' : `<div class="warn-box">\u26d4 ${escapeHtml(plan.reason || 'This handover cannot be arranged.')}</div>`}
+        </div>`
+      : '';
 
     const preview = A.chosen.size
       ? `<div class="ok-box">\u{1F54A}\u{FE0F} Handing over <strong>${A.chosen.size}</strong>
@@ -1011,12 +1130,13 @@ const Actions = (function () {
         <div class="geo-row"><span>Current maintenance</span><strong>${fmtGdp(flowNow.maintenance)}</strong></div>
         ${flowNow.occupation ? `<div class="geo-row"><span>of which occupation</span><strong class="deficit">${fmtGdp(-flowNow.occupation)}</strong></div>` : ''}
       </div>
+      ${settleHtml}
       <div class="stat"><div class="label">Population after</div><div class="value">${fmtPop(after.pop)} <span class="delta">${given.pop ? '&minus;' + fmtPop(given.pop) : ''}</span></div></div>
       <div class="stat"><div class="label">GDP after</div><div class="value">${fmtGdp(after.gdp)} <span class="delta">${given.gdp ? '&minus;' + fmtGdp(given.gdp) : ''}</span></div></div>
       <div class="stat"><div class="label">Political leaning after</div>${renderPolitics(after)}</div>
       <div class="btn-row">
         <button class="btn ghost" id="a-cancel">Cancel</button>
-        <button class="btn go" id="a-go" ${A.chosen.size ? '' : 'disabled'}>Release ${A.chosen.size ? '(' + A.chosen.size + ')' : ''}</button>
+        <button class="btn go" id="a-go" ${plan && plan.ok ? '' : 'disabled'}>Release ${A.chosen.size ? '(' + A.chosen.size + ')' : ''}</button>
       </div>
     `);
     document.getElementById('a-cancel').onclick = cancel;
@@ -1068,6 +1188,7 @@ const Actions = (function () {
   }
 
   return {
+    treaty, aid,
     isActive, start, onHover, onClick, cancel,
     annexCooldownLeft, annexCost,
     tradeCooldownLeft, nationTradeCapacityFor, hasExportAccess, exportFlows, applyCapacity,

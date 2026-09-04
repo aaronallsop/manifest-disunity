@@ -199,6 +199,33 @@ const Elections = (function () {
   /* the result                                                          */
   /* ------------------------------------------------------------------ */
 
+  /*
+   * IS THE WINDOW STILL OPEN — and against which clock (M9.2).
+   *
+   * `hold` stamps `gov.lostAt` with `asOf`, which is turn N+1 when the world is
+   * resolving turn N: the count happens inside the batch and the decision
+   * belongs to whoever is looking at the board afterwards. Everything that asks
+   * "can this still be refused" therefore has to ask against the SAME clock,
+   * and there are two kinds of caller with two different answers to what the
+   * clock reads:
+   *
+   *   - inside the batch (`World.advanceTurn` -> `tick` -> `steal`),
+   *     `World.getTurn()` is still N while the stamp says N+1;
+   *   - after it (the player's modal, a save reopening), `World.getTurn()` has
+   *     moved to N+1 and matches the stamp.
+   *
+   * Until M9.2 only the second kind passed. `steal` and `pending` both compared
+   * against `World.getTurn()` unconditionally, so the AI's immediate refusal
+   * always returned "There is no result to refuse" and every police state in
+   * the world politely conceded — the documented behaviour was dead code on the
+   * live path. The test that covered it passed because it called `tick` without
+   * `asOf`, which is the one way the two clocks agree.
+   *
+   * So: callers inside a batch pass the `asOf` they are resolving under, and
+   * everyone else gets `World.getTurn()`. One helper, so there is one answer.
+   */
+  const isOpen = (n, asOf) => n.gov.lostAt === (asOf == null ? World.getTurn() : asOf);
+
   /** May this government refuse a result it has just lost? */
   function canSteal(nid, tune) {
     const t = tune || window.TUNE;
@@ -289,11 +316,11 @@ const Elections = (function () {
    * liberties raise grievance, grievance feeds the movements, and the movements
    * are what takes the country apart.
    */
-  function steal(nid, tune, rng) {
+  function steal(nid, tune, rng, opts = {}) {
     const t = tune || window.TUNE;
     const n = Game.getNation(nid);
     if (!n) return { ok: false, reason: 'No such nation.' };
-    if (n.gov.lostAt !== World.getTurn() || !n.gov.lostFrom) {
+    if (!isOpen(n, opts.asOf) || !n.gov.lostFrom) {
       return { ok: false, reason: 'There is no result to refuse.' };
     }
     if (!canSteal(nid, t)) {
@@ -333,7 +360,8 @@ const Elections = (function () {
       const res = hold(nid, t, rng, { asOf: opts.asOf });
       if (!res) continue;
       if (res.changed && res.canSteal && !(opts.defer && opts.defer(nid))) {
-        const s = steal(nid, t, rng);
+        // THE SAME CLOCK `hold` STAMPED WITH. See isOpen.
+        const s = steal(nid, t, rng, { asOf: opts.asOf });
         res.stolen = s.ok;
       }
       out.push(res);
@@ -341,10 +369,15 @@ const Elections = (function () {
     return out;
   }
 
-  /** Is there a result this nation could still refuse? */
-  function pending(nid) {
+  /**
+   * Is there a result this nation could still refuse?
+   *
+   * `asOf` for a caller inside the world batch; omitted for the UI, which runs
+   * after it and reads the same clock the stamp was written on. See isOpen.
+   */
+  function pending(nid, asOf) {
     const n = Game.getNation(nid);
-    return !!(n && n.gov.lostAt === World.getTurn() && n.gov.lostFrom);
+    return !!(n && isOpen(n, asOf) && n.gov.lostFrom);
   }
 
   return { due, nextFor, poll, hold, steal, tick, canSteal, pending, termOf };

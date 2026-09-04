@@ -329,3 +329,26 @@ describe('Migration — in the turn', () => {
     ok(empty === 0, `${empty} Areas were emptied completely`);
   });
 });
+
+describe('The clamp conserves (M9.8)', () => {
+  /*
+   * The old apply step ended `Math.max(0, was + d)`. That is a one-sided guard
+   * and it does not lose people — it CREATES them: the destinations have
+   * already been credited the full share by the time the source is clamped to
+   * zero, so the world quietly gains a few at a time, in the one phase whose
+   * headline invariant is that it conserves. `leaving` is now capped at what is
+   * actually in the destination buffer, which makes the clamp unreachable, and
+   * `clamped` reports the shortfall if it ever is reached rather than letting
+   * it be discovered as eleven million extra people in turn forty.
+   */
+  it('never has to clamp, and says so', async () => {
+    const { rng } = await bootWorld({ seed: SEED });
+    let worst = 0;
+    for (let i = 0; i < 20; i++) {
+      World.advanceTurn(T(), rng);
+      const rep = Migration.lastFlows();
+      if (rep && Number.isFinite(rep.clamped)) worst = Math.max(worst, rep.clamped);
+    }
+    equal(worst, 0, `the migration clamp created ${worst} people`);
+  });
+});

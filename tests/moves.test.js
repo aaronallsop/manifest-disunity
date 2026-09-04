@@ -48,6 +48,125 @@ describe('plan is pure', () => {
     deepEqual(a.effects, b.effects);
   });
 
+  /*
+   * PREVIEW AND RESOLUTION COME FROM ONE EXPRESSION (M9.3).
+   *
+   * `planAnnex` showed a Force number built from the reach penalty and the army
+   * ratio; `resolveAnnex` built its own from the coalition shell and the army
+   * ratio. Neither had what the other had, so a war at the edge of reach was
+   * priced higher, previewed as harder, and then fought exactly as well as one
+   * next door — while a nation the world had ganged up on was previewed a
+   * fight it was not going to get. The plan/resolve split exists precisely to
+   * make that impossible, and it had happened anyway, because the two sides
+   * were two expressions rather than one.
+   *
+   * The check is structural rather than numeric: the resolver must consume the
+   * plan's number, and the number must contain all three factors. A test that
+   * pinned a value would pass again the moment somebody rebuilt the expression
+   * with a different set of terms.
+   */
+  it('the annex preview and the civil-war roll use the same multiplier', async () => {
+    await bootWorld({ seed: SEED });
+    const nid = '06';
+    const areas = [...Game.annexTargets(nid)].slice(0, 2);
+    Game.getNation(nid).treasury = 1e15;
+    const p = Moves.plan({ type: 'annex', nid, areas }, T());
+    ok(p.ok, p.reason);
+
+    // The plan reports it, and the effects vector the AI scores shows the same.
+    ok(Number.isFinite(p.scoreMult), 'the plan does not report the multiplier it will resolve with');
+    close(p.forceMult, p.scoreMult, 1e-12, 'Force and scoreMult have drifted apart again');
+
+    // ...and it is the product of all three factors, not a subset.
+    const against = [...new Set(areas.map((f) => Game.getOwner(f)).filter((o) => o && o !== nid))];
+    const expected = (1 + (p.shell || 0))
+      * Military.warMultiplier(nid, against, T())
+      * (typeof Projection === 'undefined' ? 1 : Projection.warMultiplier(nid, areas, T()));
+    close(p.scoreMult, expected, 1e-12, 'the multiplier is missing one of shell / army / reach');
+
+    // The resolver reports back what it actually rolled with (`res`, the
+    // CivilWar result, which carries the scoreMult it was handed).
+    const r = Moves.resolve({ type: 'annex', nid, areas }, RNG.create(SEED), T());
+    ok(r.ok, r.reason);
+    close(r.res.scoreMult, p.scoreMult, 1e-12,
+      'the roll used a different multiplier than the panel showed');
+  });
+
+  /*
+   * ...and the reach term is really in there: an Area at the edge of what a
+   * nation can project must resolve with a HARSHER multiplier than one next to
+   * its capital. `Projection.warMultiplier` is >= 1 and rises with distance, and
+   * a high civil-war score is bad for the attacker.
+   */
+  it('reach makes the roll worse, not only the price', async () => {
+    await bootWorld({ seed: SEED });
+    if (typeof Projection === 'undefined') return;   // reach is optional at load
+    const nid = '06';
+    const targets = [...Game.annexTargets(nid)]
+      .filter((f) => Projection.inRange(nid, f, T()));
+    if (targets.length < 2) return;
+    const byReach = targets
+      .map((f) => [f, Projection.warMultiplier(nid, [f], T())])
+      .sort((a, b) => a[1] - b[1]);
+    const near = byReach[0], far = byReach[byReach.length - 1];
+    if (!(far[1] > near[1] + 1e-9)) return;          // this board has no gradient to test
+    Game.getNation(nid).treasury = 1e15;
+    const pNear = Moves.plan({ type: 'annex', nid, areas: [near[0]] }, T());
+    const pFar = Moves.plan({ type: 'annex', nid, areas: [far[0]] }, T());
+    ok(pNear.ok && pFar.ok, 'one of the two single-Area annexations was refused');
+    ok(pFar.reachWar > pNear.reachWar, 'the two Areas do not differ in reach after all');
+    ok(pFar.scoreMult > pNear.scoreMult,
+      'reach priced the far Area higher but did not make its war go worse');
+  });
+
+  /*
+   * ONE RULEBOOK, WHOEVER IS ASKING (M9.3).
+   *
+   * `annex.strongNeighbourFactor` — you cannot annex from a nation more than
+   * 4x your size on both population and GDP — was enforced in
+   * `Actions.startAnnex` and nowhere else. That is the human's click path. The
+   * AI plans through `Moves.legal` and resolves through `Moves.plan`, and
+   * neither knew the rule existed, so fifty nations played by a looser rulebook
+   * than the one person the rule was written for.
+   *
+   * Two claims, because the rule has to hold at both doors: `legal` must not
+   * OFFER such a target, and `plan` must REFUSE one handed to it directly —
+   * a caller with its own intent (a test, the editor, a future scripted move)
+   * goes straight to `plan`.
+   */
+  it('the 4x untouchable rule binds every caller, not just the click path', async () => {
+    await bootWorld({ seed: SEED });
+    const factor = T().get('annex.strongNeighbourFactor');
+
+    // Find a real pair: somebody small next to somebody more than 4x their size.
+    let small = null, giant = null;
+    for (const [nid] of Game.nations) {
+      const hit = Game.adjacentNations(nid).find((o) => Moves.tooStrongToAnnex(nid, o, T()));
+      if (hit) { small = nid; giant = hit; break; }
+    }
+    ok(small && giant, 'no nation on this board is 4x any of its neighbours — nothing to test');
+
+    // 1. The candidate list never offers it.
+    const offered = Moves.legal(small, {}, T())
+      .filter((m) => m.type === 'annex')
+      .map((m) => m.against);
+    ok(!offered.includes(giant),
+      `legal() offered ${small} an annexation of ${giant}, which is over ${factor}x its size`);
+
+    // 2. And plan() refuses it when handed the intent directly.
+    const areas = [...Game.annexTargets(small)].filter((f) => Game.getOwner(f) === giant);
+    ok(areas.length, 'the two nations do not actually border each other');
+    Game.getNation(small).treasury = 1e15;   // so the refusal cannot be about money
+    const p = Moves.plan({ type: 'annex', nid: small, areas: areas.slice(0, 1) }, T());
+    equal(p.ok, false, 'plan() allowed an annexation the click path refuses');
+    ok(/your size/.test(p.reason), `the refusal does not name the rule: "${p.reason}"`);
+
+    // 3. resolve() refuses exactly what plan() refused — the M6.1 contract.
+    const r = Moves.resolve({ type: 'annex', nid: small, areas: areas.slice(0, 1) },
+      RNG.create(SEED), T());
+    equal(r.ok, false, 'resolve() went through with a move plan() refused');
+  });
+
   it('refuses an unknown move rather than throwing', async () => {
     await bootWorld({ seed: SEED });
     const r = Moves.plan({ type: 'invade', nid: '06' });
@@ -105,6 +224,67 @@ describe('resolve honours what plan said', () => {
       'the bill did not match the quote');
   });
 
+  /*
+   * WHAT THE PANEL SHOWS IS WHAT THE TREASURY PAYS (M9.4).
+   *
+   * `charges exactly what the preview quoted` above proves resolve charges
+   * plan.cost. What it cannot prove is that the PANEL shows plan.cost, and
+   * until M9.4 two of the three action panels did not:
+   *
+   *   - annex called `Moves.annexCost` directly, which is the BASE price. The
+   *     charged price is that times `Projection.costMultiplier`, so at the edge
+   *     of reach the panel understated the bill by up to 1.6x.
+   *   - unite showed no price at all. It costs `unite.costGdpShare` of the
+   *     target's GDP, charged on the ATTEMPT — so a player could take a 30%
+   *     chance, lose the roll, and discover the fee afterwards.
+   *   - release showed the savings and not the `release.costGdpShare`
+   *     settlement, which made a valve priced as relief read as a pure gain.
+   *
+   * The panels live in js/actions.js and are DOM-bound, so what is pinned here
+   * is the contract they now rest on: for all three moves the plan's `cost` is
+   * the number the resolver spends. A panel that renders `plan.cost` cannot
+   * then lie; a panel that derives its own number can, and did.
+   */
+  it('every priced move quotes what it charges — annex, unite and release', async () => {
+    await bootWorld({ seed: SEED });
+    const spend = (nid, intent, seed) => {
+      const p = Moves.plan(intent, T());
+      ok(p.ok, `${intent.type} was refused: ${p.reason}`);
+      ok(p.cost > 0, `${intent.type} quoted a price of ${p.cost}`);
+      const before = Game.getNation(nid).treasury;
+      const r = Moves.resolve(intent, RNG.create(seed), T());
+      ok(r.ok, `${intent.type} resolve refused what plan allowed: ${r.reason}`);
+      const paid = before - Game.getNation(nid).treasury;
+      close(paid, p.cost, Math.max(1, p.cost * 1e-9),
+        `${intent.type}: quoted ${p.cost}, charged ${paid}`);
+      return p;
+    };
+
+    // ANNEX — and specifically that the quote carries the reach multiplier,
+    // which is the half the panel used to drop.
+    const nid = '06';
+    const areas = [...Game.annexTargets(nid)].slice(0, 2);
+    Game.getNation(nid).treasury = 1e15;
+    const pa = spend(nid, { type: 'annex', nid, areas }, 7);
+    const base = Moves.annexCost(areas, pa.shell, T());
+    close(pa.cost, base * pa.reachMult, Math.max(1, pa.cost * 1e-9),
+      'the annex quote is not the base price times the reach multiplier');
+
+    // UNITE — charged on the attempt, whatever the roll says.
+    await bootWorld({ seed: SEED });
+    const un = '39';
+    const target = Game.adjacentNations(un)[0];
+    Game.getNation(un).treasury = 1e15;
+    spend(un, { type: 'unite', nid: un, target }, 11);
+
+    // RELEASE — the settlement, which the panel showed as savings only.
+    await bootWorld({ seed: SEED });
+    const rl = '48';
+    const give = [...Game.getNation(rl).counties].slice(0, 2);
+    Game.getNation(rl).treasury = 1e15;
+    spend(rl, { type: 'release', nid: rl, areas: give }, 13);
+  });
+
   it('the same intent and seed give the same result', async () => {
     const run = async () => {
       await bootWorld({ seed: SEED });
@@ -118,14 +298,24 @@ describe('resolve honours what plan said', () => {
 
   it('a different seed can give a different result', async () => {
     /*
-     * Delaware, not California: three Areas is a rounding error to the largest
-     * economy on the board and does not trigger a war at all, so every seed
-     * would return "peaceful" and the test would prove nothing about the RNG.
-     * A big bite by a small state is the case that actually rolls dice.
+     * New Hampshire, not California: three Areas is a rounding error to the
+     * largest economy on the board and does not trigger a war at all, so every
+     * seed would return "peaceful" and the test would prove nothing about the
+     * RNG. A big bite by a small state is the case that actually rolls dice.
+     *
+     * It was DELAWARE until M9.3, and the change is the milestone working
+     * rather than a test being appeased. Delaware's only neighbours are
+     * Pennsylvania, Maryland and New Jersey, all of them past
+     * `annex.strongNeighbourFactor` — so under the rule the human has always
+     * played by, Delaware cannot annex anybody at all. `plan` did not know
+     * that rule existed, which is exactly why this test could be written
+     * against a move no player could make. New Hampshire is the same shape of
+     * case (small state, big bite, triggers on both GDP and population)
+     * against a neighbour it is legally allowed to bite.
      */
     const run = async (s) => {
       await bootWorld({ seed: SEED });
-      const nid = '10';
+      const nid = '33';
       const areas = [...Game.annexTargets(nid)].slice(0, 3);
       Game.getNation(nid).treasury = 1e15;
       const r = Moves.resolve({ type: 'annex', nid, areas }, RNG.create(s));
@@ -193,8 +383,11 @@ describe('Moves.legal — the AI\'s candidate list', () => {
     ok(moves.length > 3, `only ${moves.length} legal moves`);
     for (const m of moves) {
       equal(m.nid, '06');
-      ok(['annex', 'unite', 'govern', 'release', 'autonomy'].includes(m.type),
-        `unexpected move type ${m.type}`);
+      // trade, treaty and aid joined the list in M11 — the candidate list is
+      // the AI's whole view of what it may do, so a move missing from here is a
+      // move fifty nations cannot make.
+      ok(['annex', 'unite', 'govern', 'release', 'autonomy', 'trade', 'treaty', 'aid']
+        .includes(m.type), `unexpected move type ${m.type}`);
       if (m.type === 'annex') {
         ok(m.areas.length > 0 && m.areas.length <= T().get('annex.budgetAreas'));
         for (const f of m.areas) ok(!Game.getNation('06').counties.has(f), 'offered to annex its own Area');

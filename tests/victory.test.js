@@ -376,3 +376,125 @@ describe('Going with the breakaway', () => {
     ok(Game.getNation(Game.getPlayer()), 'the world did not survive the switch');
   });
 });
+
+describe('The alarm (M9.5)', () => {
+  /*
+   * THE ACCEPTANCE CRITERION, and the reason the rule changed at all.
+   *
+   * The old alarm was `standings().filter(progress >= win.warnAt)`, and on the
+   * opening board that is three nations at 84% before anybody has done
+   * anything — because `progress` is the WORST term of a condition and the
+   * worst term of two of the three conditions is a power stock that opens near
+   * its target. The player's first turn opened on a red warning about a race
+   * nobody was running.
+   */
+  it('a fresh game produces no alarm at all', async () => {
+    await bootWorld({ seed: SEED });
+    Victory.resetAlarms();
+    equal(Victory.alarms(T()).length, 0, 'the opening board raised an alarm');
+    // ...and the reason it is silent is NOT that nobody is near the bar.
+    const bar = T().get('win.warnAt');
+    const near = Victory.standings(T()).filter((r) => r.best.progress >= bar);
+    ok(near.length > 0,
+      'nobody is near a victory on turn 0, so this test proves nothing about the rule');
+  });
+
+  /*
+   * THE OPENING IS SILENT ALL THE WAY THROUGH THE GRACE PERIOD, and this is the
+   * measurement that set `win.warnDelta`.
+   *
+   * At seed 20260829 over 40 turns, across every nation already past
+   * `win.warnAt`, there are 314 turn-to-turn moves with a median of +0.0127 —
+   * so the first threshold tried, 0.01, fired on less than routine settling and
+   * was not a threshold at all: 143 alarms before turn 12 and 98 after it. At
+   * 0.03 the same run reports 3 times, all of them after the grace period.
+   *
+   * The grace gate is the other half. `check` refuses to return a winner before
+   * `win.graceTurns`, so warning before then is warning about a race nobody can
+   * yet finish, and the opening turns are precisely when the stocks are
+   * settling toward their targets.
+   */
+  it('says nothing at all through the grace period', async () => {
+    const { rng } = await bootWorld({ seed: SEED });
+    Victory.resetAlarms();
+    let fired = 0;
+    const grace = T().get('win.graceTurns');
+    for (let i = 0; i < grace; i++) {
+      World.advanceTurn(T(), rng);
+      fired += Victory.alarms(T()).length;
+    }
+    equal(fired, 0, `${fired} alarms before turn ${grace}, when nobody can win yet`);
+  });
+
+  it('and is rare afterwards — news, not wallpaper', async () => {
+    const { rng } = await bootWorld({ seed: SEED });
+    Victory.resetAlarms();
+    let fired = 0;
+    for (let i = 0; i < 40; i++) {
+      World.advanceTurn(T(), rng);
+      fired += Victory.alarms(T()).length;
+    }
+    // Measured: 3 at this seed. The assertion is the ORDER OF MAGNITUDE, which
+    // is what "rare" means and what survives a tuning change; 98 was the count
+    // before M9.5 and is what this is defending against.
+    ok(fired <= 12, `${fired} alarms in 40 turns is wallpaper, not news`);
+  });
+
+  it('fires when a nation actually moves toward winning', async () => {
+    await bootWorld({ seed: SEED });
+    // Past the grace period, or the gate answers before the rule does.
+    World.setTurn(T().get('win.graceTurns') + 1);
+    Victory.resetAlarms();
+    Victory.alarms(T());                       // take the baseline
+
+    /*
+     * Move somebody. Authority and Influence are the binding terms of the two
+     * non-conquest conditions, so lifting both of a nation that is already near
+     * the bar is the shape of "this one is closing in" — and it is what the old
+     * rule could not distinguish from "this one has always been there".
+     */
+    const bar = T().get('win.warnAt');
+    const near = Victory.standings(T()).filter((r) => r.best.progress >= bar);
+    ok(near.length, 'nothing near the bar to move');
+    for (const r of near) {
+      const n = Game.getNation(r.nid);
+      if (typeof n.authority === 'number') n.authority = Math.min(1, n.authority + 0.15);
+      if (typeof n.influence === 'number') n.influence = Math.min(1, n.influence + 0.15);
+      if (typeof n.qol === 'number') n.qol = Math.min(1, n.qol + 0.15);
+    }
+    Game.touch({ values: true });
+    const fired = Victory.alarms(T());
+    ok(fired.length > 0, 'a nation moved 15 points toward victory and nothing was said');
+    for (const f of fired) {
+      ok(f.delta > 0, 'an alarm fired on a nation that did not move');
+      ok(f.best.progress > f.from, 'the alarm reports a move that went backwards');
+    }
+  });
+
+  it('does not repeat itself inside the cooldown', async () => {
+    await bootWorld({ seed: SEED });
+    World.setTurn(T().get('win.graceTurns') + 1);
+    Victory.resetAlarms();
+    Victory.alarms(T());
+    const bar = T().get('win.warnAt');
+    const near = Victory.standings(T()).filter((r) => r.best.progress >= bar);
+    const bump = () => {
+      for (const r of near) {
+        const n = Game.getNation(r.nid);
+        if (!n) continue;
+        if (typeof n.authority === 'number') n.authority = Math.min(1, n.authority + 0.05);
+        if (typeof n.influence === 'number') n.influence = Math.min(1, n.influence + 0.05);
+        if (typeof n.qol === 'number') n.qol = Math.min(1, n.qol + 0.05);
+      }
+      Game.touch({ values: true });
+      return Victory.alarms(T());
+    };
+    const first = bump();
+    ok(first.length > 0, 'the first move was not reported');
+    // Same turn, same pair, moving again: the cooldown is in TURNS, and the
+    // world has not advanced, so nothing repeats.
+    const second = bump();
+    const repeated = second.filter((r) => first.some((f) => f.nid === r.nid && f.best.id === r.best.id));
+    equal(repeated.length, 0, 'the same nation and condition were reported twice in one turn');
+  });
+});

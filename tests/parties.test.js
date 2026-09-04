@@ -246,3 +246,162 @@ describe('Party spawn coverage', () => {
     equal(Ideology.count(), 6);
   });
 });
+
+/*
+ * M8.2 — the widened homelands, and a rate as well as a ceiling.
+ *
+ * The Shattering needs three homelands to be bigger than they were. Deseret's
+ * cession rolls over the authored Mormon Corridor, and `phaseSentiment`
+ * hard-deletes any share outside the baked homeland every turn (world.js:328) —
+ * so a corridor Area outside Deseret's homeland is one the scenario can seed and
+ * the world engine erases on the turn after. Cascadia's founding ground and
+ * Jefferson's heartland are the same problem in the other two directions.
+ *
+ * The regions come from `content/cultural.json` rather than from a hand-copied
+ * list: it is where the Mormon Corridor and Cascadia are authored, it is what
+ * the player sees in the Culture map mode, and a second copy here would drift
+ * the first time either is repainted.
+ */
+describe('The M8.2 homelands', () => {
+  // The five sub-regions of the corridor, from content/cultural.json.
+  const CORRIDOR_SUBREGIONS = ['Wasatch Front', 'Zion', 'Bonneville', 'Tetonia', 'Uintas'];
+  // The nine far-northern California Areas the cultural doc puts in Cascadia,
+  // and which the Shattering hands to the Cascadia nation.
+  const CA_BELT = ['06015', '06023', '06035', '06045', '06049', '06089', '06093', '06103', '06105'];
+
+  /** Every Area the cultural doc assigns to any of the named leaves. */
+  function leafAreas(culture, names) {
+    const ids = new Set();
+    const walk = (n) => { if (names.includes(n.name)) ids.add(n.id); (n.children || []).forEach(walk); };
+    (culture.nodes || []).forEach(walk);
+    equal(ids.size, names.length, `cultural.json is missing one of ${names.join(', ')}`);
+    return Object.keys(culture.assign)
+      .filter((a) => { const p = culture.assign[a]; return p && ids.has(p[p.length - 1]); });
+  }
+
+  it('Deseret can organise across the whole 57-Area Mormon Corridor', async () => {
+    const { raw } = await bootWorld({ seed: SEED });
+    const corridor = leafAreas(raw.culture, CORRIDOR_SUBREGIONS);
+    equal(corridor.length, 57, 'the authored Mormon Corridor is not 57 Areas any more');
+
+    const home = new Set(Movements.get('Deseret').homeland);
+    for (const a of corridor) {
+      ok(home.has(a), `corridor Area ${a} is outside Deseret's homeland, so phaseSentiment `
+        + 'would delete anything the scenario seeds there');
+    }
+    /*
+     * 41 Areas before M8.2 ("Utah + SE Idaho + Elko NV"), 61 after: the 57
+     * corridor Areas plus Carbon, Emery, Grand and San Juan. The four eastern
+     * Utah Areas are NOT in the corridor and stay in the homeland anyway,
+     * because dropping them would put four Areas outside every homeland in the
+     * game — the exact hole the M7 close spent a milestone closing.
+     */
+    equal(home.size, 61, 'Deseret\'s homeland is not the corridor plus the rest of Utah');
+  });
+
+  it('Cascadia and Jefferson both reach the nine northern California Areas', async () => {
+    await bootWorld({ seed: SEED });
+    const casc = new Set(Movements.get('Cascadian Separatists').homeland);
+    const jeff = new Set(Movements.get('State of Jefferson').homeland);
+    for (const a of CA_BELT) {
+      ok(casc.has(a), `${a} is Cascadia's founding ground and outside its own homeland`);
+      ok(jeff.has(a), `${a} is Jefferson's heartland and outside its homeland`);
+    }
+    /*
+     * THIS OVERLAP IS THE POINT, not a mistake. Under the Shattering these nine
+     * Areas are the Cascadia nation, and they lean red while Cascadia governs
+     * green — so Jefferson opens as an organised opposition on most of its
+     * new government's ground.
+     */
+    ok([...jeff].some((a) => casc.has(a)), 'the two homelands no longer overlap');
+    // The southern Oregon tier the 1941 proposal named, all of it.
+    for (const a of ['41033', '41015', '41035', '41037', '41019', '41029']) {
+      ok(jeff.has(a), `southern Oregon Area ${a} is outside Jefferson's homeland`);
+    }
+  });
+
+  it('every movement carries a growth RATE as well as a ceiling', async () => {
+    const { raw } = await bootWorld({ seed: SEED });
+    let raised = 0;
+    for (const [name, d] of Object.entries(raw.partyDefs)) {
+      ok(d.growthRate > 0, `"${name}" has growthRate ${d.growthRate}`);
+      if (d.growthRate !== 1) raised++;
+    }
+    // One movement moves faster than the world, and it is the one whose
+    // unfinished secession is the live story (D-M8g).
+    equal(raised, 1, 'more than one movement is off the default rate');
+    equal(raw.partyDefs.Deseret.growthRate, 1.5);
+    equal(Movements.rateOf('Deseret'), 1.5, 'the rate did not reach the live record');
+    equal(Movements.rateOf('Franklin'), 1, 'a default-rate movement is not at 1.0');
+    equal(Movements.rateOf('No Such Movement'), 1, 'an unknown movement must fall back to 1.0');
+  });
+
+  it('the rate reaches the world engine: same board, faster corridor, nobody else moved', async () => {
+    /*
+     * THE MEASUREMENT, run here rather than remembered from a console session,
+     * and run as an A/B on ONE bake so that only the rate differs — changing the
+     * homeland changes the derived core, which changes how many draws seeding
+     * takes, which reshuffles the spawn stream for every movement after it. That
+     * confound is real and it is why this test edits the loaded definition
+     * instead of comparing two bakes.
+     *
+     * 20 world turns, seed 20260829, no AI. Deseret's mean share across its
+     * homeland:
+     *
+     *      rate 1.0 -> 0.2221   peak 0.4517   1,705,576 organised
+     *      rate 1.5 -> 0.3114   peak 0.5853   2,319,321 organised
+     *
+     * and the reference movement, New England United, is IDENTICAL to the
+     * person: 5,572,718 both times. A Free Texas moves by one person, which is
+     * float noise in a 13-million-strong movement, and it arrives through the
+     * market rather than through sentiment.
+     *
+     * RE-MEASURED AT THE M9.6 AREA RE-BAKE (was 0.2417 / 0.3532, peaks 0.4446 /
+     * 0.5769). The corridor is a different set of Areas now — 1,676 became
+     * 1,688 — so its mean share is a different number about the same claim. The
+     * claim is the ratio, and it is unchanged: 1.40x, against the 1.3x the
+     * assertion below asks for. The absolute values are here so that the next
+     * bake can tell a re-measure from a regression, which is the only reason to
+     * pin a measured number at all.
+     */
+    const raw = await loadData();
+    const original = raw.partyDefs.Deseret.growthRate;
+    const run = async (rate) => {
+      raw.partyDefs.Deseret.growthRate = rate;
+      const { rng } = await bootWorld({ seed: SEED });
+      for (let i = 0; i < 20; i++) World.advanceTurn(window.TUNE, rng);
+      const out = {};
+      for (const name of ['Deseret', 'New England United', 'A Free Texas']) {
+        const s = Movements.strength(name);
+        out[name] = { mean: s.mean, peak: s.peak, people: s.people, areas: s.areas };
+      }
+      return out;
+    };
+    try {
+      const slow = await run(1.0);
+      const fast = await run(1.5);
+
+      ok(fast.Deseret.mean > slow.Deseret.mean * 1.3,
+        `rate 1.5 should organise the corridor much harder: ${slow.Deseret.mean.toFixed(4)} -> `
+        + `${fast.Deseret.mean.toFixed(4)}`);
+      close(slow.Deseret.mean, 0.2221, 0.02, 'the rate-1.0 corridor moved');
+      close(fast.Deseret.mean, 0.3114, 0.02, 'the rate-1.5 corridor moved');
+      equal(fast.Deseret.areas, slow.Deseret.areas,
+        'the rate should change how fast it organises, not how far it reaches');
+
+      /*
+       * The unchanged reference movements. They are not bit-identical and are
+       * not expected to be: every movement is coupled to every other through the
+       * world market, so a corridor that organises harder moves Utah's stocks,
+       * which moves prices, which moves everybody's GDP by a hair. What matters
+       * is the ORDER: parts per million, not parts per hundred.
+       */
+      for (const name of ['New England United', 'A Free Texas']) {
+        const drift = Math.abs(fast[name].people - slow[name].people) / slow[name].people;
+        ok(drift < 1e-5, `${name} moved ${(drift * 100).toFixed(5)}%, which is not noise`);
+      }
+    } finally {
+      raw.partyDefs.Deseret.growthRate = original;
+    }
+  });
+});

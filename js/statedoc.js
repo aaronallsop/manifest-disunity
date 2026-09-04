@@ -31,7 +31,25 @@
  * than a copy of the last time someone pressed Save.
  */
 
-export const VERSION = 2;
+/*
+ * VERSION 3 (M9.6): the Area re-bake.
+ *
+ * `build_areas.py` was made deterministic and capped at 8 counties per Area in
+ * M1.13b, but `data/areas.json` was never regenerated, because an Area id is the
+ * join key for economy.json, both map modes, every authored homeland and every
+ * save (D36). M9.6 adopts it: 1,676 Areas become 1,688, eleven ids are retired
+ * and twenty-three are new.
+ *
+ * A version 2 document is therefore describing a map that no longer exists.
+ * Refused, not migrated, for the reason the v1 refusal gives: "migrating" one
+ * means inventing which Area a county belongs to for every id that moved, and a
+ * clear message beats a plausible lie.
+ *
+ * The build stamp below would have caught it anyway — it compares Area counts —
+ * but it would have said "1,676 Areas; this build has 1,688", which tells the
+ * player a number rather than what happened to their game.
+ */
+export const VERSION = 3;
 
 /**
  * A fingerprint of the MAP BUILD this document was made against.
@@ -73,6 +91,7 @@ export function assemble(session = {}) {
     military: Military.serialize(),
     relations: Relations.serialize(),
     recognition: Recognition.serialize(),
+    pacts: Pacts.serialize(),
     events: Events.serialize(),
     leaders: Leaders.serialize(),
     history: History.serialize(),
@@ -91,7 +110,18 @@ export function validate(doc, areasDef) {
   if (!doc || typeof doc !== 'object') return 'That file is not a Nation States save.';
   if (doc.deleted) return 'That save was deleted.';
   if (doc.v == null) return 'That save has no version stamp and cannot be read.';
+  /*
+   * The refusal says which wall it hit. Two versions have been retired for two
+   * different reasons, and "your save is too old" is the answer that tells a
+   * player nothing they can act on.
+   */
   if (doc.v < VERSION) {
+    if (doc.v === 2) {
+      return 'That is a version 2 save, made before the Area map was re-baked (M9.6). '
+        + 'The map it describes had 1,676 Areas; this one has 1,688, and eleven of its Area '
+        + 'ids no longer exist. Loading it would mean guessing where a dozen borders went. '
+        + 'Start a new game.';
+    }
     return `That is a version ${doc.v} save from before the model rewrite. `
       + 'It carries no world turn, market prices, party roster or RNG state, so it cannot be '
       + 'loaded without inventing them. Start a new game.';
@@ -118,7 +148,14 @@ export function validate(doc, areasDef) {
  * @returns {{rng}} the restored RNG, which the caller owns.
  */
 export function applyModel(doc) {
-  if (doc.tune) window.TUNE.load(doc.tune);
+  /*
+   * REPLACE, NOT MERGE (M9.8). `doc.tune` is `TUNE.diff()` — the overrides the
+   * saved game was played with — and merging it into a session that has its own
+   * (the dev dashboard sets them on the live TUNE) yields a third tuning that
+   * neither the save nor the session ever ran on. A document with no overrides
+   * at all still has to reset the session's, which is why this is unconditional.
+   */
+  window.TUNE.replace(doc.tune || {});
   const rng = doc.rng ? RNG.restore(doc.rng) : null;
   if (rng) TurnSystem.setRng(rng);
   World.loadState(doc.world || { turn: (doc.meta && doc.meta.turn) || 0 });
@@ -132,6 +169,7 @@ export function applyModel(doc) {
   Military.loadState(doc.military);
   Relations.loadState(doc.relations);
   Recognition.loadState(doc.recognition);
+  Pacts.loadState(doc.pacts);
   Events.loadState(doc.events);
   Leaders.loadState(doc.leaders);
   History.loadState(doc.history);
@@ -145,6 +183,6 @@ export function applyModel(doc) {
 }
 
 /** Every module a document must round-trip, for the "nothing was forgotten" test. */
-export const STATEFUL_MODULES = ['Game', 'TurnSystem', 'World', 'Market', 'Colors', 'Movements', 'Ledger', 'Military', 'Relations', 'Recognition', 'Events', 'Leaders', 'History'];
+export const STATEFUL_MODULES = ['Game', 'TurnSystem', 'World', 'Market', 'Colors', 'Movements', 'Ledger', 'Military', 'Relations', 'Recognition', 'Events', 'Leaders', 'History', 'Pacts'];
 
 export default { VERSION, buildStamp, assemble, validate, applyModel, STATEFUL_MODULES };

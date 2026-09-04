@@ -159,4 +159,39 @@ describe('TUNE', () => {
     const sum = t.get('market.demandShare').reduce((a, b) => a + b, 0);
     close(sum, 1, 1e-9, 'demandShare sum');
   });
+
+  /*
+   * NO KEY IS DEFINED TWICE (M9.1).
+   *
+   * This one has to read the SOURCE, not the object, and that is the whole
+   * point of it. A duplicate key in an object literal is not an error and
+   * leaves no trace: the later definition silently wins and the earlier one —
+   * its value, its slider range, its argued documentation — becomes dead text
+   * that greps, reads and reviews as if it were live.
+   *
+   * `econ.occupationHostility` was defined twice for four milestones. The M0.3
+   * placeholder (v 1.0, one-line doc) sat BELOW the argued M4 definition
+   * (v 1.6, the anti-snowball rationale), so the game shipped the placeholder
+   * while every reader of tunables.js, DESIGN.md and the review found 1.6. With
+   * 298 keys in one literal, nothing but a source scan can see this.
+   *
+   * Matches only top-level entries: two spaces, a quoted key, a colon. Nested
+   * metadata is indented four.
+   */
+  it('no tunable key is defined twice in the source', async () => {
+    const src = await fetch(new URL('../js/tunables.js', import.meta.url), { cache: 'no-store' })
+      .then((r) => r.text());
+    const seen = new Map();
+    const dupes = [];
+    for (const m of src.matchAll(/^ {2}'([A-Za-z][\w.]*)':\s*\{/gm)) {
+      const key = m[1];
+      const line = src.slice(0, m.index).split('\n').length;
+      if (seen.has(key)) dupes.push(`${key} (lines ${seen.get(key)} and ${line})`);
+      else seen.set(key, line);
+    }
+    equal(dupes.length, 0, `duplicate tunable keys: ${dupes.join(', ')}`);
+    // ...and the scan must actually be finding the schema, or it proves nothing.
+    equal(seen.size, Object.keys(SCHEMA).length,
+      'the source scan and SCHEMA disagree about how many keys there are');
+  });
 });

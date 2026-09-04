@@ -145,9 +145,357 @@ const Moves = (function () {
     return base * (1 + T(tune).get('annex.shellCostMult') * (shell || 0));
   }
 
+
+
+  /* ------------------------------------------------------------------ */
+  /* treaties and aid (M11.2)                                            */
+  /* ------------------------------------------------------------------ */
+
+  const cooldownOn = (nid, field, key, tune) => {
+    const n = nationOf(nid);
+    if (!n || n[field] == null) return 0;
+    return Math.max(0, T(tune).get(key) - (World.getTurn() - n[field]));
+  };
+
+  /**
+   * @param intent {type:'treaty', nid, target, kind}
+   *
+   * A pact is the first thing in this game a nation can PROMISE. Everything
+   * else it can do to another country is something it does TO them and then
+   * they remember; this sits on the board until somebody breaks it, and the
+   * breaking is worth more than the never-signing.
+   */
+  function planTreaty(intent, tune) {
+    const { nid, target } = intent;
+    const kind = intent.kind || 'nonaggression';
+    const me = nationOf(nid), them = nationOf(target);
+    if (!me || !them) return no('That nation no longer exists.');
+    if (nid === target) return no('You cannot sign a treaty with yourself.');
+    if (!Pacts.KINDS.includes(kind)) return no(`There is no such thing as a "${kind}".`);
+    if (Pacts.live(nid, target)) {
+      return no(`You already have a ${Pacts.LABEL[Pacts.live(nid, target).kind]} with ${them.name}.`);
+    }
+    if (!Game.adjacentNations(nid).includes(target)) {
+      return no(`${them.name} is not within reach.`);
+    }
+    const cd = cooldownOn(nid, 'lastTreatyTurn', 'treaty.cooldownTurns', tune);
+    if (cd > 0) return no(`Your diplomats are still drafting — ${cd} more world ${cd === 1 ? 'turn' : 'turns'}.`);
+    /*
+     * A SIGNATURE NEEDS TWO GOVERNMENTS, exactly as a trade deal does.
+     */
+    if (typeof Recognition !== 'undefined' && !Recognition.canTrade(nid, target)) {
+      return no(`${them.name} will not sign anything with a government it does not admit exists.`);
+    }
+    /*
+     * ...AND THEY HAVE TO BE WILLING. The bar is deliberately BELOW zero: two
+     * nations that merely tolerate one another are exactly the pair a
+     * non-aggression pact is for, and requiring warmth first would make a treaty
+     * a reward for a relationship rather than a way of building one.
+     */
+    const standing = Relations.score(target, nid, T(tune));
+    const bar = T(tune).get('treaty.minStanding');
+    if (standing < bar) {
+      return no(`${them.name} will not sign with you. `
+        + `They will need to think better of you first.`, { standing });
+    }
+    return {
+      ok: true, reason: null, cost: 0, target, kind, standing,
+      effects: [
+        { label: 'Pacts held', value: 1 },
+        { label: 'How they see you', value: standing },
+      ],
+    };
+  }
+
+  function resolveTreaty(intent, rng, tune) {
+    const plan = planTreaty(intent, tune);
+    if (!plan.ok) return { ...plan, events: [] };
+    const { nid, target } = intent;
+    const kind = plan.kind;
+    Pacts.sign(nid, target, kind);
+    const n = nationOf(nid);
+    if (n) n.lastTreatyTurn = World.getTurn();
+    // Both directions: signing is a thing two governments did together.
+    Relations.record(nid, target, 'treatied', { tune: T(tune) });
+    Relations.record(target, nid, 'treatied', { tune: T(tune) });
+    Game.touch({ values: true });
+    const entry = log({
+      subject: nid, kind: 'treaty', delta: 1, partner: target,
+      text: `${nameOf(nid)} and ${nameOf(target)} signed a ${Pacts.LABEL[kind]}.`,
+    });
+    return { ...plan, events: [entry] };
+  }
+
+  /**
+   * @param intent {type:'aid', nid, target}
+   *
+   * A cheque, and three things bought with it: standing, a better chance of
+   * being recognised, and a share of the recipient's politics. The third is the
+   * active lever Ideological Dominance was missing — see js/pacts.js.
+   *
+   * The AMOUNT is not a choice. It is `aid.shareOfTreasury` of what the donor
+   * holds, for the same reason every other price in this game is derived: a
+   * figure the player types is a figure the AI cannot compare against, and the
+   * interesting decision is who to fund rather than how much.
+   */
+  function planAid(intent, tune) {
+    const { nid, target } = intent;
+    const me = nationOf(nid), them = nationOf(target);
+    if (!me || !them) return no('That nation no longer exists.');
+    if (nid === target) return no('You cannot pay yourself.');
+    const cd = cooldownOn(nid, 'lastAidTurn', 'aid.cooldownTurns', tune);
+    if (cd > 0) return no(`The last transfer is still clearing — ${cd} more world ${cd === 1 ? 'turn' : 'turns'}.`);
+    const cost = Math.max(0, me.treasury) * T(tune).get('aid.shareOfTreasury');
+    if (cost <= 0 || me.treasury < cost) {
+      return no('There is nothing in the treasury to give.');
+    }
+    /*
+     * WHAT IT BUYS depends on the RECIPIENT's size, not the donor's. The same
+     * money is a transformative sum to a small country and a rounding error to
+     * a large one, which is what makes buying the continent's politics
+     * impossible and buying one neighbour's entirely reasonable.
+     */
+    const flow = Game.treasuryFlow(target);
+    const income = flow ? Math.max(1, flow.income) : 1;
+    const share = cost / income;
+    const patron = Pacts.patronOf(target);
+    return {
+      ok: true, reason: null, cost, target, share,
+      // What the recipient's patron weight would become. `Pacts.pay` owns the
+      // arithmetic; this previews it without performing it, because `plan` is pure.
+      wouldBe: Math.min(T(tune).get('aid.patronMax'),
+        ((patron && patron.nid === nid) ? patron.weight : 0) + share * T(tune).get('aid.patronGain')),
+      patron,
+      effects: [
+        { label: 'Treasury', value: -cost },
+        { label: 'A year of their income', value: share },
+        { label: 'How they see you', value: 1 },
+      ],
+    };
+  }
+
+  function resolveAid(intent, rng, tune) {
+    const plan = planAid(intent, tune);
+    if (!plan.ok) return { ...plan, events: [] };
+    const { nid, target } = intent;
+    if (!Game.spend(nid, plan.cost)) return no('The treasury moved before the transfer went out.');
+    Game.earn(target, plan.cost);
+    const n = nationOf(nid);
+    if (n) n.lastAidTurn = World.getTurn();
+    const p = Pacts.pay(nid, target, plan.share, T(tune));
+    /*
+     * ONE DIRECTION. Gratitude is not symmetric: the recipient thinks better of
+     * the donor, and the donor has no new opinion of the recipient beyond
+     * being out of pocket.
+     */
+    Relations.record(target, nid, 'aided', { tune: T(tune) });
+    Game.touch({ values: true });
+    const entry = log({
+      subject: nid, kind: 'aid', delta: -plan.cost, partner: target,
+      text: `${nameOf(nid)} sent ${Math.round(plan.cost / 1e9)}bn to ${nameOf(target)}`
+        + `${p && p.nid === nid && p.weight > 0.05 ? `, who now govern noticeably more like them` : ''}.`,
+      terms: [
+        { name: 'Share of their income', value: plan.share, key: 'aid.shareOfTreasury' },
+        { name: 'Patron weight', value: p ? p.weight : 0, key: 'aid.patronGain' },
+      ],
+    });
+    return { ...plan, patron: p, events: [entry] };
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* trade (M11.1)                                                       */
+  /* ------------------------------------------------------------------ */
+
+  /*
+   * TRADE BECOMES A MOVE, and the reason is not tidiness.
+   *
+   * The rules below were written in M6.6 and lived in `js/actions.js` — that
+   * is, in the UI — so only the human could use them. The consequence the audit
+   * found is sharper than "the AI does not trade": `traded` is the ONLY
+   * relations channel ordinary play generates. Every other entry in the ledger
+   * comes from taking something from somebody. So the player could farm
+   * standing at zero risk, every few turns, for union odds and coalition
+   * exemptions the AI could never earn back — not because the AI was worse at
+   * it, but because the rule was not written where the AI could see it.
+   *
+   * This is the same argument M6.3 made about annexation, in the one place it
+   * had not yet been applied.
+   *
+   * WHAT MOVED AND WHAT DID NOT. The bilateral deal is here, because it is the
+   * one that creates a relationship. Selling to the world market stays a UI path
+   * in actions.js: it is a nation and a price, it records nothing about anybody,
+   * and giving the AI a free income button with no counterparty would change the
+   * economy without changing the diplomacy.
+   */
+
+  /** A nation's tradeable flows against another, by sector, at market prices ($M). */
+  function tradeFlows(a, b, tune) {
+    if (typeof Market === 'undefined' || typeof MapModes === 'undefined') return [];
+    const ms = Market.nationSurplus(a, T(tune)), ts = Market.nationSurplus(b, T(tune));
+    const prices = Market.getPrices();
+    const e = MapModes.getEconomy();
+    if (!ms || !ts || !prices || !e) return [];
+    const flows = [];
+    e.sectors.forEach((sec, i) => {
+      const sell = Math.min(Math.max(0, ms.surplus[i]), Math.max(0, -ts.surplus[i]));
+      const buy = Math.min(Math.max(0, ts.surplus[i]), Math.max(0, -ms.surplus[i]));
+      if (sell + buy > 1) {
+        flows.push({ i, s: sec, sell, buy, vol: sell + buy, value: (sell + buy) * (prices[i] / 100) });
+      }
+    });
+    return flows;
+  }
+
+  /**
+   * Clip a set of flows to what the two nations can physically move.
+   *
+   * A CAP, and it is what stopped the world market being strictly better than
+   * every neighbour: capacity comes off the baked ports, rail hubs and border
+   * gateways, so geography decides how much of a matched surplus actually ships.
+   */
+  function applyCapacity(flows, capacity) {
+    const uncappedTotal = flows.reduce((sum, f) => sum + f.value, 0);
+    if (uncappedTotal <= capacity || uncappedTotal <= 0) {
+      return { flows, total: uncappedTotal, capped: false, uncappedTotal };
+    }
+    const k = capacity / uncappedTotal;
+    return {
+      flows: flows.map((f) => ({ ...f, vol: f.vol * k, value: f.value * k })),
+      total: capacity, capped: true, uncappedTotal,
+    };
+  }
+
+  /** Turns until `nid` may deal with `key` again ('world', 'Canada', or a nation id). */
+  function tradeCooldownLeft(nid, key, tune) {
+    const n = nationOf(nid);
+    if (!n || !n.tradeCooldown) return 0;
+    const last = n.tradeCooldown[key];
+    if (last == null) return 0;
+    return Math.max(0, T(tune).get('trade.cooldownTurns') - (World.getTurn() - last));
+  }
+
+  function markTraded(nid, key) {
+    const n = nationOf(nid);
+    if (n) (n.tradeCooldown || (n.tradeCooldown = {}))[key] = World.getTurn();
+  }
+
+  /**
+   * @param intent {type:'trade', nid, target}
+   *
+   * Both sides earn the same. That is not a simplification — a matched deal is
+   * two nations each selling what the other lacks, and the whole point of the
+   * bilateral rate being higher than the world market is that finding a partner
+   * whose deficits mirror your surpluses is a skill.
+   */
+  function planTrade(intent, tune) {
+    const { nid, target } = intent;
+    const me = nationOf(nid), them = nationOf(target);
+    if (!me || !them) return no('That nation no longer exists.');
+    if (nid === target) return no('You cannot trade with yourself.');
+    if (!Game.adjacentNations(nid).includes(target)) {
+      return no(`${them.name} is not within reach.`);
+    }
+    const cd = tradeCooldownLeft(nid, target, tune);
+    if (cd > 0) {
+      return no(`You dealt with ${them.name} recently — ${cd} more world ${areaWord(cd) === 'Area' ? 'turn' : 'turns'}.`);
+    }
+    /*
+     * A DEAL NEEDS TWO GOVERNMENTS (M7.8). An unrecognised state can still sell
+     * to the world market through intermediaries, but a trade agreement is a
+     * signature, and a signature needs both sides to admit the other exists.
+     */
+    if (typeof Recognition !== 'undefined' && !Recognition.canTrade(nid, target)) {
+      const oneWay = !Recognition.recognises(target, nid);
+      return no(oneWay
+        ? `${them.name} does not recognise you as a country, and a trade agreement is a signature between two governments.`
+        : `You do not recognise ${them.name} as a country.`);
+    }
+    const limit = Math.min(Game.tradeCapacity(nid).total, Game.tradeCapacity(target).total);
+    const res = applyCapacity(tradeFlows(nid, target, tune), limit);
+    if (!res.flows.length || res.total <= 0) {
+      return no(`Nothing to trade — you and ${them.name} run the same surpluses.`);
+    }
+    const gain = res.total * T(tune).get('trade.gain');
+    return {
+      ok: true, reason: null, target, cost: 0,
+      flows: res.flows, total: res.total, capped: res.capped, uncappedTotal: res.uncappedTotal,
+      gain,
+      effects: [
+        { label: 'Traded value', value: res.total * 1e6 },
+        { label: 'Treasury, each side', value: gain * 1e6 },
+        // What it buys that money cannot is a `traded` entry in BOTH
+        // directions, which is the one relations channel ordinary play
+        // generates without taking anything from anybody. It is not a number
+        // the effects vector can carry, so what is reported here is the size of
+        // the deal that earns it.
+        { label: 'Sectors traded', value: res.flows.length },
+      ],
+    };
+  }
+
+  function resolveTrade(intent, rng, tune) {
+    const plan = planTrade(intent, tune);
+    if (!plan.ok) return { ...plan, events: [] };
+    const { nid, target } = intent;
+    const a = nameOf(nid), b = nameOf(target);
+    const gain = plan.gain;
+    Game.batch(() => {
+      Game.earn(nid, gain * 1e6);
+      Game.earn(target, gain * 1e6);
+      markTraded(nid, target);
+      markTraded(target, nid);
+      /*
+       * BOTH DIRECTIONS. The only relations term that accumulates through
+       * ordinary play rather than through violence, which is what lets a
+       * patient nation build standing without taking anything from anybody.
+       */
+      Relations.record(nid, target, 'traded', { tune: T(tune) });
+      Relations.record(target, nid, 'traded', { tune: T(tune) });
+    });
+    if (typeof Market !== 'undefined') Market.update(T(tune)); // traded supply moves the prices
+    const entry = log({
+      subject: nid, kind: 'trade', delta: gain * 1e6, partner: target,
+      text: `${a} and ${b} signed a trade deal worth ${Math.round(gain)}M to each.`,
+    });
+    return { ...plan, gain, events: [entry] };
+  }
+
   /* ------------------------------------------------------------------ */
   /* annex                                                              */
   /* ------------------------------------------------------------------ */
+
+  /*
+   * THE UNTOUCHABLE NEIGHBOUR (M9.3).
+   *
+   * A nation more than `annex.strongNeighbourFactor` times your size on BOTH
+   * population and GDP cannot be annexed from at all. Decided by size and not
+   * by ideology: the rule this replaced blocked only same-lean nations that
+   * were bigger, which left every ideological opposite wide open however large
+   * — Wyoming (0.59M, $51B) could not touch Montana or Idaho but could chew on
+   * Colorado (5.96M, $558B) freely, every turn, at no risk.
+   *
+   * It lives HERE now, and that is the whole point of the M9.3 move. It was
+   * enforced in `Actions.startAnnex` — the human's click path — and nowhere
+   * else: not in `planAnnex`, not in `legal`, not anywhere the AI or the
+   * simulator could see it. The rules of the same action differed by which
+   * caller you were, and the caller who got the looser rules was the one with
+   * fifty seats. One function, three callers, one rule.
+   */
+  function tooStrongToAnnex(nid, ownerId, tune) {
+    if (!ownerId || ownerId === nid) return false;
+    const factor = T(tune).get('annex.strongNeighbourFactor');
+    const me = Game.nationDemographics(nid);
+    const them = Game.nationDemographics(ownerId);
+    if (!me || !them) return false;
+    return them.pop > me.pop * factor && them.gdp > me.gdp * factor;
+  }
+
+  /** Every nation `nid` may not annex from, as a Set of nation ids. */
+  function untouchable(nid, tune) {
+    const out = new Set();
+    for (const [oid] of Game.nations) if (tooStrongToAnnex(nid, oid, tune)) out.add(oid);
+    return out;
+  }
 
   /**
    * @param intent {type:'annex', nid, areas:[fips]}
@@ -174,6 +522,22 @@ const Moves = (function () {
       if (own.has(f)) return no('You already hold that Area.');
       if (!Game.county[f]) return no('That Area does not exist.');
       targets.push(f);
+    }
+
+    /*
+     * ...and not from somebody who could swat you. See tooStrongToAnnex: until
+     * M9.3 this was checked only on the human's click path, so `plan` — the
+     * function the AI, the simulator and every test go through — did not know
+     * the rule existed.
+     */
+    const factor = T(tune).get('annex.strongNeighbourFactor');
+    const strong = targets
+      .map((f) => Game.getOwner(f))
+      .find((o) => tooStrongToAnnex(nid, o, tune));
+    if (strong) {
+      const who = Game.getNation(strong);
+      return no(`${who ? who.name : 'That nation'} is more than ${factor}\u00d7 your size on both `
+        + 'population and GDP. There is no ground to take from them.');
     }
 
     /*
@@ -205,7 +569,31 @@ const Moves = (function () {
      */
     const reachWar = typeof Projection !== 'undefined'
       ? Projection.warMultiplier(nid, targets, T(tune)) : 1;
-    const forceMult = Military.warMultiplier(nid, against, tune) * reachWar;
+    /*
+     * THE NUMBER THE RESOLVER WILL USE, COMPUTED ONCE (M9.3).
+     *
+     * This is `scoreMult`: everything that scales the civil-war score, where
+     * low is a win for the attacker. Three factors, and until M9.3 no caller
+     * saw all three —
+     *
+     *   (1 + shell)  the coalition surcharge. Applied by `resolveAnnex`, absent
+     *                from the preview, so a nation the world had ganged up on
+     *                was shown a fight it was not going to get.
+     *   Military     your Field army against their Borders.
+     *   reachWar     the edge-of-reach penalty (M7.11 / §6.4). Shown in the
+     *                preview, NEVER passed to the roll — so a war at the limit
+     *                of projection was priced higher, previewed as harder, and
+     *                then fought exactly as well as one next door. One of the
+     *                three things reach is documented to do simply did not
+     *                happen.
+     *
+     * `resolveAnnex` now reads `plan.scoreMult` rather than rebuilding it. Two
+     * expressions kept in step is the arrangement that produced this bug; one
+     * expression, called twice, is the arrangement that cannot.
+     */
+    const scoreMult = (1 + (shell || 0)) * Military.warMultiplier(nid, against, tune) * reachWar;
+    // `forceMult` is the name the panel and the AI have always known it by.
+    const forceMult = scoreMult;
     const affordable = n.treasury >= cost;
 
     const before = Game.nationDemographics(nid);
@@ -217,7 +605,7 @@ const Moves = (function () {
       ok: affordable,
       reason: affordable ? null
         : `Mobilising costs ${Math.round(cost / 1e9)}bn and the treasury holds ${Math.round(Math.max(0, n.treasury) / 1e9)}bn.`,
-      cost, shell, targets, war, forceMult, reachMult, reachWar,
+      cost, shell, targets, war, forceMult, scoreMult, reachMult, reachWar,
       effects: [
         { label: 'Areas', value: targets.length },
         { label: 'Population', value: added.pop },
@@ -251,14 +639,19 @@ const Moves = (function () {
     const added = Game.demographics(targets);
     const after = Game.demographics([...n.counties, ...targets]);
     /*
-     * The blue-shell surcharge AND the force ratio. `scoreMult` scales the
-     * civil-war score, where low is a win for the attacker — so a prepared
-     * Field army makes the same annexation go better and an unprepared one makes
-     * it go worse. Before M6.5 the only input to a war was how big you were.
+     * The blue-shell surcharge, the force ratio AND the reach penalty —
+     * straight off the plan the player was shown (M9.3). `scoreMult` scales the
+     * civil-war score, where low is a win for the attacker, so a prepared Field
+     * army makes the same annexation go better and an unprepared one makes it
+     * go worse. Before M6.5 the only input to a war was how big you were.
+     *
+     * Read from `plan`, not recomputed. This line used to build its own version
+     * of the expression in planAnnex, and the two had drifted: the resolver had
+     * the shell the preview lacked, and the preview had the reach the resolver
+     * lacked.
      */
     const res = CivilWar.resolve(before, added, after, {
-      scoreMult: (1 + (plan.shell || 0)) * Military.warMultiplier(nid, Object.keys(victims), tune),
-      rng, tune: T(tune),
+      scoreMult: plan.scoreMult, rng, tune: T(tune),
     });
 
     let taken = targets, born = [];
@@ -308,6 +701,24 @@ const Moves = (function () {
       { name: 'Flip magnitude', value: res.flipMagnitude, key: 'war.diceFlipFloor' },
       { name: 'Score', value: res.score, key: 'war.victoryBand' },
     ] : null;
+    /*
+     * ...AND A PACT YOU SIGNED WITH THE VICTIM IS TORN UP BY THIS (M11.2).
+     *
+     * Recorded HERE, in the resolver, for the same reason the ledger and the
+     * relations memories are: this is the one place that knows what actually
+     * happened. The breach is a separate, heavier memory than the annexation
+     * itself — being taken from by somebody who promised not to is worse than
+     * being taken from by somebody who never promised anything, and that
+     * asymmetry is the entire reason a treaty is worth signing.
+     */
+    for (const victim of Object.keys(victims)) {
+      const p = typeof Pacts !== 'undefined' ? Pacts.live(nid, victim) : null;
+      if (!p || p.kind !== 'nonaggression') continue;
+      Pacts.breach(nid, victim);
+      Relations.record(victim, nid, 'reneged', { tune: T(tune) });
+      log({ subject: nid, kind: 'treaty', delta: -1, partner: victim,
+        text: `${nameOf(nid)} tore up its non-aggression pact with ${nameOf(victim)}.` });
+    }
     remember(nid, Object.keys(victims), res.triggered ? 'warred' : 'annexed',
       Math.max(1, taken.length), tune);
     const who = nameOf(nid);
@@ -813,9 +1224,11 @@ const Moves = (function () {
   /* ------------------------------------------------------------------ */
 
   const PLANNERS = { annex: planAnnex, unite: planUnite, release: planRelease, govern: planGovern,
-                    autonomy: planAutonomy, recognise: planRecognise };
+                    autonomy: planAutonomy, recognise: planRecognise, trade: planTrade,
+                    treaty: planTreaty, aid: planAid };
   const RESOLVERS = { annex: resolveAnnex, unite: resolveUnite, release: resolveRelease,
-                      govern: resolveGovern, autonomy: resolveAutonomy, recognise: resolveRecognise };
+                      govern: resolveGovern, autonomy: resolveAutonomy, recognise: resolveRecognise,
+                      trade: resolveTrade, treaty: resolveTreaty, aid: resolveAid };
 
   /** Pure. Never draws, never rolls, never mutates. */
   function plan(intent, tune) {
@@ -849,12 +1262,16 @@ const Moves = (function () {
       // Out-of-reach ground is not a candidate: the AI should not spend its
       // scoring on moves the rules will refuse, and a list that offers them is
       // a list that teaches the wrong thing.
+      // Out of reach is not a candidate, and neither is a nation that could
+      // swat you (M9.3) — `plan` refuses both, and a candidate list that
+      // offers a move the rules refuse teaches the scorer the wrong thing.
+      const blocked = untouchable(nid, tune);
       const targets = [...Game.annexTargets(nid)]
         .filter((f) => typeof Projection === 'undefined' || Projection.inRange(nid, f, T(tune)));
       const byOwner = {};
       for (const f of targets) {
         const o = Game.getOwner(f);
-        if (o) (byOwner[o] = byOwner[o] || []).push(f);
+        if (o && !blocked.has(o)) (byOwner[o] = byOwner[o] || []).push(f);
       }
       for (const [o, areas] of Object.entries(byOwner)) {
         const pick = areas
@@ -865,6 +1282,39 @@ const Moves = (function () {
     }
     if (!uniteCooldownLeft(nid, tune)) {
       for (const other of Game.adjacentNations(nid)) out.push({ type: 'unite', nid, target: other });
+    }
+
+    /*
+     * TRADE, with every neighbour it is not on cooldown with (M11.1).
+     *
+     * One candidate per bordering nation, exactly like unite: the deal itself is
+     * not a choice — the flows are whatever the two economies happen to mismatch
+     * on — so the only decision is WHO, and that is one intent each.
+     *
+     * `plan` refuses the ones that cannot happen (nothing to trade, no mutual
+     * recognition), which is the same division of labour every other move here
+     * uses: `legal` is cheap and generous, `plan` is the rulebook.
+     */
+    for (const other of Game.adjacentNations(nid)) {
+      if (!tradeCooldownLeft(nid, other, tune)) out.push({ type: 'trade', nid, target: other });
+    }
+
+    /*
+     * TREATIES AND AID (M11.2), the two Influence verbs.
+     *
+     * A treaty candidate per neighbour without one; `plan` refuses where the
+     * other side will not sign. Aid is offered to neighbours too — not to the
+     * whole continent — because a patron relationship you cannot reach is a
+     * cheque posted into the dark, and because fifty-one aid candidates per
+     * nation per turn is a scoring pass nobody asked for.
+     */
+    if (!cooldownOn(nid, 'lastTreatyTurn', 'treaty.cooldownTurns', tune)) {
+      for (const other of Game.adjacentNations(nid)) {
+        if (!Pacts.live(nid, other)) out.push({ type: 'treaty', nid, target: other, kind: 'nonaggression' });
+      }
+    }
+    if (!cooldownOn(nid, 'lastAidTurn', 'aid.cooldownTurns', tune)) {
+      for (const other of Game.adjacentNations(nid)) out.push({ type: 'aid', nid, target: other });
     }
 
     /*
@@ -932,6 +1382,11 @@ const Moves = (function () {
     plan, resolve, legal,
     planSplinter, partialSubset, acceptsRelease,
     annexCost, annexCooldownLeft, releaseCooldownLeft, uniteCooldownLeft,
+    // The one implementation of the 4x rule (M9.3). The UI asks it the same
+    // question `plan` and `legal` ask, rather than answering it a second way.
+    tooStrongToAnnex, untouchable,
+    // ...and of the trade rules (M11.1), for the same reason.
+    tradeFlows, applyCapacity, tradeCooldownLeft, markTraded,
     autonomyCooldownLeft: (nid, tune) => cooldown(nid, 'lastAutonomyTurn', 'autonomy.cooldownTurns', tune),
   };
 })();

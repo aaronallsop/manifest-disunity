@@ -25,6 +25,12 @@
  *             makes "the Anarcho-Capitalists are a nuisance" and "Deseret is a
  *             country in waiting" different facts rather than the same fact at
  *             different times.
+ *   growthRate how FAST it gets there, as a multiplier on `sent.maxRise` (M8.2).
+ *             Distinct from the cap, and the distinction is load-bearing: a
+ *             seeded share erodes back toward the formula's target at
+ *             `sent.maxFall` every turn, so "this region is angrier than
+ *             anywhere else and getting angrier" cannot be said by planting a
+ *             bigger number — that is a spike that decays. It needs a rate.
  *   state     latent -> rising -> armed -> declared -> realized.
  *
  * THE STATE MACHINE is a description, not a driver. It is derived each turn from
@@ -173,6 +179,7 @@ const Movements = (function () {
         core,
         seed,
         growthCap: def.growthCap == null ? null : def.growthCap,
+        growthRate: def.growthRate == null ? 1 : def.growthRate,
         goals: def.goals || [],
         sponsor: null,       // M6: a nation backing it
         nation: null,        // the nation it realised into, once it has one
@@ -203,6 +210,21 @@ const Movements = (function () {
     const rec = live[name];
     const t = tune || window.TUNE;
     return rec && rec.growthCap != null ? rec.growthCap : t.get('world.partyCeiling');
+  }
+
+  /**
+   * How fast this movement organises, as a multiplier on `sent.maxRise`.
+   *
+   * 1.0 for everything the bake did not single out, so the world engine's rate
+   * limit is unchanged for every movement but the one the design wanted moving
+   * faster. It multiplies the RISE cap only: a movement that grows quickly still
+   * loses ground at the same speed as everybody else, because organising being
+   * slower than collapsing is a property of the model, not of a movement.
+   */
+  function rateOf(name) {
+    const rec = live[name];
+    const r = rec && rec.growthRate;
+    return Number.isFinite(r) && r > 0 ? r : 1;
   }
 
   /**
@@ -362,6 +384,7 @@ const Movements = (function () {
           homeland: resolveAreas(def.counties).areas,
           core: resolveAreas(def.core).areas,
           growthCap: def.growthCap == null ? null : def.growthCap,
+          growthRate: def.growthRate == null ? 1 : def.growthRate,
           goals: def.goals || [],
           seed: (saved.seed || []).slice(),
           nation: saved.nation || null,
@@ -384,6 +407,7 @@ const Movements = (function () {
     strength,
     refreshStates,
     capOf,
+    rateOf,
     resolveAreas,
     clampMovements,
     ideologyIdOf,

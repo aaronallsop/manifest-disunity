@@ -73,13 +73,61 @@ const Coalitions = (function () {
     const joinAt = t.get('coalition.joinRelation');
     const out = new Map();
 
+    /*
+     * WHO IS ABOUT TO WIN (M11.3), read once for the whole survey.
+     *
+     * `Victory.standings` walks every nation and every condition, so it is not a
+     * thing to do inside the loop below.
+     */
+    const bar = t.get('ai.denyBar');
+    const wVictory = t.get('coalition.wVictory');
+    const closing = new Map();
+    /*
+     * NOT BEFORE ANYBODY CAN WIN. `Victory.check` refuses to return a winner
+     * before `win.graceTurns` and `Victory.alarms` refuses to report one, so a
+     * coalition formed against somebody "about to win" on turn 0 is a coalition
+     * against a race that has not started.
+     *
+     * It also keeps the older claim honest. "Being big is not the crime" is the
+     * design in one sentence, and on the opening board size and victory
+     * proximity are the same number — the largest economy IS the nation closest
+     * to Economic Supremacy, by construction and without having done anything.
+     * The grace period is where those two come apart: after it, a nation is
+     * close because of what it did.
+     */
+    const grace = World.getTurn() < t.get('win.graceTurns');
+    if (!grace && wVictory > 0 && typeof Victory !== 'undefined' && Victory.loaded()) {
+      for (const row of Victory.standings(t)) {
+        if (row.best && row.best.progress >= bar) closing.set(row.nid, row.best);
+      }
+    }
+
     for (const [nid] of Game.nations) {
       const n = Game.getNation(nid);
       const share = total > 0 ? rows.get(nid) / total : 0;
       const influence = n.influence == null ? 0.5 : n.influence;
-      const threat = share * (1 - influence);
+      /*
+       * THREAT IS SIZE-AND-DISLIKE **PLUS BEING ABOUT TO WIN** (M11.3).
+       *
+       * `share * (1 - influence)` alone is the whole anti-snowball machinery
+       * pointed at exactly one strategy. Both non-conquest victories keep
+       * Influence HIGH by construction — Reunification has an Influence floor,
+       * Ideological Dominance requires it, Economic Supremacy comes with it —
+       * so a nation quietly closing on either had its threat multiplied by
+       * something near zero and no coalition ever formed against it. The audit:
+       * "nothing in the game contests a rival who is quietly winning."
+       *
+       * The new term is deliberately NOT scaled by (1 - influence). Being
+       * liked is a defence against being feared for your size; it is not a
+       * defence against being about to win, because the thing the rest of the
+       * continent minds is the winning.
+       */
+      const near = closing.get(nid);
+      const closeness = near ? Math.max(0, (near.progress - bar) / Math.max(1e-6, 1 - bar)) : 0;
+      const threat = share * (1 - influence) + wVictory * closeness * share;
       const rec = {
         nid, share, influence, threat, members: [],
+        closing: near ? { label: near.label, progress: near.progress } : null,
         pressure: 0, weight: 0,
         summary: '', formed: threat >= trigger,
       };
@@ -137,7 +185,9 @@ const Coalitions = (function () {
   function summarise(rec) {
     if (!rec.formed) {
       return rec.share > 0.15
-        ? `Large, and tolerated: ${Math.round(rec.influence * 100)}% Influence keeps it from being a threat.`
+        ? (rec.closing
+          ? `${Math.round(rec.closing.progress * 100)}% of the way to ${rec.closing.label} — and being liked is no defence against that.`
+          : `Large, and tolerated: ${Math.round(rec.influence * 100)}% Influence keeps it from being a threat.`)
         : 'Not big enough to worry anybody.';
     }
     const top = rec.members.slice(0, 3).map((m) => m.name).join(', ');

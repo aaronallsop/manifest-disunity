@@ -271,12 +271,29 @@ describe('Releasing counties has a recipient, not a target', () => {
 describe('Occupation costs more where it is resented (M4.5)', () => {
   it('hostility is the strongest organised movement in an Area', async () => {
     await bootWorld({ seed: SEED });
-    const rec = Movements.get('Deseret');
-    const f = rec.core[0];
-    const c = Game.county[f];
+    /*
+     * THE STRONGEST, whichever it is. This used to read Deseret's core[0] and
+     * compare against Deseret's own share, which quietly assumed Deseret is the
+     * biggest movement in the first Area of its own core. It was, until the
+     * M9.6 Area re-bake regrouped the counties under it and something else took
+     * the lead there — at which point a correct `hostility` failed a test that
+     * was asserting an accident of the data rather than the contract.
+     *
+     * The contract is `max(share)`, so that is what is checked, over an Area
+     * chosen for having more than one movement in it — the only case in which
+     * "the strongest" says anything at all.
+     */
+    const contested = Object.keys(Game.county)
+      .find((x) => Object.keys(Game.county[x].mov || {}).length > 1);
+    ok(contested, 'no Area on the board has two movements in it');
+    const c = Game.county[contested];
     let pop = 0;
     for (let i = 0; i < c.pop.length; i++) pop += c.pop[i];
-    close(Game.hostility(f), (c.mov.Deseret || 0) / pop, 1e-9);
+    const strongest = Math.max(...Object.values(c.mov)) / pop;
+    close(Game.hostility(contested), strongest, 1e-9);
+    // ...and it really is a max, not whichever one happens to be first.
+    ok(Object.values(c.mov).length > 1);
+    ok(Game.hostility(contested) >= (c.mov[Object.keys(c.mov)[0]] || 0) / pop - 1e-12);
     // an Area nobody has organised is not hostile
     const quiet = Object.keys(Game.county).find((x) => Object.keys(Game.county[x].mov).length === 0);
     if (quiet) equal(Game.hostility(quiet), 0);

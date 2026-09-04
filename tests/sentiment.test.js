@@ -149,18 +149,28 @@ describe('The phase', () => {
     const snap = World.buffer(), nxt = World.buffer();
     World.phaseSentiment(snap, nxt, T(), owners);
 
-    const rise = T().get('sent.maxRise'), fall = T().get('sent.maxFall');
+    /*
+     * THE RISE CAP IS PER MOVEMENT since M8.2: `sent.maxRise` times that
+     * movement's own `growthRate`, so Deseret at 1.5 may legitimately move half
+     * again as far in a turn as anybody else. Dated so the next reader knows
+     * this is the model and not a loosened assertion — the FALL cap is still the
+     * world's, because organising being slower than collapsing is a property of
+     * the model rather than of a movement.
+     */
+    const maxRise = T().get('sent.maxRise'), fall = T().get('sent.maxFall');
     let worst = 0, where = null;
     for (let f = 0; f < nxt.n; f++) {
       const pop = bufPop(snap, f);
       if (pop <= 0) continue;
       const names = new Set([...Object.keys(snap.mov[f]), ...Object.keys(nxt.mov[f])]);
       for (const m of names) {
+        const rise = maxRise * Movements.rateOf(m);
         const a = (snap.mov[f][m] || 0) / pop;
         const b = (nxt.mov[f][m] || 0) / bufPop(nxt, f);
         const d = b - a;
         if (d > worst) { worst = d; where = `${nxt.idAt(f)}/${m}`; }
-        ok(d <= rise + 1e-6, `${nxt.idAt(f)} ${m} rose ${d.toFixed(4)} in one turn (cap ${rise})`);
+        ok(d <= rise + 1e-6,
+          `${nxt.idAt(f)} ${m} rose ${d.toFixed(4)} in one turn (cap ${rise} at rate ${Movements.rateOf(m)})`);
         ok(d >= -fall - 1e-6, `${nxt.idAt(f)} ${m} fell ${(-d).toFixed(4)} in one turn (cap ${fall})`);
       }
     }
@@ -265,5 +275,116 @@ describe('The explanation', () => {
     await bootWorld({ seed: SEED });
     equal(Sentiment.explain('49035', 'The Whig Revival', T()), null);
     equal(Sentiment.explain('nowhere', 'Deseret', T()), null);
+  });
+});
+
+describe('The ground itself (M12)', () => {
+  /*
+   * THE ACCEPTANCE CRITERION from docs/AUDIT-PLAN.md M12: "a nation with a rich
+   * coast and a poor interior shows a grievance gradient the pressure map can
+   * paint — with a measured spread."
+   *
+   * Before M12 this was structurally impossible, and that is the finding
+   * DESIGN.md §12 called the #1 structural gap. Quality of life and civil
+   * liberties were NATIONAL stocks, so every Area of a country was exactly as
+   * pleasant and exactly as free as every other one; grievance read one number
+   * per nation and migration pulled toward one number per nation. The pressure
+   * map could be flat inside a border and nothing could make it otherwise.
+   */
+  it('gives one nation a spread of quality of life, not a single number', async () => {
+    const { rng } = await bootWorld({ seed: SEED });
+    // Let the columns fill: they open AT their reading and then rate-limit.
+    for (let i = 0; i < 6; i++) World.advanceTurn(T(), rng);
+
+    // The largest nation on the board, so there is enough ground for a gradient.
+    let best = null, bestN = 0;
+    for (const [nid] of Game.nations) {
+      const n = Game.getNation(nid);
+      if (n && n.counties.size > bestN) { best = nid; bestN = n.counties.size; }
+    }
+    ok(best && bestN > 20, `the biggest nation holds only ${bestN} Areas`);
+
+    const vals = [...Game.getNation(best).counties]
+      .map((f) => Game.areaQol(f))
+      .filter((v) => v >= 0);
+    equal(vals.length, bestN, 'some Areas of a live nation have no reading at all');
+
+    const lo = Math.min(...vals), hi = Math.max(...vals);
+    const nat = Game.getNation(best).qol;
+    ok(hi - lo > 0.02,
+      `${Game.getNation(best).name} is uniformly ${lo.toFixed(3)} pleasant across ${bestN} Areas`);
+    // ...and the national stock is inside its own spread rather than beside it.
+    ok(nat >= lo - 0.15 && nat <= hi + 0.15,
+      `the nation reads ${nat.toFixed(3)} and its ground runs ${lo.toFixed(3)}..${hi.toFixed(3)}`);
+  });
+
+  /*
+   * CIVIL LIBERTIES ARE UNIFORM UNTIL SOMETHING MAKES THEM NOT BE, and that is
+   * the design rather than a gap. Quality of life varies everywhere because
+   * local wealth varies everywhere; liberties only vary where there is
+   * occupation, self-rule, or trouble to hold down. The first version of this
+   * test asked the largest nation on a calm turn-6 board for a spread and got
+   * none — correctly, because none of those three was true anywhere in it.
+   *
+   * So the mechanism is tested where it applies: hand a nation somebody else's
+   * ground and watch the ground it took become less free than the ground it
+   * had. That is the M12 claim in one comparison — a nation holding a province
+   * down is unfree IN THAT PROVINCE, and no less free than before at home.
+   */
+  it('civil liberties fall on ground a nation took, and not at home', async () => {
+    const { rng } = await bootWorld({ seed: SEED });
+    for (let i = 0; i < 4; i++) World.advanceTurn(T(), rng);
+
+    const nid = '06';
+    const home = [...Game.getNation(nid).counties];
+    ok(home.length > 10, 'the test nation is too small to have a home and a frontier');
+
+    // Take a neighbour's ground. `moveCounties` is the one choke point, so this
+    // is occupation exactly as an annexation would produce it.
+    const victim = Game.adjacentNations(nid)[0];
+    const taken = [...Game.getNation(victim).counties].slice(0, 6);
+    ok(taken.length, 'the neighbour holds nothing to take');
+    Game.moveCounties(taken, nid, { reason: 'annex' });
+    for (const f of taken) ok(Game.isOccupied(f), `${f} is not occupied ground`);
+
+    // Let the stocks move. They are rate-limited, so this is not instant.
+    for (let i = 0; i < 6; i++) World.advanceTurn(T(), rng);
+
+    const mean = (list) => {
+      const vals = list.map((f) => Game.areaLiberties(f)).filter((v) => v >= 0);
+      return vals.length ? vals.reduce((a, b) => a + b, 0) / vals.length : null;
+    };
+    const stillHome = home.filter((f) => Game.getOwner(f) === nid);
+    const stillTaken = taken.filter((f) => Game.getOwner(f) === nid);
+    ok(stillHome.length && stillTaken.length, 'the ground moved back before it could be measured');
+
+    const atHome = mean(stillHome), abroad = mean(stillTaken);
+    ok(atHome != null && abroad != null, 'some ground has no reading');
+    ok(abroad < atHome,
+      `occupied ground reads ${abroad.toFixed(3)} against ${atHome.toFixed(3)} at home`);
+
+    // ...and quality of life falls there too, by less: an occupier can pave the
+    // roads and still not let anybody vote (area.libOccupied is the larger).
+    const qHome = mean(stillHome.map((f) => f)) && stillHome
+      .map((f) => Game.areaQol(f)).reduce((a, b) => a + b, 0) / stillHome.length;
+    const qAbroad = stillTaken.map((f) => Game.areaQol(f)).reduce((a, b) => a + b, 0) / stillTaken.length;
+    ok(qAbroad < qHome, `occupied ground is a nicer place to live (${qAbroad.toFixed(3)} vs ${qHome.toFixed(3)})`);
+  });
+
+  it('a newly created Area opens at its reading rather than climbing from zero', async () => {
+    const { rng } = await bootWorld({ seed: SEED });
+    for (let i = 0; i < 4; i++) World.advanceTurn(T(), rng);
+    /*
+     * `-1` in the column means "never computed". A brand-new Area reading 0
+     * would be the worst place on the continent on the turn it was founded, and
+     * every consumer would believe it — which is the same rule `Power.step`
+     * uses for a null previous value, for the same reason.
+     */
+    for (const [nid] of Game.nations) {
+      for (const f of Game.getNation(nid).counties) {
+        const q = Game.areaQol(f);
+        ok(q >= 0 && q <= 1, `${f} reads ${q}`);
+      }
+    }
   });
 });

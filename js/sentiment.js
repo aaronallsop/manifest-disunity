@@ -86,6 +86,34 @@ const Sentiment = (function () {
     grievance += term('War weariness', a.weariness || 0, clamp01(a.weariness || 0),
       'sent.wWeariness', "what the state's own wars are costing the people at home");
 
+    /*
+     * A STANDING ARGUMENT ON PARTICULAR GROUND (M8.7).
+     *
+     * Every other grievance term is a property of the NATION holding the Area —
+     * how it feeds its people, how it governs, how tired it is. This one is a
+     * property of the AREA, and it is the only way to say something the model
+     * otherwise cannot: that this specific place has a reason of its own, older
+     * than whoever currently governs it.
+     *
+     * The Shattering uses it for the Mormon Corridor that did not cede, and
+     * hardest on the Areas that voted to go and were cut off from Salt Lake. It
+     * had to be a term rather than a bigger seed, because a seeded share erodes
+     * back toward the formula's target at `sent.maxFall` every turn: seeding
+     * alone makes a region angriest on turn 1 and calmest by turn 10, which is
+     * the story backwards.
+     *
+     * It rides INSIDE grievance, so it is still multiplied by `base` — a place
+     * with an authored grievance toward a movement whose ideology it does not
+     * share still cannot be radicalised into it, which is the rule the whole
+     * formula is built on. `attrs.sentBoost` round-trips in the v2 save for
+     * free, and because `target` and `explain` are one implementation the boost
+     * shows up as a named row in the Why panel with no second code path.
+     */
+    if (a.boost) {
+      grievance += term('Unfinished business', a.boost, clamp01(a.boost),
+        'sent.wBoost', 'a grievance this ground carries whoever governs it');
+    }
+
     // PULL — the diffusion term. tanh so that one committed neighbour matters a
     // lot and the tenth matters little: a movement spreads along a frontier, it
     // does not multiply by how many friends it already has.
@@ -218,6 +246,15 @@ const Sentiment = (function () {
       affinity[i] = movements.map((m) => Ideology.affinity(i, Movements.ideologyIndexOf(m)));
     }
     const caps = movements.map((m) => Movements.capOf(m, tune));
+    /*
+     * HOW FAR (`caps`) AND HOW FAST (`rises`), resolved once per turn beside
+     * each other because they are the two halves of one question and the phase
+     * reads both in the same inner loop. `rises[m]` is already multiplied by
+     * `sent.maxRise`, so the phase compares a delta against a number rather than
+     * doing a lookup and a multiply 1,676 x 32 times a turn.
+     */
+    const maxRise = tune.get('sent.maxRise');
+    const rises = movements.map((m) => maxRise * Movements.rateOf(m));
 
     /*
      * Homelands as NODE sets, and occupation as a node-indexed flag.
@@ -235,15 +272,20 @@ const Sentiment = (function () {
     const g = Game.graph();
     const occupied = new Uint8Array(g ? g.n : 0);
     const autonomous = new Uint8Array(g ? g.n : 0);
+    // The authored per-Area grievance (M8.7). Float32: it is a bounded score,
+    // and 1,676 of them is a rounding error beside the sentiment matrix.
+    const boost = new Float32Array(g ? g.n : 0);
     if (g) {
       for (let i = 0; i < g.n; i++) {
         const id = g.idAt(i);
         occupied[i] = Game.isOccupied(id) ? 1 : 0;
         autonomous[i] = Game.isAutonomous(id) ? 1 : 0;
+        const c = Game.county[id];
+        boost[i] = (c && c.attrs && c.attrs.sentBoost) || 0;
       }
     }
 
-    return { byNation, movements, affinity, caps, homelands, occupied, autonomous, owners };
+    return { byNation, movements, affinity, caps, rises, homelands, occupied, autonomous, boost, owners };
   }
 
   /**
@@ -276,16 +318,34 @@ const Sentiment = (function () {
       if (p > 0) neighbourSum += (other.mov[movementName] || 0) / p;
     }
 
+    /*
+     * THE AREA'S OWN QUALITY OF LIFE AND LIBERTIES (M12), blended with its
+     * nation's. Both are true: a country in crisis is in crisis everywhere, and
+     * a poor interior is a poor interior inside a rich country. Before M12 the
+     * second half did not exist and grievance had no gradient to build on
+     * inside a border — which is why the pressure map was flat inside one.
+     *
+     * `-1` in the column means the ground has not been read yet (a brand-new
+     * Area, the turn it is created), and the honest answer then is the nation's
+     * number rather than zero.
+     */
+    const wLocal = t.get('sent.wLocal');
+    const areaQol = Game.areaQol ? Game.areaQol(areaId) : -1;
+    const areaLib = Game.areaLiberties ? Game.areaLiberties(areaId) : -1;
+    const natQol = nation ? nation.qol : 0.5;
+    const natLib = nation ? nation.liberties : 0.5;
     const rc = target({
       base: ctx.affinity[Ideology.dominantIndex(c.pop)][mi],
-      qol: nation ? nation.qol : 0.5,
-      liberties: nation ? nation.liberties : 0.5,
+      qol: areaQol >= 0 ? (1 - wLocal) * natQol + wLocal * areaQol : natQol,
+      liberties: areaLib >= 0 ? (1 - wLocal) * natLib + wLocal * areaLib : natLib,
       nationPower: nation ? nation.power : 0.5,
       authority: nation ? nation.authority : 0.5,
       neighbourSum,
       weariness: (Game.getNation(Game.getOwner(areaId)) || {}).weariness || 0,
       occupied: Game.isOccupied ? Game.isOccupied(areaId) : false,
       autonomous: Game.isAutonomous ? Game.isAutonomous(areaId) : false,
+      // Read off the Area, the same value the phase reads out of its context.
+      boost: (c.attrs && c.attrs.sentBoost) || 0,
       /*
        * Read LIVE, not from the cached context. The garrison is the one input
        * here that changes without ownership moving and without the turn
@@ -332,7 +392,10 @@ const Sentiment = (function () {
     if (cur >= threshold) return { turns: 0, target, current: cur, threshold, arriving: true };
     // A target under the line is a plateau, not a slow climb.
     if (target < threshold) return { turns: null, target, current: cur, threshold, arriving: false };
-    const rise = t.get('sent.maxRise');
+    // This movement's own rate, not the world's (M8.2): a corridor that turns
+    // half again as fast arrives sooner, and a clock that reported otherwise
+    // would be a second, wrong model of the same phase.
+    const rise = t.get('sent.maxRise') * Movements.rateOf(movementName);
     // The approach is rate-limited AND eases as it nears the target, so the
     // honest estimate is the rate-limited one: it is a floor on the time, which
     // is the direction a warning should err in.

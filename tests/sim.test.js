@@ -124,11 +124,42 @@ describe('What a sample says', () => {
  * choices. See the note above `The tuned pacing of the world engine`.
  */
 describe('The summary answers the questions a tuning pass asks', () => {
+  /*
+   * THE DIAL REACHES THE ENGINE — measured across seeds, not pinned to one.
+   *
+   * This asked seed 20260829 for a secession under `sent.maxRise: 0.06` and got
+   * one for four milestones, then stopped at the M9.6 Area re-bake. Nothing
+   * regressed: with the dial open, four of the five seeds below secede on turn
+   * 7-8, and 20260829 is simply not one of them any more. A movement's derived
+   * core is a function of the Area plan, and changing the plan reshuffles the
+   * `spawn` stream for every movement after it — so a claim staked on ONE seed
+   * is a claim that expires at the next legitimate bake, which is exactly what
+   * happened.
+   *
+   * The claim was never about that seed. It is that the dial moves the engine
+   * in both directions, and the contrast is what says so: at 0.0011 nothing
+   * secedes anywhere in twelve turns, at 0.06 most boards come apart inside
+   * ten.
+   */
   it('names the first secession, or says there was none', async () => {
-    const quiet = await Sim.run({ seed: 20260829, turns: 12, ai: false, overrides: { 'sent.maxRise': 0.0011 } });
-    equal(quiet.summary.firstSecessionTurn, null, 'something seceded with sentiment barely moving');
-    const loud = await Sim.run({ seed: 20260829, turns: 40, ai: false, overrides: { 'sent.maxRise': 0.06 } });
-    ok(loud.summary.firstSecessionTurn > 0, 'nothing seceded even with sentiment racing');
+    const seeds = [20260829, 1, 4242, 7, 101];
+    let loudSeceded = 0;
+    const firsts = [];
+    for (const seed of seeds) {
+      const quiet = await Sim.run({ seed, turns: 12, ai: false, overrides: { 'sent.maxRise': 0.0011 } });
+      equal(quiet.summary.firstSecessionTurn, null,
+        `something seceded at seed ${seed} with sentiment barely moving`);
+      const loud = await Sim.run({ seed, turns: 40, ai: false, overrides: { 'sent.maxRise': 0.06 } });
+      if (loud.summary.firstSecessionTurn > 0) {
+        loudSeceded++;
+        firsts.push(loud.summary.firstSecessionTurn);
+      }
+    }
+    // Measured after the re-bake: 4 of 5, first secession turn 7-8.
+    ok(loudSeceded >= 3,
+      `only ${loudSeceded} of ${seeds.length} boards came apart with sentiment racing`);
+    ok(Math.min(...firsts) < 15,
+      `with the dial wide open the earliest secession is turn ${Math.min(...firsts)}`);
   });
 
   it('watches the death-spiral floors', async () => {
@@ -186,9 +217,35 @@ describe('The tuned pacing of the world engine', () => {
     }
   });
 
+  /*
+   * AND THE GAME STILL HAS CONTENT — a distribution, not a seed.
+   *
+   * Measured over twelve seeds, 80 turns, no AI, before and after the M9.6 Area
+   * re-bake:
+   *
+   *      before   16 secessions across 12 seeds, 2 seeds produced none
+   *      after    14 secessions across 12 seeds, 4 seeds produced none
+   *      first secession, median   turn 29 both ways
+   *
+   * The individual seeds reshuffled completely — 20260829 went 2 -> 0 and seed
+   * 1 went 0 -> 2 — because an Area re-bake changes every movement's derived
+   * core and therefore the `spawn` stream. That is documented behaviour, and it
+   * is why this reads several seeds: "eighty turns and nobody left" is a fair
+   * thing to assert about the WORLD and an unfair thing to assert about one
+   * draw from it.
+   */
   it('and the game still has content: something declares, and something does not', async () => {
-    const r = await Sim.run({ seed: 20260829, turns: 80, ai: false });
-    ok(r.summary.secessions >= 1, 'eighty turns and nobody left');
+    const seeds = [20260829, 1, 4242, 7];
+    let seceded = 0, total = 0;
+    let r = null;
+    for (const seed of seeds) {
+      const run = await Sim.run({ seed, turns: 80, ai: false });
+      total += run.summary.secessions;
+      if (run.summary.secessions >= 1) { seceded++; if (!r) r = run; }
+    }
+    ok(seceded >= 2, `${seeds.length} boards, 80 turns each, and only ${seceded} produced a secession`);
+    ok(total >= 3, `only ${total} secessions across ${seeds.length} boards`);
+    r = r || await Sim.run({ seed: seeds[0], turns: 80, ai: false });
     const states = r.summary.states;
     ok(states.realized > 0, 'no movement got a country');
     ok((states.rising || 0) + (states.armed || 0) > 0,

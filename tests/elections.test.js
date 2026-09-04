@@ -239,6 +239,93 @@ describe('Elections — refusing the result', () => {
     equal(Game.getNation('06').gov.rulingIdeology, 'red');
   });
 
+  /*
+   * THE TEST ABOVE IS THE ONE THAT HID THE BUG (M9.2).
+   *
+   * It calls `tick` with no `asOf`, which is the single arrangement in which
+   * `gov.lostAt` and `World.getTurn()` agree — and `js/world.js` has never
+   * called it that way. On the live path it passes `asOf: turn + 1` while
+   * `World.getTurn()` still reads N inside the batch, so the guard in `steal`
+   * never matched and every AI police state in the game conceded politely.
+   *
+   * This one calls `tick` exactly the way `World.advanceTurn` does. It is the
+   * regression test, and the reason it is written as a separate case rather
+   * than a parameter on the one above is that the two call shapes are two
+   * different claims: "stealing works" and "stealing works where it is
+   * actually called from".
+   */
+  it('and does so when tick is called the way the world calls it', async () => {
+    const { rng } = await bootWorld({ seed: SEED });
+    Game.changeRulingIdeology('06', 'red', { force: true });
+    runToPolls('06', rng);
+    Game.getNation('06').liberties = T().get('election.stealBelow') - 0.05;
+    // js/world.js: Elections.tick(tn, rng, { defer, asOf: turn + 1 }).
+    const out = Elections.tick(T(), rng, { asOf: World.getTurn() + 1 });
+    const mine = out.find((r) => r.nid === '06');
+    ok(mine && mine.changed, 'the minority government was not turned out to begin with');
+    ok(mine.stolen, 'the AI steal path is dead on the clock the world calls it with');
+    equal(Game.getNation('06').gov.rulingIdeology, 'red', 'the refusal did not stick');
+    ok(!Elections.pending('06', World.getTurn() + 1), 'the window stayed open after a refusal');
+  });
+
+  /*
+   * ...and the deferred half of the same call, on the same clock: the player's
+   * result must survive `tick` with `asOf` set and still be there for the modal
+   * that runs AFTER the batch, when World.getTurn() has caught up to the stamp.
+   */
+  it('a deferred result stays open across the batch boundary', async () => {
+    const { rng } = await bootWorld({ seed: SEED });
+    Game.changeRulingIdeology('06', 'red', { force: true });
+    runToPolls('06', rng);
+    Game.getNation('06').liberties = T().get('election.stealBelow') - 0.05;
+    const asOf = World.getTurn() + 1;
+    const out = Elections.tick(T(), rng, { defer: (nid) => nid === '06', asOf });
+    const mine = out.find((r) => r.nid === '06');
+    ok(mine && mine.changed && !mine.stolen, 'the caller was not left the decision');
+    ok(Elections.pending('06', asOf), 'the window is shut to a caller inside the batch');
+    // The UI asks after the world has moved on, with no asOf at all.
+    World.setTurn(asOf);
+    ok(Elections.pending('06'), 'the window is shut to the modal that has to show it');
+    ok(Elections.steal('06', T(), rng).ok, 'the player could not act on their own result');
+  });
+
+  /*
+   * THE ACCEPTANCE CRITERION (docs/AUDIT-PLAN.md M9.2), through the live path:
+   * `World.advanceTurn`, not `Elections.tick` called by hand.
+   *
+   * Every nation is pushed below `election.stealBelow` before each turn rather
+   * than a chosen few, and the reason is worth recording because the first
+   * version of this test failed for it. Liberties is a rate-limited stock
+   * recomputed in `phasePower`, which runs AFTER the election phase — so a
+   * value written before `advanceTurn` survives long enough to be read at the
+   * polls, but only for that turn, and it converges back to its own target
+   * afterwards. Pinning five large nations down produced 26 turned-out
+   * governments in 60 turns and not one of them among the five: big stable
+   * countries are exactly the ones that keep winning.
+   *
+   * Measured at this seed over 60 turns: 222 elections, 32 changes of
+   * government, 32 refusals. The assertion is not the 32 — that moves with any
+   * tuning change — but the SHAPE: with every government eligible, the number
+   * that refuse equals the number that lost. Before M9.2 it was zero out of
+   * however many, for any number of turns, because the guard compared a stamp
+   * written at N+1 against a clock still reading N.
+   */
+  it('every eligible AI government refuses its result, through World.advanceTurn', async () => {
+    const { rng } = await bootWorld({ seed: SEED });
+    const floor = T().get('election.stealBelow') - 0.05;
+    for (let i = 0; i < 60; i++) {
+      for (const [, n] of Game.nations) n.liberties = floor;
+      World.advanceTurn(T(), rng);
+    }
+    const els = Ledger.all().filter((e) => e.kind === 'election');
+    const changed = els.filter((e) => e.changed);
+    const stolen = els.filter((e) => e.stolen);
+    ok(els.length > 100, `only ${els.length} elections in 60 turns — the run did not happen`);
+    ok(changed.length > 0, 'no government anywhere lost an election, so nothing could be refused');
+    equal(stolen.length, changed.length,
+      `${changed.length} governments lost and only ${stolen.length} refused`);
+  });
+
   it('the open decision survives a save', async () => {
     /*
      * `gov` is serialized wholesale and rebuilt through `makeGov`, which names

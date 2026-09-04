@@ -446,7 +446,9 @@ describe('Influence in the live world', () => {
     const vals = [];
     for (const [, n] of Game.nations) {
       ok(typeof n.influence === 'number' && Number.isFinite(n.influence), `${n.name} has no Influence`);
-      ok(n.why.influence && n.why.influence.inputs.length === 9,
+      // Nine until M11.2, which added Treaties and Clients — the two verbs
+      // the design list had reserved and nothing had ever wired.
+      ok(n.why.influence && n.why.influence.inputs.length === 11,
         `Influence reported ${n.why.influence.inputs.length} terms`);
       vals.push(n.influence);
     }

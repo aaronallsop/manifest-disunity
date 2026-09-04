@@ -142,7 +142,7 @@ function defaultSummary(value, inputs) {
  * can be under 0.4 of sustained downward pressure and still hold the floor,
  * which is what stops "already losing" from being the same as "cannot recover".
  */
-export function step(previous, target, tune, floorOverride) {
+export function step(previous, target, tune, floorOverride, limits) {
   /*
    * `power.floor` exists to stop a DEATH SPIRAL: an Authority of zero makes
    * everything worse which makes Authority lower, and a nation can never climb
@@ -150,10 +150,16 @@ export function step(previous, target, tune, floorOverride) {
    * peace is permanently eight per cent exhausted, paying quality of life and
    * feeding every movement in its ground for a war it never fought. So the
    * floor is a parameter, and weariness passes zero.
+   *
+   * THE RATE LIMITS ARE A PARAMETER FOR THE SAME REASON (M9.8). `power.maxFall`
+   * being larger than `power.maxRise` says "standing is easier to lose than to
+   * build", which is true of the four stocks a nation HAS and exactly backwards
+   * for the one it SUFFERS. Weariness passes its own pair, inverted; everybody
+   * else takes the shared ones by omitting the argument.
    */
   const floor = floorOverride == null ? tune.get('power.floor') : floorOverride;
-  const rise = tune.get('power.maxRise');
-  const fall = tune.get('power.maxFall');
+  const rise = tune.get((limits && limits.rise) || 'power.maxRise');
+  const fall = tune.get((limits && limits.fall) || 'power.maxFall');
   if (previous == null) return Math.max(floor, clamp01(target));
   const delta = clamp01(target) - previous;
   const moved = previous + (delta > 0 ? Math.min(delta, rise) : Math.max(delta, -fall));
@@ -375,6 +381,33 @@ export function influence(a, tune) {
       norm: (a.legitimacy == null ? 1 : a.legitimacy) - 1,
       key: 'power.influence.wRecognition',
       note: a.legitimacyNote || 'how much of the continent admits you are a country' },
+    /*
+     * THE TWO VERBS (M11.2). Both are standing a nation BUILT rather than
+     * standing it has by being large, and they are the first Influence terms
+     * that reward doing something for somebody else.
+     *
+     * TREATIES is signed: pacts held minus breaches at `breachWeight`, so the
+     * raw number goes negative for a serial betrayer. `saturate` on a negative
+     * would be nonsense, so the sign is carried out and the magnitude
+     * saturated — a nation that has broken five pacts is not ten times worse
+     * than one that has broken one, it is simply somebody nobody signs with.
+     */
+    { label: 'Treaties', signed: true, raw: a.treaties || 0,
+      norm: (a.treaties || 0) >= 0
+        ? saturate(a.treaties || 0, tune.get('power.influence.treatyK'))
+        : -saturate(-(a.treaties || 0), tune.get('power.influence.treatyK')),
+      key: 'power.influence.wTreaty',
+      note: 'pacts you hold, less the ones you have broken' },
+    /*
+     * AID is unsigned and small: standing bought rather than earned. It reads
+     * summed patron WEIGHT rather than a head count, because one country deeply
+     * in your pocket is worth about as much as three that took a cheque once —
+     * and it evaporates the moment the payments stop, which is what keeps
+     * Ideological Dominance a campaign rather than a purchase.
+     */
+    { label: 'Clients', raw: a.clients || 0,
+      norm: saturate(a.clients || 0, tune.get('power.influence.clientsK')),
+      key: 'power.influence.wAid', note: 'nations you are funding, by how deeply' },
   ];
 
   const record = build(tune.get('power.influence.base'), terms, tune, influenceSummary);
@@ -583,7 +616,10 @@ export function weariness(a, tune) {
 
   const record = build(tune.get('power.weariness.base'), terms, tune, wearinessSummary);
   record.target = record.value;
-  record.value = step(a.previous, record.value, tune, 0);
+  // Floor 0 (a nation at peace is not tired) and its own rate limits, which run
+  // the other way up to the other four stocks' — see step() and M9.8.
+  record.value = step(a.previous, record.value, tune, 0,
+    { rise: 'power.weariness.maxRise', fall: 'power.weariness.maxFall' });
   return record;
 }
 
@@ -882,6 +918,11 @@ export function gatherInfluence(facts, turn, tune, ctx) {
     coalition: typeof Coalitions !== 'undefined' ? Coalitions.pressure(facts.nid) : 0,
     legitimacy: typeof Recognition !== 'undefined' ? Recognition.scalar(facts.nid) : 1,
     legitimacyNote: legitimacyNote(facts.nid),
+    // M11.2 — the treaty record, and how much of other people's politics this
+    // nation is paying for. Both come out of js/pacts.js, which owns the state.
+    treaties: typeof Pacts !== 'undefined' ? Pacts.standing(facts.nid, tune) : 0,
+    clients: typeof Pacts !== 'undefined'
+      ? Pacts.clientsOf(facts.nid).reduce((sum, c) => sum + c.weight, 0) : 0,
     leaderInfluence: lead(facts.nid, 'influence'),
     leaderNote: leaderNote(facts.nid),
     partners,

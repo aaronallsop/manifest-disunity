@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Nation States &mdash; 50 states, 50 nations</title>
+    <title>Nation States &mdash; 61 nations where 51 states were</title>
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
@@ -11,7 +11,7 @@
       <header>
         <div class="brand">
           <h1>Nation States</h1>
-          <span class="tagline">What if every U.S. state became its own nation?</span>
+          <span class="tagline">The Union came apart. Sixty-one nations, and one of them is yours.</span>
         </div>
 
         <div class="toggle-group">
@@ -46,10 +46,8 @@
         <div class="toggle-group">
           <span class="tg-label">Game</span>
           <div class="savebar">
-            <button id="btn-save">&#128190; Save</button>
-            <button id="btn-load">&#128194; Load</button>
-            <button id="btn-timeline">&#8987; Timeline</button>
-            <button id="btn-editor">&#128506; Enter map editor</button>
+            <button id="btn-menu" class="menu-btn" aria-haspopup="dialog"
+              title="New game, save, load, timeline, map editor">&#9776; Menu</button>
           </div>
         </div>
       </header>
@@ -65,6 +63,9 @@
         </div>
         <aside id="panel"></aside>
       </main>
+
+      <!-- The game's memory (M9.7). Collapsed to one line; the record is a click away. -->
+      <div id="journal"></div>
     </div>
 
     <div id="modal"><div class="modal-card"><div class="modal-body"></div></div></div>
@@ -95,6 +96,7 @@
     <script src="js/projection.js"></script>
     <script src="js/relations.js"></script>
     <script src="js/recognition.js"></script>
+    <script src="js/pacts.js"></script>
     <script src="js/coalitions.js"></script>
     <script src="js/events.js"></script>
     <script src="js/leaders.js"></script>
@@ -104,12 +106,22 @@
     <script src="js/actions.js"></script>
     <script src="js/leaderboard.js"></script>
     <script src="js/ledger.js"></script>
+    <script src="js/journal.js"></script>
     <script src="js/sentiment.js"></script>
     <script src="js/migration.js"></script>
     <script src="js/world.js"></script>
     <script src="js/market.js"></script>
+    <script src="js/scenario.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/shell.js"></script>
+    <script src="js/panels.js"></script>
+    <script src="js/format.js"></script>
     <script src="js/saves.js"></script>
+    <script src="js/telemetry.js"></script>
+    <script src="js/disclosure.js"></script>
+    <script src="js/objectives.js"></script>
+    <script src="js/menu.js"></script>
     <script src="js/editor.js"></script>
   </body>
 </html>

@@ -232,3 +232,41 @@ describe('It is a stock, and it is state', () => {
     for (const k of Object.keys(before)) equal(after[k], before[k], `reading weariness changed ${k}`);
   });
 });
+
+describe('War weariness is rate-limited the other way up (M9.8)', () => {
+  /*
+   * The other four power stocks are things a nation HAS, so `power.maxFall`
+   * (0.08) is deliberately larger than `power.maxRise` (0.05): standing is
+   * easier to lose than to build. Weariness is a thing a nation SUFFERS, and it
+   * inherited those limits — so it climbed at 0.05 and shed at 0.08, which is
+   * the intended asymmetry inverted. The bill is supposed to arrive while you
+   * are still fighting and to still be there afterwards.
+   */
+  it('rises faster than it falls, unlike every other stock', async () => {
+    await bootWorld({ seed: SEED });
+    const t = T();
+    ok(t.get('power.weariness.maxRise') > t.get('power.weariness.maxFall'),
+      'weariness sheds faster than it accumulates');
+    ok(t.get('power.maxFall') > t.get('power.maxRise'),
+      'the shared limits are no longer the ones weariness must NOT use');
+  });
+
+  it('and moves by its own caps, not the shared ones', async () => {
+    const { rng } = await bootWorld({ seed: SEED });
+    const t = T();
+    const rise = t.get('power.weariness.maxRise');
+    const fall = t.get('power.weariness.maxFall');
+
+    // From zero: whatever the target, one turn can only climb by maxRise.
+    Game.getNation('06').weariness = 0;
+    World.advanceTurn(t, rng);
+    const up = Game.getNation('06').weariness;
+    ok(up <= rise + 1e-9, `weariness rose ${up} in one turn, past its own cap of ${rise}`);
+
+    // From one: whatever the target, one turn can only shed by maxFall.
+    Game.getNation('06').weariness = 1;
+    World.advanceTurn(t, rng);
+    const down = 1 - Game.getNation('06').weariness;
+    ok(down <= fall + 1e-9, `weariness fell ${down} in one turn, past its own cap of ${fall}`);
+  });
+});

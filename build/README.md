@@ -38,6 +38,13 @@ python -m pip install -r build/requirements.txt   # only for build_trade / build
                                         validate.py
 ```
 
+**`build_parties.py` also reads `content/cultural.json`.** The Mormon Corridor and Cascadia are
+authored there, in the map mode the player can see and the editor can republish, and
+`cultural_leaves()` expands the named leaves back through `areas.json` into member counties. That is
+one definition of a region rather than two: a leaf repainted in the editor moves the homelands that
+name it on the next bake. It is the only edge in this pipeline that runs from `content/` into
+`data/`, and it is deliberate.
+
 `build_neighbors.py` sits outside the DAG: it parses the Census County Adjacency File into
 `county_neighbors.json`, which feeds **only** the display-only "Neighbors" row in the county panel.
 The simulation reads `adjacency.json` instead.
@@ -115,7 +122,7 @@ constants:
 |---|---|
 | `build_areas.py` | `AUTHORED_MERGES`, `THRESHOLD`, `MAX_MEMBERS`, `WEST_EXEMPT` |
 | `build_adjacency.py` | `MARITIME_COUNTY_LINKS`, `PACIFIC_STATES`, `CANADA_STATES` |
-| `build_parties.py` | the region table: movement names, spawn chances, share ranges, homelands |
+| `build_parties.py` | the region table: movement names, spawn chances, share ranges, homelands, `GROWTH_RATE` |
 | `build_trade.py` | `CHOKE_POINTS`, `BORDER_CROSSINGS`, corridor and river definitions |
 | `build_transport.py` | `RAIL_HUBS` |
 | `build_economy.py` | the sector templates and the classification ladder |

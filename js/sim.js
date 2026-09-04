@@ -127,6 +127,7 @@ const Sim = (function () {
     Ledger.reset();
     Relations.reset();
     Recognition.reset();
+    Pacts.reset();
     Migration.reset();
     Coalitions.reset();
     Colors.reset();
@@ -145,8 +146,27 @@ const Sim = (function () {
     Movements.setup(raw.partyDefs, rng);
     MapModes.init(raw.data);
     if (raw.economy) { MapModes.setEconomy(raw.economy); Market.update(tune); }
+    /*
+     * THE OPENING BOARD, if this run is measuring a scenario. `opts.scenario`
+     * is off by default so that every verdict the dashboard has ever printed
+     * still means what it meant; the dev.html toggle turns it on.
+     *
+     * Phase A goes here for the reasons in js/scenario.js's header: before the
+     * turn order (or the successors never act) and before World.begin (or the
+     * stocks and the timeline's turn-0 frame are taken on an intact Texas).
+     */
+    const scenarioDoc = opts.scenario === true ? raw.scenario
+      : (opts.scenario && typeof opts.scenario === 'object' ? opts.scenario : null);
+    if (typeof Scenario !== 'undefined') Scenario.reset();
+    if (scenarioDoc && typeof Scenario !== 'undefined') {
+      Scenario.load(scenarioDoc);
+      Scenario.apply({ doc: scenarioDoc, culture: raw.culture, rng, tune });
+    }
     TurnSystem.begin([...Game.nations.keys()], rng);
     World.begin(tune, null, rng);
+    if (scenarioDoc && typeof Scenario !== 'undefined') {
+      Scenario.afterBegin({ doc: scenarioDoc, rng, tune });
+    }
 
     /*
      * `ai: false` runs the world with every nation passing.
@@ -191,6 +211,9 @@ const Sim = (function () {
     const firstDeclare = series.find((s) => s.declared > 0);
     return {
       turns: last.turn,
+      // The roster the run OPENED with, so a verdict can be read against the
+      // board it was measured on rather than against a remembered fifty-one.
+      opening: first.nations,
       nations: `${first.nations} -> ${last.nations}`,
       secessions: last.declared,
       firstSecessionTurn: firstDeclare ? firstDeclare.turn : null,
@@ -241,11 +264,11 @@ const SimData = (function () {
       get('/content/cultural.json', null), get('/content/ideologies.json', null),
       get('/content/tunables.json', null), get('/content/capitals.json', null),
       get('/content/events.json', null), get('/content/leaders.json', null),
-      get('/content/names.json', null),
+      get('/content/names.json', null), get('/content/scenario-shattered.json', null),
     ]).then(([data, adjacency, areas, partyDefs, economy, trade, transport, culture,
-              ideologies, tunables, capitals, eventDefs, leaderDefs, nameDefs]) =>
+              ideologies, tunables, capitals, eventDefs, leaderDefs, nameDefs, scenario]) =>
       ({ data, adjacency, areas, partyDefs, economy, trade, transport, culture,
-         ideologies, tunables, capitals, eventDefs, leaderDefs, nameDefs }));
+         ideologies, tunables, capitals, eventDefs, leaderDefs, nameDefs, scenario }));
     return promise;
   }
   return { load };

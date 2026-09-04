@@ -40,17 +40,30 @@ function claim(rec) {
    * entries: the declaration rule tests the largest CONNECTED piece of the
    * claim, so a scattered set of the right size still fails — which is the
    * rule working, and would have looked like the fixture failing.
+   *
+   * M8.2: grown from the largest connected piece OF THE CORE, not from the
+   * whole core. The core is derived as "the smallest set of homeland Areas
+   * holding 60% of the people", and nothing makes that contiguous — once
+   * Deseret's homeland widened to the full Mormon Corridor its core became the
+   * Wasatch Front plus St George, 300 miles down the interstate, and growing
+   * from `core[0]` produced a claim of seven Areas in two pieces of four and
+   * three. The rule then correctly refused to found a country on it and three
+   * tests reported a movement that would not declare. The whole core is still
+   * included, because tier 2 will not even look at a movement until every core
+   * Area is over the line.
    */
   const home = new Set(rec.homeland);
-  const out = [...rec.core];
-  const have = new Set(out);
   const need = window.TUNE.get('nation.minAreas') + 2;
+  const pieces = Game.components(new Set(rec.core), null).sort((a, b) => b.length - a.length);
+  const out = [...(pieces[0] || rec.core)];
+  const have = new Set(out);
   for (let i = 0; i < out.length && out.length < need; i++) {
     for (const nb of Game.countyNeighbors(out[i])) {
       if (out.length >= need) break;
       if (home.has(nb) && !have.has(nb)) { out.push(nb); have.add(nb); }
     }
   }
+  for (const f of rec.core) if (!have.has(f)) { out.push(f); have.add(f); }
   return out;
 }
 

@@ -1,10 +1,14 @@
 # Nation States
 
-A browser strategy game about the fragmentation and re-formation of the United States. All 51
-states begin as sovereign nations on a real-data county map; movements, secession, trade and war
-take it from there. Nations remember what has been done to them, gang up on whoever frightens them,
-argue about whether a breakaway is a country at all, hold elections they can lose, and lose people
-to whoever is a better place to live.
+A browser strategy game about the fragmentation and re-formation of the United States. The board
+opens on a country that has already come apart: **sixty-one nations** on a real-data county map,
+where fifty-one states used to be — Texas partitioned five ways, California five plus a cession
+to Cascadia, and a Deseret half out of the Mormon Corridor. Movements, secession, trade and war take
+it from there. (`?scenario=none` boots the fifty-one intact states instead.)
+
+Nations remember what has been done to them, gang up on whoever frightens them, argue about whether
+a breakaway is a country at all, hold elections they can lose, and lose people to whoever is a
+better place to live.
 
 **`DESIGN.md` is the single source of truth for what the game is and how it works.** This file
 tells you how to run it and where things live. If the two ever disagree, `DESIGN.md` is right and

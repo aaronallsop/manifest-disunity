@@ -44,6 +44,18 @@ const Ledger = (function () {
     // M7.8: `recognise` is one nation deciding, `recognised` is the world having
     // decided — the same fact told by the actor and by the newspaper.
     'recognise', 'recognised',
+    // M11.2: the two Influence verbs. `treaty` covers both signing and tearing
+    // one up — the delta's sign says which, and a breach is news either way.
+    'treaty', 'aid',
+    /*
+     * M8: the opening board, when the opening board is not fifty-one intact
+     * states. Its own kind and not `declare`/`died`, because those two are how
+     * the game reports things that HAPPENED IN PLAY: Sim's `firstSecessionTurn`
+     * and `nationsLost` verdict cards read them, and a scenario that dissolved
+     * two states at setup would report every run as broken before turn 1
+     * (D-M8e).
+     */
+    'scenario',
   ];
 
   /**
@@ -105,7 +117,13 @@ const Ledger = (function () {
    * kind — a one-Area defection into a movement's first country matters more
    * than a routine six-Area annexation, and only the magnitude knows that.
    */
-  const WEIGHT = { won: 1000, declare: 100, died: 90, unite: 70, war: 60, found: 55, annex: 40,
+  // `scenario` outranks everything: it only ever appears on turn 0, and when it
+  // does it is the whole front page.
+  const WEIGHT = { scenario: 500,
+                   won: 1000, declare: 100, died: 90, unite: 70, war: 60, found: 55, annex: 40,
+                   // A pact torn up outranks one signed, and both outrank a
+                   // trade deal: a promise is news and a transaction is not.
+                   treaty: 34, aid: 18,
                    election: 38, govern: 35, crisis: 32, release: 30, autonomy: 28, recognise: 26, defect: 25,
                    recognised: 22, fragment: 20, leader: 15, trade: 10, power: 5 };
 

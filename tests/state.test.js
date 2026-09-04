@@ -162,7 +162,14 @@ describe('The live store', () => {
     await bootWorld({ seed: SEED });
     const st = Game.state();
     // 1,676 Areas x (6 pop + 6 anchor) x 8 + 1,676 x 8 + 1,676 x 2
-    equal(st.bytes(), st.n * (12 * 8 + 8 + 2));
+    /*
+     * The arithmetic, per Area: pop (6 ideologies x Float64) + anchor (6 x
+     * Float64) = 12 x 8, gdp (Float64) = 8, owner (Int16) = 2, and from M12 the
+     * two per-Area stocks (Float32 each) = 8. Written out rather than pinned as
+     * a total so the next field is a term in a sum rather than a number nobody
+     * can derive.
+     */
+    equal(st.bytes(), st.n * (12 * 8 + 8 + 2 + 4 * 2));
     ok(st.bytes() < 300 * 1024, `the store is ${(st.bytes() / 1024).toFixed(0)} KB`);
   });
 

@@ -1,7 +1,7 @@
 # Nation States — Design
 
 *The single source of truth for what this game is and how it works, **as it actually is today**.
-Last rewritten at the end of **M7** of `docs/REBUILD-PLAN.md`. If this document and the code
+Last rewritten at the end of **M8** (`docs/SHATTER-PLAN.md`). If this document and the code
 disagree, the document is a bug — say so and fix it.*
 
 *What comes next lives in `docs/REBUILD-PLAN.md`, not here. This file describes the present.*
@@ -10,11 +10,12 @@ disagree, the document is a bug — say so and fix it.*
 
 ## 1. Premise
 
-A browser strategy game set in a scenario where **every U.S. state becomes its own nation**. You
-pick one of the 51 — the board is built from real 2024 data: population, GDP and presidential vote —
-and play through turns of union, annexation, civil war, trade and politics while the other fifty do
-the same. The question the game asks is whether a country holds together, and it can be answered
-three ways: put the Union back, win the argument, or become the economy the continent runs on.
+A browser strategy game about a United States that **has already come apart**. The board is built
+from real 2024 data — population, GDP and presidential vote — and it opens on the wreckage: sixty-one
+nations where fifty-one states used to be. You pick one and play through turns of union, annexation,
+civil war, trade and politics while the other sixty do the same. The question the game asks is
+whether a country holds together, and it can be answered three ways: put the Union back, win the
+argument, or become the economy the continent runs on.
 
 Nations remember what has been done to them, gang up on whoever frightens them, argue about whether
 a breakaway is a country at all, hold elections they can lose, and lose people to whoever is a
@@ -22,7 +23,12 @@ better place to live.
 
 Nothing is invented where real data exists. Where a figure is not published separately, a grounded
 estimate is apportioned from a real total (so nation-level sums stay correct) and flagged in the UI
-with an **est.** badge.
+with an **est.** badge. That includes the borders the game opens on: every successor state below is
+cut along a cultural region somebody actually painted, not along a line drawn to make a nice shape.
+
+**The fifty-one-state board is still there**, at `?scenario=none`, and it is still the model's
+baseline: it is what the invariant suite runs against, and a scenario is authored content laid over
+one engine rather than a second engine.
 
 ---
 
@@ -75,6 +81,66 @@ nothing to say about CT. `js/geo-ct.js` is the one place that is reconciled. The
 layer cannot be fixed by a predicate over the topology, because the topology only contains the old
 county polygons; CT is excluded from that mesh and drawn from the planning-region geojson instead,
 which is what makes the lines coincide with the fills.
+
+### 2.1 The opening board: the Shattering
+
+The game's story was that the country had come apart, and the board opened as fifty-one intact
+states — *the moment before the story*. M8 makes the opening position tell it.
+
+| Nation | Areas | Pop | GDP | Governs as | Seat |
+| --- | ---: | ---: | ---: | --- | --- |
+| Dallas | 22 | 9.34M | $868B | red | Dallas Co |
+| Houston | 32 | 10.07M | $904B | red | Harris Co |
+| El Paso | 16 | 2.79M | $308B | red | El Paso Co |
+| Austin | 13 | 3.69M | $344B | **blue** | Travis Co |
+| San Antonio | 21 | 5.40M | $347B | red | Bexar Co |
+| Los Angeles | 1 | 9.76M | $1,003B | blue | LA Co |
+| Bay Area | 9 | 7.65M | $1,332B | blue | San Francisco |
+| Riverside | 3 | 4.93M | $286B | red | Riverside Co |
+| SoCal | 6 | 8.95M | $882B | blue | San Diego Co |
+| Northern California | 30 | 7.56M | $513B | blue | Sacramento Co |
+| Cascadia | 9 | 0.59M | $33B | **green** | Humboldt Co |
+| Deseret | ~31 of 57 | ~3.8M | — | yellow | Salt Lake Co |
+
+**It is authored content.** `content/scenario-shattered.json` says what the board is;
+`js/scenario.js` applies it and knows nothing about Texas. Every claim is resolved against the
+**cultural map mode's own `assign` table** — the document the player can see in the Culture view and
+the editor can republish — so repainting a leaf moves a successor's border and no code changes.
+
+**Every partition is validated before anything moves, and the error names the FIPS.** Three ways an
+authored claim can be wrong and all three are silent without the check: an Area that is not on this
+map build, an Area the dissolving state does not hold, and an Area claimed twice or not at all. The
+last is the one that actually happens — the Dallas cultural leaf carries eight *Oklahoma* Areas and
+El Paso one, because a cultural region does not stop at a state line — and its symptom without a
+check would be a Texas that survives the shattering holding nine counties in the Panhandle.
+
+**Two dramas fall out of the data and are kept.** The nine Areas handed to Cascadia are the State of
+Jefferson's heartland and lean red, so Cascadia opens as a green government over ground that wants
+something else: its Civil Liberties open at **0.47** against 0.63–0.71 for the other Californian
+successors, and it is the only opening the faction picker rates *brutal*. And Austin is the only blue
+Texan successor **and** holds the old Texas seat of government, surrounded by the four states it just
+divorced.
+
+**Deseret is half-born, and that is the whole point.** The Wasatch Front always cedes; every other
+Mormon Corridor Area rolls its own sub-region's odds on a dedicated `scenario` rng stream, and
+anything that ends up disconnected from Salt Lake **does not cede** and is remembered as `leftBehind`.
+It opens `origin: false` — a pariah with no recognition and a parent, so **Utah's signature is the key
+that unlocks the continent from turn 0**: measured, the rest of the continent's per-turn chance of
+recognising Deseret goes 0.070 → 0.181 the moment Utah gives in. It takes the honeymoon Authority
+term and **not** the transition GDP cut, because the shattering predates the first turn and an economy
+that opens under its own published figures reads as a data bug rather than as a story.
+
+**The corridor that stayed is the live story.** Non-ceded corridor Areas open with an elevated Deseret
+share — deliberately *under* `secession.countyThreshold`, because an Area over the line on turn 0
+defects on turn 1 — plus a standing `attrs.sentBoost` grievance that is strongest on the ground that
+voted to go and was cut off. With Deseret's `growthRate` of 1.5 the corridor turns faster by
+mechanism rather than by wish: over 40 turns its mean share runs 0.295 → 0.460, against 0.402 with
+the boost switched off and 0.419 at the ordinary rate.
+
+**Setup speaks in its own voice.** No `declare` and no `died` entries: `Sim`'s `firstSecessionTurn`
+and `nationsLost` verdicts read those two words, and a shattering that used them would report every
+run as broken before the first turn. A dedicated `scenario` ledger kind carries it, and the turn-0
+newspaper prints those entries once as the opening edition — *The year the Union dissolved*.
 
 ---
 
@@ -864,7 +930,8 @@ started with, to 2.2e-16.
 ### 7.1 What a Movement is
 
 ```
-{ id, name, ideology, type, homeland[], core[], seed[], growthCap, goals[], sponsor, state }
+{ id, name, ideology, type, homeland[], core[], seed[],
+  growthCap, growthRate, goals[], sponsor, nation, state }
 ```
 
 - **homeland** — every Area it *can* exist in. Geography decides where.
@@ -872,7 +939,13 @@ started with, to 2.2e-16.
   homeland Areas holding 60% of its people, never fewer than three. Hand-authoring thirty-two county
   lists is data entry that goes stale the moment `areas.json` is re-baked; the derivation is the
   principled reading of "heartland" and produces the right answers by construction — Deseret's core
-  is the Wasatch Front (4 Areas of 41), Cascadia's is the Portland–Seattle corridor.
+  is the Wasatch Front (6 Areas of 61), Cascadia's is the Portland–Seattle corridor.
+
+  It is not guaranteed **contiguous**, and since M8.2 widened Deseret to the whole Mormon Corridor
+  it is not: the 60% of its people who decide the core are the Wasatch Front plus St George, three
+  hundred miles down the interstate. That is correct — a heartland is where the people are — and it
+  is why a test fixture that grows a viable claim has to grow it from the largest connected piece of
+  the core rather than from `core[0]`.
 
   The Cascadia example was, for three milestones, a claim the data contradicted: its homeland was
   the R-leaning inland northwest, so its derived core was Butte and Shasta counties in *California*
@@ -884,6 +957,15 @@ started with, to 2.2e-16.
 - **growthCap** — its own ceiling, 0.25 for a nuisance and 0.60 for a country in waiting. One number
   per movement is what makes "a fringe that stays fringe" and "a country in waiting" different facts
   rather than the same fact at different times.
+- **growthRate** — how *fast* it gets there, as a multiplier on `sent.maxRise`. Default 1.0;
+  Deseret is 1.5. A different fact from the cap and the model had only the cap, which is why "this
+  region is angrier than anywhere else and getting angrier" could not be said at all: a seeded share
+  erodes back toward the formula's target at `sent.maxFall` every turn, so planting a bigger number
+  is a spike that decays. Only the RISE is scaled — a movement that fell at its own speed would make
+  "organising is slower than collapsing" a property of a movement rather than of the model.
+- **nation** — the country it realised into, if it has one. Set by a declaration in play or by the
+  opening scenario, and it does two jobs: it arms tier-1 defection toward that country, and it stops
+  the movement being a candidate to declare a *second* one out of the first one's territory.
 - **state** — `latent → rising → armed → declared → realized`, **read off the map every turn**, never
   set by an event. A machine written by events goes stale the first time one is missed: a movement
   whose nation is conquered would stay `realized` forever.
@@ -903,11 +985,21 @@ grievance   = w_qol   * (1 - quality of life)
             + w_lib   * (1 - civil liberties)
             + w_power * (1 - how powerful the nation holding it is)
             + w_auth  * (1 - that nation's authority)
+            + w_wear  * war weariness
+            + w_boost * the Area's own authored grievance
 pull        = w_nbr   * tanh(k * SUM over neighbours of their share)
 suppression = w_sup   * garrison pressure
 
 target      = clamp01( base * (grievance + pull) - suppression )
 ```
+
+**`w_boost` is the only term that is a property of the PLACE** rather than of the nation holding it,
+and it is the only way the model can say "this ground has a reason of its own, older than whoever
+governs it". `attrs.sentBoost` is authored per Area — the Shattering uses it for the Mormon Corridor
+that did not cede, hardest on the ground that voted to go and was cut off — and it rides *inside*
+grievance rather than beside it, so it is still multiplied by `base`: an authored grievance cannot
+radicalise a place into a movement whose ideology it does not share. It shows up in the Why panel as
+**Unfinished business** with no second code path, because `target` and `explain` are one function.
 
 **`base` is multiplicative**, and that is the design rule made mechanical: *geography defines where a
 movement can exist; ideology defines how strong it is there*. Misgovern a Democratic Socialist city
@@ -933,11 +1025,12 @@ One implementation, the same expressions in the same order, so the "why did Salt
 can never be a second drifting model of the model. Storing the factors instead would be ~170,000
 objects a turn thrown away.
 
-Measured over 60 turns: Deseret spreads from its 4-Area core to all 41 of its homeland and runs to
-its 0.60 cap; A Free Texas 11 → 104; the New Confederacy 100 → 536. And the model **discriminates** —
-Cascadia's peak *falls* 0.176 → 0.109 and El Paso United's 0.166 → 0.075, because both sit in
-well-governed places whose leading ideology is a poor match. A suite test demands that at least one
-movement lose ground, because a model in which everything rises is one dial wearing six labels.
+Measured over 60 turns on the baseline board: Deseret spreads from its 6-Area core to all 61 of its
+widened homeland and runs to its 0.60 cap (peak 0.197 → 0.601); A Free Texas 11 → 117; Cascadia
+9 → 50. And the model still **discriminates** — El Paso United's peak *falls* 0.145 → 0 and Hawaiian
+Sovereignty's 0.230 → 0.160, because both sit in well-governed places whose leading ideology is a
+poor match. A suite test demands that at least one movement lose ground, because a model in which
+everything rises is one dial wearing six labels.
 
 ### 7.3 Secession, in two tiers
 
@@ -1006,6 +1099,17 @@ paying for itself whatever the locals think — 25 occupied Areas doubles their 
 400 costs ~24×. The **hostility** term is per Area, read straight off the strongest organised movement
 share, and it is what makes *which* ground you took matter as much as how much. Before sentiment
 existed there was nothing to read and this hook could not have been written.
+
+**Home ground is a set stamped at birth, not a state code.** It was one modal state FIPS and
+occupation was `area.st !== homeSt`, which breaks in both directions the moment the board is not
+fifty-one intact states: five successors out of Texas all read `'48'`, so one of them annexing
+another would pay no occupation anywhere in Texas; and a Deseret spanning seven states would count
+most of its own founding homeland as occupied — paying the superlinear surcharge, dragging four
+stocks, and *suppressing its own movement on its own soil*. An origin state's home ground is every
+Area of its state (identical to the old rule); a nation born in play is stamped with its founding
+grant, whatever states that spans. Ground taken later is never home, and **nothing becomes home by
+being held long enough** — a cost that expired on its own would be a timer. `homeSt` survives as a
+display fact and no rule reads it.
 
 ---
 
@@ -1210,6 +1314,15 @@ Two shapes are deliberately **not** in the document, because they are derived: a
 (a function of its id) and the election schedule (a function of the turn and the id). A derived fact
 needs no migration and cannot come back wrong.
 
+**Both halves of the model's own save walk a registry rather than naming fields.** They used to
+hand-enumerate what they copied, which is the failure `js/state.js` exists to end one level down: a
+field added to the record works perfectly for a session, is dropped by the save, and reappears at its
+default when the game is reopened. The Area columns come from `AreaState.savedFields()` — `owner` is
+marked `save: false` with a reason, because a document states ownership once as each nation's Area
+list and a second copy keyed on a nation *index* would not survive a roster that loads in a different
+order — and the nation record has its own table with optional `out`/`in` converters. Adding a field
+is one entry, and it is persisted by construction.
+
 **A document that predates a concept says nothing, not "no".** A save written before recognition
 existed is loaded as a world in which every nation founded during that game *is* recognised —
 because the alternative is retroactively stripping them of their standing, their trade and their
@@ -1246,7 +1359,7 @@ server, and the flash says which of the two happened.
 
 ## 11. Testing
 
-`tests/run.html` runs every suite in the browser; **785 tests, all green, in about 140 seconds** —
+`tests/run.html` runs every suite in the browser; **824 tests, all green, in about four minutes** —
 the suites play tens of thousands of world turns between them, which is the cost of testing a model
 whose interesting behaviour takes forty turns to appear. `?only=` filters to a comma-separated list
 of suites while working on one, and **a file that fails to load is a failure**, not a silently
@@ -1260,6 +1373,15 @@ spread of civil wars, the stationary within-nation political spread at turn 200,
 price ratchet, that one annex is one render, that no Area is zeroed by a war, that affinity is
 symmetric and reaches 0 and 1 at the ends, that the ownership column and every nation's derived Set
 agree after each kind of mutation, that population growth is neutral for movements.
+
+**Two boards, one engine.** The default fixture is still the fifty-one states, and every suite
+written before M8 still runs against it and still means what it meant. `tests/scenario.test.js` boots
+the same fixture with `{scenario: true}` and re-runs the invariants over the shattered board —
+population conservation, single-valued ownership, save round-trip, same-seed determinism — plus what
+is particular to it: the two partitions to the Area, that an authored claim which does not add up
+throws and names the FIPS, the twenty-seed spread of Deseret's cession, and that sixty turns produce
+no second Cascadia. A scenario is content laid over one engine, and the tests are arranged to keep it
+that way.
 
 Three habits are worth stating, because each was learned by being bitten:
 
@@ -1315,10 +1437,11 @@ account of where this model stops.
   adjacent Areas, so a diaspora cannot form on the far side of the continent and a refugee flow out
   of a collapsing state goes next door rather than to the best place available. That is the right
   first model and the wrong final one.
-- **The Area merge plan has not been re-baked.** `build_areas.py` is now deterministic and caps an
-  Area at 8 counties, but the shipped `areas.json` still contains a 22-county Area. Adopting the new
-  plan moves 10 of 483 Area primaries, which is a data migration across `economy.json`, both map
-  modes, every authored homeland and every save. `build/validate.py` warns about it on every run.
-  *(next legitimate rebake)*
+- ~~**The Area merge plan has not been re-baked.**~~ **Adopted in M9.6.** `build_areas.py` is
+  deterministic and caps an Area at 8 counties, and `data/areas.json` is now its output: 1,676
+  Areas became 1,688, eleven ids were retired and twenty-three are new. `build/migrate_areas.py`
+  carried the authored map modes across by inheriting each new Area’s region through its primary
+  county, and `economy.json` and `parties.json` were re-baked from it. The validator’s
+  22-county warning is gone; the save format is version 3 and refuses a version 2 document by name.
 - **`county_neighbors.json` is a pre-2015 Census vintage** with ~100 FIPS that no longer exist. It
   feeds the display-only "Neighbors" row; the simulation reads `adjacency.json`, which is current.

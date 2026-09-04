@@ -52,6 +52,7 @@ const Victory = (function () {
    * first time and would be just as quiet here.
    */
   function load(doc) {
+    last.clear();   // a new world has no history to compare against (M9.5)
     ctxCache = null; ctxEpoch = -1; ctxTurn = -1;
     const rows = (doc && doc.capitals) || {};
     capitals = {};
@@ -337,5 +338,92 @@ const Victory = (function () {
     return limit ? rows.slice(0, limit) : rows;
   }
 
-  return { load, loaded, all, isSeat, seats, progress, check, standings, context, CONDITIONS };
+  /* ------------------------------------------------------------------ */
+  /* WHO IS CLOSING IN — and when that is worth interrupting for (M9.5)  */
+  /* ------------------------------------------------------------------ */
+
+  /*
+   * The alarm used to be `progress >= win.warnAt`, evaluated fresh every turn,
+   * and it fired on turn 1 of every game: three nations "84% of the way",
+   * before anybody had done anything. That is not a threshold that was set too
+   * low. It is the wrong QUESTION.
+   *
+   * `progress` is the worst of a condition's terms, and the binding term for
+   * two of the three conditions is a power stock — Authority, Influence — which
+   * opens near its target and stays there. So "is anybody near a victory" is
+   * answered yes on the opening board, permanently, by nations that are not
+   * going anywhere. Meanwhile the thing the player actually needs to hear
+   * about, the case the tunable's own doc records — Delaware winning
+   * Ideological Dominance on turn 30 — is a nation that MOVED.
+   *
+   * So the question becomes "has anybody moved toward winning", and it needs
+   * three things at once:
+   *
+   *   NEAR    — still gated on `win.warnAt`, because movement in the foothills
+   *             is not news either.
+   *   MOVING  — up by at least `win.warnDelta` since we last looked at this
+   *             exact nation-and-condition pair. A nation that has sat at 0.84
+   *             since turn 1 never trips this; one that goes 0.84 -> 0.87 does.
+   *   QUIET   — not already reported inside `win.warnRepeatTurns`. An alarm
+   *             every turn is wallpaper, and wallpaper is what the player stops
+   *             reading three turns before the one that mattered.
+   *
+   * `last` is a baseline, not saved state, and that is deliberate: a fresh boot
+   * or a loaded save has nothing to compare against, so it records the board
+   * and says nothing. One quiet turn after a load beats a false alarm, and it
+   * is also exactly the behaviour that makes turn 1 silent.
+   */
+  const last = new Map();      // `${nid}:${conditionId}` -> {progress, turn}
+
+  /** Forget the baseline. Called from `load`, and by the suite between worlds. */
+  function resetAlarms() { last.clear(); }
+
+  /**
+   * Every nation whose approach to a victory is worth interrupting for.
+   *
+   * Reads the board and updates the baseline in one pass, so it must be called
+   * ONCE PER TURN by one caller — `newspaper`, in the live game. A second
+   * caller would consume the movement the first one reported.
+   *
+   * @returns [{nid, name, best, delta, from}] — best is a `progress()` row.
+   */
+  function alarms(tune) {
+    const t = tune || window.TUNE;
+    const bar = t.get('win.warnAt');
+    const minDelta = t.get('win.warnDelta');
+    const repeat = t.get('win.warnRepeatTurns');
+    const turn = World.getTurn();
+    const out = [];
+    /*
+     * NOTHING IS REPORTED BEFORE ANYTHING CAN BE WON.
+     *
+     * `check` refuses to return a winner before `win.graceTurns`, so an alarm
+     * before then is a warning about a race that has not started — and the
+     * opening turns are exactly when the stocks are settling toward their
+     * targets, which is movement that means nothing. The baseline is still
+     * recorded through the grace period, so the first turn that CAN raise an
+     * alarm compares against a real previous reading rather than a blank.
+     */
+    const quiet = turn < t.get('win.graceTurns');
+    for (const row of standings(t)) {
+      const key = `${row.nid}:${row.best.id}`;
+      const prev = last.get(key);
+      last.set(key, { progress: row.best.progress, turn });
+      if (quiet) continue;                               // record the baseline, say nothing
+      if (row.best.progress < bar) continue;
+      if (!prev) continue;                               // no baseline: record, say nothing
+      const delta = row.best.progress - prev.progress;
+      if (delta < minDelta) continue;                    // near, but not moving
+      const said = last.get(`said:${key}`);
+      if (said && turn - said.turn < repeat) continue;   // already said, recently
+      last.set(`said:${key}`, { turn });
+      out.push({ nid: row.nid, name: row.name, best: row.best, delta, from: prev.progress });
+    }
+    return out;
+  }
+
+  return {
+    load, loaded, all, isSeat, seats, progress, check, standings, context, CONDITIONS,
+    alarms, resetAlarms,
+  };
 })();

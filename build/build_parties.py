@@ -14,14 +14,73 @@ Each region resolves to a county list via any of these rule fields:
   mt_interior : True -> Montana counties whose neighbors are ALL in Montana
   chance / share : per-party overrides of SPAWN_CHANCE / SHARE_RANGE
 
-Judgment calls (marked *): El Paso United = Trans-Pecos reading; Deseret =
-Utah + SE Idaho + Elko NV; Great Lakes / Absaroka / tech hubs are hand lists.
+Judgment calls (marked *): El Paso United = Trans-Pecos reading; Great Lakes /
+Absaroka / tech hubs are hand lists. Deseret was "Utah + SE Idaho + Elko NV"
+until M8.2 and is now the authored Mormon Corridor (see CULTURAL_LEAVES below).
 ================================================================================
 """
 
 import json
 import os
 import re
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+DATA = os.path.join(HERE, "..", "data")
+CONTENT = os.path.join(HERE, "..", "content")
+
+
+def cultural_leaves(*leaf_names):
+    """Every COUNTY inside the named leaves of `content/cultural.json`.
+
+    THE CULTURAL DOC IS THE ONE DEFINITION OF A REGION (M8.2). The Mormon
+    Corridor and Cascadia are authored there, in the map mode the player can see
+    and the editor can publish, and a homeland that re-listed them by hand here
+    would be a second definition that drifts the first time either is repainted.
+
+    Two conversions matter and both are the M1.13 trap in a new place. The doc
+    assigns AREAS, not counties, and the rest of this file works in raw county
+    FIPS -- so each Area is expanded back through `data/areas.json` into the
+    member counties it was merged from, and a homeland written in Area ids would
+    otherwise silently drop the 150 Texan and 1,300-odd other counties that were
+    merged away, and derive a core from a fraction of the people who live there.
+    """
+    with open(os.path.join(CONTENT, "cultural.json"), encoding="utf-8") as f:
+        doc = json.load(f)
+    with open(os.path.join(DATA, "areas.json"), encoding="utf-8") as f:
+        areas = json.load(f)["areas"]
+
+    wanted, found = set(), set()
+
+    def walk(node):
+        if node.get("name") in leaf_names:
+            wanted.add(node["id"])
+            found.add(node["name"])
+        for child in node.get("children") or []:
+            walk(child)
+
+    for node in doc["nodes"]:
+        walk(node)
+    missing = set(leaf_names) - found
+    if missing:
+        raise SystemExit(f"cultural_leaves: no such leaf in cultural.json: {sorted(missing)}")
+
+    out = set()
+    for area, path in doc["assign"].items():
+        if path and path[-1] in wanted:
+            out |= set(areas.get(area, [area]))
+    return sorted(out)
+
+
+# The five sub-regions of the Mormon Corridor: 57 Areas across Utah, Idaho,
+# Arizona, Nevada, Montana, Colorado and Wyoming. This is the ground the
+# Shattering's Deseret cession rolls over (content/scenario-shattered.json), and
+# Deseret's homeland has to contain all of it or `phaseSentiment` deletes every
+# share outside the baked homeland on the turn after the scenario seeds it.
+MORMON_CORRIDOR = cultural_leaves("Wasatch Front", "Zion", "Bonneville", "Tetonia", "Uintas")
+# Cascadia proper: the wet side of Oregon and Washington plus the nine far
+# northern California counties, which the cultural doc has always put here and
+# not in Northern California.
+CASCADIA_LEAF = cultural_leaves("Cascadia")
 
 SPAWN_CHANCE = 0.5          # default probability each party spawns at setup
 SHARE_RANGE = [0.00, 0.20]  # initial county share range X (modest; growth later)
@@ -39,8 +98,10 @@ TECH_HUBS = ["06085", "06081", "06001", "06075",          # Silicon Valley + SF
              "53033",                                     # Seattle (King)
              "25017", "25025",                            # Cambridge cluster
              "49035", "49049"]                            # Salt Lake + Utah County
-DESERET_FIPS = ["16005", "16007", "16011", "16019", "16029", "16031", "16041", "16051",
-                "16065", "16071", "16077", "32007"]       # *SE Idaho + Elko NV
+# DESERET_FIPS — "*SE Idaho + Elko NV" — was retired in M8.2. Deseret's homeland
+# is the authored Mormon Corridor now (MORMON_CORRIDOR, above), which contains
+# every county this list held except Cassia (16031); Cassia sits inside the
+# Northern Christian Kingdom's Idaho homeland and is not orphaned by the change.
 GREAT_LAKES = ["27137", "27075", "27031", "55003", "55007", "55013", "55031", "55061", "55071",
                "55029", "55009", "55079", "55089", "55101", "55059", "17097", "17031", "17197",
                "18089", "18091", "18127", "26005", "26021", "26027", "26105", "26121", "26139",
@@ -67,8 +128,18 @@ GREATER_IDAHO = ["41045", "41001", "41023", "41025", "41063", "41061", "41059",
                  "41049", "41021", "41069", "41013", "41031", "41035", "41037",
                  "41033", "41029", "41019"]               # *E + S Oregon
 # Jefferson: the 1941 State of Jefferson, far northern CA + southern OR.
+#
+# M8.2 WIDENS IT, and the reason is the Shattering: the nine far-northern
+# California Areas become the founding ground of a Cascadia that governs green
+# over ground that leans red, so Jefferson has to be able to organise on all of
+# it or the drama the scenario is built around cannot happen. Mendocino (06045)
+# was the one belt county missing; Klamath (41035) and Lake (41037) complete the
+# southern Oregon tier the 1941 proposal actually named. Plumas (06063) and Coos
+# (41011) stay: they were already here, and dropping ground from a homeland is
+# not a widening.
 JEFFERSON = ["06015", "06093", "06049", "06023", "06105", "06089", "06035",
-             "06103", "06063", "41015", "41033", "41029", "41019", "41011"]
+             "06103", "06045", "06063",
+             "41015", "41033", "41029", "41019", "41011", "41035", "41037"]
 # Tribal-majority and reservation counties across the interior West and Plains.
 NATIVE_CONFED = ["04001", "04017", "04005", "04003", "04009", "04023",   # AZ
                  "35031", "35045", "35006", "35039", "35043", "35055", "35049",  # NM
@@ -302,7 +373,12 @@ REGIONS = {
     # as the DETERMINISTIC four. They are the spine of the West slice, and a run
     # that happens to have no Deseret in it is not the scenario. Only Greater
     # Idaho and Jefferson carried the flag; these two were still rolling 0.5.
-    "Cascadian Separatists":     {"fips": CASCADIA_WEST + NORTHERN_CA, "chance": 1.0},
+    # M8.2 adds the cultural doc's own Cascadia leaf — the full wet side of
+    # Oregon and Washington plus the nine northern California counties. Under the
+    # Shattering those nine ARE Cascadia, and a movement whose country's founding
+    # ground sits outside its homeland is one `phaseSentiment` deletes on turn 1.
+    "Cascadian Separatists":     {"fips": CASCADIA_WEST + NORTHERN_CA + CASCADIA_LEAF,
+                                  "chance": 1.0},
     "New England United":        {"states": NEW_ENGLAND},
     "Anarcho-Capitalist":        {"mt_interior": True},
     "Libertarians":              {"states": GREAT_PLAINS},
@@ -310,7 +386,13 @@ REGIONS = {
                                   "fips": NJ_HIGHLANDS},
     "Techno-Autocrat":           {"fips": TECH_HUBS},
     "A Free Texas":              {"states": ["48"], "fips": LITTLE_TEXAS},
-    "Deseret":                   {"states": ["49"], "fips": DESERET_FIPS, "chance": 1.0},
+    # M8.2: the full 57-Area Mormon Corridor, not "Utah + SE Idaho + Elko".
+    # `states: ["49"]` STAYS beside it: the corridor covers 25 of Utah's 29
+    # counties, and dropping Carbon, Emery, Grand and San Juan would put four
+    # Areas outside every homeland in the game — the exact hole the M7 close
+    # spent a milestone closing. The corridor is the scenario's cession ground;
+    # the homeland is the corridor plus the rest of its own state.
+    "Deseret":                   {"states": ["49"], "fips": MORMON_CORRIDOR, "chance": 1.0},
     "New Confederacy":           {"states": CONFEDERACY},
     "Great Lakes Free Trade":    {"fips": GREAT_LAKES + GREAT_LAKES_EAST},
     "New Absaroka":              {"fips": ABSAROKA},
@@ -385,7 +467,14 @@ CHARACTER = {
 
     "Christian Nationalism":         ("ideological", 0.45, ["religious government", "moral law"]),
     "New Confederacy":               ("separatist", 0.45, ["independence", "states rights"]),
-    "A Free Texas":                  ("separatist", 0.50, ["independence", "border control"]),
+    # M8.8 / D-M8j. On the shattered board there is no Texas to be free OF, and a
+    # statewide movement over five successor states would otherwise declare a
+    # sixth Texas out of the other five. It is not deleted, because a movement to
+    # put the old state back together is exactly the right pressure on a board
+    # that has just come apart — and the mechanics already do the right thing:
+    # its homeland is the whole state, so if it declares, what it founds IS Texas
+    # trying to come back. Only the type and the goals change.
+    "A Free Texas":                  ("reunification", 0.50, ["reunite Texas", "one Texan state again"]),
     "Northern Christian Kingdom":    ("theocratic-separatist", 0.40, ["religious government", "independence"]),
     "Alaskan Independence":          ("separatist", 0.45, ["independence", "resource royalties"]),
     "Hawaiian Sovereignty":          ("indigenous", 0.45, ["sovereignty", "land restoration"]),
@@ -412,12 +501,34 @@ CHARACTER = {
     "Central States Union":          ("economic", 0.35, ["a river compact", "industrial policy"]),
     "Delmarva Republic":             ("separatist", 0.35, ["statehood", "watermen's rights"]),
 
-    "California Republic":           ("separatist", 0.45, ["independence", "a Pacific republic"]),
+    # M8.8 / D-M8j, the same argument as A Free Texas: five successors and a
+    # cession where a state used to be, and a movement that wants the Republic
+    # of California back.
+    "California Republic":           ("reunification", 0.45, ["reunite California", "a Pacific republic"]),
     "Sagebrush Rebellion":           ("autonomist", 0.35, ["return the federal land", "county supremacy"]),
     "Fifty-First State":             ("separatist", 0.40, ["statehood", "an end to Denver's rules"]),
 }
 DEFAULT_TYPE = "ideological"
 DEFAULT_CAP = 0.35
+
+# ---- M8.2: how FAST a movement organises, as distinct from how far ----------
+#
+# `growthCap` says where a movement can get to; this says how quickly it gets
+# there. They are different facts and the model had only the first, which is why
+# "the corridor that did not cede is angrier than anywhere else, and getting
+# angrier" could not be said at all: a seeded share erodes back toward the
+# formula's target at `sent.maxFall` every turn, so planting a bigger number is
+# a spike that decays, not a trend.
+#
+# It multiplies `sent.maxRise` — the per-turn rise cap — for this movement only,
+# so a rate above 1 makes a region turn faster without changing where it lands.
+# 1.0 is "the same as everyone else" and is what every movement but one carries.
+GROWTH_RATE = {
+    # The unfinished secession is the region's live story: the Areas that did
+    # not go with Deseret in the Shattering are the ones with the argument.
+    "Deseret": 1.5,
+}
+DEFAULT_GROWTH_RATE = 1.0
 
 # A movement DECLARES (M4.3 tier 2) when every Area in its CORE has crossed the
 # sentiment threshold, so the core decides how hard that is. Rather than
@@ -437,9 +548,9 @@ CORE_SHARE = 0.60
 CORE_MIN = 3
 
 # ============================ END EDITABLE TABLE ================================
-
-HERE = os.path.dirname(os.path.abspath(__file__))
-DATA = os.path.join(HERE, "..", "data")
+# HERE / DATA / CONTENT are defined above the table: `cultural_leaves` reads the
+# authored map mode while the table is being built, so the paths have to exist
+# before it rather than after it.
 
 
 def slug(name):
@@ -510,11 +621,13 @@ def main():
             "ideology": ideology,
             "type": kind,
             "growthCap": cap,
+            "growthRate": GROWTH_RATE.get(name, DEFAULT_GROWTH_RATE),
             "goals": goals,
             "counties": homeland,
             "core": core,
         }
-        print(f"{name:32} {ideology:7} {kind:22} cap {cap:.2f} "
+        rate = defs[name]["growthRate"]
+        print(f"{name:32} {ideology:7} {kind:22} cap {cap:.2f} rate {rate:.2f} "
               f"{len(homeland):>5} counties, core {len(core):>4}")
 
     missing = [n for n in REGIONS if n not in CHARACTER]

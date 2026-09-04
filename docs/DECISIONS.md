@@ -1615,3 +1615,651 @@ Christian Kingdom's, twice over.
 
 Areas that can never receive a movement: 348 → 278 → 179 → **0**, and the validator warning that has
 stood since M1 is gone.
+
+### D131 — Home ground is a set stamped at birth, not a state code (D-M8c)
+**M8.1.** `homeSt` was one modal state FIPS and occupation was `area.st !== homeSt`. That reading
+breaks in both directions the moment the opening board is not fifty-one intact states: all five
+Texan successors would read `'48'`, so Dallas annexing Houston would pay no occupation anywhere in
+Texas; and a Deseret spanning seven states would count most of its own founding homeland as
+occupied — paying the superlinear surcharge, dragging four power stocks, and **suppressing its own
+movement on its own soil** through the sentiment suppression term.
+
+Home ground is now a per-nation `Set` of Area ids, stamped once: an origin state gets every Area of
+its state (identical to the old rule, and the suite proves it), a nation born in play gets its
+founding grant whatever states that spans. Ground taken later is never home and nothing becomes home
+by being held long enough — an occupation cost that expired on its own would be a timer, not a cost.
+`homeSt` survives as a display fact and no rule reads it.
+
+**It is not bit-identical on the baseline board, and the divergence is the change.** At seed
+20260829 the first difference from the pre-M8.1 world is world turn 2, and the only value that
+differs anywhere in the fingerprint — ownership, population, GDP, movements and the other fifty-four
+treasuries all identical — is the treasury of the **Washoe Republic**, founded on turn 1 out of
+Washoe County (Nevada) and Placer County (California). Its modal state was `'06'` on the
+alphabetical tie-break, so the county it is *named after* was foreign soil to it. $274,717,136
+before, $275,774,192 after: it stopped paying an occupier's surcharge to stand in its own capital.
+
+### D132 — The save path walks the field registries instead of naming fields
+**M8.1.** `Game.serialize` and `Game.loadState` each hand-enumerated what they copied, which is the
+failure `js/state.js` exists to end one level down: a field added to the record works for a session,
+is dropped by the save, and reappears at its default when the game is reopened. It had already
+happened here — `makeGov` carries a comment saying so about `gov.lostAt` — and `home` is exactly the
+kind of field it happens to next.
+
+Both halves now iterate a table. The Area columns come from `state.savedFields()`, which the audit
+found was called only by tests; `owner` is marked `save: false` with a reason (a document states
+ownership once, as each nation's Area list, and a second copy keyed on a nation *index* would not
+survive a roster that loads in a different order) and `pop` carries `saveKey: 'p'` so the frozen v2
+key survives a column rename. The nation record gets its own `NATION_FIELDS` table with optional
+`out`/`in` converters; `counties` is deliberately outside it, because ownership is restored by
+writing the owner column rather than by assigning to a derived getter.
+
+### D133 — Movement homelands widen in the bake and nowhere else (D-M8f)
+**M8.2.** `phaseSentiment` hard-deletes any share outside the baked homeland every turn, and runtime
+homeland edits do not survive a save — so a scenario that seeds sentiment outside a homeland is not
+writing a subtle bug, it is writing a value that disappears on the next turn. Deseret's homeland goes
+from 41 Areas to 61, Cascadia gains the cultural document's own Cascadia leaf, and the State of
+Jefferson gains Mendocino and the rest of the southern Oregon tier.
+
+**The regions come from `content/cultural.json`, not from a hand-copied list.** The Mormon Corridor
+and Cascadia are authored there, in the map mode the player can see and the editor can republish;
+a second copy in `build_parties.py` would drift the first time either was repainted. The bake reads
+the doc and expands each Area back through `areas.json` into its member counties, because everything
+else in that file is county FIPS and a homeland written in Area ids would derive its core from a
+fraction of the people who live in it.
+
+**Deseret keeps `states: ["49"]` beside the corridor.** The corridor covers 25 of Utah's 29 counties,
+and dropping Carbon, Emery, Grand and San Juan would put four Areas outside every homeland in the
+game — the exact hole the M7 close spent a milestone closing. The corridor is the scenario's cession
+ground; the homeland is the corridor plus the rest of its own state.
+
+### D134 — "Grows faster" is a rate, not a bigger seed (D-M8g)
+**M8.2.** A seeded share erodes back toward the formula's target at `sent.maxFall` every turn, so
+planting a bigger number makes a region angriest on turn 1 and calmest by turn 10 — the story
+backwards. `growthRate` is a per-movement multiplier on `sent.maxRise` (default 1.0, Deseret 1.5),
+baked → live record → `Sentiment.build`'s `rises[]` → the one comparison in `phaseSentiment`. The
+RISE only: a movement that falls at its own speed would make "organising is slower than collapsing"
+a property of a movement rather than of the model.
+
+Measured as an A/B on one bake — because changing a homeland changes the derived core, which changes
+how many draws seeding takes, which reshuffles the spawn stream for every movement after it — 20
+world turns at seed 20260829 with no AI:
+
+| | mean share | peak | organised |
+| --- | ---: | ---: | ---: |
+| rate 1.0 | 0.2417 | 0.4446 | 1,831,462 |
+| rate 1.5 | 0.3532 | 0.5769 | 2,552,558 |
+
+and the reference movement, New England United, is identical to the person at 5,532,593. Franklin
+and A Free Texas move by one and four people, which arrives through the world market rather than
+through sentiment.
+
+### D135 — The scenario is authored content applied by one DOM-free module (D-M8a)
+**M8.3.** `content/scenario-shattered.json` says what the board is; `js/scenario.js` knows nothing
+about Texas. Claims are resolved against the cultural document's own `assign` table, so a leaf
+repainted in the editor moves a successor's border and no code changes. Two phases, and the split is
+the ordering contract: `apply` after `Parties.setup` (movements must exist to be wired) and before
+`TurnSystem.begin` (or the successors are never dealt a turn) and before `World.begin` (the power
+stocks open *at target* on whatever they see, and `History.capture(0)` takes the timeline's first
+frame); `afterBegin` strictly after `World.begin`, which calls `Recognition.reset()` and would
+silently erase anything phase A wrote there.
+
+**Default game = shattered**, reachable back through `?scenario=none`, `opts.scenario` in Sim, and
+default-off in the test fixture. The 785 pre-M8 tests keep booting the baseline and stay meaningful
+as the model's baseline: a scenario is content laid over one engine, not a second engine.
+
+**An authored partition is validated before anything moves**, and the error names the FIPS. Three
+ways it can be wrong and all three are silent without the check: an Area that is not on this map
+build, an Area the dissolving state does not hold, and an Area claimed twice or not at all. The last
+is the one that actually happens — the Dallas leaf carries eight Oklahoma Areas and El Paso one —
+and its symptom without a check is a Texas that survives the shattering holding nine counties in the
+Panhandle.
+
+### D136 — Successors are founding states; Deseret is a declared breakaway (D-M8b)
+**M8.3 / M8.6.** The eleven Texan and Californian successors and Cascadia carry `origin: true`:
+recognised by construction, no honeymoon, no parent, because the dissolution settled before turn 0.
+Deseret is `origin: false` with `Recognition.founded(id, '49', {recognised: false})` authored in
+phase B — a pariah earning recognition in play, whose parent's signature is the key that unlocks the
+continent, on the board from turn 0.
+
+`World.applyIndependence` bundled two opposite things and is now two functions. Deseret takes the
+honeymoon Authority term and **not** the 12% transition GDP cut: the shattering predates the first
+turn, and an economy that opens under its own published figures reads as a data bug rather than as a
+story.
+
+**Setup writes no `declare` or `died` entries** (D-M8e). `Sim.summarise` reads those two words for
+`firstSecessionTurn` and `nationsLost`, and dev.html paints a verdict card red below turn 12 — a
+shattering that spoke in them would report every run as broken before the first turn. A dedicated
+`scenario` ledger kind carries it instead, and the turn-0 newspaper prints those entries once as the
+opening edition. `pruneEmpty` grew a `quiet` flag for the same reason: a dissolved parent runs out
+of ground and lands there, and its death is announced in the scenario's own voice.
+
+### D137 — Austin's government is authored, and the reason is a measurement
+**M8.4.** The plan says governments fall out of the plurality and Austin lands blue because the data
+says so. The data does say so — its thirteen Areas are 47.9R–50.6D by population, blue ahead by
+98,404 people, and 47.1R–51.4D by vote — but the turn-0 plurality does not: the Techno-Autocrat seed
+in Travis converts people out of a blue supermajority and takes more blue than red with it, and
+across eight seeds Austin landed red five times and blue three. A flagship of the scenario should not
+be a coin toss against its own data, so the government is authored in the scenario file with that
+measurement written beside it. Cascadia's green is authored for the opposite reason: it is
+*deliberately* not what its people lean toward.
+
+**And docs/SHATTER-PLAN.md's Texan population column is wrong.** Its rows were computed by summing
+only each Area's representative county and dropping the members the Area merge folded into it — the
+M1.13 trap one level up — so they understate every Texan successor and miss 1.5M people between
+them. Real: Dallas 9.34M, Houston 10.07M, El Paso 2.79M, Austin 3.69M, San Antonio 5.40M, summing to
+Texas's own 31.29M. The California rows happen to agree because California has 58 counties and 58
+Areas and nothing is merged.
+
+### D138 — The cession rolls per Area, and the odds were tuned against the measurement (D-M8d)
+**M8.6.** Deseret's cession draws from a new named rng stream, `scenario`, so that taking
+fifty-seven numbers does not reshuffle which movements exist in every game on the board.
+
+**One roll per Area at its sub-region's odds, not one roll per sub-region.** A roll per sub-region
+has the same mean and a ruinous variance — five coins decide the whole map, and one seed in
+seventeen hands Deseret nothing but the Wasatch Front — and, more interestingly, it makes the
+connectivity rule a no-op, because whole sub-regions are contiguous and almost never strand
+anything. Areas do, and the ones they strand are the places that voted to leave and did not get to.
+That is what `leftBehind` is for.
+
+The plan's odds (1.0 / 0.70 / 0.50 / 0.40 / 0.35) are an expected 30.8 of 57 Areas *before* the
+connectivity filter, and on a corridor this thin the filter is not a rounding error: about nine of
+every thirty-one rolled Areas end up cut off from Salt Lake. Measured over 20 seeds at the paper odds
+the cession ran 14–39 with a mean of 21.3. The shipped odds are 1.0 / 0.82 / 0.70 / 0.60 / 0.55,
+which measures 19–45 with a mean of 31.1 Areas and 3.75M people — where the design said it should be.
+
+### D139 — The corridor that stayed gets a seed AND a standing grievance
+**M8.7.** Two different things. The seed is where the movement starts and is deliberately **under**
+`secession.countyThreshold`, because an Area over the line on turn 0 defects on turn 1 — the
+turn-zero Cascadia disaster `movements.js` carries a note about. It is written with the
+grow-then-set pattern, because `clampMovements` scales a movement back to what its ideology actually
+holds and a seed written the naive way is clamped most of the way back to nothing before the first
+turn runs.
+
+`attrs.sentBoost` is the other half: a per-Area term inside grievance, weighted by `sent.wBoost`, and
+the only thing in the sentiment formula that is a property of the *place* rather than of the nation
+holding it. It rides inside grievance rather than beside it, so it is still multiplied by `base`: an
+authored grievance cannot radicalise ground into a movement whose ideology it does not share, which
+is the rule the whole formula is built on. `attrs` already round-trips in the v2 document, and
+because `target` and `explain` are one implementation the boost shows up as a named row —
+"Unfinished business" — in the Why panel with no second code path.
+
+Measured over 40 world turns at seed 20260829, mean Deseret share across the 28 Areas the cession
+left behind: **0.2950 → 0.4597** as shipped, 0.4024 with `sent.wBoost` at zero, 0.4193 with
+`growthRate` at 1.0. The boost is worth +0.057 of share and the rate +0.040.
+
+**What is not measured is the comparison the milestone asked for** — the corridor's slope against
+another movement's home ground — because it cannot mean what it sounds like: the corridor is *seeded*
+at 0.295 and every movement converges toward its own ceiling, so anything starting near zero
+necessarily posts the steeper line. For the record it is +0.0041/turn against Franklin's
++0.0090/turn, from 0.295 and 0.056. The A/B on one board is the measurement that isolates the claim.
+
+### D140 — The statewide movements are retargeted, not deleted (D-M8j)
+**M8.8.** "A Free Texas" and "California Republic" would otherwise declare a sixth Texas out of the
+five successors. They stay, with their type changed to `reunification` and goals to match, because a
+movement to put the old state back together is exactly the right pressure on a board that has just
+come apart — and the mechanics already do the right thing, since each homeland is the whole of its
+state and what it founds if it declares *is* the old state coming back. Names unchanged: renaming
+would break the deterministic-spawn list and every save that carries one.
+
+`origin: true` needed a label other than "former U.S. state", so the nation record gains a display-only
+`kind`: `successor`, `breakaway`, or nothing. No rule reads it.
+
+### D141 — One menu button, and starting over is a reload
+**Post-M8.** The game had no New game. The only route to a fresh world was `?fresh=1` in the address
+bar, which is a route nobody who has not read `app.js` can find, and the four bare header buttons
+that did exist (Save, Load, Timeline, Enter map editor) were competing with eight map-mode toggles
+and two selection toggles for the same eye. The header is now for the MAP — what you are selecting,
+how it is coloured, where the lines are — and one accent-coloured **Menu** button opens everything
+that is about the GAME (`js/menu.js`).
+
+**Starting over is a page reload, deliberately.** A new world is not a state transition this game
+can make in place: boot assembles the map, the party roster, the opening scenario, the power stocks
+and the timeline's first frame in one ordered pass, and eight modules hold state that only `reset()`
+at that point in that order clears correctly. Reloading runs the ONE code path known to produce a
+valid world rather than a second, quieter one that would have to be kept in step with it forever.
+What the dialog does before reloading is `SaveManager.clearLive()`, because the next boot resumes
+from `data/state.json` — and because that is destructive and unrecoverable, the dialog says so and
+offers Save first.
+
+The URL it reloads to is **built from `location.pathname`, not by editing the current query**, so
+the flags that decided the last game (`?play=`, an old `?seed=`) cannot leak into this one; `?dev=1`
+survives, because it is a property of who is at the keyboard rather than of the world. There is
+deliberately **no `?fresh=1`**: that flag skips the resume without deleting anything, so leaving it
+in the address bar would make every later reload silently discard the game in progress. Delete the
+document, hand back a clean URL, resume normally from there.
+
+`?seed=<whole number>` is new and is what makes the dialog's Seed field mean anything — the same
+seed and the same board deal the same opening every time. A value that is not a whole number is
+ignored with a console warning rather than coerced, because a seed of `NaN` is a silently different
+game every reload; the dialog refuses it before it can become a URL.
+
+Two smaller consequences. `openModal`/`closeModal` moved from `saves.js` to `app.js`: they stopped
+being a save/load detail the moment a second module needed to stop the game and ask a question, and
+the card now also closes on Escape. And `editor.js` no longer repaints a header button's label on
+enter/exit — the menu is rebuilt from `Editor.isActive()` every time it opens, so "Enter map editor"
+/ "Leave map editor" and "Timeline" / "Close timeline" cannot fall out of sync with the thing they
+describe, and there is no `getElementById` in the editor to throw the day that button is renamed.
+
+An item that cannot run says so and says why: an in-flight action carries Sets of county ids that
+outlive the world they came from, so save, load, timeline and the editor are all unsafe while one
+holds the map. The menu draws them disabled with the reason above them rather than letting them be
+clicked and then refusing — the same bargain the action panels make everywhere else.
+
+### D142 — The election clock, and why one test hid the bug for three milestones
+**M9.2.** `World.advanceTurn` calls `Elections.tick(tn, rng, { defer, asOf: turn + 1 })`, and `hold`
+stamps `gov.lostAt = asOf` — deliberately, because the count happens while turn N is being resolved
+and the decision belongs to whoever is looking at the board on N+1. But `steal` and `pending` both
+compared `lostAt === World.getTurn()`, which still reads N inside the batch. So the AI's immediate
+refusal always returned "There is no result to refuse", and every police state in the world politely
+conceded. The documented behaviour was dead code on the only path that runs it.
+
+The fix is one helper, `isOpen(n, asOf)`, and two kinds of caller: inside the batch you pass the
+`asOf` you are resolving under, outside it you pass nothing and get `World.getTurn()`, which by then
+has caught up to the stamp. That is why the player's modal always worked and nothing else did.
+
+**The test that covered it passed**, and that is the part worth recording. `tests/elections.test.js`
+called `tick` with no `asOf` — the single arrangement in which the two clocks agree, and one
+`js/world.js` has never used. A regression test that invokes the function the way the caller invokes
+it is now beside it, written as a separate case rather than a parameter, because "stealing works" and
+"stealing works where it is actually called from" are two different claims. Measured through
+`World.advanceTurn` with every government eligible: 222 elections over 60 turns, 32 changes of
+government, **32 refusals**. Before: zero, for any number of turns.
+
+### D143 — One expression for the annexation multiplier, called twice
+**M9.3.** `planAnnex` previewed a Force number built from the reach penalty and the army ratio;
+`resolveAnnex` built its own from the coalition shell and the army ratio. Neither had what the other
+had. So a war at the edge of reach was priced higher, previewed as harder, and then **fought exactly
+as well as one next door** — one of the three things §6.4 says reach does simply did not happen —
+while a nation the world had ganged up on was previewed a fight it was not going to get.
+
+The plan/resolve split exists to make precisely this impossible, and it had happened anyway, because
+the two sides were two expressions kept in step rather than one expression called twice. `planAnnex`
+now computes `scoreMult = (1 + shell) * Military.warMultiplier * reachWar` and `resolveAnnex` reads
+`plan.scoreMult`. The test asserts the resolver's returned `scoreMult` equals the plan's, and that
+the plan's equals the product of all three factors — structural rather than numeric, because a
+pinned value would pass again the moment somebody rebuilt the expression with a different set of
+terms.
+
+### D144 — The 4x rule moved out of the click path
+**M9.3.** `annex.strongNeighbourFactor` — you cannot annex from a nation more than four times your
+size on both population and GDP — was enforced in `Actions.startAnnex` and nowhere else. That is the
+human's click path. The AI plans through `Moves.legal` and resolves through `Moves.plan`, and neither
+knew the rule existed: fifty nations played by a looser rulebook than the one person it was written
+for, and the map tooltip derived its own third answer to the same question.
+
+`Moves.tooStrongToAnnex` is now the only implementation. `plan` refuses, `legal` never offers, and
+both UI callers ask it rather than re-deriving it.
+
+**A test changed with it, and the change is the milestone working.** `a different seed can give a
+different result` used Delaware — a small state taking a big bite, which is the case that actually
+rolls dice. Delaware's only neighbours are Pennsylvania, Maryland and New Jersey, all of them past
+the factor, so under the rule the human has always played by, Delaware cannot annex anybody at all.
+The test could only ever have been written against a move no player could make. It is New Hampshire
+now: same shape of case, against a neighbour it is legally allowed to bite.
+
+### D145 — Every panel renders the plan it resolves
+**M9.4.** Three action panels showed a number the resolver did not charge. Unite charged 8% of the
+target's GDP **on the attempt** and the panel never mentioned it — so a player could take a 30%
+chance, lose the roll, and discover the fee afterwards. Release charged a 10% settlement and the
+panel showed only the savings, which made a valve deliberately priced as *relief* read as a pure
+gain. Annex called `Moves.annexCost` directly, which is the BASE price: the charged price is that
+times `Projection.costMultiplier`, so at the edge of reach the shown price understated the bill by up
+to 1.6x — the exact case M7.11 made central.
+
+All three now render `Moves.plan(...)`, which also means they refuse for every reason the resolver
+refuses, before the click rather than after it, and name the reason. The annex panel gained two rows
+that had never existed anywhere in the game: the reach surcharge as a percentage, and the odds the
+army fights at when it is out past its own projection.
+
+### D146 — The victory alarm asks a different question
+**M9.5.** It was `standings().filter(progress >= win.warnAt)`, and it fired on turn 1 of every game:
+three nations "84% of the way" before anybody had done anything. That is not a threshold set too low,
+it is the wrong question. `progress` is the WORST term of a condition, and the worst term of two of
+the three conditions is a power stock that opens near its target and stays there — so "is anybody
+near a victory" is answered yes on the opening board, permanently, by nations that are not going
+anywhere.
+
+The question is now "has anybody MOVED toward winning", gated three ways: near (`win.warnAt`), moving
+(`win.warnDelta` since we last looked at that exact nation-and-condition pair), and quiet (not
+already said inside `win.warnRepeatTurns`). Plus a grace gate — `check` refuses to return a winner
+before `win.graceTurns`, so warning before then is warning about a race nobody can finish.
+
+`win.warnDelta` is **measured, not chosen**. At seed 20260829 over 40 turns, across every nation
+already past the bar: 314 turn-to-turn moves, median **+0.0127**. The first threshold tried was 0.01
+— below the median, so it fired on less than routine settling and was not a threshold at all: 143
+alarms before turn 12 and 98 after it. At **0.03** the same run reports three times, all after the
+grace period.
+
+The baseline is deliberately NOT saved. A fresh boot or a loaded game has nothing to compare against,
+records the board and says nothing; one quiet turn after a load beats a false alarm, and it is the
+same mechanism that makes turn 1 silent.
+
+### D147 — The journal, and the end of the single toast slot
+**M9.7.** `flash()` is one slot. Every action confirm flashed its result and then synchronously
+called `completeTurn()`, which flashed the newspaper over it — in the same frame. The civil-war dice
+roll, the richest feedback this game produces and the thing `Moves.resolve` goes to the trouble of
+logging as `terms`, was painted for zero frames and replaced, every single time. DESIGN.md §7.7
+describes that pathology as fixed. It was not; only the content had changed.
+
+The fix is not a longer toast or a second slot. A game whose identity is "it explains itself
+honestly" needs somewhere the explanation STAYS, and the ledger has been that record since M6.3 —
+what was missing was a surface. `js/journal.js` is a docked, turn-grouped, filterable panel that
+reads the ledger and owns nothing: no state to serialize, because the ledger already round-trips
+through the save, so a loaded game reopens with its whole history intact.
+
+The division of labour now: **flash** is transient status and the victory alarm; **the journal** is
+everything that happened, permanently, with the Why rows beside each entry; **the newspaper** is no
+longer a message that arrives and leaves — it is the journal's turn header, the same `Ledger.rank`
+headlines rendered as the divider between one turn's entries and the next. An action result still
+flashes, because feedback at the point of the click is worth having, but it is now a copy of
+something durable rather than the only telling of it.
+
+The filters are FAMILIES, not kinds: `Ledger.KINDS` has twenty entries and a row of twenty chips is
+not a filter, it is a second problem. Everything · Yours · Ground · Politics · The world, and every
+kind lands in exactly one, so "Everything" is genuinely the sum of the others.
+
+### D148 — Three sweeps: weariness, the migration clamp, and the tuning a save carries
+**M9.8.** Each one small, each one the kind of thing a second programmer trips over.
+
+**War weariness inherited the wrong asymmetry.** `power.maxFall` (0.08) is deliberately larger than
+`power.maxRise` (0.05) because the other four stocks are things a nation HAS and standing is easier
+to lose than to build. Weariness is a thing a nation SUFFERS, and inheriting those limits inverted it
+exactly: a country exhausted itself slowly and shrugged the exhaustion off half again as fast. It has
+its own pair now, the other way up, and `Power.step` takes them as a parameter for the same reason it
+takes the floor as one.
+
+**The migration clamp created people.** The apply step ended `Math.max(0, was + d)`, which is a
+one-sided guard: `leaving` is computed from `snap` and applied to `nxt`, and any earlier phase that
+left `nxt` lower made the source clamp to zero *after* the destinations had been credited the full
+share. That does not lose people, it invents them — a few at a time, in the one phase whose headline
+invariant is that it conserves, and the suite's one-sided total-population check passed throughout.
+`leaving` is now capped at what is actually in the buffer, which makes the clamp unreachable, and the
+phase report carries `clamped` so that if it ever is reached we find out then rather than as eleven
+million extra people in turn forty.
+
+**A load merged the tuning instead of replacing it.** `doc.tune` is `TUNE.diff()` — what the saved
+game was PLAYED with — and `statedoc` applied it with `load`, which merges. The dev dashboard sets
+overrides on the live TUNE, so this was not hypothetical: move a slider, load a save, and the loaded
+game silently keeps your slider, running on a third tuning that neither the save nor the session ever
+used. `TUNE.replace` resets to schema defaults first. That is the v1 bug in a new place: a save that
+restores state has to restore all of it.
+
+And one that could not be fixed in JavaScript at all: **`econ.occupationHostility` was defined
+twice.** The M0.3 placeholder (`v: 1.0`, one-line doc) sat BELOW the argued M4 definition (`v: 1.6`,
+the full anti-snowball rationale), so the later definition won and the game shipped the placeholder
+while every reader of `tunables.js`, `DESIGN.md` and the code review found 1.6. A duplicate key in an
+object literal is not an error and leaves no trace once the literal has collapsed, so the guard has
+to read the SOURCE: `tests/tunables.test.js` now fetches `js/tunables.js` as text, scans for
+top-level keys, and cross-checks the count against `SCHEMA` so that a scan which silently stopped
+matching would fail rather than pass.
+
+### D149 — The Area re-bake, adopted
+**M9.6.** D36 deferred it: `build_areas.py` was made deterministic and capped at 8 counties per Area
+in M1.13b, but `data/areas.json` was never regenerated, because an Area id is the join key for
+`economy.json`, both map modes, every authored homeland and every save. `build/validate.py` has
+warned about the surviving 22-county blob on every run since.
+
+It happens **now**, before M13 hands builds to playtesters who will make saves, and not in M12 where
+the audit filed it — the argument for "before launch" is the same argument for "before everything",
+only weaker, and every intervening milestone adds content to at least two of the files it touches.
+
+`build/migrate_areas.py` is the piece the re-bake cannot do for itself: carrying the AUTHORED data
+across. Both map modes are `{areaId: [nodeId]}` maps in which a human decided, one Area at a time,
+which region something belongs to, and that judgement is not derivable from anything. The rule is
+**inherit through the primary county** — a new Area takes the assignment of whichever old Area
+contained the county that is now its primary — which is the same rule the game uses for every other
+question about a merged Area, and means nothing is invented and nothing is lost. Where a new Area
+spans counties that were in two different old Areas, the primary decides, exactly as it decides the
+Area's name, its seat and its id.
+
+Measured: **1,676 Areas -> 1,688** (11 retired, 23 new; 483 -> 507 merge groups). Of 1,688
+assignments in each map mode, 1,665 kept their id and 23 inherited through their primary — **none
+unassigned**. `economy.json` and `parties.json` were re-baked from the new plan in dependency order
+(parties reads `cultural.json` as well, because a homeland is authored as culture nodes and expanded
+into member counties). `build/validate.py`: **0 errors, 1 warning**, down from 0 and 2 — the
+remaining one is the pre-2015 `county_neighbors.json` vintage, which is a different known issue.
+Determinism re-verified: three `PYTHONHASHSEED` values produce byte-identical output, matching what
+shipped.
+
+The save format is **version 3**, and a version 2 document is refused by name rather than migrated:
+migrating one would mean guessing where a dozen borders went. `js/saves.js` now reads
+`StateDoc.VERSION` instead of keeping a second copy of the number — a duplicate that would have left
+every stale save in the load list badged as current while the loader refused it.
+
+### D150 — app.js split five ways, mechanically
+**M10.0.** 2,406 lines, and the audit's phrase for it was "a monolith renderer on the far side of an
+otherwise clean model boundary". Split along the seams the file's own comment banners already marked:
+`app.js` (the store, the data fetch, `init`, who you are), `map.js` (the d3 map, colouring, hover,
+selection), `shell.js` (controls, modal, toast, turn banner and turn flow, end screen, timeline),
+`panels.js` (every `render*`), `format.js` (three helpers).
+
+**Mechanical and only mechanical.** Every function stays a global function declaration in the shared
+classic-script scope, so nothing changed about who can call what — this is a filing decision, not an
+architectural one, and that is what makes it verifiable: all 98 top-level declarations survive,
+none is duplicated, and the acceptance is a clean boot plus a green suite. It happened BEFORE M10's
+own work rather than after because M10 and M11 were about to add a journal, an objectives screen, a
+generated reference and progressive disclosure to a sixteen-block panel — 3,200 lines would have
+been worse to move than 2,400.
+
+### D151 — The objectives screen is generated, not written
+**M10.1.** "A stranger cannot answer 'what are my ways to win,' and no surface explains the two axes,
+the stocks, or the eight map modes." All of it existed — in `Victory.CONDITIONS`, in the TUNE
+schema's `doc` strings, in the stock summaries. What was missing was a door.
+
+The reference tab is built from `TuneMeta.describe(key)` and the same `CONDITIONS` table the victory
+check runs on, and that is the whole design: hand-written copy about a tuned system goes stale on the
+first tuning pass, silently, and the player is the last to find out. If a target moves this screen
+says the new number the same turn, because it is reading the number rather than a memory of it. The
+same strings are the map-mode tooltips and the stock-label tooltips (M10.3) — one source, three
+surfaces.
+
+Rivals are listed **per condition** rather than overall. `Victory.standings` sorts on a nation's best
+condition, which answers "who is winning" and not "who is winning at this"; a player deciding whether
+to contest Economic Supremacy needs the second, and the first would hide a nation two moves from it
+behind three idling near a different one.
+
+It also produced `screenBlocked()`: the Objectives item is deliberately NOT gated on an in-flight
+action — reading how you win is safe mid-decision and that is when a player most wants it — and the
+first version could therefore be opened underneath a waiting crisis, where it rendered perfectly and
+could not be reached or closed. `#endscreen` outranks `#modal` by design; now the menu knows.
+
+### D152 — The panel folds, and never folds a control
+**M10.2.** Sixteen blocks, "every block individually excellent, collectively unreadable to a
+newcomer". This hides nothing: every block keeps its headline — label, value, and the one-line
+summary the model already writes — and the rows that justify the number go behind a click. Measured
+on a live turn-18 game: **15 blocks, 8 of 29 Why rows visible**, two of them marked as having moved
+this turn.
+
+**A DOM transform, not sixteen edits.** It runs over the rendered panel rather than inside each
+`render*`, because the alternative is teaching sixteen functions the same lesson and teaching the
+seventeenth the day somebody adds it.
+
+Two things it got wrong first, both worth keeping written down. The block id was the whole label, and
+panel labels carry live detail after a middle dot — "Election · in 2 turns" — so a block the player
+left open closed itself the moment the number in its own title moved, which is exactly when they were
+reading it. The id is now the stable half. And the fold caught **action buttons**: the M11.2
+diplomacy block's two buttons vanished behind it, and the recognition button had quietly been in the
+same position since M10.2 shipped. A control the player cannot see is a control that does not exist,
+so a block carrying a button, input or select is never folded — a rule about content rather than a
+list of block names, so the next block to grow a button is covered without anybody remembering.
+
+### D153 — Trade became a Move, and the reason is not tidiness
+**M11.1.** The rules were written in M6.6 and lived in `js/actions.js` — in the UI — so only the
+human could use them. The consequence is sharper than "the AI does not trade": `traded` is the ONLY
+relations channel ordinary play generates, and every other entry in the ledger comes from taking
+something from somebody. The player could farm standing at zero risk for union odds and coalition
+exemptions the AI could never earn back — not because the AI was worse at it, but because the rule
+was not written where the AI could see it. This is the M6.3 argument in the one place it had not been
+applied.
+
+Measured over 60 turns after the move: **2,022 AI trade events across 71 actors**, against a human
+ceiling of 60. The acceptance criterion was "AI–AI trade should outnumber player trades".
+
+The bilateral deal moved; selling to the world market did not. That one is a nation and a price, it
+records nothing about anybody, and giving the AI a free income button with no counterparty would
+change the economy without changing the diplomacy.
+
+### D154 — Treaties are the first thing a nation can promise
+**M11.2.** Every other diplomatic fact in this game is an EVENT that decays: `Relations.record`
+writes a memory and the memory fades. A pact sits on the board until somebody breaks it, and
+breaking it is worth more than never having signed — `rel.magReneged` is -1.4 against `magTreatied`
++0.18, and the Influence term charges a breach at 2.5 pacts. That asymmetry IS the mechanic: signing
+is cheap, so without it a serial betrayer simply out-signs their own reputation.
+
+Annexing a pact partner tears the pact up, recorded in `resolveAnnex` rather than checked for
+afterwards, because "who broke this and by doing what" is knowable only where it happened.
+
+### D155 — Aid buys politics, slowly, expensively, and reversibly
+**M11.2.** The audit: "Ideological Dominance is govern-well-and-wait." Aid is the verb. A payment
+buys standing, a better chance of being recognised, and a PATRON relationship that blends the
+recipient's government lean toward the donor's in `phasePoliticalDrift` — capped at
+`aid.patronMax` 0.35, decaying at 8% a turn, and scaled by the payment as a share of the
+RECIPIENT's income, so a small country is cheap to buy and a large one effectively unbuyable.
+
+**A blend, not a fourth drift term.** The drift target is a weighted average of owner, anchor and
+neighbours whose weights sum to one; a fourth term means renormalising three tuned constants and
+every measurement in this file that rests on them. Blending the patron INTO the owner's lean changes
+what "the government's politics" means for that one nation and nothing else — which is also the more
+honest description of a client state.
+
+`applyPatrons` indexes by `Game.nationIndexOf`, not by roster iteration order. Those are different
+things — an index is assigned on first use and never reused, so a dead nation leaves a hole — and the
+first version numbered as it walked, which silently blends the wrong country's politics into another
+the moment anybody is conquered.
+
+**And the AI could not use it until `ACTIONABLE` changed.** That set names the victory requirements a
+move can shift, and 'People holding your ideology' was excluded because no verb could shift it — so a
+nation whose binding requirement was sway had no actionable goal, fell through to the nearest
+condition, and played for position. Aid is the verb, so the goal is now worth having. Before the
+change aid scored -0.30 at best and was never chosen; after it, it fires.
+
+### D156 — Nothing contested a rival who was quietly winning
+**M11.3.** Coalition threat read `size × (1 − influence)`, and BOTH non-conquest victories keep
+Influence high by construction — Reunification has an Influence floor, Ideological Dominance requires
+it, Economic Supremacy comes with it. So no coalition ever formed against a nation closing on either,
+no AI term read victory proximity at all, and against a human who has read the victory table the AI
+was an opponent on one board out of three.
+
+`coalition.wVictory` reads proximity directly and is deliberately NOT scaled by `(1 − influence)`:
+being liked is a defence against being feared for your size, and it is not a defence against being
+about to win. `ai.wDeny` scores a move by what it does to the LEADER's binding requirement rather
+than to the scorer's own progress, so taking ground off the nation closing on Reunification is worth
+doing even when it advances nothing of yours. `ai.denyBar` sits below `win.warnAt` because an
+opponent that only pushes back once the newspaper starts shouting pushes back too late to matter.
+
+**Both wait for `win.graceTurns`, and that is what keeps the older claim honest.** "Being big is not
+the crime" is the design in one sentence, and on the opening board size and victory proximity are the
+same number — the largest economy IS the nation closest to Economic Supremacy, by construction and
+without having done anything. The grace period is where the two come apart: after it, a nation is
+close because of what it did.
+
+### D157 — The ground itself
+**M12.** DESIGN.md §12's #1 structural gap. Quality of life and civil liberties were national stocks,
+so every Area of a country was exactly as pleasant and exactly as free as every other, grievance had
+one number per nation to build on, and migration pulled toward one number per nation — which is why
+the pressure map was flat inside a border and why "the Rust Belt is angry while the coast thrives"
+was a sentence this model could not produce.
+
+**The shape is `national stock + what is true HERE`, not a second full formula.** The national stock
+already reads everything national — solvency, the government, war weariness, the leader — and a
+per-Area version that re-derived those would be a second implementation free to disagree with the
+number on the panel. What is local is local: wealth against the nation's OWN median (what makes
+somewhere feel left behind is the rest of its own country), occupation, self-rule, and the garrison.
+
+**The garrison term is the one that most needed to be per-Area, and the honest derivation took two
+goes.** `Military.garrisonPressure` is a national number and the model has no per-Area garrison, so
+the first cut looked for a `Game.isGarrisoned` that does not exist — inventing a mechanic to make a
+formula work. Troops go where the trouble is, so the national pressure lands on an Area in proportion
+to `Game.hostility` there, the same quantity occupation upkeep is already priced on. Occupied ground
+takes the whole weight regardless. The consequence is the one M12 exists for: a nation holding one
+restive province down is unfree in that province and no less free than before in its capital.
+
+`-1` in the column means "never computed", so a new or newly conquered Area opens AT its reading
+rather than climbing from zero — the same rule `Power.step` uses for a null previous value, and for
+the same reason: a brand-new Area reading 0 would be the worst place on the continent on the day it
+was founded. Measured on a live turn-20 game: a **0.286 spread** of quality of life inside one
+nation whose national stock reads 0.79.
+
+Float32, not Float64: these are 0..1 stocks read to two decimals, and 1,688 Areas × two columns is
+13.5 KB against 27 KB for precision nothing consumes. Saved, unlike `anchor` — they are rate-limited
+stocks with history in them, and a document that dropped them would reopen with the whole country at
+its national average and the gradient gone.
+
+### D158 — The telemetry export is a collector, not a calculator
+**M13.1.** "The ledger is a telemetry system. Your playtest program's instrument already exists; it
+just needs an export button." Exactly right, and it is why `js/telemetry.js` computes nothing. The
+export is the ledger whole (every entry carrying the `terms` that justify it — which is what makes it
+telemetry rather than a score sheet), a per-turn series sampled AS THE GAME IS PLAYED, the player's
+own actions filtered out of the ledger rather than tracked separately, and the run's identity.
+
+Each of the four questions M13 asks has a field: "when did you first feel behind" is the per-turn
+standings and rank; "what did you do on turn 25" is the action filter; "did you see the secession
+coming" is the pressure high-water mark inside the player's own ground, turn by turn, because what
+matters is the map the player could have looked at rather than the secession they got.
+
+Written to `content/` when the local server is running and downloaded when it is not, because a
+tester who has to find and send a file is a tester whose data arrives late or not at all.
+
+**The difficulty presets are TUNE overrides**, which is the whole requirement — "so the playtest can
+A/B pacing without builds". A difficulty setting here cannot be a damage multiplier because there is
+no damage; what there is, is pacing: opening treasury, how often the world acts, how fast the ground
+turns, how long a new state is left alone. Each preset is a hypothesis about those, written in
+tunables that already have documented meanings. `standard` is deliberately EMPTY rather than a copy
+of the defaults, because a preset that restates the shipped tuning is a second place it lives and
+would go stale the first time M13 moves a number. `?difficulty=` carries a setting by link.
+
+### D159 — The playtest build is the browser build, on a static host
+**M13.2.** The question was whether a remote tester needs a program or a link, and the answer is a
+link — but only after closing one gap, and the gap was not the one it looked like.
+
+Manual Save and Load already fell back to localStorage; what did **not** was the live document. The
+autosave and the resume both went to `/api/state` and nowhere else, so on a static host a tester who
+reloaded lost everything since their last deliberate Save. `data/state.json` is what makes closing
+the tab safe, and it had no browser equivalent.
+
+**The bug that fallback exposed is the one worth recording.** A static host answers `PUT /api/state`
+with **501**, and `fetch` resolves happily on a 501 — it only rejects on a network failure. The first
+fallback triggered on `catch`, so on exactly the host a playtester would be using it wrote nothing,
+silently, every turn, and reported success. Verified against `python -m http.server` rather than
+reasoned about, which is the only reason it was found: `r.ok`, not "it did not throw".
+
+Quota is handled rather than reported. The ~5 MB budget is shared with named saves and the part that
+grows is the ledger (~0.2 KB an entry against a 670 KB world), so on a quota failure the live copy is
+rewritten with its ledger trimmed to the last ten turns. The game stays resumable, which is what the
+autosave is for; the FULL ledger is still in memory and still goes into the export, so what is lost
+is old newspaper text after a reload. That is the right thing to spend.
+
+`clearLive` clears BOTH stores unconditionally — a New game that cleared only the one it happened to
+be using would resume out of the other.
+
+**A folder is not an option**, and the reason is structural rather than fixable: `boot-globals.js` is
+an ES module and every data file is fetched, and browsers block both over `file://`. Double-clicking
+`index.html` gives a blank page and console errors, which is the worst thing to hand somebody three
+time zones away. `build/package_playtest.py` therefore produces a folder for a HOST — 75 files, 4.0
+MB, 1.1 MB zipped — and checks its own manifest against what `index.html` actually asks for, so a
+script tag added without a thought fails the package rather than 404ing on a tester's machine. It
+excludes `data/state.json` by name, because shipping the author's own game means every tester resumes
+into it and reports the game as broken.
+
+### D160 — The play log records what the ledger cannot
+**M13.2.** The ledger is a record of what happened in the WORLD, and it is complete. What it cannot
+hold is the half of a playtest that is about the person: how long they sat on turn 24, the annexation
+they opened and cancelled, the refusal they hit four times, whether they ever opened the Objectives
+screen M10 was built for. None of that is in a save, and none of it is recoverable afterwards.
+
+So `Telemetry.note` is a second, tiny record beside it: a kind, a turn, a millisecond offset and one
+short detail. Turn duration comes off the per-turn sample, because the fastest way to find the sparse
+mid-game the audit predicts is a run of eight-second turns.
+
+**The first version logged news as refusals**, and it is worth saying why the obvious rule failed.
+`warn` and `bad` are the two colours the game says no in — and also the colours it announces a
+scenario, a victory alarm and a breakaway in. Three of the first eleven entries in a test session were
+the opening edition, the party spawns and the playtest notice itself, which buries the one signal the
+log exists for. The colour cannot tell them apart, so the caller does: `flash(html, kind, {news:
+true})` marks an announcement, and there are five of those against roughly thirty refusals — which is
+why the flag is on the rare case rather than the common one.
+
+**It says so in the game.** `?playtest=1` shows a one-time notice on the tester's first turn, and the
+export dialog lists what the file contains item by item rather than claiming nothing personal is
+collected. A claim is worth less than an itemisation somebody can read, and the list is short enough
+to read — which is the point of keeping the log small in the first place.

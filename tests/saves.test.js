@@ -274,7 +274,7 @@ describe('data/state.json — the live document', () => {
 describe('The document module', () => {
   it('enumerates every stateful module, so none can be forgotten', async () => {
     await bootWorld({ seed: SEED });
-    const mods = { Game, TurnSystem, World, Market, Colors, Movements, Ledger, Military, Relations, Recognition, Events, Leaders, History };
+    const mods = { Game, TurnSystem, World, Market, Colors, Movements, Ledger, Military, Relations, Recognition, Events, Leaders, History, Pacts };
     for (const name of StateDoc.STATEFUL_MODULES) {
       ok(mods[name], `STATEFUL_MODULES names "${name}", which does not exist`);
       ok(typeof mods[name].serialize === 'function', `${name}.serialize is missing`);
@@ -306,5 +306,42 @@ describe('The document module', () => {
   it('accepts its own output', async () => {
     const { seed, rng } = await bootWorld({ seed: SEED });
     equal(StateDoc.validate(StateDoc.assemble({ seed, rng }), null), null);
+  });
+});
+
+describe('A load restores the tuning too (M9.8)', () => {
+  /*
+   * `doc.tune` is `TUNE.diff()` — what the saved game was PLAYED with — and it
+   * used to be applied with `load`, which MERGES. A session with its own
+   * overrides (the dev dashboard sets them on the live TUNE) therefore produced
+   * a third tuning after a load: neither the save's nor the session's. That is
+   * the v1 bug in a new place — a save that restores state has to restore all
+   * of it.
+   */
+  it('replaces the session overrides rather than merging into them', async () => {
+    const { rng } = await bootWorld({ seed: SEED });
+    const t = window.TUNE;
+    const authored = t.diff();                    // whatever content/tunables.json set
+    const doc = headlessSnapshot(SEED, rng);
+    deepEqual(doc.tune, authored, 'the document did not record the tuning it was played with');
+
+    // Move a slider, the way the dashboard does, then load the document.
+    const before = t.get('migration.rate');
+    t.set('migration.rate', 0.4);
+    equal(t.get('migration.rate'), 0.4, 'the slider did not move');
+    t.replace(doc.tune || {});
+    equal(t.get('migration.rate'), before, 'the loaded game kept the session slider');
+    deepEqual(t.diff(), authored, 'the tuning after a load is neither the save\u2019s nor the default');
+  });
+
+  it('and a document with no overrides at all resets the session to defaults', async () => {
+    await bootWorld({ seed: SEED });
+    const t = window.TUNE;
+    const authored = t.diff();
+    t.set('migration.rate', 0.4);
+    t.replace({});
+    deepEqual(t.diff(), {}, 'an empty override map left overrides behind');
+    t.replace(authored);                          // put the suite's world back
+    deepEqual(t.diff(), authored);
   });
 });

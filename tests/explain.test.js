@@ -93,8 +93,12 @@ describe('Pressure clocks', () => {
      */
     const { rng } = await bootWorld({ seed: SEED });
     for (let i = 0; i < 20; i++) World.advanceTurn(T(), rng);
-    const rise = T().get('sent.maxRise');
+    // The rate is PER MOVEMENT since M8.2 (`sent.maxRise` x `growthRate`), and
+    // the clock has to use the movement's own or it is a second, wrong model of
+    // the phase — a corridor that turns half again as fast arrives sooner.
+    const maxRise = T().get('sent.maxRise');
     for (const rec of Movements.all()) {
+      const rise = maxRise * Movements.rateOf(rec.name);
       for (const f of rec.homeland.slice(0, 20)) {
         const cl = Sentiment.clock(f, rec.name, T());
         if (!cl || cl.turns == null || cl.turns === 0) continue;

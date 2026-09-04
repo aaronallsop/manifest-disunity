@@ -41,10 +41,11 @@ export function loadData() {
       get('../content/events.json', null),
       get('../content/leaders.json', null),
       get('../content/names.json', null),
+      get('../content/scenario-shattered.json', null),
     ]).then(([data, adjacency, areas, partyDefs, economy, neighbors, trade, transport, culture,
-              ideologies, tunables, capitals, eventDefs, leaderDefs, nameDefs]) => ({
+              ideologies, tunables, capitals, eventDefs, leaderDefs, nameDefs, scenario]) => ({
       data, adjacency, areas, partyDefs, economy, neighbors, trade, transport, culture,
-      ideologies, tunables, capitals, eventDefs, leaderDefs, nameDefs,
+      ideologies, tunables, capitals, eventDefs, leaderDefs, nameDefs, scenario,
     }));
   }
   return dataPromise;
@@ -52,8 +53,17 @@ export function loadData() {
 
 /**
  * Rebuild the world from scratch.
- * @param {{seed?: number, spawnParties?: boolean, tune?: object}} opts
- * @returns {Promise<{seed, rng, tune, raw}>}
+ *
+ * `scenario` is OFF BY DEFAULT and that is deliberate (D-M8a). The 785 tests
+ * that existed before M8 pin `Game.nations.size === 51`, 51 seats and `'48'` /
+ * `'06'` as live nations, and they stay meaningful as the model's baseline —
+ * the shattered board is a scenario laid over the same engine, not a different
+ * engine. Pass `{scenario: true}` for the shattered fixture, or an authored
+ * document to apply one of your own.
+ *
+ * @param {{seed?: number, spawnParties?: boolean, tune?: object,
+ *          scenario?: boolean|object}} opts
+ * @returns {Promise<{seed, rng, tune, raw, scenario}>}
  */
 export async function bootWorld(opts = {}) {
   const seed = opts.seed == null ? 20260829 : opts.seed;
@@ -64,6 +74,7 @@ export async function bootWorld(opts = {}) {
   Ledger.reset();
   Relations.reset();
   Recognition.reset();
+  Pacts.reset();
   Migration.reset();
   Coalitions.reset();
   Colors.reset();
@@ -96,10 +107,26 @@ export async function bootWorld(opts = {}) {
     MapModes.setEconomy(raw.economy);
     Market.update(tune);
   }
+  /*
+   * PHASE A, in the one place the ordering contract allows it: after the
+   * movements exist and before the turn order, the stocks and the turn-0
+   * history frame are taken. See the header of js/scenario.js.
+   */
+  const doc = opts.scenario === true ? raw.scenario
+    : (opts.scenario && typeof opts.scenario === 'object' ? opts.scenario : null);
+  if (typeof Scenario !== 'undefined') Scenario.reset();
+  let scenario = null;
+  if (doc) {
+    Scenario.load(doc);
+    scenario = Scenario.apply({ doc, culture: raw.culture, rng, tune });
+  }
+
   TurnSystem.begin([...Game.nations.keys()], rng);
   World.begin(tune, null, rng);
+  // PHASE B, strictly after World.begin, which wipes the recognition matrix.
+  if (doc) scenario = Scenario.afterBegin({ doc, rng, tune });
 
-  return { seed, rng, tune, raw, spawned };
+  return { seed, rng, tune, raw, spawned, scenario };
 }
 
 /* ------------------------------------------------------------------ */

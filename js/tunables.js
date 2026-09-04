@@ -419,6 +419,11 @@ export const SCHEMA = {
     label: 'Sentiment: maximum fall per turn',
     doc: 'The most a movement can lose in one Area in one turn. Larger than the rise: organising is slower than collapsing.',
   },
+  'sent.wBoost': {
+    v: 0.35, min: -1, max: 1, step: 0.01, group: 'Sentiment',
+    label: 'Sentiment: weight of an authored local grievance',
+    doc: 'What an Area’s own `attrs.sentBoost` is worth inside grievance. The only term in the block that is a property of the PLACE rather than of the nation holding it, and the only way the model can say "this ground has a reason of its own, older than whoever governs it". The Shattering uses it for the Mormon Corridor Areas that did not cede — hardest on the ones that voted to go and were cut off — and it had to be a term rather than a bigger opening share, because a seeded share erodes back toward the formula’s target at sent.maxFall every turn: seeding alone makes a region angriest on turn 1 and calmest by turn 10, which is the story backwards. It rides inside grievance, so it is still multiplied by base: an authored grievance cannot radicalise a place into a movement whose ideology it does not share.',
+  },
   'sent.floor': {
     v: 0.004, min: 0, max: 0.2, step: 0.001, group: 'Sentiment',
     label: 'Sentiment: extinction floor',
@@ -529,11 +534,6 @@ export const SCHEMA = {
     v: 4, min: 0, max: 40, step: 1, group: 'Economy',
     label: 'Starting treasury (turns of income)',
     doc: 'Every nation opens with this many turns of gross tax income banked. Without it the treasury is zero at turn 0 and no priced action is affordable until several world turns have passed.',
-  },
-  'econ.occupationHostility': {
-    v: 1.0, min: 0, max: 3, step: 0.05, group: 'Economy',
-    label: 'Occupation hostility multiplier',
-    doc: 'How strongly an Area\'s hostility scales its upkeep.',
   },
 
   /* ---------------- market ---------------- */
@@ -894,6 +894,47 @@ export const SCHEMA = {
     label: 'AI: score below which a nation passes',
     doc: 'The bar a move must clear to be worth doing at all. Above zero on purpose: a nation that acts every single turn because something scored 0.001 is both unrealistic and exhausting to play against.',
   },
+  /*
+   * TRADE (M11.1). Two weights, because a deal buys two different things and a
+   * nation that valued only the money would trade with whoever happened to have
+   * the biggest mismatched surplus and never with the neighbour it needs to
+   * stop being afraid of.
+   */
+  'ai.wTrade': {
+    v: 0.9, min: 0, max: 4, step: 0.05, group: 'AI',
+    label: 'AI: weight of what a trade deal pays',
+    doc: 'The treasury income from a bilateral deal, as a share of a turn of gross income. Deliberately below wGrowth: a deal is small, safe and repeatable, and a nation that rated it against an annexation on money alone would never take ground again.',
+  },
+  'ai.wAmity': {
+    v: 1.1, min: 0, max: 4, step: 0.05, group: 'AI',
+    label: 'AI: weight of what a trade deal buys in standing',
+    doc: 'What trading is FOR, beyond the money. It is the one relations channel ordinary play generates that does not involve taking something from somebody, and it is worth most to a nation the partner currently mistrusts \u2014 so the term scales with how far the relationship has to travel, not with how good it already is. Above wTrade on purpose: the diplomacy is the point.',
+  },
+  'ai.wPact': {
+    v: 0.8, min: 0, max: 4, step: 0.05, group: 'AI',
+    label: 'AI: weight of signing a pact',
+    doc: 'What a treaty is worth to the nation signing it. Scaled by how exposed the signer is to the other side \u2014 a pact with the neighbour that could take your capital is worth a great deal and one with a rump across the continent is worth nothing.',
+  },
+  'ai.wPatronage': {
+    v: 0.7, min: 0, max: 4, step: 0.05, group: 'AI',
+    label: 'AI: weight of buying a client',
+    doc: 'What aid is worth beyond the money it costs, scaled by how much of the recipient\u2019s politics the payment actually buys. A nation pursuing Ideological Dominance rates this far above a nation pursuing anything else, because it is the only lever on the sway term that is not "wait".',
+  },
+  'ai.wDeny': {
+    v: 1.3, min: 0, max: 5, step: 0.05, group: 'AI',
+    label: 'AI: weight of denying the leader',
+    doc: 'How much a nation cares that somebody else is about to win. Scored on the move\u2019s effect on the LEADER\u2019s binding requirement rather than on its own progress \u2014 taking ground off the nation closing on Reunification is worth doing even when it advances nothing of yours. Without it the AI plays solitaire beside a human reading the victory table.',
+  },
+  'ai.denyBar': {
+    v: 0.6, min: 0, max: 1, step: 0.05, group: 'AI',
+    label: 'Progress at which a nation is worth denying',
+    doc: 'A rival past this much of any victory condition becomes a target. Set below win.warnAt so the AI starts pushing back before the newspaper starts shouting \u2014 an opponent that only reacts once the alarm fires reacts too late to matter.',
+  },
+  'coalition.wVictory': {
+    v: 0.55, min: 0, max: 2, step: 0.05, group: 'Coalitions',
+    label: 'Threat from being close to winning',
+    doc: 'Coalition threat was size x (1 - influence), and BOTH non-conquest victories keep influence high by construction \u2014 so no coalition ever formed against a nation quietly winning Ideological Dominance or Economic Supremacy, and the anti-snowball machinery only ever pointed at conquerors. This term reads victory proximity directly: a nation over ai.denyBar is threatening whatever the world thinks of it.',
+  },
   'ai.wVictory': {
     v: 1.30, min: 0, max: 4, step: 0.05, group: 'AI',
     label: 'AI: weight of closing on a victory condition',
@@ -992,6 +1033,27 @@ export const SCHEMA = {
     doc: 'Used only when an AI weighs a crisis option: a nation with a year of reserves values cash at nothing, one with two turns of it values cash above everything.',
   },
   /* ---------------- war weariness ---------------- */
+  /*
+   * ITS OWN RATE LIMITS, AND THE ASYMMETRY IS THE OTHER WAY UP (M9.8).
+   *
+   * The other four stocks are things a nation HAS, so `power.maxFall` (0.08) is
+   * deliberately larger than `power.maxRise` (0.05): standing is easier to lose
+   * than to build. Weariness is a thing a nation SUFFERS, and inheriting those
+   * limits silently inverted it — a country could exhaust itself only slowly and
+   * then shrug the exhaustion off half again as fast, which is the opposite of
+   * what the stock is for. The bill is supposed to arrive while you are still
+   * fighting and to still be there afterwards.
+   */
+  'power.weariness.maxRise': {
+    v: 0.08, min: 0.005, max: 0.5, step: 0.005, group: 'Power',
+    label: 'War weariness: maximum rise per turn',
+    doc: 'The most weariness can gain in one turn. Larger than its fall, and that is the inversion of the other four stocks: a war tires a country faster than peace rests it.',
+  },
+  'power.weariness.maxFall': {
+    v: 0.05, min: 0.005, max: 0.5, step: 0.005, group: 'Power',
+    label: 'War weariness: maximum fall per turn',
+    doc: 'The most weariness can shed in one turn. Smaller than its rise, so the cost of a war outlives the war. Until M9.8 weariness inherited power.maxRise/power.maxFall and therefore climbed at 0.05 and fell at 0.08 \u2014 exactly backwards.',
+  },
   'power.weariness.base': {
     v: 0, min: 0, max: 1, step: 0.01, group: 'Power',
     label: 'War weariness: base',
@@ -1107,6 +1169,21 @@ export const SCHEMA = {
     v: 0.20, min: -1, max: 1, step: 0.01, group: 'Relations',
     label: 'Relations: they recognised us',
     doc: 'What a new state feels toward whoever went first. Bigger than a trade deal and smaller than being handed ground, because acknowledging a country costs the acknowledger something and gives the acknowledged everything.',
+  },
+  'rel.magTreatied': {
+    v: 0.18, min: 0, max: 2, step: 0.01, group: 'Relations',
+    label: 'Memory: signed a pact together',
+    doc: 'What a signature is worth in standing on the day it is signed. Small, because the pact itself is the standing \u2014 it sits on the board and feeds the Influence term for as long as it holds, where this decays like every other memory.',
+  },
+  'rel.magAided': {
+    v: 0.30, min: 0, max: 2, step: 0.01, group: 'Relations',
+    label: 'Memory: they paid for something of ours',
+    doc: 'Gratitude, and it is ONE-DIRECTIONAL \u2014 the recipient thinks better of the donor and the donor has no new opinion beyond being out of pocket. Larger than a trade deal because a gift is not a bargain.',
+  },
+  'rel.magReneged': {
+    v: -1.4, min: -3, max: 0, step: 0.05, group: 'Relations',
+    label: 'Memory: they tore up a pact with us',
+    doc: 'A betrayal, and worse than being annexed by somebody who never promised otherwise \u2014 which is the entire reason a treaty is worth signing. A nation that breaks pacts finds nobody will sign the next one, and the Influence term charges it separately.',
   },
   'rel.magBetrayed': {
     v: -0.16, min: -1, max: 1, step: 0.01, group: 'Relations',
@@ -1487,6 +1564,16 @@ export const SCHEMA = {
     label: 'Progress at which a nation\u2019s approach is reported',
     doc: 'The newspaper names anybody this close to a victory condition. Without it the end of the game arrives with no build-up \u2014 measured in play: Delaware won Ideological Dominance on turn 30 and the first the player heard of it was the end screen. A game you can lose without seeing it coming is one you cannot play against.',
   },
+  'win.warnDelta': {
+    v: 0.03, min: 0, max: 0.5, step: 0.005, group: 'Victory',
+    label: 'How far a nation must MOVE before its approach is reported',
+    doc: 'The alarm fires on movement toward a victory, not on standing near one. Without it the newspaper cried wolf from turn 1 \u2014 three nations "84% of the way" on the opening board \u2014 because the binding terms of two of the three conditions are power stocks that open close to their targets and simply sit there. A nation that has been 84% of the way for thirty turns is not news; a nation that was 84% last turn and is 87% now is. MEASURED at seed 20260829 over 40 turns, across every nation already past win.warnAt: 314 turn-to-turn moves, median +0.0127, so a threshold of 0.01 fires on less than routine settling and is not a threshold at all. At 0.03 the same run reports 3 times after the grace period; at 0.01 it reports 98 times, which is wallpaper.',
+  },
+  'win.warnRepeatTurns': {
+    v: 6, min: 1, max: 40, step: 1, group: 'Victory',
+    label: 'Turns before the same warning repeats',
+    doc: 'The same nation and the same condition are not reported again inside this window, however much they move. An alarm that fires every turn is wallpaper, and wallpaper is what the player stops reading three turns before the one that mattered.',
+  },
   'win.graceTurns': {
     v: 12, min: 0, max: 80, step: 1, group: 'Victory',
     label: 'Turns before anyone can win',
@@ -1557,6 +1644,136 @@ export const SCHEMA = {
     label: 'Economic Supremacy: quality of life floor',
     doc: 'Wealth that never reaches anybody is not supremacy, it is a statistic.',
   },
+  /* ---------------- the ground itself (M12) ---------------- */
+  /*
+   * Per-Area quality of life and civil liberties. Both were national stocks, so
+   * every Area of a country was exactly as pleasant and exactly as free as
+   * every other one, and grievance had no gradient to build on inside a border.
+   *
+   * The shape is deliberately "the nation's stock, adjusted by what is true
+   * HERE" rather than a second full formula: the national stock already reads
+   * everything national (solvency, government, war weariness, the leader), and
+   * a per-Area version that re-derived those would be a second implementation
+   * of the same thing that could disagree with the panel.
+   */
+  'area.qolWealthWeight': {
+    v: 0.30, min: 0, max: 1, step: 0.01, group: 'The ground',
+    label: 'How much local wealth moves an Area\u2019s quality of life',
+    doc: 'The Area\u2019s GDP per head against the nation\u2019s own median, compressed. This is the term that makes a rich coast and a poor interior two different places to live inside one country \u2014 and it is measured against the NATION\u2019s median rather than the continent\u2019s, because what makes somewhere feel left behind is the rest of its own country.',
+  },
+  'area.qolOccupied': {
+    v: -0.18, min: -1, max: 0, step: 0.01, group: 'The ground',
+    label: 'Quality of life on occupied ground',
+    doc: 'Living under a government that took the place by force. Applied to the Area rather than to the nation, which is the whole point: a conqueror\u2019s own cities are not made worse by the conquest, and the ground it took is.',
+  },
+  'area.qolAutonomy': {
+    v: 0.10, min: 0, max: 1, step: 0.01, group: 'The ground',
+    label: 'Quality of life where the Area governs itself',
+    doc: 'Autonomy buys quiet with self-rule and pays in revenue and reach. This is the quiet, made local \u2014 the thing the Area actually gets in exchange.',
+  },
+  'area.libGarrison': {
+    v: -0.35, min: -1, max: 0, step: 0.01, group: 'The ground',
+    label: 'Civil liberties under a garrison',
+    doc: 'Troops on the street, per Area rather than averaged over the country. A nation garrisoning one restive province is not a police state everywhere, which is what the national stock had to say before M12.',
+  },
+  'area.libAutonomy': {
+    v: 0.18, min: 0, max: 1, step: 0.01, group: 'The ground',
+    label: 'Civil liberties where the Area governs itself',
+    doc: 'The other side of the autonomy trade: a place running its own affairs is freer in them.',
+  },
+  'area.libOccupied': {
+    v: -0.22, min: -1, max: 0, step: 0.01, group: 'The ground',
+    label: 'Civil liberties on occupied ground',
+    doc: 'Occupation is administered, and administration under arms is not free. Larger than the quality-of-life penalty because an occupier can pave the roads and still not let anybody vote.',
+  },
+  'area.maxRise': {
+    v: 0.06, min: 0.005, max: 0.5, step: 0.005, group: 'The ground',
+    label: 'Most an Area stock may rise in one turn',
+    doc: 'Rate-limited like every other stock in this game, and for the same reason: a place does not become somewhere else in a quarter, and the lag is what makes a decade of bad government a story rather than a step change.',
+  },
+  'area.maxFall': {
+    v: 0.09, min: 0.005, max: 0.5, step: 0.005, group: 'The ground',
+    label: 'Most an Area stock may fall in one turn',
+    doc: 'Larger than the rise, like the national stocks: somewhere is easier to ruin than to build.',
+  },
+  'sent.wLocal': {
+    v: 0.55, min: 0, max: 1, step: 0.05, group: 'Sentiment',
+    label: 'How much of grievance reads the AREA rather than the nation',
+    doc: 'Grievance blends the Area\u2019s own quality of life and liberties with its nation\u2019s. At 1.0 the national stocks would stop mattering to sentiment at all, which is wrong \u2014 a country in crisis is a country in crisis everywhere; at 0 nothing local matters, which is where the model was before M12. It is a blend because both are true.',
+  },
+  'migration.wLocal': {
+    v: 0.6, min: 0, max: 1, step: 0.05, group: 'Migration',
+    label: 'How much of the migration pull reads the AREA rather than the nation',
+    doc: 'The same blend for the same reason, and higher: people move to a PLACE. Somebody leaving a poor interior for a rich coast has not changed country, and before M12 that move was invisible to the model because both ends read the same two national numbers.',
+  },
+
+  /* ---------------- treaties and aid (M11.2) ---------------- */
+  'treaty.cooldownTurns': {
+    v: 6, min: 0, max: 40, step: 1, group: 'Diplomacy',
+    label: 'Turns between treaties',
+    doc: 'A nation may sign one pact this often. Without a clock a nation signs with every neighbour on consecutive turns and a treaty network is a formality rather than a choice about who matters.',
+  },
+  'treaty.minStanding': {
+    v: -0.2, min: -1, max: 1, step: 0.05, group: 'Diplomacy',
+    label: 'Standing needed before anybody will sign',
+    doc: 'How the other side has to feel about you before a signature is possible, on the -1..1 relations scale. Set below zero on purpose: two nations that merely tolerate each other are exactly the pair a non-aggression pact is FOR, and requiring warmth first would make treaties a reward for a relationship rather than a way of building one.',
+  },
+  'power.influence.wTreaty': {
+    v: 0.16, min: 0, max: 1, step: 0.01, group: 'Power',
+    label: 'Influence: weight of the treaty record',
+    doc: 'Pacts held, minus breaches at breachWeight. The standing a nation earns by being somebody whose signature means something \u2014 and the first Influence term that rewards a promise rather than a possession.',
+  },
+  'power.influence.treatyK': {
+    v: 4, min: 1, max: 30, step: 1, group: 'Power',
+    label: 'Treaty record at which the term is half',
+    doc: 'Saturation constant. Four live pacts is a nation with a diplomatic policy; forty would be a nation that has signed with everybody, and the term should not keep paying for that.',
+  },
+  'power.influence.breachWeight': {
+    v: 2.5, min: 0, max: 10, step: 0.1, group: 'Power',
+    label: 'How many pacts a broken one costs',
+    doc: 'A breach is worth more than a signature, and the asymmetry is the whole mechanic: signing is cheap, so without it a serial betrayer simply out-signs their own reputation. At 2.5 a nation that breaks one pact has to keep three to get back to level.',
+  },
+  'power.influence.wAid': {
+    v: 0.12, min: 0, max: 1, step: 0.01, group: 'Power',
+    label: 'Influence: weight of the nations you are funding',
+    doc: 'How many client states you keep, and how strongly. Standing bought rather than earned \u2014 which is why it is the smallest of the positive terms and why it evaporates the moment the payments stop.',
+  },
+  'power.influence.clientsK': {
+    v: 3, min: 1, max: 30, step: 1, group: 'Power',
+    label: 'Client weight at which the aid term is half',
+    doc: 'Saturation constant on the summed patron weight, not the head count: one country deeply in your pocket is worth about as much as three that took a cheque once.',
+  },
+  'aid.shareOfTreasury': {
+    v: 0.12, min: 0.01, max: 1, step: 0.01, group: 'Diplomacy',
+    label: 'Share of the treasury one payment moves',
+    doc: 'Aid is a fixed share of what the donor holds rather than a number the player types, for the same reason every other price here is derived: a figure the player chooses is a figure the AI cannot compare against, and the interesting decision is WHO to fund, not how much.',
+  },
+  'aid.cooldownTurns': {
+    v: 4, min: 0, max: 40, step: 1, group: 'Diplomacy',
+    label: 'Turns between payments to the same nation',
+    doc: 'A patron cannot simply pay every turn until the client is theirs. The clock is what makes buying a country\u2019s politics take years rather than a rich afternoon.',
+  },
+  'aid.patronGain': {
+    v: 1.2, min: 0, max: 6, step: 0.05, group: 'Diplomacy',
+    label: 'Patron weight bought per share of income given',
+    doc: 'How much of a client one payment makes, per unit of "the payment as a share of the recipient\u2019s annual income". Scaling by the RECIPIENT\u2019s income rather than the donor\u2019s is what makes small countries cheap to buy and large ones effectively unbuyable, which is the correct shape.',
+  },
+  'aid.patronMax': {
+    v: 0.35, min: 0, max: 1, step: 0.01, group: 'Diplomacy',
+    label: 'Most of a nation\u2019s politics a patron can own',
+    doc: 'The cap on the blend in phasePoliticalDrift: at 0.35 a fully-bought client governs about a third like its patron and two thirds like itself. A cap under 1 is the statement that money cannot buy a country outright, which is what stops Ideological Dominance from being a purchase.',
+  },
+  'aid.patronDecay': {
+    v: 0.08, min: 0, max: 1, step: 0.01, group: 'Diplomacy',
+    label: 'Share of patron weight lost each turn',
+    doc: 'A patron who stops paying stops being one. At 0.08 a relationship left alone is half gone in about nine turns, so the lever has to be held down rather than pulled once.',
+  },
+  'aid.recognitionBoost': {
+    v: 0.25, min: 0, max: 2, step: 0.05, group: 'Diplomacy',
+    label: 'How much aid moves the chance of being recognised',
+    doc: 'Added to the recipient\u2019s per-turn chance of recognising the donor, scaled by patron weight. Aid is how an unrecognised state buys its way onto the map, which is the one route out of the recognition trap that does not involve winning a war.',
+  },
+
   /* ---------------- coalitions ---------------- */
   'coalition.trigger': {
     v: 0.085, min: 0, max: 0.5, step: 0.005, group: 'Coalitions',
@@ -1658,6 +1875,26 @@ export class Tune {
       else unknown.push(k);
     }
     return unknown;
+  }
+
+  /**
+   * Become exactly this override map: schema defaults everywhere else (M9.8).
+   *
+   * `load` MERGES, which is right for the authored `content/tunables.json`
+   * applied over the defaults at boot, and wrong for a save. A document carries
+   * `TUNE.diff()` — the overrides the game was PLAYED with — and merging it
+   * into a session that has its own overrides produces a third tuning that
+   * neither the save nor the session ever ran on. The dev dashboard sets
+   * overrides on a live TUNE, so that is not hypothetical: move a slider, load
+   * a save, and the loaded game silently keeps your slider.
+   *
+   * A save that restores state has to restore ALL of it. Anything else is the
+   * same class of bug as the v1 format persisting two of eight stateful modules
+   * and letting the rest carry over from the session.
+   */
+  replace(overrides) {
+    for (const [k, def] of Object.entries(SCHEMA)) this.values[k] = cloneValue(def.v);
+    return this.load(overrides);
   }
 
   /** Only the keys that differ from the schema default — what content/tunables.json holds. */
