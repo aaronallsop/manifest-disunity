@@ -1,0 +1,45 @@
+{
+  "_note": "The six symmetric ideologies on two axes. ONE function drives everything downstream: affinity(a,b) = 1 - distance(a,b)/maxDistance. Coalitions, drift attraction, liberty satisfaction, trade alignment, defection targets and AI diplomacy all derive from it, which is what makes six ideologies cost two numbers each instead of fifteen hand-authored compatibility pairs. Shared economic axis means trade alignment; shared social axis means moral alignment.",
+  "axes": ["economic", "social"],
+  "axisLabels": {
+    "economic": ["collective", "market"],
+    "social": ["liberal", "traditional"]
+  },
+  "ideologies": [
+    { "id": "red",    "name": "Republican",               "short": "Rep",  "economic":  0.6, "social":  0.2, "color": "#e0483b" },
+    { "id": "blue",   "name": "Democrat",                 "short": "Dem",  "economic":  0.3, "social": -0.4, "color": "#3b6fe0" },
+    { "id": "green",  "name": "Democratic Socialist",     "short": "DSoc", "economic": -0.6, "social": -0.7, "color": "#33a852" },
+    { "id": "yellow", "name": "Conservative Nationalist", "short": "CNat", "economic":  0.5, "social":  0.7, "color": "#e3c229" },
+    { "id": "orange", "name": "Distributist",             "short": "Dist", "economic": -0.4, "social":  0.6, "color": "#e8862d" },
+    { "id": "purple", "name": "Socialist",                "short": "Soc",  "economic": -0.8, "social": -0.2, "color": "#8a5cf5" }
+  ],
+
+  "_otherSplit": "The 2024 result gives three numbers: R, D and Other. R becomes red and D becomes blue; Other is the residual that everything outside the two-party system lived in, and it is split across the remaining four BY REGION, because a third-party voter in Vermont and one in Alabama are not the same person. Weights are over [green, yellow, orange, purple] and are normalised on load. Keys are cultural-region names from data/cultural.mapmode.json; `default` covers anything unlisted or absent. Other is only 1-4% of most counties, so this table sets the texture rather than the shape - the bulk of minority-ideology presence comes from movements.",
+  "otherSplit": {
+    "default":              { "green": 0.25, "yellow": 0.25, "orange": 0.25, "purple": 0.25 },
+
+    "California":           { "green": 0.40, "yellow": 0.15, "orange": 0.15, "purple": 0.30 },
+    "Pacific Northwest":    { "green": 0.45, "yellow": 0.15, "orange": 0.10, "purple": 0.30 },
+    "Southwest":            { "green": 0.20, "yellow": 0.30, "orange": 0.35, "purple": 0.15 },
+    "Mormon Corridor":      { "green": 0.05, "yellow": 0.60, "orange": 0.30, "purple": 0.05 },
+    "Great Basin":          { "green": 0.15, "yellow": 0.40, "orange": 0.25, "purple": 0.20 },
+    "Northern Rockies":     { "green": 0.15, "yellow": 0.45, "orange": 0.25, "purple": 0.15 },
+    "Alaska":               { "green": 0.20, "yellow": 0.40, "orange": 0.30, "purple": 0.10 },
+    "Hawaii":               { "green": 0.35, "yellow": 0.10, "orange": 0.40, "purple": 0.15 },
+
+    "Great Plains":         { "green": 0.10, "yellow": 0.40, "orange": 0.40, "purple": 0.10 },
+    "Dakotas":              { "green": 0.10, "yellow": 0.35, "orange": 0.45, "purple": 0.10 },
+    "Great Lakes":          { "green": 0.25, "yellow": 0.20, "orange": 0.30, "purple": 0.25 },
+    "Ohio River Valley":    { "green": 0.20, "yellow": 0.30, "orange": 0.35, "purple": 0.15 },
+
+    "Texas":                { "green": 0.15, "yellow": 0.45, "orange": 0.30, "purple": 0.10 },
+    "Deep South":           { "green": 0.15, "yellow": 0.50, "orange": 0.25, "purple": 0.10 },
+    "Gulf Coast":           { "green": 0.20, "yellow": 0.40, "orange": 0.30, "purple": 0.10 },
+    "Southern Tidewaters":  { "green": 0.25, "yellow": 0.35, "orange": 0.25, "purple": 0.15 },
+    "Appalachia":           { "green": 0.10, "yellow": 0.40, "orange": 0.40, "purple": 0.10 },
+
+    "New England":          { "green": 0.45, "yellow": 0.10, "orange": 0.20, "purple": 0.25 },
+    "Atlantic Coast":       { "green": 0.35, "yellow": 0.15, "orange": 0.20, "purple": 0.30 },
+    "Eerie":                { "green": 0.25, "yellow": 0.25, "orange": 0.30, "purple": 0.20 }
+  }
+}

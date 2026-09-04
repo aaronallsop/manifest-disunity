@@ -1,0 +1,259 @@
+{
+  "note": "Authored crises. Each has a `when` predicate over facts the model already computes (see js/events.js FACTS), a `weight` for the draw, and two or three `options` whose `effects` come from a closed vocabulary. Nothing here invents a mechanic: every effect moves a number some other system owns, which is what keeps an event a nudge and a story rather than a second design.",
+  "events": [
+    {
+      "id": "harvest-fails",
+      "title": "The harvest fails",
+      "text": "Two dry seasons in a row. The silos in {NATION} will not carry the winter, and the price of bread is already the only thing anybody is talking about.",
+      "when": { "qol": { "below": 0.62 }, "minTurn": 5 },
+      "weight": 4,
+      "options": [
+        {
+          "label": "Buy grain at any price",
+          "note": "The treasury covers it. Nobody asks what it cost until later.",
+          "effects": { "treasuryShare": -0.35, "qol": 0.05 }
+        },
+        {
+          "label": "Ration it",
+          "note": "Fair, orderly, and deeply resented.",
+          "effects": { "liberties": -0.05, "sentiment": 0.025, "authority": 0.02 }
+        },
+        {
+          "label": "Let the market handle it",
+          "note": "It will, eventually, and not to everybody.",
+          "effects": { "qol": -0.06, "sentiment": 0.03 }
+        }
+      ]
+    },
+    {
+      "id": "general-refuses",
+      "title": "A general will not go",
+      "text": "The officer commanding {NATION}'s field army has written to say his men have been at this for years and he will not order them out again.",
+      "when": { "weariness": { "above": 0.4 } },
+      "weight": 5,
+      "options": [
+        {
+          "label": "Relieve him",
+          "note": "The army notices who was punished for saying it out loud.",
+          "effects": { "authority": 0.04, "weariness": 0.05, "liberties": -0.03 }
+        },
+        {
+          "label": "Stand the army down",
+          "note": "He was right, and everyone knows it.",
+          "effects": { "weariness": -0.12, "authority": -0.05, "standing": 0.06 }
+        },
+        {
+          "label": "Hear him out in public",
+          "note": "An unusual thing for a government to do.",
+          "effects": { "liberties": 0.05, "weariness": -0.05, "authority": -0.02 }
+        }
+      ]
+    },
+    {
+      "id": "border-incident",
+      "title": "Shots on the border",
+      "text": "A patrol strayed, or did not. Either way there are bodies on a line that {NATION}'s neighbours have been watching closely for some time.",
+      "when": { "coalition": { "above": 0.15 } },
+      "weight": 4,
+      "options": [
+        {
+          "label": "Apologise, fully and publicly",
+          "note": "Humiliating, and it works.",
+          "effects": { "standing": 0.12, "influence": 0.03, "authority": -0.04 }
+        },
+        {
+          "label": "Say nothing",
+          "note": "The story will move on. The file will not.",
+          "effects": { "standing": -0.06 }
+        },
+        {
+          "label": "Reinforce the line",
+          "note": "Nobody crosses it again this year.",
+          "effects": { "standing": -0.14, "authority": 0.05, "weariness": 0.04 }
+        }
+      ]
+    },
+    {
+      "id": "home-rule-petition",
+      "title": "A petition for home rule",
+      "text": "Half a million signatures, gathered in one quarter, asking that a region of {NATION} be allowed to govern itself. The organisers are careful to say they are not separatists.",
+      "when": { "strain": { "above": 0.55 } },
+      "weight": 5,
+      "options": [
+        {
+          "label": "Receive the petition",
+          "note": "Which is not agreeing, and is not nothing.",
+          "effects": { "sentiment": -0.02, "liberties": 0.04, "authority": -0.03 }
+        },
+        {
+          "label": "Refuse to receive it",
+          "note": "The signatures do not go away.",
+          "effects": { "sentiment": 0.035, "authority": 0.03 }
+        }
+      ]
+    },
+    {
+      "id": "foreign-investment",
+      "title": "An offer from abroad",
+      "text": "A consortium wants to build in {NATION} on terms that are generous and not entirely explained.",
+      "when": { "influence": { "above": 0.4 }, "minTurn": 8 },
+      "weight": 3,
+      "options": [
+        {
+          "label": "Take the money",
+          "effects": { "treasuryShare": 0.5, "influence": -0.04 }
+        },
+        {
+          "label": "Take it, with conditions",
+          "effects": { "treasuryShare": 0.25, "standing": 0.05 }
+        },
+        {
+          "label": "Decline",
+          "note": "A government that cannot be bought is worth something.",
+          "effects": { "authority": 0.04, "influence": 0.03 }
+        }
+      ]
+    },
+    {
+      "id": "veterans-march",
+      "title": "The veterans march",
+      "text": "They came from every part of {NATION} and they are camped outside the government buildings. Most of them are not angry, which is worse.",
+      "when": { "weariness": { "above": 0.3 }, "liberties": { "below": 0.6 } },
+      "weight": 4,
+      "options": [
+        {
+          "label": "Meet them",
+          "effects": { "liberties": 0.06, "weariness": -0.06, "treasuryShare": -0.2 }
+        },
+        {
+          "label": "Clear the square",
+          "effects": { "liberties": -0.1, "sentiment": 0.04, "authority": 0.05 }
+        },
+        {
+          "label": "Wait them out",
+          "effects": { "weariness": 0.03, "authority": -0.03 }
+        }
+      ]
+    },
+    {
+      "id": "currency-crisis",
+      "title": "The currency slips",
+      "text": "{NATION} has been spending what it does not have for long enough that somebody has noticed out loud.",
+      "when": { "runway": { "below": 4 }, "minTurn": 6 },
+      "weight": 5,
+      "options": [
+        {
+          "label": "Austerity",
+          "effects": { "treasuryShare": 0.4, "qol": -0.07, "sentiment": 0.03 }
+        },
+        {
+          "label": "Borrow against next year",
+          "effects": { "treasuryShare": 0.6, "influence": -0.05, "authority": -0.03 }
+        },
+        {
+          "label": "Cut the army",
+          "note": "The one line item large enough to matter.",
+          "effects": { "treasuryShare": 0.3, "weariness": -0.08, "authority": -0.04 }
+        }
+      ]
+    },
+    {
+      "id": "rivals-collapse",
+      "title": "A neighbour comes apart",
+      "text": "The government next door has stopped governing. There are people at {NATION}'s border with everything they own.",
+      "when": { "neighbourDied": true },
+      "weight": 6,
+      "options": [
+        {
+          "label": "Open the border",
+          "effects": { "qol": -0.04, "standing": 0.12, "influence": 0.04 }
+        },
+        {
+          "label": "Close it",
+          "effects": { "standing": -0.1, "authority": 0.03 }
+        },
+        {
+          "label": "Open it, and say what it costs",
+          "effects": { "qol": -0.02, "standing": 0.05, "treasuryShare": -0.15 }
+        }
+      ]
+    },
+    {
+      "id": "arms-scandal",
+      "title": "Where the money went",
+      "text": "An auditor in {NATION} has found that a great deal of what was spent on the army did not reach it.",
+      "when": { "deployed": { "above": 0.3 }, "minTurn": 10 },
+      "weight": 3,
+      "options": [
+        {
+          "label": "Prosecute",
+          "effects": { "authority": 0.06, "liberties": 0.03, "treasuryShare": -0.1 }
+        },
+        {
+          "label": "Bury it",
+          "effects": { "liberties": -0.06, "authority": -0.04, "influence": -0.03 }
+        }
+      ]
+    },
+    {
+      "id": "constitutional-convention",
+      "title": "A convention is called",
+      "text": "Enough of {NATION}'s regions have asked for it that refusing would itself be the answer.",
+      "when": { "authority": { "below": 0.42 }, "minTurn": 8 },
+      "weight": 4,
+      "options": [
+        {
+          "label": "Let it sit",
+          "note": "And accept whatever it decides.",
+          "effects": { "authority": 0.08, "liberties": 0.05, "influence": -0.03, "sentiment": -0.02 }
+        },
+        {
+          "label": "Dissolve it",
+          "effects": { "authority": -0.06, "liberties": -0.07, "sentiment": 0.045 }
+        }
+      ]
+    },
+    {
+      "id": "movement-leader-arrested",
+      "title": "They arrested the wrong person",
+      "text": "A regional organiser was taken in for questioning in {NATION} and has not come out. The photographs are extremely good.",
+      "when": { "strain": { "above": 0.4 }, "liberties": { "below": 0.55 } },
+      "weight": 4,
+      "options": [
+        {
+          "label": "Release them, quietly",
+          "effects": { "sentiment": -0.015, "authority": -0.03 }
+        },
+        {
+          "label": "Charge them",
+          "effects": { "sentiment": 0.05, "liberties": -0.05, "authority": 0.04 }
+        },
+        {
+          "label": "Release them, and apologise",
+          "effects": { "sentiment": -0.03, "liberties": 0.05, "authority": -0.05 }
+        }
+      ]
+    },
+    {
+      "id": "good-year",
+      "title": "A good year",
+      "text": "Nothing in particular went wrong in {NATION}, which has not been true for a while.",
+      "when": { "qol": { "above": 0.7 }, "weariness": { "below": 0.15 }, "minTurn": 10 },
+      "weight": 2,
+      "options": [
+        {
+          "label": "Bank it",
+          "effects": { "treasuryShare": 0.35 }
+        },
+        {
+          "label": "Spend it at home",
+          "effects": { "qol": 0.05, "authority": 0.03 }
+        },
+        {
+          "label": "Spend it abroad",
+          "effects": { "standing": 0.1, "influence": 0.05 }
+        }
+      ]
+    }
+  ]
+}

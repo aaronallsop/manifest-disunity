@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nation States &mdash; 61 nations where 51 states were</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <header>
+        <div class="brand">
+          <h1>Nation States</h1>
+          <span class="tagline">The Union came apart. Sixty-one nations, and one of them is yours.</span>
+        </div>
+
+        <div class="toggle-group">
+          <span class="tg-label">Select</span>
+          <div class="toggle" role="group" aria-label="Selection mode">
+            <button data-mode="nations" class="active">Nations</button>
+            <button data-mode="counties">Counties</button>
+          </div>
+        </div>
+
+        <div class="toggle-group">
+          <span class="tg-label">Map</span>
+          <div class="color-toggle" role="group" aria-label="Map coloring">
+            <button data-color="standard" class="active">Standard</button>
+            <button data-color="pressure">Pressure</button>
+            <button data-color="political">Political</button>
+            <button data-color="gdp">GDP</button>
+            <button data-color="population">Population</button>
+            <button data-color="geographic">Geographic</button>
+            <button data-color="cultural">Culture</button>
+            <button data-color="economy">Economy</button>
+          </div>
+        </div>
+
+        <div class="toggle-group">
+          <span class="tg-label">Lines</span>
+          <div class="toggle" role="group" aria-label="County lines">
+            <button id="btn-clines" title="Show the individual county lines inside merged Areas">County lines</button>
+          </div>
+        </div>
+
+        <div class="toggle-group">
+          <span class="tg-label">Game</span>
+          <div class="savebar">
+            <button id="btn-menu" class="menu-btn" aria-haspopup="dialog"
+              title="New game, save, load, timeline, map editor">&#9776; Menu</button>
+          </div>
+        </div>
+      </header>
+
+      <div id="turnbar"></div>
+
+      <main>
+        <aside id="leaderboard"></aside>
+        <div id="map">
+          <div class="loading" id="loading">Loading map&hellip;</div>
+          <div class="legend" id="legend"></div>
+          <div class="toast" id="toast"></div>
+        </div>
+        <aside id="panel"></aside>
+      </main>
+
+      <!-- The game's memory (M9.7). Collapsed to one line; the record is a click away. -->
+      <div id="journal"></div>
+    </div>
+
+    <div id="modal"><div class="modal-card"><div class="modal-body"></div></div></div>
+
+    <!-- The end of the game. Empty until there is one. -->
+    <div id="endscreen"><div class="end-card"></div></div>
+
+    <!-- Who you are. Shown once, before a fresh game. -->
+    <div id="startscreen"><div class="start-card"></div></div>
+
+    <!-- The map, at every turn it has been. -->
+    <div id="timeline"></div>
+
+    <script type="module" src="js/boot-globals.js"></script>
+    <script src="lib/d3.v7.min.js"></script>
+    <script src="lib/topojson-client.min.js"></script>
+    <script src="js/colors.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/movements.js"></script>
+    <script src="js/civilwar.js"></script>
+    <script src="js/mapmodes.js"></script>
+    <script src="js/turns.js"></script>
+    <script src="js/moves.js"></script>
+    <script src="js/ai.js"></script>
+    <script src="js/victory.js"></script>
+    <script src="js/factions.js"></script>
+    <script src="js/military.js"></script>
+    <script src="js/projection.js"></script>
+    <script src="js/relations.js"></script>
+    <script src="js/recognition.js"></script>
+    <script src="js/pacts.js"></script>
+    <script src="js/coalitions.js"></script>
+    <script src="js/events.js"></script>
+    <script src="js/leaders.js"></script>
+    <script src="js/elections.js"></script>
+    <script src="js/history.js"></script>
+    <script src="js/identity.js"></script>
+    <script src="js/actions.js"></script>
+    <script src="js/leaderboard.js"></script>
+    <script src="js/ledger.js"></script>
+    <script src="js/journal.js"></script>
+    <script src="js/sentiment.js"></script>
+    <script src="js/migration.js"></script>
+    <script src="js/world.js"></script>
+    <script src="js/market.js"></script>
+    <script src="js/scenario.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/shell.js"></script>
+    <script src="js/panels.js"></script>
+    <script src="js/format.js"></script>
+    <script src="js/saves.js"></script>
+    <script src="js/telemetry.js"></script>
+    <script src="js/disclosure.js"></script>
+    <script src="js/objectives.js"></script>
+    <script src="js/menu.js"></script>
+    <script src="js/editor.js"></script>
+  </body>
+</html>

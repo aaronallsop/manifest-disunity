@@ -1,0 +1,984 @@
+/*
+ * Power: Authority, Influence, Quality of Life, Civil Liberties.
+ *
+ * EVERY FUNCTION RETURNS A WHY RECORD, and that convention is the point of this
+ * file — more than any individual formula in it.
+ *
+ *   { value: 0.62,
+ *     inputs: [ { label: 'Age', raw: 14, norm: 0.56, weight: 0.20,
+ *                 contribution: 0.112, key: 'power.authority.wAge' }, ... ],
+ *     summary: 'Long-established, but bleeding territory' }
+ *
+ * Three things fall out of it and none of them cost extra:
+ *   - the player-facing "why is my Authority falling?" panel is `inputs`;
+ *     nothing has to be recomputed to explain a number;
+ *   - the M5 dashboard's "show your work" view is the same array, and the
+ *     `key` on each input is the tunable slider that moves it;
+ *   - a test can assert a CONTRIBUTION rather than an outcome, so a formula
+ *     change that happens to preserve the total still fails the test that cared
+ *     about the term.
+ *
+ * TWO RULES THE WHOLE FILE OBEYS.
+ *
+ * 1. **Normalise before weighting.** Every input is mapped to 0..1 by an
+ *    explicit, named curve BEFORE its weight is applied. Weights are therefore
+ *    comparable to each other, and a slider labelled "weight of territorial
+ *    losses" means the same kind of thing as one labelled "weight of age". Raw
+ *    numbers with implicit scales are how a weight of 0.2 ends up dominating a
+ *    weight of 5.
+ *
+ * 2. **The CHANGE is rate-limited, not the value.** Authority and Influence are
+ *    stocks: each turn they move at most `power.maxRise` up or `power.maxFall`
+ *    down toward the target, and never below `power.floor`. This is the
+ *    anti-death-spiral guarantee and it is in from the start rather than added
+ *    when a spiral shows up, because by then the tuning is built on top of it.
+ *    A nation that loses a war has a bad decade, not an instant collapse.
+ *
+ * THE PURE/ADAPTER SEAM. The scoring functions take a plain input object and a
+ * tunable set — no globals, no DOM, no `Game` — so they are testable against
+ * hand-written numbers and runnable by the M5 simulator. The `gather*` functions
+ * at the bottom are the one place that reads the live model, and they exist so
+ * that the seam is a documented boundary rather than an accident.
+ */
+
+/* ------------------------------------------------------------------ */
+/* normalisation curves                                               */
+/* ------------------------------------------------------------------ */
+
+export const clamp01 = (x) => (x < 0 ? 0 : x > 1 ? 1 : (Number.isFinite(x) ? x : 0));
+
+/** Linear to `full`, then flat. For quantities with a natural "enough". */
+export const ramp = (x, full) => clamp01(full > 0 ? x / full : 0);
+
+/**
+ * Diminishing returns with no ceiling: `x / (x + k)`, so `k` is the half-way
+ * point. For unbounded counts — Areas lost, occupied ground — where the tenth
+ * event should matter less than the first but no amount should saturate to
+ * exactly 1.
+ */
+export const saturate = (x, k) => (x > 0 && k > 0 ? x / (x + k) : 0);
+
+/** Map a signed ratio into 0..1 with 0 at the centre. For "above or below par". */
+export const centred = (x, span) => clamp01(0.5 + (span > 0 ? x / (2 * span) : 0));
+
+/* ------------------------------------------------------------------ */
+/* the Why record                                                     */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Build a Why record from weighted terms.
+ *
+ * @param base   the value with every input at zero — where a nation sits before
+ *               anything good or bad has happened to it
+ * @param terms  [{ label, raw, norm, key, note }]. `norm` must already be 0..1;
+ *               the weight is read from `key` so the record can name the exact
+ *               slider that moves each term.
+ * @param tune   the tunable set
+ *
+ * Weights are SIGNED: positive for what builds a stock, negative for what drains
+ * it, exactly as the record reads back to a player. `value` is the clamped sum,
+ * but every contribution is kept unclamped, so "your Authority is at the floor
+ * and here is the 0.4 of pressure holding it there" is still answerable.
+ */
+export function build(base, terms, tune, summarise) {
+  const inputs = [];
+  let total = base;
+  for (const t of terms) {
+    if (!t) continue;
+    const weight = tune.get(t.key);
+    /*
+     * MOST INPUTS ARE "HOW MUCH OF A THING", 0..1, and clamping there is what
+     * keeps a stock's base meaningful: a nation with every input at zero sits
+     * exactly at its base.
+     *
+     * A few are genuinely SIGNED — the leadership term is the first, and it has
+     * to be, because a leader with no opinion about civil liberties must
+     * contribute nothing rather than half a weight. Mapping a signed value onto
+     * 0..1 with `centred` gives every nation a constant offset and quietly moves
+     * the base for everybody, which three "sits at the base" tests caught.
+     */
+    const norm = t.signed ? Math.max(-1, Math.min(1, Number(t.norm) || 0)) : clamp01(t.norm);
+    const contribution = weight * norm;
+    total += contribution;
+    inputs.push({ label: t.label, raw: t.raw, norm, weight, contribution, key: t.key, note: t.note,
+                  signed: !!t.signed });
+  }
+  const value = clamp01(total);
+  return { value, raw: total, base, inputs, summary: (summarise || defaultSummary)(value, inputs) };
+}
+
+/**
+ * "Long-established, but bleeding territory" — the two largest movers, named.
+ *
+ * Deliberately built from the SAME array the panel renders, rather than from a
+ * second pass over the source data. A summary that can disagree with the numbers
+ * beside it is worse than no summary.
+ */
+function defaultSummary(value, inputs) {
+  const band = value >= 0.75 ? 'Very strong' : value >= 0.55 ? 'Strong'
+    : value >= 0.35 ? 'Steady' : value >= 0.18 ? 'Weak' : 'Critical';
+  const ranked = inputs.filter((i) => Math.abs(i.contribution) > 1e-9)
+    .sort((a, b) => Math.abs(b.contribution) - Math.abs(a.contribution));
+  if (!ranked.length) return band;
+  const up = ranked.find((i) => i.contribution > 0);
+  const down = ranked.find((i) => i.contribution < 0);
+  const parts = [];
+  if (up) parts.push(`${up.label.toLowerCase()} helps`);
+  if (down) parts.push(`${down.label.toLowerCase()} hurts`);
+  return parts.length ? `${band} — ${parts.join(', ')}` : band;
+}
+
+/**
+ * Move a stock toward a target, rate-limited and floored.
+ *
+ * THIS is the anti-death-spiral guarantee. Rate-limiting the CHANGE rather than
+ * the value means a nation that has a catastrophic turn still ends it with most
+ * of the standing it had — the collapse takes a decade of bad turns, which is
+ * long enough to be a story and long enough to be recoverable. Limiting the
+ * value instead (clamping Authority to a minimum) leaves the *pressure*
+ * unbounded, so the moment the clamp is relaxed the nation falls off a cliff.
+ *
+ * The floor is separate and is a floor on the stock, not on the target: a nation
+ * can be under 0.4 of sustained downward pressure and still hold the floor,
+ * which is what stops "already losing" from being the same as "cannot recover".
+ */
+export function step(previous, target, tune, floorOverride, limits) {
+  /*
+   * `power.floor` exists to stop a DEATH SPIRAL: an Authority of zero makes
+   * everything worse which makes Authority lower, and a nation can never climb
+   * out. War weariness runs the other way — a floor there means a nation at
+   * peace is permanently eight per cent exhausted, paying quality of life and
+   * feeding every movement in its ground for a war it never fought. So the
+   * floor is a parameter, and weariness passes zero.
+   *
+   * THE RATE LIMITS ARE A PARAMETER FOR THE SAME REASON (M9.8). `power.maxFall`
+   * being larger than `power.maxRise` says "standing is easier to lose than to
+   * build", which is true of the four stocks a nation HAS and exactly backwards
+   * for the one it SUFFERS. Weariness passes its own pair, inverted; everybody
+   * else takes the shared ones by omitting the argument.
+   */
+  const floor = floorOverride == null ? tune.get('power.floor') : floorOverride;
+  const rise = tune.get((limits && limits.rise) || 'power.maxRise');
+  const fall = tune.get((limits && limits.fall) || 'power.maxFall');
+  if (previous == null) return Math.max(floor, clamp01(target));
+  const delta = clamp01(target) - previous;
+  const moved = previous + (delta > 0 ? Math.min(delta, rise) : Math.max(delta, -fall));
+  return Math.max(floor, clamp01(moved));
+}
+
+/* ------------------------------------------------------------------ */
+/* Authority                                                           */
+/* ------------------------------------------------------------------ */
+
+/**
+ * How firmly a state holds its own ground.
+ *
+ *   authority = f(age, tenure, wars won, solvency, cohesion)
+ *             - f(territory lost, occupation, overreach)
+ *
+ * The plan's list also names failed suppressions, coalition pressure and
+ * military readiness. None of those exist yet — suppression is M4, coalitions
+ * and the military are M6 — and inventing a placeholder for each would mean
+ * tuning the five real terms against three sources of zero. They arrive as terms
+ * here when the mechanics behind them do.
+ *
+ * OVERREACH is the term worth explaining. Taking ground raises Authority through
+ * `wars`, but taking a lot of ground *quickly* lowers it: a state digesting six
+ * conquests at once is not more secure than one that took two. That is what
+ * stops conquest from being a pure Authority engine, and it is the same shape as
+ * the plan's `blitz_pace`.
+ *
+ * @param a {turn, founded, since, cohesion, treasury, upkeep, areas, occupied,
+ *           gains: [{turn, areas, reason}], losses: [{turn, areas}], previous}
+ */
+export function authority(a, tune) {
+  const window = tune.get('nation.historyWindow');
+  const recent = (list) => (list || []).filter((e) => a.turn - e.turn <= window);
+
+  const age = Math.max(0, a.turn - (a.founded || 0));
+  const tenure = Math.max(0, a.turn - (a.since || 0));
+
+  const gains = recent(a.gains);
+  const losses = recent(a.losses);
+  const warAreas = gains.filter((e) => e.reason === 'war').reduce((s, e) => s + e.areas, 0);
+  const takenAreas = gains.reduce((s, e) => s + e.areas, 0);
+  const lostAreas = losses.reduce((s, e) => s + e.areas, 0);
+
+  // Solvency: how many turns of upkeep the treasury covers. A state that cannot
+  // pay for itself does not command; one sitting on ten years of reserves does.
+  const solvency = a.upkeep > 0 ? a.treasury / a.upkeep : (a.treasury > 0 ? Infinity : 0);
+
+  /*
+   * Overreach: acquisitions per turn over the window, ABOVE a free allowance.
+   *
+   * The allowance is what makes this "digesting six conquests at once" rather
+   * than "conquest is bad". Without it, measured: a single six-Area war over a
+   * 20-turn window scored +0.047 on wars won and -0.060 on overreach, so
+   * *winning a war lowered Authority* — which is not a design position anyone
+   * would defend, and the test that said "a won war did not raise Authority"
+   * caught it.
+   */
+  const pace = window > 0 ? takenAreas / window : 0;
+  const excess = Math.max(0, pace - tune.get('power.authority.paceFree'));
+
+  // Occupation: what share of what you hold is somebody else's soil.
+  const occupation = a.areas > 0 ? (a.occupied || 0) / a.areas : 0;
+
+  const terms = [
+    { label: 'Age', raw: age, norm: ramp(age, tune.get('power.authority.ageFull')),
+      key: 'power.authority.wAge', note: 'turns since founding' },
+    { label: 'Tenure', raw: tenure, norm: ramp(tenure, tune.get('power.authority.tenureFull')),
+      key: 'power.authority.wTenure', note: 'turns this ideology has governed' },
+    { label: 'Wars won', raw: warAreas, norm: saturate(warAreas, tune.get('power.authority.warsK')),
+      key: 'power.authority.wWars', note: 'Areas taken by force, recently' },
+    { label: 'Solvency', raw: solvency,
+      norm: ramp(Number.isFinite(solvency) ? solvency : 999, tune.get('power.authority.solvencyFull')),
+      key: 'power.authority.wSolvency', note: 'turns of upkeep the treasury covers' },
+    { label: 'Cohesion', raw: a.cohesion || 0, norm: clamp01(a.cohesion || 0),
+      key: 'power.authority.wCohesion', note: 'how ideologically united the population is' },
+    /*
+     * A new nation's honeymoon (M4.3), decaying over its remaining turns. It is
+     * a TERM rather than a patch on the value so that a player looking at a
+     * young country can see exactly why its Authority is where it is, and watch
+     * the reason expire.
+     */
+    { label: 'Honeymoon', raw: a.honeymoon || 0, norm: clamp01(a.honeymoon || 0),
+      key: 'power.authority.wHoneymoon', note: 'goodwill toward a government that just won independence' },
+    { label: 'Territory lost', raw: lostAreas, norm: saturate(lostAreas, tune.get('power.authority.lossesK')),
+      key: 'power.authority.wLosses', note: 'Areas lost, recently' },
+    { label: 'Occupation', raw: occupation, norm: clamp01(occupation),
+      key: 'power.authority.wOccupation', note: 'share of held ground that is foreign soil' },
+    { label: 'Self-rule', raw: a.autonomous || 0,
+      norm: a.areas > 0 ? clamp01((a.autonomous || 0) / a.areas) : 0,
+      key: 'power.authority.wAutonomy', note: 'share of held ground that governs itself' },
+    { label: 'Overreach', raw: pace, norm: saturate(excess, tune.get('power.authority.overreachK')),
+      key: 'power.authority.wOverreach', note: 'Areas taken per turn beyond what a state can digest' },
+    /*
+     * WHO IS IN CHARGE (M7.5). One named line, deliberately small: a leader
+     * should be a thumb on the scale and not the scale, or every other term in
+     * the record becomes noise. `centred` maps a modifier of roughly -1..1 onto
+     * the 0..1 a term wants, so a leader with no pull on this stock contributes
+     * exactly nothing.
+     */
+    { label: 'Leadership', signed: true, raw: a.leaderAuthority || 0, norm: a.leaderAuthority || 0,
+      key: 'power.authority.wLeader', note: a.leaderNote || 'the traits of whoever is in charge' },
+  ];
+
+  const record = build(tune.get('power.authority.base'), terms, tune, authoritySummary);
+  record.target = record.value;
+  record.value = step(a.previous, record.value, tune);
+  return record;
+}
+
+function authoritySummary(value, inputs) {
+  const band = value >= 0.75 ? 'Unquestioned' : value >= 0.55 ? 'Secure'
+    : value >= 0.35 ? 'Holding' : value >= 0.18 ? 'Strained' : 'Failing';
+  const ranked = inputs.filter((i) => Math.abs(i.contribution) > 1e-9)
+    .sort((a, b) => Math.abs(b.contribution) - Math.abs(a.contribution));
+  const up = ranked.find((i) => i.contribution > 0);
+  const down = ranked.find((i) => i.contribution < 0);
+  if (!up && !down) return band;
+  if (up && down) return `${band}: ${up.label.toLowerCase()} carries it, ${down.label.toLowerCase()} drags`;
+  return `${band}: ${(up || down).label.toLowerCase()} dominates`;
+}
+
+
+/* ------------------------------------------------------------------ */
+/* Influence                                                           */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Soft power: how much the rest of the world listens to you.
+ *
+ *   influence = f(economic weight, reach, alignment)
+ *             - f(conquest x (1 + influence), blitz pace, occupation)
+ *
+ * PROMOTED, NOT INVENTED. `evalTransit` in actions.js has been computing an
+ * ad-hoc, stateless version of exactly this since M1 — relative economic size,
+ * political alignment and need — recomputed inline per dialog and thrown away,
+ * so nothing outside the trade panel could read it and nothing persisted between
+ * turns. The two size and alignment terms here are that math, generalised from
+ * "against this one partner" to "against the world" and given somewhere to live.
+ * `need` stays in `evalTransit`, because it is a fact about one deal rather than
+ * about a nation.
+ *
+ * THE (1 + influence) SCALING IS THE POINT. The design asks for a cost that
+ * depends on standing: a superpower annexing a neighbour pays more in reputation
+ * than an unknown does, because it had more to spend. That falls out of scaling
+ * the conquest term by `1 + previous`, and it means Influence is the one stock
+ * whose *own* value is an input — which is also why it must be rate-limited, or
+ * the feedback runs away in either direction.
+ *
+ * WHAT IS NOT HERE YET. The plan also names QoL rank, civil liberties, treaties
+ * honoured and broken, and aid given. QoL and liberties arrive in M3.3 and are
+ * added as terms then; treaties and aid need mechanics that do not exist (M6).
+ * Same rule as Authority: a term arrives when the thing it measures does.
+ *
+ * @param a {turn, gdpShare, alignment, partners, areas, occupied,
+ *           gains: [{turn, areas, reason}], previous}
+ */
+export function influence(a, tune) {
+  const window = tune.get('nation.historyWindow');
+  const gains = (a.gains || []).filter((e) => a.turn - e.turn <= window);
+  const takenAreas = gains.reduce((s, e) => s + e.areas, 0);
+  const pace = window > 0 ? takenAreas / window : 0;
+  const excess = Math.max(0, pace - tune.get('power.influence.paceFree'));
+  const occupation = a.areas > 0 ? (a.occupied || 0) / a.areas : 0;
+
+  /*
+   * The cost of conquest scales with the standing you already had. `previous` is
+   * null on the first turn of a nation's life, and a brand-new nation has no
+   * reputation to spend, so it scales by 1 rather than by 1 + nothing.
+   */
+  const standing = 1 + (a.previous == null ? 0 : a.previous);
+  const conquest = takenAreas * standing;
+
+  const terms = [
+    { label: 'Economic weight', raw: a.gdpShare || 0,
+      norm: saturate(a.gdpShare || 0, tune.get('power.influence.gdpShareK')),
+      key: 'power.influence.wEconomy', note: 'share of world GDP' },
+    { label: 'Reach', raw: a.partners || 0,
+      norm: saturate(a.partners || 0, tune.get('power.influence.partnersK')),
+      key: 'power.influence.wReach', note: 'nations you have live trade relations with' },
+    { label: 'Alignment', raw: a.alignment || 0, norm: clamp01(a.alignment || 0),
+      key: 'power.influence.wAlignment',
+      note: 'how close the rest of the world is to you politically, weighted by their size' },
+    { label: 'Conquest', raw: conquest,
+      norm: saturate(conquest, tune.get('power.influence.conquestK')),
+      key: 'power.influence.wConquest',
+      note: 'Areas taken recently, scaled by the standing you had to spend' },
+    { label: 'Blitz', raw: pace, norm: saturate(excess, tune.get('power.influence.paceK')),
+      key: 'power.influence.wBlitz', note: 'Areas taken per turn beyond a pace the world tolerates' },
+    { label: 'Occupation', raw: occupation, norm: clamp01(occupation),
+      key: 'power.influence.wOccupation', note: 'share of held ground that is foreign soil' },
+    /*
+     * A FEEDBACK LOOP, deliberately: low Influence is what forms the coalition,
+     * and the coalition lowers Influence further. It is escapable — stop taking
+     * ground, let the relations decay, and the threat falls — but it does not
+     * let go on its own, which is what makes an overreach something you can
+     * lose rather than something you ride out.
+     */
+    { label: 'Coalition', raw: a.coalition || 0, norm: clamp01(a.coalition || 0),
+      key: 'power.influence.wCoalition', note: 'how much of the continent is lined up against you' },
+    /*
+     * WHO IS IN CHARGE (M7.5). One named line, deliberately small: a leader
+     * should be a thumb on the scale and not the scale, or every other term in
+     * the record becomes noise. `centred` maps a modifier of roughly -1..1 onto
+     * the 0..1 a term wants, so a leader with no pull on this stock contributes
+     * exactly nothing.
+     */
+    { label: 'Leadership', signed: true, raw: a.leaderInfluence || 0, norm: a.leaderInfluence || 0,
+      key: 'power.influence.wLeader', note: a.leaderNote || 'the traits of whoever is in charge' },
+    /*
+     * WHETHER ANYBODY ADMITS YOU EXIST (M7.8), as a DEFICIT: `legitimacy - 1`,
+     * so a fully recognised nation contributes exactly nothing and a wholly
+     * unrecognised one loses the whole weight. Written the other way round it
+     * would raise every established nation's Influence by a constant and quietly
+     * move the coalition trigger for the entire board — which is the mistake the
+     * leadership term made once already.
+     */
+    { label: 'Recognition', signed: true, raw: a.legitimacy == null ? 1 : a.legitimacy,
+      norm: (a.legitimacy == null ? 1 : a.legitimacy) - 1,
+      key: 'power.influence.wRecognition',
+      note: a.legitimacyNote || 'how much of the continent admits you are a country' },
+    /*
+     * THE TWO VERBS (M11.2). Both are standing a nation BUILT rather than
+     * standing it has by being large, and they are the first Influence terms
+     * that reward doing something for somebody else.
+     *
+     * TREATIES is signed: pacts held minus breaches at `breachWeight`, so the
+     * raw number goes negative for a serial betrayer. `saturate` on a negative
+     * would be nonsense, so the sign is carried out and the magnitude
+     * saturated — a nation that has broken five pacts is not ten times worse
+     * than one that has broken one, it is simply somebody nobody signs with.
+     */
+    { label: 'Treaties', signed: true, raw: a.treaties || 0,
+      norm: (a.treaties || 0) >= 0
+        ? saturate(a.treaties || 0, tune.get('power.influence.treatyK'))
+        : -saturate(-(a.treaties || 0), tune.get('power.influence.treatyK')),
+      key: 'power.influence.wTreaty',
+      note: 'pacts you hold, less the ones you have broken' },
+    /*
+     * AID is unsigned and small: standing bought rather than earned. It reads
+     * summed patron WEIGHT rather than a head count, because one country deeply
+     * in your pocket is worth about as much as three that took a cheque once —
+     * and it evaporates the moment the payments stop, which is what keeps
+     * Ideological Dominance a campaign rather than a purchase.
+     */
+    { label: 'Clients', raw: a.clients || 0,
+      norm: saturate(a.clients || 0, tune.get('power.influence.clientsK')),
+      key: 'power.influence.wAid', note: 'nations you are funding, by how deeply' },
+  ];
+
+  const record = build(tune.get('power.influence.base'), terms, tune, influenceSummary);
+  record.target = record.value;
+  record.value = step(a.previous, record.value, tune);
+  return record;
+}
+
+function influenceSummary(value, inputs) {
+  const band = value >= 0.75 ? 'Commanding' : value >= 0.55 ? 'Respected'
+    : value >= 0.35 ? 'Heard' : value >= 0.18 ? 'Marginal' : 'Ignored';
+  const ranked = inputs.filter((i) => Math.abs(i.contribution) > 1e-9)
+    .sort((a, b) => Math.abs(b.contribution) - Math.abs(a.contribution));
+  const up = ranked.find((i) => i.contribution > 0);
+  const down = ranked.find((i) => i.contribution < 0);
+  if (!up && !down) return band;
+  if (up && down) return `${band}: ${up.label.toLowerCase()} carries it, ${down.label.toLowerCase()} costs`;
+  return `${band}: ${(up || down).label.toLowerCase()} dominates`;
+}
+
+
+/* ------------------------------------------------------------------ */
+/* Quality of Life                                                     */
+/* ------------------------------------------------------------------ */
+
+/**
+ * How well a nation feeds, treats and pays its people.
+ *
+ *   qol = f(food security, healthcare, prosperity) - f(fiscal strain)
+ *
+ * FOOD IS A NEED, NOT A SECTOR. That is the whole instruction: the six-sector
+ * economy already reports Agriculture as a share of output, but a share of
+ * output is a fact about an economy, not about whether anyone eats. What matters
+ * is production PER PERSON against a per-person requirement — so the same
+ * agricultural output feeds a small nation and starves a large one, which is not
+ * something a sector share can express.
+ *
+ * AND FOOD CAN BE BOUGHT. A nation covers the requirement out of its own fields
+ * OR out of its wallet: `qol.foodImportShare` of GDP is treated as redirectable
+ * to imports. Without that term the model says the District of Columbia starves,
+ * which is not a claim about the world — it is a claim about a model that
+ * confused growing food with having food. The mechanic that falls out is the
+ * right one: agriculture or money, and a nation with neither is in trouble.
+ *
+ * HEALTHCARE has no sector, so it is not faked as one. It is bought out of
+ * income, and GDP per capita against a per-capita requirement is the honest
+ * proxy — the same one the real world's health outcomes track closely.
+ *
+ * PER NATION, FOR NOW. M4.2's grievance wants QoL per AREA, and the economy bake
+ * is already per Area, so that refinement is a change of scope rather than of
+ * model. What is here is what M3 asked for: one number per nation, cached once a
+ * turn, with its working attached.
+ *
+ * @param a {pop, gdp, agriculture, treasuryDelta, income, previous}
+ */
+export function qol(a, tune) {
+  const pop = a.pop || 0;
+  const perCap = pop > 0 ? a.gdp / pop : 0;
+
+  // Dollars of food-equivalent available per person per year: what the fields
+  // produce, plus the share of income a nation can redirect to imports.
+  const foodSupply = (a.agriculture || 0) + (a.gdp || 0) * tune.get('qol.foodImportShare');
+  const foodCover = pop > 0 ? (foodSupply / pop) / tune.get('qol.foodPerCapita') : 0;
+
+  const healthCover = perCap / tune.get('qol.healthPerCapita');
+
+  // Fiscal strain: a deficit measured against income, because a $1bn shortfall
+  // means something different to Wyoming and to California.
+  const strain = a.income > 0 ? Math.max(0, -(a.treasuryDelta || 0)) / a.income : 0;
+
+  const terms = [
+    { label: 'Food security', raw: foodCover, norm: clamp01(foodCover),
+      key: 'qol.wFood', note: 'domestic agriculture plus affordable imports, against the per-person requirement' },
+    { label: 'Healthcare', raw: healthCover, norm: clamp01(healthCover),
+      key: 'qol.wHealth', note: 'income per person against the per-person cost of care' },
+    { label: 'Prosperity', raw: perCap, norm: ramp(perCap, tune.get('qol.prosperityFull')),
+      key: 'qol.wProsperity', note: 'GDP per person' },
+    { label: 'Fiscal strain', raw: strain, norm: saturate(strain, tune.get('qol.strainK')),
+      key: 'qol.wStrain', note: 'this turn\'s deficit as a share of income' },
+    /*
+     * WAR WEARINESS (M7.3). The first place a tired country feels it: the young
+     * are elsewhere, the budget is elsewhere, and the years are going somewhere
+     * other than into anybody's life.
+     */
+    { label: 'War weariness', raw: a.weariness || 0, norm: clamp01(a.weariness || 0),
+      key: 'qol.wWeariness', note: 'what continuous war is costing at home' },
+    /*
+     * WHO IS IN CHARGE (M7.5). One named line, deliberately small: a leader
+     * should be a thumb on the scale and not the scale, or every other term in
+     * the record becomes noise. `centred` maps a modifier of roughly -1..1 onto
+     * the 0..1 a term wants, so a leader with no pull on this stock contributes
+     * exactly nothing.
+     */
+    { label: 'Leadership', signed: true, raw: a.leaderQol || 0, norm: a.leaderQol || 0,
+      key: 'qol.wLeader', note: a.leaderNote || 'the traits of whoever is in charge' },
+  ];
+
+  const record = build(tune.get('qol.base'), terms, tune, qolSummary);
+  record.target = record.value;
+  record.value = step(a.previous, record.value, tune);
+  return record;
+}
+
+function qolSummary(value, inputs) {
+  const band = value >= 0.75 ? 'Comfortable' : value >= 0.55 ? 'Decent'
+    : value >= 0.35 ? 'Getting by' : value >= 0.18 ? 'Hard' : 'Desperate';
+  const food = inputs.find((i) => i.label === 'Food security');
+  if (food && food.norm < 0.6) return `${band}: people are going hungry`;
+  const ranked = inputs.filter((i) => Math.abs(i.contribution) > 1e-9)
+    .sort((a, b) => Math.abs(b.contribution) - Math.abs(a.contribution));
+  const down = ranked.find((i) => i.contribution < 0);
+  const up = ranked.find((i) => i.contribution > 0);
+  if (down) return `${band}: ${down.label.toLowerCase()} is the drag`;
+  return up ? `${band}: ${up.label.toLowerCase()} carries it` : band;
+}
+
+/* ------------------------------------------------------------------ */
+/* Civil Liberties                                                     */
+/* ------------------------------------------------------------------ */
+
+/**
+ * How freely a state lets its people disagree with it.
+ *
+ *   liberties = f(alignment at home, government type, prosperity)
+ *             - f(occupation, dissent under a divided population)
+ *
+ * ALIGNMENT AT HOME IS THE HINGE, and it is why this could not be written before
+ * `gov.rulingIdeology` existed. A state governing people who broadly agree with
+ * it has no reason to restrict them; a state governing a population half of
+ * which sits at the far end of both axes is under constant pressure to. That
+ * pressure is measured as the population-weighted mean affinity between each
+ * Area's political mix and the ruling ideology — the same `affinity` function
+ * that drives everything else, pointed inward.
+ *
+ * The DIVIDED term is separate from alignment and is not a duplicate of it: a
+ * nation can be uniformly mildly-opposed (low alignment, high cohesion) or
+ * evenly split into two camps that agree with the government equally little
+ * (same alignment, low cohesion). The second is the harder one to govern
+ * liberally, and only cohesion can tell them apart.
+ *
+ * WHAT THIS FEEDS. M4.2's grievance reads `1 - liberty_satisfaction` as one of
+ * its factors, so this number is an input to whether people organise against
+ * their government — which is the mechanism the whole West slice is built on.
+ *
+ * @param a {alignment, cohesion, perCapita, areas, occupied, govType, previous}
+ */
+/**
+ * WAR WEARINESS — the fifth stock, and the only one that measures what a nation
+ * is doing to ITSELF.
+ *
+ * Nothing persisted between wars before M7.3: a nation could fight every turn
+ * for forty turns and the only trace was a treasury line. Weariness is what
+ * makes a war campaign a campaign rather than a series of unrelated rolls — it
+ * accumulates while you fight, decays while you do not, and it is felt at home
+ * in the two places a tired country would feel it: quality of life falls, and
+ * every movement in your own ground gets an argument it did not have.
+ *
+ * IT IS THE AGGRESSOR'S. Being invaded is already expensive — you lose Areas,
+ * Authority reads the losses, and sentiment reads the occupation. What had no
+ * cost at all was doing the invading, over and over, and winning.
+ *
+ * A STOCK, so it uses the same rate-limited `step` as the other four: a nation
+ * does not become exhausted in one turn and does not recover in one either, and
+ * that lag is the whole point — the bill arrives while you are still fighting.
+ */
+export function weariness(a, tune) {
+  const window = tune.get('nation.historyWindow');
+  const recent = (a.gains || []).filter((e) => a.turn - e.turn <= window);
+  const wars = recent.filter((e) => e.reason === 'war');
+  const warAreas = wars.reduce((s, e) => s + e.areas, 0);
+  const occupation = a.areas > 0 ? (a.occupied || 0) / a.areas : 0;
+  /*
+   * AN ARMY IN THE FIELD, not an army. Force size is not a choice in this game —
+   * `mil.manpowerShare` is fixed, so `force / pop` varies only with equipment
+   * and doctrine and reads as a constant 0.05-0.10 for every nation forever,
+   * which is a term carrying no information and a permanent drag with no lever.
+   *
+   * The POSTURE is chosen, every turn, and an expeditionary army is a burden in
+   * a way a border garrison is not: this is the one place the M6.5 allocation
+   * costs something at home, and it is what makes "everything to Field" a
+   * decision with a price rather than a free preparation.
+   */
+  const deployed = clamp01(a.deployed || 0);
+
+  const terms = [
+    { label: 'Wars fought', raw: wars.length,
+      norm: saturate(wars.length, tune.get('power.weariness.warsK')),
+      key: 'power.weariness.wWars', note: 'separate wars started, recently' },
+    { label: 'Ground taken by force', raw: warAreas,
+      norm: saturate(warAreas, tune.get('power.weariness.areasK')),
+      key: 'power.weariness.wAreas', note: 'Areas taken in those wars' },
+    { label: 'Occupation', raw: occupation, norm: clamp01(occupation),
+      key: 'power.weariness.wOccupation', note: 'share of held ground that is somebody else’s' },
+    { label: 'In the field', raw: deployed, norm: deployed,
+      key: 'power.weariness.wDeployed', note: 'share of the army posted abroad rather than at home' },
+    /*
+     * WHO IS IN CHARGE (M7.5). One named line, deliberately small: a leader
+     * should be a thumb on the scale and not the scale, or every other term in
+     * the record becomes noise. `centred` maps a modifier of roughly -1..1 onto
+     * the 0..1 a term wants, so a leader with no pull on this stock contributes
+     * exactly nothing.
+     */
+    { label: 'Leadership', signed: true, raw: a.leaderWeariness || 0, norm: a.leaderWeariness || 0,
+      key: 'power.weariness.wLeader', note: a.leaderNote || 'the traits of whoever is in charge' },
+  ];
+
+  const record = build(tune.get('power.weariness.base'), terms, tune, wearinessSummary);
+  record.target = record.value;
+  // Floor 0 (a nation at peace is not tired) and its own rate limits, which run
+  // the other way up to the other four stocks' — see step() and M9.8.
+  record.value = step(a.previous, record.value, tune, 0,
+    { rise: 'power.weariness.maxRise', fall: 'power.weariness.maxFall' });
+  return record;
+}
+
+function wearinessSummary(value, inputs) {
+  const band = value >= 0.7 ? 'Exhausted' : value >= 0.45 ? 'Weary'
+    : value >= 0.2 ? 'Strained' : 'Rested';
+  const ranked = inputs.filter((i) => Math.abs(i.contribution) > 1e-9)
+    .sort((a, b) => Math.abs(b.contribution) - Math.abs(a.contribution));
+  return ranked.length ? `${band}: ${ranked[0].label.toLowerCase()} weighs heaviest` : band;
+}
+
+export function gatherWeariness(facts, turn) {
+  if (!facts) return null;
+  const { n } = facts;
+  return {
+    turn,
+    pop: facts.pop,
+    areas: facts.areas,
+    occupied: facts.occupied,
+    // NOT `facts.gains`, which is filtered to conquest reasons only — that is
+    // the right filter here too, and it is the same one Authority reads.
+    gains: facts.gains,
+    deployed: typeof Military !== 'undefined'
+      ? (() => { const s = Military.state(n.id); return s ? s.alloc.field * s.ready.field : 0; })()
+      : 0,
+    leaderWeariness: lead(facts.nid, 'weariness'),
+    leaderNote: leaderNote(facts.nid),
+    previous: n.weariness,
+  };
+}
+
+export function liberties(a, tune) {
+  const tolerance = tune.get('qol.govTolerance');
+  const govTol = tolerance[a.govType] != null ? tolerance[a.govType] : tolerance.Republic;
+  const occupation = a.areas > 0 ? (a.occupied || 0) / a.areas : 0;
+  const divided = 1 - clamp01(a.cohesion || 0);
+
+  const terms = [
+    { label: 'Alignment at home', raw: a.alignment || 0, norm: clamp01(a.alignment || 0),
+      key: 'liberty.wAlignment',
+      note: 'how close the governed population sits to the governing ideology' },
+    { label: 'Government', raw: govTol, norm: clamp01(govTol),
+      key: 'liberty.wGovernment', note: 'how much dissent this form of government tolerates' },
+    { label: 'Prosperity', raw: a.perCapita || 0,
+      norm: ramp(a.perCapita || 0, tune.get('qol.prosperityFull')),
+      key: 'liberty.wProsperity', note: 'GDP per person; comfortable states restrict less' },
+    { label: 'A divided people', raw: divided, norm: divided,
+      key: 'liberty.wDivided',
+      note: 'how split the population is, apart from how far it sits from the government' },
+    { label: 'Occupation', raw: occupation, norm: clamp01(occupation),
+      key: 'liberty.wOccupation', note: 'share of held ground governed as occupied territory' },
+    /*
+     * THE PRICE OF HOLDING PEOPLE DOWN. A garrison buys quiet in the sentiment
+     * phase and pays for it here, in the stock that feeds the grievance driving
+     * the next movement. Without this, suppression is a free answer to secession
+     * and the whole valve is a button you would always press.
+     */
+    { label: 'Garrison', raw: a.garrison || 0, norm: clamp01(a.garrison || 0),
+      key: 'liberty.wGarrison', note: 'troops stationed among your own people' },
+    /*
+     * WHO IS IN CHARGE (M7.5). One named line, deliberately small: a leader
+     * should be a thumb on the scale and not the scale, or every other term in
+     * the record becomes noise. `centred` maps a modifier of roughly -1..1 onto
+     * the 0..1 a term wants, so a leader with no pull on this stock contributes
+     * exactly nothing.
+     */
+    { label: 'Leadership', signed: true, raw: a.leaderLiberties || 0, norm: a.leaderLiberties || 0,
+      key: 'liberty.wLeader', note: a.leaderNote || 'the traits of whoever is in charge' },
+  ];
+
+  const record = build(tune.get('liberty.base'), terms, tune, libertySummary);
+  record.target = record.value;
+  record.value = step(a.previous, record.value, tune);
+  return record;
+}
+
+function libertySummary(value, inputs) {
+  const band = value >= 0.75 ? 'Free' : value >= 0.55 ? 'Open'
+    : value >= 0.35 ? 'Constrained' : value >= 0.18 ? 'Repressive' : 'Police state';
+  const ranked = inputs.filter((i) => Math.abs(i.contribution) > 1e-9)
+    .sort((a, b) => Math.abs(b.contribution) - Math.abs(a.contribution));
+  const down = ranked.find((i) => i.contribution < 0);
+  const up = ranked.find((i) => i.contribution > 0);
+  if (up && down) return `${band}: ${up.label.toLowerCase()} holds, ${down.label.toLowerCase()} presses`;
+  return ranked.length ? `${band}: ${ranked[0].label.toLowerCase()} decides it` : band;
+}
+
+/* ------------------------------------------------------------------ */
+/* the adapter — the one place this file reads the live model          */
+/* ------------------------------------------------------------------ */
+
+/**
+ * The world facts every nation's Influence is measured against, computed ONCE.
+ *
+ * Alignment is O(nations^2) if each nation asks the world about itself, and
+ * `nationDemographics` is a full scan of that nation's Areas — so asking 51
+ * times inside 51 loops is 51 full passes over the map per turn for a number
+ * that does not change between them.
+ */
+export function worldContext() {
+  const rows = [];
+  let gdp = 0;
+  for (const [nid] of Game.nations) {
+    const d = Game.nationDemographics(nid);
+    rows.push({ nid, gdp: d.gdp, mix: d.mix });
+    gdp += d.gdp;
+  }
+  return { rows, gdp };
+}
+
+/**
+ * Everything the four stocks need about ONE nation, read in a single pass.
+ *
+ * The four `gather*` functions each used to ask the model for what they needed,
+ * which meant `nationDemographics` four times and `treasuryFlow` twice per
+ * nation per turn — and each of those is a full scan of that nation's Areas. The
+ * power phase measured 4.51 ms of an 8.12 ms turn, more than the six world
+ * phases put together, for numbers that cannot change between the four calls.
+ *
+ * The other half of that cost was the home-alignment loop asking
+ * `Ideology.affinity(i, ruling)` per ideology per Area — about ten thousand
+ * distance computations a turn for a **six-element lookup table**. It is
+ * computed once here and the Area loop becomes arithmetic.
+ */
+/**
+ * Which territorial gains count as conquest.
+ *
+ * Filtering on the REASON rather than on "was this the turn you were founded"
+ * is the robust form: a nation created by a declaration of independence takes
+ * its founding ground through `moveCounties` like everything else, and comparing
+ * turn stamps to detect that only works while two independent clocks agree.
+ */
+const CONQUEST = new Set(['annex', 'war']);
+
+/**
+ * One leader's pull on one stock, and a note naming them.
+ *
+ * Guarded on the module rather than imported, because the map editor and old
+ * saves load a page without it — and a stock that throws when nobody is in
+ * charge would be a worse bargain than a stock that reads zero.
+ */
+const lead = (nid, key) => (typeof Leaders !== 'undefined' && Leaders.loaded()
+  ? Leaders.modifier(nid, key) : 0);
+function leaderNote(nid) {
+  if (typeof Leaders === 'undefined' || !Leaders.loaded()) return null;
+  /*
+   * `all()[nid]`, not `of(nid)`. `of` SEATS a leader when the chair is empty,
+   * and a Why record must not have side effects — it read the modifier before
+   * that happened and the note after, so the term said "Governor Vance" while
+   * its own value said nobody was in charge.
+   */
+  const l = Leaders.all()[nid];
+  return l ? `${l.title} ${l.name} — ${Leaders.describe(l)}` : null;
+}
+
+/**
+ * How many nations do not admit this one exists, named rather than counted.
+ *
+ * Reads the same matrix the stock reads; a note that could disagree with the
+ * number beside it is worse than no note.
+ */
+function legitimacyNote(nid) {
+  if (typeof Recognition === 'undefined') return null;
+  const rec = Recognition.legitimacy(nid);
+  if (!rec || rec.origin) return null;
+  return rec.summary;
+}
+
+export function nationFacts(nid, tune) {
+  const n = Game.getNation(nid);
+  if (!n) return null;
+  const d = Game.nationDemographics(nid);
+  const flow = Game.treasuryFlow(nid);
+  const surplus = typeof Market !== 'undefined' ? Market.nationSurplus(nid, tune) : null;
+
+  // Home alignment: how close the governed population sits to the governing
+  // ideology, population-weighted over the nation's own Areas.
+  //
+  // Weighted over AREAS rather than computed from the nation's aggregate mix,
+  // and the two are different numbers: a nation split into a red half and a blue
+  // half has an aggregate centroid sitting between them that resembles neither,
+  // and would read as moderately aligned with a centre-governing party that in
+  // fact nobody supports.
+  const ruling = n.gov ? Ideology.index(n.gov.rulingIdeology) : -1;
+  let alignment = 0;
+  if (ruling >= 0) {
+    const N = Ideology.count();
+    const affTo = new Array(N);
+    for (let i = 0; i < N; i++) affTo[i] = Ideology.affinity(i, ruling);
+    let weighted = 0, weight = 0;
+    for (const f of n.counties) {
+      const c = Game.county[f];
+      if (!c) continue;
+      let pop = 0, a = 0;
+      for (let i = 0; i < N; i++) { pop += c.pop[i]; a += c.pop[i] * affTo[i]; }
+      if (pop <= 0) continue;
+      weighted += a;      // already population-weighted: a is sum(pop_i * aff_i)
+      weight += pop;
+    }
+    alignment = weight > 0 ? weighted / weight : 0;
+  }
+
+  /*
+   * THE GROUND A NATION IS BORN HOLDING IS NOT GROUND IT TOOK.
+   *
+   * `createNation` grants its founding territory through `moveCounties`, which
+   * records it as an acquisition — correctly, because that is what the ledger is
+   * for. But Authority and Influence read those records as conquest, so a
+   * movement that declared independence with 39 Areas was scored as having
+   * blitzed 39 Areas on the day it was founded: measured, Deseret opened with
+   * Overreach at -0.123 and Influence pinned at the 0.08 floor, for taking
+   * nothing from anyone that it had not already been living in.
+   *
+   * Filtered once here rather than in each stock, so the two cannot disagree
+   * about what counts as a conquest.
+   */
+  const gains = (n.annexed || []).filter((e) => CONQUEST.has(e.reason));
+
+  return {
+    nid, n, d, flow, gains,
+    pop: d.pop,
+    gdp: d.gdp,
+    perCapita: d.pop > 0 ? d.gdp / d.pop : 0,
+    cohesion: d.cohesion,
+    // nationSurplus reports $M; everything else here is dollars.
+    agriculture: surplus ? surplus.prod[0] * 1e6 : 0,
+    areas: n.counties.size,
+    occupied: Game.occupiedCount(nid),
+    alignment,
+  };
+}
+
+/** Authority's inputs, from one nation's facts. */
+export function gatherAuthority(facts, turn) {
+  if (!facts) return null;
+  const { n, flow } = facts;
+  // The honeymoon decays linearly to nothing as its turns run out.
+  const left = (n.honeymoonUntil || 0) - turn;
+  const span = window.TUNE.get('secession.honeymoonTurns');
+  const honeymoon = left > 0 && span > 0
+    ? window.TUNE.get('secession.honeymoonAuthority') * Math.min(1, left / span) : 0;
+
+  return {
+    turn,
+    honeymoon,
+    founded: n.founded,
+    since: n.gov ? n.gov.since : 0,
+    cohesion: facts.cohesion,
+    treasury: n.treasury,
+    upkeep: flow ? flow.maintenance : 0,
+    areas: facts.areas,
+    occupied: facts.occupied,
+    autonomous: Game.autonomousCount(facts.nid),
+    gains: facts.gains,
+    losses: n.lost,
+    leaderAuthority: lead(facts.nid, 'authority'),
+    leaderNote: leaderNote(facts.nid),
+    previous: n.authority,
+  };
+}
+
+/**
+ * Influence's inputs. `alignment` here is the GDP-weighted mean affinity between
+ * this nation's political centroid and every OTHER nation's — the
+ * generalisation of the pairwise `rel` that `evalTransit` computes for a single
+ * trade partner. Weighted by size because being ideologically close to
+ * California is worth more than being close to Wyoming, which is what soft power
+ * means. It is a different number from `facts.alignment`, which points inward.
+ */
+export function gatherInfluence(facts, turn, tune, ctx) {
+  if (!facts) return null;
+  const { nid, n } = facts;
+  const world = ctx || worldContext();
+  const self = world.rows.find((r) => r.nid === nid);
+  if (!self) return null;
+
+  let weighted = 0, weight = 0;
+  for (const other of world.rows) {
+    if (other.nid === nid || other.gdp <= 0) continue;
+    weighted += other.gdp * Ideology.mixAffinity(self.mix, other.mix);
+    weight += other.gdp;
+  }
+
+  // Trade partners inside the memory window: `tradeCooldown` is partner -> the
+  // world turn of the last deal, which is already a record of who you do
+  // business with. Reusing it beats inventing a second relations table that
+  // could disagree with the one the trade screens read.
+  const recent = tune.get('nation.historyWindow');
+  let partners = 0;
+  for (const k in n.tradeCooldown || {}) if (turn - n.tradeCooldown[k] <= recent) partners++;
+
+  return {
+    turn,
+    gdpShare: world.gdp > 0 ? self.gdp / world.gdp : 0,
+    alignment: weight > 0 ? weighted / weight : 0,
+    coalition: typeof Coalitions !== 'undefined' ? Coalitions.pressure(facts.nid) : 0,
+    legitimacy: typeof Recognition !== 'undefined' ? Recognition.scalar(facts.nid) : 1,
+    legitimacyNote: legitimacyNote(facts.nid),
+    // M11.2 — the treaty record, and how much of other people's politics this
+    // nation is paying for. Both come out of js/pacts.js, which owns the state.
+    treaties: typeof Pacts !== 'undefined' ? Pacts.standing(facts.nid, tune) : 0,
+    clients: typeof Pacts !== 'undefined'
+      ? Pacts.clientsOf(facts.nid).reduce((sum, c) => sum + c.weight, 0) : 0,
+    leaderInfluence: lead(facts.nid, 'influence'),
+    leaderNote: leaderNote(facts.nid),
+    partners,
+    areas: facts.areas,
+    occupied: facts.occupied,
+    gains: facts.gains,
+    previous: n.influence,
+  };
+}
+
+/**
+ * QoL's inputs. Agriculture comes from `Market.nationSurplus`, which is the
+ * single definition of production in the game — reading the baked economy
+ * directly here would be the second economy that M1 spent a fix removing.
+ */
+export function gatherQol(facts, turn) {
+  if (!facts) return null;
+  const { n, flow } = facts;
+  return {
+    turn,
+    pop: facts.pop,
+    gdp: facts.gdp,
+    agriculture: facts.agriculture,
+    treasuryDelta: flow ? flow.delta : 0,
+    income: flow ? flow.income : 0,
+    weariness: n.weariness || 0,
+    leaderQol: lead(facts.nid, 'qol'),
+    leaderNote: leaderNote(facts.nid),
+    previous: n.qol,
+  };
+}
+
+/** Civil Liberties' inputs. `alignment` points INWARD — see `nationFacts`. */
+export function gatherLiberties(facts, turn) {
+  if (!facts) return null;
+  const { n } = facts;
+  return {
+    turn,
+    alignment: facts.alignment,
+    cohesion: facts.cohesion,
+    perCapita: facts.perCapita,
+    areas: facts.areas,
+    occupied: facts.occupied,
+    garrison: typeof Military !== 'undefined' ? Military.garrisonPressure(facts.nid) : 0,
+    leaderLiberties: lead(facts.nid, 'liberties'),
+    leaderNote: leaderNote(facts.nid),
+    govType: n.gov ? n.gov.type : 'Republic',
+    previous: n.liberties,
+  };
+}
+
+export default {
+  clamp01, ramp, saturate, centred, build, step,
+  worldContext, nationFacts,
+  authority, gatherAuthority,
+  influence, gatherInfluence,
+  qol, gatherQol,
+  liberties, gatherLiberties,
+};

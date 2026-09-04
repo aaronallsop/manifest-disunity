@@ -1,0 +1,144 @@
+{
+  "type": "ns-scenario",
+  "id": "shattered",
+  "name": "The Shattering",
+  "edition": "The year the Union dissolved",
+  "blurb": "The United States has already come apart. Texas partitioned along its own cultural lines, California along the coast and the mountains, and the Mormon Corridor is halfway out of the Union with the argument still running.",
+  "note": "AUTHORED CONTENT. js/scenario.js applies this; it knows nothing about Texas. Area lists are resolved against content/cultural.json's assign table, so a leaf repainted in the map editor moves the border here too. Every successor's claim is validated as an exact partition of the state it dissolves — a leftover Area or a double claim throws and names the FIPS.",
+
+  "dissolve": [
+    {
+      "state": "48",
+      "text": "Texas dissolved into five successor states.",
+      "successors": [
+        {
+          "name": "Dallas",
+          "leaves": ["Dallas"],
+          "state": "48",
+          "seat": "48113",
+          "color": "hsl(8deg 62% 55%)",
+          "note": "The Dallas leaf carries eight Oklahoma-FIPS Areas; `state` filters them out. Without it the partition throws, which is the point of the check."
+        },
+        {
+          "name": "Houston",
+          "leaves": ["Houston"],
+          "state": "48",
+          "seat": "48201",
+          "color": "hsl(28deg 68% 52%)"
+        },
+        {
+          "name": "El Paso",
+          "leaves": ["El Paso"],
+          "state": "48",
+          "seat": "48141",
+          "color": "hsl(45deg 62% 55%)",
+          "note": "One Oklahoma stray hides in this leaf too."
+        },
+        {
+          "name": "Austin",
+          "leaves": ["Austin"],
+          "state": "48",
+          "seat": "48453",
+          "gov": "blue",
+          "color": "hsl(212deg 58% 56%)",
+          "note": "The only blue Texan successor, and it holds Travis — the old Texas seat of government. The neighbours it just divorced surround it. The government is AUTHORED rather than left to the turn-0 plurality, and the reason is a measurement: these thirteen Areas are 47.9R-50.6D by population (blue ahead by 98,404 people) and 47.1R-51.4D by vote, but the plurality at turn 0 flips on the seed, because the Techno-Autocrat seed in Travis converts people out of a blue supermajority and takes more blue than red with it. Measured across eight seeds it landed red five times and blue three. A flagship of the scenario should not be a coin toss against its own data."
+        },
+        {
+          "name": "San Antonio",
+          "leaves": ["San Antonio", "Hidalgo"],
+          "state": "48",
+          "seat": "48029",
+          "color": "hsl(340deg 52% 58%)",
+          "note": "The two southern leaves go together: the border counties and the city that has always governed them."
+        }
+      ]
+    },
+    {
+      "state": "06",
+      "text": "California dissolved into five successor states, and ceded the north to Cascadia.",
+      "successors": [
+        {
+          "name": "Los Angeles",
+          "areas": ["06037"],
+          "seat": "06037",
+          "color": "hsl(268deg 52% 60%)",
+          "note": "One Area, 9.8 million people and a trillion dollars. The largest city-state on the board."
+        },
+        {
+          "name": "Bay Area",
+          "areas": ["06041", "06097", "06055", "06095", "06013", "06001", "06085", "06081", "06075"],
+          "seat": "06075",
+          "color": "hsl(190deg 58% 52%)",
+          "note": "The nine authored counties, richest per head on the continent."
+        },
+        {
+          "name": "Riverside",
+          "areas": ["06065", "06025", "06071"],
+          "seat": "06065",
+          "color": "hsl(96deg 40% 50%)",
+          "note": "The Inland Empire and the desert. Landlocked, and the only near-even Californian successor."
+        },
+        {
+          "name": "SoCal",
+          "leaves": ["SoCal"],
+          "except": ["06037", "06065", "06025", "06071"],
+          "seat": "06073",
+          "color": "hsl(320deg 46% 56%)",
+          "note": "What the southern leaf has left once Los Angeles and Riverside are out of it: San Diego, Orange, Ventura, Santa Barbara, San Luis Obispo and Imperial."
+        },
+        {
+          "name": "Northern California",
+          "leaves": ["Northern California"],
+          "except": ["06041", "06097", "06055", "06095", "06013", "06001", "06085", "06081", "06075"],
+          "seat": "06067",
+          "color": "hsl(160deg 44% 46%)",
+          "note": "The Central Valley and the Sierra, governed from Sacramento."
+        },
+        {
+          "name": "Cascadia",
+          "leaves": ["Cascadia"],
+          "state": "06",
+          "seat": "06023",
+          "gov": "green",
+          "movement": "Cascadian Separatists",
+          "color": "hsl(140deg 52% 40%)",
+          "note": "The nine far-northern Areas the cultural doc has always called Cascadia, founding a country. It is governed by the movement that made it and NOT by the plurality of the people in it — this ground is the State of Jefferson's heartland and leans the other way, so Cascadia opens with an organised opposition on most of its own soil. That is the intended drama, not an oversight."
+        }
+      ]
+    }
+  ],
+
+  "cession": {
+    "name": "Deseret",
+    "parent": "49",
+    "seat": "49035",
+    "gov": "yellow",
+    "color": "hsl(48deg 72% 50%)",
+    "movement": "Deseret",
+    "text": "Deseret declared itself out of the Mormon Corridor.",
+    "note": "HALF-BORN, and that is the design. The Wasatch Front always goes; every other corridor Area rolls its own sub-region's chance on the 'scenario' rng stream, and anything that ends up disconnected from Salt Lake does not cede and is remembered as left behind. Deseret opens unrecognised, with Utah's signature as the key that unlocks the continent.",
+    "chanceNote": "TUNED AGAINST THE MEASUREMENT, not against the odds on paper. The plan's table read 1.0 / 0.70 / 0.50 / 0.40 / 0.35, which is an expected 30.8 Areas of 57 BEFORE the connectivity filter — and the filter is not a rounding error here: per-Area rolls punch holes in a long thin corridor, and about nine of every thirty-one rolled Areas end up cut off from Salt Lake. Measured over 20 seeds at the paper odds the cession ran 14-39 with a mean of 21.3. These raised odds put it back where the design says it should be: mean 31.1 Areas and 3.75M people, spanning 19-45 across the same 20 seeds, with the Wasatch Front always in and the result always one connected piece.",
+    "regions": [
+      { "leaf": "Wasatch Front", "chance": 1.0 },
+      { "leaf": "Zion", "chance": 0.82 },
+      { "leaf": "Bonneville", "chance": 0.70 },
+      { "leaf": "Tetonia", "chance": 0.60 },
+      { "leaf": "Uintas", "chance": 0.55 }
+    ],
+    "stay": {
+      "seed": [0.24, 0.32],
+      "boost": 0.10,
+      "note": "The corridor that did not cede. Seeded BELOW secession.countyThreshold (0.40) on purpose: a share over the line on turn 0 mass-defects on turn 1, which is the turn-zero Cascadia disaster movements.js:283 exists to prevent."
+    },
+    "leftBehind": {
+      "seed": [0.30, 0.38],
+      "boost": 0.18,
+      "note": "Areas that rolled to cede and were cut off from Salt Lake. They voted to go and did not get to; they are the angriest ground on the map."
+    }
+  },
+
+  "relations": {
+    "lostToCession": true,
+    "note": "Every state that lost ground to Deseret writes a back-dated `lost` entry toward it — the closed Relations vocabulary, granted silently. Coalitions read those memories, so leaving them out would mean the corridor states had no opinion about the country that took a third of one of them. Utah does NOT open refusing recognition: the relations board starts quiet and the player watches it sour."
+  }
+}

@@ -1,0 +1,260 @@
+{
+  "note": "The seat of government of each of the 51 founding states. Authored by county name and resolved against data/game-data.json at bake time, so a typo is a loud miss rather than a silently wrong county. Resolve through Game.areaIdOf: several of these counties are merged into a larger Area.",
+  "capitals": {
+    "01": {
+      "city": "Montgomery",
+      "county": "Montgomery County",
+      "fips": "01101"
+    },
+    "02": {
+      "city": "Juneau",
+      "county": "Juneau City and Borough",
+      "fips": "02110"
+    },
+    "04": {
+      "city": "Phoenix",
+      "county": "Maricopa County",
+      "fips": "04013"
+    },
+    "05": {
+      "city": "Little Rock",
+      "county": "Pulaski County",
+      "fips": "05119"
+    },
+    "06": {
+      "city": "Sacramento",
+      "county": "Sacramento County",
+      "fips": "06067"
+    },
+    "08": {
+      "city": "Denver",
+      "county": "Denver County",
+      "fips": "08031"
+    },
+    "09": {
+      "city": "Hartford",
+      "county": "Capitol Planning Region",
+      "fips": "09110"
+    },
+    "10": {
+      "city": "Dover",
+      "county": "Kent County",
+      "fips": "10001"
+    },
+    "11": {
+      "city": "Washington",
+      "county": "District of Columbia",
+      "fips": "11001"
+    },
+    "12": {
+      "city": "Tallahassee",
+      "county": "Leon County",
+      "fips": "12073"
+    },
+    "13": {
+      "city": "Atlanta",
+      "county": "Fulton County",
+      "fips": "13121"
+    },
+    "15": {
+      "city": "Honolulu",
+      "county": "Honolulu County",
+      "fips": "15003"
+    },
+    "16": {
+      "city": "Boise",
+      "county": "Ada County",
+      "fips": "16001"
+    },
+    "17": {
+      "city": "Springfield",
+      "county": "Sangamon County",
+      "fips": "17167"
+    },
+    "18": {
+      "city": "Indianapolis",
+      "county": "Marion County",
+      "fips": "18097"
+    },
+    "19": {
+      "city": "Des Moines",
+      "county": "Polk County",
+      "fips": "19153"
+    },
+    "20": {
+      "city": "Topeka",
+      "county": "Shawnee County",
+      "fips": "20177"
+    },
+    "21": {
+      "city": "Frankfort",
+      "county": "Franklin County",
+      "fips": "21073"
+    },
+    "22": {
+      "city": "Baton Rouge",
+      "county": "East Baton Rouge Parish",
+      "fips": "22033"
+    },
+    "23": {
+      "city": "Augusta",
+      "county": "Kennebec County",
+      "fips": "23011"
+    },
+    "24": {
+      "city": "Annapolis",
+      "county": "Anne Arundel County",
+      "fips": "24003"
+    },
+    "25": {
+      "city": "Boston",
+      "county": "Suffolk County",
+      "fips": "25025"
+    },
+    "26": {
+      "city": "Lansing",
+      "county": "Ingham County",
+      "fips": "26065"
+    },
+    "27": {
+      "city": "Saint Paul",
+      "county": "Ramsey County",
+      "fips": "27123"
+    },
+    "28": {
+      "city": "Jackson",
+      "county": "Hinds County",
+      "fips": "28049"
+    },
+    "29": {
+      "city": "Jefferson City",
+      "county": "Cole County",
+      "fips": "29051"
+    },
+    "30": {
+      "city": "Helena",
+      "county": "Lewis and Clark County",
+      "fips": "30049"
+    },
+    "31": {
+      "city": "Lincoln",
+      "county": "Lancaster County",
+      "fips": "31109"
+    },
+    "32": {
+      "city": "Carson City",
+      "county": "Carson City",
+      "fips": "32510"
+    },
+    "33": {
+      "city": "Concord",
+      "county": "Merrimack County",
+      "fips": "33013"
+    },
+    "34": {
+      "city": "Trenton",
+      "county": "Mercer County",
+      "fips": "34021"
+    },
+    "35": {
+      "city": "Santa Fe",
+      "county": "Santa Fe County",
+      "fips": "35049"
+    },
+    "36": {
+      "city": "Albany",
+      "county": "Albany County",
+      "fips": "36001"
+    },
+    "37": {
+      "city": "Raleigh",
+      "county": "Wake County",
+      "fips": "37183"
+    },
+    "38": {
+      "city": "Bismarck",
+      "county": "Burleigh County",
+      "fips": "38015"
+    },
+    "39": {
+      "city": "Columbus",
+      "county": "Franklin County",
+      "fips": "39049"
+    },
+    "40": {
+      "city": "Oklahoma City",
+      "county": "Oklahoma County",
+      "fips": "40109"
+    },
+    "41": {
+      "city": "Salem",
+      "county": "Marion County",
+      "fips": "41047"
+    },
+    "42": {
+      "city": "Harrisburg",
+      "county": "Dauphin County",
+      "fips": "42043"
+    },
+    "44": {
+      "city": "Providence",
+      "county": "Providence County",
+      "fips": "44007"
+    },
+    "45": {
+      "city": "Columbia",
+      "county": "Richland County",
+      "fips": "45079"
+    },
+    "46": {
+      "city": "Pierre",
+      "county": "Hughes County",
+      "fips": "46065"
+    },
+    "47": {
+      "city": "Nashville",
+      "county": "Davidson County",
+      "fips": "47037"
+    },
+    "48": {
+      "city": "Austin",
+      "county": "Travis County",
+      "fips": "48453"
+    },
+    "49": {
+      "city": "Salt Lake City",
+      "county": "Salt Lake County",
+      "fips": "49035"
+    },
+    "50": {
+      "city": "Montpelier",
+      "county": "Washington County",
+      "fips": "50023"
+    },
+    "51": {
+      "city": "Richmond",
+      "county": "Richmond city",
+      "fips": "51760"
+    },
+    "53": {
+      "city": "Olympia",
+      "county": "Thurston County",
+      "fips": "53067"
+    },
+    "54": {
+      "city": "Charleston",
+      "county": "Kanawha County",
+      "fips": "54039"
+    },
+    "55": {
+      "city": "Madison",
+      "county": "Dane County",
+      "fips": "55025"
+    },
+    "56": {
+      "city": "Cheyenne",
+      "county": "Laramie County",
+      "fips": "56021"
+    }
+  }
+}
