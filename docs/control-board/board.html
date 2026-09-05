@@ -123,28 +123,52 @@
 // ============================================================================
 const BOARD = {
   project: "Manifest Disunity",
-  updated: "2026-09-04 22:22",          // when you last republished, local time
+  updated: "2026-09-04 23:05",          // when you last republished, local time
 
   // Three or four measured figures. value: number|string, or null = "not yet measured".
   figures: [
     { label: "Economy phases finished", value: "0 of 9" },
     { label: "Current version",         value: "v0.2" },
     { label: "Tests green",             value: 846 },
-    { label: "Resources with real supply data", value: "6 of 6" },
-    { label: "Resources with a demand model",   value: "0 of 6" },
+    { label: "Resources with real data underneath", value: "1 of 6" },
+    { label: "Resources with a demand model",       value: "0 of 6" },
   ],
 
   // The single most important true thing right now. tone: "bad" | "warn" | "ok" | "neutral".
   headline: {
-    tone: "warn",
-    text: "None of the economy is built yet, and one line of your Phase 0 checkpoint cannot be ticked "
-        + "at Phase 0 — it asks you to verify a display of demand, ratios and bands, none of which "
-        + "exist until Phase 1. Everything else that was blocking a start is now answered. A survey of "
-        + "what the game already has is running, so nothing gets built twice.",
+    tone: "bad",
+    text: "Two mistakes of mine, both from today. I broke your tuning dashboard — it has failed on "
+        + "every run since this morning, and it is the page everything in Phase 0 gets checked on. It "
+        + "is fixed but not yet proven. And I put a wrong figure on this board: I said all six "
+        + "resources had real data underneath them. Honestly it is one. Separately, a survey of the "
+        + "game found five places where your brief cannot be added to what exists — something has to "
+        + "be torn out — and your ruling that a turn is a month has a cost nobody had measured.",
   },
 
   // Only decisions that are genuinely the owner's. Ids are permanent.
   decisions: [
+    {
+      id: "month-or-quarter",
+      title: "You ruled a turn is a month. The game has been built and tuned as a quarter.",
+      evidence: "I recorded your ruling before checking what it cost, which was my error. The word "
+              + "'quarter' is written into the explanations of dozens of settings, into the reasoning "
+              + "recorded beside every number that has actually been tuned, and into two lines the "
+              + "player reads on screen. Every growth rate, every cooldown and every duration in the "
+              + "game was calibrated on the assumption that a turn is three months.",
+      cost: "Keeping the month: every one of those numbers is now wrong by a factor of three and has to "
+          + "be re-derived, along with the written argument beside each one. That is a re-tuning pass "
+          + "across the whole game, and it lands before Phase 1 rather than after. Changing the brief to "
+          + "a quarter: nothing moves, and the calibration you already have stays true — but a campaign "
+          + "runs at a quarter of the resolution, and trade deals of 6, 12, 24 and 60 turns become "
+          + "spans of years rather than months.",
+      recommendation: "A month is the better game — it is the resolution at which a shortage is felt "
+                    + "and a deal is worth renegotiating, and your 1 March 2036 opening only means "
+                    + "something if the calendar moves in months. Take the re-tuning cost, but take it "
+                    + "deliberately: it is roughly a week, it lands before any economy work, and it is "
+                    + "the sort of thing that is far cheaper now than after four phases are built on "
+                    + "top of it. If you would rather protect the pacing you already have, say quarter "
+                    + "and I will change the brief instead.",
+    },
     {
       id: "factions-approval",
       title: "Your brief angers farmers and industrialists who do not exist",
@@ -291,6 +315,14 @@ const BOARD = {
       outcome: "Written into the project rules so no future session re-raises it or tries to build it." },
     { when: "2026-09-04", decision: "Numbered the prototype v0.1 rather than giving the first number to the work in progress.",
       outcome: "Holds. The build your testers are holding now has a name, so anything they report about it can be traced to exactly what they played." },
+    { when: "2026-09-04", decision: "Added the new mode switch to the game and the test suite.",
+      outcome: "WRONG — I missed the third page that loads the same machinery, and broke your tuning dashboard. It has failed on every run since this morning. Fixed, but not yet proven working, because this session cannot serve the page. First job next session." },
+    { when: "2026-09-04", decision: "Reported on this board that all six resources had real data underneath them.",
+      outcome: "WRONG, and corrected above to one of six. The wealth figures per county are genuine. The split of that wealth into six industries is one of six hand-written templates, half the map got the same one, and it never changes for the whole game." },
+    { when: "2026-09-04", decision: "Ran a thirteen-agent survey of the game before building anything, with a second agent trying to disprove every claim that something already existed.",
+      outcome: "Paid for itself immediately. It found both errors above, and five places where your brief cannot simply be added to what exists." },
+    { when: "2026-09-04", decision: "Recorded your month ruling without first checking what the game assumed.",
+      outcome: "Premature. The game is tuned as quarters throughout, so the ruling carries a re-tuning cost I should have priced before writing it down. It is now a card above rather than a settled rule." },
   ],
 };
 // ============================================================================
