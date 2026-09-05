@@ -42,8 +42,11 @@ they lost.
   step a turn, fast-forward, force a state's figures, run the simulation, choose a seed — belongs to
   the game's own developer dashboard behind the dev flag. The economy brief says otherwise in its
   Phase 0; the brief is wrong on this point and Aaron has ruled so (D162). Do not re-raise it.
-- **One turn is one month, and the game opens on 1 March 2036** — the eve of two hundred years since
-  Texas declared itself a nation.
+- **One turn is one quarter, and the game opens on 1 March 2036** — the eve of two hundred years
+  since Texas declared itself a nation. The month was ruled and then reversed once the cost was
+  priced: every rate in the engine is tuned per quarter and the label buys flavour only (D163). Deal
+  durations are 2 / 4 / 8 / 20 turns. A future sub-turn design would give both clocks — see
+  `docs/FUTURE-IDEAS.md` F1 — and today's choice is its outer clock, so nothing is foreclosed.
 - **There is one tuning file.** Every model constant the economy needs joins the constants already
   there. Never create a second tuning file (D162).
 

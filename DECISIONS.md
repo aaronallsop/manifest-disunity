@@ -2326,3 +2326,32 @@ one and the designer edits the other.
 **Rejected:** a separate `economy.tuning.json` on the grounds that it would be tidier to hand to a
 designer. Tidiness is not worth a second source of truth, and the existing file already carries every
 other model constant with a name, a range and a comment.
+
+### D163 — The turn stays a quarter, and the date stays anyway
+
+**Supersedes the turn-length half of D162.**
+
+D162 recorded Aaron's ruling that a turn is one month. That was recorded before the cost was priced,
+which was the error: the audit then found "quarter" written into the explanations of dozens of
+tunables, into the recorded reasoning beside every number that has been tuned, and into two
+player-facing strings. A month makes all of it wrong by a factor of three.
+
+**Observed:** every rate in the engine is expressed per *turn* and calibrated as such. Nothing
+mechanical distinguishes a month from a quarter — the label changes only what the calendar prints and
+what the written justifications beside the numbers claim.
+
+**Decided:** the turn is a quarter. Deal durations become 2 / 4 / 8 / 20 turns — six months, one
+year, two years, five years. The re-derivation week goes into the economy instead.
+
+**Kept regardless:** the game opens **1 March 2036**, the eve of two hundred years since Texas
+declared itself a nation. Aaron wants the date for the story, and it costs nothing to keep: the
+anniversary still falls on turn 1 whichever unit the clock advances in.
+
+**Rejected:** the month, on the grounds that a calendar reading "March, April, May" is better
+than one reading "Q1, Q2, Q3". It is, but not by a week of re-tuning before a single economic figure
+exists.
+
+**Not foreclosed:** Aaron raised sub-turns — quarterly strategic decisions with the three months
+playing out inside each — which would give both clocks. Recorded as F1 in `docs/FUTURE-IDEAS.md`.
+Today's choice is that design's outer clock, so it is additive later rather than a reversal. Had the
+month been kept, the same design would have required coarsening rather than subdividing.

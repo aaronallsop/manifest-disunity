@@ -123,7 +123,7 @@
 // ============================================================================
 const BOARD = {
   project: "Manifest Disunity",
-  updated: "2026-09-04 23:05",          // when you last republished, local time
+  updated: "2026-09-04 22:55",          // when you last republished, local time
 
   // Three or four measured figures. value: number|string, or null = "not yet measured".
   figures: [
@@ -136,58 +136,20 @@ const BOARD = {
 
   // The single most important true thing right now. tone: "bad" | "warn" | "ok" | "neutral".
   headline: {
-    tone: "bad",
-    text: "Two mistakes of mine, both from today. I broke your tuning dashboard — it has failed on "
-        + "every run since this morning, and it is the page everything in Phase 0 gets checked on. It "
-        + "is fixed but not yet proven. And I put a wrong figure on this board: I said all six "
-        + "resources had real data underneath them. Honestly it is one. Separately, a survey of the "
-        + "game found five places where your brief cannot be added to what exists — something has to "
-        + "be torn out — and your ruling that a turn is a month has a cost nobody had measured.",
+    tone: "warn",
+    text: "The brief has been rewritten against what the game actually is, and work can resume. "
+        + "Nothing is waiting on you. Two things you should know: the tuning dashboard fix has still "
+        + "never been loaded in a browser, so treat that page as unproven until it is; and the six "
+        + "industry figures under every county are invented rather than measured, which the new brief "
+        + "orders fixed before any economy work — I am checking now whether real data exists to fix "
+        + "them with.",
   },
 
   // Only decisions that are genuinely the owner's. Ids are permanent.
   decisions: [
-    {
-      id: "month-or-quarter",
-      title: "You ruled a turn is a month. The game has been built and tuned as a quarter.",
-      evidence: "I recorded your ruling before checking what it cost, which was my error. The word "
-              + "'quarter' is written into the explanations of dozens of settings, into the reasoning "
-              + "recorded beside every number that has actually been tuned, and into two lines the "
-              + "player reads on screen. Every growth rate, every cooldown and every duration in the "
-              + "game was calibrated on the assumption that a turn is three months.",
-      cost: "Keeping the month: every one of those numbers is now wrong by a factor of three and has to "
-          + "be re-derived, along with the written argument beside each one. That is a re-tuning pass "
-          + "across the whole game, and it lands before Phase 1 rather than after. Changing the brief to "
-          + "a quarter: nothing moves, and the calibration you already have stays true — but a campaign "
-          + "runs at a quarter of the resolution, and trade deals of 6, 12, 24 and 60 turns become "
-          + "spans of years rather than months.",
-      recommendation: "A month is the better game — it is the resolution at which a shortage is felt "
-                    + "and a deal is worth renegotiating, and your 1 March 2036 opening only means "
-                    + "something if the calendar moves in months. Take the re-tuning cost, but take it "
-                    + "deliberately: it is roughly a week, it lands before any economy work, and it is "
-                    + "the sort of thing that is far cheaper now than after four phases are built on "
-                    + "top of it. If you would rather protect the pacing you already have, say quarter "
-                    + "and I will change the brief instead.",
-    },
-    {
-      id: "factions-approval",
-      title: "Your brief angers farmers and industrialists who do not exist",
-      evidence: "The brief says a food glut collapses farm-gate prices and drops farm faction approval, "
-              + "and that a manufacturing glut drops industrial faction approval. I searched the design "
-              + "document and the whole game: there is no farm faction, no industrial faction, and no "
-              + "faction approval of any kind. The word 'faction' is already taken here — it means a "
-              + "nation you can choose to play, rated by how hard it is. So those two consequences "
-              + "currently have nothing to land on.",
-      cost: "Building a faction layer is real work and a new system to understand — it is the kind of "
-          + "thing that made the game hard to read in the first place. Attaching the consequence to "
-          + "something that already exists is nearly free, but it is a weaker story: 'the country is "
-          + "unhappy' says less than 'the farmers are furious with you'.",
-      recommendation: "For now, land both consequences on things that already exist — a glut hits the "
-                    + "money and the general mood rather than a named group — and treat farm and "
-                    + "industrial factions as a later decision once you have played the economy and know "
-                    + "whether you miss them. If you would rather have the factions from the start, say "
-                    + "so and I will scope them properly before Phase 1 rather than bolting them on.",
-    },
+    // Empty is the correct state. Both cards that stood here on 4 September are answered:
+    // the turn stays a quarter (D163), and there will be no faction system (spec v2, ruling 1.9).
+    // Ids are permanent — a new decision gets a new id, never a reused one.
   ],
 
   // Standing permissions. Ids are permanent. risk: "low" | "med" | "high".
@@ -217,19 +179,30 @@ const BOARD = {
             + "removing that too and it broke the opening map, which is how I found out.",
     },
     {
-      name: "Phase 0 — Instruments and time",
+      name: "Phase 0 — Instruments",
       status: "current",
-      brief: "Build: Sections 2.1, 2.2, 2.3, 2.4. Control Board capabilities listed above. No economic logic.",
-      actual: "Not started, but no longer blocked. You have settled three things: the testing controls "
-            + "belong to the game's own developer dashboard rather than to this board, which cannot reach "
-            + "a running game; the game opens on 1 March 2036, the eve of two hundred years since Texas "
-            + "declared itself a nation; and the economy's numbers join the single tuning file that "
-            + "already exists rather than a second one beside it. A survey of what the game already has "
-            + "is running now — the turn has no calendar and the simulation exports nothing you could "
-            + "open in a spreadsheet, but several other pieces may already be built, and I will tell you "
-            + "which before starting so you do not pay for anything twice. One warning: your Phase 0 "
-            + "checkpoint asks you to verify a display of demand, ratios and bands, and none of those "
-            + "exist until Phase 1 — that line will have to be ticked then, not now.",
+      brief: "All testing controls belong in the developer dashboard. Unblock Economy mode; a calendar; "
+           + "tuning that survives a load; per-state spreadsheet export; measure what has never been "
+           + "measured; safe stepping; forcing controls; extend the existing explain-a-number pattern "
+           + "to the economy.",
+      actual: "Starting now. The re-written brief cut this down considerably by reusing what exists "
+            + "rather than rebuilding it — the way the game already explains where a number came from "
+            + "becomes the economy display instead of a new screen being invented. Eight items. The "
+            + "first is unblocking Economy mode, which currently refuses trades between states that do "
+            + "not recognise each other while hiding the screen that would explain why: the mode built "
+            + "for testing the economy cannot presently test it.",
+    },
+    {
+      name: "Phase 0.5 — Honest industry data",
+      status: "todo",
+      brief: "Re-bake the six-sector split from real county-industry data if coverage permits; "
+           + "otherwise keep the estimates but label them as estimates everywhere they appear.",
+      actual: "Not started. This phase exists because of a finding you should know about: the wealth "
+            + "figure under every county is real, but the split of it into six industries is invented "
+            + "from a handful of hand-written templates and presented as though it were measured. Your "
+            + "own design document forbids exactly that. I am checking now whether the real figures "
+            + "exist to replace them with. It comes before Phase 1 because Phase 1 asks you to predict "
+            + "which states are short of what, and a prediction against invented data proves nothing.",
     },
     { name: "Phase 1 — Autarky economy", status: "todo",
       brief: "Band model, derived demand, national pooling. No trade of any kind. Stop condition: the numbers stop surprising the designer.",
@@ -322,7 +295,11 @@ const BOARD = {
     { when: "2026-09-04", decision: "Ran a thirteen-agent survey of the game before building anything, with a second agent trying to disprove every claim that something already existed.",
       outcome: "Paid for itself immediately. It found both errors above, and five places where your brief cannot simply be added to what exists." },
     { when: "2026-09-04", decision: "Recorded your month ruling without first checking what the game assumed.",
-      outcome: "Premature. The game is tuned as quarters throughout, so the ruling carries a re-tuning cost I should have priced before writing it down. It is now a card above rather than a settled rule." },
+      outcome: "Premature, and now settled the other way. The game is tuned in quarters throughout, so the month would have cost a week of re-deriving numbers to buy a nicer-looking calendar. You confirmed the quarter. The 1 March 2036 opening stays — it costs nothing and the anniversary still lands on turn 1." },
+    { when: "2026-09-04", decision: "Sent the audit findings to your consultant rather than building against the original brief.",
+      outcome: "The right call, and the clearest result of the day. The rewritten brief reuses several things I would otherwise have rebuilt, drops a faction system nobody needed, and rules that the economy demonstration does not require the expensive change I thought it did." },
+    { when: "2026-09-04", decision: "Kept your sub-turn idea rather than letting it disappear into the conversation.",
+      outcome: "Recorded, with a note that choosing the quarter today is that design's outer clock — so nothing about it is foreclosed, and the month would have been the harder starting point for it." },
   ],
 };
 // ============================================================================
