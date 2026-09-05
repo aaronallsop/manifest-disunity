@@ -2456,3 +2456,39 @@ misreading. Spec v2's recognition RAMP (its §5.5) is a real change and stays sc
 it replaces the block with graded access, which is a different thing from deleting it.
 
 **For the consultant:** ruling 1.6's premise needs correcting in v3. The code was right.
+
+### D167 — 100-turn timing is still unmeasured, and the attempt found something worse
+
+Spec v2 §2.5 asks for two figures nobody has ever produced: a 100-turn run proven byte-identical from
+the same seed, and one honest speed number to replace the stale, mutually contradictory ones in the
+project's own documents.
+
+**Measured cleanly:** a 50-turn headless run takes **22.0 s** and **22.2 s** on this machine (two
+observations, dashboard load, 51-state board). That is the first real speed figure this project has.
+
+**Not measured, and deliberately not published:** the 100-turn figure. Two 100-turn runs launched
+together had not finished after ten minutes. Against 22 s for 50 turns, a linear cost would have
+predicted about 90 seconds for both. The discrepancy is roughly thirteenfold per turn.
+
+Two candidate explanations and no evidence separating them, which is exactly why no number is going
+on the board:
+
+1. **Background throttling.** The runs were driven through a hidden browser tab, and browsers throttle
+   those hard. If that is the cause, the real figure could still be near 45 s and the measurement is
+   simply invalid.
+2. **Superlinear cost per turn.** If the engine really does slow down as a run lengthens, that is a
+   far more important finding than the timing task it came out of — it would mean Phase 8's twenty
+   headless runs are not affordable, and it would have surfaced there rather than here.
+
+**Decided:** record both figures honestly, publish neither as the answer, and re-run the measurement
+in a foreground tab where throttling cannot be the explanation. If the per-turn cost is genuinely
+superlinear, that becomes its own investigation before Phase 8 is planned — and the audit method that
+found the demand bug is the right instrument for it.
+
+**Rejected:** extrapolating 100 turns from the 50-turn figure. The whole point of §2.5 is to replace
+estimates that were quietly wrong with measurements; producing another estimate would be the same
+mistake in a new place. Also rejected: reporting the ten-minute observation as the speed, since the
+method cannot support it.
+
+**Note for the next session:** this is the one Phase 0 item that is measured-but-inconclusive rather
+than done. It does not block anything else in Phase 0.
