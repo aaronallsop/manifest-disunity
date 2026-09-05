@@ -13,3 +13,12 @@ Add one with `/rule` whenever a mistake earns it. Number them; never delete one.
    `io.open(..., encoding='utf-8')`, or the Edit tool. To check a suspect file, count `â` and
    `€` in it — and if in doubt compare RAW BYTES against `git show <commit>:<path>`, which is
    the only test that cannot lie to you.
+
+2. **A workflow that dies mid-run can be resumed — but only if its script is under the session's
+   ORIGINAL project slug.** Moving the project directory mid-session (as on 4 September) gave this
+   session two slugs under `~/.claude/projects/`; the Workflow tool saves scripts under whichever was
+   current at launch but will only read back from the original, so `resumeFromRunId` on a script under
+   the new slug is refused as unreadable, and `request_directory` on that folder does not resolve
+   either. It cost two round trips and the cached work of two agents. If a resume is refused, check
+   which slug the script path carries; if it is the wrong one, relaunch inline rather than hunting.
+   Better: do not move the project directory in the middle of a working session.
