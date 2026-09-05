@@ -857,3 +857,23 @@ label.opt.auto-renew { display: flex; gap: 8px; align-items: center; margin-top:
 /* A2: where a deal's goods go, on the row of the deal they come off. */
 .db-via { margin-top: 3px; font-size: 11px; opacity: .7; }
 .db-via.stalled { color: var(--bad, #e0483b); opacity: 1; font-weight: 600; }
+
+/* The trade network map (A3): a diagram over the map, not a road atlas. */
+.trade-layer { pointer-events: none; }
+.trade-layer .tl-hit { pointer-events: stroke; }
+.trade-layer .tl-node { pointer-events: none; }
+.trade-layer .tl-label { fill: var(--ink, #ece9e2); font-size: 11px; font-weight: 600;
+  paint-order: stroke; stroke: rgba(0,0,0,.65); stroke-width: 3px; }
+.trade-layer .tl-broken { stroke-dasharray: 3 3; }
+.tl-legend { display: flex; flex-direction: column; gap: 6px; font-size: 12px; }
+.tl-who { font-weight: 600; }
+.tl-chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.tl-chip { display: inline-flex; align-items: center; gap: 5px; padding: 3px 8px; font-size: 12px;
+  border-radius: 6px; opacity: .45; }
+.tl-chip.on { opacity: 1; }
+.tl-chip i { width: 14px; height: 3px; border-radius: 2px; display: inline-block; }
+.tl-key { display: flex; gap: 10px; flex-wrap: wrap; opacity: .75; font-size: 11px; }
+.tl-key span { display: inline-flex; align-items: center; gap: 4px; }
+.tl-key i { width: 14px; height: 0; border-top: 2px solid currentColor; display: inline-block; }
+.tl-key i.tl-dash { border-top-style: dashed; }
+.tl-key i.tl-red { border-top-color: #e0483b; border-top-style: dashed; }

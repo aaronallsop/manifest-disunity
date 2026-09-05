@@ -147,6 +147,8 @@ function fillFor(fips) {
 }
 function recolor() {
   store.countyPaths.attr('fill', (d) => fillFor(d.id));
+  // The network is drawn over the same map, so it is redrawn with it (A3).
+  if (typeof TradeMap !== 'undefined') TradeMap.render();
 }
 
 function setColorMode(mode) {
@@ -156,6 +158,22 @@ function setColorMode(mode) {
   const html = MapModes.legend(mode);
   legend.innerHTML = html;
   legend.classList.toggle('show', !!html);
+  /*
+   * TRADE ROUTES is a mode that draws rather than colours (A3). Its legend is
+   * also its controls — the three kinds of link can be switched off — so it is
+   * written before `recolor` runs and wired after.
+   */
+  if (typeof TradeMap !== 'undefined') {
+    if (mode === 'trade') {
+      const me = (store.selected && store.selected.level === 'nation' && store.selected.id)
+        || Game.getPlayer();
+      legend.innerHTML = TradeMap.legendHtml(me);
+      legend.classList.add('show');
+      TradeMap.bind();
+    } else {
+      TradeMap.clear();
+    }
+  }
   recolor();
   // entering/leaving Culture mode: drop a stale county/nation or culture selection
   if (mode === 'cultural') {
@@ -440,6 +458,16 @@ function select(level, id) {
   else renderCountyPanel(id);
   updateCultureHighlight();
   Leaderboard.setSelected(level === 'nation' ? id : null);
+  // In Trade routes, selecting a nation IS the query: the map redraws to show
+  // whose network you are looking at (A3).
+  if (store.colorMode === 'trade' && typeof TradeMap !== 'undefined') {
+    const legend = document.getElementById('legend');
+    if (legend) {
+      legend.innerHTML = TradeMap.legendHtml(level === 'nation' ? id : Game.getPlayer());
+      TradeMap.bind();
+    }
+    TradeMap.render();
+  }
 }
 
 function deselect() {
@@ -449,6 +477,7 @@ function deselect() {
   updateCultureHighlight();
   renderPlaceholder();
   Leaderboard.setSelected(null);
+  if (store.colorMode === 'trade' && typeof TradeMap !== 'undefined') TradeMap.render();
 }
 
 function setSelectOutline(feature) {

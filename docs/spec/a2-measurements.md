@@ -168,3 +168,28 @@ teleports to Canada.
 **Cost:** the graph now takes about **10 ms** to build against 2 ms before, so roughly 12 ms a turn
 against the 153 ms a round of AI planning already costs. Still under a tenth, and still built once a
 turn rather than per plan.
+
+## A3: what the network map shows, and one thing it does not
+
+The map draws the selected nation's whole arrangement: every deal along the ground it actually
+crosses, every corridor it rents or grants, and every way out it can currently use. Road, rail and
+water are three colours and each can be switched off, because "show me only the railways" is how a
+player discovers that their entire economy runs through one line. A route that has been cut is drawn
+in red to the country that cut it and is CLICKABLE - it opens that nation's card, which is the
+shortest path from "my income fell" to "here is what I can do about it".
+
+Verified in play on a six-link network: a deal drawn solid to the partner, a rented corridor drawn
+dashed from whoever owns it, a granted corridor drawn solid to whoever pays for it, and three water
+links to Canada, Mexico and the world market. Switching water off left three links; switching rail
+off as well left none. A corridor revoked under a running deal produced two red links and two
+clickable targets naming the nation that closed it.
+
+**Straight lines between capitals, not routes along roads, and that is deliberate.** The game holds
+county geometry and no road geometry - the transport data says which counties CARRY rail and
+interstate, never where the rails and roads run. A plausible-looking line drawn along ground nobody
+surveyed would be an invention dressed as data, which this project has a rule against. A straight
+line between two centres is obviously a diagram, which is what it is.
+
+**Known and not fixed:** for a physically tiny nation the lines are only a few pixels long and hard
+to see. Recorded rather than fixed, because the honest fix is a zoom or a spread and neither is worth
+guessing at before somebody has played with it.
