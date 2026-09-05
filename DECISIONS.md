@@ -2624,3 +2624,56 @@ state price you worse — build it on A2's machinery, not beside it; and **F3** 
 carries a naming warning: `faction` already means a playable nation here, so the eventual system
 must be called something else.
 
+### D172 — The external markets, the modes, and where the rivers go in the order
+
+*2026-09-05.* Aaron specified how Canada, Mexico and the world market should work, and the answers
+change three things about what was built earlier the same day.
+
+**1. A PORT REACHES CANADA AND MEXICO, not only the world market.** What shipped in A2 wired a port
+to the world market alone, so Los Angeles could sell to Rotterdam and not to Tijuana. Aaron's rule:
+a nation reaches Mexico if it holds a Mexico border crossing, OR a port, OR a chain of transit
+agreements to somebody who does — and reaches Canada by all of those, plus the Great Lakes route
+already built. This is a hole in A2 and it is being fixed rather than deferred.
+
+**2. A PORT, NOT A COASTLINE.** Aaron ruled that only a real port lets a nation ship abroad: the 136
+port counties come from the Principal Ports dataset, so the infrastructure is already there, whereas
+a coastline is only the possibility of one. Measured: 222 counties are coastal and 136 hold a port,
+so 86 touch the sea with nothing to load a ship from. That gap is deliberate and load-bearing — it is
+what makes a port worth capturing, and it is the thing F7's "build a port" idea eventually acts on.
+
+**3. THE MODES ARE A COST HIERARCHY, not only a permission.** Aaron: ocean is cheapest, then river,
+then rail, then road as the baseline — because free interstate trade and the distribution networks
+that made land freight cheap do not survive the dissolution. A2 shipped the mode tiers as permissions
+ONLY: road, rail and port are separately grantable, and every crossing costs the same
+`transit.hopFriction` whatever it crosses. That loses half the point of having tiers, and it is worth
+noting that the OLD one-off transit path did have this (`trade.railDiscount` 0.5,
+`trade.highwayDiscount` 0.2) and the rewrite dropped it. Being restored as a per-mode friction.
+
+**4. RIVERS BEFORE THE NETWORK MAP.** Aaron agreed. The map's whole job is drawing who can reach whom
+and where it is blocked; building it before the rivers exist means drawing it twice. The alpha track
+order is therefore A2 → A2b (external markets on corridors) → **A2c (rivers and chokepoints)** → A3
+(the map) → A4 (the AI).
+
+**What made the rivers cheap enough to schedule rather than defer.** Measured before deciding: the
+data has been baked since July and never once read — four named corridors (Mississippi 105 counties,
+Ohio 56, Missouri 50, Great Lakes 81), fifteen named chokepoints falling to NINE different nations,
+and 213 river bank-pairs of which all 213 straddle different Areas with different owners today. The
+corridor graph built in A2 is already a graph of places joined by mode-tiered links, and a chokepoint
+is a place that charges a toll, which is what an intermediary already is. The genuinely new work is a
+river mode tier and a bank-permission check, not a new engine.
+
+**Deferred to `docs/FUTURE-IDEAS.md` from the same conversation:** F7 (real port sizes, and building
+and upgrading infrastructure — carrying Aaron's best line, that adding rail should be an alternative
+to invading somebody to use theirs), F8 (bundled package deals), F9 (the game proposing three routes
+out), F10 (asking the map where you could go), F11 (tolls as a bargaining chip inside a trade
+negotiation). One item from that list is NOT deferred: a flat discount on tolls between nations that
+already trade, at Aaron's own suggested playtest figure, which goes into the alpha because it costs
+almost nothing and is the cheapest possible test of whether the incentive is interesting at all.
+
+**What was ruled out as not buildable.** Nothing Aaron asked for, and that is worth writing down
+plainly rather than manufacturing a category. The one caution recorded against F9: "analyse every
+possible way to create trading networks" taken literally is enumerating every combination of
+agreements across sixty nations, which is not a large problem but an impossible one. The tractable
+question with the same answer is "find the best routes as if everyone said yes, then say who you
+would have to ask", and that runs in milliseconds.
+

@@ -181,6 +181,9 @@ hands to about a third of the board.
   and port separately, so a higher floor and ceiling for a port grant is a tunable and one line.
 - The AI's willingness to grant would need to know that a port grant costs it something real.
 
+**See also F7**, which carries the other half: ports are not interchangeable, and the real tonnages
+are in the dataset the map was baked from. Whoever builds one should build both.
+
 **Before it is worth doing.** After the alpha, and after the capacity model has been looked at once
 in its own right. The cheap half — a port toll costing more than a road toll — can land much sooner
 and is listed as an A2b item rather than here.
@@ -252,3 +255,139 @@ not matter, has thrown away the thing that made the United States rich in the fi
 Chicago is 17031 and is Illinois\'s. The Detroit River is 26163 and is Michigan\'s. Niagara is 36063
 and the St. Lawrence outlet 36089, both New York\'s. He described that chain from memory and the
 dataset agrees with him county for county.
+
+---
+
+## F7 — Ports with real sizes, and the ability to build and upgrade them
+
+**Aaron, 5 September 2026.** Raised on confirming that only a real port lets a nation ship abroad.
+
+> "I would want each port to have a limit based on actual data on how big that port is, the ability
+> to upgrade ports (and rail and roads as capital infastrucure builds that cost money and time but
+> increase the ammount of trade" ... "and also the ability to build ports and those 136 ports we
+> would want to analyze them and what are their actual feasibility for building a port there
+> (because it might just be because no one is there an it doesn't make sense or it might be beacuse
+> its geography makes for a terrible port so if a nation only has that county as a coastal region
+> they could build a port there but because it is terible it would cost extra to overhaul it.)"
+
+**Three ideas that belong together**, because each is worth much less alone:
+
+1. **Ports are not interchangeable.** Today every port counts the same: one port is
+   `trade.capacityPerPort` of throughput, whether it is Los Angeles or a barge dock. The Principal
+   Ports dataset the map was baked from carries real tonnage, so the sizes are available and are
+   simply being thrown away.
+2. **Infrastructure can be BUILT**, at a price in money and turns — a port, a railway, a road.
+3. **Where you can build one, and what it costs, depends on the ground.** Some of the 86 coastal
+   counties with no port have none because nobody lives there; some because the geography is
+   hopeless. A nation whose only coast is the second kind can still build, but it should pay through
+   the nose for it.
+
+**Why it is interesting, and this is the sentence that makes it worth building:**
+
+> "you can also add rail if you'd rather not attack an enemy to get somewhere by rail"
+
+That is the whole argument. Every route out of a landlocked country in this game currently ends in
+somebody else's hands — you ask, you pay, or you invade. Capital infrastructure is the third answer:
+slow, expensive, and yours. A game where the only response to a hostile neighbour is an army is a
+narrower game than one where you can spend ten years and a fortune building your own way round them.
+
+**What it would touch.** `Game.tradeCapacity` stops being a function of what you hold and becomes a
+function of what you hold AND what you have built, which means a per-nation build ledger in the save.
+The AI needs to know building is an option or it will never do it and the player will out-develop
+fifty nations without trying. And it wants a real cost curve, which is a tuning job on top of a
+building job.
+
+**Before it is worth doing.** After the alpha. It is a new verb, and the alpha exists to find out
+whether the verbs that already exist are any good.
+
+---
+
+## F8 — Bundled deals: pay me at both ports and the railway is free
+
+**Aaron, 5 September 2026.**
+
+> "mississippi could give me a deal, like pay us at both ports but we will give you a discounted or
+> free rail toll. The reason why this would be a future idea is that it would have to have logic
+> built in and incentives that I don't think are as built out as possible."
+
+**What it is.** A single negotiation covering several agreements at once, where one leg is discounted
+to make another palatable. Not "here is my rate for the railway" but "here is my price for the whole
+journey across my country, and I have decided how to split it."
+
+**Why it is deferred, in Aaron's own judgement and I agree with it.** Package deals only mean
+anything when both sides can value the package, and the AI cannot yet: it weighs one agreement at a
+time against its size, its need and its politics. Give it a bundle and it will either take every
+bundle or refuse every bundle, and neither teaches anybody anything. The simpler version of the same
+idea — a flat discount on tolls between nations that already trade — is scheduled rather than
+deferred, and is the thing that will show whether the incentive is interesting enough to build the
+complicated version.
+
+---
+
+## F9 — "Find me a way out": the game proposes the routes
+
+**Aaron, 5 September 2026.**
+
+> "lets say that I am Minnesotta and I say that I am trying to reach the world market I could put out
+> a bid of proposal (or something else) where the program would go through and analyze every possible
+> way to create trading networks (tolls and stuff) to get to the ocean and then it would pick the
+> three that would be the cheapest in theory and I could look through them and what all they would
+> entail and because I the player know that I plan on attacking iowa in a few turns want to go for
+> routes that don't include iowa or something like that."
+
+**What it is.** Instead of the player working out who to ask, the game does: here are the three
+cheapest ways you could reach the ocean, here is who you would have to persuade for each, and here
+is what each would cost. The player picks — and picks on information the game does not have, like
+which neighbour they are about to invade.
+
+**Why it is a good idea and cheaper than it sounds.** The routing engine built in A2 already finds
+the best way through for a GIVEN set of agreements. Finding the best way through assuming you could
+get agreement from anybody is the same search with the permission check switched off, and finding the
+best three instead of the best one is a small change to how the search keeps its results. The genuinely
+new work is the screen and the exclusions ("not through Iowa"), not the arithmetic.
+
+**One caution, and it is a real one.** "Analyse every possible way to create trading networks" taken
+literally means enumerating every combination of agreements across sixty nations, which is not a
+large problem, it is an impossible one. What is tractable — and what actually answers the player's
+question — is: find the best routes as if everyone would say yes, then tell them who they would have
+to ask. That is a different question with the same answer, and it runs in milliseconds.
+
+**Before it is worth doing.** After the network map exists, because it is that screen with one more
+mode.
+
+---
+
+## F10 — Asking the map where you could go
+
+**Aaron, 5 September 2026.** Raised while specifying the network map.
+
+> "there should be a search bar as well that lets me select a nation, mexico, canada, or world and it
+> should show potential trade routes to get there (using the same color scheme of rail, road, or
+> water but a desatured color)"
+
+**What it is.** The network map draws what you HAVE. This draws what you COULD have: pick any
+destination, and the map shows the ways through in the same colours as your real routes, faded, so
+the difference between a road you hold and a road you would have to ask for is legible at a glance.
+
+**Why it is separated from the map itself.** The map's first job is to make the network you already
+have understandable, and that job is finished before this one starts. This is also the natural home
+for F9 — once the map can draw a hypothetical route, showing three of them and letting the player
+rule one out is the same screen.
+
+---
+
+## F11 — Trading with somebody should make their tolls cheaper (the general version)
+
+**Aaron, 5 September 2026.**
+
+> "I am Wisconsin and Minnesota wants to trade with me but I don't like their rates but I want to to
+> trade with the dakotas. So I say I'll accept that rate as well as tolls for free or reduced rates
+> or something like that."
+
+**Status: the simple half is SCHEDULED, not deferred.** A flat discount on tolls between two nations
+that hold a live trade deal is going into the alpha, at Aaron's own suggested playtest figure. What
+stays here is the general version he described: tolls as a bargaining CHIP inside a trade
+negotiation, offered and withdrawn as part of the haggle rather than applied automatically.
+
+That version needs what F8 needs — a counterparty that can value a package — and it should be built
+in the same pass as F8 or not at all, because they are the same mechanism seen from two ends.
