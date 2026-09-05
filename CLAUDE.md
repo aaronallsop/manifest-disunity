@@ -38,6 +38,17 @@ they lost.
   writing. When something in the brief is ambiguous, stop and ask — do not pick something reasonable
   and carry on.
 
+## Versions
+
+`docs/VERSIONING.md` is the scheme and it is binding. The short form: the middle number moves when
+something exists that did not before (`v0.2`), the last number when the same thing is merely fixed
+(`v0.2.1`). Tag on `master`, never on the playtest branch. Tag only a verified state. One alpha bump
+per economy phase, and only after Aaron has approved that phase's checkpoint on the Control Board.
+Published tags are never moved or deleted.
+
+Current: `v0.1` the prototype, `v0.2` Economy mode. The `main` branch is a built copy for the browser
+that playtesters open — an output, not a place work happens. Do not delete it.
+
 ## Where this project departs from the standard layout, and why
 
 - The code lives in `js/`, `css/` and at the root rather than in `src/`. It is loaded directly by

@@ -2263,3 +2263,37 @@ why the flag is on the rare case rather than the common one.
 export dialog lists what the file contains item by item rather than claiming nothing personal is
 collected. A claim is worth less than an itemisation somebody can read, and the list is short enough
 to read — which is the point of keeping the log small in the first place.
+
+### D161 — Versions start at the prototype, not at today
+
+Aaron asked what the version numbers should be, expecting something like `v3.1.2`, and asked whether
+the economy work would be `v0.1.1`. Both instincts were close and both needed one correction.
+
+**The prototype takes `v0.1`, not the alpha.** The build already on the `main` branch is finished,
+playable in a browser, and has been lost by its own designer — a rival nation reached one of the three
+victory conditions. A thing that can be won and lost is a game, and it deserves the first number. Had
+the alpha taken `v0.1`, the build that testers actually hold would have had no name, and any report
+from them would be untraceable.
+
+**Economy work moves the middle number, not the last.** `v0.1.1` announces "nothing new, something was
+patched", which is exactly wrong for a system that adds capability the game did not have. A tester
+told `v0.1.1` would never look for it. The rule written into `docs/VERSIONING.md` is a question rather
+than a taxonomy — *would I have to tell a tester anything new?* — because that is the form a
+non-programmer can apply without looking anything up.
+
+**Tags go on `master`, at the commit the build came from.** `main` holds an orphan branch with a
+single commit: the browser build, uploaded so testers can open a link. It shares no history with the
+project. Tagging it would attach a version to an output rather than to a state of the work, and the
+next build would have nowhere to go. `v0.1` therefore points at `d64da4f`, the last change before the
+playtest build was pushed twenty-five minutes later.
+
+**Rejected:** semantic versioning as normally practised, where the first number tracks breaking changes
+to an interface other programmers depend on. Nobody depends on this game's internals, so that meaning
+is unavailable, and importing the convention without its meaning would produce numbers nobody could
+interpret. The stages a game actually passes through — prototype, alpha, beta, release — are what the
+numbers track here instead.
+
+**Also decided:** the alpha bumps once per phase of the economy brief, and only after the phase's
+Control Board checkpoint has been approved in writing. The brief already requires that approval; this
+makes the version history the record of it, so a future session can read the tags and know which
+phases were genuinely signed off rather than merely finished.
