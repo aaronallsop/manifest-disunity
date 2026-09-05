@@ -484,6 +484,37 @@ const Actions = (function () {
       .filter((t) => nationExportAccess(t).any)
       .map((t) => ({ t, link: transitLink(A.nid, t) }))
       .filter((r) => r.link !== null);
+    /*
+     * CORRIDORS (A2) — a standing right to move goods across somebody's ground,
+     * as against the one-off sale above it. The two sit on the same panel on
+     * purpose: they answer the same question for a landlocked nation, and the
+     * difference between renting a lift this quarter and holding the road open
+     * for five years is exactly the thing the player is being asked to weigh.
+     *
+     * Every neighbour with a real corridor is listed, including ones the player
+     * already has an agreement with, so the panel says what it holds as well as
+     * what it could ask for.
+     */
+    const corridors = (typeof Transit === 'undefined' ? [] : Game.borderingNations(A.nid)
+      .map((t) => ({ t, bits: Transit.modesBetween(A.nid, t) }))
+      .filter((r) => r.bits))
+      .map((r) => {
+        const held = [Transit.MODE.RAIL, Transit.MODE.HIGHWAY, Transit.MODE.PORT]
+          .filter((m) => (r.bits & m) && Transit.live(r.t, A.nid, m));
+        return { ...r, held };
+      });
+    const corridorHtml = corridors.length ? `
+      <div class="label" style="margin-top:12px">Corridors &middot; a standing right to cross their ground</div>
+      ${corridors.map((r) => {
+        const modes = [Transit.MODE.RAIL, Transit.MODE.HIGHWAY, Transit.MODE.PORT]
+          .filter((m) => r.bits & m).map((m) => Transit.MODE_LABEL[m]).join(', ');
+        return `<button class="btn ghost transit-btn" data-corridor="${r.t}">
+          <span>${escapeHtml(Game.getNation(r.t).name)}</span>
+          <span class="transit-meta">${escapeHtml(modes)}${r.held.length
+            ? ` &middot; you hold ${r.held.map((m) => Transit.MODE_LABEL[m]).join(' + ')}` : ''}</span>
+        </button>`;
+      }).join('')}` : '';
+
     const transitHtml = routes.length ? `
       <div class="label" style="margin-top:12px">Transit routes &middot; reach the market through a neighbour</div>
       ${routes.map((r) => `<button class="btn ghost transit-btn" data-t="${r.t}" ${tradeCooldownLeft(A.nid, r.t) ? 'disabled' : ''}>
@@ -498,6 +529,7 @@ const Actions = (function () {
       <strong>treasury</strong>, not to GDP &mdash; the goods were already counted when they were made.</p>
       ${ext}
       ${transitHtml}
+      ${corridorHtml}
       <div class="btn-row"><button class="btn ghost" id="a-cancel">Cancel</button></div>
     `);
     document.getElementById('a-cancel').onclick = cancel;
@@ -509,7 +541,9 @@ const Actions = (function () {
     wire('a-mexico', 'Mexico', 'Mexico');
     wire('a-world', 'world', 'the world market');
     document.querySelectorAll('.transit-btn').forEach((b) => {
-      if (!b.hasAttribute('disabled')) b.onclick = () => renderTransitPreview(b.dataset.t);
+      if (b.hasAttribute('disabled')) return;
+      b.onclick = () => (b.dataset.corridor
+        ? renderCorridorAsk(b.dataset.corridor) : renderTransitPreview(b.dataset.t));
     });
   }
 
@@ -632,6 +666,150 @@ const Actions = (function () {
         box.innerHTML = `<div class="deal-verdict decline">❌ ${escapeHtml(tName)} declines &mdash; too stingy.${why}</div>`;
       }
     };
+  }
+
+  /*
+   * ASKING A NEIGHBOUR TO CARRY YOUR GOODS (A2).
+   *
+   * The one-off sale above this rents a lift to market for one quarter. This
+   * buys the road for years, and it is what a landlocked nation actually needs:
+   * a trade deal you cannot get your goods to is not a trade deal.
+   *
+   * THREE THINGS THE PLAYER CHOOSES, and each one is a real decision rather than
+   * a form field: WHICH WAY (road, rail or their docks, and a nation may open
+   * one and refuse the others), HOW LONG, and WHAT TO OFFER. The neighbour has
+   * an opinion about all three, and it comes from the model, so it is the same
+   * opinion fifty other nations get.
+   */
+  function renderCorridorAsk(tid, prefill) {
+    const S = A.nid;
+    const them = Game.getNation(tid);
+    if (!them) return renderTradePrompt();
+    const bits = Transit.modesBetween(S, tid);
+    const durations = TUNE.peek('deal.durations');
+    if (!A.corridor || A.corridor.t !== tid) {
+      const first = [Transit.MODE.RAIL, Transit.MODE.HIGHWAY, Transit.MODE.PORT].find((m) => bits & m);
+      const want = TUNE.peek('deal.defaultDuration');
+      A.corridor = {
+        t: tid, mode: first,
+        duration: durations.includes(want) ? want : durations[0],
+        rate: null,
+      };
+    }
+    if (prefill) Object.assign(A.corridor, prefill);
+    const c = A.corridor;
+    const plan = Moves.plan({ type: 'transit', nid: S, target: tid,
+      mode: c.mode, duration: c.duration, rate: c.rate }, TUNE);
+    const fair = plan.ok ? plan.verdict.rate : TUNE.get('trade.transitToll');
+    if (c.rate == null) {
+      // Open BELOW what they would ask, so the slider is a decision rather than
+      // a button they say yes to nine times in ten (D31).
+      c.rate = Math.max(TUNE.get('transit.rateMin'), fair * TUNE.get('trade.openingOfferFactor'));
+    }
+    const held = Transit.live(tid, S, c.mode);
+
+    const modeRow = [Transit.MODE.RAIL, Transit.MODE.HIGHWAY, Transit.MODE.PORT].map((m) => {
+      const can = bits & m;
+      const have = can && Transit.live(tid, S, m);
+      return `<button class="btn ghost dur-opt${m === c.mode ? ' active' : ''}" data-mode="${m}"
+        ${can ? '' : 'disabled title="That border carries no such link"'}>${escapeHtml(Transit.MODE_LABEL[m])}
+        <small>${can ? (have ? 'you hold this' : 'available') : 'no link'}</small></button>`;
+    }).join('');
+    const durRow = durations.map((d) => `<button class="btn ghost dur-opt${d === c.duration ? ' active' : ''}"
+      data-dur="${d}">${d} ${plural(d, 'turn', 'turns')}<small>${escapeHtml(termWords(d))}</small></button>`).join('');
+
+    setPanel(`
+      ${actionHead('\u{1F6E3} Corridor \u2014 ask to cross their ground', Game.getNation(S))}
+      <p class="hint-block">Ask <strong>${escapeHtml(them.name)}</strong> for a standing right to move your
+      goods across their territory. It lasts the term you agree, they take a cut of what passes, and
+      either side can end it with <strong>${TUNE.peek('transit.noticeTurns')} turns'</strong> notice.</p>
+      ${held ? `<div class="ok-box">\u2705 You already have a ${escapeHtml(Transit.MODE_LABEL[c.mode])} corridor
+        across ${escapeHtml(them.name)} &mdash; ${Transit.remaining(held)} more
+        ${plural(Transit.remaining(held), 'turn', 'turns')} at ${Math.round(held.rate * 100)}%.</div>` : ''}
+      <div class="stat"><div class="label">Which way</div><div class="dur-opts">${modeRow}</div></div>
+      <div class="stat"><div class="label">How long</div><div class="dur-opts">${durRow}</div></div>
+      <div class="slider-row">
+        <div class="label">Your offer to ${escapeHtml(them.name)}: <strong id="corr-val">${Math.round(c.rate * 100)}%</strong>
+          of what crosses</div>
+        <input type="range" id="corr-slider" min="${Math.round(TUNE.get('transit.rateMin') * 100)}"
+          max="${Math.round(TUNE.get('transit.rateMax') * 100)}" value="${Math.round(c.rate * 100)}">
+      </div>
+      ${plan.ok || !plan.reason ? '' : `<div class="warn-box">\u26d4 ${escapeHtml(plan.reason)}</div>`}
+      <div id="deal-response"></div>
+      <div class="btn-row">
+        <button class="btn ghost" id="a-back">Back</button>
+        <button class="btn go" id="a-propose" ${plan.ok && !held ? '' : 'disabled'}>Propose</button>
+      </div>
+    `);
+    for (const b of document.querySelectorAll('.dur-opt[data-mode]')) {
+      if (!b.hasAttribute('disabled')) {
+        b.onclick = () => { A.corridor.mode = Number(b.dataset.mode); A.corridor.rate = null; renderCorridorAsk(tid); };
+      }
+    }
+    for (const b of document.querySelectorAll('.dur-opt[data-dur]')) {
+      b.onclick = () => { A.corridor.duration = Number(b.dataset.dur); renderCorridorAsk(tid); };
+    }
+    const sl = document.getElementById('corr-slider');
+    if (sl) {
+      sl.oninput = () => {
+        A.corridor.rate = +sl.value / 100;
+        document.getElementById('corr-val').textContent = sl.value + '%';
+        document.getElementById('deal-response').innerHTML = ''; // a stale yes is a lie
+      };
+    }
+    document.getElementById('a-back').onclick = () => { A.corridor = null; renderTradePrompt(); };
+    const prop = document.getElementById('a-propose');
+    if (prop && !prop.hasAttribute('disabled')) prop.onclick = () => proposeCorridor(tid);
+  }
+
+  function proposeCorridor(tid) {
+    const tName = Game.getNation(tid).name;
+    const box = document.getElementById('deal-response');
+    /*
+     * RE-PLANNED HERE, NOT REUSED FROM THE RENDER. The slider moves the offer
+     * without re-rendering — deliberately, so dragging it does not rebuild the
+     * panel under the player's finger — which means the plan captured when the
+     * panel was drawn is judging the OPENING offer, whatever the slider now
+     * says. Found by playing it: every offer was refused with the same reasons
+     * however generous it got.
+     */
+    const c = A.corridor;
+    const plan = Moves.plan({ type: 'transit', nid: A.nid, target: tid,
+      mode: c.mode, duration: c.duration, rate: c.rate }, TUNE);
+    const v = plan.verdict;
+    if (!box || !v) return;
+    if (typeof Telemetry !== 'undefined') Telemetry.note('corridor-propose', { d: v.kind, mode: A.corridor.mode });
+    const why = `<div class="deal-why">${v.reasons.map((r) => escapeHtml(r)).join(' ')}</div>`;
+    const sign = (rate) => {
+      const r = Moves.resolve({ type: 'transit', nid: A.nid, target: tid,
+        mode: A.corridor.mode, duration: A.corridor.duration, rate }, store.rng);
+      if (!r.ok) return flash(`\u26d4 ${escapeHtml(r.reason)}`, 'bad');
+      A = null; clearVisuals();
+      flash(`\u{1F6E3} <strong>${escapeHtml(tName)}</strong> will carry your goods by
+        ${escapeHtml(Transit.MODE_LABEL[r.mode])} for ${escapeHtml(termWords(r.duration))},
+        at ${Math.round(rate * 100)}%.`, 'good');
+      completeTurn();
+    };
+    if (v.kind === 'accept') {
+      box.innerHTML = `<div class="deal-verdict accept">\u2705 ${escapeHtml(tName)} accepts
+        ${Math.round(A.corridor.rate * 100)}%.${why}</div>
+        <button class="btn go" id="a-sign">Sign \u2014 ${escapeHtml(termWords(A.corridor.duration))}</button>`;
+      document.getElementById('a-sign').onclick = () => sign(A.corridor.rate);
+      return;
+    }
+    if (v.kind === 'counter') {
+      box.innerHTML = `<div class="deal-verdict counter">\u2194\ufe0f ${escapeHtml(tName)} wants
+        <strong>${Math.round(v.rate * 100)}%</strong>, not ${Math.round(A.corridor.rate * 100)}%.${why}</div>
+        <div class="btn-row">
+          <button class="btn go" id="a-sign">Pay their ${Math.round(v.rate * 100)}%</button>
+          <button class="btn ghost" id="a-adjust">Change my offer</button>
+        </div>`;
+      document.getElementById('a-sign').onclick = () => sign(v.rate);
+      document.getElementById('a-adjust').onclick = () => renderCorridorAsk(tid, { rate: v.rate });
+      return;
+    }
+    box.innerHTML = `<div class="deal-verdict decline">\u274c ${escapeHtml(tName)} will not carry your
+      goods for that.${why}</div>`;
   }
 
   // external deal: sell surplus to Canada/Mexico/the world, capped by capacity

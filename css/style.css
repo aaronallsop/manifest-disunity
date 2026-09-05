@@ -853,3 +853,7 @@ label.opt.auto-renew { display: flex; gap: 8px; align-items: center; margin-top:
   .db-head { display: none; }
   .db-row { grid-template-columns: 1fr 1fr; }
 }
+
+/* A2: where a deal's goods go, on the row of the deal they come off. */
+.db-via { margin-top: 3px; font-size: 11px; opacity: .7; }
+.db-via.stalled { color: var(--bad, #e0483b); opacity: 1; font-weight: 600; }

@@ -258,6 +258,12 @@ function completeTurn() {
    * fast-forward stops on it rather than running past a decision.
    */
   if (typeof Deals !== 'undefined' && Deals.waiting(you()) && showRenegotiation()) return true;
+  /*
+   * ...and last of all, somebody asking to cross your ground (A2). Below the
+   * expired deal on purpose: a contract that has run out is costing money every
+   * quarter it goes unanswered, and a request costs nothing to leave waiting.
+   */
+  if (typeof Transit !== 'undefined' && Transit.waiting(you()) && showTransitCard()) return true;
   const next = you();
   if (next && Game.getNation(next)) { setMode('nations'); select('nation', next); }
   else deselect();

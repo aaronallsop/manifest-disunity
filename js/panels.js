@@ -169,6 +169,77 @@ function renderLeader(nid) {
  * with the index at 130 was a bad deal for the seller and they should be able
  * to see that without arithmetic.
  */
+/*
+ * SOMEBODY WANTS TO CROSS YOUR GROUND (A2).
+ *
+ * The same card shape as an expiring deal, and deliberately so: a player should
+ * learn ONE thing about how this game asks them a question, not one per system.
+ * What differs is only what is being asked and what it is worth.
+ *
+ * It sits BELOW the deal prompt in the halt chain — an expired contract that is
+ * costing money every quarter it goes unanswered outranks a request that costs
+ * nothing to leave waiting.
+ */
+function showTransitCard() {
+  const me = Game.getPlayer();
+  const o = Transit.waiting(me);
+  if (!o) return false;
+  const them = Game.getNation(o.from);
+  if (!them) return false;
+  const el = document.getElementById('endscreen');
+  const card = el.querySelector('.end-card');
+  const mode = Transit.MODE_LABEL[o.terms.mode] || 'transit';
+  /*
+   * WHAT IT IS WORTH TO YOU, and what refusing costs them. The toll is a share
+   * of what crosses, so the honest thing to show is the share and the term
+   * rather than a figure invented from a volume nobody has committed yet.
+   */
+  const stuck = Game.exportAccess(o.from);
+  const theyNeedIt = !stuck.any;
+
+  card.innerHTML = `
+    <div class="end-kicker">A request &middot; ${escapeHtml(Calendar.label(World.getTurn(), TUNE))}</div>
+    <h2><span class="dot" style="background:${them.color}"></span>${escapeHtml(them.name)} wants to cross your ground</h2>
+    <p class="end-sub">By ${escapeHtml(mode)}, for ${o.terms.duration} turns, paying you
+      <strong>${Math.round(o.terms.rate * 100)}%</strong> of everything that passes.
+      ${theyNeedIt
+        ? `${escapeHtml(them.name)} has no port and no border crossing of its own — without a way through
+           somebody, it cannot trade beyond its neighbours at all.`
+        : `They have their own way out; this one is simply better for them.`}
+      Either side can end it later with ${o.terms.notice} turns' notice, and closing it is remembered.</p>
+    <div class="crisis-opts">
+      <button class="crisis-opt" data-do="grant">
+        <span class="co-label">Let them through</span>
+        <span class="co-note">You collect ${Math.round(o.terms.rate * 100)}% of what crosses, every turn,
+          for ${o.terms.duration} turns. Does not use your turn.</span>
+      </button>
+      <button class="crisis-opt" data-do="refuse">
+        <span class="co-label">No</span>
+        <span class="co-note">Nothing changes. They may ask again, or find another way round.</span>
+      </button>
+    </div>`;
+  el.classList.add('show');
+  card.querySelectorAll('.crisis-opt').forEach((b) => {
+    b.onclick = () => {
+      el.classList.remove('show');
+      const r = Transit.answer(o.id, b.dataset.do, TUNE);
+      if (b.dataset.do === 'grant') {
+        flash(r.ok
+          ? `\u{1F6E3} <strong>${escapeHtml(them.name)}</strong> may cross your ground by ${escapeHtml(mode)}.`
+          : `\u26d4 ${escapeHtml(r.reason)}`, r.ok ? 'good' : 'bad');
+      } else {
+        flash(`\u{1F6AB} You turned <strong>${escapeHtml(them.name)}</strong> away.`, '');
+      }
+      Game.touch({ values: true });
+      renderTurnBanner();
+      if (Transit.waiting(me)) return showTransitCard();
+      setMode('nations');
+      select('nation', me);
+    };
+  });
+  return true;
+}
+
 function showRenegotiation() {
   const me = Game.getPlayer();
   const o = Deals.waiting(me);
