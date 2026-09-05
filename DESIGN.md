@@ -1426,10 +1426,11 @@ account of where this model stops.
   "aid given", and neither mechanic exists: there is no treaty object and no transfer of money
   between nations. Recognition is the first thing in the game that is a standing diplomatic fact
   rather than an event, and a treaty would be the second.
-- **Trade is still a UI flow rather than a Move.** Every other action goes through
-  `Moves.plan`/`resolve` and is therefore something the AI can consider; trade lives in
-  `js/actions.js`, so fifty nations never trade with each other. The trade *rules* are model code
-  and tested; what is missing is the planner that would let an AI use them.
+- ~~**Trade is still a UI flow rather than a Move.**~~ *Stale, corrected 5 September 2026: M11.1
+  moved trade onto `Moves.plan`/`resolve` ("TRADE BECOMES A MOVE", js/moves.js) and the AI has
+  traded with itself since — verified in play. What trade still lacks is TERMS: a deal is a single
+  click with a cooldown, not a standing agreement with a duration. That is what Addendum A's stage
+  A1 builds.*
 - **A leader is a modifier and a name.** No succession crises, no factions inside a government, no
   relationship between two leaders. The trait table is twelve entries deep and the effect vocabulary
   is five stocks and a war roll.

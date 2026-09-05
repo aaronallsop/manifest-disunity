@@ -2492,3 +2492,45 @@ method cannot support it.
 
 **Note for the next session:** this is the one Phase 0 item that is measured-but-inconclusive rather
 than done. It does not block anything else in Phase 0.
+
+### D168 — Addendum A: trade first, the economy after, and four rulings on the way in
+
+The project manager's Addendum A reorders the roadmap so that an alpha test happens before any of the
+economic model is replaced: A0 unblock, A1 deals with terms, A2 transit and tolls, A3 the network map,
+A4 the AI using the new instruments, then alpha. The reasoning is sound and is the addendum's own:
+the v2 order is right for building a simulation and wrong for finding out whether the game is fun.
+
+Filed at `docs/spec/economy-system-spec-addendum-a.md` with Aaron's rulings folded in. Four of them,
+and two corrections to the addendum itself.
+
+**Rulings.**
+
+1. **The A-stages run straight through** — no stop for written approval between them. Supersedes,
+   for the alpha track only, the master rule that each phase waits for sign-off. The alpha test is
+   the checkpoint that matters.
+2. **Canada and Mexico are geography, not nations.** Not actors, not conquerable, no negotiation, no
+   opinion. Any bordering state may route through them at a flat placeholder toll of 10% — a cost to
+   the trader, not a transfer to Canada. Aaron's example: Idaho trading with Minnesota via Canada keeps
+   10% less of that deal's income. Conditions (hesitancy toward a fresh secession) may come later.
+3. **The recognition trade block stays**, per D166. The addendum restated v2 ruling 1.6; Aaron chose
+   the design document.
+4. **Great Lakes ports reach the world market only through Canada; ocean ports reach it directly.**
+
+**Corrections to the addendum.**
+
+- Its A4 premise — that trade lives in the UI so the AI never trades — is stale. M11.1 moved trade
+  onto `Moves.plan`/`resolve` and the AI has traded since; verified in play. `DESIGN.md` §12 carried
+  the same stale line and has been corrected under its own rule. What A4 genuinely adds is the AI
+  using the *new* deal and transit objects, and the offer cap and expiry.
+- Its A0 restated ruling 1.6; see ruling 3.
+
+**A mistake of mine, caught before it cost anything.** I told Aaron the county data had no ports and
+raised it as a blocking question. It has 986 counties flagged, from the 21 MB Principal Ports dataset
+pulled in July, baked into `data/county_trade.json` — I had checked `transport.json`, the wrong file.
+The running game sees them correctly (Houston 5, Florida 8, Illinois 12, Michigan 7 on the lakes,
+Wyoming 0). Verified at runtime before withdrawing the question. The lesson is the same as rule 1 in
+PROGRAMMER-RULES: check the thing the code actually reads, not the thing its name suggests.
+
+**Also struck by the addendum:** the five-nation prediction exercise. The answer key computed for it
+(`docs/PHASE1-ANSWER-KEY.md`) is not wasted — its findings about the demand formulas' units and the
+invented industry data stand regardless, and matter when derived demand is built after alpha.

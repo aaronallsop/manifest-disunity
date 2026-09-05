@@ -33,10 +33,10 @@ they lost.
   it that way.
 - **The full game must stay untouched by work on the stripped-back Economy mode.** Economy mode is
   a set of flags, not a fork. All tests green is the bar before anything is called finished.
-- **The economy brief runs on checkpoints.** No phase is skipped, no two phases are merged, and
-  nothing in a later phase starts until Aaron has verified the previous one on the Control Board in
-  writing. When something in the brief is ambiguous, stop and ask — do not pick something reasonable
-  and carry on.
+- **The economy brief runs on checkpoints.** No phase is skipped and no two phases are merged. Outside
+  the alpha track, nothing in a later phase starts until Aaron has verified the previous one on the
+  Control Board in writing — **for A0–A4 he has waived this; see the Addendum A rules below.** When
+  something in the brief is ambiguous, stop and ask — do not pick something reasonable and carry on.
 - **The Control Board never drives the game.** It is where Aaron reads progress and answers
   decisions. It cannot reach a running game and must not be built to try. Every testing control —
   step a turn, fast-forward, force a state's figures, run the simulation, choose a seed — belongs to
@@ -55,7 +55,7 @@ they lost.
 `docs/VERSIONING.md` is the scheme and it is binding. The short form: the middle number moves when
 something exists that did not before (`v0.2`), the last number when the same thing is merely fixed
 (`v0.2.1`). Tag on `master`, never on the playtest branch. Tag only a verified state. One alpha bump
-per economy phase, and only after Aaron has approved that phase's checkpoint on the Control Board.
+per stage of the roadmap as it lands — for the alpha track, at each of A0–A4.
 Published tags are never moved or deleted.
 
 Current: `v0.1` the prototype, `v0.2` Economy mode. The `main` branch is a built copy for the browser
@@ -69,14 +69,34 @@ that playtesters open — an output, not a place work happens. Do not delete it.
 - `build/` holds the offline Python scripts that bake the map and economy data, and serves the role
   `scripts/` does elsewhere.
 
+## Rules from Addendum A (the alpha track, 5 September 2026)
+
+- **The roadmap is now A0 → A4 then an alpha test**, per `docs/spec/economy-system-spec-addendum-a.md`.
+  Aaron has ruled that the A-stages run **straight through without stopping for approval between
+  them**; this supersedes, for the alpha track only, the rule that each phase waits for written
+  sign-off. Commit and tag each stage as it lands. Stop only on something genuinely his to decide.
+- **A1 and A2 build on the existing economy and do not touch it.** No changes to demand, supply or
+  price. If a stage starts needing them, stop and raise it. The model is known to be structurally
+  wrong and is being kept on purpose.
+- **Do not tune anything.** Tolls, durations and caps get placeholder tunables and stay there.
+- **Canada and Mexico are geography, not nations.** Not actors, not conquerable, no opinion, no
+  negotiation. Any bordering state may route through them at a flat placeholder toll (10%) that is a
+  cost, not a transfer. **Great Lakes ports reach the world market only through the Canada corridor;
+  ocean ports reach it directly.** `data/county_trade.json` already distinguishes the two.
+- **The recognition trade block stays** (D166). Do not implement v2 ruling 1.6 or its restatement in
+  the addendum; both misread DESIGN.md.
+- **Economy mode is a sandbox with no win condition**, and testers are told so up front.
+- **The five-nation prediction exercise is struck.** Do not wait on it or ask for it.
+
 ## Definition of done for the current phase
 
-**Phase 0 of the economy brief — instruments and time. No economic logic.**
+**The alpha track, A0 through A4, ending in an alpha test.**
 
-Done means Aaron can, on the Control Board: see a turn counter showing a date where one turn is one
-month; select any state and read its supply, demand, ratio and band per resource with the top three
-contributors to each; change a value in the tuning file, reload, and see behaviour change without a
-rebuild; run one hundred turns without the screen in under sixty seconds and open the result in a
-spreadsheet; and get identical results from the same seed twice.
+Done means an alpha tester who did not write the game can: negotiate a trade deal with real terms and
+see it expire and prompt renegotiation; grant or revoke transit through their territory by mode and
+feel the consequence land; look at the trade network map and understand why a route broke and what to
+do about it; and see AI nations trading with each other unprompted. Economy mode is the sandbox this
+happens in, and it says so.
 
-Before building any of it, report which parts already exist in the game, so nothing is paid for twice.
+The known hollow spot, deliberately accepted: nothing bad happens to a nation that does not trade.
+That is the first thing the alpha should watch for.
