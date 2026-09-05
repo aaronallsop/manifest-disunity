@@ -123,7 +123,7 @@
 // ============================================================================
 const BOARD = {
   project: "Manifest Disunity",
-  updated: "2026-09-05 17:05",          // when you last republished, local time
+  updated: "2026-09-05 17:35",          // when you last republished, local time
 
   // Three or four measured figures. value: number|string, or null = "not yet measured".
   figures: [
@@ -145,36 +145,15 @@ const BOARD = {
         + "stages can \u2014 starting with the one that began this rebuild, whether there is again "
         + "too much to think about. 948 checks pass, and the two seas are in: Pacific ports trade "
         + "with each other, Atlantic and Gulf with each other, and the canal is shut between them. "
-        + "There is a new switch below \u2014 Hog Wild Mode \u2014 and answering the question beside it is "
-        + "the last thing between here and a build worth putting in front of testers.",
+        + "Nothing is waiting on you. There is plenty left that is not \u2014 nine things, listed in "
+        + "today's handoff \u2014 and two of them are faults rather than features: the design document "
+        + "has fallen four stages behind the game, which breaks this project's own first rule, and "
+        + "using somebody's port still costs the same as using their road, which you flagged this "
+        + "morning and I did not build. Both are first in the queue when Hog Wild runs.",
   },
 
   // Only decisions that are genuinely the owner's. Ids are permanent.
-  decisions: [
-    {
-      id: "coastal-shipping",
-      title: "Can two coastal nations simply sail to each other?",
-      evidence: "Right now they cannot, and it shows. Mississippi and Houston are both on the Gulf "
-              + "with ports, and the game routes their trade out through CANADA — because a port "
-              + "reaches Canada, Mexico and the world market, but there is no sea link between two "
-              + "American ports. You told me ocean shipping is the cheapest way to move anything "
-              + "and that Florida should trade with Miami by water. Half of that is built and half "
-              + "of it is not.",
-      cost: "Building it is nearly free, and that is exactly the problem. Thirty-six of sixty "
-          + "nations hold an ocean port, so if any port can reach any other port, those thirty-six "
-          + "are all one step from each other and the map stops mattering for more than half the "
-          + "board. The reason it would be free is that there is no DISTANCE in this game yet: New "
-          + "Orleans to Houston and New Orleans to Seattle would cost exactly the same. Leaving it "
-          + "out keeps geography meaningful and leaves one visibly odd result, where two Gulf "
-          + "neighbours ship via Canada.",
-      recommendation: "Leave it out of the economy alpha and let the odd result stand — it is one "
-                    + "line on one screen, and it is at least honest about what the model does not "
-                    + "know. Then do it properly with a real distance between ports, which is a "
-                    + "measurable thing I can add later and the only version that does not flatten "
-                    + "the map. If you would rather have coastal shipping now and accept that half "
-                    + "the board becomes neighbours, say so — it is an hour, not a stage.",
-    },
-  ],
+  decisions: [],
 
   // Standing permissions. Ids are permanent. risk: "low" | "med" | "high".
   permissions: [
@@ -434,6 +413,10 @@ const BOARD = {
 
   // Decisions made on the owner's behalf and how they turned out. Corrections go BESIDE originals.
   log: [
+    { when: "2026-09-05", decision: "Asked whether two coastal nations could simply sail to each other, rather than guessing.",
+      outcome: "You answered it with something better than the question: not one ocean but two, Pacific with Pacific, Atlantic and Gulf together, and the Panama Canal shut between them because a navy that cannot move between its own oceans is two navies. It is built. Two Gulf neighbours no longer route their trade via Canada, and your rule caught a leak I would have missed — Canada has a Pacific coast in life, and the moment it had one here, Seattle could reach Boston by sea after all." },
+    { when: "2026-09-05", decision: "Let DESIGN.md fall four stages behind while building.",
+      outcome: "WRONG, and it breaks this project's own first rule — that the design document and the behaviour change in the same commit, and that when they disagree the document is right. The rivers, the chokepoints, the two seas and the network map are all in the game and none of them are in the document. Found while listing what was left rather than by anything catching it. It is the first job on the list." },
     { when: "2026-09-05", decision: "Wrote “the alpha” everywhere and meant “the economy alpha”.",
       outcome: "Your correction, and it is not only wording. An economy alpha answers economy questions with everything else switched off, and the switching off is what makes the answers trustworthy. A GAME alpha is every system on at once, and it asks things none of these stages can — starting with whether there is too much to think about again, which is the complaint that began this whole rebuild. Renamed everywhere and written down properly. One thing it implies, which is now yours to do and does not exist yet: the game alpha needs its own set of questions about the WHOLE, written before anybody plays it." },
     { when: "2026-09-05", decision: "Damaged this board with a badly quoted script, for the second time in two days.",
