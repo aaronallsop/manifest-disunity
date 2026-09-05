@@ -227,6 +227,18 @@ are not. None of these are mine to relax and none of them are what Aaron is aski
 - **The brief still wins.** Building ahead of it is not "more work done", it is work that has to be
   argued about later. If the spec does not ask for it, it goes in `docs/FUTURE-IDEAS.md`.
 
+### Parked by name
+
+Work Aaron has excluded from a run, as opposed to work that is merely further down the list. **A
+resumed run must re-read this section**, because it has no memory of the conversation that set the
+exclusion and will otherwise walk straight into it.
+
+| Parked | Since | Why | Ruling |
+|---|---|---|---|
+| **The autarky economy** (spec Phase 1) | 5 Sep 2026 | Blocked on Aaron's written predictions, which are the whole point of the phase; writing them myself deletes its purpose | D175 |
+
+Parking is per-run and per-instruction. It is not a cancellation, and nothing gets un-parked by me.
+
 ## When to stop and say so
 
 Stop, write it up, and leave it for him if any of these is true. These are the cases where guessing

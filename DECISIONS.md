@@ -2763,3 +2763,43 @@ with no measurement that could settle it, which is what Aaron is actually for; a
 money or reaches off this machine; and two bad stages in a row, which means the plan is wrong rather
 than the execution, and speed makes it worse.
 
+---
+
+### D175 — The autarky economy is parked for the duration of the run, 5 September
+
+**Aaron, immediately before the first Hog Wild run:**
+
+> "I am about to unleash you but one thing - skip the autarky economy phase and move forward with
+> anything else."
+
+**Recorded here because a resumed run has no memory of the conversation that started it.** An
+overnight resume knows only what is on disk, so a ruling made in chat and not written down is a
+ruling that expires at the first usage limit. This one has to survive three resumes.
+
+**It costs nothing from the runnable list, because autarky was already blocked on him.** The spec
+(`docs/spec/economy-system-spec.md`, Phase 1) requires the owner to write predictions *before* the
+build starts — which five nations are self-sufficient, which five are structurally short, and of
+what — and says in terms that this is a comprehension check on the owner, not a lookup task for
+engineering. Writing those predictions myself is not a shortcut, it is the deletion of the only
+thing the phase is for. So autarky was never in the set of work that could be done without him; his
+instruction removes something already absent, and closes off the drift toward it.
+
+**What it does NOT touch, checked rather than assumed: the industry re-bake.** The spec orders
+industry-data honesty as Phase 0.5 and autarky as Phase 1 — the re-bake comes *before* autarky, not
+out of it. And the six-sector split is consumed today by eight live modules (`market.js`, `moves.js`,
+`dealbook.js`, `mapmodes.js`, `objectives.js`, `panels.js`, `actions.js`, `tunables.js`), so widening
+it improves the game that is currently playable rather than laying groundwork for one that is not.
+The re-bake stays in.
+
+**One clash resolved.** D174 lists "a data re-bake" as a case where the mode stops and waits.
+That guardrail exists for re-bakes Aaron has not seen; this one he approved on 5 September (D169),
+with the coverage figure measured. Pre-approved, so it proceeds — and the guardrail stands unchanged
+for the next one.
+
+**The reading of "skip".** Taken as *for this run*, not *forever*. Autarky returns the moment his
+predictions exist. Worth him knowing what deferring it repeatedly costs: the alpha track has now
+built deals, transit, routing and the network map on the current simplified economy, so the deep
+band-and-derived-demand model gets retrofitted under a working game instead of sitting under it as
+the foundation the spec's roadmap assumed. That is not a reason to build it tonight without him. It
+is a reason for the predictions to be near the top of his list.
+
