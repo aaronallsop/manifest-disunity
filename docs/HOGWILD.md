@@ -29,7 +29,7 @@ are exact: they are how both sides know which state we are in.
 | 4 | Aaron | *"Activate hog wild mode"* — **not yet permission to run** |
 | 5 | **Me** | Last preparation. Reply: **"Hog wild mode activation commencing."** |
 | 6 | **Me** | Commit anything outstanding, stamp the start time and the token counter into `docs/HOGWILD-LOG.md`, and write the plan — the ordered list of what I intend to get through. Then: **"Hog Wild Mode Fully Operational. OINK OINK!"** |
-| 7 | **Me** | Run. |
+| 7 | **Me** | Run — **and see below, because step 7 is where the first run failed.** |
 | 8 | **Me** | On any exit condition below: **"Starting to wind down the hog."** |
 | 9 | **Me** | Final documentation, board, and the wind-down report. |
 | 10 | **Me** | If the run ended on the usage limit and the night is not over: schedule the resume — see *Running overnight*. |
@@ -37,6 +37,32 @@ are exact: they are how both sides know which state we are in.
 **THE ONE CHANGE THAT MATTERS is step 2.** Aaron's version compacted before I had prepared; the
 preparation is what makes compacting safe. Flush, then compact, then run — see *Before it starts*
 below for why the order is not a detail.
+
+### Step 7 in detail: "run" means do not hand the turn back
+
+**Written after the first run stopped dead on it, 5 September 2026.** I completed the activation,
+declared the mode operational, wrote *"Going quiet now"* — and ended my message. Aaron had to ask
+whether it had hung. It had. I had.
+
+**There is no such thing as me working quietly in the background.** I act only while composing a
+reply. The moment I finish one, I stop completely and wait for him — so a sign-off line is not a
+transition into working mode, it is the end of working. The protocol said "Run" and I read it as
+*begin running*; there is no beginning, there is only continuing to act or stopping.
+
+**So the rule for step 7 is:** after *"Hog Wild Mode Fully Operational"*, the very next thing is a
+tool call, and the work continues without a closing paragraph until one of the four exits below is
+reached. Concretely:
+
+- **Never end a stretch of work with a summary, a status report, or a promise to continue.** Those
+  are the wind-down, and the wind-down is step 9. Anywhere else they are a full stop dressed as a
+  comma.
+- **Say what is happening as it happens, in the same breath as doing it.** A sentence between two
+  actions costs nothing and keeps him oriented. A sentence *instead of* an action ends the run.
+- **If something genuinely needs him**, that is exit 2 or a stop-and-wait case — take it, say so, and
+  call it what it is. Stopping is allowed. Stopping while sounding like continuing is not.
+
+The tell, if this ever recurs: a message of mine that ends without a tool call, and does not begin
+*"Starting to wind down the hog."*
 
 ### The four ways it ends
 

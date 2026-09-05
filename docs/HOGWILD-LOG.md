@@ -124,6 +124,32 @@ nothing about tonight and we should talk about what he wants live before anythin
 
 ---
 
+### Run 1, entry 3 — The run stopped on its own first instruction — *5 Sep, 17:55*
+
+**What happened.** I finished the activation, declared the mode operational, wrote *"Going quiet
+now. Everything lands on disk as it happens"* — and ended the message. Nothing landed on disk,
+because nothing more happened. Aaron asked whether the commit had hung. The commit was fine.
+
+**Why, stated plainly enough to be useful.** I only act while writing a reply. When a reply ends, I
+stop entirely until he speaks again — there is no background, no quiet continuation. So the protocol
+step that says "Run" describes a state I cannot *enter* and then occupy; there is only continuing to
+act, or stopping. I wrote a sign-off, and a sign-off is stopping. Three minutes of a mode designed to
+run for hours.
+
+**What I did.** Rewrote step 7 of `docs/HOGWILD.md` as an explicit rule rather than a single word:
+after the operational line the next thing must be an action, work continues without a closing
+paragraph, and the only message of mine allowed to end without one is the one beginning *"Starting
+to wind down the hog."* Progress gets narrated *between* actions, never *instead of* them. The tell
+for a repeat is written down with it.
+
+**What I turned down.** Logging it as a one-off slip and carrying on. It is not a slip; it is the
+protocol being wrong about what I am, and it would have recurred at every natural pause — which in a
+run of eight stages is eight chances to silently end the night.
+
+**To undo it.** `git revert` this commit. It changes one document and no game behaviour.
+
+---
+
 *The rest of Run 1's entries follow below as they happen, newest at the bottom of the run.*
 
 ---
