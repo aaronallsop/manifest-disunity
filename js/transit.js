@@ -41,9 +41,9 @@ const Transit = (function () {
    * must be able to name exactly one: the point of the tier system is that a
    * nation can wave the lorries through and refuse the ships.
    */
-  const MODE = { HIGHWAY: 1, RAIL: 2, PORT: 4 };
-  const MODE_NAME = { 1: 'highway', 2: 'rail', 4: 'port' };
-  const MODE_LABEL = { 1: 'road', 2: 'rail', 4: 'port' };
+  const MODE = { HIGHWAY: 1, RAIL: 2, PORT: 4, RIVER: 8 };
+  const MODE_NAME = { 1: 'highway', 2: 'rail', 4: 'port', 8: 'river' };
+  const MODE_LABEL = { 1: 'road', 2: 'rail', 4: 'port', 8: 'river' };
 
   /*
    * The three places that are not nations. Prefixed so they can never collide
@@ -76,7 +76,7 @@ const Transit = (function () {
     const t = T(tune);
     const base = t.get('transit.hopFriction');
     if (mode === MODE.RAIL) return base * t.get('transit.railFrictionMult');
-    if (mode === MODE.PORT) return base * t.get('transit.waterFrictionMult');
+    if (mode === MODE.PORT || mode === MODE.RIVER) return base * t.get('transit.waterFrictionMult');
     return base;                                   // road, and anything unnamed
   }
 
@@ -167,7 +167,15 @@ const Transit = (function () {
     for (const nid of Game.nations.keys()) {
       const acc = Game.exportAccess(nid);
       if (acc.canada) { add(nid, CANADA, MODE.HIGHWAY | MODE.RAIL); add(CANADA, nid, MODE.HIGHWAY | MODE.RAIL); }
-      if (acc.lakePorts) { add(nid, CANADA, MODE.PORT); add(CANADA, nid, MODE.PORT); }
+      /*
+       * A GREAT LAKES PORT PUTS YOU ON THE LAKES, not in Canada (A2c). It used
+       * to reach Canada directly, which was the owner's first rule — and then he
+       * described the scenario the rule was for, and the scenario is richer than
+       * the rule: a shipment out of Chicago has to pass Michigan's gates, then
+       * New York's Niagara, then the St. Lawrence, and only then is it in
+       * Canadian water. The river layer builds exactly that, so this shortcut
+       * would now be a hole straight through four countries' chokepoints.
+       */
       if (acc.mexico) { add(nid, MEXICO, MODE.HIGHWAY | MODE.RAIL); add(MEXICO, nid, MODE.HIGHWAY | MODE.RAIL); }
       /*
        * A PORT REACHES THE NEIGHBOURS AS WELL AS THE WORLD (A2b). This wired to
@@ -184,8 +192,181 @@ const Transit = (function () {
     add(CANADA, WORLD, MODE.PORT);
     add(MEXICO, WORLD, MODE.PORT);
 
+    // ...and the rivers, which are borders too, and cheaper ones (A2c).
+    riverLayer(add);
+
     cache = { key, nodes, edges };
     return cache;
+  }
+
+
+  /* ---- the rivers (A2c) ----------------------------------------------- */
+
+  /*
+   * THE LARGEST NETWORK OF NAVIGABLE INLAND WATERWAY IN THE WORLD, and until now
+   * this game did not know it existed.
+   *
+   * The argument for building it is Peter Zeihan's and it is recorded in full at
+   * FUTURE-IDEAS F6: moving heavy goods by water costs a fraction of moving them
+   * by land, the United States has ~17,600 miles of it, and that one geographic
+   * fact underwrites American economic power in a way no other continent enjoys.
+   * A game about the United States coming apart, in which the rivers do not
+   * matter, has thrown away the thing that made it rich.
+   *
+   * HOW IT IS MODELLED, and the shape came out of the data rather than being
+   * imposed on it. Each corridor in data/county_trade.json is an ORDERED run of
+   * counties from headwater to mouth — the Mississippi is 105 of them, Minnesota
+   * down to Plaquemines. Fifteen counties are flagged as chokepoints, and on the
+   * Mississippi they sit at indices 47, 58, 99 and 104: the Missouri confluence,
+   * Cairo, New Orleans and the Mouth, in that order. They are not scattered.
+   * They are the gates, in sequence.
+   *
+   * So a corridor is cut at its chokepoints into SEGMENTS. Anybody sharing a
+   * segment can move goods to anybody else on it for the price of water, which
+   * is what a river IS — a road nobody had to build. To get from one segment to
+   * the next you must pass the chokepoint, and whoever owns that county can
+   * charge you or refuse you. Nothing new had to be invented for that: a
+   * chokepoint holder is an ordinary intermediary, tolled by the machinery A2
+   * already built.
+   *
+   * The confluences fall out for free. The Ohio corridor ends at Cairo and the
+   * Missouri at St. Louis, and both of those ARE chokepoints, so the tributaries
+   * join the trunk exactly where somebody is standing on the gate.
+   */
+  function riverLayer(add) {
+    const data = typeof Game.tradeData === 'function' ? Game.tradeData() : null;
+    if (!data || !data.corridors) return;
+    const cps = data.choke_point_labels || {};
+    const counties = data.counties || {};
+    const ownerOfCounty = (f) => {
+      try { return Game.getOwner(Game.areaIdOf(f)); } catch (e) { return undefined; }
+    };
+    const gateOf = (f) => {
+      const row = counties[f] || {};
+      return { fips: f, label: cps[f], owner: ownerOfCounty(f),
+        coastal: !!row.coastal, lakes: !!row.great_lakes };
+    };
+
+    const segments = [];
+    const gates = [];
+
+    /*
+     * CUT EACH CORRIDOR AT ITS GATES, IN ORDER, and remember which two stretches
+     * each gate stands between. Getting this wrong is not a small error: an
+     * earlier version let every gate on a river touch every stretch of it, which
+     * put Minnesota one hop from Louisiana and quietly deleted the entire
+     * mechanic. A river is a LINE. You pass the gates in sequence or you do not
+     * pass at all.
+     */
+    for (const [name, list] of Object.entries(data.corridors)) {
+      const mine = [];
+      let cur = { corridor: name, nations: new Set(), counties: [] };
+      const flush = () => { segments.push(cur); mine.push(segments.length - 1); cur = { corridor: name, nations: new Set(), counties: [] }; };
+      for (const f of list) {
+        if (cps[f]) {
+          flush();
+          const g = gateOf(f);
+          g.corridor = name;
+          g.before = mine[mine.length - 1];
+          gates.push(g);
+          g.index = gates.length - 1;
+          continue;
+        }
+        cur.counties.push(f);
+        const o = ownerOfCounty(f);
+        if (o) cur.nations.add(o);
+      }
+      flush();
+      // The stretch that opened after the last gate is the one below it.
+      for (const g of gates) {
+        if (g.corridor !== name || g.after != null) continue;
+        const pos = mine.indexOf(g.before);
+        g.after = pos >= 0 && pos + 1 < mine.length ? mine[pos + 1] : null;
+      }
+    }
+
+    /*
+     * THE FIVE GATES THAT ARE NOT ON A RIVER are sea entrances — the Golden
+     * Gate, the Chesapeake, Juan de Fuca, the Houston Ship Channel, and the
+     * St. Lawrence outlet. They guard a way IN from the ocean rather than a
+     * stretch of water, so they attach to whatever stretch they physically
+     * touch.
+     */
+    for (const f of Object.keys(cps)) {
+      if (gates.some((g) => g.fips === f)) continue;
+      const g = gateOf(f);
+      g.corridor = null;
+      g.touches = segments
+        .map((seg, i) => (seg.counties.some((c) => adjacentCounties(c).includes(f)) ? i : -1))
+        .filter((i) => i >= 0);
+      gates.push(g);
+    }
+
+    /* Anybody on the same stretch of water can reach anybody else on it, for
+       the price of water. The river is not anybody's road. */
+    for (const seg of segments) {
+      const list = [...seg.nations].sort();
+      for (let i = 0; i < list.length; i++) {
+        for (let j = i + 1; j < list.length; j++) {
+          add(list[i], list[j], MODE.RIVER);
+          add(list[j], list[i], MODE.RIVER);
+        }
+      }
+    }
+
+    /*
+     * AND THE GATES, each joining ONLY the stretches it actually stands
+     * between. Whoever holds the county holds the gate, so passing it is an
+     * ordinary hop and they can charge for it or refuse it. This is the whole
+     * mechanic, and on the opening board it is: Michigan on four Great Lakes
+     * gates, New York on the Niagara and the St. Lawrence, Illinois on Cairo and
+     * the Chicago canal, and Louisiana on both New Orleans and the Mouth of the
+     * Mississippi.
+     */
+    const joinGate = (g, segIdx) => {
+      const seg = segments[segIdx];
+      if (!seg || !g.owner) return;
+      for (const n of seg.nations) {
+        if (n === g.owner) continue;
+        add(n, g.owner, MODE.RIVER);
+        add(g.owner, n, MODE.RIVER);
+      }
+    };
+    for (const g of gates) {
+      if (!g.owner) continue;
+      if (g.corridor) { joinGate(g, g.before); joinGate(g, g.after); }
+      else for (const i of g.touches || []) joinGate(g, i);
+      /*
+       * A gate standing on the open sea is the way OUT, and it is the most
+       * valuable ground on this map: Louisiana holding the Mouth of the
+       * Mississippi can tax everything that floats down from Minnesota.
+       */
+      if (g.coastal) add(g.owner, WORLD, MODE.RIVER);
+    }
+
+    /*
+     * THE LAKES LEAVE BY THE ST. LAWRENCE AND NOWHERE ELSE, which is the whole
+     * of Aaron's scenario: a shipment out of Chicago passes Michigan's gates,
+     * then New York's Niagara, then New York's St. Lawrence, and only then is it
+     * in Canadian water. A Great Lakes port therefore puts a nation ON the lakes;
+     * it does not by itself put them in Canada.
+     */
+    const stLawrence = gates.find((g) => /St\. Lawrence/.test(g.label || ''));
+    if (stLawrence && stLawrence.owner) {
+      add(stLawrence.owner, CANADA, MODE.RIVER);
+      add(CANADA, stLawrence.owner, MODE.RIVER);
+    }
+
+    lastRivers = { segments, gates };
+  }
+
+  let lastRivers = null;
+  /** What the river layer decided this turn: the stretches, and who holds the gates. */
+  const rivers = () => { graph(); return lastRivers; };
+
+  /** County neighbours, guarded — the corridor lists carry counties the map may not. */
+  function adjacentCounties(f) {
+    try { return Game.countyNeighbors(f) || []; } catch (e) { return []; }
   }
 
   /** Every mode available across one border, as bits. 0 if goods cannot cross. */
@@ -234,7 +415,9 @@ const Transit = (function () {
 
   /* ---- finding a way through ---------------------------------------- */
 
-  const BITS = [MODE.RAIL, MODE.HIGHWAY, MODE.PORT]; // fixed order: rail first
+  // Fixed order, cheapest first, so the search meets the best way across a
+  // border before the worse ones and the tie-break rarely has to decide.
+  const BITS = [MODE.RIVER, MODE.PORT, MODE.RAIL, MODE.HIGHWAY];
 
   /**
    * The best way to get goods from `a` to `b`, or null.
@@ -849,7 +1032,7 @@ const Transit = (function () {
 
   return {
     MODE, MODE_NAME, MODE_LABEL, CANADA, MEXICO, WORLD, isOutside,
-    reset, graph, modesBetween, priceRoute, keep, find, toWorld, reaches,
+    reset, graph, modesBetween, priceRoute, keep, find, toWorld, reaches, rivers,
     live, get, permits, permitFor, forNation, grant, serve, withdraw,
     reneges, standing, remaining, tick, tickRegister, netFor, blockedAt,
     propose, offersFor, waiting, answer, decline: declineOffer,

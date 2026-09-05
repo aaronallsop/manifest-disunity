@@ -1897,6 +1897,13 @@ const Game = (function () {
     rulingBloc,
     earn,
     areaExport,
+    /*
+     * The baked trade attributes, for the one reader that needs the whole file
+     * rather than one Area's worth: the river corridors and chokepoints are
+     * ORDERED lists of counties, and a corridor only means anything read end to
+     * end (A2c).
+     */
+    tradeData: () => tradeData,
     areaTransport,
     exportAccess,
     tradeCapacity,

@@ -22,32 +22,43 @@ const SEED = 20260829;
 const T = () => window.TUNE;
 
 describe('Transit — the corridor graph describes the real map', () => {
-  it('every edge between two nations is a real shared land border', async () => {
+  it('every LAND edge is a real shared land border', async () => {
     await bootWorld({ seed: SEED });
     const g = Transit.graph();
     let checked = 0;
     for (const [from, tos] of g.edges) {
       if (Transit.isOutside(from)) continue;
-      for (const to of tos.keys()) {
+      const overland = new Set(Game.borderingNations(from));
+      for (const [to, bits] of tos) {
         if (Transit.isOutside(to)) continue;
-        ok(Game.borderingNations(from).includes(to),
-          `${from} -> ${to} is in the corridor graph but they share no land border`);
+        if (!(bits & (Transit.MODE.HIGHWAY | Transit.MODE.RAIL))) continue;    // a river is not a land border
+        ok(overland.has(to),
+          `${from} -> ${to} carries a road or a railway and they share no land border`);
         checked += 1;
       }
     }
     ok(checked > 100, `only ${checked} land edges on a 60-nation board`);
   });
 
-  it('never routes across water, which is the bug this replaces', async () => {
+  it('a lorry never drives across water, which is the bug this replaces', async () => {
     await bootWorld({ seed: SEED });
     const g = Transit.graph();
+    /*
+     * NARROWED TO THE LAND MODES WHEN THE RIVERS ARRIVED, and deliberately not
+     * weakened: two nations on the same stretch of the Mississippi genuinely can
+     * move goods to each other without sharing a border, which is the whole point
+     * of a river. What must never happen is a ROAD or a RAILWAY between nations
+     * that do not touch — that is the defect this replaced, where state-level
+     * adjacency spans water and California was offered an overland route to
+     * Alaska.
+     */
     for (const [from, tos] of g.edges) {
       if (Transit.isOutside(from)) continue;
       const overland = new Set(Game.borderingNations(from));
-      for (const to of tos.keys()) {
-        if (Transit.isOutside(to)) continue;
+      for (const [to, bits] of tos) {
+        if (Transit.isOutside(to) || !(bits & (Transit.MODE.HIGHWAY | Transit.MODE.RAIL))) continue;
         ok(overland.has(to),
-          `${from} -> ${to} is reachable only across water; that is the California/Alaska defect`);
+          `${from} -> ${to} is driveable and they are only connected across water; that is the California/Alaska defect`);
       }
     }
   });
@@ -61,8 +72,10 @@ describe('Transit — the corridor graph describes the real map', () => {
       for (const [to, bits] of tos) {
         if (Transit.isOutside(to)) continue;
         ok(bits !== 0, `${from} -> ${to} exists with no mode at all`);
-        ok((bits & ~(Transit.MODE.HIGHWAY | Transit.MODE.RAIL)) === 0,
-          `${from} -> ${to} carries a mode a land border cannot`);
+        // Rivers add MODE.RIVER between nations that share water; a land border
+        // may still only ever carry a road or a railway.
+        ok((bits & Transit.MODE.PORT) === 0,
+          `${from} -> ${to} claims a port link, which is a place rather than a border`);
         if (bits & Transit.MODE.RAIL) rail += 1;
         if (bits & Transit.MODE.HIGHWAY) road += 1;
       }
@@ -121,11 +134,22 @@ describe('Transit — the ways out', () => {
       if (acc.oceanPorts) {
         ok(out.get(Transit.WORLD) & Transit.MODE.PORT, `${nid} has an ocean port but cannot reach the world`);
         ocean += 1;
-      } else {
-        ok(!out.get(Transit.WORLD), `${nid} reaches the world with no ocean port`);
+      } else if (out.get(Transit.WORLD)) {
+        // The one other way out on your own ground: holding a river gate that
+        // stands on the open sea (A2c). Anything else is a hole.
+        const r = Transit.rivers();
+        ok(r.gates.some((x) => x.owner === nid && x.coastal),
+          `${nid} reaches the world with no ocean port and no sea gate`);
       }
       if (acc.lakePorts) {
-        ok(out.get(Transit.CANADA) & Transit.MODE.PORT, `${nid} has a lake port but cannot reach Canada by ship`);
+        /*
+         * A lake port puts you ON the lakes, and the lakes leave by the
+         * St. Lawrence (A2c). Reaching Canada from Chicago means passing
+         * Michigan's gates and then New York's, so what is asserted here is that
+         * the nation is on the water — not that it is already in Canada.
+         */
+        ok(Transit.find(nid, Transit.CANADA, { permit: () => ({ rate: 0.2 }) }),
+          `${nid} has a Great Lakes port and cannot reach Canada by any route at all`);
         lakes += 1;
       }
     }
@@ -147,6 +171,117 @@ describe('Transit — the ways out', () => {
       ok(g.edges.get(id).get(Transit.WORLD), `${id} cannot reach the world`);
       equal(Game.getNation(id), undefined, `${id} exists as a nation and could therefore be conquered`);
     }
+  });
+});
+
+describe('Transit — the rivers (A2c)', () => {
+  const open = { permit: () => ({ rate: 0.2 }) };
+  const named = (n) => [...Game.nations.keys()].find((k) => Game.getNation(k).name === n);
+
+  it('cuts each river into stretches at its own chokepoints, in order', async () => {
+    await bootWorld({ seed: SEED });
+    const r = Transit.rivers();
+    ok(r && r.segments.length > 6, `only ${r ? r.segments.length : 0} stretches of water on the whole map`);
+    /*
+     * THE BUG THIS EXISTS TO CATCH, because it happened: an earlier version let
+     * every gate on a river touch every stretch of it, which put Minnesota one
+     * hop from Louisiana and deleted the entire mechanic without failing
+     * anything. A river is a LINE. You pass the gates in sequence or not at all.
+     */
+    for (const g of r.gates) {
+      if (!g.corridor) continue;
+      ok(g.before == null || g.after == null || g.before !== g.after,
+        `${g.label} claims to stand between a stretch and itself`);
+      if (g.after != null) {
+        equal(g.after, g.before + 1,
+          `${g.label} joins stretches that are not next to each other`);
+      }
+    }
+  });
+
+  it('the far ends of the Mississippi are not neighbours', async () => {
+    await bootWorld({ seed: SEED });
+    const mn = named('Minnesota'), la = named('Louisiana');
+    ok(mn && la, 'Minnesota or Louisiana is not on this board');
+    equal(Transit.modesBetween(mn, la), 0,
+      'the top of the Mississippi is directly connected to the bottom, so the gates in between count for nothing');
+    // ...but they ARE both on the river, one stretch and some gates apart.
+    const route = Transit.find(mn, la, open);
+    ok(route && route.hops.length >= 1,
+      'Minnesota cannot reach Louisiana by water at all, which the Mississippi contradicts');
+  });
+
+  it('nations on the same stretch reach each other for the price of water', async () => {
+    await bootWorld({ seed: SEED });
+    const r = Transit.rivers();
+    const seg = r.segments.find((x) => x.nations.size > 2);
+    ok(seg, 'no stretch of river is shared by three nations');
+    const list = [...seg.nations];
+    for (const a2 of list) {
+      for (const b of list) {
+        if (a2 === b) continue;
+        ok(Transit.modesBetween(a2, b) & Transit.MODE.RIVER,
+          `${a2} and ${b} share ${seg.corridor} and cannot reach each other on it`);
+      }
+    }
+  });
+
+  it('whoever holds a gate is on the route, and can close it', async () => {
+    await bootWorld({ seed: SEED });
+    const wi = named('Wisconsin'), mi = named('Michigan');
+    ok(wi && mi, 'Wisconsin or Michigan is not on this board');
+    const acc = Game.exportAccess(wi);
+    equal(acc.oceanPorts, 0, 'Wisconsin has an ocean port, so it is not the landlocked-on-the-lakes case');
+    ok(acc.lakePorts > 0, 'Wisconsin has no Great Lakes port');
+
+    const openRoute = Transit.find(wi, Transit.CANADA, open);
+    ok(openRoute, 'Wisconsin cannot reach Canada even with every gate open');
+    const closed = Transit.find(wi, Transit.CANADA, { permit: (n) => (n === mi ? null : { rate: 0.2 }) });
+    ok(!closed || !closed.hops.some((h) => h.node === mi),
+      'Michigan refused passage and the route went through Michigan anyway');
+  });
+
+  it('a Great Lakes port puts a nation on the lakes, not in Canada', async () => {
+    await bootWorld({ seed: SEED });
+    const g = Transit.graph();
+    for (const [nid] of Game.nations) {
+      const acc = Game.exportAccess(nid);
+      if (!acc.lakePorts || acc.canada || acc.oceanPorts) continue;
+      const direct = g.edges.get(nid).get(Transit.CANADA);
+      ok(!direct,
+        `${nid} reaches Canada straight off a lake port, which skips every gate between it and the St. Lawrence`);
+    }
+  });
+
+  it('a gate on the open sea is a way out, and it is the most valuable ground on the map', async () => {
+    await bootWorld({ seed: SEED });
+    const r = Transit.rivers();
+    const sea = r.gates.filter((x) => x.coastal && x.owner);
+    ok(sea.length > 0, 'no chokepoint stands on the open sea');
+    const g = Transit.graph();
+    for (const x of sea) {
+      ok(g.edges.get(x.owner).get(Transit.WORLD),
+        `${x.label} stands on the sea and its owner cannot reach the world through it`);
+    }
+  });
+
+  it('crossing by water is cheaper than crossing by land, so a river is worth holding', async () => {
+    await bootWorld({ seed: SEED });
+    const t = T();
+    const river = Transit.priceRoute([{ node: 'x', mode: Transit.MODE.RIVER, rate: 0.2 }], t).keep;
+    const road = Transit.priceRoute([{ node: 'x', mode: Transit.MODE.HIGHWAY, rate: 0.2 }], t).keep;
+    ok(river > road, `a river crossing (${river.toFixed(3)}) is not cheaper than a road one (${road.toFixed(3)})`);
+  });
+
+  it('costs about as much to build as the land graph, once a turn', async () => {
+    await bootWorld({ seed: SEED });
+    Transit.reset();
+    const t0 = performance.now();
+    Transit.graph();
+    const ms = performance.now() - t0;
+    // The whole graph, rivers included, must stay far below one round of AI
+    // planning (measured at 153ms) or A2c has quietly blown the turn budget.
+    ok(ms < 60, `building the corridor graph took ${ms.toFixed(1)}ms; it is built every turn`);
   });
 });
 

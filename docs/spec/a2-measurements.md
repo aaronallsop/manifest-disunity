@@ -123,3 +123,48 @@ test at five crossings, including the cheapest one.
 the metric exists to close. What a single crossing costs at that baseline: road keeps 71%, rail 81%,
 water 84% - a legible difference that makes a railway neighbour worth more than a road one, and a
 river worth more than either.
+
+## A2c: what the rivers actually did
+
+The corridor data is ORDERED, headwater to mouth, and the chokepoints sit in it in sequence. That
+one fact decided the whole design: a river is a LINE, cut at its gates into stretches. Anyone sharing
+a stretch reaches anyone else on it for the price of water; passing to the next stretch means passing
+whoever holds the gate, who is then an ordinary intermediary and can charge or refuse.
+
+**Twelve stretches across four rivers, and who holds the gates:**
+
+| Gate | Held by |
+|---|---|
+| Soo Locks, Straits of Mackinac, St. Clair, Detroit River | **Michigan** (four) |
+| Niagara, St. Lawrence outlet | **New York** |
+| Chicago Ship Canal, Cairo (Ohio-Mississippi confluence) | **Illinois** |
+| New Orleans, **Mouth of the Mississippi** | **Louisiana** |
+| Missouri-Mississippi confluence | Missouri |
+| Golden Gate / Chesapeake / Juan de Fuca / Houston Ship Channel | Bay Area / Virginia / Washington / Houston |
+
+The upper Mississippi is one stretch shared by Minnesota, Wisconsin, Iowa, Illinois and Missouri —
+five nations trading by barge with nobody's permission. Below Cairo it is Missouri, Kentucky,
+Tennessee, Arkansas, Mississippi and Louisiana. The tributaries join the trunk at gates, because the
+Ohio ends at Cairo and the Missouri at St. Louis and both of those ARE chokepoints.
+
+**What it produces in play**, every gate open at 20%:
+
+| | |
+|---|---|
+| Illinois to the world | down the Mississippi through **Louisiana**, keeps 71% |
+| ...if Louisiana closes the Gulf | reroutes through **Mississippi**, still 71% — Louisiana is a gate, not a monopoly |
+| Wisconsin (lake ports only) to Canada | across the lakes through **Michigan**, keeps 71% |
+| ...if Michigan closes the lakes | overland through **Minnesota**, still 71% |
+| Minnesota to the world | its own Canadian border crossing at 90% — cheaper than the whole river run to the Gulf |
+
+None of that was scripted. It is the map.
+
+**One departure worth knowing.** The first rule for Canada was "a Great Lakes port", and it shipped
+that way in A2. Then Aaron described the scenario the rule was for — Chicago having to get past
+Michigan and then New York — and the scenario is richer than the rule. So a lake port now puts a
+nation ON the lakes, and the lakes leave by the St. Lawrence, which is New York's. Chicago no longer
+teleports to Canada.
+
+**Cost:** the graph now takes about **10 ms** to build against 2 ms before, so roughly 12 ms a turn
+against the 153 ms a round of AI planning already costs. Still under a tenth, and still built once a
+turn rather than per plan.
