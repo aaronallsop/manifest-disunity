@@ -123,7 +123,7 @@
 // ============================================================================
 const BOARD = {
   project: "Manifest Disunity",
-  updated: "2026-09-05 10:06",          // when you last republished, local time
+  updated: "2026-09-05 10:17",          // when you last republished, local time
 
   // Three or four measured figures. value: number|string, or null = "not yet measured".
   figures: [
@@ -137,52 +137,17 @@ const BOARD = {
   // The single most important true thing right now. tone: "bad" | "warn" | "ok" | "neutral".
   headline: {
     tone: "ok",
-    text: "A0 is done and tagged v0.3. A1 — a trade becoming a standing agreement rather than a "
-        + "click — was half planned when the machine hit its daily limit: four of the eight design "
-        + "passes finished, they agree with one another, and that is enough to build from, so nothing "
-        + "is lost. Your approval on the industry data is recorded. Two new questions are below, both "
-        + "about how strong trade should be, and both cheaper to answer now than after the alpha.",
+    text: "You answered all four, so A1 is being built now: a trade becomes an agreement with a "
+        + "term, money arrives every quarter instead of once, and an offer can be answered with a "
+        + "counter-offer that changes the length. A deal will pay over a year what a click paid over "
+        + "a year, so trade is about commitment rather than sudden wealth, and how much stronger it "
+        + "gets is a slider we turn deliberately later. Your idea about walking out of a deal and "
+        + "paying for it in reputation is written down and belongs with the next stage. Nothing is "
+        + "waiting on you.",
   },
 
   // Only decisions that are genuinely the owner's. Ids are permanent.
-  decisions: [
-    {
-      id: "deal-income-scale",
-      title: "A signed deal pays every quarter. Clicking paid once a year.",
-      evidence: "Today a trade is one click that pays once, and the same two states cannot trade again "
-              + "for a year. A standing deal pays every quarter for as long as it runs. Same partners, "
-              + "same goods, same arithmetic — but roughly four times the money per partner, and more "
-              + "again where a deal runs five years. Every treasury in the game gets richer at once.",
-      cost: "If a deal simply pays what the arithmetic says, trade becomes the strongest thing in the "
-          + "game overnight, and everything tuned around the old rhythm — what an army costs, what "
-          + "annexing costs, how fast a broken state recovers — is now tuned for a poorer world than "
-          + "the one it is in. If a deal instead pays over a year what clicking paid over a year, the "
-          + "change is purely about commitment: you are agreeing to something for five years rather "
-          + "than shopping. The alpha then tests the thing it was built to test.",
-      recommendation: "Pay the same over a year, and put the difference on a slider so we can turn "
-                    + "trade up deliberately once we can see what it does. Signing a deal should change "
-                    + "what you can plan, not instantly make you rich. If you want deals to be a real "
-                    + "windfall, say so — it is one number either way, and far cheaper to choose now "
-                    + "than to re-tune the whole game around afterwards.",
-    },
-    {
-      id: "deal-early-exit",
-      title: "Can you walk out of a deal early?",
-      evidence: "A deal runs six months, a year, two years or five. Your addendum says expiry prompts a "
-              + "renegotiation with a countdown, and says nothing about leaving before then. Walking "
-              + "out with notice is already specified for the next stage, where revoking a transit "
-              + "agreement gives the other side warning and costs you something.",
-      cost: "Building early exit into this stage means building the notice period, the price of "
-          + "breaking, and how the other side remembers it — a stage's worth of work, arriving before "
-          + "anyone has played with a deal at all. Leaving it out means a five-year deal signed in "
-          + "error is a five-year mistake, which is either the most interesting thing in the game or "
-          + "the most irritating.",
-      recommendation: "Leave it out of this stage. Deals run their term, and breaking one arrives with "
-                    + "revocation in the next stage, where the notice-and-reputation machinery is "
-                    + "already planned and paid for. So that a five-year mistake is not made by "
-                    + "accident, the term you are signing will be the largest thing on the confirmation.",
-    },
-  ],
+  decisions: [],
 
   // Standing permissions. Ids are permanent. risk: "low" | "med" | "high".
   permissions: [
@@ -239,7 +204,10 @@ const BOARD = {
             + "they found are questions for you, above. Two were mine and are settled: an offer from "
             + "another state now has to be accepted or refused rather than simply happening to you, "
             + "and the news feed will record signing, renewal and expiry rather than every quarterly "
-            + "payment — which would have buried real news inside twenty-five years.",
+            + "payment — which would have buried real news inside twenty-five years. Both of yours "
+            + "are answered and being built: a deal pays over a year what a click paid over a year, "
+            + "and deals run their term, with the length you are signing made the largest thing on "
+            + "the confirmation so five years is never agreed to by accident.",
     },
     { name: "A2 — Transit and tolls", status: "todo",
       brief: "Transit agreements by mode — highway, rail, port — with tolls that compound along a route; Canada and Mexico as corridors at a flat 10%; revocation as a player action with a notice period.",
@@ -311,12 +279,12 @@ const BOARD = {
       damagedIfAutomated: false,
     },
     {
-      what: "Saying when playtesters should move from v0.1 to v0.2",
+      what: "Saying when playtesters get a new build — answered for now: after the alpha",
       ifAutomated: "Publishing to your playtest link changes what other people receive, so I will not do "
-                 + "it without you saying so. The link currently serves the prototype from 3 September. "
-                 + "The stripped-back Economy build is finished and would test the exact question that "
-                 + "started this work — whether the game becomes legible with politics and separatists "
-                 + "taken off the table.",
+                 + "it without you saying so, and the permission for it stays off. You have said nobody "
+                 + "has the link yet and nobody will until the alpha is built, so the finished Economy "
+                 + "build waits with the rest. This stays on the list because the timing is permanently "
+                 + "yours, not because anything is stuck.",
       damagedIfAutomated: false,
     },
   ],
@@ -332,6 +300,8 @@ const BOARD = {
 
   // Decisions made on the owner's behalf and how they turned out. Corrections go BESIDE originals.
   log: [
+    { when: "2026-09-05", decision: "Asked you four questions before writing a line of A1, rather than building and asking after.",
+      outcome: "All four answered in one sitting, and one of them turned into a design idea worth keeping — breaking a deal early and paying for it in reputation, which is now written down against the stage that already builds the machinery for it. A deal will pay over a year what a click paid over a year; deals run their term; testers wait for the alpha; the industry re-bake stays where you put it." },
     { when: "2026-09-05", decision: "Built A1 from four finished design passes rather than re-running the four that died with the daily limit.",
       outcome: "A judgement call, and I think the right one — the four that survived cover the money, the screen, the save file, and an audit of the code being replaced, and they reached the same conclusions independently. Re-running the other four would have bought a second opinion at the cost of a morning. If A1 comes out wrong, this is the first decision to look at." },
     { when: "2026-09-05", decision: "Recorded your approval to widen the six industries and re-bake them from real government figures.",

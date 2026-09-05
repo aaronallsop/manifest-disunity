@@ -2590,3 +2590,37 @@ Three findings from the four passes, and what was done with each:
 And one for Aaron that the addendum left open: whether a deal can be **broken early**. Recommended
 no for A1 — revocation-with-notice is already specified for A2. On the board as `deal-early-exit`.
 
+### D171 — Aaron's four rulings on A1, 5 September
+
+*2026-09-05.* Asked before a line of A1 was written; all four answered the same morning.
+
+**1. A deal pays over a year what a click paid over a year.** The two cards on the board framed it
+as: a standing deal pays every turn what the click paid once per `trade.cooldownTurns + 1 = 4`
+turns, so trade income per partner would rise ~4x. Aaron chose *same over a year*. So A1's
+settlement scales the per-turn payment by a tunable that starts at 1/(cooldown+1), i.e. the deal is
+about **commitment, not sudden wealth**, and everything already tuned around the old rhythm — army
+upkeep, annexation cost, recovery rates — stays true. The multiplier is a tunable so trade can be
+turned up deliberately after the alpha rather than by accident before it. Rejected: paying the raw
+arithmetic and re-tuning the whole cost model around a richer world before anyone has played it.
+
+**2. Deals run their term.** No early exit in A1. Breaking a deal arrives with A2, where
+revocation-with-notice is already specified and costed. To stop a five-year mistake being made by
+accident, **the term is the largest thing on the confirmation**. See F2 in `docs/FUTURE-IDEAS.md`
+for Aaron's own design for what breaking one should eventually cost.
+
+**3. Playtesters wait for the alpha.** The `live` permission stays off. Aaron added, mid-session:
+the playtest is live on GitHub but he has sent it to nobody and will not until the alpha is built.
+So there is no audience to disturb and no urgency; the finished Economy build waits with the rest.
+
+**4. The industry re-bake stays after the alpha.** D169's approval is not a reschedule. Re-baking
+changes what every county is made of and would move every number the alpha exists to measure.
+Rejected: doing the honest data first, which delays trade and makes the alpha test a world nobody
+has played.
+
+Two ideas were captured rather than built, both Aaron's, both in `docs/FUTURE-IDEAS.md`:
+**F2** breaking a deal early and paying for it in a decaying reputation that makes every other
+state price you worse — build it on A2's machinery, not beside it; and **F3** interest groups
+(farmers, industrialists) with their own approval, which the original brief assumed existed. F3
+carries a naming warning: `faction` already means a playable nation here, so the eventual system
+must be called something else.
+
