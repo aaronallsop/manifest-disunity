@@ -319,6 +319,41 @@ describe('Deals — one per pair, and what is promised is not available', () => 
   });
 });
 
+describe('Deals — a purchase never becomes a surplus', () => {
+  /*
+   * FOUND WHILE MAPPING A2, and it is an A1 defect rather than an A2 one.
+   *
+   * Availability was `live - committed`. For a seller that is right: promise
+   * your wheat away and you have none left. For a BUYER the commitment is
+   * negative, so the subtraction ADDED to what the nation appeared to have —
+   * and a nation that contracted to buy 100 and whose own production later
+   * drifted positive could offer to sell more than it produces, reselling goods
+   * that do not exist, because settlement is money-only and nothing physically
+   * arrives. A resale chain out of thin air, which the roadmap says must never
+   * be profitable.
+   */
+  it('a nation cannot offer to sell what it has only contracted to buy', async () => {
+    await bootWorld({ seed: SEED });
+    // Produces 10, has contracted to buy 100. It may sell its own 10 and no more.
+    equal(Moves.freeSurplus(10, -100), 10, 'a purchase inflated what could be sold');
+    // Produces nothing and has bought 100: still nothing to sell.
+    equal(Moves.freeSurplus(0, -100), 0);
+  });
+
+  it('still lets a commitment consume availability, in both directions', async () => {
+    await bootWorld({ seed: SEED });
+    equal(Moves.freeSurplus(100, 0), 100, 'an uncommitted surplus is available');
+    equal(Moves.freeSurplus(100, 60), 40, 'promising 60 of 100 away left the wrong amount');
+    equal(Moves.freeSurplus(100, 100), 0, 'promising it all away left something');
+    equal(Moves.freeSurplus(-100, 0), -100, 'an uncovered deficit is buyable');
+    equal(Moves.freeSurplus(-100, -60), -40, 'covering 60 of a 100 deficit left the wrong amount');
+    equal(Moves.freeSurplus(-100, -100), 0, 'a fully covered deficit is still buyable');
+    // Over-promising is clamped rather than going negative and flipping sign.
+    equal(Moves.freeSurplus(100, 150), 0, 'over-commitment turned into a deficit');
+    equal(Moves.freeSurplus(-100, -150), 0, 'over-purchase turned into a surplus');
+  });
+});
+
 describe('Deals — expiry, renewal and the prompt', () => {
   it('auto-renew signs a fresh deal on today\'s prices rather than yesterday\'s', async () => {
     await bootWorld({ seed: SEED });

@@ -329,6 +329,31 @@ const Moves = (function () {
    */
 
   /**
+   * What a nation may still promise of one sector, given what it has already
+   * promised. Positive is surplus it can still sell, negative is deficit it can
+   * still buy.
+   *
+   * A COMMITMENT CONSUMES AVAILABILITY AND NEVER CREATES IT, and the second half
+   * of that is the part that was wrong (found while mapping A2). The old rule
+   * was a plain subtraction, `live - committed`, which is right for a seller —
+   * promise your whole wheat surplus away and you have none left. But a BUYER's
+   * commitment is negative, so subtracting it ADDED to what the nation appeared
+   * to have. A nation that contracted to buy 100 of a sector and whose own
+   * production later drifted positive — through growth, or through annexing a
+   * farming region — could then offer to sell 110 while producing 10, and the
+   * 100 it was "reselling" does not exist: settlement is money only, nothing
+   * physically arrives. That is a resale chain out of thin air, which is
+   * precisely what the roadmap says must never be profitable.
+   *
+   * So the two sides are computed separately and neither may go below zero.
+   */
+  function freeSurplus(live, committed) {
+    const canSell = Math.max(0, Math.max(0, live) - Math.max(0, committed));
+    const canBuy = Math.max(0, Math.max(0, -live) - Math.max(0, -committed));
+    return canSell - canBuy;
+  }
+
+  /**
    * A nation's tradeable flows against another, by sector, at market prices ($M).
    *
    * `ignoreDeal` excludes one live deal from the commitment subtraction below,
@@ -353,8 +378,8 @@ const Moves = (function () {
      */
     const ca = typeof Deals === 'undefined' ? null : Deals.committed(a, ignoreDeal);
     const cb = typeof Deals === 'undefined' ? null : Deals.committed(b, ignoreDeal);
-    const freeA = (i) => ms.surplus[i] - (ca ? ca.bySector[i] || 0 : 0);
-    const freeB = (i) => ts.surplus[i] - (cb ? cb.bySector[i] || 0 : 0);
+    const freeA = (i) => freeSurplus(ms.surplus[i], ca ? ca.bySector[i] || 0 : 0);
+    const freeB = (i) => freeSurplus(ts.surplus[i], cb ? cb.bySector[i] || 0 : 0);
     const flows = [];
     e.sectors.forEach((sec, i) => {
       const sa = freeA(i), sb = freeB(i);
@@ -1577,6 +1602,10 @@ const Moves = (function () {
     tooStrongToAnnex, untouchable,
     // ...and of the trade rules (M11.1), for the same reason.
     tradeFlows, applyCapacity, tradeCooldownLeft, markTraded,
+    // Exported so the "a purchase does not become a surplus" rule can be tested
+    // as the arithmetic it is, rather than by contriving a world in which a
+    // nation's production drifts across zero mid-contract.
+    freeSurplus,
     autonomyCooldownLeft: (nid, tune) => cooldown(nid, 'lastAutonomyTurn', 'autonomy.cooldownTurns', tune),
   };
 })();
