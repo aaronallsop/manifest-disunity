@@ -161,7 +161,7 @@ const Journal = (function () {
     const unread = rows.filter((e) => e.id > seenId).length;
     const latest = rows.length ? rows[rows.length - 1] : null;
 
-    const chips = FAMILIES.map((f) =>
+    const chips = FAMILIES.filter((f) => f.id !== 'politics' || Complexity.enabled('politics')).map((f) =>
       `<button class="j-chip${filter === f.id ? ' active' : ''}" data-fam="${f.id}">${esc(f.label)}</button>`).join('');
 
     /*

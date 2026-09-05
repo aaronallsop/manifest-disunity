@@ -87,8 +87,11 @@ const Leaderboard = (function () {
         <span class="lb-count">${list.length} nations</span>
       </div>
       <div class="lb-sort">
-        ${sortBtn('pop', 'Pop')}${sortBtn('gdp', 'GDP')}${sortBtn('political', 'Ideology')}
-        ${sortBtn('authority', 'Auth')}${sortBtn('influence', 'Infl')}${sortBtn('qol', 'QoL')}${sortBtn('liberties', 'Lib')}
+        ${sortBtn('pop', 'Pop')}${sortBtn('gdp', 'GDP')}
+        ${Complexity.enabled('politics') ? `${sortBtn('political', 'Ideology')}
+        ${sortBtn('authority', 'Auth')}${sortBtn('influence', 'Infl')}` : ''}
+        ${sortBtn('qol', 'QoL')}
+        ${Complexity.enabled('politics') ? sortBtn('liberties', 'Lib') : ''}
       </div>
       <ol class="lb-list">
         ${list

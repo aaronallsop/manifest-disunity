@@ -50,8 +50,8 @@ function renderNationPanel(nid) {
         <button class="act" data-act="unite">🤝 Unite with nation</button>
         <button class="act" data-act="annex"${annexAttrs}>⚔️ Annex counties${cd > 0 ? ` <span class="act-note">regrouping ${cd}</span>` : ''}</button>
         <button class="act" data-act="trade">🚛 Trade with nation</button>
-        <button class="act" data-act="release"${releaseAttrs}>🕊️ Release counties${rcd > 0 ? ` <span class="act-note">arranging ${rcd}</span>` : ''}</button>
-        <button class="act" data-act="govern"${govAttrs}>🗳️ Change course${gcd > 0 ? ` <span class="act-note">${gcd} turns</span>` : ''}</button>
+        ${Complexity.enabled('movements') ? `<button class="act" data-act="release"${releaseAttrs}>🕊️ Release counties${rcd > 0 ? ` <span class="act-note">arranging ${rcd}</span>` : ''}</button>` : ''}
+        ${Complexity.enabled('politics') ? `<button class="act" data-act="govern"${govAttrs}>🗳️ Change course${gcd > 0 ? ` <span class="act-note">${gcd} turns</span>` : ''}</button>` : ''}
         <button class="act pass" data-act="pass">⏭ End turn</button>
       </div>`
     : `<div class="actions">
@@ -72,10 +72,10 @@ function renderNationPanel(nid) {
     <div class="stat"><div class="label">GDP</div><div class="value">${fmtGdp(demo.gdp)}</div></div>
     ${renderTreasury(nid)}
     ${renderAuthority(nid)}
-    <div class="stat">
+    ${Complexity.enabled('politics') ? `<div class="stat">
       <div class="label">Political leaning</div>
       ${renderPolitics(demo)}
-    </div>
+    </div>` : ''}
     ${renderNationEconomy(nid)}
     ${renderCoalition(nid)}
     ${renderElection(nid)}
@@ -129,7 +129,7 @@ function renderNationPanel(nid) {
   if (typeof Disclosure !== 'undefined') Disclosure.apply(panel, nid);
 }
 function renderLeader(nid) {
-  if (typeof Leaders === 'undefined' || !Leaders.loaded()) return '';
+  if (typeof Leaders === 'undefined' || !Leaders.loaded() || !Complexity.enabled('politics')) return '';
   const l = Leaders.of(nid, store.rng, TUNE);
   if (!l) return '';
   const traits = Leaders.traits(nid);
@@ -218,7 +218,7 @@ function showCrisis() {
  * is a real piece of information about who is about to have a bad decade.
  */
 function renderCoalition(nid) {
-  if (typeof Coalitions === 'undefined') return '';
+  if (typeof Coalitions === 'undefined' || !Complexity.enabled('politics')) return '';
   const rec = Coalitions.against(nid, TUNE);
   if (!rec || !rec.formed) return '';
   const flow = Game.treasuryFlow(nid);
@@ -250,7 +250,7 @@ function renderCoalition(nid) {
  * disagree with you and will vote you out over it".
  */
 function renderElection(nid) {
-  if (typeof Elections === 'undefined') return '';
+  if (typeof Elections === 'undefined' || !Complexity.enabled('politics')) return '';
   const res = Elections.poll(nid, TUNE);
   if (!res) return '';
   const turns = Elections.nextFor(nid, TUNE);
@@ -286,7 +286,7 @@ function renderElection(nid) {
  * while ten thousand people leaving for Nevada is something you did.
  */
 function renderMigration(nid) {
-  if (typeof Migration === 'undefined') return '';
+  if (typeof Migration === 'undefined' || !Complexity.enabled('movements')) return '';
   const r = Migration.report(nid);
   if (!r || (!r.net && !r.left && !r.came)) return '';
   const sign = (v) => (v >= 0 ? '+' : '\u2212') + fmtPop(Math.abs(v));
@@ -321,7 +321,7 @@ function renderMigration(nid) {
  * not, worst first, which is the list you work through.
  */
 function renderRecognition(nid) {
-  if (typeof Recognition === 'undefined') return '';
+  if (typeof Recognition === 'undefined' || !Complexity.enabled('politics')) return '';
   const rec = Recognition.legitimacy(nid, TUNE);
   if (!rec || rec.origin) return '';
   const me = you();
@@ -372,7 +372,7 @@ function renderRecognition(nid) {
  */
 function renderDiplomacy(nid) {
   const me = Game.getPlayer();
-  if (!me || me === nid || typeof Pacts === 'undefined') return '';
+  if (!me || me === nid || typeof Pacts === 'undefined' || !Complexity.enabled('politics')) return '';
   const them = Game.getNation(nid);
   if (!them) return '';
 
@@ -425,7 +425,7 @@ function renderDiplomacy(nid) {
 }
 
 function renderStanding(nid) {
-  if (typeof Relations === 'undefined') return '';
+  if (typeof Relations === 'undefined' || !Complexity.enabled('politics')) return '';
   const me = you();
   if (!me || !Game.getNation(me)) return '';
   if (nid !== me) {
@@ -503,7 +503,7 @@ function renderMilitary(nid) {
  * which is the thing that turns a score into a plan.
  */
 function renderVictory(nid) {
-  if (!Victory.loaded() || !Game.isPlayer(nid)) return '';
+  if (!Victory.loaded() || !Game.isPlayer(nid) || !Complexity.enabled('politics')) return '';
   const rows = Victory.progress(nid, TUNE);
   if (!rows.length) return '';
   const best = rows.reduce((a, r) => (r.progress > a.progress ? r : a), rows[0]);
@@ -547,6 +547,7 @@ function renderVictory(nid) {
  * used — not a second account of it.
  */
 function renderPressure(fips) {
+  if (!Complexity.enabled('movements')) return '';
   const c = Game.county[Game.areaIdOf(fips)];
   if (!c) return '';
   let pop = 0;
@@ -619,7 +620,7 @@ function renderReach(fips, ownerId) {
  * is the question that decides whether this Area empties.
  */
 function renderLivability(fips) {
-  if (typeof Migration === 'undefined') return '';
+  if (typeof Migration === 'undefined' || !Complexity.enabled('movements')) return '';
   const pol = Game.areaPolitics(fips);
   if (!pol || !pol.dominantId) return '';
   const why = Migration.explain(fips, pol.dominantId, TUNE);
@@ -655,10 +656,10 @@ function renderCountyPanel(fips) {
 
     <div class="stat"><div class="label">Population</div><div class="value">${fmtPop(Game.countyPop(fips))}${estTag(rec, 'p')}</div></div>
     <div class="stat"><div class="label">GDP</div><div class="value">${fmtGdp(Game.countyGdp(fips))}${estTag(rec, 'g')}</div></div>
-    <div class="stat">
+    ${Complexity.enabled('politics') ? `<div class="stat">
       <div class="label">Political leaning</div>
       ${renderPolitics(pol, rec)}
-    </div>
+    </div>` : ''}
     ${renderLivability(fips)}
     ${renderReach(fips, ownerId)}
     ${renderPressure(fips)}
@@ -714,15 +715,18 @@ function renderAreaActions(fips, ownerId) {
      */
     const auto = Game.isAutonomous(fips);
     const plan = Moves.plan({ type: 'autonomy', nid: actor, areas: [fips], grant: !auto }, TUNE);
-    return `<div class="actions">
-      <div class="label">Yours &middot; ${escapeHtml(me.name)}${auto ? ' &middot; governs itself' : ''}</div>
-      <div class="geo-row"><span>Upkeep${occupied ? ' &middot; occupied ground' : ''}</span>
-        <strong class="deficit">${fmtGdp(-upkeep)} / turn</strong></div>
+    const valveHtml = Complexity.enabled('movements') ? `
       <button class="act" id="area-autonomy" ${plan.ok ? '' : 'disabled'}>
         ${auto ? '🏛️ Take back direct rule' : '🤲 Grant self-rule'}</button>
       ${plan.ok ? '' : `<div class="locked-note">${escapeHtml(plan.reason)}</div>`}
       <button class="act" id="area-release" ${why ? 'disabled' : ''}>🕊️ Release this Area</button>
       ${why ? `<div class="locked-note">${why}</div>` : ''}
+    ` : '';
+    return `<div class="actions">
+      <div class="label">Yours &middot; ${escapeHtml(me.name)}${auto ? ' &middot; governs itself' : ''}</div>
+      <div class="geo-row"><span>Upkeep${occupied ? ' &middot; occupied ground' : ''}</span>
+        <strong class="deficit">${fmtGdp(-upkeep)} / turn</strong></div>
+      ${valveHtml}
     </div>`;
   }
 
@@ -782,8 +786,14 @@ function renderTreasury(nid) {
 function renderAuthority(nid) {
   const n = Game.getNation(nid);
   if (!n || !n.why) return '';
-  return renderWhy('Authority', n.why.authority) + renderWhy('Influence', n.why.influence)
-    + renderWhy('Quality of life', n.why.qol) + renderWhy('Civil liberties', n.why.liberties)
+  // Authority, Influence and Civil liberties are political-standing stocks —
+  // hidden in Economy mode along with the rest of that layer. Quality of life
+  // and war weariness stay: they're economic/war-cost signals, not politics.
+  return (Complexity.enabled('politics')
+    ? renderWhy('Authority', n.why.authority) + renderWhy('Influence', n.why.influence)
+    : '')
+    + renderWhy('Quality of life', n.why.qol)
+    + (Complexity.enabled('politics') ? renderWhy('Civil liberties', n.why.liberties) : '')
     /*
      * The fifth stock, and shown only when there is something to show: a nation
      * at peace has no war weariness, and a row that reads 0% every turn for the

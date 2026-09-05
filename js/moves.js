@@ -1308,12 +1308,12 @@ const Moves = (function () {
      * cheque posted into the dark, and because fifty-one aid candidates per
      * nation per turn is a scoring pass nobody asked for.
      */
-    if (!cooldownOn(nid, 'lastTreatyTurn', 'treaty.cooldownTurns', tune)) {
+    if (Complexity.enabled('politics') && !cooldownOn(nid, 'lastTreatyTurn', 'treaty.cooldownTurns', tune)) {
       for (const other of Game.adjacentNations(nid)) {
         if (!Pacts.live(nid, other)) out.push({ type: 'treaty', nid, target: other, kind: 'nonaggression' });
       }
     }
-    if (!cooldownOn(nid, 'lastAidTurn', 'aid.cooldownTurns', tune)) {
+    if (Complexity.enabled('politics') && !cooldownOn(nid, 'lastAidTurn', 'aid.cooldownTurns', tune)) {
       for (const other of Game.adjacentNations(nid)) out.push({ type: 'aid', nid, target: other });
     }
 
@@ -1329,7 +1329,7 @@ const Moves = (function () {
      * ground to shed passes its own intent, and `plan` judges it by the same
      * rules.
      */
-    if (!releaseCooldownLeft(nid, tune) && n.counties.size > 1) {
+    if (Complexity.enabled('movements') && !releaseCooldownLeft(nid, tune) && n.counties.size > 1) {
       const budget = Math.min(T(tune).get('release.budgetAreas'), n.counties.size - 1);
       const worst = [...n.counties]
         .map((f) => [f, Sentiment.pressure(f)])
@@ -1346,7 +1346,7 @@ const Moves = (function () {
      * answers to the same problem — one keeps the Area and one does not — and
      * the choice between them is exactly what the scorer is for.
      */
-    if (!cooldown(nid, 'lastAutonomyTurn', 'autonomy.cooldownTurns', tune)) {
+    if (Complexity.enabled('movements') && !cooldown(nid, 'lastAutonomyTurn', 'autonomy.cooldownTurns', tune)) {
       const cap = Math.floor(n.counties.size * T(tune).get('autonomy.maxShare'));
       const room = cap - Game.autonomousCount(nid);
       if (room > 0) {
@@ -1361,7 +1361,7 @@ const Moves = (function () {
         if (worst.length) out.push({ type: 'autonomy', nid, areas: worst, grant: true });
       }
     }
-    if (!opts.skipGovern) {
+    if (!opts.skipGovern && Complexity.enabled('politics')) {
       for (const x of Ideology.all()) {
         if (x.id !== n.gov.rulingIdeology) out.push({ type: 'govern', nid, ideology: x.id });
       }

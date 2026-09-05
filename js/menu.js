@@ -142,6 +142,18 @@ const Menu = (function () {
             <span><strong>${esc(d.label)}</strong><em>${esc(d.blurb)}</em></span>
           </label>`).join('')}
       </div>
+      <div class="menu-opts">
+        <label class="opt">
+          <input type="radio" name="ns-complexity" value="full"${Complexity.current() !== 'economy' ? ' checked' : ''}>
+          <span><strong>Full</strong>
+            <em>Everything: movements, secession, elections, leaders, diplomacy, the whole board.</em></span>
+        </label>
+        <label class="opt">
+          <input type="radio" name="ns-complexity" value="economy"${Complexity.current() === 'economy' ? ' checked' : ''}>
+          <span><strong>Economy</strong>
+            <em>Unite, annex and trade against the market, with politics and separatist movements switched off.</em></span>
+        </label>
+      </div>
       <label class="menu-field"><span>Seed</span>
         <input id="new-seed" class="modal-input" inputmode="numeric" autocomplete="off"
           placeholder="blank for a random world"></label>
@@ -164,11 +176,13 @@ const Menu = (function () {
       if (raw && !/^-?\d+$/.test(raw)) return msg('A seed is a whole number. Leave it blank for a random one.');
       const pick = document.querySelector('input[name="ns-board"]:checked');
       const diff = document.querySelector('input[name="ns-diff"]:checked');
+      const complexity = document.querySelector('input[name="ns-complexity"]:checked');
       msg('Starting a new world…');
       // Throw the live document away BEFORE navigating, or the next boot resumes
       // straight back into the world we were asked to replace.
       await SaveManager.clearLive();
-      location.href = url(pick ? pick.value : 'shattered', raw, diff ? diff.value : null);
+      location.href = url(pick ? pick.value : 'shattered', raw, diff ? diff.value : null,
+        complexity ? complexity.value : null);
     };
     seedEl.focus();
   }
@@ -186,13 +200,14 @@ const Menu = (function () {
    * silently discard the game in progress. We delete the document instead and
    * hand back a clean URL that resumes normally from here on.
    */
-  function url(boardValue, seed, difficulty) {
+  function url(boardValue, seed, difficulty, complexity) {
     const q = new URLSearchParams();
     if (boardValue === 'none') q.set('scenario', 'none');
     if (seed) q.set('seed', seed);
     // Carried in the URL as well as in localStorage, so a playtest can hand
     // somebody a specific setting by link (M13.1).
     if (difficulty && difficulty !== 'standard') q.set('difficulty', difficulty);
+    if (complexity && complexity !== 'full') q.set('complexity', complexity);
     if (new URLSearchParams(location.search).has('dev')) q.set('dev', '1');
     const s = q.toString();
     return location.pathname + (s ? '?' + s : '');

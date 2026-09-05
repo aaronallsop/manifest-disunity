@@ -1097,7 +1097,9 @@ const World = (function () {
     if (!only && typeof History !== 'undefined') { History.reset(); History.capture(turn); }
     // Everybody has a leader before the first stock is computed, so the
     // Leadership term is never reading an empty chair on turn 0.
-    if (typeof Leaders !== 'undefined' && Leaders.loaded()) Leaders.tick(T(tune), rng || null);
+    if (typeof Leaders !== 'undefined' && Leaders.loaded() && Complexity.enabled('politics')) {
+      Leaders.tick(T(tune), rng || null);
+    }
     phasePower(T(tune), turn, only);
   }
 
@@ -1116,7 +1118,7 @@ const World = (function () {
     // start-of-turn ideology cache, with each client's patron blended in (M11.2)
     const mixes = applyPatrons(phaseRecomputeMixes(snap, nxt, owners));
     phasePoliticalDrift(snap, nxt, mixes, tn, owners, rng);
-    phaseSentiment(snap, nxt, tn, owners);
+    if (Complexity.enabled('movements')) phaseSentiment(snap, nxt, tn, owners);
     /*
      * PEOPLE MOVE (M7.9), between drift and growth.
      *
@@ -1128,7 +1130,7 @@ const World = (function () {
      * any are applied. Order-dependence there would mean the node numbering
      * decided who moved.
      */
-    if (typeof Migration !== 'undefined') Migration.step(snap, nxt, tn, owners);
+    if (typeof Migration !== 'undefined' && Complexity.enabled('movements')) Migration.step(snap, nxt, tn, owners);
     phasePopulationGrowth(snap, nxt, tn, owners);
     phaseEconomicGrowth(snap, nxt, tn); // after popGrowth: reads the realised change
     phaseCleanup(snap, nxt, tn);
@@ -1157,7 +1159,7 @@ const World = (function () {
        * born this turn gets its first Authority reading, and before treasuries
        * so it pays its own bills from the moment it exists.
        */
-      lastEvents = phaseSecession(tn, rng);
+      lastEvents = Complexity.enabled('movements') ? phaseSecession(tn, rng) : [];
       Game.refreshGovernments(turn + 1);
       // Readiness follows the allocation, rate-limited. Before the power stocks,
       // because a garrison that came up this turn should be holding ground down
@@ -1168,22 +1170,26 @@ const World = (function () {
       Relations.forget(tn);
       // ...and the pacts whose other party is gone, and the gratitude that has
       // run out (M11.2). Beside Relations.forget for the same reason.
-      if (typeof Pacts !== 'undefined') Pacts.tick(tn);
+      if (typeof Pacts !== 'undefined' && Complexity.enabled('politics')) Pacts.tick(tn);
       /*
        * WHO THE WORLD HAS DECIDED TO ADMIT EXISTS. After `forget`, because the
        * decision reads standing and should read this turn's, and after secession
        * so a nation founded this turn starts its clock at nought rather than
        * getting a free roll on the day it declared.
        */
-      if (typeof Recognition !== 'undefined') Recognition.tick(tn, rng);
+      if (typeof Recognition !== 'undefined' && Complexity.enabled('politics')) Recognition.tick(tn, rng);
       /*
        * CRISES, last, because every trigger reads a stock and the stocks have
        * just been recomputed — an event fired before `phasePower` would be
        * asking about last turn's world.
        */
-      if (typeof Events !== 'undefined' && Events.loaded()) Events.tick(tn, rng);
+      if (typeof Events !== 'undefined' && Events.loaded() && Complexity.enabled('politics')) {
+        Events.tick(tn, rng);
+      }
       // ...and seat anybody without a leader.
-      if (typeof Leaders !== 'undefined' && Leaders.loaded()) Leaders.tick(tn, rng);
+      if (typeof Leaders !== 'undefined' && Leaders.loaded() && Complexity.enabled('politics')) {
+        Leaders.tick(tn, rng);
+      }
       /*
        * WHOEVER IS DUE AT THE POLLS (M7.10). After the stocks of last turn and
        * before this turn's are computed, because the four things a government is
@@ -1194,7 +1200,7 @@ const World = (function () {
        * for them to settle; a headless world has none and every government that
        * can refuse a result, does.
        */
-      if (typeof Elections !== 'undefined') {
+      if (typeof Elections !== 'undefined' && Complexity.enabled('politics')) {
         lastElections = Elections.tick(tn, rng, { defer: electionDefer, asOf: turn + 1 });
       }
       /*
@@ -1204,7 +1210,8 @@ const World = (function () {
        * rule every other phase here follows.
        */
       phaseGround(null, Game.state(), tn, null);
-      Movements.refreshStates(tn); // derived from the map, so it follows the writeback
+      // derived from the map, so it follows the writeback
+      if (Complexity.enabled('movements')) Movements.refreshStates(tn);
       Game.tickTreasuries(); // income minus maintenance, on this turn's updated GDP
       Market.update(tn);     // reprice every resource from live supply vs demand
       phasePower(tn, turn + 1); // last: every input it reads is a result of this turn
@@ -1227,7 +1234,7 @@ const World = (function () {
      * only looks at the human is a game the AI cannot win, and an AI that
      * cannot win is not an opponent, it is scenery.
      */
-    if (!winner && typeof Victory !== 'undefined' && Victory.loaded()) {
+    if (!winner && typeof Victory !== 'undefined' && Victory.loaded() && Complexity.enabled('politics')) {
       const v = Victory.check(tn);
       if (v) {
         winner = v;

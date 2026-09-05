@@ -44,6 +44,7 @@ const AI = (function () {
    * of the line is a crisis that an average would report as calm.
    */
   function strain(nid, tune) {
+    if (!Complexity.enabled('movements')) return 0;
     const n = Game.getNation(nid);
     if (!n) return 0;
     const line = tune.get('secession.countyThreshold');

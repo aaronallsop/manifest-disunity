@@ -78,6 +78,7 @@ export async function bootWorld(opts = {}) {
   Migration.reset();
   Coalitions.reset();
   Colors.reset();
+  Complexity.reset();
   World.setTurn(0);
   Market.loadState(null);
 

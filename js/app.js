@@ -142,6 +142,12 @@ async function init() {
     store.authoredTune = tunables ? (tunables.values || tunables) : {};
     const wantDiff = new URLSearchParams(location.search).get('difficulty');
     Telemetry.apply(wantDiff || Telemetry.remembered(), store.authoredTune);
+    /*
+     * COMPLEXITY MODE (M?): Full or Economy, same precedence as difficulty.
+     * `?complexity=` names it for this boot; a loaded save overrides this again
+     * with what it was actually played with (see the resume path below).
+     */
+    store.complexity = Complexity.init({ url: new URLSearchParams(location.search).get('complexity') });
     // Seeded RNG, created before anything draws. Everything downstream takes it
     // explicitly; nothing reads it off a module global.
     //
@@ -175,7 +181,16 @@ async function init() {
     Coalitions.reset();
     Colors.assign(Object.keys(data.states));
     Game.init(data, adjacency, areas, { trade, transport, culture: cultureMode });
-    const emerged = Parties.setup(partyDefs, store.rng); // setup-only regional party spawns
+    /*
+     * setup-only regional party spawns. NOT gated by `Complexity.enabled('movements')`:
+     * the Shattered board's opening partition is BUILT from these seeded cores
+     * (Scenario.apply founds each successor nation on its movement's core Areas),
+     * so skipping the spawn breaks board generation itself, independent of the
+     * complexity mode. Economy mode instead stops these movements from ever
+     * growing or mattering again after this point — see the `movements` gates
+     * in js/world.js (phaseSentiment/phaseSecession never run).
+     */
+    const emerged = Parties.setup(partyDefs, store.rng);
     MapModes.init(data);
     if (geoMode && geoMode.type === 'ns-mapmode') MapModes.setRegion(geoMode); // published in the editor
     if (cultureMode && cultureMode.type === 'ns-mapmode') MapModes.setCulture(cultureMode);

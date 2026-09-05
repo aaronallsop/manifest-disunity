@@ -98,6 +98,9 @@ export function assemble(session = {}) {
     ledger: Ledger.serialize(),
     // only deliberate overrides, so a schema change is not baked into a save
     tune: window.TUNE.diff(),
+    // Full vs Economy — a session/mode flag, not a tuning value, so a save
+    // remembers which layers of the simulation it was actually played with.
+    complexity: Complexity.serialize(),
     ui: session.ui || {},
   };
 }
@@ -156,6 +159,8 @@ export function applyModel(doc) {
    * at all still has to reset the session's, which is why this is unconditional.
    */
   window.TUNE.replace(doc.tune || {});
+  // A document with no `complexity` field predates this mode and was Full.
+  Complexity.init({ saved: doc.complexity || Complexity.PRESETS.full });
   const rng = doc.rng ? RNG.restore(doc.rng) : null;
   if (rng) TurnSystem.setRng(rng);
   World.loadState(doc.world || { turn: (doc.meta && doc.meta.turn) || 0 });
