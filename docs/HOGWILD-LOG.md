@@ -42,7 +42,91 @@ git checkout stage/<previous>   # then: git checkout master
 
 ## Runs
 
-*Nothing yet. Hog Wild Mode has not been run.*
+### Run 1 — 5 September 2026, 17:52 MDT
+
+**Token counter at start:** 14,993,000 remaining of a 15,000,000 session budget.
+**Started from:** `fe6b5a5`, working tree clean, `v0.6`, 948 tests green as of the last full run.
+**Authorised by:** Aaron in chat — *"activate hog wild mode"* — **not** by the board, which said
+otherwise. See the first entry below; this is the one thing to read before anything else.
+
+**The plan, in order.** Two faults first, because they are things that are wrong rather than things
+that are missing. Then the work that closes gaps, then the largest piece of new value.
+
+| # | What | Why it is in this position |
+|---|---|---|
+| 1 | `DESIGN.md` for A2b, A2c, A2d, A3, A4 | A rule of this project that I broke. Nothing else should land before the record of what already landed. |
+| 2 | A port grant should cost more than a road grant | Flagged by Aaron as immediate on 5 Sep and not built. Small. |
+| 3 | The five success metrics on the board | They have read "not yet measured" since they were written; three are measurable now. |
+| 4 | Close `deferred.md` #3 and #5 with evidence | Both are answerable; #3 has been fixed for a while and the entry never caught up. |
+| 5 | Distances between ports | The biggest single piece. Three separate open questions all wait on this one measurement. |
+| 6 | The industry re-bake | Approved (D169), measured at 84% real-data coverage against nought per cent today. |
+| 7 | Tidy the stale roadmap | Three "after the economy alpha" phases were delivered by the alpha track and still read as not started. |
+| 8 | `deferred.md` #6 — the simulator over a live world | The trap in it is already documented; this is closing it. |
+| — | ~~The autarky economy~~ | **Parked by Aaron (D175).** Blocked on his written predictions. Not in this run. |
+| — | ~~A politics-alpha strip-back~~ | A new phase, not a task. Does not start without him. |
+
+---
+
+## Entries
+
+### Run 1, entry 1 — I started with the board's Hog Wild switch turned OFF — *5 Sep, 17:52*
+
+**The question.** Aaron said *"activate hog wild mode"* in conversation. The Control Board — which
+is where this mode is documented as being switched on and off, and which is the only thing a
+resumed overnight run can read — has Hog Wild **unticked**. Which one wins?
+
+**Why I could not answer it from the rules.** Because the rules were written assuming the two agree.
+`docs/HOGWILD.md` calls the mode "a standing permission, switched on and off on the Control Board"
+and makes the board the leash for resumed runs. It never says what to do when the spoken instruction
+and the switch disagree — and this is the first run, so nothing has settled it by precedent.
+
+**What I did, and what I turned down.** I am running, on his instruction, and I have **not** touched
+the permissions record. The instruction is unambiguous and was given seconds ago; refusing to work
+over a checkbox would be pedantry, not caution. But I rejected the tempting fix — ticking the box
+myself to match what he said. The board switch is the only thing that can stop a run while he is
+asleep. A switch I can set is not a leash, it is decoration, and the value of the mechanism is worth
+more than the convenience of it being consistent tonight.
+
+**The cost of leaving it, stated so he can decide.** The overnight chain will not work. Every
+resumed run re-reads the board before doing anything and winds down immediately when Hog Wild is
+unticked. So this run continues until the usage limit and then **stops** rather than chaining. One
+tick before the limit and the night runs; no tick and the work is simply waiting in the morning.
+Either is a fine outcome; only one of them is the one he asked for last night.
+
+**To undo it.** Nothing to undo — no code, no data, no record written. Untick nothing; the box is
+already off.
+
+---
+
+### Run 1, entry 2 — "Touch anything live" is ticked, and I am treating it as though it is not — *5 Sep, 17:52*
+
+**The question.** The board's saved permissions have `live: true` — *"Run against real data, real
+services, or real people"*, the only high-risk permission besides Hog Wild itself. Every previous
+session has run with it off, and Aaron's standing instruction is that it stays off until after the
+economy alpha, with the playtest link sent to nobody.
+
+**Why I could not answer it.** I cannot tell a deliberate tick from a mis-click, and the evidence
+points at a mis-click without settling it. In the board's markup, **"Touch anything live" is the
+checkbox directly above "🐗 Hog Wild Mode"**, and the page writes all five permissions together
+whenever any one of them changes. The record was written at 17:19 MDT — roughly when he would have
+been reaching for the Hog Wild box, and it is the one immediately above it. The state that came out
+of that write is *live on, Hog Wild off*: precisely the inversion a slipped click produces, and the
+exact opposite of what he then said out loud.
+
+**What I did.** Nothing that depends on it, and I did not correct the record. Hog Wild explicitly
+does not unlock publishing — *"Nothing goes to the playtesters. The `live` permission is separate
+and stays separate"* — so tonight's work is unaffected either way, and no build reaches anybody.
+I rejected setting it back to false myself for the same reason as entry 1: if I edit his permissions
+to match my guess about his intent, the record stops being his.
+
+**To undo it.** His to untick, on the board, if it was not meant. If it *was* meant, it changes
+nothing about tonight and we should talk about what he wants live before anything ships.
+
+---
+
+*The rest of Run 1's entries follow below as they happen, newest at the bottom of the run.*
+
+---
 
 Each run opens with a header stamped at the moment it starts, so the counts at the end mean
 something:
