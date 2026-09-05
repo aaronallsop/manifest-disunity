@@ -123,13 +123,13 @@
 // ============================================================================
 const BOARD = {
   project: "Manifest Disunity",
-  updated: "2026-09-05 15:41",          // when you last republished, local time
+  updated: "2026-09-05 16:20",          // when you last republished, local time
 
   // Three or four measured figures. value: number|string, or null = "not yet measured".
   figures: [
-    { label: "Alpha-track stages done",  value: "A0–A2 of A0–A4" },
+    { label: "Economy-alpha stages done",  value: "A0–A2 of A0–A4" },
     { label: "Current version",         value: "v0.5" },
-    { label: "Tests green",             value: 939 },
+    { label: "Tests green",             value: 943 },
     { label: "Industry figures that are real, today",   value: "0%" },
     { label: "Industry figures real after the re-bake", value: "84%" },
   ],
@@ -137,17 +137,42 @@ const BOARD = {
   // The single most important true thing right now. tone: "bad" | "warn" | "ok" | "neutral".
   headline: {
     tone: "ok",
-    text: "Geography matters now. Goods cross other people\u2019s ground, and the countries in "
-        + "between charge for it \u2014 by road, rail, or water, each priced differently and each "
-        + "granted separately, so a neighbour can open its motorways and close its docks. And the "
-        + "rivers are in: the Mississippi, the Missouri, the Ohio and the Great Lakes, cut into "
-        + "stretches at fifteen real chokepoints. Michigan holds four of them. Louisiana holds the "
-        + "Mouth of the Mississippi. 939 checks pass and I have played it. Next is the map that "
-        + "draws all of this. Nothing is waiting on you.",
+    text: "Every stage of the ECONOMY alpha is built \u2014 and that distinction is yours and it is "
+        + "the right one, so it is now written that way everywhere. This is not the game alpha. It "
+        + "tests trade and nothing else, which is exactly why politics and separatists are switched "
+        + "off: isolation is what makes the answers worth having. The game alpha is the first time "
+        + "somebody plays the whole thing with every system on, and it asks questions none of these "
+        + "stages can \u2014 starting with the one that began this rebuild, whether there is again "
+        + "too much to think about. 943 checks pass. One question for you below, and it is the last "
+        + "thing between here and a build worth putting in front of testers.",
   },
 
   // Only decisions that are genuinely the owner's. Ids are permanent.
-  decisions: [],
+  decisions: [
+    {
+      id: "coastal-shipping",
+      title: "Can two coastal nations simply sail to each other?",
+      evidence: "Right now they cannot, and it shows. Mississippi and Houston are both on the Gulf "
+              + "with ports, and the game routes their trade out through CANADA — because a port "
+              + "reaches Canada, Mexico and the world market, but there is no sea link between two "
+              + "American ports. You told me ocean shipping is the cheapest way to move anything "
+              + "and that Florida should trade with Miami by water. Half of that is built and half "
+              + "of it is not.",
+      cost: "Building it is nearly free, and that is exactly the problem. Thirty-six of sixty "
+          + "nations hold an ocean port, so if any port can reach any other port, those thirty-six "
+          + "are all one step from each other and the map stops mattering for more than half the "
+          + "board. The reason it would be free is that there is no DISTANCE in this game yet: New "
+          + "Orleans to Houston and New Orleans to Seattle would cost exactly the same. Leaving it "
+          + "out keeps geography meaningful and leaves one visibly odd result, where two Gulf "
+          + "neighbours ship via Canada.",
+      recommendation: "Leave it out of the economy alpha and let the odd result stand — it is one "
+                    + "line on one screen, and it is at least honest about what the model does not "
+                    + "know. Then do it properly with a real distance between ports, which is a "
+                    + "measurable thing I can add later and the only version that does not flatten "
+                    + "the map. If you would rather have coastal shipping now and accept that half "
+                    + "the board becomes neighbours, say so — it is an hour, not a stage.",
+    },
+  ],
 
   // Standing permissions. Ids are permanent. risk: "low" | "med" | "high".
   permissions: [
@@ -289,14 +314,43 @@ const BOARD = {
             + "reaches Canada, and it shipped that way. Then you described Chicago having to get "
             + "past Michigan and New York \u2014 which is richer than the rule. A lake port now puts "
             + "you on the lakes; the lakes leave by the St. Lawrence, which is New York\u2019s." },
-    { name: "A3 — The trade network map", status: "current",
+    { name: "A3 — The trade network map", status: "done",
       brief: "Select a state and see its routes; hops drawn by mode; broken links shown with their reason and a click to renegotiate.",
-      actual: "Not started." },
-    { name: "A4 — The AI trades", status: "todo",
-      brief: "AI nations use the new deals and transit agreements; incoming offers capped at three a turn, each with an expiry. Then the alpha test.",
-      actual: "Not started. Note: the addendum assumed the AI never trades; it already does. What is new is the AI using the new instruments." },
+      actual: "Done. Everything the last three stages built was invisible: a deal said it paid less "
+            + "than it should, and a line of text said which country was in the way. That is enough "
+            + "to be TOLD and not enough to understand, because what you need to see is not one "
+            + "deal, it is the shape of the whole arrangement — who you depend on, who depends on "
+            + "you, and which single neighbour could cut half of it.\n\n"
+            + "Pick a nation and the map draws its whole network: every deal along the ground it "
+            + "actually crosses, every corridor it rents or grants, and every way out it can "
+            + "currently use. Road, rail and water are three colours and each one switches off, "
+            + "because “show me only the railways” is how you find out your whole economy runs "
+            + "through one line. A route somebody has cut is drawn in red to the country that cut "
+            + "it, and clicking it opens their card.\n\n"
+            + "Straight lines between capitals rather than routes drawn along real roads, and that "
+            + "is deliberate: the data says which counties CARRY rail and motorway, never where the "
+            + "rails and roads run. A convincing line along ground nobody surveyed would be an "
+            + "invention dressed up as data, which your own first principle forbids. A straight line "
+            + "is obviously a diagram, which is what it is.\n\n"
+            + "One fault found by looking at it: a corridor you GRANT drew nothing at all, so half "
+            + "the picture — the half that is other people depending on you — was silently missing. "
+            + "Known and not fixed: for a physically tiny nation the lines are a few pixels long and "
+            + "hard to see." },
+    { name: "A4 — The AI trades", status: "done",
+      brief: "AI nations use the new deals and transit agreements; incoming offers capped at three a turn, each with an expiry. Then the economy alpha.",
+      actual: "Done. Sixty nations now buy passage when they need it, answer what is asked of them "
+            + "before deciding what to do, and trade with whoever their corridors reach.\n\n"
+            + "It values a corridor by what it OPENS UP rather than by what it costs — a landlocked "
+            + "nation is not buying a road, it is buying the difference between having an export "
+            + "economy and not having one. That is what stops it buying passage into a dead end: "
+            + "asking a neighbour who cannot themselves reach a market is worth what it sounds "
+            + "like.\n\n"
+            + "Measured over twenty turns of play: nine corridors signed unprompted — Nevada paying "
+            + "SoCal 35% for rail, Maryland paying North Carolina 37% — thirteen deals running "
+            + "through other people’s ground, and 83 milliseconds a turn, so a hundred turns is "
+            + "about eight seconds against your sixty-second target." },
     {
-      name: "After alpha — Honest industry data",
+      name: "After the economy alpha — Honest industry data",
       status: "todo",
       brief: "Re-bake the six-sector split from real county-industry data if coverage permits; "
            + "otherwise keep the estimates but label them as estimates everywhere they appear.",
@@ -307,33 +361,33 @@ const BOARD = {
             + "and the rest can be filled in from each county's own real total and marked as "
             + "estimates. Today it is nought per cent — six hand-written patterns behind 1,688 places, "
             + "with half the map sharing one. You approved this on 5 September: widen the six so every "
-            + "dollar lands somewhere real. It stays scheduled after the alpha unless you move it.",
+            + "dollar lands somewhere real. It stays scheduled after the economy alpha unless you move it.",
     },
-    { name: "After alpha — Autarky economy", status: "todo",
+    { name: "After the economy alpha — Autarky economy", status: "todo",
       brief: "Band model, derived demand, national pooling. No trade of any kind. Stop condition: the numbers stop surprising the designer.",
       actual: "Not started. Two of the three questions it needed are answered — population is real census "
             + "data that both grows and migrates, and economy size is the output figure the game already "
             + "computes. The third is the factions question above. Still needs your written predictions "
             + "before building starts." },
-    { name: "After alpha — Prices and the world market", status: "todo",
+    { name: "After the economy alpha — Prices and the world market", status: "todo",
       brief: "Price formula, World Market. Single abstract partner. No diplomacy, no routing, no third-party transit.",
       actual: "Not started." },
-    { name: "After alpha — Deals between neighbours", status: "todo",
+    { name: "After the economy alpha — Deals between neighbours", status: "todo",
       brief: "Trade Deal object, five-factor acceptance, counter-offers including duration, deal ledger, AI-initiated offers with expiry. Adjacency only — no routing through third parties.",
       actual: "Not started." },
-    { name: "After alpha — Transit, tolls and the network map", status: "todo",
+    { name: "After the economy alpha — Transit, tolls and the network map", status: "todo",
       brief: "The largest phase. Build the map mode with the routing engine, not after.",
       actual: "Not started." },
-    { name: "After alpha — Recognition, Canada, Mexico", status: "todo",
+    { name: "After the economy alpha — Recognition, Canada, Mexico", status: "todo",
       brief: "Recognition score and ramp, border-state suspicion, Canada/Mexico as partners and as corridors, gray-market trade.",
       actual: "Not started." },
-    { name: "After alpha — Diplomatic teeth", status: "todo",
+    { name: "After the economy alpha — Diplomatic teeth", status: "todo",
       brief: "Embargo, corridor closure with notice period and reputation cost, lending, hunger-generates-claims.",
       actual: "Not started." },
-    { name: "After alpha — Succession and shocks", status: "todo",
+    { name: "After the economy alpha — Succession and shocks", status: "todo",
       brief: "Treaty succession Limbo, infrastructure damage and upgrade.",
       actual: "Not started." },
-    { name: "After alpha — Tuning", status: "todo",
+    { name: "After the economy alpha — Tuning", status: "todo",
       brief: "Build: nothing new. Run the headless sim 20 times with varied starts and seeds.",
       actual: "Not started." },
   ],
@@ -356,10 +410,10 @@ const BOARD = {
       damagedIfAutomated: false,
     },
     {
-      what: "Saying when playtesters get a new build — answered for now: after the alpha",
+      what: "Saying when playtesters get a new build — answered for now: after the economy alpha",
       ifAutomated: "Publishing to your playtest link changes what other people receive, so I will not do "
                  + "it without you saying so, and the permission for it stays off. You have said nobody "
-                 + "has the link yet and nobody will until the alpha is built, so the finished Economy "
+                 + "has the link yet and nobody will until the economy alpha is built, so the finished Economy "
                  + "build waits with the rest. This stays on the list because the timing is permanently "
                  + "yours, not because anything is stuck.",
       damagedIfAutomated: false,
@@ -377,6 +431,10 @@ const BOARD = {
 
   // Decisions made on the owner's behalf and how they turned out. Corrections go BESIDE originals.
   log: [
+    { when: "2026-09-05", decision: "Wrote “the alpha” everywhere and meant “the economy alpha”.",
+      outcome: "Your correction, and it is not only wording. An economy alpha answers economy questions with everything else switched off, and the switching off is what makes the answers trustworthy. A GAME alpha is every system on at once, and it asks things none of these stages can — starting with whether there is too much to think about again, which is the complaint that began this whole rebuild. Renamed everywhere and written down properly. One thing it implies, which is now yours to do and does not exist yet: the game alpha needs its own set of questions about the WHOLE, written before anybody plays it." },
+    { when: "2026-09-05", decision: "Damaged this board with a badly quoted script, for the second time in two days.",
+      outcome: "Caught before you saw it, by a check that reads the page back rather than trusting the write. Restored from the backup and redone by hand. The lesson is already written down from last time and I did not follow it: anything with quotes and line breaks in it gets edited directly, never generated by a script with three layers of quoting between the intent and the file." },
     { when: "2026-09-05", decision: "Built the rivers before the map, on your call, rather than after.",
       outcome: "Right, and it saved the map being drawn twice \u2014 the map\u2019s whole job is showing who can reach whom and where it is blocked, and half of that did not exist yet. It also turned out the river data has been in the project since July, fully baked and never once read, so a thing we both expected to be expensive was mostly wiring." },
     { when: "2026-09-05", decision: "Let every gate on a river touch every stretch of it.",
@@ -392,11 +450,11 @@ const BOARD = {
     { when: "2026-09-05", decision: "Bounded what a save remembers about finished deals.",
       outcome: "Caught by measuring rather than guessing: twenty-two quarters of a sixty-one-nation board made 737 deals, 673 of them already over, and every one was going into your save file for ever. They are now forgotten five years after they end, which is longer than anything on screen looks back." },
     { when: "2026-09-05", decision: "Asked you four questions before writing a line of A1, rather than building and asking after.",
-      outcome: "All four answered in one sitting, and one of them turned into a design idea worth keeping — breaking a deal early and paying for it in reputation, which is now written down against the stage that already builds the machinery for it. A deal will pay over a year what a click paid over a year; deals run their term; testers wait for the alpha; the industry re-bake stays where you put it." },
+      outcome: "All four answered in one sitting, and one of them turned into a design idea worth keeping — breaking a deal early and paying for it in reputation, which is now written down against the stage that already builds the machinery for it. A deal will pay over a year what a click paid over a year; deals run their term; testers wait for the economy alpha; the industry re-bake stays where you put it." },
     { when: "2026-09-05", decision: "Built A1 from four finished design passes rather than re-running the four that died with the daily limit.",
       outcome: "A judgement call, and I think the right one — the four that survived cover the money, the screen, the save file, and an audit of the code being replaced, and they reached the same conclusions independently. Re-running the other four would have bought a second opinion at the cost of a morning. If A1 comes out wrong, this is the first decision to look at." },
     { when: "2026-09-05", decision: "Recorded your approval to widen the six industries and re-bake them from real government figures.",
-      outcome: "Scheduled, not started — it stays after the alpha where you put it. It is the change that takes the last invented numbers out from under your map." },
+      outcome: "Scheduled, not started — it stays after the economy alpha where you put it. It is the change that takes the last invented numbers out from under your map." },
     { when: "2026-09-05", decision: "Adopted the addendum's new order — trade first, economy after — and ran A0 straight through as you instructed.",
       outcome: "A0 done and tagged v0.3 in one sitting. Two corrections to the addendum recorded: the AI already trades, and the recognition item restated a misreading." },
     { when: "2026-09-05", decision: "Told you the county data had no ports and raised it as a blocker.",

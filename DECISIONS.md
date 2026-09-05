@@ -2677,3 +2677,46 @@ agreements across sixty nations, which is not a large problem but an impossible 
 question with the same answer is "find the best routes as if everyone said yes, then say who you
 would have to ask", and that runs in milliseconds.
 
+### D173 — This is the ECONOMY alpha. The game alpha is a different thing, later
+
+*2026-09-05.* Aaron, at the end of the A4 work:
+
+> "this is the economy alpha not the game alpha. Once we get all alphas done for each part of the
+> game are we really at an alpha"
+
+He is right, and the docs have been sloppy about it. Everything written in this project since
+Addendum A says "the alpha" and means "the economy alpha", which is a different and much smaller
+claim. Renamed throughout, and the distinction is worth stating properly rather than just
+find-and-replacing, because it changes what the finish line is.
+
+**AN ECONOMY ALPHA answers economy questions and nothing else.** Is negotiating a deal interesting
+or is it a menu? Does holding a corridor feel powerful? Do expiries create useful pressure or just
+admin? Does the world feel alive with other nations trading? Every one of those can be answered with
+politics and separatist movements switched off, which is exactly why they ARE switched off. It is a
+test of one system, run in isolation, and isolation is what makes the answers trustworthy.
+
+**A GAME ALPHA is the first time somebody plays the whole thing.** Every system on at once, with the
+questions that only exist at the join: does an economic grievance turn into a separatist movement?
+Does a nation that has cornered a chokepoint get invaded for it? Does the player have too much to
+think about again — which is the exact complaint that started this whole rebuild? None of those can
+be asked of a stripped-back build, and none of them are what the next few weeks are testing.
+
+**THE MECHANISM FOR DOING THIS TO EVERY SYSTEM ALREADY EXISTS,** and it is worth saying because it
+was built for a narrower reason. `js/complexity.js` was written to strip politics and movements away
+so the economy could be built alone. It is the same switch a POLITICS alpha would use in the other
+direction: turn the economy down to a baseline, build the political layer properly, test it on its
+own terms. The pattern is repeatable — strip back, build one system until it argues back, alpha it,
+switch it on — and the flags are how.
+
+**So the honest shape of the road is:**
+
+| | |
+|---|---|
+| now | economy alpha — trade, deals, corridors, rivers, markets |
+| then | the other systems, each stripped back and built the same way |
+| finally | the GAME alpha — every flag on, played end to end, and the first honest test of whether it is a game rather than a set of systems |
+
+Which also means the game alpha needs something none of the per-system alphas do: a fresh set of
+questions about the WHOLE, written before it is played. That is Aaron's to write and it does not
+exist yet. Not urgent — but it should not be discovered on the day.
+
