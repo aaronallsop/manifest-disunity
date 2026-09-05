@@ -1,88 +1,267 @@
-# Economy & Trade System — Implementation Spec
+# Economy & Trade System — Implementation Spec v2
 
-**Status:** Draft for programmer handoff
-**Audience:** Engineering
-**Rule of the document:** Work stops at every Control Board Checkpoint. Nothing in a later phase gets started until the designer has verified the prior phase on the Control Board and said so in writing.
+**Supersedes:** v1 (4 September 2026). Discard v1 — it is preserved in git history only. Several of
+its phases asked for work that already exists, and several of its assumptions were refuted by the
+4 September audit.
 
----
-
-## 0. How to use this document
-
-Sections 1–7 are the specification: what the system is and why. Section 8 is the build order. Section 9 lists open questions the designer still owes you.
-
-Every number in this document is a **placeholder**. They are first-pass values chosen to be plausible and to make testing possible, not balanced values. All of them live in the tuning data file (see 2.2), not in code. Do not hard-code any of them.
-
-### Working agreements
-
-1. **No phase is skipped and no phase is merged with another.** If a phase looks trivially small, it still ends at its checkpoint.
-2. **Every phase ends in a playable, inspectable build.** No "backend done, UI next sprint." If the designer can't see it and poke it, the phase isn't finished.
-3. **All tuning constants live in a data file.** The designer must be able to change a number, reload, and see the effect without a rebuild and without you.
-4. **Determinism.** Given a seed, a run must reproduce exactly. This is non-negotiable for testing.
-5. **When something is ambiguous, stop and ask.** Do not resolve design ambiguity by picking something reasonable and continuing. Section 9 lists the known gaps; if you hit an unknown one, add it there and raise it.
+**Status:** Authoritative. Development may resume.
+**Basis:** Revised against the codebase audit of 4 September 2026 and against `DESIGN.md`.
 
 ---
 
-## 1. Core concepts and vocabulary
+## 0. What changed from v1, and why
 
-| Term | Meaning |
+v1 was written without reading `DESIGN.md` or the codebase. The audit found eight conflicts and a set
+of instrument gaps. This version rules on all of them.
+
+| v1 said | v2 says | Reason |
+|---|---|---|
+| A turn is one month | **A turn stays a quarter** | The re-derivation cost buys flavour only. See 1.1. |
+| Control Board runs the tests | **All testing controls live in `dev.html`** | The Control Board is a published status page and cannot reach a running game. |
+| Logistics becomes a different kind of object | **Logistics stays a sector; its ratio governs throughput** | Preserves the sum-to-one price invariant and its test. Cheaper and no less expressive. |
+| Price formula replaces the price index | **The existing index becomes the base price; multipliers layer on top** | Additive, not a replacement. The index is built and tested. |
+| Food/manufacturing glut angers factions | **Glut hits treasury income and Area grievance** | No faction system exists and none is being built. |
+| `manufacturingDemand` includes `armySize × 1.5` | **Term dropped** | Army size is derived from population and carries no independent signal. |
+| Build a gray market | **Fix the existing block to the haircut `DESIGN.md` already describes** | §6.5 of `DESIGN.md` specifies a smuggler's rate; the code hard-blocks. The document is right and the code is the bug. |
+| Debug overlay is new work | **Extend the existing `Power.build()` Why record to the economy** | The pattern exists and is good. Reuse it. |
+
+Three things v1 got right and this version keeps: derived demand, goods actually moving, and the band
+model.
+
+---
+
+## 1. Owner rulings
+
+### 1.1 Turn length — recommend reverting to the quarter
+
+The earlier ruling was one month, and the audit then priced it: every tuned rate's written
+justification says "per quarter," and re-deriving them is unbudgeted.
+
+**Recommendation: keep the quarter.** Nothing mechanical is at stake. Every rate in the engine is per
+*turn*; the label only changes what the calendar prints. The flavour that motivated the month
+survives intact:
+
+- Open on **1 March 2036**, the eve of two hundred years since Texas declared independence.
+- Advance one quarter per turn. The anniversary still lands on turn 1.
+- Deal durations become **2 / 4 / 8 / 20 turns** (six months, one year, two years, five years).
+
+What the month would buy is a calendar that ticks in months. What it costs is a full re-derivation
+pass. That budget should go to section 2, which is where the game is.
+
+**This reverses a prior ruling and is the owner's to confirm.** If the month is wanted for reasons
+beyond the calendar, say so and it gets built — but it should be a deliberate purchase, not a default.
+
+### 1.2 Conflict (2) — demand is a fixed share of own output
+
+**Ruling: replace.** This is the single most important finding in the audit and it is worth saying
+plainly: as built, no state can ever be short of anything, because every state's demand is defined as
+a share of what that state already produces. The "deficits" on the trade screen are statements about
+industry mix, not about sufficiency. A game about states that cannot feed themselves currently
+contains no mechanism by which a state can fail to feed itself.
+
+There is no additive path. Derived demand (section 3.4) replaces it. The existing trade screens,
+trade tests and surplus figures are invalidated and get rebuilt.
+
+### 1.3 Conflict (3) — trade moves money, never goods
+
+**Ruling: replace.** Trade becomes a transfer of quantities. Money still moves; goods move too, and
+the buyer's supply figure rises.
+
+This is the expensive commitment and it is the correct one. Without it, every downstream system in
+this spec is decoration: transit tolls price nothing real, band effects can't propagate across a
+border, and a trade network map would draw lines that carry nothing.
+
+### 1.4 Conflict (4) — industry mix is frozen and mostly invented
+
+This splits into two questions the audit ran together. They have different answers.
+
+**(a) Does the demonstration require mutable industry mix? No.** The audit assumed it did. It doesn't,
+and this saves a great deal of work.
+
+Separate **capacity** from **output**:
+
+- A region's industry mix is its productive **capacity**. Geography, and mostly fixed.
+- Actual **output** is capacity × utilisation, where utilisation is gated by input availability.
+
+Cut a state's Resource Extraction supply and its Manufacturing *output* falls the same turn, because
+the factories are idle, not because the region stopped being industrial. That is both the correct
+real-world model and the cheaper one. **Industry mix stays frozen for now.** Mutable mix is deferred
+to a post-launch phase and is not in this roadmap.
+
+**(b) Is the invented industry split acceptable? No — and it violates the project's own rule.**
+
+`DESIGN.md` opens with a stated principle: nothing is invented where real data exists, and grounded
+estimates are apportioned from real totals and flagged **est.** in the UI. Six hand-authored
+templates with roughly half the map sharing one is not a grounded estimate; it is a guess wearing the
+authority of the real GDP figure it is attached to. It is also the substrate every number in this
+spec sits on.
+
+**Ruling: re-bake the industry split from real data before Phase 1.**
+
+BEA publishes county-level GDP by industry (the CAGDP2 series) at NAICS sector granularity. Mapping
+those NAICS sectors onto the game's six is a build-script job in exactly the tradition of the existing
+`build_*.py` scripts. **Engineering to verify coverage and suppression rates before committing** —
+BEA suppresses some county-industry cells for disclosure reasons, and where a cell is suppressed the
+existing apportion-from-a-real-total-and-flag-it convention applies.
+
+If coverage turns out to be too poor to use, the fallback is to keep the templates and **label them
+honestly in the UI as estimates**. What is not acceptable is leaving invented figures presented as
+measured ones.
+
+This is scheduled as **Phase 0.5** and it moves before Phase 1, because Phase 1's whole acceptance
+test is a prediction about which states are short of what.
+
+### 1.5 Conflict (5) — one global price
+
+**Ruling: layer, don't replace.** The existing index (`100 × (demand share ÷ supply share)^1.3`)
+becomes the **base price** for a resource. The deal-specific multipliers in section 4.1 apply on top
+of it for a specific buyer, seller, route and duration. The index is built, tested and reports
+something true; it just isn't a *deal* price.
+
+### 1.6 Conflict (6) — unrecognised states hard-blocked from trade
+
+**Ruling: fix to a haircut.** `DESIGN.md` §6.5 already specifies this: a smuggler's rate on the world
+market, deliberately a haircut rather than a lock, "because refusing external trade outright would
+make an unrecognised landlocked state unplayable."
+
+The code hard-blocks. `DESIGN.md` states its own convention for this case: *if this document and the
+code disagree, the document is a bug — say so and fix it.* Here the document is right and the code is
+wrong, so the code changes and the document stands.
+
+This also resolves the Economy-mode defect logged in `deferred.md`. It is scheduled in Phase 0 because
+it currently makes the mode built for economy testing untestable.
+
+### 1.7 Conflict (7) — Logistics as a commodity
+
+**Ruling: Logistics stays a sector.** It is produced and consumed like the other five, the sum-to-one
+invariant holds, and the existing test stands.
+
+What changes is only what its *band* does. Logistics demand is the total volume moved (internal
+distribution plus every import and export leg), and its ratio governs transit losses and route
+reliability. It fits the uniform band model with no special-casing. v1's "different kind of object"
+framing is withdrawn.
+
+### 1.8 Conflict (8) — `armySize` in manufacturing demand
+
+**Ruling: drop the term.** Reinstate only if force size ever becomes a player decision.
+
+### 1.9 Factions
+
+**Ruling: no faction system.** "Faction" already means a playable nation in this codebase and the term
+is not being overloaded.
+
+Glut consequences land on things that exist:
+
+- **Treasury** — sector income collapses (this is the real agricultural glut mechanism)
+- **Area grievance** — raise `attrs.sentBoost` in the affected Areas, which is the existing authored-
+  grievance channel and already feeds sentiment
+
+In Economy mode the second has nothing to feed, so glut is a treasury effect only there. That is
+acceptable and should be stated in the UI.
+
+### 1.10 CSV columns
+
+**Ruling: request only values that exist or that a phase creates.** v1 asked for unrest, per-neighbour
+opinion and debt as Phase 0 columns; none exist. Revised list in section 2.4, with the phase each
+column arrives in.
+
+---
+
+## 2. Phase 0 — Instruments (revised)
+
+All testing controls belong in **`dev.html`**, the existing developer dashboard. The Control Board is
+the owner's status and decision page and is not part of the test loop.
+
+### 2.1 Unblock Economy mode
+
+Fix the recognition trade block per ruling 1.6. Until this is done, the mode built for testing the
+economy cannot test the economy.
+
+### 2.2 Calendar
+
+Turn integer maps to a quarter and a year. Opens Q1 2036, displayed as a date. Surfaced in the game UI
+and in every export.
+
+### 2.3 Tuning that survives a load
+
+Three defects, all on the common path:
+
+- Loading a save replaces the whole tuning set, silently discarding live edits
+- The dashboard displays schema defaults rather than live values
+- Export copies to clipboard for manual pasting
+
+Target behaviour: change a value, reload, observe the effect, with no rebuild and nothing silently
+lost. Write to `content/tunables.json` directly.
+
+Economy constants join the existing ~335 in the one schema. No second file.
+
+### 2.4 Per-state CSV export
+
+One row per nation per turn.
+
+| Column | Arrives |
 |---|---|
-| **Turn** | One month of in-world time. Fixed. Displayed in the UI. |
-| **State** | A playable or AI-controlled polity on the map. |
-| **Resource** | One of six national aggregates. See section 3. |
-| **Supply / Demand / Ratio** | Every resource has a supply, a derived demand, and `ratio = supply / demand`. |
-| **Band** | The bucket a ratio falls into. Drives all consequences. See 3.1. |
-| **Trade Deal** | A bilateral agreement to move a quantity of a resource at a price for a duration. |
-| **Transit Agreement** | A separate instrument granting the right to move goods *through* a state by a specific mode. |
-| **Route** | The ordered path a trade deal's goods take, including all transit hops. |
-| **Recognition** | A 0–1 score representing how much of the world accepts a state as legitimate. |
-| **World Market** | An abstract external buyer/seller reachable only via port access. |
+| turn, date, nation, population, GDP, treasury | Phase 0 |
+| per-sector output (6) | Phase 0 |
+| per-sector demand, ratio, band (18) | Phase 1 |
+| per-sector delivered imports and exports (12) | Phase 2 |
+| active deal count, active transit agreement count | Phase 3 |
+| logistics utilisation, route failure count | Phase 4 |
+| recognition score | Phase 5 |
 
----
+### 2.5 Measure what has never been measured
 
-## 2. Foundations (build these first, they are Phase 0)
+- Determinism: **100 turns, byte-identical**, twice, same seed. Currently proven at 10 turns with a
+  rounded comparison.
+- Performance: one honest current figure for a 100-turn headless run. The figures in the project's
+  documents are stale and mutually contradictory. Replace them and delete the old ones.
 
-### 2.1 Time
+If 100 turns is too slow to be usable, say so now rather than in Phase 8.
 
-- One turn = one month. Surface this in the UI.
-- All durations are expressed in turns. Standard deal lengths: 6, 12, 24, 60.
+### 2.6 Safe stepping
 
-### 2.2 Tuning data file
+- Single-step must not desynchronise the counters
+- Fast-forward N turns
+- Running the headless simulator must not destroy live game state
 
-A single human-editable file (JSON or CSV, engineering's choice) containing at minimum:
+### 2.7 Forcing controls (in `dev.html`)
 
-- Band thresholds per resource
-- Base prices per resource
-- All price formula coefficients
-- Toll rate multipliers by mode
-- Demand coefficients
-- Recognition thresholds and penalties
-- Storage capacities
+- Set a state's sector output, **persisting across recomputation** (the audit is right that this needs
+  a persistence layer, since output is recomputed from wealth every turn)
+- Set recognition
+- Force a conquest
+- Force a treaty revocation (from Phase 3, when treaties exist)
 
-Hot reload is required. The designer will spend more time in this file than in the game.
+### 2.8 Extend the Why record to the economy
 
-### 2.3 Debug overlay
+`Power.build()` already returns a number decomposed into named weighted contributions, each naming the
+tunable that moves it. Reuse that structure for every economic figure: supply, demand, ratio, price,
+delivered cost.
 
-Selecting any state shows, per resource:
+This is the debug overlay. It does not need inventing.
 
-- Supply, demand, ratio, current band
-- The **top three contributors** to supply and the top three to demand, with their numeric contribution
-- Active effects currently applied by that band
+**Checkpoint 0 — owner verifies in `dev.html`:** Economy mode trades without an invisible recognition
+block; the date displays and advances by quarter; a tuning edit survives a save/load and a reload; the
+per-state CSV exports; 100-turn determinism and one honest speed figure are recorded; step and
+fast-forward are safe; forcing a state's output persists; any economic number expands into its
+contributions.
 
-This is the single most important thing you will build. Without it, no later phase can be verified.
+### 2.9 Phase 0.5 — Industry data
 
-### 2.4 Headless simulation
+Per ruling 1.4(b). Re-bake the six-sector split from BEA county-industry data if coverage permits;
+otherwise label the templates as estimates in the UI.
 
-A mode that runs N turns with no rendering and writes a CSV: one row per state per turn, one column per tracked value (all six resources' supply/demand/ratio/band, treasury, debt, unrest, opinion toward each neighbour, active deal count).
-
-Target: 100 turns in under 60 seconds. This is how balance gets done in Phase 8.
+**Checkpoint 0.5 — owner verifies:** either every county's split traces to a real figure or an
+apportioned one flagged **est.**, or the templates are visibly labelled as estimates everywhere they
+appear. `build/validate.py` passes. The owner spot-checks five counties he knows.
 
 ---
 
 ## 3. The resource model
 
-### 3.1 Uniform band structure
+### 3.1 Bands
 
-All six resources use the same band math. Only the *consequences* differ.
+`ratio = supply / demand`, evaluated end of turn. Band transitions fire an event the journal can print.
 
 | Band | Ratio |
 |---|---|
@@ -92,473 +271,403 @@ All six resources use the same band math. Only the *consequences* differ.
 | Surplus | 1.11 – 1.50 |
 | Glut | > 1.50 |
 
-Bands are evaluated at end of turn. Band *transitions* should fire an event the UI can display ("Nevada has entered Manufacturing Deficit").
+### 3.2 Capacity and output
 
-### 3.2 The six resources
+Per ruling 1.4(a):
 
-#### Food
+```
+output = capacity × utilisation
+```
+
+Capacity comes from the baked industry split and scales with GDP. Utilisation is gated by input
+availability — principally Resource Extraction gating Manufacturing. This is the channel the
+supply-cut demonstration travels down.
+
+### 3.3 The six sectors
+
+#### Agriculture (Food)
 
 | Band | Effect |
 |---|---|
-| Crisis | Quality of Life −30, Unrest +5/turn, Army morale −20 |
-| Deficit | QoL −10, Unrest +2/turn |
+| Crisis | Quality of Life −30, Area grievance +5/turn, army readiness −20 |
+| Deficit | QoL −10, Area grievance +2/turn |
 | Met | — |
-| Surplus | QoL +3, exportable volume available |
+| Surplus | QoL +3, exportable volume |
 | Glut | See below |
 
-**Glut is special.** Food has a **storage capacity** (silos), expressed in turns of national consumption. Base capacity 4 turns, upgradeable. Surplus fills storage first with no penalty. Only volume above storage capacity triggers the glut penalty:
+**Storage.** Food has a silo capacity expressed in turns of national consumption. Base 4 turns (one
+year). Surplus fills storage with no penalty; only volume above capacity triggers glut.
 
-- Farm-gate price collapse: agricultural income −50%
-- Farm faction approval −4/turn while the condition persists
+**Glut:** agricultural income −50%; `attrs.sentBoost` raised in agricultural Areas.
 
-> **Design note for engineering:** this replaces an earlier idea where food surplus caused a health penalty. Do not implement a health effect from food surplus.
+No health effect. v1's obesity idea is withdrawn.
 
 #### Resource Extraction
 
 | Band | Effect |
 |---|---|
-| Crisis | Manufacturing output hard-capped at 40%, admin costs +25%, QoL −10 |
-| Deficit | Manufacturing output capped at the extraction ratio, productivity −10% |
+| Crisis | Manufacturing utilisation capped at 40%; admin costs +25%; QoL −10 |
+| Deficit | Manufacturing utilisation capped at the extraction ratio; productivity −10% |
 | Met | — |
-| Surplus | +Canada/Mexico trade willingness; World Market demand available |
-| Glut | Extraction sector income −40% (price effect) |
+| Surplus | Canada/Mexico trade willingness up; world market demand available |
+| Glut | Extraction income −40% |
 
 #### Manufacturing
 
 | Band | Effect |
 |---|---|
-| Crisis | Military equipment score −50%, infrastructure repair halted, QoL −15 |
-| Deficit | Military equipment score −20%, QoL −5 |
+| Crisis | Military equipment −50%; infrastructure repair halted; QoL −15 |
+| Deficit | Military equipment −20%; QoL −5 |
 | Met | — |
-| Surplus | Consumer goods income, valued at **60% of what the same volume would fetch as an export** (exporting should always beat domestic consumption) |
-| Glut | Idle capacity; industrial faction approval −2/turn |
+| Surplus | Consumer goods income at **60% of export value** (exporting must always beat domestic consumption) |
+| Glut | Idle capacity; `attrs.sentBoost` raised in industrial Areas |
 
-#### Logistics *(formerly "Trade")*
+#### Logistics (Trade & Transportation)
 
-**This resource changed type.** It is no longer a consumable. It is a **throughput capacity**.
-
-- `utilisation = total volume moved this turn / logistics capacity`
-- Volume moved includes both internal distribution and all import/export legs.
-
-| Utilisation | Effect |
-|---|---|
-| > 1.50 | Routes fail at random (10%/turn per route), transit losses 20% |
-| 1.11 – 1.50 | Transit losses 10%, toll costs +15% |
-| 0.90 – 1.10 | Transit losses 3% |
-| 0.50 – 0.89 | Transit losses 1%; state is eligible to host broker routes |
-| < 0.50 | As above, plus +opinion from states that route through you |
-
-The old "surplus Trade raises other nations' opinion of you" outcome now emerges from this rather than being applied directly: states with spare capacity host other people's routes, and hosting generates the opinion.
-
-#### Finance
-
-Two distinct levers, not one:
-
-- **Debt ceiling** = `f(finance surplus, economy size)`. Placeholder: `ceiling = economySize × (0.4 + 0.6 × financeRatio)`.
-- **Interest rate** = `baseRate − (financeRatio − 1.0) × 0.03`, floored at 1%.
+Demand = total volume moved, internal plus every trade leg.
 
 | Band | Effect |
 |---|---|
-| Crisis | Cannot service existing debt; default risk 15%/turn; all credit frozen |
-| Deficit | Interest rate penalty; ceiling reduced |
+| Crisis | Route failures 10%/turn per route; transit losses 20% |
+| Deficit | Transit losses 10%; toll costs +15% |
+| Met | Transit losses 3% |
+| Surplus | Transit losses 1%; eligible to host broker routes |
+| Glut | As Surplus, plus opinion bonus from states routing through you |
+
+#### Finance
+
+- **Debt ceiling** = `GDP × (0.4 + 0.6 × financeRatio)`
+- **Interest rate** = `baseRate − (financeRatio − 1.0) × 0.03`, floored at 1%
+
+| Band | Effect |
+|---|---|
+| Crisis | Cannot service debt; default risk 15%/turn; credit frozen |
+| Deficit | Rate penalty; ceiling reduced |
 | Met | — |
-| Surplus | May **lend to other states** (new mechanic — see 5.5) |
-| Glut | Lending capacity increased; small opinion bonus with debtor states |
+| Surplus | May lend to other states (section 5.6) |
+| Glut | Lending capacity up; small opinion bonus with debtors |
 
 #### Information Technology
 
-Three concrete jobs. IT is not a generic buff.
-
-| Band | Intel error on other states' figures | Tax leakage | Military tech tier |
+| Band | Intel error on others' figures | Tax leakage | Military tech tier |
 |---|---|---|---|
 | Crisis | ±40% | 25% | 1 |
 | Deficit | ±25% | 18% | 2 |
 | Met | ±15% | 10% | 3 |
 | Surplus | ±7% | 5% | 4 |
-| Glut | ±3% | 2% | 5, +opinion from all states |
+| Glut | ±3% | 2% | 5, +opinion |
 
-**Intel error** means: when the player or an AI inspects another state's resources, army strength, or treaty terms, the displayed number is perturbed within that band. Low-IT states negotiate partly blind. This is intended and is a core reason to invest in IT.
+**Intel error** perturbs the displayed value when inspecting another state's figures. Low-IT states
+negotiate partly blind, and that is the reason to invest in IT.
 
-### 3.3 Derived demand
+### 3.4 Derived demand
 
-Demand is **computed from state composition**, never authored per state. First-pass coefficients:
+Replaces share-of-own-output entirely.
 
 ```
-foodDemand        = population × 1.0 × (1 + qolModifier × 0.1)
-extractionDemand  = manufacturingCapacity × 0.6 + population × 0.1
-manufacturingDemand = population × 0.3 + armySize × 1.5 + infrastructureUpkeep
-logisticsDemand   = totalVolumeMoved          (see Logistics above)
-financeDemand     = debtService + governmentExpenditure
-itDemand          = (population + manufacturingCapacity) × 0.05
+foodDemand          = population × 1.0 × (1 + qolModifier × 0.1)
+extractionDemand    = manufacturingCapacity × 0.6 + population × 0.1
+manufacturingDemand = population × 0.3 + infrastructureUpkeep
+logisticsDemand     = totalVolumeMoved
+financeDemand       = debtService + governmentExpenditure
+itDemand            = (population + manufacturingCapacity) × 0.05
 ```
 
-Consequence to preserve: Manufacturing consumes Resource Extraction. Cutting a state's extraction supply must visibly degrade its manufacturing within a few turns.
+All coefficients live in the tuning schema.
 
-### 3.4 Internal distribution
+### 3.5 Internal distribution
 
-**Decision: resources pool nationally.** There is no intra-national supply chain simulation. The cost of internal distribution is modelled as a Logistics utilisation load only. Do not build regional stockpiles.
+Resources pool nationally. No intra-national supply chain. Internal distribution appears only as a
+Logistics load.
 
 ---
 
 ## 4. Price formation
 
-Prices must be **visible**. Every quoted price shows its component multipliers in a tooltip. An opaque price is a price the player will ignore.
+### 4.1 Base price and multipliers
 
-### 4.1 Unit price
-
-```
-UnitPrice = BasePrice
-          × ScarcityMult
-          × AlternativesMult
-          × RelationsMult
-          × RiskMult
-          × DurationMult
-```
-
-| Term | Formula | Notes |
-|---|---|---|
-| BasePrice | per-resource constant | From tuning file; also the World Market reference |
-| ScarcityMult | `clamp(1 + 1.2 × (1 − buyerRatio), 0.6, 2.5)` | Buyer in Crisis at 0.4 → ×1.72 |
-| AlternativesMult | `1 + 0.5 × (1 − min(buyerSupplierCount, 3) / 3)` | Sole supplier → ×1.50; three or more → ×1.00 |
-| RelationsMult | `1 − (opinion / 100) × 0.2` | Range ×0.80 to ×1.20 |
-| RiskMult | `1 + 0.08 × transitHops + 0.15 if any hop is hostile` | |
-| DurationMult | 6t = ×1.00, 12t = ×0.97, 24t = ×0.93, 60t = ×0.88 | Long deals discount by default |
-
-**AlternativesMult is the most important term in this formula.** It is what makes cutting a rival's other supplier a strategic act. Do not omit or simplify it.
-
-**DurationMult inversion:** when the seller's own scarcity is *rising* (their ratio has fallen for 3+ consecutive turns), the AI inverts the duration discount into a premium of the same magnitude. A seller who expects to gain leverage should not lock in a cheap long deal.
-
-### 4.2 Delivered cost and compounding tolls
-
-Tolls **compound multiplicatively** along the route:
+The existing global index is the **base price**. Deal price layers on top:
 
 ```
-DeliveredCost = UnitPrice × Π(1 + tollRate_i)   for each transit hop i
+DealPrice = BasePrice × ScarcityMult × AlternativesMult × RelationsMult × RiskMult × DurationMult
 ```
 
-Toll rate by mode, as multipliers on the base toll rate:
-
-| Mode | Multiplier |
+| Term | Formula |
 |---|---|
-| Highway | ×1.0 |
-| Rail | ×1.6 |
-| Port | ×2.5 |
+| ScarcityMult | `clamp(1 + 1.2 × (1 − buyerRatio), 0.6, 2.5)` |
+| AlternativesMult | `1 + 0.5 × (1 − min(buyerSupplierCount, 3) / 3)` |
+| RelationsMult | `1 − (opinion / 100) × 0.2` |
+| RiskMult | `1 + 0.08 × transitHops + 0.15 if any hop is hostile` |
+| DurationMult | 2t ×1.00, 4t ×0.97, 8t ×0.93, 20t ×0.88 |
 
-Compounding is deliberate: it makes long broker chains bleed value and prevents infinite arbitrage. A five-hop chain should be visibly unprofitable.
+**AlternativesMult is the most important term.** It is what makes cutting a rival's other supplier a
+strategic act rather than a flavour event. Do not simplify it away.
+
+**Duration inversion:** when the seller's own ratio has fallen for three consecutive turns, the AI
+inverts the duration discount into a premium of equal magnitude. A seller gaining leverage should not
+lock in a cheap long deal.
+
+Every price expands into its multipliers in a tooltip, using the Why record from 2.8.
+
+### 4.2 Compounding tolls
+
+```
+DeliveredCost = DealPrice × Π(1 + tollRate_i)
+```
+
+Toll multipliers by mode: **Highway ×1.0, Rail ×1.6, Port ×2.5.**
+
+Compounding is deliberate. It makes long broker chains bleed value and prevents infinite arbitrage.
 
 ### 4.3 World Market
 
-- Reachable **only** through port access (own port, or port transit rights, or a Canada/Mexico corridor).
-- It is a **price-taker with slow-moving prices**, not an infinite sink. Dumping volume moves the price down over subsequent turns and it recovers slowly.
-- It has a **shipping capacity cap** per state per turn.
-
-Both of these exist to stop "sell everything overseas" from becoming the dominant strategy.
+- Reachable only through port access: own port, port transit rights, or a Canada/Mexico corridor
+- A price-taker with **slow-moving prices**, not an infinite sink
+- Shipping capacity cap per state per turn
+- Existing external-trade rate (45% of bilateral) folds into this as the baseline haircut
 
 ---
 
-## 5. Trade and diplomacy layer
+## 5. Trade and diplomacy
 
-### 5.1 Trade Deal object
+### 5.1 Trade Deal
 
 | Field | Notes |
 |---|---|
-| Parties | Buyer, seller |
-| Resource | One of the six |
-| Volume | Per turn |
+| Parties, resource, volume/turn | |
 | Price | Per unit, delivered |
-| Duration | In turns |
-| Route | Ordered list of transit hops |
-| Auto-renew | Boolean, negotiable |
+| Duration | 2 / 4 / 8 / 20 turns |
+| Route | Ordered transit hops |
+| Auto-renew | Negotiable |
 
-Expiry must produce a **renegotiation prompt**, not a silent lapse. Surface expiry countdowns at 6, 3, and 1 turns out.
+**Goods move.** On execution the seller's available supply falls and the buyer's rises, both
+treasuries settle, and Logistics load rises on every state on the route.
 
-### 5.2 Transit Agreement object
+Expiry produces a renegotiation prompt, with countdowns at 4, 2 and 1 turns.
 
-A separate instrument from a trade deal. A state can permit highway transit while refusing port access.
+### 5.2 Trade becomes a Move
+
+`DESIGN.md` §12 already names this: trade lives in `js/actions.js` rather than going through
+`Moves.plan`/`resolve`, so the AI never trades. Fifty nations that never trade cannot test a trade
+economy.
+
+Trade joins the standard `plan`/`resolve` path with an AI scorer. Scheduled in Phase 3.
+
+### 5.3 Transit Agreement
+
+Separate instrument from a trade deal. A state can permit highway transit while refusing port access.
 
 | Field | Notes |
 |---|---|
-| Grantor / grantee | |
-| Mode | Highway, Rail, or Port |
-| Volume cap | Per turn. Prevents any one corridor carrying a continent. |
+| Grantor, grantee, mode | Highway / Rail / Port |
+| Volume cap | Per turn |
 | Rate | The toll |
-| Duration | |
-| Notice period | Turns between a revocation order and it taking effect |
+| Duration, notice period | Turns between a revocation order and effect |
 
-**Revocation is a player action** with a reputation cost. The threat of closure is the point of being a corridor state, so make the action prominent and the consequence real.
+**Revocation is a player action** with a reputation cost. The threat of closure is the point of being
+a corridor state.
 
-### 5.3 Deal acceptance — five factors
+The existing transit system already routes over baked rail and interstate corridors and already has a
+neighbour that weighs an offer and can counter or decline. What is new is the **mode distinction** and
+the standing agreement.
 
-AI willingness is a function of, in rough order of weight:
+### 5.4 Acceptance factors
 
-1. **Alternatives** — do they have another supplier or buyer?
-2. **Demand** — their band for that resource
-3. **Relations and recognition**
-4. **Relative power**
-5. **Route risk** — hop count and hostility along the path
+In rough order of weight: **alternatives**, demand band, relations and recognition, relative power,
+route risk. Counter-offers may modify duration as well as price and volume.
 
-Counter-offers must be able to modify **duration** as well as price and volume.
+### 5.5 Recognition ramp
 
-### 5.4 Recognition
-
-```
-RecognitionScore = Σ(PowerWeight of recognising states) / Σ(PowerWeight of all states)
-```
-
-Power-weighted, not a headcount. Trade access is a **ramp, not a cliff**:
+Recognition is already power-weighted. What changes is the trade consequence.
 
 | Score | Access |
 |---|---|
-| < 0.15 | **Gray market only.** ×2.0 price markup, 30% volume cap, 10%/turn seizure chance |
-| 0.15 – 0.50 | Limited de jure. ×1.4 markup, 60% volume cap |
-| > 0.50 | Full access |
+| < 0.15 | Smuggler's rate: ×2.0 markup, 30% volume cap, 10%/turn seizure risk |
+| 0.15 – 0.50 | ×1.4 markup, 60% volume cap |
+| > 0.50 | Full |
 
-Unrecognised states must always be able to move *some* goods. A hard trade cut-off produces a death spiral where a state can't develop, so it never gets recognised, so it can't develop.
+Never a hard cut-off, per ruling 1.6.
 
-**Border-state suspicion:** Canada and Mexico apply an additional −0.15 recognition penalty to states directly bordering them, decaying over 24 turns from the breakaway.
+**Border-state suspicion:** Canada and Mexico apply an additional −0.15 to states directly bordering
+them, decaying over 24 turns from the breakaway. Any bordering state may negotiate transit *through*
+them under the same mode tiers.
 
-**Canada and Mexico as corridors:** any state bordering them may negotiate transit through them, subject to the same mode tiers. A New York–Washington route through Canada is legal and should work.
+### 5.6 Additional instruments
 
-### 5.5 Additional diplomatic instruments
+- **Embargo** — unilateral suspension, reputation cost, cost to your own economy
+- **Lending** — the primary use for surplus Finance; debtors take opinion and leverage penalties
+- **Corridor closure** — see 5.3
 
-- **Embargo.** Unilateral suspension of all deals with a target. Reputation cost, and cost to your own economy.
-- **Lending.** Finance-surplus states may extend loans. Debtors take opinion and leverage penalties. This is the primary use for excess Finance.
-- **Corridor closure.** See 5.2.
+### 5.7 Hunger generates claims
 
-### 5.6 Hunger generates claims
+A state in Food Deficit or Crisis accrues ClaimPressure toward each adjacent state in Surplus or Glut:
+**+2/turn** (Deficit), **+5/turn** (Crisis). Suppressed to zero while an active food deal covers ≥50%
+of the shortfall at ≤1.3× base price. At 50, a casus belli unlocks.
 
-A state in Food Deficit or Crisis accrues `ClaimPressure` toward each **adjacent** state in Food Surplus or Glut:
+Selling food to a hungry neighbour becomes a security policy; starving one becomes a deliberate risk.
 
-- Deficit: +2/turn
-- Crisis: +5/turn
+### 5.8 Treaty succession
 
-Accrual is **suppressed to zero** while an active food deal covers ≥50% of their shortfall at ≤1.3× base price.
+On absorption, treaties enter **Limbo for 6 turns** at 50% volume. The successor ratifies (free) or
+voids (−10 opinion) each individually. Unratified at turn 6 voids automatically.
 
-At ClaimPressure 50, a casus belli unlocks.
-
-Intent: selling food to a hungry neighbour is a security policy, and starving them is a deliberate risk rather than a passive default.
-
-### 5.7 Treaty succession on conquest
-
-When a state is absorbed:
-
-1. All of its treaties enter **Limbo** for 6 turns.
-2. During Limbo, trade flows at 50% volume.
-3. The successor may **ratify** or **void** each treaty individually. Voiding costs −10 opinion with the counterparty; ratifying costs nothing.
-4. Anything unratified at the end of Limbo voids automatically.
-
-Do not implement blanket void-on-conquest. A single conquest cascading into continent-wide economic collapse is too swingy and removes the interesting decision.
+Not blanket void-on-conquest: one conquest cascading into continental collapse is too swingy and
+deletes the decision.
 
 ---
 
-## 6. Feedback and UI (not optional, not "polish")
+## 6. Feedback
 
 ### 6.1 Trade Network map mode
 
-Select a state and see:
-
-- Outbound and inbound trade lines to every partner
-- Transit hops rendered distinctly by mode (highway / rail / port)
-- **Broken links** rendered distinctly, with the reason (expired, revoked, conquered, over-capacity)
-- A click-through from a broken link to open negotiation with whoever now controls that hop
-
-This ships in the same phase as the routing engine, not after it.
+Ships with the routing engine, not after it. Shows partners, hops rendered distinctly by mode, and
+**broken links with their reason** (expired, revoked, conquered, over-capacity), each click-through
+opening negotiation with whoever now controls the hop.
 
 ### 6.2 Deal ledger
 
-A single screen listing:
-
-- Active trade deals, with expiry countdowns
-- Active transit agreements, with volume utilisation and notice periods
-- **Open offers** received, with their own expiry timers
-
-Cap incoming AI offers per turn (placeholder: 3) so the player isn't spammed.
+Active deals with expiry countdowns; active transit agreements with utilisation and notice periods;
+open offers with their own expiry. Cap incoming AI offers at 3/turn.
 
 ### 6.3 Tooltips
 
-Any price shown anywhere must expand into its component multipliers with values. Any band effect must expand into the number that produced it.
+Every price and every band effect expands into the Why record that produced it.
 
 ---
 
-## 7. Balance risks to watch
+## 7. Roadmap
 
-| Risk | Mitigation already specified |
+Each phase ends at an **owner checkpoint**, verified in `dev.html` or in a normal play session.
+Written approval before the next phase starts.
+
+| Phase | Contents |
 |---|---|
-| Broker states arbitraging to dominance | Compounding tolls (4.2), volume caps (5.2) |
-| World Market as dominant strategy | Price-taker with slow price movement + shipping cap (4.3) |
-| Unrecognised-state death spiral | Gray market floor (5.4) |
-| Conquest cascading into economic collapse | Treaty Limbo (5.7) |
-| Domestic consumption beating export | Surplus manufacturing valued at 60% of export (3.2) |
+| **0** | Instruments (section 2) |
+| **0.5** | Industry data honesty (section 2.9) |
+| **1** | Derived demand, bands, capacity/utilisation. Autarky. |
+| **2** | Goods move. Trade transfers quantities. |
+| **3** | Deals with duration; trade becomes a Move; deal ledger |
+| **4** | Transit modes, routing, compounding tolls, network map |
+| **5** | Recognition ramp, Canada/Mexico corridors |
+| **6** | Embargo, lending, hunger claims |
+| **7** | Treaty succession, infrastructure damage |
+| **8** | Tuning |
 
----
+### Phase 1 — Autarky
 
-## 8. Build plan
+Replace share-of-own-output demand with 3.4. Bands, capacity/utilisation. **No trade changes.**
 
-Nine phases. Each ends at a **Control Board Checkpoint**: work stops, the designer verifies on the Control Board, and written approval is required before the next phase starts.
+*Owner writes predictions before build starts:* which five nations are self-sufficient, which five are
+structurally short, and of what. This is a comprehension check on the owner, not a lookup task for
+engineering.
 
-### What the Control Board needs to support
+**Checkpoint 1:** 60-turn run, trade disabled — every nation reaches stable or slowly-declining
+equilibrium, nothing oscillates or explodes. Predicted-short nations are in Deficit or Crisis. Forcing
+a nation's Extraction to zero degrades its Manufacturing *output* within 3 turns without touching its
+industry mix. Every band is reachable and observable.
 
-If the Control Board already does any of this, skip it. If it does not, adding it is part of Phase 0.
+*Stop condition:* the numbers stop surprising the owner. This phase produces a boring but coherent
+economy. **A map where everyone is comfortable is a failed Phase 1**, even if nothing crashes.
 
-- Select any state and read its full resource breakdown (the 3.3 debug overlay)
-- Step turns one at a time, and fast-forward N turns
-- Edit any tuning value and reload
-- Force a state's resource supply to an arbitrary value (for testing consequences directly)
-- Force diplomatic states: set recognition, force a conquest, force a treaty revocation
-- Run the headless sim and export CSV
-- Seed control for reproducible runs
+### Phase 2 — Goods move
 
----
+Trade transfers quantities. Supply figures change on both sides. Logistics load accrues.
 
-### Phase 0 — Instrumentation and time
+**Checkpoint 2 — the supply-cut demonstration.** With forcing controls, sever a nation's Extraction
+imports. Its Manufacturing output falls, its military equipment score falls, its QoL falls, and the
+CSV shows the chain turn by turn. This is the demonstration the whole system exists to deliver; if it
+isn't legible here, stop.
 
-**Build:** Sections 2.1, 2.2, 2.3, 2.4. Control Board capabilities listed above. **No economic logic.**
+### Phase 3 — Deals and the AI
 
-**Checkpoint — designer verifies:**
-- Turn counter shows a date, one turn advances one month
-- Debug overlay shows supply/demand/ratio/band and top-three contributors for any state
-- Changing a value in the tuning file and reloading changes behaviour, with no rebuild
-- Headless run of 100 turns completes in under 60s and exports a readable CSV
-- Same seed, twice, produces identical CSVs
+Duration, counter-offers including duration, ledger, expiry prompts. Trade becomes a Move with an AI
+scorer.
 
----
+*Owner writes predictions:* the price of a given deal from a strong seller to a desperate buyer, and
+the reverse.
 
-### Phase 1 — Autarky economy
+**Checkpoint 3:** a 4-turn deal expires and prompts renegotiation with countdowns at 4/2/1. A buyer
+with no alternative pays visibly more than one with three. Duration inversion fires and is visible.
+**AI nations trade with each other unprompted** — verify in a 60-turn headless run that inter-AI deal
+count is non-zero and stable. Offers are capped and expire.
 
-**Build:** Band model (3.1, 3.2), derived demand (3.3), national pooling (3.4). **No trade of any kind.**
+### Phase 4 — Transit and the network map
 
-**Designer writes predictions before build starts:** which five states should be self-sufficient, which five structurally broken.
+**Checkpoint 4 — three named scenarios.** *Nevada:* trades to Oregon by highway and rail through
+California, and cannot reach the World Market for want of port rights, with the port refusal legible
+on the map. *Wisconsin:* the long toll rail corridor west is marginal, not free money, with the
+compounding tolls readable in the tooltip. *Broker chain:* a deliberately constructed five-hop resale
+chain is unprofitable.
 
-**Checkpoint — designer verifies:**
-- 60-turn run with zero trade: every state reaches stable or slowly-declining equilibrium. Nothing oscillates or explodes.
-- The five predicted-broken states are in Deficit or Crisis
-- Manually zeroing a state's Resource Extraction on the Control Board degrades its Manufacturing within 3–5 turns
-- Every band is reachable and every band's effect is observable in the overlay
+*Stop condition:* the owner can explain any nation's economy from the map alone, without the overlay.
 
-**Stop condition:** the numbers stop surprising the designer. This phase produces a boring but coherent economy. That is the goal.
+### Phase 5 — Recognition and foreign corridors
 
----
-
-### Phase 2 — Price formation and World Market
-
-**Build:** Price formula (4.1), World Market (4.3). Single abstract partner. **No diplomacy, no routing, no third-party transit.**
-
-**Checkpoint — designer verifies:**
-- Selling volume into the World Market moves the price down, and it recovers slowly
-- Shipping capacity cap binds
-- A Glut state can partially but not fully relieve itself via the World Market
-- Price tooltip shows every multiplier with its value, and the numbers multiply out to the shown price
-
----
-
-### Phase 3 — Bilateral deals, adjacent states only
-
-**Build:** Trade Deal object (5.1), five-factor acceptance (5.3), counter-offers including duration, deal ledger (6.2), AI-initiated offers with expiry. **Adjacency only — no routing through third parties.**
-
-**Designer writes predictions before build starts:** the price of a given deal from a strong state to a desperate one, and the reverse.
-
-**Checkpoint — designer verifies:**
-- A 12-turn deal expires and produces a renegotiation prompt, with countdowns at 6/3/1
-- A buyer with no alternative supplier pays visibly more than one with three
-- The seller-scarcity duration inversion (4.1) fires and is visible in the tooltip
-- Incoming offers are capped and expire
-- Both designer predictions land within a reasonable margin
-
----
-
-### Phase 4 — Transit, tolls, and the network map
-
-**The largest phase.** Build the map mode *with* the routing engine, not after.
-
-**Build:** Transit Agreement object (5.2), mode tiers, routing, compounding tolls (4.2), volume caps, Logistics utilisation (3.2), Trade Network map mode (6.1).
-
-**Checkpoint — designer verifies these named scenarios:**
-- **Nevada scenario:** Nevada trades to Oregon through California by highway and rail, and *cannot* reach the World Market because it lacks port rights. Confirm the port refusal is the binding constraint and is legible on the map.
-- **Wisconsin scenario:** the long toll rail corridor west to the Pacific is *marginal*, not free money. Read the compounding tolls in the tooltip.
-- **Broker chain:** deliberately construct a five-hop resale chain. Confirm it is unprofitable.
-- Logistics over-capacity causes route failures and is visible in the overlay
-
-**Stop condition:** the designer can look at the map and explain any state's economy out loud without opening the debug overlay.
-
----
-
-### Phase 5 — Recognition, Canada, Mexico, gray market
-
-**Build:** Recognition score and ramp (5.4), border-state suspicion, Canada/Mexico as partners and as corridors, gray-market trade.
-
-**Checkpoint — designer verifies:**
-- Force a mid-game breakaway on the Control Board. The new state survives on gray-market trade at a punishing rate and is not dead on arrival.
-- Recognition rising produces a smooth improvement in terms, with no step change
-- A state bordering Mexico faces visibly stiffer terms than an interior state at the same recognition score
-- A New York → Washington route through Canada works and is priced by the same toll tiers
-
----
+**Checkpoint 5:** force a mid-game breakaway — the new nation survives on the smuggler's rate and is
+not dead on arrival. Recognition rising improves terms smoothly with no step change. A
+Mexico-bordering nation faces stiffer terms than an interior one at equal recognition. A New York →
+Washington route through Canada works and prices by the same mode tiers.
 
 ### Phase 6 — Diplomatic teeth
 
-**Build:** Embargo, corridor closure with notice period and reputation cost (5.2), lending (5.5), hunger-generates-claims (5.6).
-
-**Checkpoint — designer verifies:**
-- Closing a corridor: the notice period elapses, the reputation hit lands, and the network map shows the break with the correct reason
-- Starving a neighbour accrues ClaimPressure at the specified rate; selling them food at a fair rate stops accrual immediately
-- ClaimPressure reaching 50 unlocks a casus belli
-- A loan is extended, serviced, and defaulted on, with correct opinion effects at each step
-
----
+**Checkpoint 6:** corridor closure elapses its notice period, lands its reputation cost, and shows on
+the map with the correct reason. Starving a neighbour accrues ClaimPressure at spec; selling them food
+stops it immediately; 50 unlocks a casus belli. A loan is extended, serviced and defaulted, with
+correct opinion at each step.
 
 ### Phase 7 — Succession and shocks
 
-**Build:** Treaty succession Limbo (5.7), infrastructure damage and upgrade.
-
-**Checkpoint — designer verifies:**
-- **Deseret scenario:** Deseret absorbs Utah. Utah's treaties enter Limbo, trade drops to 50% volume, the network map shows the break, and the designer can ratify or void each treaty individually with the correct opinion consequences.
-- Unratified treaties void automatically at turn 6 of Limbo
-- Damaging infrastructure on a corridor degrades throughput and shows on the map
-
----
+**Checkpoint 7 — the Deseret scenario.** Deseret absorbs Utah. Treaties enter Limbo, volume drops to
+50%, the network map shows the break, each treaty can be ratified or voided individually with correct
+opinion consequences, and anything unratified voids at turn 6.
 
 ### Phase 8 — Tuning
 
-**Build:** nothing new. Run the headless sim 20 times with varied starts and seeds.
-
-**Designer looks for:**
-- States that always win or always die
-- Resources whose constraint never binds
-- Bands nobody ever enters
-- Prices that never move
-
-All fixes in this phase happen in the tuning file. If a fix requires a code change, that is a design bug and goes back to the designer, not a tuning task.
+No new code. Twenty headless runs, varied seeds. Look for nations that always win or always die,
+resources whose constraint never binds, bands nobody enters, prices that never move. All fixes in the
+tuning file. A fix requiring code is a design bug and returns to the owner.
 
 ---
 
-## 9. Open questions for the designer
+## 8. Balance risks
 
-These are not blockers for Phase 0 or Phase 1, but they need answers before the phase noted.
+| Risk | Mitigation |
+|---|---|
+| Brokers arbitraging to dominance | Compounding tolls (4.2), volume caps (5.3) |
+| World Market as dominant strategy | Slow prices + shipping cap (4.3) |
+| Unrecognised death spiral | Smuggler's rate floor (5.5) |
+| Conquest cascading into collapse | Treaty Limbo (5.8) |
+| Domestic consumption beating export | Surplus manufacturing at 60% (3.3) |
+| Everyone comfortable, no trade game | Phase 1 stop condition |
+
+---
+
+## 9. Open questions
+
+Answered by the audit and closed: population, economy size, factions.
 
 | # | Question | Needed by |
 |---|---|---|
-| 1 | What is "population" and where does it come from? Is it fixed, or does it grow/migrate? | Phase 1 |
-| 2 | What is "economy size" for the debt ceiling formula? | Phase 1 |
-| 3 | What determines a state's PowerWeight for recognition? | Phase 5 |
-| 4 | Does the player start recognised, or is establishing recognition part of the opening? | Phase 5 |
-| 5 | Which map regions have ports, and does the Great Lakes / Seaway route require Canadian transit? (Duluth's resource is being changed to Logistics — confirm it needs Canadian port transit to reach the World Market.) | Phase 4 |
-| 6 | Can Canada or Mexico be conquered, or are they fixed external actors? | Phase 5 |
-| 7 | How do factions (farm, industrial) currently work, and what does their approval feed into? | Phase 1 |
-| 8 | Are infrastructure upgrades a build queue, a money spend, or something else? | Phase 7 |
+| 1 | Confirm or overturn the quarter (ruling 1.1) | Phase 0 |
+| 2 | BEA county-industry coverage — usable, or fall back to labelled estimates? | Phase 0.5 |
+| 3 | What determines PowerWeight for recognition? | Phase 5 |
+| 4 | Does the player start recognised, or is earning it part of the opening? | Phase 5 |
+| 5 | Ports, and does the Great Lakes / Seaway route require Canadian transit? | Phase 4 |
+| 6 | Can Canada or Mexico be conquered, or are they fixed actors? | Phase 5 |
+| 7 | Infrastructure upgrades — queue, spend, or other? | Phase 7 |
+| 8 | Does Economy mode need its own reduced victory condition, or is it a sandbox? | Phase 3 |
+
+Question 8 is new. Economy mode currently strips victory checking with the politics flag, which leaves
+the mode with no ending.
 
 ---
 
-## 10. Changes from the earlier design notes
+## 10. Note on the audit
 
-For anyone who read the original notes, these are deliberate reversals. Do not implement the original version.
+The thirteen-agent audit with adversarial refutation was the right instrument and it found the thing
+that mattered. Conflict (2) — that demand is a share of own output and therefore nothing can ever be
+short — would have been discovered in Phase 4 or later, on top of three phases of work built over it.
+Finding it before Phase 0 started is worth more than everything else in this document.
 
-| Original | Now |
-|---|---|
-| "Trade" as a consumable resource | **Logistics**, a throughput capacity |
-| Food surplus causes obesity / health penalty | Food glut above storage causes **farm price collapse and farm faction anger**. No health effect. |
-| Food-deficit neighbours raise tension because you won't trade | **Hunger generates claims**, suppressed by actually selling to them |
-| Three factors for deal acceptance | **Five**, with alternatives weighted highest |
-| Recognition at 50% as an on/off gate | **Power-weighted ramp** with a gray-market floor |
-| Finance: low limits debt / high enables debt | **Debt ceiling + interest rate**, plus **lending to other states** |
-| IT as a general positive buff | **Intel accuracy, tax leakage, military tech tier** |
-| Per-resource bespoke penalty structures | **One band model** for all six |
+The same method should run again before Phase 4, which is the next phase large enough to hide a
+structural assumption.
