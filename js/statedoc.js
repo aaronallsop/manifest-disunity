@@ -96,8 +96,14 @@ export function assemble(session = {}) {
     leaders: Leaders.serialize(),
     history: History.serialize(),
     ledger: Ledger.serialize(),
-    // only deliberate overrides, so a schema change is not baked into a save
-    tune: window.TUNE.diff(),
+    /*
+     * Only what was DELIBERATELY changed away from the shipped tuning, so
+     * neither a schema change nor a later edit to content/tunables.json is
+     * baked into a save (spec v2 §2.3). `diff()` measured against schema
+     * defaults, which swept the whole authored file into every save and made
+     * re-authoring a number unable to reach a game already in progress.
+     */
+    tune: window.TUNE.diffFromAuthored(),
     // Full vs Economy — a session/mode flag, not a tuning value, so a save
     // remembers which layers of the simulation it was actually played with.
     complexity: Complexity.serialize(),

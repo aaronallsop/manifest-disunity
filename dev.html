@@ -62,7 +62,7 @@
     </div>
     <div class="dev-run">
       <button class="btn ghost" id="reset">Reset overrides</button>
-      <button class="btn ghost" id="copy">Copy as JSON</button>
+      <button class="btn ghost" id="copy" title="Merge the moved sliders into content/tunables.json">Save to tunables.json</button>
     </div>
     <div id="tunes"></div>
   </aside>
@@ -135,6 +135,30 @@ import { SCHEMA, groups } from './js/tunables.js';
 const overrides = {};
 let busy = false;
 
+/*
+ * THE BASELINE IS THE SHIPPED GAME, NOT THE SCHEMA DEFAULT (spec v2 §2.3).
+ *
+ * Every slider used to start at `SCHEMA[key].v` and call itself "changed" when
+ * it left it — but a run layers the authored content/tunables.json over those
+ * defaults, so any authored value was displayed as one number and simulated as
+ * another. With one override authored today that is a small lie; it is still a
+ * lie, and it is the one this dashboard exists to not tell.
+ */
+let BASE = Object.fromEntries(Object.entries(SCHEMA).map(([k, d]) => [k, d.v]));
+let authored = {};
+
+async function loadAuthored() {
+  try {
+    const r = await fetch('content/tunables.json', { cache: 'no-store' });
+    if (!r.ok) return;
+    const doc = await r.json();
+    authored = doc.values || {};
+    for (const [k, v] of Object.entries(authored)) if (k in BASE) BASE[k] = v;
+  } catch (e) {
+    el('status').textContent = 'could not read content/tunables.json — showing schema defaults';
+  }
+}
+
 const el = (id) => document.getElementById(id);
 const fmt = (v) => (typeof v === 'number'
   ? (Math.abs(v) >= 1000 ? v.toFixed(0) : Math.abs(v) >= 1 ? v.toFixed(2) : v.toFixed(3))
@@ -161,8 +185,8 @@ function buildTunes() {
         <div class="dev-tune" data-key="${key}">
           <label title="${(def.doc || '').replace(/"/g, '&quot;')}">${def.label || key}
             <span class="k">${key}</span></label>
-          <input type="range" min="${def.min}" max="${def.max}" step="${def.step}" value="${def.v}" />
-          <span class="val">${fmt(def.v)}</span>
+          <input type="range" min="${def.min}" max="${def.max}" step="${def.step}" value="${BASE[key]}" />
+          <span class="val">${fmt(BASE[key])}</span>
         </div>`).join('')}
     </details>`).join('');
 
@@ -173,12 +197,14 @@ function buildTunes() {
     input.oninput = () => {
       const v = Number(input.value);
       out.textContent = fmt(v);
-      if (v === SCHEMA[key].v) delete overrides[key]; else overrides[key] = v;
+      if (v === BASE[key]) delete overrides[key]; else overrides[key] = v;
       row.classList.toggle('changed', key in overrides);
     };
     // Re-run on release rather than on every pixel of the drag: a run is ~600ms
     // and firing one per input event would queue dozens.
     input.onchange = () => run();
+    // An authored value is not an override the user made, so it is not marked
+    // "changed" -- but it IS the number the game runs, which is what shows.
   });
 }
 
@@ -316,12 +342,50 @@ el('reset').onclick = () => {
   buildTunes();
   run();
 };
-el('copy').onclick = () => {
-  const json = JSON.stringify(overrides, null, 2);
-  navigator.clipboard?.writeText(json);
-  el('status').textContent = `copied ${Object.keys(overrides).length} overrides — paste into content/tunables.json`;
+/*
+ * WRITE THE FILE, do not ask for a copy-paste (spec v2 2.3).
+ *
+ * The old button put JSON on the clipboard and told the designer to paste it
+ * into content/tunables.json by hand. Every hand step is a step that gets
+ * skipped, mis-pasted, or done to the wrong file -- and the acceptance test for
+ * this phase is "change a value, reload, see the effect", which a clipboard
+ * cannot deliver. The server already accepts PUT /api/content/<name>.json.
+ *
+ * It merges rather than replaces: the authored file is the shipped tuning and
+ * this dashboard only ever knows about the handful of keys currently being
+ * explored. Replacing wholesale would silently drop every authored value the
+ * current session did not happen to touch.
+ */
+el('copy').onclick = async () => {
+  const n = Object.keys(overrides).length;
+  if (!n) { el('status').textContent = 'nothing to save -- no sliders moved'; return; }
+  const merged = { ...authored, ...overrides };
+  const body = {
+    _note: 'Authored tunable overrides. Only keys that deliberately differ from the schema defaults in js/tunables.js belong here -- the schema stays the source of truth for what exists, its type, range and doc. Written by the dashboard Save button; hand-editable. Unknown keys are ignored with a console warning.',
+    _schema: 'js/tunables.js',
+    values: merged,
+  };
+  el('status').textContent = 'saving...';
+  try {
+    const r = await fetch('api/content/tunables.json', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body, null, 2),
+    });
+    if (!r.ok) throw new Error('server returned ' + r.status);
+    authored = merged;
+    for (const [k, v] of Object.entries(merged)) if (k in BASE) BASE[k] = v;
+    for (const k of Object.keys(overrides)) delete overrides[k];
+    buildTunes();
+    el('status').textContent = `saved ${n} value${n === 1 ? '' : 's'} to content/tunables.json -- ${Object.keys(merged).length} authored in total`;
+  } catch (e) {
+    // A static host has no PUT. Fall back rather than lose the work silently.
+    navigator.clipboard?.writeText(JSON.stringify(overrides, null, 2));
+    el('status').textContent = `could not write the file (${e.message}) -- copied to the clipboard instead`;
+  }
 };
 
+await loadAuthored();
 buildTunes();
 run();
 window.__DEV__ = { run, overrides, Sim };

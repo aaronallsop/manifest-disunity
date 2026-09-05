@@ -1855,6 +1855,12 @@ const cloneValue = (v) =>
 export class Tune {
   constructor(overrides) {
     this.values = {};
+    /*
+     * The authored baseline — content/tunables.json. Empty until setAuthored is
+     * called at boot, so a Tune built for a test or for the simulator behaves
+     * exactly as it did before three layers existed.
+     */
+    this.authored = {};
     for (const [k, def] of Object.entries(SCHEMA)) this.values[k] = cloneValue(def.v);
     if (overrides) this.load(overrides);
     /** key -> {count, last} for every key served since the last resetReads() */
@@ -1914,9 +1920,56 @@ export class Tune {
    * same class of bug as the v1 format persisting two of eight stateful modules
    * and letting the rest carry over from the session.
    */
+  /**
+   * THREE LAYERS, NOT TWO (spec v2 §2.3).
+   *
+   * schema defaults  <  content/tunables.json  <  deliberate overrides
+   *
+   * The authored file is a BASELINE — the shipped tuning of the game — and not
+   * an override anybody chose. Recording it here is what lets a save restore
+   * what it was *deliberately* played with while still picking up an edit to
+   * the authored file made since.
+   *
+   * Without this, `replace` reset to schema defaults and the save's diff put the
+   * authored values back as though they were choices, so a designer who edited
+   * a number and reloaded a game in progress silently got his old number back.
+   * That is the Phase 0 acceptance test — change a value, reload, see the
+   * effect — failing on the commonest path, and failing without saying so.
+   */
+  setAuthored(map) {
+    this.authored = {};
+    for (const [k, v] of Object.entries(map || {})) {
+      if (this.has(k)) this.authored[k] = cloneValue(v);
+    }
+    return this;
+  }
+
+  /** Schema defaults with the authored file laid over them: the shipped game. */
+  baseline() {
+    const out = {};
+    for (const [k, def] of Object.entries(SCHEMA)) out[k] = cloneValue(def.v);
+    for (const [k, v] of Object.entries(this.authored || {})) out[k] = cloneValue(v);
+    return out;
+  }
+
   replace(overrides) {
-    for (const [k, def] of Object.entries(SCHEMA)) this.values[k] = cloneValue(def.v);
+    const base = this.baseline();
+    for (const k of Object.keys(SCHEMA)) this.values[k] = base[k];
     return this.load(overrides);
+  }
+
+  /**
+   * What a SAVE should carry: only what was deliberately changed away from the
+   * shipped game. Anything equal to the authored baseline is left out, so
+   * re-authoring that number later reaches games already in progress.
+   */
+  diffFromAuthored() {
+    const base = this.baseline();
+    const out = {};
+    for (const k of Object.keys(SCHEMA)) {
+      if (JSON.stringify(this.values[k]) !== JSON.stringify(base[k])) out[k] = cloneValue(this.values[k]);
+    }
+    return out;
   }
 
   /** Only the keys that differ from the schema default — what content/tunables.json holds. */

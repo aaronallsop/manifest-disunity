@@ -140,6 +140,13 @@ async function init() {
      * hands somebody a specific setting by link.
      */
     store.authoredTune = tunables ? (tunables.values || tunables) : {};
+    /*
+     * The authored file is the shipped game's tuning, not somebody's override
+     * (spec v2 §2.3). Telling TUNE that is what lets a save restore what it was
+     * deliberately played with while still picking up an edit made to the file
+     * since — which is the acceptance test for this phase.
+     */
+    TUNE.setAuthored(store.authoredTune);
     const wantDiff = new URLSearchParams(location.search).get('difficulty');
     Telemetry.apply(wantDiff || Telemetry.remembered(), store.authoredTune);
     /*
