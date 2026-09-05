@@ -183,14 +183,63 @@ const Transit = (function () {
        * Rotterdam and not to Tijuana. A ship leaving an American ocean port can
        * obviously reach a Canadian or Mexican one.
        */
-      if (acc.oceanPorts) {
-        add(nid, WORLD, MODE.PORT);
-        add(nid, CANADA, MODE.PORT); add(CANADA, nid, MODE.PORT);
-        add(nid, MEXICO, MODE.PORT); add(MEXICO, nid, MODE.PORT);
-      }
+      if (acc.oceanPorts) add(nid, WORLD, MODE.PORT);
+      /*
+       * CANADA IS REACHED BY SEA FROM THE ATLANTIC SIDE ONLY (A2d), and this is
+       * the line that keeps the Panama ruling honest. Canada has a Pacific coast
+       * in life and does not here, because the moment it has one it becomes a
+       * way round the closed canal: Washington ships to Vancouver, Vancouver
+       * ships to Halifax, and Seattle is trading with Boston by sea after all.
+       *
+       * A Pacific nation still reaches Canada — overland, through the border
+       * crossings it holds, which is how its goods would really go. What it
+       * cannot do is use Canadian water as a bridge between two oceans.
+       *
+       * Mexico takes both coasts freely, because nothing on the far side of
+       * Mexico connects onward: it is a destination and a land corridor, never a
+       * way from one American sea to the other.
+       */
+      if (acc.atlanticPorts) { add(nid, CANADA, MODE.PORT); add(CANADA, nid, MODE.PORT); }
+      if (acc.oceanPorts) { add(nid, MEXICO, MODE.PORT); add(MEXICO, nid, MODE.PORT); }
     }
     add(CANADA, WORLD, MODE.PORT);
     add(MEXICO, WORLD, MODE.PORT);
+
+    /*
+     * TWO PORTS ON THE SAME SEA CAN REACH EACH OTHER (A2d, the owner's rule).
+     *
+     * Not one great ocean but two basins, and they are NOT joined: the Panama
+     * Canal is shut to former American states, which is also part of why the
+     * Union could not hold — it cut the navy in half. So Washington ships to
+     * California freely and to Maine not at all; Maine's goods go by land, which
+     * is what they would really do.
+     *
+     * A basin link is a DIRECT edge with nobody in between, so it costs nothing,
+     * exactly as two nations sharing a land border cost each other nothing. What
+     * it does not model is distance — New Orleans to Houston prices the same as
+     * New Orleans to Boston — and that is the honest limit of it, recorded
+     * rather than papered over.
+     */
+    const basin = (holds) => {
+      const list = [...Game.nations.keys()].filter((n) => holds(Game.exportAccess(n))).sort();
+      for (let i = 0; i < list.length; i++) {
+        for (let j = i + 1; j < list.length; j++) {
+          add(list[i], list[j], MODE.PORT);
+          add(list[j], list[i], MODE.PORT);
+        }
+      }
+      return list;
+    };
+    basin((a) => a.pacificPorts);
+    const atlantic = basin((a) => a.atlanticPorts);
+
+    /*
+     * ...AND THE LAKES REACH THE ATLANTIC THROUGH CANADA, which is the owner's
+     * other rule and the reason the St. Lawrence matters: a shipment out of
+     * Chicago passes Michigan's gates, then New York's, then Canadian water at
+     * the flat corridor rate, and only then can it dock in Boston.
+     */
+    for (const nid of atlantic) { add(CANADA, nid, MODE.PORT); add(nid, CANADA, MODE.PORT); }
 
     // ...and the rivers, which are borders too, and cheaper ones (A2c).
     riverLayer(add);

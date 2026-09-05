@@ -391,3 +391,60 @@ negotiation, offered and withdrawn as part of the haggle rather than applied aut
 
 That version needs what F8 needs — a counterparty that can value a package — and it should be built
 in the same pass as F8 or not at all, because they are the same mechanism seen from two ends.
+
+---
+
+## F12 — The Panama Canal is shut to former American states
+
+**Aaron, 5 September 2026.** Given as the reason the two oceans are separate, while specifying how
+coastal shipping should work.
+
+> "For now lets say that diagetically that the Panama Canal isn't letting any former american state
+> through so that is why pacific and atlantic are cut off (and diagetically that would help explain
+> the split because american navies would have been cut off)"
+
+**Status: BUILT as a rule, recorded here as a STORY that has not been told.** The mechanic shipped
+in A2d — a Pacific port and an Atlantic port share no water, and Canada is given no Pacific coast so
+it cannot be sailed round the back. What does not exist is any way for a player to find that out.
+There is no line of text anywhere in the game saying the canal is closed; a player simply notices
+that Seattle cannot ship to Boston and has to guess why.
+
+**Why it is worth telling properly.** The second half of Aaron's note is the interesting half: the
+canal being shut is not only a consequence of the collapse, it is part of the CAUSE — a navy that
+cannot move between its own oceans is not one navy, it is two. That is a good piece of history for a
+game that opens after the fact, and it belongs somewhere a player will meet it: an opening card, a
+line in the journal the first time somebody's route is refused, or an entry in whatever eventually
+explains the world.
+
+**Before it is worth doing.** Whenever the game gets a place to say things about the world it is set
+in. There is not one yet, and inventing one for a single fact would be the wrong order.
+
+---
+
+## F13 — Over short distances, is a ship really cheaper than a lorry?
+
+**Aaron, 5 September 2026.** Raised in the same message, about his own rule.
+
+> "I imagine though that it would make more sense to ship via rail and road for florida and georgia
+> than ships right? Or is over the water still shipping cheaper over short distances? Lets save this
+> in future ideas"
+
+**The question is sharper than it looks, and the honest answer today is that the game cannot tell.**
+Water is cheaper per crossing than rail, and rail than road, and that is the whole of the model —
+there is no DISTANCE in it. Florida to Georgia and Florida to Massachusetts cost exactly the same,
+because both are one sea link with nobody in between. So the game currently says a ship is always
+better, and it says so for the wrong reason: not because water is cheap, but because it does not
+know how far anything is.
+
+**In life the answer is that it depends on the leg.** Water wins decisively over long hauls and
+loses over short ones, because loading and unloading a ship costs the same whether it sails fifty
+miles or five thousand — which is exactly the transhipment cost this model also does not have.
+
+**What would answer it properly.** A real distance between ports, which is measurable from the
+county centroids already in the map, plus a fixed cost per port call. Those two together produce the
+real-world shape on their own: short sea legs lose to the lorry, long ones win easily, and nobody has
+to hand-tune a table of exceptions. It is the same missing piece the coastal-shipping decision named
+— see the `coastal-shipping` card on the Control Board — and both should be built in one pass.
+
+**Before it is worth doing.** After the economy alpha. It is a refinement of a mechanic nobody has
+played with yet, and the alpha may well say the flat version is fine.

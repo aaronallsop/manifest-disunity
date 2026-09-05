@@ -1268,6 +1268,18 @@ const Game = (function () {
   }
 
   /* ---- export access & trade capacity (from the baked trade/transport data) ---- */
+
+  /*
+   * THE PACIFIC COAST, BY STATE (A2d). Alaska and Hawaii are in the list and
+   * currently hold no ground on this map, which is the lower 48 — they are here
+   * so the rule does not have to be rewritten the day somebody adds them.
+   */
+  const PACIFIC_STATES = new Set(['02', '06', '15', '41', '53']); // AK CA HI OR WA
+  /** A county with a real port on real salt water, as against a river wharf. */
+  const seaPort = (t, m) => {
+    const r = t && t.counties ? t.counties[m] : null;
+    return !!(r && r.has_port && r.coastal && !r.great_lakes);
+  };
   /**
    * Does this Area carry a port, or a Canada/Mexico border gateway?
    *
@@ -1296,6 +1308,19 @@ const Game = (function () {
       // reaches it only through Canada (the owner's ruling). That distinction is
       // an edge in the corridor graph, not a property of the trade panel.
       oceanPort: rows.some((r) => r.has_port && r.coastal && !r.great_lakes),
+      /*
+       * WHICH OCEAN (A2d). Two ports on the same sea can trade with each other;
+       * two on opposite coasts cannot, because the Panama Canal is shut to
+       * former American states — which is also, diegetically, part of why the
+       * Union could not hold itself together, since it split the navy in half.
+       *
+       * Decided by the STATE the county sits in rather than by anything in the
+       * trade file, because that is the fact that is actually known. It reads
+       * the ground a nation HOLDS, not the name it goes by, so a nation that has
+       * taken a Californian port is a Pacific power whatever it is called.
+       */
+      pacificPort: members.some((m) => seaPort(t, m) && PACIFIC_STATES.has(String(m).slice(0, 2))),
+      atlanticPort: members.some((m) => seaPort(t, m) && !PACIFIC_STATES.has(String(m).slice(0, 2))),
       lakePort: rows.some((r) => r.has_port && r.great_lakes),
       canada: !!(x && x.external && members.some((m) => x.external.Canada.includes(m))),
       mexico: !!(x && x.external && members.some((m) => x.external.Mexico.includes(m))),
@@ -1337,6 +1362,8 @@ const Game = (function () {
     const n = nations.get(nid);
     const acc = {
       ports: 0, oceanPorts: 0, lakePorts: 0,
+      // Which sea, not just whether there is one (A2d).
+      pacificPorts: 0, atlanticPorts: 0,
       canada: 0, mexico: 0, railHubs: 0, gateways: 0, any: false,
     };
     if (!n) return acc;
@@ -1345,6 +1372,8 @@ const Game = (function () {
       if (e.port) acc.ports++;
       if (e.oceanPort) acc.oceanPorts++;
       if (e.lakePort) acc.lakePorts++;
+      if (e.pacificPort) acc.pacificPorts++;
+      if (e.atlanticPort) acc.atlanticPorts++;
       if (e.canada) acc.canada++;
       if (e.mexico) acc.mexico++;
       if (e.railHub) acc.railHubs++;

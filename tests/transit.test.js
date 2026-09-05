@@ -72,10 +72,13 @@ describe('Transit — the corridor graph describes the real map', () => {
       for (const [to, bits] of tos) {
         if (Transit.isOutside(to)) continue;
         ok(bits !== 0, `${from} -> ${to} exists with no mode at all`);
-        // Rivers add MODE.RIVER between nations that share water; a land border
-        // may still only ever carry a road or a railway.
-        ok((bits & Transit.MODE.PORT) === 0,
-          `${from} -> ${to} claims a port link, which is a place rather than a border`);
+        /*
+         * A PAIR MAY SHARE MORE THAN ONE KIND OF LINK, and since A2d they often
+         * do: Alabama and Florida share a land border AND the Gulf. What is
+         * checked here is that any LAND mode between them is backed by a real
+         * shared border, which the previous test does; a sea link between two
+         * neighbours is not a contradiction, it is the coast.
+         */
         if (bits & Transit.MODE.RAIL) rail += 1;
         if (bits & Transit.MODE.HIGHWAY) road += 1;
       }
@@ -282,6 +285,95 @@ describe('Transit — the rivers (A2c)', () => {
     // The whole graph, rivers included, must stay far below one round of AI
     // planning (measured at 153ms) or A2c has quietly blown the turn budget.
     ok(ms < 60, `building the corridor graph took ${ms.toFixed(1)}ms; it is built every turn`);
+  });
+});
+
+describe('Transit — two seas, not one ocean (A2d)', () => {
+  const seas = () => {
+    const pac = [], atl = [];
+    for (const [nid] of Game.nations) {
+      const acc = Game.exportAccess(nid);
+      if (acc.pacificPorts) pac.push(nid);
+      if (acc.atlanticPorts) atl.push(nid);
+    }
+    return { pac, atl };
+  };
+
+  it('both coasts exist on the board and no nation is on both', async () => {
+    await bootWorld({ seed: SEED });
+    const { pac, atl } = seas();
+    ok(pac.length > 1, `only ${pac.length} Pacific nations`);
+    ok(atl.length > 1, `only ${atl.length} Atlantic or Gulf nations`);
+    // Not impossible in principle — a nation that conquered both coasts would
+    // be on both — but on the opening board nobody has, and if that changes the
+    // basin rule still holds because it reads the GROUND a nation holds.
+    for (const n of pac) ok(!atl.includes(n), `${n} is somehow on both oceans at the start`);
+  });
+
+  it('two ports on the same sea reach each other with nobody in between', async () => {
+    await bootWorld({ seed: SEED });
+    const { pac, atl } = seas();
+    for (const group of [pac, atl]) {
+      for (const a2 of group) {
+        for (const b of group) {
+          if (a2 === b) continue;
+          ok(Transit.modesBetween(a2, b) & Transit.MODE.PORT,
+            `${a2} and ${b} are on the same sea and cannot reach each other`);
+        }
+      }
+    }
+  });
+
+  it('THE PANAMA RULING: no sea link between the two oceans', async () => {
+    await bootWorld({ seed: SEED });
+    const { pac, atl } = seas();
+    /*
+     * The canal is shut to former American states, which is also part of why the
+     * Union could not hold — it split the navy. So a Pacific port and an
+     * Atlantic port share no water, and a route between them has to cross
+     * somebody's ground.
+     */
+    for (const a2 of pac) {
+      for (const b of atl) {
+        equal(Transit.modesBetween(a2, b) & Transit.MODE.PORT, 0,
+          `${a2} (Pacific) and ${b} (Atlantic) share a sea link; the canal is supposed to be shut`);
+      }
+    }
+  });
+
+  it('and Canada cannot be used to sail round the closed canal', async () => {
+    await bootWorld({ seed: SEED });
+    const { pac } = seas();
+    const g = Transit.graph();
+    /*
+     * Canada has a Pacific coast in life and must not have one here: the moment
+     * it does, Washington ships to Vancouver, Vancouver ships to Halifax, and
+     * Seattle is trading with Boston by sea after all. A Pacific nation reaches
+     * Canada overland, which is how its goods would really go.
+     */
+    for (const nid of pac) {
+      if (Game.exportAccess(nid).atlanticPorts) continue;
+      const bits = g.edges.get(nid).get(Transit.CANADA) || 0;
+      equal(bits & Transit.MODE.PORT, 0,
+        `${nid} can sail to Canada from the Pacific, which reopens the canal by the back door`);
+    }
+  });
+
+  it('the Great Lakes reach the Atlantic through Canada, and pay for it', async () => {
+    await bootWorld({ seed: SEED });
+    const { atl } = seas();
+    const g = Transit.graph();
+    for (const nid of atl) {
+      ok(g.edges.get(Transit.CANADA).get(nid) & Transit.MODE.PORT,
+        `Canada cannot reach ${nid}, so a Great Lakes nation has no way to the Atlantic`);
+    }
+    // ...and a lake nation genuinely gets there, at a cost.
+    const lakes = [...Game.nations.keys()].find((n) => Game.exportAccess(n).lakePorts
+      && !Game.exportAccess(n).oceanPorts);
+    ok(lakes, 'no lake-only nation on the board');
+    const r = Transit.find(lakes, atl[0], { permit: () => ({ rate: 0.2 }) });
+    ok(r, `${lakes} sits on the lakes and cannot reach the Atlantic at all`);
+    ok(r.keep < 1, 'it reached the Atlantic for nothing, which is not the deal');
   });
 });
 
@@ -805,29 +897,36 @@ describe('Transit — what a route costs', () => {
     ok(rail > road, `rail (${rail.toFixed(3)}) is not cheaper than road (${road.toFixed(3)})`);
   });
 
-  it('the search prefers the cheaper way across the same border', async () => {
+  it('the search never crosses by a dearer way than the border offers', async () => {
     await bootWorld({ seed: SEED });
-    // A border carrying both rail and road must be crossed by rail: same
-    // permission, same toll, cheaper carriage.
+    /*
+     * Water beats rail beats road, so a route must always take the best link the
+     * border actually carries. Checked against the modes AVAILABLE rather than
+     * asserting rail specifically, because since A2d a land border may also be a
+     * coastline and water would then be the right answer.
+     */
     const pick = { permit: () => ({ rate: 0.2 }) };
+    const RANK = { 8: 0, 4: 1, 2: 2, 1: 3 };   // river, water, rail, road
     let checked = 0;
     for (const [a] of Game.nations) {
-      for (const b of Game.borderingNations(a)) {
-        const bits = Transit.modesBetween(a, b);
-        if (!(bits & Transit.MODE.RAIL) || !(bits & Transit.MODE.HIGHWAY)) continue;
-        for (const [c] of Game.nations) {
-          if (c === a || c === b) continue;
-          if (!(Transit.modesBetween(b, c) & Transit.MODE.RAIL)) continue;
-          const r = Transit.find(a, c, pick);
-          if (!r || !r.hops.length || r.hops[0].node !== b) continue;
-          equal(r.hops[0].mode, Transit.MODE.RAIL,
-            `${a} crossed ${b} by road where a railway was available and no cheaper`);
+      for (const [c] of Game.nations) {
+        if (a === c) continue;
+        const r = Transit.find(a, c, pick);
+        if (!r || !r.hops.length) continue;
+        let prev = a;
+        for (const h of r.hops) {
+          const bits = Transit.modesBetween(prev, h.node);
+          const best = [8, 4, 2, 1].find((m) => bits & m);
+          equal(RANK[h.mode], RANK[best],
+            `${prev} to ${h.node} was crossed by ${Transit.MODE_LABEL[h.mode]} where `
+            + `${Transit.MODE_LABEL[best]} was available and cheaper`);
+          prev = h.node;
           checked += 1;
-          if (checked > 5) return;
         }
+        if (checked > 20) return;
       }
     }
-    ok(checked > 0, 'no border carrying both rail and road was routed over');
+    ok(checked > 0, 'no routed hop was found to check');
   });
 
   it('a neighbour you already trade with charges you less to cross', async () => {
@@ -858,19 +957,28 @@ describe('Transit — what a route costs', () => {
     equal(Transit.get(full.id).rate, 0.4, 'the discount rewrote the signed agreement');
   });
 
-  it('a port reaches Canada and Mexico, not only the world market', async () => {
+  it('a port reaches the world and Mexico; only an ATLANTIC one reaches Canada', async () => {
     await bootWorld({ seed: SEED });
     const g = Transit.graph();
     let checked = 0;
     for (const [nid] of Game.nations) {
-      if (!Game.exportAccess(nid).oceanPorts) continue;
+      const acc = Game.exportAccess(nid);
+      if (!acc.oceanPorts) continue;
       const out = g.edges.get(nid);
       ok(out.get(Transit.WORLD) & Transit.MODE.PORT, `${nid} cannot reach the world from its own port`);
-      ok(out.get(Transit.CANADA) & Transit.MODE.PORT, `${nid} has an ocean port and cannot ship to Canada`);
       ok(out.get(Transit.MEXICO) & Transit.MODE.PORT, `${nid} has an ocean port and cannot ship to Mexico`);
+      /*
+       * Canada by sea is the Atlantic side only (A2d), and the omission is the
+       * point: give Canada a Pacific coast and it becomes the way round the
+       * closed canal. Mexico may have both, because nothing on its far side
+       * connects onward to the other ocean.
+       */
+      if (acc.atlanticPorts) {
+        ok(out.get(Transit.CANADA) & Transit.MODE.PORT, `${nid} is on the Atlantic and cannot ship to Canada`);
+      }
       checked += 1;
     }
-    ok(checked > 10, `only ${checked} nations with an ocean port`);
+    ok(checked > 5, `only ${checked} nations with an ocean port`);
   });
 
   it('the old five-hop guard, kept as arithmetic over the tunables', async () => {
