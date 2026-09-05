@@ -24,6 +24,14 @@ they lost.
 
 ## Rules specific to this project
 
+- **Check Hog Wild Mode on the Control Board at the start of every session.** It is a standing
+  permission like the others, and when it is on it changes how the whole session runs: keep building
+  without stopping to ask, use as many parallel agents as the work needs, and answer the questions
+  that would otherwise become cards — but write every one of them into `docs/HOGWILD-LOG.md` as it
+  happens, with the question, why you could not answer it, what you did instead, and the command that
+  undoes it. **Every stage gets a `stage/<name>` git tag.** The full definition, including the five
+  things the mode does NOT unlock and the four cases where you stop and wait anyway, is in
+  `docs/HOGWILD.md`. Read it before switching it on in your head.
 - **`DESIGN.md` is the source of truth for what the game does.** If behaviour changes, it changes
   in the same commit. If `DESIGN.md` and any other document disagree, `DESIGN.md` is right and the
   other is a bug.

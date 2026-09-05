@@ -123,13 +123,13 @@
 // ============================================================================
 const BOARD = {
   project: "Manifest Disunity",
-  updated: "2026-09-05 16:20",          // when you last republished, local time
+  updated: "2026-09-05 17:05",          // when you last republished, local time
 
   // Three or four measured figures. value: number|string, or null = "not yet measured".
   figures: [
-    { label: "Economy-alpha stages done",  value: "A0–A2 of A0–A4" },
-    { label: "Current version",         value: "v0.5" },
-    { label: "Tests green",             value: 943 },
+    { label: "Economy-alpha stages done",  value: "all of A0–A4" },
+    { label: "Current version",         value: "v0.6" },
+    { label: "Tests green",             value: 948 },
     { label: "Industry figures that are real, today",   value: "0%" },
     { label: "Industry figures real after the re-bake", value: "84%" },
   ],
@@ -143,8 +143,10 @@ const BOARD = {
         + "off: isolation is what makes the answers worth having. The game alpha is the first time "
         + "somebody plays the whole thing with every system on, and it asks questions none of these "
         + "stages can \u2014 starting with the one that began this rebuild, whether there is again "
-        + "too much to think about. 943 checks pass. One question for you below, and it is the last "
-        + "thing between here and a build worth putting in front of testers.",
+        + "too much to think about. 948 checks pass, and the two seas are in: Pacific ports trade "
+        + "with each other, Atlantic and Gulf with each other, and the canal is shut between them. "
+        + "There is a new switch below \u2014 Hog Wild Mode \u2014 and answering the question beside it is "
+        + "the last thing between here and a build worth putting in front of testers.",
   },
 
   // Only decisions that are genuinely the owner's. Ids are permanent.
@@ -180,6 +182,7 @@ const BOARD = {
     { id: "fix",     label: "Fix a failing check",                  risk: "low",  desc: "Change code so a test or check passes, without changing what the project produces." },
     { id: "quality", label: "Change something that affects output", risk: "med",  desc: "Edit prompts, thresholds or settings that change the quality of the result." },
     { id: "live",    label: "Touch anything live",                  risk: "high", desc: "Run against real data, real services, or real people." },
+    { id: "hogwild", label: "🐗 Hog Wild Mode",                      risk: "high", desc: "Keep building without stopping to ask, using as many parallel agents as the work needs, until there is nothing left that does not need you. Every decision I make in your place gets written down as it happens — the question, why I could not answer it, what I did instead, and the one command that undoes it — in the Hog Wild log. It does NOT unlock anything above: nothing goes to your playtesters, history is never rewritten, and nothing is called done that was not verified." },
   ],
 
   // Phases. status: "done" | "current" | "todo".

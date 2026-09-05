@@ -2720,3 +2720,46 @@ Which also means the game alpha needs something none of the per-system alphas do
 questions about the WHOLE, written before it is played. That is Aaron's to write and it does not
 exist yet. Not urgent — but it should not be discovered on the day.
 
+### D174 — Hog Wild Mode, and the gap Aaron's own question found
+
+*2026-09-05.* Aaron created a standing permission: keep building unattended until there is nothing
+left that does not need him, with as many parallel agents as the work takes, deciding the questions
+that would otherwise become cards — on condition that every such decision is written down as it
+happens. Defined in full in `docs/HOGWILD.md`, logged in `docs/HOGWILD-LOG.md`, toggled on the
+Control Board.
+
+**What makes this worth recording as a decision rather than just a setting** is the question he
+asked while proposing it:
+
+> "If you pushed through to A2B and there was an issue you would be able to read the documentation
+> to know what happened and how to fix or roll back right?"
+
+Measured against the repository as it actually stood, the honest answer was **half yes**:
+
+- *What happened and why* — yes, comfortably. Every stage has a commit message that argues its own
+  case, a numbered entry here, and measurements in `docs/spec/`. A2b's commit says why the road
+  friction is 0.25 and not 0.12, with the table.
+- *How to roll it back* — **no, not by Aaron.** There were six tags, all milestone-level. A2b had
+  none. Undoing it required knowing it was commit `35753a3`, which I can find and he cannot. Under a
+  mode where eight stages might land while he is away, that is not a small gap; it is the difference
+  between a licence and a liability.
+
+**So the mode ships with the fix rather than the flaw.** Every stage now carries a `stage/<name>`
+tag, retro-applied back to A1: `stage/a1`, `stage/a2`, `stage/a2b`, `stage/a2c`, `stage/a2d`,
+`stage/a3`, `stage/a4`. Each log entry names the one command that reverses its stage. A decision made
+in Aaron's absence that he cannot undo from what I wrote is worse than a decision I never made, and
+the tags are what make the difference concrete rather than aspirational.
+
+**Five things the mode deliberately does NOT unlock,** written down because "go hog wild" could
+reasonably be read as "the guardrails are off": nothing goes to the playtesters (`live` stays a
+separate permission); no force-push or rewritten history (the trail IS the deliverable, and a
+rewritten history destroys the thing the mode depends on); no secrets or `data/` committed; nothing
+marked done that was not verified and no number published that was not measured; and the brief still
+wins — building ahead of it is not "more work done", it is work to be argued about later.
+
+**And four cases where it stops and waits anyway,** because guessing is worse: a decision expensive
+to reverse (a data re-bake, a save-format break); a matter of taste about how the game should FEEL
+with no measurement that could settle it, which is what Aaron is actually for; anything that spends
+money or reaches off this machine; and two bad stages in a row, which means the plan is wrong rather
+than the execution, and speed makes it worse.
+
