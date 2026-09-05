@@ -82,6 +82,10 @@
 
 <script src="lib/d3.v7.min.js"></script>
 <script src="lib/topojson-client.min.js"></script>
+<!-- Before every model file, because world.js, moves.js and ai.js all ask it what
+     is switched on. Omitting it here is what broke this page in 18fe982: the
+     dashboard threw on the first turn it tried to run. -->
+<script src="js/complexity.js"></script>
 <script src="js/colors.js"></script>
 <script src="js/movements.js"></script>
 <script src="js/game.js"></script>
