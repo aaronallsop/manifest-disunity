@@ -145,7 +145,9 @@ function renderTurnBanner() {
     <span class="tb-label">Round ${p.round} &middot; ${p.total} nations</span>
     <button class="tb-current" id="tb-jump"><span class="dot" style="background:${n.color}"></span>
       You are <strong>${escapeHtml(n.name)}</strong></button>
-    <span class="tb-label">&middot; World turn <strong id="world-turn">${World.getTurn()}</strong></span>
+    <span class="tb-label" title="One turn is one ${Calendar.unit(TUNE)}. The game opened in ${Calendar.label(0, TUNE)}.">
+      &middot; <strong id="world-date">${Calendar.label(World.getTurn(), TUNE)}</strong>
+      <span class="tb-turn">turn <span id="world-turn">${World.getTurn()}</span></span></span>
     ${store.dev ? '<button class="tb-pass" id="tb-advance" style="margin-left:0" title="Dev: step the world engine without playing a round">Step world &#9193;</button>' : ''}
     <button class="tb-pass" id="tb-pass">End turn &#9197;</button>`;
   document.getElementById('tb-jump').onclick = () => { if (!Actions.isActive()) { setMode('nations'); select('nation', you()); } };

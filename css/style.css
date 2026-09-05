@@ -812,3 +812,13 @@ svg.flag { border-radius: 2px; flex: none; vertical-align: middle; }
 /* ---------- the telemetry export dialog (M13.2) ---------- */
 .ex-list { margin: 12px 0 4px; border: 1px solid var(--line); border-radius: 8px; padding: 8px 11px; background: var(--panel-bg-2); }
 .ex-list .geo-row { font-size: 12px; }
+
+/* The date is the headline in the turn bar and the turn number is the footnote:
+   a player thinks in "spring 2038", not in "turn 9". Both are shown because the
+   turn number is what every log line, save and export is keyed by. */
+#turnbar .tb-turn {
+  opacity: .55;
+  font-size: .85em;
+  margin-left: 4px;
+  font-variant-numeric: tabular-nums;
+}

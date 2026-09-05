@@ -22,6 +22,28 @@
  * values are not slider-able; the dashboard renders them as editable JSON.
  */
 export const SCHEMA = {
+  /* ---------------- the calendar ---------------- */
+  'calendar.startYear': {
+    v: 2036, min: 1776, max: 2200, step: 1, group: 'Calendar',
+    label: 'Opening year',
+    doc: 'The year turn 0 begins in. The game opens on 1 March 2036, the eve of two hundred years since Texas declared itself a nation, so the bicentenary falls inside the first turn.',
+  },
+  'calendar.startMonth': {
+    v: 3, min: 1, max: 12, step: 1, group: 'Calendar',
+    label: 'Opening month',
+    doc: 'Month turn 0 begins in, 1-12. March. Turns run as quarters FROM this month rather than from the calendar\'s own, so every turn lands on a real month (March, June, September, December) and the opening date is kept exactly.',
+  },
+  'calendar.startDay': {
+    v: 1, min: 1, max: 28, step: 1, group: 'Calendar',
+    label: 'Opening day',
+    doc: 'Day of the month the game opens on. Shown only in exports, where a sortable full date is more useful than a pretty one.',
+  },
+  'calendar.monthsPerTurn': {
+    v: 3, min: 1, max: 12, step: 1, group: 'Calendar',
+    label: 'Months per turn',
+    doc: 'How much time one world turn represents. Three: a quarter. The month was ruled and reversed (D163) because every rate in the engine is calibrated per turn, so the unit changes only what the calendar prints — set this to 1 and the whole game would need re-deriving, not just this number.',
+  },
+
   /* ---------------- world phases ---------------- */
   'world.driftStep': {
     v: 0.02, min: 0, max: 0.2, step: 0.005, group: 'World',
