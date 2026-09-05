@@ -657,6 +657,53 @@ export const SCHEMA = {
     doc: 'The toll slider opens at this fraction of the corridor rate. It opened AT the corridor rate, which the transit nation accepted outright in 190 of 214 adjacent pairs - the player pressed Propose, got a yes, and the negotiation contributed nothing. A lowball default makes the slider a decision.',
   },
 
+  /* ---------------- deals (A1) ---------------- */
+  'deal.rate': {
+    v: 0.25, min: 0, max: 2, step: 0.05, group: 'Trade',
+    label: 'Deal rate (share of a click, per turn)',
+    doc: 'What one turn of a standing deal pays, as a share of what the old one-click trade paid outright. At 0.25 with a 4-turn deal, a year of a deal pays exactly what a year of clicking paid - which is the ruling (D171): a deal is about commitment, not sudden wealth, so nothing already tuned against the old rhythm (army upkeep, the price of annexing, recovery rates) has to be re-derived. At 1.0 a deal pays every turn what a click paid once every four, so trade income per partner is roughly four times what it was. This is the slider that turns trade up, deliberately, after the alpha has shown what it does.',
+  },
+  'deal.durations': {
+    v: [2, 4, 8, 20], kind: 'array', group: 'Trade',
+    label: 'Deal durations (turns)',
+    doc: 'The menu of terms a deal may be signed for, in world turns. A turn is a quarter (D163), so these read as six months, one year, two years and five years. A duration outside this list is refused by the planner rather than rounded, because the four buttons are the negotiation.',
+  },
+  'deal.defaultDuration': {
+    v: 4, min: 1, max: 40, step: 1, group: 'Trade',
+    label: 'Default deal duration (turns)',
+    doc: 'The term a trade carries when no terms were named - what the AI signs in A1, and where the duration row opens. Must be a member of deal.durations; the panel snaps to the nearest member if it is not. At 4 with deal.rate 0.25, an AI signing a default deal earns exactly what its old click earned, spread over exactly the four turns it used to spend on cooldown.',
+  },
+  'deal.defaultAutoRenew': {
+    v: 0, min: 0, max: 1, step: 1, group: 'Trade',
+    label: 'Auto-renew starts ticked',
+    doc: '1 if a new deal opens with auto-renew on, 0 if off. Off by default because a deal that renews itself silently is a deal the player stops noticing, and the expiry prompt is the moment the whole stage exists to create.',
+  },
+  'deal.countdownAt': {
+    v: [4, 2, 1], kind: 'array', group: 'Trade',
+    label: 'Expiry warnings at (turns left)',
+    doc: 'Turns-left values at which the player is told a deal is running out. Only deals the player is party to generate these: fifty nations\' countdowns are a newspaper nobody reads, and every other deal shows its own countdown on the deal ledger. A deal shorter than the largest value here simply skips the warnings it never reaches.',
+  },
+  'deal.offerTurns': {
+    v: 2, min: 1, max: 20, step: 1, group: 'Trade',
+    label: 'An open offer stands for (turns)',
+    doc: 'How long an offer waits for an answer before it lapses. Applies to the renegotiation prompt raised when a deal expires, and to the offers AI nations start sending in A4.',
+  },
+  'deal.maxOpenOffers': {
+    v: 3, min: 1, max: 10, step: 1, group: 'Trade',
+    label: 'Incoming offers at once',
+    doc: 'The most unanswered offers one nation may be holding. Enforced from A1 so the cap is load-bearing before A4 turns fifty nations loose on it - an inbox is a decision, and an inbox of twenty is admin.',
+  },
+  'deal.priceMultMin': {
+    v: 0.8, min: 0, max: 1, step: 0.05, group: 'Trade',
+    label: 'Price split: lowest',
+    doc: 'The least favourable split a seller may be pushed to in a counter-offer. The multiplier moves the joint gain between the two parties - seller takes value x mult, buyer value x (2 - mult) - so the SUM never changes and 1.0 is exactly the old even split. A true buyer-pays-seller price waits for goods to physically move; until then this is the only honest meaning a haggle over price can have.',
+  },
+  'deal.priceMultMax': {
+    v: 1.2, min: 1, max: 2, step: 0.05, group: 'Trade',
+    label: 'Price split: highest',
+    doc: 'The most favourable split a seller may win in a counter-offer. See deal.priceMultMin: the two are symmetric about 1.0, which is the even split the one-click trade always paid.',
+  },
+
   /* ---------------- civil war ---------------- */
   'war.triggerSizeRatio': {
     v: 0.15, min: 0.01, max: 3, step: 0.01, group: 'Civil war',

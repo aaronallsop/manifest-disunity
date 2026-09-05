@@ -86,6 +86,7 @@ function renderNationPanel(nid) {
     ${renderMilitary(nid)}
     ${renderVictory(nid)}
     ${renderExportAccess(nid)}
+    ${renderDeals(nid)}
 
     ${actionsHtml}
     ${renderSources('nation')}
@@ -157,6 +158,102 @@ function renderLeader(nid) {
  * uses everywhere else, because a decision made without knowing the price is a
  * guess. What is not shown is which one the game thinks you should take.
  */
+/*
+ * THE EXPIRED DEAL (A1) — the third decision the model refuses to make for you.
+ *
+ * Everything a player needs to answer it is on the card, and one line of it is
+ * the whole reason a long deal is a bet: what the sector's price was when the
+ * deal was signed, against what it is now. A deal signed at 104 and expiring
+ * with the index at 130 was a bad deal for the seller and they should be able
+ * to see that without arithmetic.
+ */
+function showRenegotiation() {
+  const me = Game.getPlayer();
+  const o = Deals.waiting(me);
+  if (!o) return false;
+  const them = Game.getNation(o.from);
+  if (!them) return false;
+  const el = document.getElementById('endscreen');
+  const card = el.querySelector('.end-card');
+  const past = Deals.get(o.dealId);
+  const prices = typeof Market === 'undefined' ? null : Market.getPrices();
+  const econ = typeof MapModes === 'undefined' ? null : MapModes.getEconomy();
+
+  const drift = (o.terms.flows || []).map((f) => {
+    const now = prices ? prices[f.i] : null;
+    const sec = econ && econ.sectors ? econ.sectors[f.i] : `sector ${f.i}`;
+    const then = past ? (past.flows.find((x) => x.i === f.i) || {}).price : f.price;
+    return `<div class="geo-row"><span>${escapeHtml(sec)}</span><strong>` +
+      (then == null || now == null ? '&mdash;'
+        : (past ? `signed at ${Math.round(then)} &middot; index now ${Math.round(now)}`
+                : `quoted at ${Math.round(then)}${Math.round(then) === Math.round(now) ? ' (today\'s index)' : ` &middot; index now ${Math.round(now)}`}`)) +
+      '</strong></div>';
+  }).join('');
+
+  const earned = past ? (past.a === me ? past.earnedA : past.earnedB) : 0;
+  const term = past ? past.duration : o.terms.duration;
+  const can = Moves.plan({ type: 'trade', nid: me, target: o.from,
+    terms: { duration: o.terms.duration, autoRenew: o.terms.autoRenew, priceMult: o.terms.priceMult } }, TUNE);
+  const perTurn = can.ok && can.perTurn ? can.perTurn.me : 0;
+  /*
+   * The same card answers two questions, because they are the same question:
+   * somebody is offering you a contract and you have to say yes or no. Only the
+   * framing differs — a renewal knows what the last one paid, a fresh offer
+   * knows only what this one would.
+   */
+  const fresh = o.kind !== 'renew';
+
+  card.innerHTML = `
+    <div class="end-kicker">${fresh ? 'An offer' : 'Expired'} &middot; ${escapeHtml(Calendar.label(World.getTurn(), TUNE))}</div>
+    <h2><span class="dot" style="background:${them.color}"></span>${fresh
+      ? `${escapeHtml(them.name)} wants a trade deal`
+      : `Your deal with ${escapeHtml(them.name)} has run out`}</h2>
+    <p class="end-sub">${fresh
+      ? `A ${term}-turn agreement. It would pay your treasury ${fmtGdp(perTurn * 1e6)} a turn
+         until ${escapeHtml(Calendar.label(World.getTurn() + term, TUNE))}, at the prices below —
+         and hold that much of your surplus for the whole of it.`
+      : `It ran ${term} turns and paid your treasury ${fmtGdp(earned * 1e6)} over its life.
+         ${escapeHtml(them.name)} is asking again on the same terms.`}</p>
+    ${drift}
+    <div class="crisis-opts">
+      <button class="crisis-opt" data-do="renew" ${can.ok ? '' : 'disabled'}>
+        <span class="co-label">${fresh ? `Sign for ${term} turns` : 'Sign again on the same terms'}</span>
+        <span class="co-note">${can.ok
+          ? `${fresh ? `+${fmtGdp(perTurn * 1e6)} a turn` : `Another ${term} turns`}, at today's index. Does not use your turn.`
+          : escapeHtml(can.reason || 'Those terms no longer stand.')}</span>
+      </button>
+      <button class="crisis-opt" data-do="lapse">
+        <span class="co-label">${fresh ? 'No' : 'Let it lapse'}</span>
+        <span class="co-note">Nothing changes hands. You can open the table with them yourself any turn.</span>
+      </button>
+    </div>`;
+  el.classList.add('show');
+  card.querySelectorAll('.crisis-opt').forEach((b) => {
+    b.onclick = () => {
+      if (b.disabled) return;
+      el.classList.remove('show');
+      const r = Deals.answer(o.id, b.dataset.do, TUNE);
+      if (b.dataset.do === 'renew') {
+        if (r.ok) flash(`\u{1F69B} Signed with <strong>${escapeHtml(them.name)}</strong> for ${term} turns.`, 'good');
+        else flash(`\u26d4 ${escapeHtml(r.reason)}`, 'bad');
+      } else {
+        flash(fresh
+          ? `\u{1F4C4} You turned down <strong>${escapeHtml(them.name)}</strong>.`
+          : `\u{1F4C4} Your deal with <strong>${escapeHtml(them.name)}</strong> has lapsed.`, '');
+      }
+      Game.touch({ values: true });
+      Leaderboard.refresh();
+      renderTurnBanner();
+      // Two deals can expire in the same quarter; the next card comes straight
+      // up rather than waiting a turn for a decision that is already overdue.
+      if (Deals.waiting(me)) return showRenegotiation();
+      setMode('nations');
+      select('nation', me);
+    };
+  });
+  return true;
+}
+
 function showCrisis() {
   const q = Events.waiting();
   if (!q) return false;
@@ -916,6 +1013,56 @@ function renderGeography(fips) {
   const row = (label, id) => `<div class="geo-row"><span>${label}</span><strong>${id ? escapeHtml(r.names[id]) : '&mdash;'}</strong></div>`;
   return `<div class="stat"><div class="label">Geography</div>
     ${row('Super region', p[0])}${row('Region', p[1])}${row('Area', p[2])}</div>`;
+}
+
+/*
+ * WHAT THIS NATION IS COMMITTED TO (A1).
+ *
+ * The `.value` is the COUNT, not the countdown, and that is deliberate. The
+ * panel marks a block as changed by comparing its value text, so putting the
+ * countdown there would light this block up every single quarter and teach the
+ * player to stop looking at it — the exact failure the disclosure code warns
+ * about. A count changes when something actually happens: a deal is signed, or
+ * one runs out.
+ *
+ * Never gated by Complexity. Trade is the core loop in both modes, and this is
+ * the only place a player can see what they have already promised away.
+ */
+function renderDeals(nid) {
+  if (typeof Deals === 'undefined') return '';
+  const live = Deals.forNation(nid);
+  if (!live.length) {
+    return `<div class="stat"><div class="label">Deals</div><div class="value">No deals</div>
+      <div class="geo-row"><span>Open Trade and click a neighbour to sign one.</span></div></div>`;
+  }
+  const warnAt = Math.max(...(TUNE.peek('deal.countdownAt') || [1]));
+  const econ = typeof MapModes === 'undefined' ? null : MapModes.getEconomy();
+  const rows = live.slice(0, 5).map((d) => {
+    const them = Game.getNation(Deals.other(d, nid));
+    const left = Deals.remaining(d);
+    const s = Deals.settlement(d, TUNE);
+    const mine = d.a === nid ? s.a : s.b;
+    const sec = econ && econ.sectors && d.flows.length
+      ? econ.sectors[d.flows[0].i] + (d.flows.length > 1 ? ` +${d.flows.length - 1}` : '') : '';
+    /*
+     * Amber has to mean "running out", not "exists". `deal.countdownAt` tops
+     * out at 4, so a freshly signed four-turn deal would be amber from the hour
+     * it was signed and the colour would carry no information at all. It must
+     * also be late in this deal's OWN life — half its term gone — which makes a
+     * four-turn deal amber at two and a five-year deal amber at four.
+     */
+    const cls = left <= 1 ? 'deficit'
+      : (left <= warnAt && left <= d.duration / 2 ? 'warn' : 'surplus');
+    return `<div class="geo-row"><span><i class="dot" style="background:${them ? them.color : '#888'}"></i>${
+      escapeHtml(them ? them.name : '?')}${sec ? ` &middot; ${escapeHtml(sec)}` : ''} &middot; +${fmtGdp(mine * 1e6)}/turn</span>
+      <strong class="${cls}">${left} ${left === 1 ? 'turn' : 'turns'} left</strong></div>`;
+  }).join('');
+  const more = live.length > 5 ? `<div class="geo-row"><span>&hellip;and ${live.length - 5} more</span></div>` : '';
+  return `<div class="stat"><div class="label">Deals &middot; standing trade agreements</div>
+    <div class="value">${live.length} ${live.length === 1 ? 'deal' : 'deals'}</div>
+    ${rows}${more}
+    <div class="geo-row"><span>Income from deals</span><strong class="surplus">+${
+      fmtGdp(Deals.income(nid, TUNE) * 1e6)}/turn</strong></div></div>`;
 }
 
 function renderExportAccess(nid) {

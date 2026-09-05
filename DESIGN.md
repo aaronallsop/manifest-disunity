@@ -179,7 +179,8 @@ newspaper prints those entries once as the opening edition — *The year the Uni
   since}`), a founding turn, a home state (`homeSt` — ground that is not theirs is *occupied*), a
   **territorial memory** (`annexed[]` and `lost[]`, trimmed to a 20-turn window), four **power
   stocks** with their working attached, an annexation clock, a release clock and a per-partner trade
-  cooldown.
+  stamp (the turn a deal was last signed with them, read by Influence as reach; it stopped being a
+  cooldown gate in A1).
 - **Every territorial change is recorded at one choke point.** Annex, unite, release, civil-war
   fragmentation and nation creation all flow through `moveCounties`, which stamps the turn, the
   counterparty, the Area count and the reason on both sides. Instrumenting the five callers
@@ -579,8 +580,14 @@ game.*
 Sell surplus production for **money**. Income goes to the treasury, never to GDP: the goods were
 already counted when they were produced.
 
-- **Bilateral** with a neighbour: surpluses flow to whoever runs the matching deficit, valued at
-  market prices, at the **full** rate to both sides.
+- **Bilateral** with a neighbour: a standing **deal**, not a click. Surpluses flow to whoever runs
+  the matching deficit, valued at market prices, at the **full** rate to both sides — and they keep
+  flowing, every turn, for the term that was signed. A deal carries a duration (2, 4, 8 or 20 turns
+  — six months, a year, two years, five), an optional auto-renew, and a price **fixed at signing**:
+  the index may drift for five years and the deal does not, which is what makes a long term a bet.
+  A pair may hold **one live deal at a time**, and the volume a deal covers is subtracted from the
+  surplus either side has left to offer anybody else — a nation that has promised its whole wheat
+  surplus to Kansas has none left for Nebraska.
 - **External** (Canada, Mexico, the world market): sell your whole positive surplus, at **45%** of
   the bilateral rate.
 - **Transit**: a landlocked nation reaches the market through a neighbour that has export access,
@@ -593,7 +600,30 @@ surplus in one click and beat the best bilateral deal by 1.7×–50× for 41 of 
 headline trade feature dead content. With capacity and the penalty, most nations now do better with
 a well-matched neighbour.
 
-Each partner is on a cooldown.
+**What a turn of a deal pays** is one turn of the old click scaled by `deal.rate`, which ships at
+0.25 against a partner cooldown of 3 — so a year of a deal pays exactly what a year of clicking
+paid. That is a ruling (D171), not an accident: a deal is about **commitment**, not sudden wealth,
+and every number tuned against the old rhythm — army upkeep, the price of annexing, how fast a
+broken state recovers — stays true. `deal.rate` is the slider that makes trade stronger, to be
+turned up deliberately after the alpha rather than by accident before it.
+
+**Expiry is the point.** At the end of a term the deal is re-planned against today's world: today's
+prices, today's surpluses, and a fresh check that both nations are alive, still bordering and still
+recognise each other. An auto-renewing deal re-signs on the new numbers, or lapses with the reason
+if it cannot. One that is not auto-renewing simply ends — and if the player was party to it, the
+counterparty comes back with an offer on the old terms, which the shell raises as a halt at the end
+of the round. Warnings land at 4, 2 and 1 turns left, and only for deals the player is in: fifty
+nations' countdowns are a newspaper nobody reads.
+
+**The partner cooldown is retired for bilateral deals** and lives on only for external sales and
+transit. What stopped a pair trading every turn is now the deal itself: they already have an
+arrangement, and it runs until it runs out. The cooldown STAMP is still written at signing, because
+Influence counts recent partners as reach — but at signing only, never per settlement.
+
+**Breaking a deal early is not possible yet.** Deals run their term. Walking out — and paying for it
+in a reputation that makes every other state price you worse — is designed and recorded as F2 in
+`docs/FUTURE-IDEAS.md`, and belongs on the revocation-with-notice machinery that arrives with
+transit agreements rather than beside it.
 
 ### Release
 Hand territory over — the first of the design's release valves, and the reason Counties mode
@@ -1428,9 +1458,11 @@ account of where this model stops.
   rather than an event, and a treaty would be the second.
 - ~~**Trade is still a UI flow rather than a Move.**~~ *Stale, corrected 5 September 2026: M11.1
   moved trade onto `Moves.plan`/`resolve` ("TRADE BECOMES A MOVE", js/moves.js) and the AI has
-  traded with itself since — verified in play. What trade still lacks is TERMS: a deal is a single
-  click with a cooldown, not a standing agreement with a duration. That is what Addendum A's stage
-  A1 builds.*
+  traded with itself since — verified in play. The TERMS gap it named is closed: A1 made a deal a
+  standing agreement with a duration, a fixed price and an expiry. What remains is that **nothing
+  physically moves** — settlement is a treasury credit, so a buyer gains money rather than goods,
+  and a haggle over price can only move the joint gain between the parties rather than set a real
+  one. That waits for goods to move, and it is the honest remaining gap here.*
 - **A leader is a modifier and a name.** No succession crises, no factions inside a government, no
   relationship between two leaders. The trait table is twelve entries deep and the effect vocabulary
   is five stocks and a war roll.

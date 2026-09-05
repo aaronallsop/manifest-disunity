@@ -248,6 +248,16 @@ function completeTurn() {
   // A crisis is waiting for an answer, and it is the only thing in this game
   // that stops to ask one (M7.4).
   if (typeof Events !== 'undefined' && Events.waiting() && showCrisis()) return true;
+  /*
+   * A DEAL HAS RUN OUT AND THE OTHER SIDE IS ASKING AGAIN (A1).
+   *
+   * Last in the chain deliberately: a breakaway, a lost election, a defeat, a
+   * victory and a crisis all outrank an expired contract. Like the crisis, it
+   * can never fire mid-sweep, because the queue is only read here — after
+   * AI.sweep has returned — and like the crisis it is a `return true`, so
+   * fast-forward stops on it rather than running past a decision.
+   */
+  if (typeof Deals !== 'undefined' && Deals.waiting(you()) && showRenegotiation()) return true;
   const next = you();
   if (next && Game.getNation(next)) { setMode('nations'); select('nation', next); }
   else deselect();

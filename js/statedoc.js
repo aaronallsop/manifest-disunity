@@ -92,6 +92,7 @@ export function assemble(session = {}) {
     relations: Relations.serialize(),
     recognition: Recognition.serialize(),
     pacts: Pacts.serialize(),
+    deals: Deals.serialize(),
     events: Events.serialize(),
     leaders: Leaders.serialize(),
     history: History.serialize(),
@@ -181,6 +182,8 @@ export function applyModel(doc) {
   Relations.loadState(doc.relations);
   Recognition.loadState(doc.recognition);
   Pacts.loadState(doc.pacts);
+  // A document written before A1 carries no deals and loads as none.
+  Deals.loadState(doc.deals);
   Events.loadState(doc.events);
   Leaders.loadState(doc.leaders);
   History.loadState(doc.history);
@@ -194,6 +197,6 @@ export function applyModel(doc) {
 }
 
 /** Every module a document must round-trip, for the "nothing was forgotten" test. */
-export const STATEFUL_MODULES = ['Game', 'TurnSystem', 'World', 'Market', 'Colors', 'Movements', 'Ledger', 'Military', 'Relations', 'Recognition', 'Events', 'Leaders', 'History', 'Pacts'];
+export const STATEFUL_MODULES = ['Game', 'TurnSystem', 'World', 'Market', 'Colors', 'Movements', 'Ledger', 'Military', 'Relations', 'Recognition', 'Events', 'Leaders', 'History', 'Pacts', 'Deals'];
 
 export default { VERSION, buildStamp, assemble, validate, applyModel, STATEFUL_MODULES };

@@ -687,15 +687,35 @@ const Actions = (function () {
    * implementations again and the human's is the one that drifts, which is the
    * failure M6.3 fixed for annexation and M9.4 fixed for its price.
    */
+  /**
+   * THE NEGOTIATING TABLE (A1). This used to be a preview with one button on
+   * it: the flows were whatever the two economies happened to mismatch on, the
+   * money was whatever that was worth, and the only decision was whether to
+   * press the button. Now there is a decision on the panel — how long you are
+   * agreeing to this for — and it is the decision the whole stage exists to
+   * create. Everything else here is the old preview, kept.
+   *
+   * `A.terms` holds what the player has chosen so far, so re-rendering after a
+   * click does not throw the choice away.
+   */
   function renderTradePreview(tid) {
     const S = A.nid;
     const tName = Game.getNation(tid).name;
-    const plan = Moves.plan({ type: 'trade', nid: S, target: tid });
+    const durations = TUNE.peek('deal.durations');
+    if (!A.terms) {
+      const want = TUNE.peek('deal.defaultDuration');
+      A.terms = {
+        duration: durations.includes(want) ? want : durations[0],
+        autoRenew: !!TUNE.peek('deal.defaultAutoRenew'),
+      };
+    }
+    const plan = Moves.plan({ type: 'trade', nid: S, target: tid, terms: A.terms });
     const flows = plan.flows || [];
     const total = plan.total || 0;
+    const perTurn = plan.perTurn ? plan.perTurn.me : 0;
     const gain = plan.gain || 0;
     const res = { capped: plan.capped, total, uncappedTotal: plan.uncappedTotal };
-    const cd = tradeCooldownLeft(S, tid);
+    const openDeal = typeof Deals === 'undefined' ? null : Deals.live(S, tid);
     /*
      * A DEAL NEEDS TWO GOVERNMENTS. Shown as a refusal on the preview rather
      * than by hiding the neighbour, because "Nevada will not deal with you and
@@ -709,26 +729,68 @@ const Actions = (function () {
       .map((f) => `<div class="geo-row"><span><i class="econ-dot" style="background:${MapModes.ECON_COLORS[f.i]}"></i>${f.s}
           ${f.sell > f.buy ? '&rarr; them' : '&larr; us'}</span><strong>${fmtGdp(f.value * 1e6)}</strong></div>`)
       .join('');
+    /*
+     * THE TERM, as four buttons rather than a slider. The durations are a menu
+     * (`deal.durations`) and not a range, so a segmented row is the honest
+     * control: there is no meaningful 5-turn deal to slide past.
+     */
+    const durRow = durations.map((d) => `<button class="btn ghost dur-opt${d === A.terms.duration ? ' active' : ''}"
+        data-dur="${d}">${d} ${plural(d, 'turn', 'turns')}<small>${escapeHtml(termWords(d))}</small></button>`).join('');
+    const until = Calendar.label(World.getTurn() + A.terms.duration, TUNE);
+
     setPanel(`
-      ${actionHead('\u{1F69B} Trade — preview', Game.getNation(S))}
+      ${actionHead('\u{1F69B} Trade — a deal with terms', Game.getNation(S))}
       <p class="hint-block">Deal with <strong>${escapeHtml(tName)}</strong>: surpluses flow to whoever runs the
-      matching deficit, valued at current market prices. A matched deal pays the full rate to both sides.</p>
+      matching deficit, valued at current market prices. A matched deal pays the full rate to both sides,
+      <strong>every turn until it runs out</strong> &mdash; at the price you sign at, whatever the market does after.</p>
       ${flows.length ? rows : '<div class="warn-box">No matching surplus/deficit pairs &mdash; nothing to trade.</div>'}
       ${flows.length ? capacityNote(S, res) : ''}
-      <div class="stat"><div class="label">Traded value</div><div class="value">${fmtGdp(total * 1e6)}</div></div>
-      <div class="stat"><div class="label">Treasury income (each side)</div><div class="value surplus">+${fmtGdp(gain * 1e6)}</div></div>
-      ${cd ? `<div class="warn-box">⏳ You dealt with ${escapeHtml(tName)} recently &mdash; ${cd} more world ${plural(cd, 'turn', 'turns')}.</div>` : ''}
+      <div class="stat"><div class="label">How long &mdash; and this is the decision</div>
+        <div class="dur-opts">${durRow}</div>
+        <label class="opt auto-renew"><input type="checkbox" id="a-renew" ${A.terms.autoRenew ? 'checked' : ''}>
+          Renew on the same terms when it runs out</label>
+      </div>
+      <div class="stat"><div class="label">Traded value, per turn</div><div class="value">${fmtGdp(total * 1e6)}</div></div>
+      <div class="stat"><div class="label">To your treasury, per turn</div><div class="value surplus">+${fmtGdp(perTurn * 1e6)}</div></div>
+      <div class="stat"><div class="label">Over the whole deal</div><div class="value surplus">+${fmtGdp(gain * 1e6)}</div>
+        <div class="geo-row"><span>Runs until</span><strong>${escapeHtml(until)}</strong></div></div>
+      ${openDeal ? `<div class="warn-box">\u{1F4C4} You already have a deal with ${escapeHtml(tName)} &mdash;
+        ${Deals.remaining(openDeal)} more ${plural(Deals.remaining(openDeal), 'turn', 'turns')}. Renegotiate when it expires.</div>` : ''}
       ${shut ? `<div class="warn-box">\u{1F6AB} No deal. ${oneWay
         ? `${escapeHtml(tName)} does not recognise you as a country, and a trade agreement is a signature between two governments.`
         : `You do not recognise ${escapeHtml(tName)} as a country. Recognise them from their card and the table is open.`}</div>` : ''}
       ${plan.ok || !plan.reason ? '' : `<div class="warn-box">\u26d4 ${escapeHtml(plan.reason)}</div>`}
       <div class="btn-row">
         <button class="btn ghost" id="a-back">Back</button>
-        <button class="btn go" id="a-go" ${plan.ok ? '' : 'disabled'}>Sign trade deal</button>
+        <button class="btn go" id="a-go" ${plan.ok ? '' : 'disabled'}>Sign for ${A.terms.duration} ${plural(A.terms.duration, 'turn', 'turns')}</button>
       </div>
     `);
-    document.getElementById('a-back').onclick = () => { A.pending = null; setSelectOutline(nationOutline(A.nid)); renderTradePrompt(); };
+    // Every control re-plans and re-renders, so the three money lines and the
+    // end date always describe the terms actually on the table.
+    for (const b of document.querySelectorAll('.dur-opt')) {
+      b.onclick = () => { A.terms.duration = Number(b.dataset.dur); renderTradePreview(tid); };
+    }
+    const renew = document.getElementById('a-renew');
+    if (renew) renew.onchange = () => { A.terms.autoRenew = renew.checked; renderTradePreview(tid); };
+    document.getElementById('a-back').onclick = () => {
+      A.pending = null; A.terms = null; setSelectOutline(nationOutline(A.nid)); renderTradePrompt();
+    };
     document.getElementById('a-go').onclick = () => plan.ok && confirmTrade(tid);
+  }
+
+  /**
+   * '4 turns' in words a person uses, from the calendar's own month count — so
+   * a change to how long a turn is renames every button rather than leaving
+   * four hard-coded lies on the panel.
+   */
+  const SPELT = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
+  function termWords(turns) {
+    const months = turns * (TUNE.peek('calendar.monthsPerTurn') || 3);
+    if (months % 12 === 0) {
+      const y = months / 12;
+      return `${SPELT[y] || y} ${y === 1 ? 'year' : 'years'}`;
+    }
+    return `${SPELT[months] || months} months`;
   }
 
   /*
@@ -741,12 +803,15 @@ const Actions = (function () {
    */
   function confirmTrade(tid) {
     const S = A.nid;
+    const terms = A.terms;
     const Sname = Game.getNation(S).name, Tname = Game.getNation(tid).name;
-    const r = Moves.resolve({ type: 'trade', nid: S, target: tid }, store.rng);
+    const r = Moves.resolve({ type: 'trade', nid: S, target: tid, terms }, store.rng);
     if (!r.ok) return flash(`\u26d4 ${escapeHtml(r.reason)}`, 'bad');
     A = null;
     clearVisuals();
-    flash(`\u{1F69B} <strong>${escapeHtml(Sname)}</strong> and <strong>${escapeHtml(Tname)}</strong> signed a trade deal &mdash; both treasuries +${fmtGdp(r.gain * 1e6)}.`, 'good');
+    flash(`\u{1F69B} <strong>${escapeHtml(Sname)}</strong> and <strong>${escapeHtml(Tname)}</strong> signed a
+      ${escapeHtml(termWords(r.duration))} deal &mdash; +${fmtGdp(r.perTurn.me * 1e6)} a turn to each,
+      until ${escapeHtml(Calendar.label(r.until, TUNE))}. First payment this turn.`, 'good');
     completeTurn();
   }
   /* ================================================================= */

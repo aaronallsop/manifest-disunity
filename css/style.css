@@ -822,3 +822,13 @@ svg.flag { border-radius: 2px; flex: none; vertical-align: middle; }
   margin-left: 4px;
   font-variant-numeric: tabular-nums;
 }
+
+/* Deal terms (A1): four buttons, not a slider — the durations are a menu. */
+.dur-opts { display: flex; gap: 6px; flex-wrap: wrap; margin: 6px 0; }
+.dur-opts .dur-opt { flex: 1 1 0; min-width: 70px; padding: 6px 8px; line-height: 1.15; }
+.dur-opts .dur-opt small { display: block; opacity: .65; font-size: 11px; }
+.dur-opts .dur-opt.active { background: var(--accent, #2d5be3); color: #fff; border-color: var(--accent, #2d5be3); }
+.dur-opts .dur-opt.active small { opacity: .85; }
+label.opt.auto-renew { display: flex; gap: 8px; align-items: center; margin-top: 4px; font-size: 13px; }
+/* A deal running out: amber at the first warning, red on its last turn. */
+.geo-row strong.warn { color: #d9a21b; }

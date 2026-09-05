@@ -1212,6 +1212,13 @@ const World = (function () {
       phaseGround(null, Game.state(), tn, null);
       // derived from the map, so it follows the writeback
       if (Complexity.enabled('movements')) Movements.refreshStates(tn);
+      /*
+       * STANDING TRADE DEALS PAY (A1). Before the treasuries tick, so a deal's
+       * income is in the balance the same turn it was earned, and inside the
+       * same batch so one round is one re-render. Never gated by Complexity:
+       * trade is the core loop in both modes.
+       */
+      if (typeof Deals !== 'undefined') Deals.tick(tn, turn, { player: Game.getPlayer() });
       Game.tickTreasuries(); // income minus maintenance, on this turn's updated GDP
       Market.update(tn);     // reprice every resource from live supply vs demand
       phasePower(tn, turn + 1); // last: every input it reads is a result of this turn

@@ -328,19 +328,44 @@ const Moves = (function () {
    * economy without changing the diplomacy.
    */
 
-  /** A nation's tradeable flows against another, by sector, at market prices ($M). */
-  function tradeFlows(a, b, tune) {
+  /**
+   * A nation's tradeable flows against another, by sector, at market prices ($M).
+   *
+   * `ignoreDeal` excludes one live deal from the commitment subtraction below,
+   * which is what lets a deal be re-planned at its own expiry without being
+   * blocked by the volume it is itself about to release.
+   */
+  function tradeFlows(a, b, tune, ignoreDeal) {
     if (typeof Market === 'undefined' || typeof MapModes === 'undefined') return [];
     const ms = Market.nationSurplus(a, T(tune)), ts = Market.nationSurplus(b, T(tune));
     const prices = Market.getPrices();
     const e = MapModes.getEconomy();
     if (!ms || !ts || !prices || !e) return [];
+    /*
+     * WHAT IS ALREADY PROMISED IS NOT AVAILABLE (A1). A standing deal occupies
+     * the surplus it covers, so a nation that has signed its whole wheat surplus
+     * to Kansas has none left to offer Nebraska. This is a READ against the
+     * deals ledger and a subtraction here; it does not touch Market at all.
+     *
+     * It is also the half of the cooldown's retirement that is easy to miss.
+     * Without it, "one live deal per pair" would still let fifty AI nations
+     * promise the same goods to every neighbour they have.
+     */
+    const ca = typeof Deals === 'undefined' ? null : Deals.committed(a, ignoreDeal);
+    const cb = typeof Deals === 'undefined' ? null : Deals.committed(b, ignoreDeal);
+    const freeA = (i) => ms.surplus[i] - (ca ? ca.bySector[i] || 0 : 0);
+    const freeB = (i) => ts.surplus[i] - (cb ? cb.bySector[i] || 0 : 0);
     const flows = [];
     e.sectors.forEach((sec, i) => {
-      const sell = Math.min(Math.max(0, ms.surplus[i]), Math.max(0, -ts.surplus[i]));
-      const buy = Math.min(Math.max(0, ts.surplus[i]), Math.max(0, -ms.surplus[i]));
+      const sa = freeA(i), sb = freeB(i);
+      const sell = Math.min(Math.max(0, sa), Math.max(0, -sb));
+      const buy = Math.min(Math.max(0, sb), Math.max(0, -sa));
       if (sell + buy > 1) {
-        flows.push({ i, s: sec, sell, buy, vol: sell + buy, value: (sell + buy) * (prices[i] / 100) });
+        flows.push({
+          i, s: sec, sell, buy, vol: sell + buy,
+          price: prices[i],
+          value: (sell + buy) * (prices[i] / 100),
+        });
       }
     });
     return flows;
@@ -380,24 +405,44 @@ const Moves = (function () {
   }
 
   /**
-   * @param intent {type:'trade', nid, target}
+   * @param intent {type:'trade', nid, target, terms?:{duration, autoRenew, priceMult}, ignoreDeal?}
    *
-   * Both sides earn the same. That is not a simplification — a matched deal is
-   * two nations each selling what the other lacks, and the whole point of the
-   * bilateral rate being higher than the world market is that finding a partner
-   * whose deficits mirror your surpluses is a skill.
+   * Both sides earn the same, at the default split. That is not a simplification
+   * — a matched deal is two nations each selling what the other lacks, and the
+   * whole point of the bilateral rate being higher than the world market is that
+   * finding a partner whose deficits mirror your surpluses is a skill. What A1
+   * adds is that the arrangement has a TERM: the same arithmetic, paid every
+   * turn for as long as it runs, at the price it was signed at.
    */
   function planTrade(intent, tune) {
     const { nid, target } = intent;
+    const t = T(tune);
     const me = nationOf(nid), them = nationOf(target);
     if (!me || !them) return no('That nation no longer exists.');
     if (nid === target) return no('You cannot trade with yourself.');
     if (!Game.adjacentNations(nid).includes(target)) {
       return no(`${them.name} is not within reach.`);
     }
-    const cd = tradeCooldownLeft(nid, target, tune);
-    if (cd > 0) {
-      return no(`You dealt with ${them.name} recently — ${cd} more world ${areaWord(cd) === 'Area' ? 'turn' : 'turns'}.`);
+    /*
+     * ONE LIVE DEAL PER PAIR — what replaced the cooldown (A1). The cooldown
+     * existed to stop the same two nations trading every turn; a standing deal
+     * does that better, because it says WHY they cannot: they already have an
+     * arrangement, and it runs until it runs out.
+     */
+    const open = typeof Deals === 'undefined' ? null : Deals.live(nid, target);
+    if (open && open.id !== intent.ignoreDeal) {
+      const left = Deals.remaining(open);
+      return no(`You already have a deal with ${them.name} — it runs ${left} more ${left === 1 ? 'turn' : 'turns'}. Renegotiate when it expires.`);
+    }
+    const terms = intent.terms || {};
+    const durations = t.get('deal.durations');
+    const duration = terms.duration == null ? t.get('deal.defaultDuration') : terms.duration;
+    if (!durations.includes(duration)) {
+      return no(`A deal runs for ${durations.join(', ')} turns, not ${duration}.`);
+    }
+    const priceMult = terms.priceMult == null ? 1 : terms.priceMult;
+    if (priceMult < t.get('deal.priceMultMin') || priceMult > t.get('deal.priceMultMax')) {
+      return no('That price is outside what either side would sign.');
     }
     /*
      * A DEAL NEEDS TWO GOVERNMENTS (M7.8). An unrecognised state can still sell
@@ -411,18 +456,49 @@ const Moves = (function () {
         : `You do not recognise ${them.name} as a country.`);
     }
     const limit = Math.min(Game.tradeCapacity(nid).total, Game.tradeCapacity(target).total);
-    const res = applyCapacity(tradeFlows(nid, target, tune), limit);
+    const res = applyCapacity(tradeFlows(nid, target, tune, intent.ignoreDeal), limit);
     if (!res.flows.length || res.total <= 0) {
-      return no(`Nothing to trade — you and ${them.name} run the same surpluses.`);
+      return no(`Nothing to trade — you and ${them.name} run the same surpluses${open ? ' that is not already promised' : ''}.`);
     }
-    const gain = res.total * T(tune).get('trade.gain');
+    /*
+     * WHAT A TURN OF THIS PAYS. `deal.rate` is Aaron's ruling made arithmetic
+     * (D171): at 0.25 a turn of a deal pays a quarter of what the old click paid
+     * outright, so four turns of a deal pay exactly what one click did. The
+     * split moves the joint gain between the parties and never changes its
+     * total, so at priceMult 1 `perTurn.me` is the old `total * trade.gain`
+     * divided by four, and `gain` below is the old number exactly.
+     */
+    const rate = t.get('trade.gain') * t.get('deal.rate');
+    let mine = 0, theirs = 0;
+    for (const f of res.flows) {
+      const sellerIsMe = f.sell >= f.buy;
+      const sellerTake = f.value * priceMult * rate;
+      const buyerTake = f.value * (2 - priceMult) * rate;
+      mine += sellerIsMe ? sellerTake : buyerTake;
+      theirs += sellerIsMe ? buyerTake : sellerTake;
+    }
+    /*
+     * `gain` STAYS THE WHOLE-TERM TAKE, and that is deliberate. `AI.score` reads
+     * `preview.gain` against a turn of national income to decide whether a trade
+     * is worth its turn; report the per-turn figure there and every AI in the
+     * game would value trade at a quarter of what it did, which is a behaviour
+     * change in the Full game smuggled in under an economy stage. At the default
+     * four-turn term this is byte-for-byte the number the click reported.
+     */
+    const gain = mine * duration;
+    const autoRenew = terms.autoRenew == null
+      ? !!t.get('deal.defaultAutoRenew') : !!terms.autoRenew;
     return {
-      ok: true, reason: null, target, cost: 0,
+      ok: true, reason: null, target, nid, cost: 0,
       flows: res.flows, total: res.total, capped: res.capped, uncappedTotal: res.uncappedTotal,
       gain,
+      duration, autoRenew, priceMult,
+      perTurn: { me: mine, them: theirs },
+      until: World.getTurn() + duration,
       effects: [
         { label: 'Traded value', value: res.total * 1e6 },
-        { label: 'Treasury, each side', value: gain * 1e6 },
+        { label: 'Treasury, per turn', value: mine * 1e6 },
+        { label: 'Turns', value: duration },
         // What it buys that money cannot is a `traded` entry in BOTH
         // directions, which is the one relations channel ordinary play
         // generates without taking anything from anybody. It is not a number
@@ -438,26 +514,76 @@ const Moves = (function () {
     if (!plan.ok) return { ...plan, events: [] };
     const { nid, target } = intent;
     const a = nameOf(nid), b = nameOf(target);
-    const gain = plan.gain;
+    /*
+     * NOBODY SIGNS A CONTRACT ON THE PLAYER'S BEHALF (A1).
+     *
+     * A one-click trade could be imposed on the player and it did not matter:
+     * both sides gained, and it was over the moment it happened. A standing
+     * agreement is a different animal — it occupies the player's surplus, it
+     * locks the pair out of dealing again, and it runs for years. So an AI that
+     * wants a deal with the player makes an OFFER, which comes up as a card at
+     * the end of the round. AI-to-AI deals still sign directly: fifty nations
+     * asking each other's permission is a turn nobody watches.
+     *
+     * `deal.maxOpenOffers` caps the inbox from day one rather than from A4,
+     * because an inbox of twenty is not a decision, it is admin.
+     */
+    const player = typeof Game.getPlayer === 'function' ? Game.getPlayer() : null;
+    if (player && target === player && nid !== player) {
+      const offer = Deals.propose({
+        from: nid, to: target, kind: 'new',
+        terms: {
+          duration: plan.duration, autoRenew: plan.autoRenew, priceMult: plan.priceMult,
+          flows: plan.flows.map((f) => ({ i: f.i, s: f.s, vol: f.vol, price: f.price })),
+        },
+      }, T(tune));
+      if (!offer) return { ...plan, ok: false, reason: `${b} is not taking any more offers this turn.`, events: [] };
+      const e = log({
+        subject: nid, kind: 'trade', event: 'offer', partner: target,
+        text: `${a} has offered ${b} a ${plan.duration}-turn trade deal.`,
+      });
+      return { ...plan, offered: offer, deal: null, events: [e] };
+    }
+    let deal = null;
     Game.batch(() => {
-      Game.earn(nid, gain * 1e6);
-      Game.earn(target, gain * 1e6);
+      /*
+       * NOTHING IS PAID AT SIGNING (A1). The first money arrives on the world
+       * tick that closes this turn — which is the same End turn the click used
+       * to pay on, so the player sees no delay, but a deal that is voided before
+       * that tick has genuinely paid nothing.
+       */
+      deal = Deals.sign(plan);
+      /*
+       * The stamp is kept and the GATE is gone. `power.js` counts partners
+       * stamped inside the nation's history window as Influence reach, so
+       * dropping the write would quietly lower Influence across the board.
+       * Written at signing only: stamping every settlement would keep a
+       * neighbour's transit route disabled for the whole life of a deal.
+       */
       markTraded(nid, target);
       markTraded(target, nid);
       /*
        * BOTH DIRECTIONS. The only relations term that accumulates through
        * ordinary play rather than through violence, which is what lets a
        * patient nation build standing without taking anything from anybody.
+       *
+       * Once per SIGNING, as before — not per settlement. Recorded every turn a
+       * deal pays, a twenty-turn deal would be worth twenty trades, and union
+       * odds, release acceptance and coalition exemptions all read this number.
        */
       Relations.record(nid, target, 'traded', { tune: T(tune) });
       Relations.record(target, nid, 'traded', { tune: T(tune) });
     });
-    if (typeof Market !== 'undefined') Market.update(T(tune)); // traded supply moves the prices
     const entry = log({
-      subject: nid, kind: 'trade', delta: gain * 1e6, partner: target,
-      text: `${a} and ${b} signed a trade deal worth ${Math.round(gain)}M to each.`,
+      subject: nid, kind: 'trade', event: 'signed', dealId: deal ? deal.id : null,
+      delta: plan.gain * 1e6, partner: target,
+      terms: [
+        { name: 'Per turn, each side', value: plan.perTurn.me, key: 'deal.rate' },
+        { name: 'Turns', value: plan.duration, key: 'deal.durations' },
+      ],
+      text: `${a} and ${b} signed a ${plan.duration}-turn trade deal worth ${Math.round(plan.perTurn.me)}M a turn to each.`,
     });
-    return { ...plan, gain, events: [entry] };
+    return { ...plan, deal, events: [entry] };
   }
 
   /* ------------------------------------------------------------------ */
@@ -1285,18 +1411,22 @@ const Moves = (function () {
     }
 
     /*
-     * TRADE, with every neighbour it is not on cooldown with (M11.1).
+     * TRADE, with every neighbour it does not already have a deal with (A1;
+     * was: every neighbour it is not on cooldown with, M11.1).
      *
      * One candidate per bordering nation, exactly like unite: the deal itself is
      * not a choice — the flows are whatever the two economies happen to mismatch
      * on — so the only decision is WHO, and that is one intent each.
      *
-     * `plan` refuses the ones that cannot happen (nothing to trade, no mutual
-     * recognition), which is the same division of labour every other move here
-     * uses: `legal` is cheap and generous, `plan` is the rulebook.
+     * `plan` refuses the ones that cannot happen (nothing to trade, nothing left
+     * to trade that is not already promised, no mutual recognition), which is
+     * the same division of labour every other move here uses: `legal` is cheap
+     * and generous, `plan` is the rulebook.
      */
     for (const other of Game.adjacentNations(nid)) {
-      if (!tradeCooldownLeft(nid, other, tune)) out.push({ type: 'trade', nid, target: other });
+      if (typeof Deals === 'undefined' || !Deals.live(nid, other)) {
+        out.push({ type: 'trade', nid, target: other });
+      }
     }
 
     /*
