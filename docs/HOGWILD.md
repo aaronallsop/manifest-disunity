@@ -16,6 +16,56 @@ His reasoning, and it is the part worth keeping in mind while the mode is on:
 
 ---
 
+## Before it starts: clear the desk
+
+**Aaron, 5 September 2026, proposing this:**
+
+> "since the purpose of it is to go hog wild for as long as possible would it make sense to have a
+> compact feature built into hogwild mode first so that the the programmer knows they are going to
+> be going hog wild but before they do they compact the session so it burns less tokens and they can
+> go hog wild longer and harder?"
+
+**Yes — and the step BEFORE compacting is the one that matters.**
+
+Compacting a conversation summarises it, which frees room and cuts what has to be re-sent on every
+turn. That is real and it is worth doing. But summarising is lossy, and this mode is precisely the
+one where losing something is expensive: if a ruling of Aaron's gets blurred into a summary, I can
+contradict a decision he made and not know I have done it. The whole licence rests on me carrying
+his intent correctly while he is not here to correct me.
+
+**So the ordering is: flush, then compact, then run.** Compaction is safe exactly to the extent that
+nothing important lives only in the conversation. Which means the entry ritual is:
+
+1. **Write everything durable to disk.** Every ruling from the conversation into `DECISIONS.md`,
+   every deferred idea into `docs/FUTURE-IDEAS.md`, the Control Board republished, and a handoff in
+   `docs/handoffs/`. After this step the chat should contain nothing that matters and is not also in
+   a file.
+2. **Start fresh rather than compact, if the choice is available.** Aaron's own standing rules
+   already say to prefer a handoff plus a new session over `/compact` at a natural boundary, and
+   they are right: a compacted session still carries its summary plus everything since, where a
+   fresh one carries only what `/resume` reads back. Hog Wild always begins at a natural boundary,
+   because step 1 makes one.
+3. **Then go**, with `/resume` reading the handoff, the board and the repo state — including the Hog
+   Wild toggle itself.
+
+I cannot compact the session myself; that is Aaron's command. What I can do is get everything to a
+state where compacting or restarting costs nothing, and then say so.
+
+## Spending the room well once it is running
+
+The point of clearing the desk is to run longer, which is wasted if the room goes on re-reading
+things. While the mode is on:
+
+- **Do not re-read a file already read this session** unless it has been edited since.
+- **Run the slice, not the suite.** `?only=transit,deals` answers most questions in a few seconds;
+  the full run is for the end of a stage, not the middle of one.
+- **Do not re-derive what is written down.** `DECISIONS.md` and the spec measurements exist so a
+  question is answered once. Re-measuring a figure already recorded is the same waste as re-reading
+  a file.
+- **Let the agents carry the reading.** A fan-out that returns a structured answer costs less of
+  this session's room than doing the same reading here, which is half the reason the mode allows
+  them.
+
 ## What it turns on
 
 **Keep going.** Do not stop at the end of a stage to report and wait. Finish it, write it down, start
