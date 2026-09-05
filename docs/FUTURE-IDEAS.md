@@ -146,3 +146,109 @@ Aaron's "factions system" above should be read as naming the idea, not the event
 **Before it is worth doing.** After the economy roadmap completes and has been played. The test is
 Aaron's own: play the economy and find out whether he misses them. If a food glut feels like it
 should have made somebody angry and it did not, that is the signal.
+
+---
+
+## F4 — Using somebody's PORT is not the same as using their road
+
+**Aaron, 5 September 2026.** Raised while specifying how Canada, Mexico and the world market should
+work, in the middle of stage A2.
+
+> "it isn't like I am just going through their ports to the world the same way I am using Nevadas
+> roads and rails, but I am actually using their port which requires man power, infastructure, and
+> also is a hard limit of how much they can export to the world market as well"
+
+**What it is.** A transit agreement for a road or a railway lets somebody's lorries cross your
+ground. A transit agreement for your PORT puts their cargo through your cranes, your docks and your
+people, and every ton of theirs you handle is a ton of your own you cannot. So a port grant should
+cost more than a road grant, and — the harder half — it should EAT INTO THE HOST'S OWN CAPACITY
+rather than being free to give away.
+
+**Why it is interesting.** It turns a port from a permission into a scarce asset. Today a nation
+either has export capacity or it does not, and lending a corridor costs the host nothing but the
+toll it chose to charge. Under this rule a coastal nation with a big port becomes a genuine hub
+whose capacity is fought over — and one that has already sold its dock space to three neighbours has
+to decide whether to keep its own goods at home. That is a real strategic position that geography
+hands to about a third of the board.
+
+**What it would touch.**
+
+- `Game.tradeCapacity` is currently a per-nation number derived from ports, rail hubs and gateways,
+  and it is the volume cap on every standing deal in the game. Making it SHARED between a host and
+  its guests changes what that number means everywhere it is read, which is the single most
+  load-bearing figure in the economy. It is not a small change and it should not be pretended to be.
+- The toll rate would need to differ by mode. That half is nearly free: A2 already grants road, rail
+  and port separately, so a higher floor and ceiling for a port grant is a tunable and one line.
+- The AI's willingness to grant would need to know that a port grant costs it something real.
+
+**Before it is worth doing.** After the alpha, and after the capacity model has been looked at once
+in its own right. The cheap half — a port toll costing more than a road toll — can land much sooner
+and is listed as an A2b item rather than here.
+
+---
+
+## F5 — A tax on particular goods crossing a border
+
+**Aaron, 5 September 2026.** Raised alongside F4.
+
+> "the toll/cost of trading with the world, canada, mexico if you have signed a trade deal with a
+> coastal city with a port should be much higher and possibly should be a set tax as well for
+> certain goods"
+
+**What it is.** Not a share of the money, but a levy on a particular commodity: a fee per ton of
+grain, or a flat charge on manufactured goods, regardless of what they sold for.
+
+**Why it is deferred rather than scheduled.** It cannot be built honestly yet. Nothing physically
+moves in this economy — settlement is a treasury credit, and a deal's "volume" is a matched surplus
+valued at market prices rather than a quantity of anything that leaves one place and arrives at
+another. A tax per ton of a good, on an economy with no tons and no goods, would be a number
+pretending to be a rule. **It becomes buildable the moment goods actually move**, which the roadmap
+places after the alpha, and it should be built in the same pass as that.
+
+---
+
+## F6 — The rivers, and why they matter more than they look
+
+**Aaron, 5 September 2026.** Raised while specifying the external markets, with the reasoning
+credited to Peter Zeihan's *The Accidental Superpower* (2014): the United States holds roughly
+17,600 miles of navigable internal waterway, more than the rest of the world combined, and moving
+heavy goods by water costs a fraction of moving them by land. Zeihan's argument is that this one
+geographic fact underwrites American economic power, where China and Germany are limited by not
+having it.
+
+**Why this is recorded here and not simply built.** It is scheduled — see the roadmap — but the
+REASON belongs in writing, because a future reader looking at four river corridors and fifteen
+chokepoints in the data will otherwise assume they are decoration. They are not. They are the
+argument the whole map rests on: a game about the United States fracturing, in which the rivers do
+not matter, has thrown away the thing that made the United States rich in the first place.
+
+**What is already in the data, baked in July 2026 and never once read by the game:**
+
+- Four named navigable corridors: **Mississippi** (105 counties), **Ohio** (56), **Missouri** (50)
+  and the **Great Lakes** (81).
+- **Fifteen named chokepoints**, and measured on the opening board they fall to NINE different
+  nations: Michigan holds four (the Soo Locks, the Straits of Mackinac, the St. Clair and the
+  Detroit River), New York two (Niagara and the St. Lawrence outlet), Illinois two (Cairo and the
+  Chicago Sanitary & Ship Canal), Louisiana two — including **the Mouth of the Mississippi**, which
+  is a licence to tax everything that floats down from Minnesota. Houston, Virginia, Washington,
+  Missouri and the Bay Area hold one each.
+- **213 bank pairs** — counties facing each other across a navigable river. Measured: all 213
+  straddle different Areas, and on the opening board all 213 have different owners. So "hold both
+  banks, or pay whoever holds the other one" is a live question in two hundred places rather than a
+  theoretical one.
+- 1,216 distinct named rivers across 932 counties, including the **Columbia** (19 counties), which
+  answers the open question about Pacific access for the interior northwest: it is there.
+
+**The scenario, in Aaron\'s words, and it is exactly what the data encodes:**
+
+> "I am Illinois and Cook County has the modifiers Port + Great Lakes. So they can trade with every
+> other great lakes nation and Canada. But lets say they get into a trade war with Michigan, then
+> Michigan isn\'t going to let their ships pass through their choke point. So Illinois has to pay a
+> hefty toll to go through their waters. So now they want to trade to the world markets, and now New
+> York which has a choke point on the great lakes is going to charge them a toll to get through. And
+> then finally they need to sign a seperate agreement with Canada to let their ships pass through
+> Canada to get to the open market."
+
+Chicago is 17031 and is Illinois\'s. The Detroit River is 26163 and is Michigan\'s. Niagara is 36063
+and the St. Lawrence outlet 36089, both New York\'s. He described that chain from memory and the
+dataset agrees with him county for county.
