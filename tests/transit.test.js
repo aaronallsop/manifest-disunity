@@ -571,7 +571,109 @@ describe('Transit — what a route costs', () => {
     t.replace({ 'transit.hopFriction': saved });
   });
 
-  it('a five-hop chain loses to selling straight to the world market', async () => {
+  it('a five-hop chain loses to selling straight to the world market, BY EVERY MODE', async () => {
+    await bootWorld({ seed: SEED });
+    const t = T();
+    /*
+     * CHECKED FOR ALL THREE MODES, not just the baseline. Water is much cheaper
+     * to cross than road, which is the point of the hierarchy — and it is
+     * exactly the loophole that would let a long chain pay after all. Measured
+     * when the hierarchy was added: a road baseline of 0.25 is the LOWEST at
+     * which a five-crossing WATER chain still loses, which is why it is 0.25
+     * rather than something gentler.
+     */
+    const alt = t.get('trade.worldMarketPenalty')
+      / (t.get('deal.rate') * (t.get('trade.cooldownTurns') + 1));
+    for (const [name, mode] of [['road', Transit.MODE.HIGHWAY], ['rail', Transit.MODE.RAIL],
+      ['water', Transit.MODE.PORT]]) {
+      const hops = [];
+      for (let i = 0; i < 5; i++) hops.push({ node: `n${i}`, mode, rate: t.get('transit.rateMin') });
+      const five = Transit.priceRoute(hops, t).keep;
+      ok(five < alt,
+        `five ${name} crossings keep ${(five * 100).toFixed(1)}% at the friendliest rate anyone would `
+        + `sign, against ${(alt * 100).toFixed(1)}% for selling abroad directly — raise `
+        + 'transit.hopFriction until a long chain stops paying');
+    }
+  });
+
+  it('water is cheaper to cross than rail, and rail than road', async () => {
+    await bootWorld({ seed: SEED });
+    const t = T();
+    const one = (mode) => Transit.priceRoute([{ node: 'x', mode, rate: 0.1 }], t).keep;
+    const road = one(Transit.MODE.HIGHWAY), rail = one(Transit.MODE.RAIL), water = one(Transit.MODE.PORT);
+    ok(water > rail, `water (${water.toFixed(3)}) is not cheaper than rail (${rail.toFixed(3)})`);
+    ok(rail > road, `rail (${rail.toFixed(3)}) is not cheaper than road (${road.toFixed(3)})`);
+  });
+
+  it('the search prefers the cheaper way across the same border', async () => {
+    await bootWorld({ seed: SEED });
+    // A border carrying both rail and road must be crossed by rail: same
+    // permission, same toll, cheaper carriage.
+    const pick = { permit: () => ({ rate: 0.2 }) };
+    let checked = 0;
+    for (const [a] of Game.nations) {
+      for (const b of Game.borderingNations(a)) {
+        const bits = Transit.modesBetween(a, b);
+        if (!(bits & Transit.MODE.RAIL) || !(bits & Transit.MODE.HIGHWAY)) continue;
+        for (const [c] of Game.nations) {
+          if (c === a || c === b) continue;
+          if (!(Transit.modesBetween(b, c) & Transit.MODE.RAIL)) continue;
+          const r = Transit.find(a, c, pick);
+          if (!r || !r.hops.length || r.hops[0].node !== b) continue;
+          equal(r.hops[0].mode, Transit.MODE.RAIL,
+            `${a} crossed ${b} by road where a railway was available and no cheaper`);
+          checked += 1;
+          if (checked > 5) return;
+        }
+      }
+    }
+    ok(checked > 0, 'no border carrying both rail and road was routed over');
+  });
+
+  it('a neighbour you already trade with charges you less to cross', async () => {
+    await bootWorld({ seed: SEED });
+    const pair = (() => {
+      for (const [a] of Game.nations) {
+        for (const b of Game.borderingNations(a)) {
+          const bits = Transit.modesBetween(a, b);
+          const m = [Transit.MODE.RAIL, Transit.MODE.HIGHWAY].find((x) => bits & x);
+          if (!m) continue;
+          const p = Moves.plan({ type: 'trade', nid: a, target: b }, T());
+          if (p.ok && p.total > 0) return { a, b, m };
+        }
+      }
+      return null;
+    })();
+    ok(pair, 'no bordering pair that both carries goods and can trade');
+    Transit.grant({ grantor: pair.b, grantee: pair.a, mode: pair.m, rate: 0.4, duration: 20 }, T());
+
+    const full = Transit.permits(pair.b, pair.a, pair.m);
+    close(full.rate, 0.4, 1e-12, 'the toll is not what was signed');
+    Moves.resolve({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: 8 } }, null, T());
+    const discounted = Transit.permits(pair.b, pair.a, pair.m);
+    close(discounted.rate, 0.4 * (1 - T().get('transit.partnerDiscount')), 1e-12,
+      'signing a trade deal did not make the corridor cheaper');
+    // ...and the AGREEMENT itself is untouched: the discount is what is charged,
+    // not a renegotiation behind the grantor's back.
+    equal(Transit.get(full.id).rate, 0.4, 'the discount rewrote the signed agreement');
+  });
+
+  it('a port reaches Canada and Mexico, not only the world market', async () => {
+    await bootWorld({ seed: SEED });
+    const g = Transit.graph();
+    let checked = 0;
+    for (const [nid] of Game.nations) {
+      if (!Game.exportAccess(nid).oceanPorts) continue;
+      const out = g.edges.get(nid);
+      ok(out.get(Transit.WORLD) & Transit.MODE.PORT, `${nid} cannot reach the world from its own port`);
+      ok(out.get(Transit.CANADA) & Transit.MODE.PORT, `${nid} has an ocean port and cannot ship to Canada`);
+      ok(out.get(Transit.MEXICO) & Transit.MODE.PORT, `${nid} has an ocean port and cannot ship to Mexico`);
+      checked += 1;
+    }
+    ok(checked > 10, `only ${checked} nations with an ocean port`);
+  });
+
+  it('the old five-hop guard, kept as arithmetic over the tunables', async () => {
     await bootWorld({ seed: SEED });
     const t = T();
     /*

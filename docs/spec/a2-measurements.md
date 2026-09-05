@@ -99,3 +99,27 @@ Three things worth noticing, none of which were special-cased:
 
 Against the 0.208 ms one `Moves.plan` call already costs, a route lookup is about
 a third of a plan — affordable inside planning, which is where it has to run.
+
+## A2b: what the mode hierarchy costs, and why the road baseline is 0.25
+
+Aaron's ruling: water is the cheapest way to cross a border, then rail, then road as the baseline.
+A2 shipped the tiers as PERMISSIONS only - a nation could open its railways and close its docks, but
+crossing by rail cost exactly what crossing by road cost.
+
+Setting the numbers turned out to be constrained from both ends, which is worth recording because it
+is not obvious. A routed deal has to keep more than **45%** to beat simply selling abroad directly
+(the world-market penalty, scaled for a deal paying every turn against a sale paying once every
+four). And the roadmap says a five-crossing chain must never pay. So every mode has to fail that
+test at five crossings, including the cheapest one.
+
+| Road baseline | Road, 5 crossings | Rail, 5 | Water, 5 | |
+|---|---|---|---|---|
+| 0.12 | 0.41 | 0.53 | 0.59 | rail and water both PAY - broken |
+| 0.20 | 0.25 | 0.41 | 0.48 | water still pays - broken |
+| **0.25** | **0.18** | **0.34** | **0.43** | all three fail. The lowest that works |
+| 0.30 | 0.13 | 0.29 | 0.38 | works, but crossings hurt more than they need to |
+
+**0.25 is not a taste, it is the floor.** Below it the hierarchy Aaron asked for reopens the loophole
+the metric exists to close. What a single crossing costs at that baseline: road keeps 71%, rail 81%,
+water 84% - a legible difference that makes a railway neighbour worth more than a road one, and a
+river worth more than either.

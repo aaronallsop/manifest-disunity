@@ -59,6 +59,27 @@ const Transit = (function () {
 
   const T = (tune) => tune || window.TUNE;
 
+  /**
+   * WHAT A CROSSING COSTS, BY HOW IT IS CROSSED (A2b).
+   *
+   * The owner's hierarchy: water is cheapest, then rail, then road as the
+   * baseline. The reasoning is that the dissolution takes free interstate trade
+   * and the distribution networks with it, so land freight stops being the cheap
+   * default it is today — while a barge is a barge whoever owns the bank.
+   *
+   * Modes were PERMISSIONS ONLY when A2 shipped: a nation could open its
+   * railways and close its docks, but crossing by rail cost exactly what
+   * crossing by road cost, which threw away half the point of having tiers. The
+   * old one-off transit path had this and the rewrite dropped it.
+   */
+  function frictionFor(mode, tune) {
+    const t = T(tune);
+    const base = t.get('transit.hopFriction');
+    if (mode === MODE.RAIL) return base * t.get('transit.railFrictionMult');
+    if (mode === MODE.PORT) return base * t.get('transit.waterFrictionMult');
+    return base;                                   // road, and anything unnamed
+  }
+
   /* ---- the corridor graph ------------------------------------------- */
 
   let cache = null;      // { key, nodes, edges: Map<from, Map<to, modeBits>> }
@@ -148,7 +169,17 @@ const Transit = (function () {
       if (acc.canada) { add(nid, CANADA, MODE.HIGHWAY | MODE.RAIL); add(CANADA, nid, MODE.HIGHWAY | MODE.RAIL); }
       if (acc.lakePorts) { add(nid, CANADA, MODE.PORT); add(CANADA, nid, MODE.PORT); }
       if (acc.mexico) { add(nid, MEXICO, MODE.HIGHWAY | MODE.RAIL); add(MEXICO, nid, MODE.HIGHWAY | MODE.RAIL); }
-      if (acc.oceanPorts) add(nid, WORLD, MODE.PORT);
+      /*
+       * A PORT REACHES THE NEIGHBOURS AS WELL AS THE WORLD (A2b). This wired to
+       * the world market alone when A2 shipped, so Los Angeles could sell to
+       * Rotterdam and not to Tijuana. A ship leaving an American ocean port can
+       * obviously reach a Canadian or Mexican one.
+       */
+      if (acc.oceanPorts) {
+        add(nid, WORLD, MODE.PORT);
+        add(nid, CANADA, MODE.PORT); add(CANADA, nid, MODE.PORT);
+        add(nid, MEXICO, MODE.PORT); add(MEXICO, nid, MODE.PORT);
+      }
     }
     add(CANADA, WORLD, MODE.PORT);
     add(MEXICO, WORLD, MODE.PORT);
@@ -183,7 +214,6 @@ const Transit = (function () {
    */
   function priceRoute(hops, tune) {
     const t = T(tune);
-    const friction = t.get('transit.hopFriction');
     const foreign = t.get('transit.foreignCorridorToll');
     let carried = 1;
     const legs = [];
@@ -196,7 +226,7 @@ const Transit = (function () {
         continue;
       }
       const take = carried * h.rate;
-      carried = (carried - take) * (1 - friction);
+      carried = (carried - take) * (1 - frictionFor(h.mode, t));
       legs.push({ node: h.node, corridor: false, mode: h.mode, rate: h.rate, take, transfer: true });
     }
     return { keep: carried, legs };
@@ -237,7 +267,6 @@ const Transit = (function () {
     if (a === b || !g.edges.has(a) || !g.edges.has(b)) return null;
     const maxHops = t.get('transit.maxHops');
     const maxCorridors = t.get('transit.maxCorridors');
-    const friction = t.get('transit.hopFriction');
     const foreign = t.get('transit.foreignCorridorToll');
     /*
      * `permit(node, mode)` answers "may this nation's goods cross that one by
@@ -290,7 +319,7 @@ const Transit = (function () {
               rate = grant.rate;
             }
             const take = st.keep * rate;
-            const carried = corridor ? st.keep - take : (st.keep - take) * (1 - friction);
+            const carried = corridor ? st.keep - take : (st.keep - take) * (1 - frictionFor(m, t));
             const cand = {
               keep: carried,
               hops: st.hops.concat([{ node: v, mode: m, rate, corridor }]),
@@ -389,7 +418,24 @@ const Transit = (function () {
       return { rate: window.TUNE.get('transit.foreignCorridorToll'), transfer: false, id: null };
     }
     const rec = live(node, grantee, mode, turn);
-    return rec ? { rate: rec.rate, transfer: true, id: rec.id, cap: rec.cap } : null;
+    if (!rec) return null;
+    /*
+     * A NEIGHBOUR YOU TRADE WITH CHARGES YOU LESS (A2b, the owner's rule).
+     *
+     * The reasoning is his: a nation that wants your goods has a reason to make
+     * getting them cheap, and a corridor ought to be worth something at the
+     * trade table rather than being a separate transaction with a separate
+     * price. This is the blunt version of that idea — a flat discount, applied
+     * automatically — and it is deliberately blunt: it costs almost nothing and
+     * it is the cheapest way to find out whether holding a deal AND a corridor
+     * with the same neighbour is interesting enough to build the negotiated
+     * version (FUTURE-IDEAS F8 and F11).
+     */
+    let rate = rec.rate;
+    if (typeof Deals !== 'undefined' && Deals.live(node, grantee)) {
+      rate *= 1 - window.TUNE.get('transit.partnerDiscount');
+    }
+    return { rate, transfer: true, id: rec.id, cap: rec.cap };
   }
 
   /** A permission callback bound to one nation, for handing to `find`. */

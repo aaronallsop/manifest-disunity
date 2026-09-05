@@ -727,9 +727,24 @@ export const SCHEMA = {
     doc: 'What a trade loses for being routed through Canada or Mexico. The owner\'s ruling, and it is a COST rather than a transfer: nobody receives it, the trade is simply worth this much less for having gone that way. Canada and Mexico are not actors in this game - they cannot be conquered, they have no opinion, and there is no agreement to negotiate or revoke - so this number is the entire relationship.',
   },
   'transit.hopFriction': {
-    v: 0.12, min: 0, max: 0.5, step: 0.01, group: 'Trade',
-    label: 'Cost of each crossing',
-    doc: 'What a shipment loses at every border it crosses, on top of whatever the country there charges. Nobody collects it - it is handling, transhipment and delay. It exists because compounding tolls ALONE do not price out a long chain: five crossings at the lowest rate anyone would sign still deliver 77% of the money, so without a cost that distance carries by itself, a five-hop resale chain stays profitable and the roadmap\'s own success metric fails.',
+    v: 0.25, min: 0, max: 0.6, step: 0.01, group: 'Trade',
+    label: 'Cost of a crossing by ROAD',
+    doc: 'What a shipment loses at every border it crosses by road, on top of whatever the country there charges. Nobody collects it - it is handling, transhipment and delay. This is the BASELINE, and the other two modes are discounts off it. It exists because compounding tolls ALONE do not price out a long chain: five crossings at the lowest rate anyone would sign still deliver 77% of the money, so without a cost that distance carries by itself, a long chain stays profitable and the roadmap\'s own success metric fails. Measured: 0.25 is the LOWEST baseline at which all three modes still fail the five-hop test, which is why it is not lower.',
+  },
+  'transit.railFrictionMult': {
+    v: 0.6, min: 0.1, max: 1, step: 0.05, group: 'Trade',
+    label: 'Crossing by rail costs this much of a road crossing',
+    doc: 'Rail is cheaper than road per ton-mile and always has been. At 0.6 a shipment keeps 81% across a rail border against 71% across a road one, which is enough to make a nation prefer the railway and to make a neighbour who holds one worth more.',
+  },
+  'transit.waterFrictionMult': {
+    v: 0.45, min: 0.1, max: 1, step: 0.05, group: 'Trade',
+    label: 'Crossing by water costs this much of a road crossing',
+    doc: 'Water is the cheapest way to move heavy goods by a wide margin, which is the whole reason the river network matters (see F6). At 0.45 a shipment keeps 84% across a water border. It is not lower because below about 0.45 a five-crossing water chain starts beating a direct sale abroad, and the roadmap says a long chain must never pay.',
+  },
+  'transit.partnerDiscount': {
+    v: 0.5, min: 0, max: 1, step: 0.05, group: 'Trade',
+    label: 'Toll discount for a nation you already trade with',
+    doc: 'How much cheaper a corridor is when the two nations also hold a live trade deal. The owner\'s figure for the alpha. It is the cheapest possible test of an idea worth far more work later: that a corridor should be a bargaining chip inside a trade negotiation rather than a separate transaction. If holding a deal and a corridor with the same neighbour turns out to be interesting, the full version (FUTURE-IDEAS F8 and F11) is worth building; if not, this cost almost nothing to find out.',
   },
   'transit.maxHops': {
     v: 3, min: 1, max: 6, step: 1, group: 'Trade',

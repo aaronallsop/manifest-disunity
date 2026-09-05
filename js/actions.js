@@ -293,6 +293,15 @@ const Actions = (function () {
    *               fallback and a well-matched neighbour is the skilled play.
    */
   const TRADE_GAIN = () => TUNE.get('trade.gain');
+  /** A name a person would use, for a nation or for a place that is not one. */
+  const nodeLabel = (id) => {
+    if (typeof Transit === 'undefined') return id;
+    if (id === Transit.CANADA) return 'Canada';
+    if (id === Transit.MEXICO) return 'Mexico';
+    if (id === Transit.WORLD) return 'the world market';
+    const n = Game.getNation(id);
+    return n ? n.name : id;
+  };
   // transit routing: a landlocked nation reaches the market through a neighbour
   // that has export access; the transit nation takes a toll, discounted by the
   // corridor it controls (rail beats highway).
@@ -448,6 +457,30 @@ const Actions = (function () {
     return flows;
   }
 
+  /*
+   * THE WAY OUT, WHOEVER OWNS IT (A2b).
+   *
+   * The three external buttons used to be gated on holding a port or a border
+   * crossing YOURSELF, which is why fourteen of sixty nations could not sell
+   * abroad at all — not badly placed, simply excluded. Now the same question is
+   * asked of the corridor graph, so a nation that has bought passage across a
+   * neighbour reaches the same markets, minus what the journey costs.
+   *
+   * STRICTLY A WIDENING. A nation with its own port still routes with nobody in
+   * between and keeps exactly 1.0, so nothing that could already sell abroad
+   * sells for a different number. That is what makes this safe to ship without
+   * re-tuning the external economy, and it is why the one-off sale itself is
+   * left exactly as it was.
+   */
+  const EXTERNAL_NODE = { Canada: 'CANADA', Mexico: 'MEXICO', world: 'WORLD' };
+  function externalRoute(nid, key) {
+    if (typeof Transit === 'undefined') return null;
+    const node = Transit[EXTERNAL_NODE[key]];
+    if (!node) return null;
+    if (Transit.modesBetween(nid, node)) return { hops: [], keep: 1, legs: [] };
+    return Transit.find(nid, node, { permit: Transit.permitFor(nid) });
+  }
+
   function renderTradePrompt() {
     const n = Game.getNation(A.nid);
     const acc = nationExportAccess(A.nid);
@@ -456,9 +489,14 @@ const Actions = (function () {
     const cd = (key) => tradeCooldownLeft(A.nid, key);
     const extBtn = (id, key, label, enabled, why) => {
       const left = cd(key);
-      const off = !enabled || left > 0;
+      const route = externalRoute(A.nid, key);
+      const off = !(enabled || route) || left > 0;
       const title = left > 0 ? `Recently traded — ${left} more world ${plural(left, 'turn', 'turns')}` : why;
-      return `<button class="btn ghost" id="${id}" ${off ? `disabled title="${title}"` : ''}>${label}${left > 0 ? ` <span class="act-note">${left}</span>` : ''}</button>`;
+      // When the way out is somebody else's, say whose and what it costs.
+      const via = !enabled && route && route.hops.length
+        ? ` <span class="act-note">via ${escapeHtml(route.hops.map((h) => nodeLabel(h.node)).join(', '))} &middot; ${Math.round(route.keep * 100)}%</span>`
+        : '';
+      return `<button class="btn ghost" id="${id}" ${off ? `disabled title="${title}"` : ''}>${label}${via}${left > 0 ? ` <span class="act-note">${left}</span>` : ''}</button>`;
     };
     const ext = `
       <div class="label" style="margin-top:10px">External partners &middot; via export points</div>
@@ -469,7 +507,8 @@ const Actions = (function () {
       </div>
       <div class="geo-row"><span>External sales pay <strong>${Math.round(penalty * 100)}%</strong> of the bilateral rate &mdash; volume without margin.</span></div>
       <div class="geo-row"><span>Export capacity</span><strong>${fmtGdp(cap.total * 1e6)} / turn</strong></div>
-      ${acc.any ? '' : '<div class="warn-box">⛔ Landlocked &mdash; no port or Canada/Mexico gateway. Route through a neighbour below.</div>'}`;
+      ${acc.any || externalRoute(A.nid, 'world') || externalRoute(A.nid, 'Canada') || externalRoute(A.nid, 'Mexico')
+        ? '' : '<div class="warn-box">⛔ Landlocked &mdash; no port, no border crossing, and nobody will carry your goods. Ask a neighbour for a corridor below.</div>'}`;
 
     /*
      * Transit needs a REAL shared border and a REAL corridor.
@@ -819,7 +858,14 @@ const Actions = (function () {
     const res = applyCapacity(exportFlows(S), nationTradeCapacity(S).total);
     const flows = res.flows, total = res.total;
     const penalty = TUNE.get('trade.worldMarketPenalty');
-    const gain = total * TRADE_GAIN() * penalty * marketRate(S);
+    /*
+     * The journey comes off the sale exactly as it comes off a deal: `keep` is
+     * 1.0 when the nation reaches the market on its own ground, so a coastal
+     * nation's export income is byte-for-byte what it was before A2b.
+     */
+    const route = externalRoute(S, key);
+    const carriage = route ? route.keep : 1;
+    const gain = total * TRADE_GAIN() * penalty * marketRate(S) * carriage;
     const rows = flows.slice().sort((a, b) => b.value - a.value)
       .map((f) => `<div class="geo-row"><span><i class="econ-dot" style="background:${MapModes.ECON_COLORS[f.i]}"></i>${f.s} &rarr; export</span>
         <strong>${fmtGdp(f.value * 1e6)}</strong></div>`)
@@ -833,6 +879,11 @@ const Actions = (function () {
       ${capacityNote(S, res)}
       ${smugglingNote(S)}
       <div class="stat"><div class="label">Exported value</div><div class="value">${fmtGdp(total * 1e6)}</div></div>
+      ${route && route.hops.length ? `<div class="stat"><div class="label">Getting there</div>
+        <div class="value deficit">&minus;${Math.round((1 - carriage) * 100)}%</div>
+        ${route.legs.map((l) => `<div class="geo-row"><span>${escapeHtml(nodeLabel(l.node))}${
+          l.transfer ? '' : ' &mdash; a cost nobody collects'}</span>
+          <strong>${Math.round(l.rate * 100)}%</strong></div>`).join('')}</div>` : ''}
       <div class="stat"><div class="label">Your treasury income</div><div class="value surplus">+${fmtGdp(gain * 1e6)}</div></div>
       <div class="btn-row">
         <button class="btn ghost" id="a-back">Back</button>
