@@ -8,7 +8,7 @@ M8.2 are prerequisites the later tasks silently corrupt without, and the boot-se
 Companion documents:
 - `DESIGN.md` — what the game is today. This milestone changes §1's opening premise; the M8 close
   rewrites the affected sections, same as every milestone before it.
-- `docs/DECISIONS.md` — append the decisions in §2 as D-entries when they are implemented.
+- `DECISIONS.md` — append the decisions in §2 as D-entries when they are implemented.
 - The Union Audit (consulting review, 2026-08-30) — its roadmap M8–M13 renumbers to M9–M14; this
   milestone goes first because it changes the opening board every later measurement runs on.
 
@@ -138,7 +138,7 @@ cultural doc's `assign` table directly.
 
 ## 2. Decisions settled up front
 
-Append these to `docs/DECISIONS.md` as they land; flag disagreement before implementing, not after.
+Append these to `DECISIONS.md` as they land; flag disagreement before implementing, not after.
 
 - **D-M8a — The scenario is authored content, applied by one DOM-free module.**
   `content/scenario-shattered.json` (nations, seats, cession rules, sentiment boosts, relations
@@ -401,7 +401,7 @@ scenario's edition.
 > shattered board, and write tests/scenario.test.js running the invariants suite under
 > bootWorld({scenario}) plus roster shape, no-duplicate-declarations over 60 turns, and the
 > 61-nation round-time measurement. Rewrite the affected DESIGN.md sections; append the D-M8
-> entries to docs/DECISIONS.md.
+> entries to DECISIONS.md.
 
 ---
 

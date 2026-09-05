@@ -1,0 +1,372 @@
+<title>Manifest Disunity Control Board</title>
+<!--
+  CONTROL BOARD TEMPLATE
+  ======================
+  Copy this file to docs/control-board/board.html in the project, then edit ONLY the
+  BOARD object in the <script> at the bottom. The markup renders itself from that data.
+  Do not hand-edit the HTML sections.
+
+  Publish with the Artifact tool:
+    file_path: docs/control-board/board.html
+    capabilities: { db: {} }
+    favicon: "🎛️"       (first publish only)
+    url: <the address in docs/control-board/BOARD-URL.md>   (every publish after the first)
+
+  Saved records the owner writes, which you read at the start of every session:
+    read_db  db_op:"list"  collection:"decisions"          -> one doc per decision id
+                                                              { status: "approved"|"commented", note, at }
+    read_db  db_op:"get"   collection:"settings" doc_id:"permissions"
+                                                           -> { map: { <permission id>: true|false }, at }
+    comments                                               -> threads the owner sent to Claude
+
+  Rules that live in the data, not the markup:
+    - Decision ids are PERMANENT. Never rename one; a new decision gets a new id.
+    - Every figure in `figures` and `numbers` is measured this session or shown as null
+      (renders as "not yet measured").
+    - No file paths, function names or ticket numbers anywhere in BOARD.
+-->
+<style>
+  :root {
+    --bg: #f6f5f2; --panel: #ffffff; --ink: #1c1b19; --muted: #6b6862; --line: #e2dfd8;
+    --accent: #2d5be3; --ok: #1f7a3f; --warn: #b8860b; --bad: #b3261e; --bad-bg: #fbeae8;
+    --ok-bg: #e7f5ec; --warn-bg: #fbf3dd; --chip: #eeece7;
+  }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+    --bg: #141412; --panel: #1e1d1a; --ink: #ece9e2; --muted: #a09c93; --line: #33312c;
+    --accent: #7ea1ff; --ok: #6fce8c; --warn: #e2b74a; --bad: #ff7b72; --bad-bg: #3a1c19;
+    --ok-bg: #16301f; --warn-bg: #352c12; --chip: #2a2925;
+  } }
+  :root[data-theme="dark"] {
+    --bg: #141412; --panel: #1e1d1a; --ink: #ece9e2; --muted: #a09c93; --line: #33312c;
+    --accent: #7ea1ff; --ok: #6fce8c; --warn: #e2b74a; --bad: #ff7b72; --bad-bg: #3a1c19;
+    --ok-bg: #16301f; --warn-bg: #352c12; --chip: #2a2925;
+  }
+  body { background: var(--bg); color: var(--ink); font: 15px/1.5 -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; }
+  main { max-width: 900px; margin: 0 auto; padding: 20px 16px 60px; }
+  h1 { font-size: 22px; margin: 0; }
+  h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 32px 0 10px; }
+  .masthead { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: baseline; justify-content: space-between; }
+  .updated { color: var(--muted); font-size: 13px; }
+  .figures { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-top: 14px; }
+  .fig { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; }
+  .fig b { display: block; font-size: 22px; line-height: 1.1; }
+  .fig span { color: var(--muted); font-size: 12px; }
+  .headline { margin-top: 18px; padding: 14px 16px; border-radius: 10px; border: 1px solid var(--line); background: var(--panel); font-size: 17px; }
+  .headline.bad { background: var(--bad-bg); border-color: var(--bad); }
+  .headline.warn { background: var(--warn-bg); border-color: var(--warn); }
+  .headline.ok { background: var(--ok-bg); border-color: var(--ok); }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin-bottom: 12px; }
+  .card h3 { margin: 0 0 6px; font-size: 16px; }
+  .card p { margin: 6px 0; }
+  .label { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 10px; }
+  button { font: inherit; padding: 7px 14px; border-radius: 8px; border: 1px solid var(--line); background: var(--chip); color: var(--ink); cursor: pointer; }
+  button.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  textarea { width: 100%; box-sizing: border-box; font: inherit; padding: 8px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); min-height: 60px; }
+  .answered { color: var(--ok); font-weight: 600; }
+  .rail { display: flex; gap: 6px; flex-wrap: wrap; }
+  .phase { flex: 1 1 120px; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel); font-size: 13px; }
+  .phase.done { background: var(--ok-bg); border-color: var(--ok); }
+  .phase.current { background: var(--warn-bg); border-color: var(--warn); font-weight: 600; }
+  .perm { display: flex; gap: 12px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .perm input { margin-top: 5px; transform: scale(1.3); }
+  .risk { font-size: 11px; padding: 2px 7px; border-radius: 6px; background: var(--chip); color: var(--muted); white-space: nowrap; }
+  .risk.high { background: var(--bad-bg); color: var(--bad); }
+  .risk.med { background: var(--warn-bg); color: var(--warn); }
+  table { width: 100%; border-collapse: collapse; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; font-size: 14px; }
+  th { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; }
+  .twocol { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 640px) { .twocol { grid-template-columns: 1fr; } }
+  .quote { border-left: 3px solid var(--line); padding-left: 10px; color: var(--muted); font-style: italic; }
+  .status { font-size: 13px; color: var(--muted); margin-top: 8px; min-height: 1.2em; }
+  .status.bad { color: var(--bad); }
+  .wrap { overflow-x: auto; }
+</style>
+
+<main>
+  <div class="masthead">
+    <h1 id="title"></h1>
+    <div class="updated" id="updated"></div>
+  </div>
+  <div class="figures" id="figures"></div>
+  <div class="headline" id="headline"></div>
+
+  <h2>Needs a decision from you</h2>
+  <div id="decisions"></div>
+
+  <h2>What you allow while you're away</h2>
+  <div class="card">
+    <div id="perms"></div>
+    <div class="status" id="perm-status"></div>
+  </div>
+
+  <h2>Progress</h2>
+  <div class="rail" id="rail"></div>
+
+  <h2>What was asked, and what actually happened</h2>
+  <div id="phases"></div>
+
+  <h2>Waiting on you</h2>
+  <div id="blocked"></div>
+
+  <h2>The numbers this project exists to produce</h2>
+  <div class="figures" id="numbers"></div>
+
+  <h2>What the work has found</h2>
+  <div class="wrap"><table id="log"><thead><tr><th>When</th><th>Decision made on your behalf</th><th>How it turned out</th></tr></thead><tbody></tbody></table></div>
+</main>
+
+<script>
+// ============================================================================
+// EDIT THIS OBJECT. Nothing else.
+// ============================================================================
+const BOARD = {
+  project: "Manifest Disunity",
+  updated: "2026-09-04 21:52",          // when you last republished, local time
+
+  // Three or four measured figures. value: number|string, or null = "not yet measured".
+  figures: [
+    { label: "Economy phases finished", value: "0 of 9" },
+    { label: "Tests green",             value: 846 },
+    { label: "Resources with real supply data", value: "6 of 6" },
+    { label: "Resources with a demand model",   value: "0 of 6" },
+  ],
+
+  // The single most important true thing right now. tone: "bad" | "warn" | "ok" | "neutral".
+  headline: {
+    tone: "warn",
+    text: "None of the economy is built yet. The next step is Phase 0 — instruments only, no economic "
+        + "logic — and a good part of it already exists in the game. Two things are waiting on you "
+        + "below before Phase 1 can start.",
+  },
+
+  // Only decisions that are genuinely the owner's. Ids are permanent.
+  decisions: [
+    {
+      id: "phase1-questions",
+      title: "Three questions from your own brief, needed before Phase 1",
+      evidence: "Section 9 of your economy brief lists eight questions you owe. Three of them bite at "
+              + "Phase 1: what 'population' is and whether it grows or moves; what 'economy size' means "
+              + "for the debt ceiling; and how the farm and industrial factions currently work and what "
+              + "their approval feeds into. Phase 0 does not need them. Phase 1 cannot be built without "
+              + "them, because demand for every resource is computed from population.",
+      cost: "Answering now costs you twenty minutes. Not answering stops the work after Phase 0, which "
+          + "is roughly a week of building away.",
+      recommendation: "Answer them in the note below whenever you have a clear head — before Phase 0 "
+                    + "finishes, not today. If you would rather talk them through than write them, say so "
+                    + "and we will do it in conversation.",
+    },
+    {
+      id: "main-branch",
+      title: "There is a second branch on GitHub called 'main' and I do not know what it is",
+      evidence: "Your backup has two separate lines of history that share no common ancestor. One holds "
+              + "the whole project, 77 entries long. The other holds a single entry called 'Playtest "
+              + "build'. GitHub treats the second one as the front door, which is why it keeps offering "
+              + "to merge them.",
+      cost: "If it is the hosted copy your playtesters open, deleting it breaks their link. If it is "
+          + "left over from an experiment, leaving it means anyone who opens your repository sees a "
+          + "stub instead of the project.",
+      recommendation: "Tell me which it is and I will act. If you do not know, I will investigate before "
+                    + "touching anything — I will not delete a branch that might be serving your playtest.",
+    },
+  ],
+
+  // Standing permissions. Ids are permanent. risk: "low" | "med" | "high".
+  permissions: [
+    { id: "rerun",   label: "Re-run long jobs",                     risk: "low",  desc: "Restart something that was already approved once." },
+    { id: "fix",     label: "Fix a failing check",                  risk: "low",  desc: "Change code so a test or check passes, without changing what the project produces." },
+    { id: "quality", label: "Change something that affects output", risk: "med",  desc: "Edit prompts, thresholds or settings that change the quality of the result." },
+    { id: "live",    label: "Touch anything live",                  risk: "high", desc: "Run against real data, real services, or real people." },
+  ],
+
+  // Phases. status: "done" | "current" | "todo".
+  phases: [
+    {
+      name: "Groundwork — strip the game back",
+      status: "done",
+      brief: "I want to start with building out the economy, but for that we wouldn't need politics, "
+           + "separatist movements, influence, authority, or really anything but the ability to unite, "
+           + "annex counties, and anything to do with the economy (so trade and resources).",
+      actual: "Built as a switch inside the existing game rather than a separate stripped copy, because "
+            + "a separate copy would have drifted apart from the real game within a week and could not "
+            + "be merged back. You choose Full or Economy when you start a new game, and a saved game "
+            + "remembers which one it was. Economy mode hides politics, elections, leaders, diplomacy, "
+            + "separatist movements and the standing scores, and leaves unite, annex, trade, the market "
+            + "and the treasury working. One departure worth knowing: the fractured opening map is "
+            + "physically built out of the separatist movements, so those still get created at the moment "
+            + "the world is made — they simply never grow, never break away, and are never shown. I tried "
+            + "removing that too and it broke the opening map, which is how I found out.",
+    },
+    {
+      name: "Phase 0 — Instruments and time",
+      status: "current",
+      brief: "Build: Sections 2.1, 2.2, 2.3, 2.4. Control Board capabilities listed above. No economic logic.",
+      actual: "Not started. Some of it already exists: the game already reproduces a run exactly from the "
+            + "same seed, already has a tuning file with sliders, and already explains a number by naming "
+            + "its top contributors — which is the pattern your debug overlay asks for. Missing: the turn "
+            + "has no notion of a month or a date, the headless run exports nothing you can open in a "
+            + "spreadsheet, and this board cannot yet step turns or force a state's figures. Before "
+            + "building anything I will tell you exactly which parts already exist, so you are not paying "
+            + "for work twice.",
+    },
+    { name: "Phase 1 — Autarky economy", status: "todo",
+      brief: "Band model, derived demand, national pooling. No trade of any kind. Stop condition: the numbers stop surprising the designer.",
+      actual: "Not started. Needs your three answers first." },
+    { name: "Phase 2 — Prices and the world market", status: "todo",
+      brief: "Price formula, World Market. Single abstract partner. No diplomacy, no routing, no third-party transit.",
+      actual: "Not started." },
+    { name: "Phase 3 — Deals between neighbours", status: "todo",
+      brief: "Trade Deal object, five-factor acceptance, counter-offers including duration, deal ledger, AI-initiated offers with expiry. Adjacency only — no routing through third parties.",
+      actual: "Not started." },
+    { name: "Phase 4 — Transit, tolls and the network map", status: "todo",
+      brief: "The largest phase. Build the map mode with the routing engine, not after.",
+      actual: "Not started." },
+    { name: "Phase 5 — Recognition, Canada, Mexico", status: "todo",
+      brief: "Recognition score and ramp, border-state suspicion, Canada/Mexico as partners and as corridors, gray-market trade.",
+      actual: "Not started." },
+    { name: "Phase 6 — Diplomatic teeth", status: "todo",
+      brief: "Embargo, corridor closure with notice period and reputation cost, lending, hunger-generates-claims.",
+      actual: "Not started." },
+    { name: "Phase 7 — Succession and shocks", status: "todo",
+      brief: "Treaty succession Limbo, infrastructure damage and upgrade.",
+      actual: "Not started." },
+    { name: "Phase 8 — Tuning", status: "todo",
+      brief: "Build: nothing new. Run the headless sim 20 times with varied starts and seeds.",
+      actual: "Not started." },
+  ],
+
+  // Things only the owner can supply, and what happens if a machine supplies them instead.
+  blocked: [
+    {
+      what: "The three questions above: what population is, what economy size means, and how the factions work",
+      ifAutomated: "I would pick something plausible and the whole economy would be balanced on a guess "
+                 + "you never made. Your own brief tells me to stop and ask rather than resolve this myself.",
+      damagedIfAutomated: true,
+    },
+    {
+      what: "Your written predictions before Phase 1 and Phase 3 start",
+      ifAutomated: "Your brief asks you to name, before each of those phases is built, which five states "
+                 + "should be self-sufficient and which five structurally broken, and what a given deal "
+                 + "should cost. The point is that they are written down before I build, so the result "
+                 + "can surprise you. If I write them, they are worthless — I would be marking my own work.",
+      damagedIfAutomated: true,
+    },
+    {
+      what: "Installing the GitHub command-line tool, and telling me what the second branch is",
+      ifAutomated: "I cannot confirm your backup is private without it. Your standing rules require every "
+                 + "project to be private, and right now I am reporting that as unverified rather than "
+                 + "assuming it.",
+      damagedIfAutomated: false,
+    },
+  ],
+
+  // Success metrics. value null = "not yet measured". Never an estimate.
+  numbers: [
+    { label: "100 turns run without the screen, target under 60 seconds", value: null },
+    { label: "Same seed twice, identical results", value: null },
+    { label: "States at stable equilibrium after 60 turns with no trade", value: null },
+    { label: "Bands that are reachable and visible", value: null },
+    { label: "Five-hop resale chain is unprofitable", value: null },
+  ],
+
+  // Decisions made on the owner's behalf and how they turned out. Corrections go BESIDE originals.
+  log: [
+    { when: "2026-09-04", decision: "Built the stripped-back mode as a switch inside the game rather than a separate copy.",
+      outcome: "Right call. Every test still passes and the full game is untouched, so nothing had to be merged back." },
+    { when: "2026-09-04", decision: "Also removed the separatist movements from the moment the world is created.",
+      outcome: "Wrong, and reversed the same hour. The fractured opening map is built out of those movements, so removing them broke the opening board. They are created and then frozen instead." },
+    { when: "2026-09-04", decision: "Left the army, the memory between nations, and the civil-war risk running underneath Economy mode.",
+      outcome: "Held. Annexing and uniting genuinely depend on them; stripping them would have changed what those two actions mean rather than simplifying the screen." },
+    { when: "2026-09-04", decision: "Moved the project into your programs folder and named it to match the backup.",
+      outcome: "Verified — same 997 files, full history, integrity check clean." },
+    { when: "2026-09-04", decision: "Did not open a pull request when asked, and explained why instead.",
+      outcome: "Correct. The work was already on the main line of development and the only other branch is unrelated, so there was nothing to compare." },
+  ],
+};
+// ============================================================================
+
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmt = (v) => (v === null || v === undefined || v === "") ? "not yet measured" : v;
+
+function render() {
+  document.title = BOARD.project + " — Control Board";
+  $("title").textContent = BOARD.project;
+  $("updated").textContent = "Updated " + BOARD.updated;
+  $("figures").innerHTML = BOARD.figures.map(f => `<div class="fig"><b>${esc(fmt(f.value))}</b><span>${esc(f.label)}</span></div>`).join("");
+  const h = $("headline"); h.className = "headline " + (BOARD.headline.tone || ""); h.textContent = BOARD.headline.text;
+
+  $("decisions").innerHTML = BOARD.decisions.length ? BOARD.decisions.map(d => `
+    <div class="card" data-decision="${esc(d.id)}">
+      <h3>${esc(d.title)}</h3>
+      <p><span class="label">Evidence</span><br>${esc(d.evidence)}</p>
+      <p><span class="label">Cost either way</span><br>${esc(d.cost)}</p>
+      <p><span class="label">Recommendation</span><br>${esc(d.recommendation)}</p>
+      <div class="answer"></div>
+      <textarea placeholder="Your note (optional)"></textarea>
+      <div class="row"><button class="primary" data-act="approved">Approve</button><button data-act="commented">Comment</button></div>
+      <div class="status"></div>
+    </div>`).join("") : `<div class="card"><p>Nothing is waiting on you. That is the correct state.</p></div>`;
+
+  $("perms").innerHTML = BOARD.permissions.map(p => `
+    <label class="perm"><input type="checkbox" data-perm="${esc(p.id)}">
+      <div><b>${esc(p.label)}</b> <span class="risk ${esc(p.risk)}">${esc(p.risk)} risk</span><br><span style="color:var(--muted)">${esc(p.desc)}</span></div></label>`).join("");
+
+  $("rail").innerHTML = BOARD.phases.map(p => `<div class="phase ${esc(p.status)}">${esc(p.name)}</div>`).join("");
+  $("phases").innerHTML = BOARD.phases.map(p => `
+    <div class="card"><h3>${esc(p.name)}</h3><div class="twocol">
+      <div><span class="label">The brief said</span><p class="quote">${esc(p.brief)}</p></div>
+      <div><span class="label">What actually happened</span><p>${esc(p.actual)}</p></div></div></div>`).join("");
+
+  $("blocked").innerHTML = BOARD.blocked.length ? BOARD.blocked.map(b => `
+    <div class="card"><h3>${esc(b.what)}</h3><p><span class="label">If a machine supplies it instead</span><br>${esc(b.ifAutomated)}
+    ${b.damagedIfAutomated ? ' <span class="risk high">actively damaged if automated</span>' : ''}</p></div>`).join("")
+    : `<div class="card"><p>Nothing is blocked on you.</p></div>`;
+
+  $("numbers").innerHTML = BOARD.numbers.map(n => `<div class="fig"><b>${esc(fmt(n.value))}</b><span>${esc(n.label)}</span></div>`).join("");
+  $("log").querySelector("tbody").innerHTML = BOARD.log.length ? BOARD.log.map(l =>
+    `<tr><td>${esc(l.when)}</td><td>${esc(l.decision)}</td><td>${esc(l.outcome)}</td></tr>`).join("")
+    : `<tr><td colspan="3" style="color:var(--muted)">Nothing recorded yet.</td></tr>`;
+}
+
+// ---- persistence (db capability) -------------------------------------------
+let db = null;
+async function wire() {
+  render();
+  try { db = await claude.use("db"); } catch (e) { db = null; }
+  const ps = $("perm-status");
+  if (!db) {
+    ps.className = "status bad";
+    ps.textContent = "Saving is unavailable in this view. Your ticks and answers will NOT be recorded.";
+    document.querySelectorAll("[data-decision] .status").forEach(s => { s.className = "status bad"; s.textContent = "Saving unavailable — your answer will not reach Claude."; });
+    return;
+  }
+  // permissions
+  const permRef = db.doc("settings/permissions");
+  permRef.onSnapshot(snap => {
+    const map = (snap.exists && snap.data().map) || {};
+    document.querySelectorAll("[data-perm]").forEach(cb => { cb.checked = !!map[cb.dataset.perm]; });
+    ps.className = "status"; ps.textContent = snap.exists ? "Saved " + (snap.data().at || "") : "Nothing saved yet.";
+  }, e => { ps.className = "status bad"; ps.textContent = "Could not load saved permissions (" + e.code + ")."; });
+  document.querySelectorAll("[data-perm]").forEach(cb => cb.addEventListener("change", async () => {
+    const map = {}; document.querySelectorAll("[data-perm]").forEach(c => map[c.dataset.perm] = c.checked);
+    try { await permRef.set({ map, at: new Date().toISOString() }); ps.className = "status"; ps.textContent = "Saved."; }
+    catch (e) { ps.className = "status bad"; ps.textContent = "Not saved (" + e.code + "). Try again."; }
+  }));
+  // decisions
+  document.querySelectorAll("[data-decision]").forEach(card => {
+    const id = card.dataset.decision, ref = db.doc("decisions/" + id);
+    const st = card.querySelector(".status"), ans = card.querySelector(".answer"), ta = card.querySelector("textarea");
+    ref.onSnapshot(snap => {
+      if (snap.exists) { const d = snap.data(); ans.innerHTML = `<p class="answered">You ${esc(d.status)} this on ${esc((d.at||"").slice(0,16).replace("T"," "))}${d.note ? " — “" + esc(d.note) + "”" : ""}</p>`; }
+      else ans.innerHTML = "";
+    }, e => { st.className = "status bad"; st.textContent = "Could not load your answer (" + e.code + ")."; });
+    card.querySelectorAll("[data-act]").forEach(btn => btn.addEventListener("click", async () => {
+      try { await ref.set({ status: btn.dataset.act, note: ta.value.trim(), at: new Date().toISOString() }); st.className = "status"; st.textContent = "Saved. Claude will read this at the start of the next session."; ta.value = ""; }
+      catch (e) { st.className = "status bad"; st.textContent = "Not saved (" + e.code + "). Try again."; }
+    }));
+  });
+}
+wire();
+</script>

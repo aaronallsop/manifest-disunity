@@ -359,7 +359,7 @@ Done in the order **M3.4 -> M3.1 -> M3.2 -> M3.3**, because the plan lists M3.4'
       since M1 is gone.
 - [x] **M7 close (b)** `DESIGN.md` rewritten for a game with diplomacy, elections, migration and a
       limit on how far anybody can reach; `README.md`'s module map brought up to date; and
-      `docs/DECISIONS.md` given the fifteen entries M6.5 through M7.12 never got.
+      `DECISIONS.md` given the fifteen entries M6.5 through M7.12 never got.
 
 ---
 
@@ -414,7 +414,7 @@ Done in the order **M3.4 -> M3.1 -> M3.2 -> M3.3**, because the plan lists M3.4'
       matching Victory's row count, dev.html verdict cards re-baselined for both boards, and
       `tests/scenario.test.js` — 29 tests running the invariants under the shattered fixture plus
       what is particular to it. **824 tests green.** `DESIGN.md` §1 and a new §2.1 rewritten;
-      `docs/DECISIONS.md` given D131–D140.
+      `DECISIONS.md` given D131–D140.
 
 ---
 
@@ -450,7 +450,7 @@ errors and 2 warnings (both of them data-vintage notes with no fix that is not a
 fresh shattered boot plays 60 turns in the browser with an empty console. `DESIGN.md` was rewritten at the M7 close: §4.1 is five stocks, §6.4 is reach,
 §6.5 is relations, coalitions and recognition, §6.6 is leaders, crises and elections, §7.6 is
 migration, and §12 is now an account of where the model stops rather than a queue.
-`docs/DECISIONS.md` carries D116–D130 for M6.5 through the close.
+`DECISIONS.md` carries D116–D130 for M6.5 through the close.
 
 What a next pass would take up, in the order the evidence argues for it: **per-Area power
 stocks** (the one structural gap left, and the thing that would give migration and the diffusion
@@ -532,7 +532,7 @@ it.
 ## M9 — the seams
 
 Every confirmed gap between what the game shows and what it does, closed. Nothing new; everything
-honest. `docs/AUDIT-PLAN.md` §3 is the milestone; `docs/DECISIONS.md` D142–D149 are the arguments.
+honest. `docs/AUDIT-PLAN.md` §3 is the milestone; `DECISIONS.md` D142–D149 are the arguments.
 
 **M9.1 — the duplicate tunable.** `econ.occupationHostility` was defined twice, and the two
 definitions carried different values: the M0.3 placeholder (`v: 1.0`, one-line doc) sat below the

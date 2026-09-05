@@ -21,9 +21,9 @@ until it is done.
 DO NOT ASK ME ANYTHING. Not for clarification, not for approval, not for a design preference, not
 to confirm a deletion, not to pick between two reasonable options, not at the end of a milestone.
 Every decision in this project is yours to make. If two approaches are defensible, pick the one
-that better serves docs/REBUILD-PLAN.md's stated architecture, write one line in docs/DECISIONS.md
+that better serves docs/REBUILD-PLAN.md's stated architecture, write one line in DECISIONS.md
 saying what you chose and why, and keep going. If something in the plan turns out to be wrong when
-you meet the real code, fix the plan, note it in docs/DECISIONS.md, and keep going. Silence from me
+you meet the real code, fix the plan, note it in DECISIONS.md, and keep going. Silence from me
 is not a blocker — it is the mode.
 
 Do not stop to summarise progress and wait. Do not end a turn with a question. When you finish a
@@ -114,8 +114,8 @@ Do not mark a task complete on the strength of "the code looks right". Load it a
 - A test fails: fix the cause, not the test. If the test itself is wrong, fix the test and say so
   in the commit message.
 - A task is much bigger than the plan implies: split it into sub-tasks in docs/PROGRESS.md, do them
-  all, and note the split in docs/DECISIONS.md. Never abandon a milestone half-done.
-- You hit something genuinely ambiguous: choose, record it in docs/DECISIONS.md, move on.
+  all, and note the split in DECISIONS.md. Never abandon a milestone half-done.
+- You hit something genuinely ambiguous: choose, record it in DECISIONS.md, move on.
 - You break something badly: `git diff`, `git stash` or revert to the last good commit and redo the
   task differently. This is exactly why M0.1 comes first.
 - You run low on context: update docs/PROGRESS.md with precise state — which task, what is done,
@@ -125,7 +125,7 @@ Do not mark a task complete on the strength of "the code looks right". Load it a
 ## Keep these three files current as you go
 
 - docs/PROGRESS.md — the checklist, ticked as you complete tasks, with a one-line note per task.
-- docs/DECISIONS.md — every judgment call you made instead of asking me, with the reason.
+- DECISIONS.md — every judgment call you made instead of asking me, with the reason.
 - DESIGN.md — updated at the end of each milestone to describe the game as it actually is then.
   It is meant to be the single source of truth and it is currently stale in three places; do not
   let it go stale again.

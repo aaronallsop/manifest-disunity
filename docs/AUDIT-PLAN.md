@@ -11,7 +11,7 @@ tasks with **acceptance criteria this project can actually check** — measured 
 tests, in the house style.
 
 Companion documents: `docs/REBUILD-PLAN.md` (M0–M7), `docs/SHATTER-PLAN.md` (M8), `DESIGN.md` (the
-model), `docs/DECISIONS.md` (D1–D141).
+model), `DECISIONS.md` (D1–D141).
 
 ---
 
@@ -239,7 +239,7 @@ retention."*
       `<script>` tags. A missing script should be a `ReferenceError` naming the file, not a silent
       behaviour change. (`js/menu.js` was written with none, deliberately; it is the pattern.)
 
-**Status: complete.** All eight tasks landed; D142–D149 in `docs/DECISIONS.md`, the account in
+**Status: complete.** All eight tasks landed; D142–D149 in `DECISIONS.md`, the account in
 `docs/PROGRESS.md`. The re-bake also cost seven test failures, none of them regressions and only two
 of them re-pins — the other five were tests making claims their measurements could not support, and
 fixing those is the durable half of the milestone.

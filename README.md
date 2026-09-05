@@ -123,5 +123,5 @@ replaced them, fetched from TIGERweb. See `js/geo-ct.js` for why that is more wo
 - `DESIGN.md` — what the game is, now
 - `docs/REBUILD-PLAN.md` — the milestone plan being worked through
 - `docs/PROGRESS.md` — which tasks are done
-- `docs/DECISIONS.md` — every judgment call and its reason
+- `DECISIONS.md` — every judgment call and its reason
 - `docs/CODE-REVIEW.md` and `docs/CODE-REVIEW-FINDINGS.md` — the review the plan came from
