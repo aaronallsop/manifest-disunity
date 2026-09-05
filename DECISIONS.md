@@ -2297,3 +2297,32 @@ numbers track here instead.
 Control Board checkpoint has been approved in writing. The brief already requires that approval; this
 makes the version history the record of it, so a future session can read the tags and know which
 phases were genuinely signed off rather than merely finished.
+
+### D162 — Three rulings from Aaron before Phase 0
+
+**The Control Board does not drive the game.** The economy brief's Phase 0 asks for the Control Board
+to step turns, fast-forward, force a state's resource supply and force a conquest. Aaron has ruled
+that this was a mistake in the brief: the Control Board is where he reads progress and answers
+decisions, nothing more. The game is played in a browser as it always has been.
+
+Those testing controls therefore belong to the game's own developer dashboard, behind the existing
+dev flag, which already carries the tuning sliders and a manual step-one-turn button. The two are
+different instruments with different session lengths — the board is read once and closed, the
+dashboard is poked for twenty minutes beside the map it is poking. This is a departure from
+`docs/spec/economy-system-spec.md` and the spec has not been altered, because it is authoritative and
+Aaron's; this entry is the correction of record.
+
+**The game starts on 1 March 2036.** One turn is one month, so turn 1 is March 2036 and the second
+day of play is the bicentenary of Texas declaring itself a nation. The date is not decoration: it
+gives the opening board a reason to be the day it is, and every turn counter in the game now reads as
+a date somebody could put on a newspaper.
+
+**One tuning file, not two.** The economy's constants — band thresholds, base prices, price
+coefficients, toll multipliers, demand coefficients, recognition thresholds, storage capacities — go
+into the tuning file the game already has, rather than a second file beside it. Two files means two
+places the truth lives and eventually they disagree, and the disagreement is silent: the game reads
+one and the designer edits the other.
+
+**Rejected:** a separate `economy.tuning.json` on the grounds that it would be tidier to hand to a
+designer. Tidiness is not worth a second source of truth, and the existing file already carries every
+other model constant with a name, a range and a comment.

@@ -37,6 +37,15 @@ they lost.
   nothing in a later phase starts until Aaron has verified the previous one on the Control Board in
   writing. When something in the brief is ambiguous, stop and ask — do not pick something reasonable
   and carry on.
+- **The Control Board never drives the game.** It is where Aaron reads progress and answers
+  decisions. It cannot reach a running game and must not be built to try. Every testing control —
+  step a turn, fast-forward, force a state's figures, run the simulation, choose a seed — belongs to
+  the game's own developer dashboard behind the dev flag. The economy brief says otherwise in its
+  Phase 0; the brief is wrong on this point and Aaron has ruled so (D162). Do not re-raise it.
+- **One turn is one month, and the game opens on 1 March 2036** — the eve of two hundred years since
+  Texas declared itself a nation.
+- **There is one tuning file.** Every model constant the economy needs joins the constants already
+  there. Never create a second tuning file (D162).
 
 ## Versions
 

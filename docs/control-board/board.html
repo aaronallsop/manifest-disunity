@@ -123,11 +123,12 @@
 // ============================================================================
 const BOARD = {
   project: "Manifest Disunity",
-  updated: "2026-09-04 21:52",          // when you last republished, local time
+  updated: "2026-09-04 22:22",          // when you last republished, local time
 
   // Three or four measured figures. value: number|string, or null = "not yet measured".
   figures: [
     { label: "Economy phases finished", value: "0 of 9" },
+    { label: "Current version",         value: "v0.2" },
     { label: "Tests green",             value: 846 },
     { label: "Resources with real supply data", value: "6 of 6" },
     { label: "Resources with a demand model",   value: "0 of 6" },
@@ -136,39 +137,32 @@ const BOARD = {
   // The single most important true thing right now. tone: "bad" | "warn" | "ok" | "neutral".
   headline: {
     tone: "warn",
-    text: "None of the economy is built yet. The next step is Phase 0 — instruments only, no economic "
-        + "logic — and a good part of it already exists in the game. Two things are waiting on you "
-        + "below before Phase 1 can start.",
+    text: "None of the economy is built yet, and one line of your Phase 0 checkpoint cannot be ticked "
+        + "at Phase 0 — it asks you to verify a display of demand, ratios and bands, none of which "
+        + "exist until Phase 1. Everything else that was blocking a start is now answered. A survey of "
+        + "what the game already has is running, so nothing gets built twice.",
   },
 
   // Only decisions that are genuinely the owner's. Ids are permanent.
   decisions: [
     {
-      id: "phase1-questions",
-      title: "Three questions from your own brief, needed before Phase 1",
-      evidence: "Section 9 of your economy brief lists eight questions you owe. Three of them bite at "
-              + "Phase 1: what 'population' is and whether it grows or moves; what 'economy size' means "
-              + "for the debt ceiling; and how the farm and industrial factions currently work and what "
-              + "their approval feeds into. Phase 0 does not need them. Phase 1 cannot be built without "
-              + "them, because demand for every resource is computed from population.",
-      cost: "Answering now costs you twenty minutes. Not answering stops the work after Phase 0, which "
-          + "is roughly a week of building away.",
-      recommendation: "Answer them in the note below whenever you have a clear head — before Phase 0 "
-                    + "finishes, not today. If you would rather talk them through than write them, say so "
-                    + "and we will do it in conversation.",
-    },
-    {
-      id: "main-branch",
-      title: "There is a second branch on GitHub called 'main' and I do not know what it is",
-      evidence: "Your backup has two separate lines of history that share no common ancestor. One holds "
-              + "the whole project, 77 entries long. The other holds a single entry called 'Playtest "
-              + "build'. GitHub treats the second one as the front door, which is why it keeps offering "
-              + "to merge them.",
-      cost: "If it is the hosted copy your playtesters open, deleting it breaks their link. If it is "
-          + "left over from an experiment, leaving it means anyone who opens your repository sees a "
-          + "stub instead of the project.",
-      recommendation: "Tell me which it is and I will act. If you do not know, I will investigate before "
-                    + "touching anything — I will not delete a branch that might be serving your playtest.",
+      id: "factions-approval",
+      title: "Your brief angers farmers and industrialists who do not exist",
+      evidence: "The brief says a food glut collapses farm-gate prices and drops farm faction approval, "
+              + "and that a manufacturing glut drops industrial faction approval. I searched the design "
+              + "document and the whole game: there is no farm faction, no industrial faction, and no "
+              + "faction approval of any kind. The word 'faction' is already taken here — it means a "
+              + "nation you can choose to play, rated by how hard it is. So those two consequences "
+              + "currently have nothing to land on.",
+      cost: "Building a faction layer is real work and a new system to understand — it is the kind of "
+          + "thing that made the game hard to read in the first place. Attaching the consequence to "
+          + "something that already exists is nearly free, but it is a weaker story: 'the country is "
+          + "unhappy' says less than 'the farmers are furious with you'.",
+      recommendation: "For now, land both consequences on things that already exist — a glut hits the "
+                    + "money and the general mood rather than a named group — and treat farm and "
+                    + "industrial factions as a later decision once you have played the economy and know "
+                    + "whether you miss them. If you would rather have the factions from the start, say "
+                    + "so and I will scope them properly before Phase 1 rather than bolting them on.",
     },
   ],
 
@@ -202,17 +196,23 @@ const BOARD = {
       name: "Phase 0 — Instruments and time",
       status: "current",
       brief: "Build: Sections 2.1, 2.2, 2.3, 2.4. Control Board capabilities listed above. No economic logic.",
-      actual: "Not started. Some of it already exists: the game already reproduces a run exactly from the "
-            + "same seed, already has a tuning file with sliders, and already explains a number by naming "
-            + "its top contributors — which is the pattern your debug overlay asks for. Missing: the turn "
-            + "has no notion of a month or a date, the headless run exports nothing you can open in a "
-            + "spreadsheet, and this board cannot yet step turns or force a state's figures. Before "
-            + "building anything I will tell you exactly which parts already exist, so you are not paying "
-            + "for work twice.",
+      actual: "Not started, but no longer blocked. You have settled three things: the testing controls "
+            + "belong to the game's own developer dashboard rather than to this board, which cannot reach "
+            + "a running game; the game opens on 1 March 2036, the eve of two hundred years since Texas "
+            + "declared itself a nation; and the economy's numbers join the single tuning file that "
+            + "already exists rather than a second one beside it. A survey of what the game already has "
+            + "is running now — the turn has no calendar and the simulation exports nothing you could "
+            + "open in a spreadsheet, but several other pieces may already be built, and I will tell you "
+            + "which before starting so you do not pay for anything twice. One warning: your Phase 0 "
+            + "checkpoint asks you to verify a display of demand, ratios and bands, and none of those "
+            + "exist until Phase 1 — that line will have to be ticked then, not now.",
     },
     { name: "Phase 1 — Autarky economy", status: "todo",
       brief: "Band model, derived demand, national pooling. No trade of any kind. Stop condition: the numbers stop surprising the designer.",
-      actual: "Not started. Needs your three answers first." },
+      actual: "Not started. Two of the three questions it needed are answered — population is real census "
+            + "data that both grows and migrates, and economy size is the output figure the game already "
+            + "computes. The third is the factions question above. Still needs your written predictions "
+            + "before building starts." },
     { name: "Phase 2 — Prices and the world market", status: "todo",
       brief: "Price formula, World Market. Single abstract partner. No diplomacy, no routing, no third-party transit.",
       actual: "Not started." },
@@ -239,12 +239,6 @@ const BOARD = {
   // Things only the owner can supply, and what happens if a machine supplies them instead.
   blocked: [
     {
-      what: "The three questions above: what population is, what economy size means, and how the factions work",
-      ifAutomated: "I would pick something plausible and the whole economy would be balanced on a guess "
-                 + "you never made. Your own brief tells me to stop and ask rather than resolve this myself.",
-      damagedIfAutomated: true,
-    },
-    {
       what: "Your written predictions before Phase 1 and Phase 3 start",
       ifAutomated: "Your brief asks you to name, before each of those phases is built, which five states "
                  + "should be self-sufficient and which five structurally broken, and what a given deal "
@@ -253,10 +247,19 @@ const BOARD = {
       damagedIfAutomated: true,
     },
     {
-      what: "Installing the GitHub command-line tool, and telling me what the second branch is",
+      what: "Installing the GitHub command-line tool",
       ifAutomated: "I cannot confirm your backup is private without it. Your standing rules require every "
                  + "project to be private, and right now I am reporting that as unverified rather than "
-                 + "assuming it.",
+                 + "assuming it. Everything else about the backup is confirmed working.",
+      damagedIfAutomated: false,
+    },
+    {
+      what: "Saying when playtesters should move from v0.1 to v0.2",
+      ifAutomated: "Publishing to your playtest link changes what other people receive, so I will not do "
+                 + "it without you saying so. The link currently serves the prototype from 3 September. "
+                 + "The stripped-back Economy build is finished and would test the exact question that "
+                 + "started this work — whether the game becomes legible with politics and separatists "
+                 + "taken off the table.",
       damagedIfAutomated: false,
     },
   ],
@@ -282,6 +285,12 @@ const BOARD = {
       outcome: "Verified — same 997 files, full history, integrity check clean." },
     { when: "2026-09-04", decision: "Did not open a pull request when asked, and explained why instead.",
       outcome: "Correct. The work was already on the main line of development and the only other branch is unrelated, so there was nothing to compare." },
+    { when: "2026-09-04", decision: "Answered two of the three questions your brief said you owed, by reading your own documentation rather than asking you.",
+      outcome: "Right to check first. Population and economy size were both already documented and did not need your time. The third question turned out to be larger than the brief assumed and is now the only card above." },
+    { when: "2026-09-04", decision: "Recorded that this board must never be built to drive the game, after you ruled the brief was wrong on that point.",
+      outcome: "Written into the project rules so no future session re-raises it or tries to build it." },
+    { when: "2026-09-04", decision: "Numbered the prototype v0.1 rather than giving the first number to the work in progress.",
+      outcome: "Holds. The build your testers are holding now has a name, so anything they report about it can be traced to exactly what they played." },
   ],
 };
 // ============================================================================
