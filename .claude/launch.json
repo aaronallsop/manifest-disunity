@@ -6,6 +6,12 @@
       "runtimeExecutable": "python",
       "runtimeArgs": ["server.py", "--port", "8000"],
       "port": 8000
+    },
+    {
+      "name": "playtest-build",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8001", "--directory", "dist/playtest"],
+      "port": 8001
     }
   ]
 }
