@@ -123,13 +123,13 @@
 // ============================================================================
 const BOARD = {
   project: "Manifest Disunity",
-  updated: "2026-09-05 11:00",          // when you last republished, local time
+  updated: "2026-09-05 11:40",          // when you last republished, local time
 
   // Three or four measured figures. value: number|string, or null = "not yet measured".
   figures: [
-    { label: "Alpha-track stages done",  value: "A0 of A0–A4" },
+    { label: "Alpha-track stages done",  value: "A0–A1 of A0–A4" },
     { label: "Current version",         value: "v0.3" },
-    { label: "Tests green",             value: 885 },
+    { label: "Tests green",             value: 889 },
     { label: "Industry figures that are real, today",   value: "0%" },
     { label: "Industry figures real after the re-bake", value: "84%" },
   ],
@@ -137,12 +137,12 @@ const BOARD = {
   // The single most important true thing right now. tone: "bad" | "warn" | "ok" | "neutral".
   headline: {
     tone: "ok",
-    text: "A trade is now a contract. You pick a partner and a length \u2014 six months, a year, two "
-        + "years, five \u2014 and the money arrives every quarter until it runs out, at the price you "
-        + "signed at whatever the market does afterwards. When it ends, the other side comes back "
-        + "and asks again, and you decide. It works: 885 checks pass and I have played it. Two "
-        + "pieces of the stage are still missing and they are named below. Nothing is waiting on "
-        + "you.",
+    text: "A1 is done. A trade is a contract now: you propose a length, the other side accepts it "
+        + "or counters with the one it wants and tells you why, and the money arrives every quarter "
+        + "until it runs out. There is a deals screen listing everything you have signed. 889 "
+        + "checks pass and I have played it. One correction is in the record below \u2014 I told you a "
+        + "long deal was a bet on the market, and when I measured it, it is not: prices barely move. "
+        + "Next is transit and tolls, the biggest stage left. Nothing is waiting on you.",
   },
 
   // Only decisions that are genuinely the owner's. Ids are permanent.
@@ -191,7 +191,7 @@ const BOARD = {
     },
     {
       name: "A1 — Deals with terms",
-      status: "current",
+      status: "done",
       brief: "A trade becomes a standing agreement rather than a single click with a cooldown. Durations "
            + "of six months to five years, counter-offers that can change duration, expiry that prompts "
            + "renegotiation with countdowns, and a ledger of active deals and open offers.",
@@ -213,12 +213,21 @@ const BOARD = {
             + "four-year agreement with me without asking. Harmless when a trade was one click, not "
             + "harmless when it holds your goods for a year \u2014 so a nation that wants a deal with "
             + "you now has to ask, and you get a card. They still deal with each other directly.\n\n"
-            + "STILL MISSING, and both are in your brief: the other side never counters your offer, "
-            + "so choosing terms is a decision but not yet a negotiation; and there is no deals "
-            + "screen \u2014 your own card shows the five closest to expiring, but nothing lists them "
-            + "all or shows offers waiting.",
+            + "Both gaps are now closed. Proposing a length gets an answer: a neighbour accepts, "
+            + "or counters with the term it wants and says why. What decides that is how much the "
+            + "deal is worth to THEM \u2014 a neighbour gaining five per cent of a quarter\u2019s income "
+            + "signs for five years, one gaining a fifth of a per cent will only give you six "
+            + "months. So the way to get a long commitment is to trade with somebody who genuinely "
+            + "needs what you have, which is the first time in this game that choosing a partner "
+            + "has been a real decision rather than arithmetic. The answer never changes if you ask "
+            + "twice, so there is nothing to grind. And there is a deals screen: everything you "
+            + "have signed, what each pays, what you signed at against what the market says now, "
+            + "when each ends, and anything waiting on your answer.\n\n"
+            + "The other nations do not haggle yet \u2014 they sign at the standard length. Teaching "
+            + "them to negotiate is the last stage, and pulling it forward would have changed how "
+            + "every nation weighs trade against everything else it could do that turn.",
     },
-    { name: "A2 — Transit and tolls", status: "todo",
+    { name: "A2 — Transit and tolls", status: "current",
       brief: "Transit agreements by mode — highway, rail, port — with tolls that compound along a route; Canada and Mexico as corridors at a flat 10%; revocation as a player action with a notice period.",
       actual: "Not started." },
     { name: "A3 — The trade network map", status: "todo",
@@ -309,6 +318,10 @@ const BOARD = {
 
   // Decisions made on the owner's behalf and how they turned out. Corrections go BESIDE originals.
   log: [
+    { when: "2026-09-05", decision: "Told you a five-year deal was a bet on the market, and then measured whether that was true.",
+      outcome: "WRONG, and corrected. Over ten years of play the biggest price move is under five per cent and most are one to three. Freezing a price at signing is real and worth almost nothing. The mechanism is right; the drama is not there, because nothing in this game currently rewards timing. That is a finding about your economy rather than about deals, and it is worth the alpha looking at." },
+    { when: "2026-09-05", decision: "Built the negotiation on what a deal is worth to the OTHER side, and left the price out of it.",
+      outcome: "The right shape, and the reason is worth keeping: nothing physically moves in the economy yet, so a haggle over price could only shuffle the same money between the two of you rather than set a real one \u2014 which would teach a player something untrue. Length is honest, so length is what you negotiate. The price machinery is already built, already running at the even split, and switched on when goods start moving." },
     { when: "2026-09-05", decision: "Let an AI nation sign a four-year deal with the player without asking, and found it by playing the build rather than by reading it.",
       outcome: "A real fault, fixed the same hour. A trade being imposed on you did not matter when it was over the moment it happened; a contract that holds your goods for a year does. Other nations now have to ask, and you answer on a card. The tests did not catch it and would not have \u2014 it was only visible on screen." },
     { when: "2026-09-05", decision: "Bounded what a save remembers about finished deals.",
