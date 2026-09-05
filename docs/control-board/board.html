@@ -123,27 +123,24 @@
 // ============================================================================
 const BOARD = {
   project: "Manifest Disunity",
-  updated: "2026-09-05 01:43",          // when you last republished, local time
+  updated: "2026-09-05 03:18",          // when you last republished, local time
 
   // Three or four measured figures. value: number|string, or null = "not yet measured".
   figures: [
-    { label: "Phase 0 items finished",  value: "3 of 8" },
-    { label: "Current version",         value: "v0.2" },
-    { label: "Tests green",             value: 861 },
+    { label: "Alpha-track stages done",  value: "A0 of A0–A4" },
+    { label: "Current version",         value: "v0.3" },
+    { label: "Tests green",             value: 866 },
     { label: "Industry figures that are real, today",   value: "0%" },
     { label: "Industry figures real after the re-bake", value: "84%" },
   ],
 
   // The single most important true thing right now. tone: "bad" | "warn" | "ok" | "neutral".
   headline: {
-    tone: "warn",
-    text: "Three of the eight Phase 0 jobs are done and verified while you slept: Economy mode can "
-        + "trade again, the turn has a real date (March 2036, and four turns make a year), and a "
-        + "tuning number you change now survives a reload instead of being silently thrown away. "
-        + "Two things for your eye: the industry figures under every county are still invented, and "
-        + "I have measured that 84% of them could be real; and one long run took far longer than it "
-        + "should have, which I could not cleanly explain, so I have published no speed number "
-        + "rather than a wrong one.",
+    tone: "ok",
+    text: "The roadmap changed while you were away, on your instruction: trade first, the economy "
+        + "after, then an alpha test. Stage A0 is done and tagged v0.3 — the workbench for testing "
+        + "trade exists. A1, trade deals with real terms, is being planned by eight agents and built "
+        + "next. Nothing is waiting on you.",
   },
 
   // Only decisions that are genuinely the owner's. Ids are permanent.
@@ -199,26 +196,41 @@ const BOARD = {
             + "removing that too and it broke the opening map, which is how I found out.",
     },
     {
-      name: "Phase 0 — Instruments",
-      status: "current",
-      brief: "All testing controls belong in the developer dashboard. Unblock Economy mode; a calendar; "
-           + "tuning that survives a load; per-state spreadsheet export; measure what has never been "
-           + "measured; safe stepping; forcing controls; extend the existing explain-a-number pattern "
-           + "to the economy.",
-      actual: "Three of eight done, and verified in the real game rather than only by test. (1) Economy "
-            + "mode can trade again — it had been refusing deals because of a political system it had "
-            + "itself switched off and hidden, which was my bug from the day before. (2) The turn is a "
-            + "date: the game opens in March 2036 and four turns make a year, so the Texas anniversary "
-            + "falls inside the first turn. (3) A tuning number you change now reaches a game already "
-            + "in progress instead of being quietly reverted by the save — proved end to end by "
-            + "editing a value, reloading, and watching the running game pick it up. The dashboard "
-            + "also stopped showing you factory numbers while running different ones, and its export "
-            + "writes the file instead of asking you to copy and paste. Left to do: spreadsheet "
-            + "export, safe stepping and fast-forward, the controls that force a state's figures, and "
-            + "extending the explain-a-number panel to the economy.",
+      name: "A0 — Unblock",
+      status: "done",
+      brief: "The minimum required to test trade at all. Fix the recognition block; a calendar; tuning "
+           + "edits that survive a load; safe single-step and fast-forward without desynchronising the "
+           + "counters.",
+      actual: "Done and tagged v0.3. Economy mode trades again. The turn reads as a date and four turns "
+            + "make a year. A tuning number you change reaches a game in progress. Stepping and "
+            + "fast-forward go through the same path End turn takes, so the two clocks stay together "
+            + "— the old shortcut is kept as a test so the defect cannot come back. The simulator "
+            + "refuses to run on top of itself, which is what caused last night's false alarm. And the "
+            + "invented industry figures are labelled as estimates wherever they appear. One "
+            + "departure: the addendum asked for the recognition block to become a price penalty; that "
+            + "misread your design document and you chose to keep the block.",
     },
     {
-      name: "Phase 0.5 — Honest industry data",
+      name: "A1 — Deals with terms",
+      status: "current",
+      brief: "A trade becomes a standing agreement rather than a single click with a cooldown. Durations "
+           + "of six months to five years, counter-offers that can change duration, expiry that prompts "
+           + "renegotiation with countdowns, and a ledger of active deals and open offers.",
+      actual: "Being planned now by eight agents — four to design it against the existing code and four "
+            + "to try to break those designs — before a line is written. Built on the existing economy, "
+            + "which it must not touch.",
+    },
+    { name: "A2 — Transit and tolls", status: "todo",
+      brief: "Transit agreements by mode — highway, rail, port — with tolls that compound along a route; Canada and Mexico as corridors at a flat 10%; revocation as a player action with a notice period.",
+      actual: "Not started." },
+    { name: "A3 — The trade network map", status: "todo",
+      brief: "Select a state and see its routes; hops drawn by mode; broken links shown with their reason and a click to renegotiate.",
+      actual: "Not started." },
+    { name: "A4 — The AI trades", status: "todo",
+      brief: "AI nations use the new deals and transit agreements; incoming offers capped at three a turn, each with an expiry. Then the alpha test.",
+      actual: "Not started. Note: the addendum assumed the AI never trades; it already does. What is new is the AI using the new instruments." },
+    {
+      name: "After alpha — Honest industry data",
       status: "todo",
       brief: "Re-bake the six-sector split from real county-industry data if coverage permits; "
            + "otherwise keep the estimates but label them as estimates everywhere they appear.",
@@ -230,31 +242,31 @@ const BOARD = {
             + "estimates. Today it is nought per cent — six hand-written patterns behind 1,688 places, "
             + "with half the map sharing one. One decision above is yours before this can start.",
     },
-    { name: "Phase 1 — Autarky economy", status: "todo",
+    { name: "After alpha — Autarky economy", status: "todo",
       brief: "Band model, derived demand, national pooling. No trade of any kind. Stop condition: the numbers stop surprising the designer.",
       actual: "Not started. Two of the three questions it needed are answered — population is real census "
             + "data that both grows and migrates, and economy size is the output figure the game already "
             + "computes. The third is the factions question above. Still needs your written predictions "
             + "before building starts." },
-    { name: "Phase 2 — Prices and the world market", status: "todo",
+    { name: "After alpha — Prices and the world market", status: "todo",
       brief: "Price formula, World Market. Single abstract partner. No diplomacy, no routing, no third-party transit.",
       actual: "Not started." },
-    { name: "Phase 3 — Deals between neighbours", status: "todo",
+    { name: "After alpha — Deals between neighbours", status: "todo",
       brief: "Trade Deal object, five-factor acceptance, counter-offers including duration, deal ledger, AI-initiated offers with expiry. Adjacency only — no routing through third parties.",
       actual: "Not started." },
-    { name: "Phase 4 — Transit, tolls and the network map", status: "todo",
+    { name: "After alpha — Transit, tolls and the network map", status: "todo",
       brief: "The largest phase. Build the map mode with the routing engine, not after.",
       actual: "Not started." },
-    { name: "Phase 5 — Recognition, Canada, Mexico", status: "todo",
+    { name: "After alpha — Recognition, Canada, Mexico", status: "todo",
       brief: "Recognition score and ramp, border-state suspicion, Canada/Mexico as partners and as corridors, gray-market trade.",
       actual: "Not started." },
-    { name: "Phase 6 — Diplomatic teeth", status: "todo",
+    { name: "After alpha — Diplomatic teeth", status: "todo",
       brief: "Embargo, corridor closure with notice period and reputation cost, lending, hunger-generates-claims.",
       actual: "Not started." },
-    { name: "Phase 7 — Succession and shocks", status: "todo",
+    { name: "After alpha — Succession and shocks", status: "todo",
       brief: "Treaty succession Limbo, infrastructure damage and upgrade.",
       actual: "Not started." },
-    { name: "Phase 8 — Tuning", status: "todo",
+    { name: "After alpha — Tuning", status: "todo",
       brief: "Build: nothing new. Run the headless sim 20 times with varied starts and seeds.",
       actual: "Not started." },
   ],
@@ -298,6 +310,10 @@ const BOARD = {
 
   // Decisions made on the owner's behalf and how they turned out. Corrections go BESIDE originals.
   log: [
+    { when: "2026-09-05", decision: "Adopted the addendum's new order — trade first, economy after — and ran A0 straight through as you instructed.",
+      outcome: "A0 done and tagged v0.3 in one sitting. Two corrections to the addendum recorded: the AI already trades, and the recognition item restated a misreading." },
+    { when: "2026-09-05", decision: "Told you the county data had no ports and raised it as a blocker.",
+      outcome: "WRONG — I had checked the wrong file. There are 986, from the real Principal Ports dataset you pulled in July, and the game reads them correctly. Verified at runtime before withdrawing the question, and recorded as a lesson: check the thing the code actually reads." },
     { when: "2026-09-05", decision: "Checked your design document before making a change your consultant asked for.",
       outcome: "Saved a mistake. They said the trade block between unrecognised countries contradicted your design; it does not — your document deliberately specifies both a block on direct deals AND a smuggler's rate on the world market, and the code had both right. The real fault was mine, and smaller." },
     { when: "2026-09-05", decision: "Refused to publish a speed figure I could not stand behind.",
