@@ -141,6 +141,77 @@ describe('Deals — Aaron\'s income ruling (D171)', () => {
   });
 });
 
+describe('Deals — the counterparty has an opinion about the term', () => {
+  it('gives the same answer to the same terms every time', async () => {
+    await bootWorld({ seed: SEED });
+    const pair = findPair();
+    ok(pair, 'no tradeable neighbouring pair');
+    const ask = { type: 'trade', nid: pair.a, target: pair.b, terms: { duration: 20 } };
+    const a = Moves.plan(ask, T()).verdict;
+    const b = Moves.plan(ask, T()).verdict;
+    const c = Moves.plan(ask, T()).verdict;
+    equal(a.kind, b.kind); equal(b.kind, c.kind);
+    equal(a.duration, b.duration); equal(b.duration, c.duration);
+    // A negotiation you can reroll is a slot machine, not a negotiation.
+  });
+
+  it('accepts the term it asked for, so a counter can always be taken', async () => {
+    await bootWorld({ seed: SEED });
+    let found = 0;
+    for (const [nid] of Game.nations) {
+      for (const other of Game.adjacentNations(nid)) {
+        const p = Moves.plan({ type: 'trade', nid, target: other, terms: { duration: 20 } }, T());
+        if (!p.ok || p.verdict.kind !== 'counter') continue;
+        const taken = Moves.plan({ type: 'trade', nid, target: other,
+          terms: { duration: p.verdict.duration } }, T());
+        ok(taken.ok, `taking the counter was refused: ${taken.reason}`);
+        equal(taken.verdict.kind, 'accept',
+          'the counterparty countered with a term it will not then sign');
+        found += 1;
+        if (found >= 5) return;
+      }
+    }
+    ok(found > 0, 'no counter-offer occurred anywhere on the map to check');
+  });
+
+  it('wants a longer term where the deal is worth more to them', async () => {
+    await bootWorld({ seed: SEED });
+    const seen = [];
+    for (const [nid] of Game.nations) {
+      for (const other of Game.adjacentNations(nid)) {
+        const p = Moves.plan({ type: 'trade', nid, target: other, terms: { duration: 4 } }, T());
+        if (!p.ok) continue;
+        const flow = Game.treasuryFlow(other);
+        seen.push({ share: (p.perTurn.them * 1e6) / Math.max(1, flow ? flow.income : 1),
+          want: p.verdict.duration });
+      }
+    }
+    ok(seen.length > 20, `only ${seen.length} plans to compare`);
+    seen.sort((x, y) => x.share - y.share);
+    const lo = seen.slice(0, Math.floor(seen.length / 4));
+    const hi = seen.slice(-Math.floor(seen.length / 4));
+    const mean = (a) => a.reduce((s, x) => s + x.want, 0) / a.length;
+    ok(mean(hi) > mean(lo),
+      `the nations who gain most want ${mean(hi).toFixed(1)} turns, the least ${mean(lo).toFixed(1)} — appetite is not tracking value`);
+  });
+
+  it('does not judge the player on politics when politics is switched off', async () => {
+    await bootWorld({ seed: SEED });
+    const pair = findPair();
+    ok(pair, 'no tradeable neighbouring pair');
+    const before = Complexity.serialize();
+    Complexity.applyPreset('economy');
+    const off = Moves.plan({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: 4 } }, T());
+    ok(!off.verdict.reasons.some((r) => /history|dealt with you/i.test(r)),
+      `Economy mode cited a relations reason: ${off.verdict.reasons.join(' ')}`);
+    Complexity.applyPreset('full');
+    const on = Moves.plan({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: 4 } }, T());
+    ok(on.verdict.reasons.some((r) => /history|dealt with you/i.test(r)),
+      'Full mode dropped the relations reason');
+    Complexity.init({ saved: before });
+  });
+});
+
 describe('Deals — the scope rule', () => {
   it('signing a deal leaves the price index byte-identical', async () => {
     await bootWorld({ seed: SEED });

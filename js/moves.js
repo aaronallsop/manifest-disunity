@@ -405,6 +405,65 @@ const Moves = (function () {
   }
 
   /**
+   * HOW LONG THE OTHER SIDE WANTS TO BE TIED DOWN (A1).
+   *
+   * Trade was a menu: you pressed a button and it happened. A term makes it a
+   * decision, and a term the counterparty has an opinion about makes it a
+   * NEGOTIATION — which is one of the questions the alpha exists to answer.
+   *
+   * Two inputs, and both of them are things a country would actually weigh:
+   *
+   *   WHAT IT IS WORTH TO THEM. A deal that pays a meaningful share of their
+   *   quarterly income is one they want locked in for years. A rounding error
+   *   is one they will sign for six months and think no more about. This is the
+   *   dominant term and it is deliberately the one the player can influence, by
+   *   trading with someone who actually needs what they have.
+   *
+   *   WHETHER THEY TRUST YOU. Only when politics is switched on. A nation that
+   *   remembers dealing with you before commits for longer. In Economy mode
+   *   this term is absent rather than zero — a system that has been switched
+   *   off must not quietly charge the player for itself (D166), and being
+   *   judged on a hidden variable is exactly that.
+   *
+   * PURE. No RNG, no clock: proposing the same terms twice gets the same
+   * answer, so there is no reroll to grind and no way to shop for a yes.
+   */
+  function dealVerdict(nid, target, duration, theirTake, tune) {
+    const t = T(tune);
+    const durations = t.get('deal.durations');
+    const flow = Game.treasuryFlow ? Game.treasuryFlow(target) : null;
+    const income = flow ? Math.max(1, flow.income) : 1;
+    const share = Math.max(0, (theirTake * 1e6) / income);
+    const worth = Math.min(1, share / Math.max(1e-9, t.get('deal.termAppetiteShare')));
+
+    const politics = typeof Complexity === 'undefined' || Complexity.enabled('politics');
+    const standing = politics && typeof Relations !== 'undefined'
+      ? Relations.score(target, nid, t) : null;
+    // Relations run -1..1; only the warm half buys a longer term.
+    const trust = standing == null ? null : Math.max(0, Math.min(1, standing));
+
+    const appetite = trust == null
+      ? worth
+      : (worth * (1 - t.get('deal.termTrustWeight'))) + (trust * t.get('deal.termTrustWeight'));
+    const wantIdx = Math.round(appetite * (durations.length - 1));
+    const want = durations[Math.max(0, Math.min(durations.length - 1, wantIdx))];
+    const askedIdx = durations.indexOf(duration);
+    const gap = Math.abs(askedIdx - wantIdx);
+
+    const reasons = [];
+    reasons.push(share >= t.get('deal.termAppetiteShare')
+      ? 'This is worth real money to them — they want it locked in.'
+      : `It is worth about ${(share * 100).toFixed(1)}% of a turn's income to them.`);
+    if (trust != null && trust > 0.05) reasons.push('They have dealt with you before and it went well.');
+    else if (trust != null) reasons.push('They have no history with you to go on.');
+
+    return {
+      kind: gap <= t.get('deal.termTolerance') ? 'accept' : 'counter',
+      duration: want, asked: duration, reasons,
+    };
+  }
+
+  /**
    * @param intent {type:'trade', nid, target, terms?:{duration, autoRenew, priceMult}, ignoreDeal?}
    *
    * Both sides earn the same, at the default split. That is not a simplification
@@ -488,8 +547,9 @@ const Moves = (function () {
     const gain = mine * duration;
     const autoRenew = terms.autoRenew == null
       ? !!t.get('deal.defaultAutoRenew') : !!terms.autoRenew;
+    const verdict = dealVerdict(nid, target, duration, theirs, t);
     return {
-      ok: true, reason: null, target, nid, cost: 0,
+      ok: true, reason: null, target, nid, cost: 0, verdict,
       flows: res.flows, total: res.total, capped: res.capped, uncappedTotal: res.uncappedTotal,
       gain,
       duration, autoRenew, priceMult,

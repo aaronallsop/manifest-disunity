@@ -832,3 +832,24 @@ svg.flag { border-radius: 2px; flex: none; vertical-align: middle; }
 label.opt.auto-renew { display: flex; gap: 8px; align-items: center; margin-top: 4px; font-size: 13px; }
 /* A deal running out: amber at the first warning, red on its last turn. */
 .geo-row strong.warn { color: #d9a21b; }
+
+/* The deals screen (A1): a register of what is still true, not a newspaper. */
+.db-body { font-size: 13px; }
+.db-head, .db-row { display: grid; grid-template-columns: 1.1fr 1.6fr .8fr 1.1fr .7fr; gap: 10px;
+  align-items: start; padding: 8px 4px; border-bottom: 1px solid var(--line, #2a2a28); }
+.db-head { font-size: 11px; text-transform: uppercase; letter-spacing: .05em; opacity: .6; border-bottom-width: 2px; }
+.db-who { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px; }
+.db-who small, .db-when small, .db-pay small { display: block; width: 100%; opacity: .6; font-size: 11px; }
+.db-sec { display: flex; justify-content: space-between; gap: 8px; }
+.db-drift { font-style: normal; opacity: .65; font-variant-numeric: tabular-nums; }
+.db-drift.up { color: var(--good, #4caf7d); opacity: .9; }
+.db-drift.down { color: var(--bad, #e0483b); opacity: .9; }
+.db-pay, .db-when strong { font-variant-numeric: tabular-nums; }
+.db-acts { display: flex; gap: 6px; flex-wrap: wrap; }
+.db-acts .btn { padding: 4px 10px; font-size: 12px; }
+.db-total { margin-top: 10px; opacity: .8; }
+.ob-empty { opacity: .7; padding: 14px 4px; }
+@media (max-width: 700px) {
+  .db-head { display: none; }
+  .db-row { grid-template-columns: 1fr 1fr; }
+}

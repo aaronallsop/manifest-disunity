@@ -760,14 +760,17 @@ const Actions = (function () {
         ? `${escapeHtml(tName)} does not recognise you as a country, and a trade agreement is a signature between two governments.`
         : `You do not recognise ${escapeHtml(tName)} as a country. Recognise them from their card and the table is open.`}</div>` : ''}
       ${plan.ok || !plan.reason ? '' : `<div class="warn-box">\u26d4 ${escapeHtml(plan.reason)}</div>`}
+      <div id="deal-response"></div>
       <div class="btn-row">
         <button class="btn ghost" id="a-back">Back</button>
-        <button class="btn go" id="a-go" ${plan.ok ? '' : 'disabled'}>Sign for ${A.terms.duration} ${plural(A.terms.duration, 'turn', 'turns')}</button>
+        <button class="btn go" id="a-propose" ${plan.ok ? '' : 'disabled'}>Propose ${A.terms.duration} ${plural(A.terms.duration, 'turn', 'turns')}</button>
       </div>
     `);
     // Every control re-plans and re-renders, so the three money lines and the
     // end date always describe the terms actually on the table.
     for (const b of document.querySelectorAll('.dur-opt')) {
+      // Re-rendering clears #deal-response, so a yes to eight turns can never be
+      // left sitting under a panel that now says twenty.
       b.onclick = () => { A.terms.duration = Number(b.dataset.dur); renderTradePreview(tid); };
     }
     const renew = document.getElementById('a-renew');
@@ -775,7 +778,61 @@ const Actions = (function () {
     document.getElementById('a-back').onclick = () => {
       A.pending = null; A.terms = null; setSelectOutline(nationOutline(A.nid)); renderTradePrompt();
     };
-    document.getElementById('a-go').onclick = () => plan.ok && confirmTrade(tid);
+    document.getElementById('a-propose').onclick = () => plan.ok && proposeDeal(tid, plan);
+  }
+
+  /*
+   * THE ANSWER, AND WHY IT IS NOT A DICE ROLL.
+   *
+   * `plan.verdict` is a pure function of the world and the terms, so proposing
+   * the same length twice gets the same answer. There is nothing to grind and
+   * no reroll to shop for, which is what stops a negotiation becoming a slot
+   * machine. What moves the answer is the world: trade with somebody who
+   * actually needs what you have and they will commit for years.
+   *
+   * The old panel signed on one click. That was a menu, not a negotiation, and
+   * "is negotiating a deal interesting, or is it a menu?" is one of the
+   * questions the alpha exists to answer — so the button now proposes, and
+   * signing is what a yes unlocks.
+   */
+  function proposeDeal(tid, plan) {
+    const tName = Game.getNation(tid).name;
+    const v = plan.verdict;
+    const box = document.getElementById('deal-response');
+    if (!box || !v) return confirmTrade(tid);
+    if (typeof Telemetry !== 'undefined') {
+      Telemetry.note('deal-propose', { d: v.kind, dur: A.terms.duration });
+      A.rounds = (A.rounds || 0) + 1;
+    }
+    const why = `<div class="deal-why">${v.reasons.map((r) => escapeHtml(r)).join(' ')}</div>`;
+    if (v.kind === 'accept') {
+      box.innerHTML = `<div class="deal-verdict accept">\u2705 ${escapeHtml(tName)} accepts
+        ${A.terms.duration} ${plural(A.terms.duration, 'turn', 'turns')}.${why}</div>
+        <button class="btn go" id="a-sign">Sign &mdash; ${escapeHtml(termWords(A.terms.duration))},
+        +${fmtGdp(plan.perTurn.me * 1e6)} a turn</button>`;
+      document.getElementById('a-sign').onclick = () => confirmTrade(tid);
+      return;
+    }
+    /*
+     * A counter names a length and says why. Two ways out of it, because the
+     * player should be able to take the deal OR keep haggling: accept their
+     * number, or load it into the buttons and change something first.
+     */
+    const theirs = Moves.plan({ type: 'trade', nid: A.nid, target: tid,
+      terms: { duration: v.duration, autoRenew: A.terms.autoRenew } });
+    box.innerHTML = `<div class="deal-verdict counter">\u2194\ufe0f ${escapeHtml(tName)} counters:
+      <strong>${escapeHtml(termWords(v.duration))}</strong>, not ${escapeHtml(termWords(A.terms.duration))}.${why}</div>
+      <div class="deal-diff"><div class="geo-row"><span>You asked for</span><strong>${A.terms.duration}
+        ${plural(A.terms.duration, 'turn', 'turns')}</strong></div>
+        <div class="geo-row"><span>They will sign</span><strong class="surplus">${v.duration}
+        ${plural(v.duration, 'turn', 'turns')}${theirs.ok ? ` &middot; +${fmtGdp(theirs.perTurn.me * 1e6)} a turn` : ''}</strong></div></div>
+      <div class="btn-row">
+        <button class="btn go" id="a-sign" ${theirs.ok ? '' : 'disabled'}>Take their ${v.duration} ${plural(v.duration, 'turn', 'turns')}</button>
+        <button class="btn ghost" id="a-adjust">Change my offer</button>
+      </div>`;
+    const sign = document.getElementById('a-sign');
+    if (sign) sign.onclick = () => { A.terms.duration = v.duration; confirmTrade(tid); };
+    document.getElementById('a-adjust').onclick = () => { A.terms.duration = v.duration; renderTradePreview(tid); };
   }
 
   /**
@@ -805,8 +862,12 @@ const Actions = (function () {
     const S = A.nid;
     const terms = A.terms;
     const Sname = Game.getNation(S).name, Tname = Game.getNation(tid).name;
+    const rounds = A.rounds || 1;
     const r = Moves.resolve({ type: 'trade', nid: S, target: tid, terms }, store.rng);
     if (!r.ok) return flash(`\u26d4 ${escapeHtml(r.reason)}`, 'bad');
+    if (typeof Telemetry !== 'undefined') {
+      Telemetry.note('deal-sign', { dur: r.duration, rounds, autoRenew: terms.autoRenew ? 1 : 0 });
+    }
     A = null;
     clearVisuals();
     flash(`\u{1F69B} <strong>${escapeHtml(Sname)}</strong> and <strong>${escapeHtml(Tname)}</strong> signed a

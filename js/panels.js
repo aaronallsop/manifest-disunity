@@ -115,6 +115,8 @@ function renderNationPanel(nid) {
   );
   const goto = panel.querySelector('#goto-current');
   if (goto) goto.onclick = () => { setMode('nations'); select('nation', you()); };
+  const dealsLink = panel.querySelector('#goto-deals');
+  if (dealsLink) dealsLink.onclick = () => DealBook.open();
   const rec = panel.querySelector('#a-recognise');
   if (rec) rec.onclick = () => Actions.recognise(nid);
   const tre = panel.querySelector('#a-treaty');
@@ -1058,11 +1060,14 @@ function renderDeals(nid) {
       <strong class="${cls}">${left} ${left === 1 ? 'turn' : 'turns'} left</strong></div>`;
   }).join('');
   const more = live.length > 5 ? `<div class="geo-row"><span>&hellip;and ${live.length - 5} more</span></div>` : '';
+  // Only on your OWN card: the deals screen is your register, not a rival's.
+  const link = Game.isPlayer(nid)
+    ? '<div class="geo-row"><span></span><button class="linklike" id="goto-deals">Open the deals screen &rarr;</button></div>' : '';
   return `<div class="stat"><div class="label">Deals &middot; standing trade agreements</div>
     <div class="value">${live.length} ${live.length === 1 ? 'deal' : 'deals'}</div>
     ${rows}${more}
     <div class="geo-row"><span>Income from deals</span><strong class="surplus">+${
-      fmtGdp(Deals.income(nid, TUNE) * 1e6)}/turn</strong></div></div>`;
+      fmtGdp(Deals.income(nid, TUNE) * 1e6)}/turn</strong></div>${link}</div>`;
 }
 
 function renderExportAccess(nid) {

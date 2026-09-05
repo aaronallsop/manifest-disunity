@@ -704,6 +704,22 @@ export const SCHEMA = {
     doc: 'The most favourable split a seller may win in a counter-offer. See deal.priceMultMin: the two are symmetric about 1.0, which is the even split the one-click trade always paid.',
   },
 
+  'deal.termAppetiteShare': {
+    v: 0.06, min: 0.005, max: 0.5, step: 0.005, group: 'Trade',
+    label: 'Term appetite: what counts as valuable',
+    doc: 'The share of one turn of national income at which a deal reads as worth locking in for the longest term available. Below it the counterparty wants a shorter commitment, and counters. This is the term the player can actually influence, by trading with somebody who needs what they have rather than with whoever is nearest.',
+  },
+  'deal.termTrustWeight': {
+    v: 0.35, min: 0, max: 1, step: 0.05, group: 'Trade',
+    label: 'Term appetite: weight on standing',
+    doc: 'How much of the appetite for a long term comes from how the counterparty feels about you rather than from what the deal is worth. Read only when politics is switched on: in Economy mode the term is absent rather than zero, because a system that has been switched off must not quietly charge the player for itself (D166).',
+  },
+  'deal.termTolerance': {
+    v: 1, min: 0, max: 3, step: 1, group: 'Trade',
+    label: 'Term tolerance (steps)',
+    doc: 'How far from its preferred term the counterparty will sign without countering, counted in steps along deal.durations. At 1 a nation that wants a year will still sign six months or two years; at 0 every proposal that is not exactly right is countered, which is a negotiation nobody enjoys.',
+  },
+
   /* ---------------- civil war ---------------- */
   'war.triggerSizeRatio': {
     v: 0.15, min: 0.01, max: 3, step: 0.01, group: 'Civil war',

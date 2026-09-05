@@ -69,6 +69,9 @@ const Menu = (function () {
               here that is safe while an action holds the map — and the moment a
               player most wants it is mid-decision. */''}
         ${item('mi-obj', '&#127919;', 'Objectives', 'The three ways to win, live &mdash; and how to read this game.', false)}
+        ${item('mi-deals', '&#128739;', 'Deals',
+              'Every standing trade agreement you have &mdash; what each pays, what you signed at against '
+              + 'what the market says now, and anything waiting for an answer.', false)}
         ${item('mi-new', '&#127760;', 'New game', 'A fresh world &mdash; choose the opening board and the seed.', off)}
         ${item('mi-save', '&#128190;', 'Save game', 'Write this world to disk under a name you choose.', off)}
         ${item('mi-load', '&#128194;', 'Load game', 'Open a saved world. This one is replaced.', off)}
@@ -85,6 +88,9 @@ const Menu = (function () {
     // Objectives and Export are live either way: one reads the rules and the
     // other reads the record, and neither touches the world.
     document.getElementById('mi-obj').onclick = () => Objectives.open();
+    // Reading what you have already signed is safe mid-action for the same
+    // reason reading the objectives is: it changes nothing on the map.
+    document.getElementById('mi-deals').onclick = () => { closeModal(); DealBook.open(); };
     document.getElementById('mi-export').onclick = openExport;
     if (off) return; // every other item is disabled; nothing more to wire
 

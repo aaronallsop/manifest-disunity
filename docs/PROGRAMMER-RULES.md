@@ -22,3 +22,17 @@ Add one with `/rule` whenever a mistake earns it. Number them; never delete one.
    either. It cost two round trips and the cached work of two agents. If a resume is refused, check
    which slug the script path carries; if it is the wrong one, relaunch inline rather than hunting.
    Better: do not move the project directory in the middle of a working session.
+
+3. **`node --check` does not reliably catch syntax errors in this project's ES modules.** An
+   unescaped apostrophe inside a single-quoted string in `js/tunables.js` (`'a turn's income'`)
+   passed `node --check js/tunables.js` and then took the whole game down at boot with
+   `Uncaught SyntaxError: Unexpected identifier 's'` — which surfaces three modules later as
+   `Ideology is not defined`, because the page keeps loading after a script fails to parse. The
+   symptom points nowhere near the cause. Use `node -e "import('./js/<file>.js')"` for a module,
+   and prefer the Edit tool over generating JS strings from Python: every layer of quoting between
+   the intent and the file is a chance to produce exactly this.
+
+4. **Prefer a file over `python -c` for any script containing backticks, apostrophes or backslashes.**
+   Bash expands backticks inside double quotes, so a Python one-liner carrying JS or Markdown will
+   be silently mangled before Python ever sees it — and the resulting error names a line that is not
+   what you wrote. Write the script to the scratchpad and run it by path.

@@ -584,7 +584,12 @@ already counted when they were produced.
   the matching deficit, valued at market prices, at the **full** rate to both sides — and they keep
   flowing, every turn, for the term that was signed. A deal carries a duration (2, 4, 8 or 20 turns
   — six months, a year, two years, five), an optional auto-renew, and a price **fixed at signing**:
-  the index may drift for five years and the deal does not, which is what makes a long term a bet.
+  the index may drift for five years and the deal does not. Measured 5 September 2026, and it is
+  less dramatic than it sounds: over forty turns — ten years — the largest sector price moved 4.7%
+  and most moved one to three, so freezing a price is structurally real and financially negligible.
+  The mechanism is right and the volatility is not there yet. **Nothing in this game currently
+  rewards timing**, which is a finding about the economy rather than about deals, and one the alpha
+  should look at.
   A pair may hold **one live deal at a time**, and the volume a deal covers is subtracted from the
   surplus either side has left to offer anybody else — a nation that has promised its whole wheat
   surplus to Kansas has none left for Nebraska.
@@ -607,6 +612,21 @@ and every number tuned against the old rhythm — army upkeep, the price of anne
 broken state recovers — stays true. `deal.rate` is the slider that makes trade stronger, to be
 turned up deliberately after the alpha rather than by accident before it.
 
+**It is a negotiation, not a menu.** You propose a length; the other side accepts it or counters
+with the one it wants, and says why. What decides its appetite is what the deal is worth to it — a
+deal paying a real share of a quarter's income is one it wants locked in for years, a rounding error
+is one it will sign for six months and forget — plus, **only when politics is switched on**, how it
+feels about you. In Economy mode that second term is absent rather than zero: a system that has been
+switched off must not quietly charge the player for itself.
+
+The answer is a pure function of the world and the terms, so proposing the same thing twice gets the
+same reply. There is no reroll to grind and no way to shop for a yes; what moves the answer is
+trading with somebody who actually needs what you have. Measured on the opening board: a neighbour
+gaining 5% of a turn's income signs for five years, one gaining 0.2% counters at six months.
+
+The AI does not negotiate terms in this stage — it signs at the standard length. Teaching it to
+haggle is A4's job.
+
 **Expiry is the point.** At the end of a term the deal is re-planned against today's world: today's
 prices, today's surpluses, and a fresh check that both nations are alive, still bordering and still
 recognise each other. An auto-renewing deal re-signs on the new numbers, or lapses with the reason
@@ -619,6 +639,12 @@ nations' countdowns are a newspaper nobody reads.
 transit. What stopped a pair trading every turn is now the deal itself: they already have an
 arrangement, and it runs until it runs out. The cooldown STAMP is still written at signing, because
 Influence counts recent partners as reach — but at signing only, never per settlement.
+
+**The deals screen** is the register of what is still true, as against the journal, which is the
+newspaper of what happened. It lists every running deal — who with, what, what it pays a turn, what
+you signed at against what the index says now, when it ends and whether it renews itself — plus
+anything waiting for an answer. It is read-only apart from those answers, because deals run their
+term.
 
 **Breaking a deal early is not possible yet.** Deals run their term. Walking out — and paying for it
 in a reputation that makes every other state price you worse — is designed and recorded as F2 in
