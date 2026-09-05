@@ -2396,3 +2396,63 @@ real.
 correctly identified what they could not answer. Their value was in naming the gate precisely enough
 that it could be measured in two minutes. Recorded because the instinct to run another agent round
 would have been wrong.
+
+### D165 — The six sectors stay as they are; the re-bake is deferred, not cancelled
+
+Aaron: "Lets stick with the resources as they are without any changes for now and move forward."
+
+**Decided:** the six sectors keep their current definitions and membership. The widening proposed in
+D164 — absorbing the 47.5% of real GDP that has no game sector — is not done. Phase 0.5 stays on the
+roadmap and is deferred rather than deleted; the measurement in `docs/BEA-INDUSTRY-FEASIBILITY.md`
+does not go stale, because the data file and the suppression rates it counted are fixed 2024 figures.
+
+**What this leaves standing, and it must not be quietly forgotten:** the industry split under every
+Area is invented, and the game currently presents it to the player as measured — the Area panel names
+a dominant sector and the economy map colours by it, neither carrying the **est.** badge the design
+document requires. Spec v2 is explicit that the fallback of keeping the templates is acceptable *only*
+if they are labelled honestly, and that "what is not acceptable is leaving invented figures presented
+as measured ones."
+
+So the deferral is of the re-bake, not of the honesty. The labelling is carried in `docs/deferred.md`
+and stays visible on the Control Board until it is either labelled or replaced. It is a small change
+to a badge mechanism that already exists and is already wired to population, GDP and vote.
+
+**Rejected:** treating "no changes" as closing the question. Aaron ruled on scope and sequencing, which
+is his; he did not rule that invented data may be presented as real, which is his design document's
+rule and still binds.
+
+### D166 — The recognition trade block is not a bug; the consultant misread the design document
+
+Spec v2 ruling 1.6 says the code hard-blocks bilateral trade between unrecognised states, that
+`DESIGN.md` §6.5 specifies a smuggler's rate instead, and that "the document is right and the code is
+the bug." Checked before changing anything, and the premise is wrong.
+
+`DESIGN.md`:833-836 specifies BOTH, and names them as two of the four costs of being a pariah:
+
+> "no bilateral trade with anyone who does not recognise you, a smuggler's rate on the world market,
+> no seat in a coalition, and a signed deficit on Influence. The market is a haircut rather than a
+> lock, because refusing external trade outright would make an unrecognised landlocked state
+> unplayable"
+
+The "haircut rather than a lock" sentence is about the **world market**, not about bilateral deals.
+The code implements both correctly: `canTrade` requires mutual recognition for a bilateral deal, and
+`marketRate` applies the sliding smuggler's rate on the world market with a comment restating the
+document's reasoning. Nothing here contradicts anything.
+
+**The actual defect was mine.** Economy mode switches the politics layer off — recognition never
+ticks, and both the recognition panel and the Recognise button are hidden — while `canTrade` went on
+gating trade against a frozen value the player could neither see nor change. In the one mode built
+for testing trade, trades were refused with no visible cause and no route to fix it.
+
+**Decided:** a switched-off system does not charge for itself. `canTrade` and `marketRate` now return
+the permissive answer when the politics layer is off, answered inside `js/recognition.js` rather than
+at each of the seven call sites, so a future caller cannot forget it. This reads the same way the
+existing guards do — callers already treat an absent Recognition module as "no gate", and a
+switched-off one is the same situation.
+
+**Rejected:** implementing ruling 1.6 as written. Removing the bilateral block would delete a
+deliberate, documented cost of secession that the design document argues for, on the strength of a
+misreading. Spec v2's recognition RAMP (its §5.5) is a real change and stays scheduled for Phase 5;
+it replaces the block with graded access, which is a different thing from deleting it.
+
+**For the consultant:** ruling 1.6's premise needs correcting in v3. The code was right.

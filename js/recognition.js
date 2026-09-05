@@ -350,8 +350,31 @@ const Recognition = (function () {
   /* what it is worth                                                    */
   /* ------------------------------------------------------------------ */
 
+  /*
+   * WHEN RECOGNITION IS SWITCHED OFF, IT MUST NOT STILL CHARGE FOR ITSELF.
+   *
+   * Economy mode turns the politics layer off: `Recognition.tick` never runs, so
+   * nobody's standing ever changes, and the panel and the Recognise button are
+   * both hidden. Leaving the gates below live meant a frozen political value the
+   * player could neither see nor alter was silently refusing their trades — in
+   * the one mode built for testing trade. That was introduced with the mode and
+   * is the defect this answers.
+   *
+   * The rule is answered HERE rather than at each call site so a future caller
+   * cannot forget it, and it reads the same way the existing guards do: callers
+   * already treat an absent Recognition module as "no gate", and a switched-off
+   * one is the same situation.
+   *
+   * Note this is NOT the "hard block versus haircut" change the economy brief
+   * asks for in its ruling 1.6. DESIGN.md deliberately specifies both: no
+   * bilateral trade with anyone who does not recognise you, AND a smuggler's
+   * rate on the world market. The code already implements both correctly. See
+   * D166.
+   */
+  const live = () => typeof Complexity === 'undefined' || Complexity.enabled('politics');
+
   /** May these two sign a bilateral deal? Both have to admit the other exists. */
-  const canTrade = (a, b) => recognises(a, b) && recognises(b, a);
+  const canTrade = (a, b) => !live() || (recognises(a, b) && recognises(b, a));
 
   /**
    * What a nation gets paid on the world market, as a fraction of the going rate.
@@ -363,6 +386,7 @@ const Recognition = (function () {
    * round, so this is a problem that solves itself if you survive it.
    */
   function marketRate(nid, tune) {
+    if (!live()) return 1; // see canTrade: a switched-off system charges nothing
     const t = tune || window.TUNE;
     const floor = t.get('recognition.tradeFloor');
     const v = scalar(nid);
