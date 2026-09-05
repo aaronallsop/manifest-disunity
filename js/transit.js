@@ -338,6 +338,8 @@ const Transit = (function () {
    */
   const gkey = (grantor, grantee, mode) => `${grantor}>${grantee}:${mode}`;
 
+  let offers = new Map();    // id -> incoming request
+  let offerSeq = 0;
   let grants = new Map();    // id -> record
   let byKey = new Map();     // 'grantor>grantee:mode' -> id of the live grant
   let notices = [];          // append-only: who closed what, and when
@@ -347,7 +349,9 @@ const Transit = (function () {
     grants = new Map();
     byKey = new Map();
     notices = [];
+    offers = new Map();
     seq = 0;
+    offerSeq = 0;
   }
 
   /** Turns this grant still has to run, counting the one being asked about. */
@@ -506,7 +510,7 @@ const Transit = (function () {
    * One turn of the register: the dead, the noticed, the expired, the forgotten.
    * Walked in ascending id order so a reloaded save resolves in the same order.
    */
-  function tick(tune, turn) {
+  function tickRegister(tune, turn) {
     const t = T(tune);
     const now = turn == null ? World.getTurn() : turn;
     const ids = [...grants.keys()].sort((x, y) => Number(x.slice(1)) - Number(y.slice(1)));
@@ -533,18 +537,262 @@ const Transit = (function () {
     notices = notices.filter((x) => now - x.turn <= w * 2);
   }
 
+  /* ---- asking, and being asked --------------------------------------- */
+
+  /*
+   * ONE INBOX, NOT TWO. A nation asking to cross the player's ground and a
+   * neighbour asking to renew a trade deal are the same shape of decision, and
+   * a game that asks them in two different places has taught the player two
+   * things where one would do. These are the same functions A1 wrote for deals,
+   * with a corridor in them.
+   */
+  function propose(o, tune) {
+    const t = T(tune);
+    if (live(o.to, o.from, o.plan.mode)) return null;   // they already carry it
+    if (offersFor(o.to).length >= t.get('deal.maxOpenOffers')) return null;
+    offerSeq += 1;
+    const made = o.made == null ? World.getTurn() : o.made;
+    const rec = {
+      id: `x${offerSeq}`,
+      from: o.from, to: o.to, kind: 'transit',
+      made, expires: made + t.get('deal.offerTurns'),
+      terms: {
+        mode: o.plan.mode, rate: o.plan.rate,
+        duration: o.plan.duration, cap: o.plan.cap == null ? null : o.plan.cap,
+        notice: o.plan.notice,
+      },
+    };
+    offers.set(rec.id, rec);
+    return rec;
+  }
+
+  function offersFor(nid, turn) {
+    const now = turn == null ? World.getTurn() : turn;
+    const out = [];
+    for (const o of offers.values()) if (o.to === nid && o.expires > now) out.push(o);
+    return out.sort((a, b) => a.made - b.made || (a.id < b.id ? -1 : 1));
+  }
+
+  const waiting = (nid, turn) => (nid ? offersFor(nid, turn)[0] || null : null);
+  const declineOffer = (id) => offers.delete(id);
+
+  /**
+   * Answer one. 'grant' opens the corridor on the offered terms; anything else
+   * refuses it. Goes through the model rather than the DOM so the whole decision
+   * is testable with no screen attached.
+   */
+  function answer(offerId, choice, tune) {
+    const o = offers.get(offerId);
+    if (!o) return { ok: false, reason: 'That request is no longer open.' };
+    offers.delete(offerId);
+    if (choice !== 'grant') return { ok: true, granted: null };
+    const rec = grant({
+      grantor: o.to, grantee: o.from, mode: o.terms.mode, rate: o.terms.rate,
+      duration: o.terms.duration, cap: o.terms.cap, notice: o.terms.notice,
+    }, T(tune));
+    return rec ? { ok: true, granted: rec } : { ok: false, reason: 'That corridor is already open.' };
+  }
+
+  /* ---- taking the toll ------------------------------------------------ */
+
+  const say = (e) => (typeof Ledger === 'undefined' ? null : Ledger.append({ phase: 'transit', ...e }));
+  const nameOf = (nid) => {
+    if (nid === CANADA) return 'Canada';
+    if (nid === MEXICO) return 'Mexico';
+    const n = typeof Game === 'undefined' ? null : Game.getNation(nid);
+    return n ? n.name : nid;
+  };
+
+  /**
+   * ONE TURN OF EVERY ROUTE, in its own phase.
+   *
+   * DELIBERATELY NOT INSIDE `Deals.tick`. A1's settlement is left gross and
+   * untouched, and the toll is taken here afterwards, so the scope rule for this
+   * whole stage is provable by reading one diff: `git diff js/deals.js` shows a
+   * single new field and nothing else. Put the arithmetic inside the deal and
+   * that proof is gone, along with the ability to say what a deal is worth
+   * without knowing where its goods went.
+   *
+   * NO OVERDRAW IS POSSIBLE, and it has to be said because `Game.earn` does not
+   * clamp: what is debited here is a share of the credit `Deals.tick` made for
+   * that same deal on this same turn, so it can never exceed it.
+   *
+   * CONSERVATION IS THE INVARIANT. What every hop takes, plus what arrives, is
+   * exactly what the deal paid. The foreign corridors are the only leak, and
+   * they leak on purpose: the owner's ruling is that Canada's ten per cent is a
+   * cost nobody collects.
+   *
+   * THE PRICE IS RECOMPUTED FROM THE STORED HOPS every turn rather than stored
+   * as a multiplier. A float in the save that disagreed with the fold in its last
+   * bit would be a treasury drifting by pennies over sixty turns with nothing on
+   * screen to point at.
+   */
+  function tick(tune, turn, opts) {
+    const t = T(tune);
+    const now = turn == null ? World.getTurn() : turn;
+    const player = (opts || {}).player || null;
+    tickRegister(t, now);
+    if (typeof Deals === 'undefined') return;
+
+    /*
+     * IS THE ROUTE STILL THERE? Checked before anything is paid, because the
+     * whole point of being able to close a corridor is that it hurts somebody
+     * who was relying on it. A stalled deal earns NOTHING this turn — and its
+     * term keeps running down, so a corridor holder who gives notice can burn a
+     * five-year contract to nothing. That is the drama the stage exists for.
+     */
+    const live = [];
+    for (const d of Deals.all()) {
+      if (d.status !== 'live') continue;
+      const route = d.route;
+      if (!route || !route.hops || !route.hops.length) continue;
+      const blocked = blockedAt(d, now);
+      if (blocked) {
+        if (!route.stalled) {
+          route.stalled = { turn: now, at: blocked.at, why: blocked.why };
+          if (player && (d.a === player || d.b === player)) {
+            say({
+              subject: player, kind: 'trade', event: 'stalled', dealId: d.id,
+              partner: other({ a: d.a, b: d.b }, player),
+              text: `Your goods can no longer cross ${nameOf(blocked.at)} — the deal with `
+                + `${nameOf(d.a === player ? d.b : d.a)} pays nothing until there is another way through.`,
+            });
+          }
+        }
+        continue;                                  // stalled: nobody is paid
+      }
+      if (route.stalled) {
+        route.stalled = null;
+        if (player && (d.a === player || d.b === player)) {
+          say({
+            subject: player, kind: 'trade', event: 'resumed', dealId: d.id,
+            partner: other({ a: d.a, b: d.b }, player),
+            text: `Your goods are moving again to ${nameOf(d.a === player ? d.b : d.a)}.`,
+          });
+        }
+      }
+      live.push(d);
+    }
+
+    for (const d of live) {
+      const route = d.route;
+      const gross = Deals.settlement(d, t);
+      const priced = priceRoute(route.hops, t);
+      const lost = 1 - priced.keep;
+      if (lost <= 0) continue;
+      /*
+       * BOTH PARTIES PAY. The goods are theirs jointly and the journey is the
+       * deal's, not one side's; charging only the seller would make a routed
+       * deal a bargain for whoever happened to be buying.
+       */
+      Game.earn(d.a, -gross.a * lost * 1e6);
+      Game.earn(d.b, -gross.b * lost * 1e6);
+      const paid = (gross.a + gross.b) * 1e6;
+      for (const leg of priced.legs) {
+        if (!leg.transfer) continue;               // Canada and Mexico collect nothing
+        Game.earn(leg.node, leg.take * paid);
+      }
+      if (player && (d.a === player || d.b === player) && !route.told) {
+        route.told = true;
+        say({
+          subject: player, kind: 'trade', event: 'routed', dealId: d.id,
+          partner: other({ a: d.a, b: d.b }, player),
+          text: `Your goods to ${nameOf(d.a === player ? d.b : d.a)} cross `
+            + `${route.hops.map((h) => nameOf(h.node)).join(', ')} — you keep `
+            + `${Math.round(priced.keep * 100)}% of what the deal pays.`,
+        });
+      }
+    }
+  }
+
+  const other = (d, nid) => (d.a === nid ? d.b : d.a);
+
+  /**
+   * The first hop this deal can no longer cross, and why — or null if the whole
+   * route still stands.
+   *
+   * THE REASON IS THE POINT, not the refusal. A route that has simply stopped
+   * working is a mystery; one that says "Nevada closed its border" is a decision
+   * the player can act on, and it is also exactly the record the network map
+   * needs to draw a broken link and offer to renegotiate it.
+   */
+  function blockedAt(d, turn) {
+    const grantee = d.a;    // the route was found from a's side and is stored that way
+    for (const h of d.route.hops) {
+      if (isOutside(h.node)) continue;             // Canada asks nothing and refuses nothing
+      if (!Game.getNation(h.node)) return { at: h.node, why: 'lost' };
+      const g = live(h.node, grantee, h.mode, turn);
+      if (!g) return { at: h.node, why: 'revoked' };
+      // A cap is a promise about volume, and a corridor over it carries the
+      // older contract first — which is what a contract means.
+      if (g.cap != null && loadOn(g, turn) > g.cap && !firstClaim(g, d, turn)) {
+        return { at: h.node, why: 'capped' };
+      }
+    }
+    return null;
+  }
+
+  /** Total value of every live routed deal leaning on one grant this turn. */
+  function loadOn(g, turn) {
+    if (typeof Deals === 'undefined') return 0;
+    let sum = 0;
+    for (const d of Deals.all()) {
+      if (d.status !== 'live' || !d.route || !d.route.hops) continue;
+      if (!d.route.hops.some((h) => h.node === g.grantor && h.mode === g.mode)) continue;
+      if (d.a !== g.grantee && d.b !== g.grantee) continue;
+      sum += Deals.committed(d.a).value;
+      break;                                       // value is per nation, counted once
+    }
+    return sum;
+  }
+
+  /**
+   * Does this deal have the prior claim on a corridor that is over its cap?
+   *
+   * OLDEST FIRST, AND A HARD CUT RATHER THAN A HAIRCUT. Sharing a full corridor
+   * pro-rata would quietly shave a few per cent off everybody's income with no
+   * event to explain it; stalling the newest contract is a thing that happened,
+   * that can be said in one sentence, and that the player can do something
+   * about.
+   */
+  function firstClaim(g, d, turn) {
+    if (typeof Deals === 'undefined') return true;
+    let oldest = null;
+    for (const x of Deals.all()) {
+      if (x.status !== 'live' || !x.route || !x.route.hops) continue;
+      if (!x.route.hops.some((h) => h.node === g.grantor && h.mode === g.mode)) continue;
+      if (!oldest || Number(x.id.slice(1)) < Number(oldest.id.slice(1))) oldest = x;
+    }
+    return !oldest || oldest.id === d.id;
+  }
+
+  /** What a nation takes from every deal it has, after carriage. */
+  function netFor(nid, tune, turn) {
+    if (typeof Deals === 'undefined') return 0;
+    const t = T(tune);
+    let sum = 0;
+    for (const d of Deals.forNation(nid, turn)) {
+      const s = Deals.settlement(d, t);
+      sum += (d.a === nid ? s.a : s.b) * keep(d, t);
+    }
+    return sum;
+  }
+
   /* ---- state --------------------------------------------------------- */
 
   const serialize = () => ({
-    seq,
+    seq, offerSeq,
     grants: [...grants.values()].map((r) => ({ ...r })),
     notices: notices.map((n) => ({ ...n })),
+    offers: [...offers.values()].map((o) => ({ ...o, terms: { ...o.terms } })),
   });
 
   function loadState(snap) {
     clearRegister();
     if (!snap) return;              // a document written before A2
     seq = snap.seq || 0;
+    offerSeq = snap.offerSeq || 0;
+    for (const o of snap.offers || []) offers.set(o.id, { ...o, terms: { ...o.terms } });
     for (const r of snap.grants || []) {
       const rec = { ...r };
       grants.set(rec.id, rec);
@@ -557,7 +805,8 @@ const Transit = (function () {
     MODE, MODE_NAME, MODE_LABEL, CANADA, MEXICO, WORLD, isOutside,
     reset, graph, modesBetween, priceRoute, keep, find, toWorld, reaches,
     live, get, permits, permitFor, forNation, grant, serve, withdraw,
-    reneges, standing, remaining, tick,
+    reneges, standing, remaining, tick, tickRegister, netFor, blockedAt,
+    propose, offersFor, waiting, answer, decline: declineOffer,
     serialize, loadState,
     count: () => [...grants.values()].filter((r) => r.status !== 'ended').length,
     all: () => [...grants.values()],

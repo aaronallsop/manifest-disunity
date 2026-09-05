@@ -1297,6 +1297,11 @@ export const SCHEMA = {
     label: 'Relations: they recognised us',
     doc: 'What a new state feels toward whoever went first. Bigger than a trade deal and smaller than being handed ground, because acknowledging a country costs the acknowledger something and gives the acknowledged everything.',
   },
+  'rel.magRevoked': {
+    v: -0.30, min: -1, max: 0, step: 0.01, group: 'Relations',
+    label: 'Memory: they closed a corridor on us',
+    doc: 'How badly a nation takes having a transit corridor closed on it after notice. Set between an annexation (-0.22) and a broken non-aggression pact (-1.4), and much closer to the annexation, because this is a LAWFUL exit taken with a year\'s warning rather than a betrayal - but it is still somebody deciding your economy is worth less to them than their own convenience, and the injured party has a year to watch it coming.',
+  },
   'rel.magTreatied': {
     v: 0.18, min: 0, max: 2, step: 0.01, group: 'Relations',
     label: 'Memory: signed a pact together',

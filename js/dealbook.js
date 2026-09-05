@@ -64,7 +64,8 @@ const DealBook = (function () {
       const them = Game.getNation(Deals.other(d, me));
       const left = Deals.remaining(d);
       const s = Deals.settlement(d, T());
-      const mine = d.a === me ? s.a : s.b;
+      const carriage = Transit.keep(d, T());
+      const mine = (d.a === me ? s.a : s.b) * carriage;
       /*
        * THE BET, in one cell. A deal holds the price it was signed at for its
        * whole term, so a seller who signed at 104 and watched the index climb
@@ -87,7 +88,7 @@ const DealBook = (function () {
         <div class="db-renew">${d.autoRenew ? '&#10003; renews' : '&mdash;'}</div>
       </div>`;
     }).join('');
-    const income = Deals.income(me, T());
+    const income = Transit.netFor(me, T());
     return `<div class="db-head">
         <div class="db-who">With</div><div class="db-what">What, and at what price</div>
         <div class="db-pay">To you</div><div class="db-when">Runs until</div><div class="db-renew">Renew</div>

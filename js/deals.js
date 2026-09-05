@@ -186,6 +186,14 @@ const Deals = (function () {
         vol: f.vol, price: f.price,
       })),
       paid: 0, earnedA: 0, earnedB: 0,
+      /*
+       * WHERE THE GOODS GO (A2), and the only line this file gained for that
+       * whole stage. `null` means they cross nobody's ground but the two
+       * parties' own, which is every deal the game could sign before A2 and
+       * costs exactly nothing. The toll is taken in its own world phase, so
+       * settlement below stays gross and unchanged.
+       */
+      route: plan.route || null,
       status: 'live', endedTurn: null, reason: null,
       renewedFrom: o.renewedFrom || null,
     };
@@ -440,7 +448,13 @@ const Deals = (function () {
    */
   const serialize = () => ({
     seq, offerSeq,
-    deals: [...deals.values()].map((d) => ({ ...d, flows: d.flows.map((f) => ({ ...f })) })),
+    deals: [...deals.values()].map((d) => ({
+      ...d,
+      flows: d.flows.map((f) => ({ ...f })),
+      // Deep-copied like the flows: a shallow spread passes the round-trip test
+      // and still leaves a loaded game sharing hop objects with the live one.
+      route: d.route ? { ...d.route, hops: d.route.hops.map((h) => ({ ...h })) } : null,
+    })),
     offers: [...offers.values()].map((o) => ({ ...o, terms: { ...o.terms, flows: o.terms.flows.map((f) => ({ ...f })) } })),
   });
 
@@ -451,6 +465,7 @@ const Deals = (function () {
     offerSeq = snap.offerSeq || 0;
     for (const d of snap.deals || []) {
       const rec = { ...d, flows: (d.flows || []).map((f) => ({ ...f })) };
+      rec.route = d.route ? { ...d.route, hops: (d.route.hops || []).map((h) => ({ ...h })) } : null;
       deals.set(rec.id, rec);
       if (rec.status === 'live') byPair.set(key(rec.a, rec.b), rec.id);
     }

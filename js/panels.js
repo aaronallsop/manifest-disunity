@@ -1043,7 +1043,9 @@ function renderDeals(nid) {
     const them = Game.getNation(Deals.other(d, nid));
     const left = Deals.remaining(d);
     const s = Deals.settlement(d, TUNE);
-    const mine = d.a === nid ? s.a : s.b;
+    // Net of carriage: the treasury receives this, so the panel must say it.
+    const carriage = typeof Transit === 'undefined' ? 1 : Transit.keep(d, TUNE);
+    const mine = (d.a === nid ? s.a : s.b) * carriage;
     const sec = econ && econ.sectors && d.flows.length
       ? econ.sectors[d.flows[0].i] + (d.flows.length > 1 ? ` +${d.flows.length - 1}` : '') : '';
     /*
@@ -1067,7 +1069,8 @@ function renderDeals(nid) {
     <div class="value">${live.length} ${live.length === 1 ? 'deal' : 'deals'}</div>
     ${rows}${more}
     <div class="geo-row"><span>Income from deals</span><strong class="surplus">+${
-      fmtGdp(Deals.income(nid, TUNE) * 1e6)}/turn</strong></div>${link}</div>`;
+      fmtGdp((typeof Transit === 'undefined' ? Deals.income(nid, TUNE)
+        : Transit.netFor(nid, TUNE)) * 1e6)}/turn</strong></div>${link}</div>`;
 }
 
 function renderExportAccess(nid) {

@@ -504,8 +504,21 @@ const Moves = (function () {
     const me = nationOf(nid), them = nationOf(target);
     if (!me || !them) return no('That nation no longer exists.');
     if (nid === target) return no('You cannot trade with yourself.');
-    if (!Game.adjacentNations(nid).includes(target)) {
-      return no(`${them.name} is not within reach.`);
+    /*
+     * WITHIN REACH MEANS NEIGHBOURS, OR A WAY THROUGH (A2). The adjacency branch
+     * is checked first and unchanged, so every pair the game could already sign
+     * passes exactly as before and cannot have acquired a route it does not
+     * need. Only when they do NOT touch does the corridor graph get asked.
+     *
+     * `Moves.legal` is deliberately NOT widened to match: the AI's view of who
+     * it can trade with does not move in A2. Teaching it to use corridors is A4.
+     */
+    const direct = Game.adjacentNations(nid).includes(target);
+    let route = null;
+    if (!direct) {
+      route = typeof Transit === 'undefined' ? null
+        : Transit.find(nid, target, { tune: t, permit: Transit.permitFor(nid) });
+      if (!route) return no(`${them.name} is not within reach — no neighbour will carry your goods that far.`);
     }
     /*
      * ONE LIVE DEAL PER PAIR — what replaced the cooldown (A1). The cooldown
@@ -569,6 +582,17 @@ const Moves = (function () {
      * change in the Full game smuggled in under an economy stage. At the default
      * four-turn term this is byte-for-byte the number the click reported.
      */
+    /*
+     * CARRIAGE COMES OFF THE HEADLINE FIGURES, not off the settlement. The AI
+     * reads `preview.gain` against a turn of its income to decide whether a
+     * trade is worth its turn, and a routed deal reported at its face value is
+     * the old "world market beats everything" defect reinstated in a new place.
+     * For a direct deal `carriage` is exactly 1, so nothing that already worked
+     * moves by a bit.
+     */
+    const carriage = route ? route.keep : 1;
+    mine *= carriage;
+    theirs *= carriage;
     const gain = mine * duration;
     const autoRenew = terms.autoRenew == null
       ? !!t.get('deal.defaultAutoRenew') : !!terms.autoRenew;
@@ -576,6 +600,8 @@ const Moves = (function () {
     return {
       ok: true, reason: null, target, nid, cost: 0, verdict,
       flows: res.flows, total: res.total, capped: res.capped, uncappedTotal: res.uncappedTotal,
+      route: route ? { hops: route.hops.map((h) => ({ ...h })), keep: route.keep } : null,
+      carriage,
       gain,
       duration, autoRenew, priceMult,
       perTurn: { me: mine, them: theirs },
@@ -583,6 +609,7 @@ const Moves = (function () {
       effects: [
         { label: 'Traded value', value: res.total * 1e6 },
         { label: 'Treasury, per turn', value: mine * 1e6 },
+        ...(route ? [{ label: 'Carriage', value: -(1 - carriage) }] : []),
         { label: 'Turns', value: duration },
         // What it buys that money cannot is a `traded` entry in BOTH
         // directions, which is the one relations channel ordinary play
@@ -669,6 +696,254 @@ const Moves = (function () {
       text: `${a} and ${b} signed a ${plan.duration}-turn trade deal worth ${Math.round(plan.perTurn.me)}M a turn to each.`,
     });
     return { ...plan, deal, events: [entry] };
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* transit (A2)                                                       */
+  /* ------------------------------------------------------------------ */
+
+  /*
+   * CARRYING SOMEBODY ELSE'S GOODS, AND WHAT IT IS WORTH TO CARRY THEM.
+   *
+   * This arithmetic used to live inside the trade panel, which meant the player
+   * was the only one who could ever ask for a corridor and the AI could not have
+   * had an opinion about one if it wanted to. It is here now for the reason
+   * everything else here is: one rulebook, asked the same question by a screen
+   * and by fifty other nations, so the two can never answer differently.
+   *
+   * WHAT A GRANTOR WEIGHS, all three of them things a country would:
+   *   SIZE      - the larger power holds out for a better cut.
+   *   NEED      - what the toll would be worth against its own economy. The
+   *               needier it is, the more readily it settles.
+   *   ALIGNMENT - how close its politics are to yours, over the WHOLE party
+   *               vector rather than one share of it. Read ONLY when politics is
+   *               switched on: in Economy mode the term is ABSENT rather than
+   *               zero, because a system that has been switched off must not
+   *               quietly charge the player for itself (D166).
+   *
+   * PURE, like the deal verdict: same world and same terms give the same answer
+   * every time. A negotiation you can reroll is a slot machine.
+   */
+  function transitVerdict(grantor, grantee, offered, total, tune) {
+    const t = T(tune);
+    const dS = Game.nationDemographics(grantee), dT = Game.nationDemographics(grantor);
+    if (!dS || !dT) return null;
+    const base = t.get('trade.transitToll');
+    const relSize = dT.gdp / (dS.gdp + dT.gdp);
+    const sizeMult = 0.75 + 0.5 * relSize;
+
+    const politics = typeof Complexity === 'undefined' || Complexity.enabled('politics');
+    let rel = null, relMult = 1;
+    if (politics && typeof CivilWar !== 'undefined') {
+      const sS = CivilWar.shares(dS), sT = CivilWar.shares(dT);
+      let dist = 0;
+      for (const k of new Set([...Object.keys(sS), ...Object.keys(sT)])) {
+        dist += Math.abs((sS[k] || 0) - (sT[k] || 0));
+      }
+      rel = Math.max(-1, Math.min(1, 1 - dist / t.get('trade.alignmentScale')));
+      relMult = 1 - 0.2 * rel;
+    }
+
+    const incomeToT = total * t.get('trade.gain') * base;
+    const need = Math.max(0, Math.min(1, (incomeToT / (dT.gdp / 1e6)) * t.get('trade.needScale')));
+    const needMult = 1 - 0.25 * need;
+
+    const ask = Math.max(t.get('transit.rateMin'),
+      Math.min(t.get('transit.rateMax'), base * sizeMult * relMult * needMult));
+
+    const reasons = [];
+    if (relSize > 0.6) reasons.push('They are the larger power, so they hold out for a better cut.');
+    else if (relSize < 0.4) reasons.push('You are bigger than them, so they will take less.');
+    if (need > 0.5) reasons.push('The income would really help them.');
+    else if (need < 0.15) reasons.push('Frankly, they do not need this.');
+    if (rel != null && rel > 0.3) reasons.push('Your politics are close enough to theirs.');
+    else if (rel != null && rel < -0.3) reasons.push('They have little in common with you.');
+    if (!reasons.length) reasons.push('A middling proposition, from where they are standing.');
+
+    const kind = offered == null ? 'ask'
+      : (offered >= ask - 0.005 ? 'accept'
+        : (offered >= ask * t.get('trade.counterFloor') ? 'counter' : 'decline'));
+    return { kind, rate: ask, offered, reasons, relSize, need, rel };
+  }
+
+  /**
+   * @param intent {type:'transit', nid, target, mode, rate?, duration?, cap?}
+   *
+   * `nid` ASKS, `target` GRANTS. A corridor is directed and per mode: a nation
+   * can wave the lorries through and refuse the ships, which is the whole point
+   * of the tiers, so the same pair may hold three different agreements and each
+   * is its own object.
+   */
+  function planTransit(intent, tune) {
+    const { nid, target } = intent;
+    const t = T(tune);
+    const me = nationOf(nid), them = nationOf(target);
+    if (!me || !them) return no('That nation no longer exists.');
+    if (nid === target) return no('You do not need your own permission.');
+    /*
+     * A REAL SHARED LAND BORDER, from the corridor graph rather than from
+     * adjacency. `Game.adjacentNations` deliberately spans water and once
+     * offered California an overland route to Alaska; a corridor built on it
+     * would ship lorries across the Pacific.
+     */
+    const mode = intent.mode;
+    const bits = typeof Transit === 'undefined' ? 0 : Transit.modesBetween(nid, target);
+    if (!bits) return no(`No road or railway crosses the border with ${them.name}.`);
+    if (!(bits & mode)) {
+      const have = Object.keys(Transit.MODE).filter((k) => bits & Transit.MODE[k])
+        .map((k) => Transit.MODE_LABEL[Transit.MODE[k]]).join(' or ');
+      return no(`That border carries ${have}, not ${Transit.MODE_LABEL[mode] || 'that'}.`);
+    }
+    if (Transit.live(target, nid, mode)) {
+      return no(`${them.name} already carries your goods that way.`);
+    }
+    if (typeof Recognition !== 'undefined' && !Recognition.canTrade(nid, target)) {
+      return no(`${them.name} does not recognise you as a country, and a corridor is an agreement between two governments.`);
+    }
+    const durations = t.get('deal.durations');
+    const duration = intent.duration == null ? t.get('deal.defaultDuration') : intent.duration;
+    if (!durations.includes(duration)) {
+      return no(`A corridor runs for ${durations.join(', ')} turns, not ${duration}.`);
+    }
+    // What crossing their ground would be worth, so the grantor has something to
+    // weigh. Their capacity is the limit: the goods leave through THEIR gates.
+    const limit = Math.min(Game.tradeCapacity(nid).total, Game.tradeCapacity(target).total);
+    const res = applyCapacity(tradeFlows(nid, target, tune), limit);
+    const total = Math.max(res.total, 0);
+    const offered = intent.rate == null ? null : intent.rate;
+    const verdict = transitVerdict(target, nid, offered, total, t);
+    if (!verdict) return no('That nation no longer exists.');
+    const rate = offered == null ? verdict.rate : offered;
+    if (rate < t.get('transit.rateMin') || rate > t.get('transit.rateMax')) {
+      return no('No corridor is worth that, from either end.');
+    }
+    return {
+      ok: true, reason: null, target, nid, cost: 0,
+      mode, rate, duration, verdict,
+      notice: t.get('transit.noticeTurns'),
+      cap: intent.cap == null ? null : intent.cap,
+      until: World.getTurn() + duration,
+      effects: [
+        { label: 'Toll they keep', value: rate },
+        { label: 'Turns', value: duration },
+        { label: 'Notice to close', value: t.get('transit.noticeTurns') },
+      ],
+    };
+  }
+
+  function resolveTransit(intent, rng, tune) {
+    const plan = planTransit(intent, tune);
+    if (!plan.ok) return { ...plan, events: [] };
+    const { nid, target } = intent;
+    const a = nameOf(nid), b = nameOf(target);
+    const label = Transit.MODE_LABEL[plan.mode] || 'transit';
+    /*
+     * NOBODY OPENS THE PLAYER'S BORDER ON THEIR BEHALF, the same rule A1
+     * established for a trade deal and for the same reason: an agreement that
+     * lets another nation's goods across your ground for years is a decision,
+     * not a thing that happens to you. AI-to-AI corridors still sign directly.
+     */
+    const player = typeof Game.getPlayer === 'function' ? Game.getPlayer() : null;
+    if (player && target === player && nid !== player) {
+      const offer = Transit.propose
+        ? Transit.propose({ from: nid, to: target, plan }, T(tune)) : null;
+      const e = log({
+        subject: nid, kind: 'trade', event: 'transit-offer', partner: target,
+        text: `${a} has asked to move goods across ${b} by ${label}.`,
+      });
+      return { ...plan, offered: offer || true, events: [e] };
+    }
+    let rec = null;
+    Game.batch(() => {
+      rec = Transit.grant({
+        grantor: target, grantee: nid, mode: plan.mode,
+        rate: plan.rate, duration: plan.duration, cap: plan.cap, notice: plan.notice,
+      }, T(tune));
+      // A corridor is a favour with a price on it, and it is remembered the way
+      // a trade is: once, at signing, in both directions.
+      Relations.record(nid, target, 'traded', { tune: T(tune) });
+      Relations.record(target, nid, 'traded', { tune: T(tune) });
+    });
+    const entry = log({
+      subject: nid, kind: 'trade', event: 'transit', partner: target,
+      agreementId: rec ? rec.id : null,
+      terms: [
+        { name: 'Toll', value: plan.rate, key: 'trade.transitToll' },
+        { name: 'Turns', value: plan.duration, key: 'deal.durations' },
+      ],
+      text: `${b} will carry ${a}'s goods by ${label} for ${plan.duration} turns, at ${Math.round(plan.rate * 100)}%.`,
+    });
+    return { ...plan, agreement: rec, events: [entry] };
+  }
+
+  /**
+   * @param intent {type:'revoke', nid, agreementId}
+   *
+   * GIVE NOTICE ON A CORRIDOR. Either side may: a nation walking away from a
+   * corridor it is paying for is the same instrument seen from the other end,
+   * and refusing it would leave the payer no exit but a breach.
+   *
+   * IT DOES NOT USE THE TURN. Nothing changes hands, no ground moves and no army
+   * marches, which is the same test recognising a country passes. What stops it
+   * being spammed is not a clock, it is the reputation.
+   */
+  function planRevoke(intent, tune) {
+    const { nid } = intent;
+    const t = T(tune);
+    const me = nationOf(nid);
+    if (!me) return no('That nation no longer exists.');
+    const rec = typeof Transit === 'undefined' ? null : Transit.get(intent.agreementId);
+    if (!rec) return no('That agreement no longer exists.');
+    if (rec.grantor !== nid && rec.grantee !== nid) return no('That is not your agreement to end.');
+    if (rec.status !== 'live') {
+      return no(rec.status === 'noticed' ? 'Notice has already been given on it.' : 'It has already ended.');
+    }
+    const otherSide = rec.grantor === nid ? rec.grantee : rec.grantor;
+    const closing = rec.grantor === nid;
+    return {
+      ok: true, reason: null, target: otherSide, nid, cost: 0,
+      agreementId: rec.id, closing,
+      notice: rec.notice,
+      endsTurn: World.getTurn() + rec.notice,
+      effects: [
+        { label: 'Turns it keeps running', value: rec.notice },
+        // Only the side that CLOSES a corridor pays for it. Walking away from
+        // something you were paying for costs you the corridor and nothing else.
+        { label: 'Standing with them', value: closing ? t.get('rel.magRevoked') : 0 },
+      ],
+    };
+  }
+
+  function resolveRevoke(intent, rng, tune) {
+    const plan = planRevoke(intent, tune);
+    if (!plan.ok) return { ...plan, events: [] };
+    const { nid } = intent;
+    const t = T(tune);
+    const rec = Transit.get(plan.agreementId);
+    const a = nameOf(nid), b = nameOf(plan.target);
+    Game.batch(() => {
+      Transit.serve(rec.id, nid, World.getTurn(), t);
+      /*
+       * THE NEIGHBOURHOOD IS WATCHING, and this is the half that is easy to
+       * leave out. A nation resented only by the country it just cut off is
+       * resented only by the country least able to do anything about it. The
+       * witness helper is the one place that knows how to spread it: victims get
+       * the grievance, onlookers get `witnessed` at a fraction of it.
+       *
+       * Only a GRANTOR pays. Handing back a corridor you were paying for is not
+       * a betrayal of anybody.
+       */
+      if (plan.closing) remember(nid, [plan.target], 'revoked', 1, t);
+    });
+    const entry = log({
+      subject: nid, kind: 'trade', event: 'revoke', partner: plan.target,
+      agreementId: rec.id,
+      terms: [{ name: 'Notice', value: plan.notice, key: 'transit.noticeTurns' }],
+      text: plan.closing
+        ? `${a} gave ${b} ${plan.notice} turns' notice on the corridor across its ground.`
+        : `${a} is giving up the corridor it rented across ${b}.`,
+    });
+    return { ...plan, events: [entry] };
   }
 
   /* ------------------------------------------------------------------ */
@@ -1436,10 +1711,12 @@ const Moves = (function () {
 
   const PLANNERS = { annex: planAnnex, unite: planUnite, release: planRelease, govern: planGovern,
                     autonomy: planAutonomy, recognise: planRecognise, trade: planTrade,
-                    treaty: planTreaty, aid: planAid };
+                    treaty: planTreaty, aid: planAid, transit: planTransit,
+                    revoke: planRevoke };
   const RESOLVERS = { annex: resolveAnnex, unite: resolveUnite, release: resolveRelease,
                       govern: resolveGovern, autonomy: resolveAutonomy, recognise: resolveRecognise,
-                      trade: resolveTrade, treaty: resolveTreaty, aid: resolveAid };
+                      trade: resolveTrade, treaty: resolveTreaty, aid: resolveAid,
+                      transit: resolveTransit, revoke: resolveRevoke };
 
   /** Pure. Never draws, never rolls, never mutates. */
   function plan(intent, tune) {
@@ -1601,7 +1878,7 @@ const Moves = (function () {
     // question `plan` and `legal` ask, rather than answering it a second way.
     tooStrongToAnnex, untouchable,
     // ...and of the trade rules (M11.1), for the same reason.
-    tradeFlows, applyCapacity, tradeCooldownLeft, markTraded,
+    tradeFlows, applyCapacity, tradeCooldownLeft, markTraded, transitVerdict,
     // Exported so the "a purchase does not become a surplus" rule can be tested
     // as the arithmetic it is, rather than by contriving a world in which a
     // nation's production drifts across zero mid-contract.

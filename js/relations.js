@@ -85,6 +85,13 @@ const Relations = (function () {
     treatied: 'rel.magTreatied',   // we signed something together
     aided: 'rel.magAided',         // they paid for something of ours
     reneged: 'rel.magReneged',     // they broke a pact they had signed with us
+    // A2 — closing a corridor somebody's economy runs through. DELIBERATELY NOT
+    // `reneged`: that one is written when a nation invades a country it signed a
+    // non-aggression pact with, and is weighted accordingly. Giving a year's
+    // notice and walking away from a haulage agreement is a lawful exit, and
+    // filing it under the same heading as a surprise invasion would pin the
+    // injured party at the bottom of the scale for it.
+    revoked: 'rel.magRevoked',     // they gave notice on a corridor we relied on
   };
 
   const clamp = (x, lo, hi) => (x < lo ? lo : x > hi ? hi : x);

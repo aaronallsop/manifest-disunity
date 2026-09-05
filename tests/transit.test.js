@@ -237,6 +237,287 @@ describe('Transit — finding a way through', () => {
   });
 });
 
+describe('Transit — the toll comes off the income, never out of the deal', () => {
+  /*
+   * THE THREE TRIPWIRES FOR THE WHOLE STAGE. A2 was scoped as an addition: a new
+   * instrument and a new cost on a new kind of deal, with nothing that already
+   * worked paying differently. If any of these three goes red, it has stopped
+   * being that and become an economy change, whatever else is passing.
+   */
+
+  /**
+   * Open every border to everybody, through the real register, so these tests
+   * exercise the whole path rather than a stub. Returns how many were opened —
+   * asserted non-zero, because a fixture that quietly grants nothing turns every
+   * test below into a test that passes by not running.
+   */
+  function openEveryBorder(rate) {
+    let opened = 0;
+    for (const [a] of Game.nations) {
+      for (const [b] of Game.nations) {
+        if (a === b) continue;
+        const bits = Transit.modesBetween(a, b);
+        for (const m of [Transit.MODE.RAIL, Transit.MODE.HIGHWAY, Transit.MODE.PORT]) {
+          if (!(bits & m)) continue;
+          if (Transit.grant({ grantor: a, grantee: b, mode: m, rate, duration: 20 }, T())) opened += 1;
+        }
+      }
+    }
+    return opened;
+  }
+
+  /** A pair that do NOT touch but can reach each other through somebody. */
+  function routedPair() {
+    for (const [a] of Game.nations) {
+      const direct = new Set(Game.adjacentNations(a));
+      for (const [b] of Game.nations) {
+        if (a === b || direct.has(b)) continue;
+        const p = Moves.plan({ type: 'trade', nid: a, target: b }, T());
+        if (p.ok && p.route && p.route.hops.length && p.total > 0) return { a, b, plan: p };
+      }
+    }
+    return null;
+  }
+
+  /** Boot, open every border, and find a genuinely routed pair. Never null. */
+  async function routedWorld() {
+    await bootWorld({ seed: SEED });
+    const opened = openEveryBorder(T().get('transit.rateMin'));
+    ok(opened > 50, `only ${opened} corridors granted; the fixture is not opening the board`);
+    const pair = routedPair();
+    ok(pair, 'no two nations on the whole board need a corridor to reach each other');
+    return pair;
+  }
+
+  it('a direct deal is untouched to the bit', async () => {
+    await bootWorld({ seed: SEED });
+    let checked = 0;
+    for (const [a] of Game.nations) {
+      for (const b of Game.adjacentNations(a)) {
+        const p = Moves.plan({ type: 'trade', nid: a, target: b }, T());
+        if (!p.ok) continue;
+        equal(p.route, null, `${a}-${b} share a border and were given a route anyway`);
+        equal(p.carriage, 1, `${a}-${b} are neighbours and were charged carriage`);
+        checked += 1;
+        if (checked > 30) return;
+      }
+    }
+    ok(checked > 0, 'no direct pair found to check');
+  });
+
+  it('a routed deal\'s GROSS settlement is what it would have been with no route', async () => {
+    const pair = await routedWorld();
+    Moves.resolve({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: 8 } }, null, T());
+    const d = Deals.live(pair.a, pair.b);
+    ok(d && d.route, 'the deal was signed without the route it needed');
+    const gross = Deals.settlement(d, T());
+    const bare = Deals.settlement({ ...d, route: null }, T());
+    deepEqual(gross, bare,
+      'the toll has moved INSIDE the deal\'s own arithmetic; it must come off the income afterwards');
+  });
+
+  it('what everyone takes plus what arrives is exactly what the deal paid', async () => {
+    const pair = await routedWorld();
+    Moves.resolve({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: 8 } }, null, T());
+    const d = Deals.live(pair.a, pair.b);
+    const total = () => [...Game.nations.values()].reduce((s, n) => s + n.treasury, 0);
+
+    const before = total();
+    const t0 = World.getTurn();
+    Deals.tick(T(), t0, {});
+    const afterGross = total();
+    Transit.tick(T(), t0, {});
+    const afterToll = total();
+
+    const gross = Deals.settlement(d, T());
+    const priced = Transit.priceRoute(d.route.hops, T());
+    const paid = (gross.a + gross.b) * 1e6;
+    const tol = Math.abs(paid) * 1e-9 + 1;
+    close(afterGross - before, paid, tol,
+      'the deal did not pay what its settlement says it pays');
+
+    /*
+     * WHAT LEAVES THE BOARD, AND WHY IT IS ALLOWED TO. Two of the three things
+     * a journey costs are deliberately collected by nobody:
+     *
+     *   the FOREIGN CORRIDOR share — the owner's ruling is that Canada's ten per
+     *   cent is a cost, not a transfer;
+     *   the CROSSING FRICTION — handling, transhipment and delay, which is what
+     *   makes distance expensive regardless of how generous the middlemen are.
+     *
+     * Everything a domestic nation charges is a TRANSFER and must still be on
+     * the board afterwards. So the board's total falls by exactly what the two
+     * parties paid minus what the transit nations received — three quantities
+     * computed three different ways, which is what makes this an invariant
+     * rather than a restatement.
+     */
+    const collected = priced.legs.filter((l) => l.transfer).reduce((s, l) => s + l.take, 0) * paid;
+    const chargedToParties = (1 - priced.keep) * paid;
+    close(afterToll - afterGross, collected - chargedToParties, tol,
+      'money was minted or destroyed on the journey');
+    ok(collected > 0, 'the transit nations were charged for but paid nothing');
+    ok(chargedToParties > collected,
+      'nothing was lost to the crossings themselves, so distance costs the parties nothing');
+  });
+
+  it('every nation that carried the goods was actually paid for it', async () => {
+    const pair = await routedWorld();
+    Moves.resolve({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: 8 } }, null, T());
+    const d = Deals.live(pair.a, pair.b);
+    const gross = Deals.settlement(d, T());
+    const paid = (gross.a + gross.b) * 1e6;
+    const priced = Transit.priceRoute(d.route.hops, T());
+    const before = new Map([...Game.nations.keys()].map((n) => [n, Game.getNation(n).treasury]));
+    const t0 = World.getTurn();
+    Deals.tick(T(), t0, {});
+    Transit.tick(T(), t0, {});
+    let checked = 0;
+    for (const leg of priced.legs) {
+      if (!leg.transfer) {
+        // A corridor node is not a nation and cannot hold money at all.
+        equal(Game.getNation(leg.node), undefined,
+          `${leg.node} took a cut and exists as a nation, which the ruling forbids`);
+        continue;
+      }
+      const got = Game.getNation(leg.node).treasury - before.get(leg.node);
+      close(got, leg.take * paid, Math.abs(paid) * 1e-9 + 1,
+        `${leg.node} carried the goods and was paid the wrong amount`);
+      checked += 1;
+    }
+    ok(checked > 0, 'the route had no domestic hop to check');
+  });
+
+  it('routing leaves the price index byte-identical', async () => {
+    const pair = await routedWorld();
+    const before = JSON.stringify(Market.getPrices());
+    Moves.resolve({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: 8 } }, null, T());
+    const t0 = World.getTurn();
+    for (let i = 0; i < 8; i++) { Deals.tick(T(), t0 + i, {}); Transit.tick(T(), t0 + i, {}); }
+    equal(JSON.stringify(Market.getPrices()), before, 'carrying goods moved a price');
+  });
+
+  it('a routed deal survives a save with its hops deep-copied', async () => {
+    const pair = await routedWorld();
+    Moves.resolve({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: 8 } }, null, T());
+    const snap = JSON.parse(JSON.stringify(Deals.serialize()));
+    Deals.loadState(snap);
+    deepEqual(Deals.serialize(), snap, 'a routed deal did not survive its own round trip');
+    const d = Deals.live(pair.a, pair.b);
+    ok(d.route && d.route.hops.length, 'the route was lost in the save');
+    // Mutating the loaded copy must not reach back into the snapshot.
+    d.route.hops[0].rate = 999;
+    ok(snap.deals.every((x) => !x.route || x.route.hops.every((h) => h.rate !== 999)),
+      'the loaded game shares hop objects with its own save');
+  });
+});
+
+describe('Transit — closing a corridor under a running deal', () => {
+  function openEveryBorder(rate) {
+    let opened = 0;
+    for (const [a] of Game.nations) {
+      for (const [b] of Game.nations) {
+        if (a === b) continue;
+        const bits = Transit.modesBetween(a, b);
+        for (const m of [Transit.MODE.RAIL, Transit.MODE.HIGHWAY, Transit.MODE.PORT]) {
+          if (!(bits & m)) continue;
+          if (Transit.grant({ grantor: a, grantee: b, mode: m, rate, duration: 20 }, T())) opened += 1;
+        }
+      }
+    }
+    return opened;
+  }
+  async function routedDeal() {
+    await bootWorld({ seed: SEED });
+    ok(openEveryBorder(T().get('transit.rateMin')) > 50, 'the fixture opened no corridors');
+    for (const [a] of Game.nations) {
+      const direct = new Set(Game.adjacentNations(a));
+      for (const [b] of Game.nations) {
+        if (a === b || direct.has(b)) continue;
+        const p = Moves.plan({ type: 'trade', nid: a, target: b }, T());
+        if (!p.ok || !p.route || !p.route.hops.length || p.total <= 0) continue;
+        Moves.resolve({ type: 'trade', nid: a, target: b, terms: { duration: 20 } }, null, T());
+        return { a, b, deal: Deals.live(a, b) };
+      }
+    }
+    ok(false, 'no routed deal could be signed anywhere on the board');
+    return null;
+  }
+
+  it('a notice keeps the goods moving for exactly its notice period', async () => {
+    const r = await routedDeal();
+    const hop = r.deal.route.hops.find((h) => !h.corridor);
+    ok(hop, 'the route crosses nobody, so there is nothing to close');
+    const g = Transit.live(hop.node, r.a, hop.mode);
+    ok(g, 'the hop it routes through has no grant behind it');
+
+    const t0 = World.getTurn();
+    Transit.serve(g.id, hop.node, t0, T());
+    const notice = g.notice;
+    // Still carrying, right up to the last turn of the notice.
+    for (let i = 0; i < notice; i++) {
+      equal(Transit.blockedAt(r.deal, t0 + i), null,
+        `the corridor stopped carrying ${i} turns into a ${notice}-turn notice`);
+    }
+    Transit.tickRegister(T(), t0 + notice);
+    ok(Transit.blockedAt(r.deal, t0 + notice),
+      'the corridor was still carrying after its notice had run out');
+  });
+
+  it('a closed corridor stops the deal paying, and its term keeps running down', async () => {
+    const r = await routedDeal();
+    const hop = r.deal.route.hops.find((h) => !h.corridor);
+    ok(hop, 'the route crosses nobody');
+    const g = Transit.live(hop.node, r.a, hop.mode);
+    const t0 = World.getTurn();
+
+    // One good turn first, so the comparison is against a deal that was paying.
+    Deals.tick(T(), t0, {});
+    Transit.tick(T(), t0, {});
+    const paidBefore = r.deal.paid;
+    ok(paidBefore > 0, 'the deal was not paying even before the corridor closed');
+
+    Transit.serve(g.id, hop.node, t0, T());
+    const closed = t0 + g.notice;
+    Transit.tickRegister(T(), closed);
+    const treasuryBefore = Game.getNation(r.a).treasury;
+    Transit.tick(T(), closed, {});
+    equal(Game.getNation(r.a).treasury, treasuryBefore,
+      'a stalled deal still moved money');
+    ok(r.deal.route.stalled, 'the deal was blocked and nothing recorded why');
+    equal(r.deal.route.stalled.at, hop.node, 'the stall names the wrong nation');
+    equal(r.deal.route.stalled.why, 'revoked');
+    // ...and the clock does not stop. A corridor holder can burn a long contract
+    // down to nothing, which is the whole reason closing one is a threat.
+    ok(Deals.remaining(r.deal, closed) < Deals.remaining(r.deal, t0),
+      'the deal\'s term stopped running while it was stalled');
+  });
+
+  it('says who to talk to, which is what makes it a decision', async () => {
+    const r = await routedDeal();
+    const hop = r.deal.route.hops.find((h) => !h.corridor);
+    const g = Transit.live(hop.node, r.a, hop.mode);
+    const t0 = World.getTurn();
+    Transit.serve(g.id, hop.node, t0, T());
+    Transit.tickRegister(T(), t0 + g.notice);
+    const b = Transit.blockedAt(r.deal, t0 + g.notice);
+    ok(b && b.at && b.why, 'a blocked route reported no reason a player could act on');
+    ok(Game.getNation(b.at), 'the blockage names something that is not a nation');
+  });
+
+  it('nobody can close Canada', async () => {
+    await bootWorld({ seed: SEED });
+    for (const id of [Transit.CANADA, Transit.MEXICO]) {
+      equal(Transit.live(id, [...Game.nations.keys()][0], Transit.MODE.RAIL), null,
+        `${id} holds a grant, which means somebody could revoke it`);
+      // ...and asking permission of a corridor always succeeds, at the flat rate.
+      const p = Transit.permits(id, [...Game.nations.keys()][0], Transit.MODE.RAIL);
+      ok(p, `${id} refused passage, which the ruling says it cannot do`);
+      equal(p.transfer, false, `${id} is being paid, which the ruling forbids`);
+      equal(p.rate, T().get('transit.foreignCorridorToll'));
+    }
+  });
+});
+
 describe('Transit — what a route costs', () => {
   it('a route with nobody in between costs exactly nothing', async () => {
     await bootWorld({ seed: SEED });

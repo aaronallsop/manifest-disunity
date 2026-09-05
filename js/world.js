@@ -1219,6 +1219,13 @@ const World = (function () {
        * trade is the core loop in both modes.
        */
       if (typeof Deals !== 'undefined') Deals.tick(tn, turn, { player: Game.getPlayer() });
+      /*
+       * ...AND THE COUNTRIES THE GOODS CROSSED TAKE THEIR CUT (A2). A separate
+       * phase, immediately after settlement and inside the same batch, so that
+       * what a deal is worth and what it costs to carry stay two questions with
+       * two answers. Deals.tick pays gross; this takes the journey out of it.
+       */
+      if (typeof Transit !== 'undefined') Transit.tick(tn, turn, { player: Game.getPlayer() });
       Game.tickTreasuries(); // income minus maintenance, on this turn's updated GDP
       Market.update(tn);     // reprice every resource from live supply vs demand
       phasePower(tn, turn + 1); // last: every input it reads is a result of this turn
