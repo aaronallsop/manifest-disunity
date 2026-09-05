@@ -1,4 +1,4 @@
-<title>Manifest Disunity Control Board</title>
+﻿<title>Manifest Disunity Control Board</title>
 <!--
   CONTROL BOARD TEMPLATE
   ======================
@@ -9,7 +9,7 @@
   Publish with the Artifact tool:
     file_path: docs/control-board/board.html
     capabilities: { db: {} }
-    favicon: "🎛️"       (first publish only)
+    favicon: "ðŸŽ›ï¸"       (first publish only)
     url: <the address in docs/control-board/BOARD-URL.md>   (every publish after the first)
 
   Saved records the owner writes, which you read at the start of every session:
@@ -123,33 +123,52 @@
 // ============================================================================
 const BOARD = {
   project: "Manifest Disunity",
-  updated: "2026-09-04 22:55",          // when you last republished, local time
+  updated: "2026-09-05 00:05",          // when you last republished, local time
 
   // Three or four measured figures. value: number|string, or null = "not yet measured".
   figures: [
     { label: "Economy phases finished", value: "0 of 9" },
     { label: "Current version",         value: "v0.2" },
     { label: "Tests green",             value: 846 },
-    { label: "Resources with real data underneath", value: "1 of 6" },
-    { label: "Resources with a demand model",       value: "0 of 6" },
+    { label: "Industry figures that are real, today",     value: "0%" },
+    { label: "Industry figures real after the re-bake",   value: "84%" },
+    { label: "Resources with a demand model",             value: "0 of 6" },
   ],
 
   // The single most important true thing right now. tone: "bad" | "warn" | "ok" | "neutral".
   headline: {
     tone: "warn",
-    text: "The brief has been rewritten against what the game actually is, and work can resume. "
-        + "Nothing is waiting on you. Two things you should know: the tuning dashboard fix has still "
-        + "never been loaded in a browser, so treat that page as unproven until it is; and the six "
-        + "industry figures under every county are invented rather than measured, which the new brief "
-        + "orders fixed before any economy work — I am checking now whether real data exists to fix "
-        + "them with.",
+    text: "The invented industry figures under your map can be replaced with real ones â€” measured, not "
+        + "guessed: 84% come straight from published government data and the rest are filled in from "
+        + "each county's real total and labelled as estimates. Today none of them are real. One "
+        + "decision below is yours before that work can start. Also still true: the tuning dashboard "
+        + "fix has never been loaded in a browser, so treat that page as unproven until it is.",
   },
 
   // Only decisions that are genuinely the owner's. Ids are permanent.
   decisions: [
-    // Empty is the correct state. Both cards that stood here on 4 September are answered:
-    // the turn stays a quarter (D163), and there will be no faction system (spec v2, ruling 1.9).
-    // Ids are permanent — a new decision gets a new id, never a reused one.
+    {
+      id: "sector-coverage",
+      title: "Half the real economy has nowhere to go in your six sectors",
+      evidence: "The industry figures can be replaced with real ones â€” I measured it rather than "
+              + "guessing: 84% of them come straight from published government data, and the rest get "
+              + "filled in from each county's real total and marked as estimates. But the six sectors "
+              + "you have only account for 52% of the actual economy. Government, professional "
+              + "services, healthcare, education, construction, utilities and hospitality have no "
+              + "sector to belong to â€” a little under half of everything.",
+      cost: "Widening the six to absorb everything: every dollar lands somewhere real and the totals "
+          + "stay true, but some sectors stop meaning exactly what their name suggests â€” the software "
+          + "industry, for instance, is officially filed under professional services rather than "
+          + "information, so Information Technology has to take that in to mean what you think it "
+          + "means. Dropping the missing half instead: simpler, but the sectors stop adding up to a "
+          + "county's real output, which breaks the promise your design document makes. Spreading it "
+          + "evenly across the six: that is inventing again, just with better arithmetic.",
+      recommendation: "Widen the six so everything lands somewhere real. It is the only one of the "
+                    + "three that does not put invented numbers back in after we have just taken them "
+                    + "out. I will write down exactly which real-world industry goes into which of "
+                    + "your six before building anything, so you can check the ones you have an "
+                    + "opinion about â€” the tech one especially.",
+    },
   ],
 
   // Standing permissions. Ids are permanent. risk: "low" | "med" | "high".
@@ -163,7 +182,7 @@ const BOARD = {
   // Phases. status: "done" | "current" | "todo".
   phases: [
     {
-      name: "Groundwork — strip the game back",
+      name: "Groundwork â€” strip the game back",
       status: "done",
       brief: "I want to start with building out the economy, but for that we wouldn't need politics, "
            + "separatist movements, influence, authority, or really anything but the ability to unite, "
@@ -175,60 +194,63 @@ const BOARD = {
             + "separatist movements and the standing scores, and leaves unite, annex, trade, the market "
             + "and the treasury working. One departure worth knowing: the fractured opening map is "
             + "physically built out of the separatist movements, so those still get created at the moment "
-            + "the world is made — they simply never grow, never break away, and are never shown. I tried "
+            + "the world is made â€” they simply never grow, never break away, and are never shown. I tried "
             + "removing that too and it broke the opening map, which is how I found out.",
     },
     {
-      name: "Phase 0 — Instruments",
+      name: "Phase 0 â€” Instruments",
       status: "current",
       brief: "All testing controls belong in the developer dashboard. Unblock Economy mode; a calendar; "
            + "tuning that survives a load; per-state spreadsheet export; measure what has never been "
            + "measured; safe stepping; forcing controls; extend the existing explain-a-number pattern "
            + "to the economy.",
       actual: "Starting now. The re-written brief cut this down considerably by reusing what exists "
-            + "rather than rebuilding it — the way the game already explains where a number came from "
+            + "rather than rebuilding it â€” the way the game already explains where a number came from "
             + "becomes the economy display instead of a new screen being invented. Eight items. The "
             + "first is unblocking Economy mode, which currently refuses trades between states that do "
             + "not recognise each other while hiding the screen that would explain why: the mode built "
             + "for testing the economy cannot presently test it.",
     },
     {
-      name: "Phase 0.5 — Honest industry data",
+      name: "Phase 0.5 â€” Honest industry data",
       status: "todo",
       brief: "Re-bake the six-sector split from real county-industry data if coverage permits; "
            + "otherwise keep the estimates but label them as estimates everywhere they appear.",
-      actual: "Not started. This phase exists because of a finding you should know about: the wealth "
-            + "figure under every county is real, but the split of it into six industries is invented "
-            + "from a handful of hand-written templates and presented as though it were measured. Your "
-            + "own design document forbids exactly that. I am checking now whether the real figures "
-            + "exist to replace them with. It comes before Phase 1 because Phase 1 asks you to predict "
-            + "which states are short of what, and a prediction against invented data proves nothing.",
+      actual: "Not started, but now costed, and the answer is good. The real figures exist, they have "
+            + "been sitting in the project since July, and the existing data build already opens that "
+            + "file and throws away everything except the single total. Measured: 84% of the industry "
+            + "figures can come straight from published government data, and the rest get filled in "
+            + "from each county's own real total and marked as estimates â€” which is exactly what your "
+            + "design document already says to do, and what the game already does for population and "
+            + "output. Today the figure is nought per cent: there are six hand-written patterns behind "
+            + "1,688 places, and half the map shares one of them. One decision above is yours before "
+            + "this can start.",
     },
-    { name: "Phase 1 — Autarky economy", status: "todo",
+    { name: "Phase 1 â€” Autarky economy", status: "todo",
       brief: "Band model, derived demand, national pooling. No trade of any kind. Stop condition: the numbers stop surprising the designer.",
-      actual: "Not started. Two of the three questions it needed are answered — population is real census "
+      actual: "Not started. Two of the three questions it needed are answered â€” population is real census "
             + "data that both grows and migrates, and economy size is the output figure the game already "
             + "computes. The third is the factions question above. Still needs your written predictions "
             + "before building starts." },
-    { name: "Phase 2 — Prices and the world market", status: "todo",
+    { name: "Phase 2 â€” Prices and the world market", status: "todo",
       brief: "Price formula, World Market. Single abstract partner. No diplomacy, no routing, no third-party transit.",
       actual: "Not started." },
-    { name: "Phase 3 — Deals between neighbours", status: "todo",
-      brief: "Trade Deal object, five-factor acceptance, counter-offers including duration, deal ledger, AI-initiated offers with expiry. Adjacency only — no routing through third parties.",
+    { name: "Phase 3 â€” Deals between neighbours", status: "todo",
+      brief: "Trade Deal object, five-factor acceptance, counter-offers including duration, deal ledger, AI-initiated offers with expiry. Adjacency only â€” no routing through third parties.",
       actual: "Not started." },
-    { name: "Phase 4 — Transit, tolls and the network map", status: "todo",
+    { name: "Phase 4 â€” Transit, tolls and the network map", status: "todo",
       brief: "The largest phase. Build the map mode with the routing engine, not after.",
       actual: "Not started." },
-    { name: "Phase 5 — Recognition, Canada, Mexico", status: "todo",
+    { name: "Phase 5 â€” Recognition, Canada, Mexico", status: "todo",
       brief: "Recognition score and ramp, border-state suspicion, Canada/Mexico as partners and as corridors, gray-market trade.",
       actual: "Not started." },
-    { name: "Phase 6 — Diplomatic teeth", status: "todo",
+    { name: "Phase 6 â€” Diplomatic teeth", status: "todo",
       brief: "Embargo, corridor closure with notice period and reputation cost, lending, hunger-generates-claims.",
       actual: "Not started." },
-    { name: "Phase 7 — Succession and shocks", status: "todo",
+    { name: "Phase 7 â€” Succession and shocks", status: "todo",
       brief: "Treaty succession Limbo, infrastructure damage and upgrade.",
       actual: "Not started." },
-    { name: "Phase 8 — Tuning", status: "todo",
+    { name: "Phase 8 â€” Tuning", status: "todo",
       brief: "Build: nothing new. Run the headless sim 20 times with varied starts and seeds.",
       actual: "Not started." },
   ],
@@ -240,7 +262,7 @@ const BOARD = {
       ifAutomated: "Your brief asks you to name, before each of those phases is built, which five states "
                  + "should be self-sufficient and which five structurally broken, and what a given deal "
                  + "should cost. The point is that they are written down before I build, so the result "
-                 + "can surprise you. If I write them, they are worthless — I would be marking my own work.",
+                 + "can surprise you. If I write them, they are worthless â€” I would be marking my own work.",
       damagedIfAutomated: true,
     },
     {
@@ -255,7 +277,7 @@ const BOARD = {
       ifAutomated: "Publishing to your playtest link changes what other people receive, so I will not do "
                  + "it without you saying so. The link currently serves the prototype from 3 September. "
                  + "The stripped-back Economy build is finished and would test the exact question that "
-                 + "started this work — whether the game becomes legible with politics and separatists "
+                 + "started this work â€” whether the game becomes legible with politics and separatists "
                  + "taken off the table.",
       damagedIfAutomated: false,
     },
@@ -279,7 +301,7 @@ const BOARD = {
     { when: "2026-09-04", decision: "Left the army, the memory between nations, and the civil-war risk running underneath Economy mode.",
       outcome: "Held. Annexing and uniting genuinely depend on them; stripping them would have changed what those two actions mean rather than simplifying the screen." },
     { when: "2026-09-04", decision: "Moved the project into your programs folder and named it to match the backup.",
-      outcome: "Verified — same 997 files, full history, integrity check clean." },
+      outcome: "Verified â€” same 997 files, full history, integrity check clean." },
     { when: "2026-09-04", decision: "Did not open a pull request when asked, and explained why instead.",
       outcome: "Correct. The work was already on the main line of development and the only other branch is unrelated, so there was nothing to compare." },
     { when: "2026-09-04", decision: "Answered two of the three questions your brief said you owed, by reading your own documentation rather than asking you.",
@@ -289,17 +311,19 @@ const BOARD = {
     { when: "2026-09-04", decision: "Numbered the prototype v0.1 rather than giving the first number to the work in progress.",
       outcome: "Holds. The build your testers are holding now has a name, so anything they report about it can be traced to exactly what they played." },
     { when: "2026-09-04", decision: "Added the new mode switch to the game and the test suite.",
-      outcome: "WRONG — I missed the third page that loads the same machinery, and broke your tuning dashboard. It has failed on every run since this morning. Fixed, but not yet proven working, because this session cannot serve the page. First job next session." },
+      outcome: "WRONG â€” I missed the third page that loads the same machinery, and broke your tuning dashboard. It has failed on every run since this morning. Fixed, but not yet proven working, because this session cannot serve the page. First job next session." },
     { when: "2026-09-04", decision: "Reported on this board that all six resources had real data underneath them.",
       outcome: "WRONG, and corrected above to one of six. The wealth figures per county are genuine. The split of that wealth into six industries is one of six hand-written templates, half the map got the same one, and it never changes for the whole game." },
     { when: "2026-09-04", decision: "Ran a thirteen-agent survey of the game before building anything, with a second agent trying to disprove every claim that something already existed.",
       outcome: "Paid for itself immediately. It found both errors above, and five places where your brief cannot simply be added to what exists." },
     { when: "2026-09-04", decision: "Recorded your month ruling without first checking what the game assumed.",
-      outcome: "Premature, and now settled the other way. The game is tuned in quarters throughout, so the month would have cost a week of re-deriving numbers to buy a nicer-looking calendar. You confirmed the quarter. The 1 March 2036 opening stays — it costs nothing and the anniversary still lands on turn 1." },
+      outcome: "Premature, and now settled the other way. The game is tuned in quarters throughout, so the month would have cost a week of re-deriving numbers to buy a nicer-looking calendar. You confirmed the quarter. The 1 March 2036 opening stays â€” it costs nothing and the anniversary still lands on turn 1." },
     { when: "2026-09-04", decision: "Sent the audit findings to your consultant rather than building against the original brief.",
       outcome: "The right call, and the clearest result of the day. The rewritten brief reuses several things I would otherwise have rebuilt, drops a faction system nobody needed, and rules that the economy demonstration does not require the expensive change I thought it did." },
+    { when: "2026-09-05", decision: "Stopped commissioning agent research and measured the industry data myself.",
+      outcome: "The right call. Eight agents all named the same missing number and none of them counted it. Counting it took two minutes against a file already in the project, and it turned a maybe into a costed yes: 84% of the industry figures can be real." },
     { when: "2026-09-04", decision: "Kept your sub-turn idea rather than letting it disappear into the conversation.",
-      outcome: "Recorded, with a note that choosing the quarter today is that design's outer clock — so nothing about it is foreclosed, and the month would have been the harder starting point for it." },
+      outcome: "Recorded, with a note that choosing the quarter today is that design's outer clock â€” so nothing about it is foreclosed, and the month would have been the harder starting point for it." },
   ],
 };
 // ============================================================================
@@ -309,7 +333,7 @@ const esc = (s) => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&l
 const fmt = (v) => (v === null || v === undefined || v === "") ? "not yet measured" : v;
 
 function render() {
-  document.title = BOARD.project + " — Control Board";
+  document.title = BOARD.project + " â€” Control Board";
   $("title").textContent = BOARD.project;
   $("updated").textContent = "Updated " + BOARD.updated;
   $("figures").innerHTML = BOARD.figures.map(f => `<div class="fig"><b>${esc(fmt(f.value))}</b><span>${esc(f.label)}</span></div>`).join("");
@@ -357,7 +381,7 @@ async function wire() {
   if (!db) {
     ps.className = "status bad";
     ps.textContent = "Saving is unavailable in this view. Your ticks and answers will NOT be recorded.";
-    document.querySelectorAll("[data-decision] .status").forEach(s => { s.className = "status bad"; s.textContent = "Saving unavailable — your answer will not reach Claude."; });
+    document.querySelectorAll("[data-decision] .status").forEach(s => { s.className = "status bad"; s.textContent = "Saving unavailable â€” your answer will not reach Claude."; });
     return;
   }
   // permissions
@@ -377,7 +401,7 @@ async function wire() {
     const id = card.dataset.decision, ref = db.doc("decisions/" + id);
     const st = card.querySelector(".status"), ans = card.querySelector(".answer"), ta = card.querySelector("textarea");
     ref.onSnapshot(snap => {
-      if (snap.exists) { const d = snap.data(); ans.innerHTML = `<p class="answered">You ${esc(d.status)} this on ${esc((d.at||"").slice(0,16).replace("T"," "))}${d.note ? " — “" + esc(d.note) + "”" : ""}</p>`; }
+      if (snap.exists) { const d = snap.data(); ans.innerHTML = `<p class="answered">You ${esc(d.status)} this on ${esc((d.at||"").slice(0,16).replace("T"," "))}${d.note ? " â€” â€œ" + esc(d.note) + "â€" : ""}</p>`; }
       else ans.innerHTML = "";
     }, e => { st.className = "status bad"; st.textContent = "Could not load your answer (" + e.code + ")."; });
     card.querySelectorAll("[data-act]").forEach(btn => btn.addEventListener("click", async () => {

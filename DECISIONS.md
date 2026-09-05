@@ -2355,3 +2355,44 @@ exists.
 playing out inside each — which would give both clocks. Recorded as F1 in `docs/FUTURE-IDEAS.md`.
 Today's choice is that design's outer clock, so it is additive later rather than a reversal. Had the
 month been kept, the same design would have required coarsening rather than subdividing.
+
+### D164 — The industry split can be re-baked from real data, and the gate was measured rather than argued
+
+Spec v2 ruling 1.4(b) ordered the invented six-sector split replaced with real BEA county-industry
+data if coverage permits, and told engineering to verify coverage and suppression before committing.
+
+Eight agents investigated. Every one of them flagged the same load-bearing unknown — the disclosure
+suppression rate — and not one of them measured it, because measuring it was outside each of their
+briefs. Two of them said plainly that their findings established availability and not usability, and
+that nobody should commit on their strength. They were right to say so, and the useful move at that
+point was to stop reading opinions and count.
+
+**Observed**, from `build/raw/CAGDP2.zip`, 3,127 counties, 2024, counted directly:
+
+- 18.8% of county-sector cells are suppressed or unavailable; 81.2% carry a real figure.
+- Falling back to BEA's aggregate lines where a component is suppressed lifts measured coverage from
+  77.0% to **83.5%** of all sector figures on the map.
+- **99.6% of counties publish a usable all-industry total** — the anchor apportionment requires.
+- The game's six sectors span only **52.5%** of measured county GDP.
+- The data has been on disk since 2 July. The existing data build reads this exact file and discards
+  33 of its 34 industry lines with one filter.
+
+**Decided:** re-bake with apportionment. 83.5% measured, 16.5% apportioned from a real county total
+and flagged **est.** via the badge mechanism that already exists for population, GDP and vote. Today's
+figure is 0% measured, so this is not a marginal improvement.
+
+**Rejected:** a straight re-bake, because only 42.8% of counties have all six sectors published and
+insisting on complete data would discard the other 57%. Also rejected: doing nothing and labelling the
+templates as estimates, which spec v2 offers as the fallback — it is honest but it leaves the substrate
+of every economic number in the game invented when a real substrate is sitting in the repository.
+
+**Escalated to Aaron:** the 47.5% of real GDP with no game sector — government, professional services,
+healthcare, education, construction, utilities, hospitality. The data cannot decide where it goes and
+two of the three available answers re-introduce the invention this ruling exists to remove. Carded on
+the Control Board with a recommendation to widen the six definitions so every dollar lands somewhere
+real.
+
+**Method note:** the finding that mattered here was produced by measurement after eight agents had
+correctly identified what they could not answer. Their value was in naming the gate precisely enough
+that it could be measured in two minutes. Recorded because the instinct to run another agent round
+would have been wrong.
