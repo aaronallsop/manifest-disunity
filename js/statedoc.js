@@ -93,6 +93,7 @@ export function assemble(session = {}) {
     recognition: Recognition.serialize(),
     pacts: Pacts.serialize(),
     deals: Deals.serialize(),
+    transit: Transit.serialize(),
     events: Events.serialize(),
     leaders: Leaders.serialize(),
     history: History.serialize(),
@@ -184,6 +185,8 @@ export function applyModel(doc) {
   Pacts.loadState(doc.pacts);
   // A document written before A1 carries no deals and loads as none.
   Deals.loadState(doc.deals);
+  // A document written before A2 carries no corridors and loads as none.
+  Transit.loadState(doc.transit);
   Events.loadState(doc.events);
   Leaders.loadState(doc.leaders);
   History.loadState(doc.history);
@@ -197,6 +200,6 @@ export function applyModel(doc) {
 }
 
 /** Every module a document must round-trip, for the "nothing was forgotten" test. */
-export const STATEFUL_MODULES = ['Game', 'TurnSystem', 'World', 'Market', 'Colors', 'Movements', 'Ledger', 'Military', 'Relations', 'Recognition', 'Events', 'Leaders', 'History', 'Pacts', 'Deals'];
+export const STATEFUL_MODULES = ['Game', 'TurnSystem', 'World', 'Market', 'Colors', 'Movements', 'Ledger', 'Military', 'Relations', 'Recognition', 'Events', 'Leaders', 'History', 'Pacts', 'Deals', 'Transit'];
 
 export default { VERSION, buildStamp, assemble, validate, applyModel, STATEFUL_MODULES };

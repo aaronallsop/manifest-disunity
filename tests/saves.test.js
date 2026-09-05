@@ -274,7 +274,7 @@ describe('data/state.json — the live document', () => {
 describe('The document module', () => {
   it('enumerates every stateful module, so none can be forgotten', async () => {
     await bootWorld({ seed: SEED });
-    const mods = { Game, TurnSystem, World, Market, Colors, Movements, Ledger, Military, Relations, Recognition, Events, Leaders, History, Pacts, Deals };
+    const mods = { Game, TurnSystem, World, Market, Colors, Movements, Ledger, Military, Relations, Recognition, Events, Leaders, History, Pacts, Deals, Transit };
     for (const name of StateDoc.STATEFUL_MODULES) {
       ok(mods[name], `STATEFUL_MODULES names "${name}", which does not exist`);
       ok(typeof mods[name].serialize === 'function', `${name}.serialize is missing`);
@@ -282,7 +282,7 @@ describe('The document module', () => {
     }
     // and the document actually carries a key for each of them
     const doc = StateDoc.assemble({ seed: SEED, rng: RNG.create(1) });
-    for (const k of ['game', 'turns', 'world', 'market', 'colors', 'parties', 'military', 'relations', 'events', 'leaders', 'history', 'pacts', 'deals']) {
+    for (const k of ['game', 'turns', 'world', 'market', 'colors', 'parties', 'military', 'relations', 'events', 'leaders', 'history', 'pacts', 'deals', 'transit']) {
       ok(doc[k] !== undefined, `the document has no "${k}" section`);
     }
   });

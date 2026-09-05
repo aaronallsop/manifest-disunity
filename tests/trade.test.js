@@ -117,6 +117,73 @@ describe('Trade capacity', () => {
   });
 });
 
+describe('Trade capacity did not move (A2 step 1)', () => {
+  /*
+   * THE MOST EXPENSIVE MISTAKE AVAILABLE IN A2, PINNED.
+   *
+   * A2 needs to know what a port REACHES — ocean, Great Lakes, or nothing at all
+   * (59 of the 136 port counties are inland river ports). The tempting way to
+   * add that is to redefine what counts as a port. That would be silent and
+   * catastrophic: `areaExport.port` feeds `exportAccess.ports`, which is
+   * multiplied by trade.capacityPerPort into `tradeCapacity.total`, which is the
+   * volume cap applied to EVERY standing trade deal in the game. Change it and
+   * every deal on the board quietly repays a different number every turn, with
+   * nothing on screen to say why.
+   *
+   * So this fixture is the whole safety net for the stage: the capacity and the
+   * complete access record of every nation on the seeded opening board, asserted
+   * unchanged. If it goes red, A2 has stopped being an addition and become an
+   * economy change.
+   */
+  it('the port classification is additive: capacity and access are untouched', async () => {
+    await bootWorld({ seed: SEED });
+    let checked = 0;
+    for (const [nid] of Game.nations) {
+      const acc = Game.exportAccess(nid);
+      // The fields A2 is allowed to add, and nothing else.
+      const legacy = { ports: acc.ports, canada: acc.canada, mexico: acc.mexico,
+        railHubs: acc.railHubs, gateways: acc.gateways, any: acc.any };
+      equal(legacy.gateways, legacy.canada + legacy.mexico, `${nid}: gateways stopped being the sum`);
+      equal(legacy.any, legacy.ports + legacy.gateways > 0, `${nid}: "any" stopped meaning what it meant`);
+      // Capacity is derived from the untouched fields alone.
+      const expected = legacy.ports * T().get('trade.capacityPerPort')
+        + acc.railHubs * T().get('trade.capacityPerRailHub')
+        + legacy.gateways * T().get('trade.capacityPerGateway')
+        + T().get('trade.capacityBase');
+      close(Game.tradeCapacity(nid).total, expected, 1e-6,
+        `${nid}: trade capacity is no longer ports+hubs+gateways+base — a deal's volume cap has moved`);
+      checked += 1;
+    }
+    ok(checked > 40, `only ${checked} nations checked`);
+  });
+
+  it('a port reaches the ocean, the lakes, or nothing — and the three do not overlap', async () => {
+    await bootWorld({ seed: SEED });
+    let ocean = 0, lake = 0, river = 0, both = 0;
+    for (const [nid, n] of Game.nations) {
+      for (const aid of n.counties) {
+        const e = Game.areaExport(aid);
+        if (!e.port) {
+          equal(e.oceanPort, false, `${aid}: an ocean port that is not a port`);
+          equal(e.lakePort, false, `${aid}: a lake port that is not a port`);
+          continue;
+        }
+        if (e.oceanPort && e.lakePort) both += 1;
+        else if (e.oceanPort) ocean += 1;
+        else if (e.lakePort) lake += 1;
+        else river += 1;
+      }
+    }
+    equal(both, 0, 'an Area claims both an ocean port and a Great Lakes port');
+    ok(ocean > 0 && lake > 0 && river > 0,
+      `expected all three kinds on the board, got ocean ${ocean}, lakes ${lake}, river ${river}`);
+    // The river ports are the point of the classification: real capacity that
+    // reaches no sink at all. If this ever drops to zero, somebody has quietly
+    // redefined a port and the fixture above is the one to read.
+    ok(river > 0, 'no inland port on the whole map, which the baked data contradicts');
+  });
+});
+
 describe('World market vs bilateral', () => {
   it('no longer strictly dominates', async () => {
     await bootWorld({ seed: SEED });

@@ -720,6 +720,48 @@ export const SCHEMA = {
     doc: 'How far from its preferred term the counterparty will sign without countering, counted in steps along deal.durations. At 1 a nation that wants a year will still sign six months or two years; at 0 every proposal that is not exactly right is countered, which is a negotiation nobody enjoys.',
   },
 
+  /* ---------------- transit (A2) ---------------- */
+  'transit.foreignCorridorToll': {
+    v: 0.10, min: 0, max: 0.5, step: 0.01, group: 'Trade',
+    label: 'Canada / Mexico corridor cost',
+    doc: 'What a trade loses for being routed through Canada or Mexico. The owner\'s ruling, and it is a COST rather than a transfer: nobody receives it, the trade is simply worth this much less for having gone that way. Canada and Mexico are not actors in this game - they cannot be conquered, they have no opinion, and there is no agreement to negotiate or revoke - so this number is the entire relationship.',
+  },
+  'transit.hopFriction': {
+    v: 0.12, min: 0, max: 0.5, step: 0.01, group: 'Trade',
+    label: 'Cost of each crossing',
+    doc: 'What a shipment loses at every border it crosses, on top of whatever the country there charges. Nobody collects it - it is handling, transhipment and delay. It exists because compounding tolls ALONE do not price out a long chain: five crossings at the lowest rate anyone would sign still deliver 77% of the money, so without a cost that distance carries by itself, a five-hop resale chain stays profitable and the roadmap\'s own success metric fails.',
+  },
+  'transit.maxHops': {
+    v: 3, min: 1, max: 6, step: 1, group: 'Trade',
+    label: 'Most countries in between',
+    doc: 'The longest route the search will consider, counted in countries the goods pass through. Three is already exotic; the cap exists so the search cost stays bounded on a board where every border can move every turn. Note that the arithmetic makes long routes unprofitable on its own - the cap is a performance bound, not the thing that stops resale chains.',
+  },
+  'transit.maxCorridors': {
+    v: 1, min: 0, max: 3, step: 1, group: 'Trade',
+    label: 'Most foreign corridors in one route',
+    doc: 'How many times one route may duck through Canada or Mexico. At 1 a route may leave and re-enter once, which is the Idaho-to-Minnesota case the owner described; higher values let a route weave along the northern border collecting a flat charge each time, which is arithmetic rather than geography.',
+  },
+  'transit.rateMin': {
+    v: 0.05, min: 0, max: 0.5, step: 0.01, group: 'Trade',
+    label: 'Lowest toll anyone will sign',
+    doc: 'The floor on what a country will charge to carry somebody else\'s goods. Lifted out of the old one-off transit negotiation, where it was a literal in the middle of an expression, so it can be tuned and so the five-hop arithmetic can be checked against it.',
+  },
+  'transit.rateMax': {
+    v: 0.60, min: 0.1, max: 1, step: 0.05, group: 'Trade',
+    label: 'Highest toll anyone will sign',
+    doc: 'The ceiling on a transit toll. Above this a corridor is worth more closed than open and the negotiation stops meaning anything. Lifted out of the old one-off transit negotiation with the floor.',
+  },
+  'transit.noticeTurns': {
+    v: 4, min: 0, max: 20, step: 1, group: 'Trade',
+    label: 'Notice before a route closes (turns)',
+    doc: 'How long a corridor keeps carrying after its holder gives notice. Four turns is a year, and it deliberately matches the largest expiry warning a trade deal gives, so a player learns one rhythm for "something you rely on is ending" rather than two.',
+  },
+  'transit.renegeWeight': {
+    v: 2, min: 0, max: 10, step: 0.5, group: 'Trade',
+    label: 'What closing a route costs your standing',
+    doc: 'How heavily a closed corridor counts against the corridors you hold when the world judges your reliability. Above 1 because signing is cheap: if a revocation cost no more than an agreement earned, a country could out-sign its own reputation by granting corridors it intended to close.',
+  },
+
   /* ---------------- civil war ---------------- */
   'war.triggerSizeRatio': {
     v: 0.15, min: 0.01, max: 3, step: 0.01, group: 'Civil war',

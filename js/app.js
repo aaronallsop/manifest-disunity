@@ -185,6 +185,7 @@ async function init() {
     Recognition.reset();
     Pacts.reset();
     Deals.reset();
+    Transit.reset();
     Migration.reset();
     Coalitions.reset();
     Colors.assign(Object.keys(data.states));

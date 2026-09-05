@@ -146,6 +146,7 @@ const Sim = (function () {
     Recognition.reset();
     Pacts.reset();
     Deals.reset();
+    Transit.reset();
     Migration.reset();
     Coalitions.reset();
     Colors.reset();

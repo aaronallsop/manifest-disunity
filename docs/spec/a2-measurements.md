@@ -54,3 +54,48 @@ What this does *not* license is recomputing the graph inside `Moves.plan` itself
 round that same 2 ms becomes 1.5 seconds a turn, and 100 turns becomes two and a half minutes of
 graph-building alone. The graph is built once per turn; the route lookup is what runs per plan, and
 the route lookup is what has to stay cheap.
+
+## What the routing engine actually produces
+
+Measured once the corridor graph and the route search were built, with every
+border open at a flat 20% toll, so the numbers show the geography rather than the
+negotiation. Every landlocked nation on the seeded board, and how much of a
+deal's income survives the journey:
+
+| From | Through | Keeps |
+|---|---|---|
+| District of Columbia | Maryland (rail) | 70% |
+| Nevada | California (rail) | 70% |
+| West Virginia | Maryland (rail) | 70% |
+| Iowa | Illinois (rail), then **Canada by ship** | 63% |
+| South Dakota | Minnesota (rail), then Canada | 63% |
+| Wyoming | Idaho (rail), then Canada | 63% |
+| Utah | Arizona (**road**), then Mexico | 63% |
+| Colorado | New Mexico (rail), then Mexico | 63% |
+| Kansas | Oklahoma (rail), then Texas (rail) | 50% |
+| Nebraska | Colorado, New Mexico, then Mexico | 45% |
+
+Three things worth noticing, none of which were special-cased:
+
+- **Iowa reaches the world by ship across the Great Lakes.** It goes overland to
+  Illinois, which holds a Great Lakes port, and then into Canada by water. That
+  is the owner's Great Lakes ruling emerging from the graph rather than from a
+  rule about Iowa.
+- **Utah's route is by ROAD where everyone else's is by rail**, because that is
+  the only corridor its border with Arizona carries. Mode tiers mean Arizona
+  could open its motorways to Utah and still refuse it everything else.
+- **Nebraska keeps 45%** against DC's 70%, on the same toll rate. Nothing charges
+  Nebraska more; it is simply three crossings from a market and each one is paid
+  out of what survived the last. Distance costs money without any rule that says
+  distance costs money.
+
+## What the search costs
+
+| | |
+|---|---|
+| Route searches timed | 51 (every nation to the world market) |
+| Total | **3.3 ms** |
+| Each | **0.065 ms** |
+
+Against the 0.208 ms one `Moves.plan` call already costs, a route lookup is about
+a third of a plan — affordable inside planning, which is where it has to run.

@@ -1268,12 +1268,35 @@ const Game = (function () {
   }
 
   /* ---- export access & trade capacity (from the baked trade/transport data) ---- */
-  /** Does this Area carry a port, or a Canada/Mexico border gateway? */
+  /**
+   * Does this Area carry a port, or a Canada/Mexico border gateway?
+   *
+   * WHAT A PORT REACHES IS NOT THE SAME QUESTION AS WHETHER THERE IS ONE (A2).
+   * `port` keeps its exact original meaning and must keep it: it feeds
+   * `exportAccess.ports`, which feeds `tradeCapacity.total`, which is the volume
+   * limit on every standing trade deal in the game. Redefine `port` while adding
+   * these and every deal on the board quietly starts paying a different number
+   * every turn — the most expensive mistake available in this stage, and one
+   * that does not look like a mistake.
+   *
+   * The two new flags are ADDITIVE and nothing outside the corridor graph reads
+   * them. Measured on data/county_trade.json: of 136 port counties, 57 are
+   * ocean, 20 are Great Lakes and 59 are neither — river ports, inland. The
+   * three sets are disjoint, so this is a classification and not a heuristic. A
+   * river port is real capacity that reaches no sink, which is why `port` still
+   * counts it and why routing will not.
+   */
   function areaExport(fips) {
     const members = county[cid(fips)]?.counties || [cid(fips)];
     const t = tradeData, x = transportData;
+    const rows = t && t.counties ? members.map((m) => t.counties[m]).filter(Boolean) : [];
     return {
       port: !!(t && t.counties && members.some((m) => t.counties[m] && t.counties[m].has_port)),
+      // An ocean port reaches the world market directly; a Great Lakes port
+      // reaches it only through Canada (the owner's ruling). That distinction is
+      // an edge in the corridor graph, not a property of the trade panel.
+      oceanPort: rows.some((r) => r.has_port && r.coastal && !r.great_lakes),
+      lakePort: rows.some((r) => r.has_port && r.great_lakes),
       canada: !!(x && x.external && members.some((m) => x.external.Canada.includes(m))),
       mexico: !!(x && x.external && members.some((m) => x.external.Mexico.includes(m))),
       railHub: !!(x && x.counties && members.some((m) => x.counties[m] && x.counties[m].rail_hub)),
@@ -1300,14 +1323,28 @@ const Game = (function () {
     };
   }
 
-  /** Ports, land gateways and rail hubs a nation holds. */
+  /**
+   * Ports, land gateways and rail hubs a nation holds.
+   *
+   * `ports`, `canada`, `mexico`, `railHubs`, `gateways` and `any` are UNTOUCHED
+   * by A2 and must stay so: `ports` and `gateways` are multiplied by the
+   * capacity tunables three functions down, and that number is the volume cap on
+   * every standing deal. `oceanPorts` and `lakePorts` are new, additive, and
+   * exist only so the corridor graph can tell a port that reaches the world from
+   * one that reaches Canada from one that reaches nothing at all.
+   */
   function exportAccess(nid) {
     const n = nations.get(nid);
-    const acc = { ports: 0, canada: 0, mexico: 0, railHubs: 0, gateways: 0, any: false };
+    const acc = {
+      ports: 0, oceanPorts: 0, lakePorts: 0,
+      canada: 0, mexico: 0, railHubs: 0, gateways: 0, any: false,
+    };
     if (!n) return acc;
     for (const aid of n.counties) {
       const e = areaExport(aid);
       if (e.port) acc.ports++;
+      if (e.oceanPort) acc.oceanPorts++;
+      if (e.lakePort) acc.lakePorts++;
       if (e.canada) acc.canada++;
       if (e.mexico) acc.mexico++;
       if (e.railHub) acc.railHubs++;
@@ -1893,6 +1930,13 @@ const Game = (function () {
     boostGdp,
     nations,
     getOwner: (f) => ownerIdAt(nodeOf(f)),
+    /*
+     * Who owns the Area at this GRAPH INDEX (A2). The corridor graph sweeps
+     * every Area once a turn looking for borders, and going index -> Area id ->
+     * node index for each of ~3,100 Areas and their neighbours would be a string
+     * lookup per edge for an answer the columnar store already has.
+     */
+    ownerIdAtIndex: (i) => ownerIdAt(i),
     getNation: (nid) => nations.get(nid),
     colorForCounty: (f) => nations.get(ownerIdAt(nodeOf(f)))?.color || '#c9ced6',
     countyPop,
