@@ -16,6 +16,103 @@ His reasoning, and it is the part worth keeping in mind while the mode is on:
 
 ---
 
+## The protocol
+
+**Aaron's, 5 September 2026, with four changes agreed in the same conversation.** The spoken phrases
+are exact: they are how both sides know which state we are in.
+
+| # | Who | What happens |
+|---|---|---|
+| 1 | Aaron | *"What have you got left to do?"* |
+| 2 | **Me** | I tell him — **and clear the desk in the same breath.** Every ruling to `DECISIONS.md`, every deferred idea to `docs/FUTURE-IDEAS.md`, the board republished, a handoff written. Then: **"Desk is clear — safe to compact."** |
+| 3 | Aaron | `/compact`, or better a fresh session |
+| 4 | Aaron | *"Activate hog wild mode"* — **not yet permission to run** |
+| 5 | **Me** | Last preparation. Reply: **"Hog wild mode activation commencing."** |
+| 6 | **Me** | Commit anything outstanding, stamp the start time and the token counter into `docs/HOGWILD-LOG.md`, and write the plan — the ordered list of what I intend to get through. Then: **"Hog Wild Mode Fully Operational. OINK OINK!"** |
+| 7 | **Me** | Run. |
+| 8 | **Me** | On any exit condition below: **"Starting to wind down the hog."** |
+| 9 | **Me** | Final documentation, board, and the wind-down report. |
+| 10 | **Me** | If the run ended on the usage limit and the night is not over: schedule the resume — see *Running overnight*. |
+
+**THE ONE CHANGE THAT MATTERS is step 2.** Aaron's version compacted before I had prepared; the
+preparation is what makes compacting safe. Flush, then compact, then run — see *Before it starts*
+below for why the order is not a detail.
+
+### The four ways it ends
+
+1. **There is nothing left that does not need him.** The intended ending.
+2. **He comes back and says stop.** Immediate, no argument, no finishing the current thought first.
+3. **Two stages in a row have gone badly.** That means the plan is wrong rather than the execution,
+   and going faster makes it worse.
+4. **The room is running out.** And this is the one that has to be watched rather than discovered:
+   *begin the wind-down while there is still enough left to do it properly.* A run that goes flat out
+   until it is cut off produces no report, no board update and no list of what was guessed at — which
+   is every part of the mode's value gone at once. Landing the plane is not the last thing to spend
+   room on, it is the first thing to reserve it for.
+
+### Running overnight
+
+**Aaron, 5 September 2026:**
+
+> "is there a way that you could also run hog wild all night? So you wind down at a usage limit but
+> as soon as it resets you go hog wild where you left off?"
+
+**Yes.** A run that ends on the usage limit schedules its own resume, so the night goes:
+run → limit → wind down → schedule → wait → resume → repeat.
+
+**What makes it possible is the paperwork, not the scheduler.** A scheduled run starts with NO
+memory of the conversation that set it going. It knows only what is on disk. So everything the mode
+already demands — the log, the handoff, the board, the stage tags — stops being good practice and
+becomes the mechanism: it is the entire contents of the next run's head. A wind-down that skimps on
+the report does not produce a poor report, it produces a resumed run that does not know what it is
+doing.
+
+**The two conditions, both of which are Aaron's to meet, not mine:**
+
+1. **The Claude app has to stay open.** Scheduled tasks run while the app is running; if it is
+   closed when one is due, it fires on next launch instead. That is still useful — the work is
+   waiting when he sits down — but it is not overnight.
+2. **The machine must not sleep.** Same reason.
+
+**The leash, and it works while he is asleep.** Every resumed run re-reads the Control Board before
+doing anything. Untick Hog Wild and the next run winds down immediately instead of continuing. The
+scheduled task can also be cancelled outright; ask, and it is one call.
+
+**The cap.** A run may schedule at most **three** resumes before it stops chaining and waits for
+him, whatever the board says. A chain that could extend itself forever is not a licence, it is a
+runaway — and three covers a night, since the limit resets roughly every five hours.
+
+**What I do not know yet, and this is exactly the shape of thing the mode is supposed to write
+down.** A scheduled run may not be able to reach the Control Board: publishing it goes through the
+same authentication as the browser, and the notes on this kind of run warn that interactively
+authenticated services can be missing. If that turns out to be true, an overnight run can still
+commit, tag and write to `docs/`, and the board update simply waits for the morning. The first
+overnight run will settle it and the answer goes in this file. Until then, assume the board might
+not update and make sure the log alone is enough to understand the night.
+
+### The wind-down report
+
+Written into `docs/HOGWILD-LOG.md` and summarised on the board. Four parts, and the third is the one
+Aaron actually asked for:
+
+1. **Where it got to** — stages landed, tests green, the tag each one is on.
+2. **What is next**, and what of it needs him.
+3. **WHERE I WENT MOST HOG WILD** — the decisions ranked by *how much I made up*, worst first. Not a
+   list of everything I decided; a list of the ones where I was least sure and a reasonable person
+   might have gone the other way. These are the ones for us both to look at with the mode switched
+   off. Each says what I would check first to find out whether it was wrong.
+4. **The counts.** Agents started, and tokens spent from the counter at step 6 to the counter now.
+   Both are exact. What I cannot break down is which agent spent what, so the number is a total and
+   should be read as one.
+
+### Agents inherit the mode
+
+While it is on, the agents I start carry the same instruction: keep going, decide rather than queue,
+and write down what you decided and why. What they do NOT inherit is the ability to act on the world
+— they do not commit, publish, or touch the board, and their decisions reach the log through me. So
+"an agent in hog wild mode" means one that will not stop to ask me a question it can answer and
+document; it does not mean a second one of me.
+
 ## Before it starts: clear the desk
 
 **Aaron, 5 September 2026, proposing this:**

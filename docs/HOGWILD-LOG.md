@@ -40,9 +40,23 @@ git checkout stage/<previous>   # then: git checkout master
 
 ---
 
-## Entries
+## Runs
 
 *Nothing yet. Hog Wild Mode has not been run.*
+
+Each run opens with a header stamped at the moment it starts, so the counts at the end mean
+something:
+
+> ## Run 1 — *date, time started*
+>
+> **Token counter at start:** *n*
+> **The plan:** the ordered list of what I intended to get through.
+
+...and closes with the wind-down report: where it got to, what is next, **where I went most hog
+wild** (ranked by how much I made up, worst first, each with what I would check to find out whether
+it was wrong), and the counts — agents started, and tokens spent between the two counter readings.
+
+## Entries
 
 The first session it runs, every decision taken without you lands here in this shape:
 
