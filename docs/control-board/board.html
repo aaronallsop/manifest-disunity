@@ -123,7 +123,7 @@
 // ============================================================================
 const BOARD = {
   project: "Manifest Disunity",
-  updated: "2026-09-05 03:18",          // when you last republished, local time
+  updated: "2026-09-05 10:06",          // when you last republished, local time
 
   // Three or four measured figures. value: number|string, or null = "not yet measured".
   figures: [
@@ -137,35 +137,50 @@ const BOARD = {
   // The single most important true thing right now. tone: "bad" | "warn" | "ok" | "neutral".
   headline: {
     tone: "ok",
-    text: "The roadmap changed while you were away, on your instruction: trade first, the economy "
-        + "after, then an alpha test. Stage A0 is done and tagged v0.3 — the workbench for testing "
-        + "trade exists. A1, trade deals with real terms, is being planned by eight agents and built "
-        + "next. Nothing is waiting on you.",
+    text: "A0 is done and tagged v0.3. A1 — a trade becoming a standing agreement rather than a "
+        + "click — was half planned when the machine hit its daily limit: four of the eight design "
+        + "passes finished, they agree with one another, and that is enough to build from, so nothing "
+        + "is lost. Your approval on the industry data is recorded. Two new questions are below, both "
+        + "about how strong trade should be, and both cheaper to answer now than after the alpha.",
   },
 
   // Only decisions that are genuinely the owner's. Ids are permanent.
   decisions: [
     {
-      id: "sector-coverage",
-      title: "Half the real economy has nowhere to go in your six sectors",
-      evidence: "The industry figures under your map can be replaced with real ones — I measured it "
-              + "rather than guessing: 84% come straight from published government data, and the rest "
-              + "are filled in from each county's real total and marked as estimates. Today none of "
-              + "them are real. But your six sectors only account for 52% of the actual economy. "
-              + "Government, professional services, healthcare, education, construction, utilities "
-              + "and hospitality have no sector to belong to — a little under half of everything.",
-      cost: "Widening the six to absorb everything: every dollar lands somewhere real and the totals "
-          + "stay true, but some sectors stop meaning exactly what their name suggests — software is "
-          + "officially filed under professional services, so Information Technology has to take that "
-          + "in to mean what you think it means. Dropping the missing half: simpler, but the sectors "
-          + "stop adding up to a county's real output, which breaks the promise your design document "
-          + "makes. Spreading it evenly: inventing again, with better arithmetic.",
-      recommendation: "You have said to leave the resources alone for now and I have, so this is not "
-                    + "urgent — it is here so it is not forgotten. When you do want it: widen the six. "
-                    + "It is the only option that does not put invented numbers back after we have "
-                    + "just removed them. Meanwhile the game still shows those invented figures as "
-                    + "though they were measured, which your own design document forbids, and "
-                    + "labelling them is the cheap honest stopgap.",
+      id: "deal-income-scale",
+      title: "A signed deal pays every quarter. Clicking paid once a year.",
+      evidence: "Today a trade is one click that pays once, and the same two states cannot trade again "
+              + "for a year. A standing deal pays every quarter for as long as it runs. Same partners, "
+              + "same goods, same arithmetic — but roughly four times the money per partner, and more "
+              + "again where a deal runs five years. Every treasury in the game gets richer at once.",
+      cost: "If a deal simply pays what the arithmetic says, trade becomes the strongest thing in the "
+          + "game overnight, and everything tuned around the old rhythm — what an army costs, what "
+          + "annexing costs, how fast a broken state recovers — is now tuned for a poorer world than "
+          + "the one it is in. If a deal instead pays over a year what clicking paid over a year, the "
+          + "change is purely about commitment: you are agreeing to something for five years rather "
+          + "than shopping. The alpha then tests the thing it was built to test.",
+      recommendation: "Pay the same over a year, and put the difference on a slider so we can turn "
+                    + "trade up deliberately once we can see what it does. Signing a deal should change "
+                    + "what you can plan, not instantly make you rich. If you want deals to be a real "
+                    + "windfall, say so — it is one number either way, and far cheaper to choose now "
+                    + "than to re-tune the whole game around afterwards.",
+    },
+    {
+      id: "deal-early-exit",
+      title: "Can you walk out of a deal early?",
+      evidence: "A deal runs six months, a year, two years or five. Your addendum says expiry prompts a "
+              + "renegotiation with a countdown, and says nothing about leaving before then. Walking "
+              + "out with notice is already specified for the next stage, where revoking a transit "
+              + "agreement gives the other side warning and costs you something.",
+      cost: "Building early exit into this stage means building the notice period, the price of "
+          + "breaking, and how the other side remembers it — a stage's worth of work, arriving before "
+          + "anyone has played with a deal at all. Leaving it out means a five-year deal signed in "
+          + "error is a five-year mistake, which is either the most interesting thing in the game or "
+          + "the most irritating.",
+      recommendation: "Leave it out of this stage. Deals run their term, and breaking one arrives with "
+                    + "revocation in the next stage, where the notice-and-reputation machinery is "
+                    + "already planned and paid for. So that a five-year mistake is not made by "
+                    + "accident, the term you are signing will be the largest thing on the confirmation.",
     },
   ],
 
@@ -216,9 +231,15 @@ const BOARD = {
       brief: "A trade becomes a standing agreement rather than a single click with a cooldown. Durations "
            + "of six months to five years, counter-offers that can change duration, expiry that prompts "
            + "renegotiation with countdowns, and a ledger of active deals and open offers.",
-      actual: "Being planned now by eight agents — four to design it against the existing code and four "
-            + "to try to break those designs — before a line is written. Built on the existing economy, "
-            + "which it must not touch.",
+      actual: "Half planned. Eight passes were commissioned — four to design it against the existing "
+            + "code, four to attack those designs. Four finished before the machine hit its daily "
+            + "limit, and they agree with one another on every point that matters, including the one "
+            + "that matters most: nothing any of them proposes touches the working economy. That is "
+            + "enough to build from without spending the morning re-running the other four. Two things "
+            + "they found are questions for you, above. Two were mine and are settled: an offer from "
+            + "another state now has to be accepted or refused rather than simply happening to you, "
+            + "and the news feed will record signing, renewal and expiry rather than every quarterly "
+            + "payment — which would have buried real news inside twenty-five years.",
     },
     { name: "A2 — Transit and tolls", status: "todo",
       brief: "Transit agreements by mode — highway, rail, port — with tolls that compound along a route; Canada and Mexico as corridors at a flat 10%; revocation as a player action with a notice period.",
@@ -240,7 +261,8 @@ const BOARD = {
             + "Measured: 84% of the industry figures can come straight from published government data "
             + "and the rest can be filled in from each county's own real total and marked as "
             + "estimates. Today it is nought per cent — six hand-written patterns behind 1,688 places, "
-            + "with half the map sharing one. One decision above is yours before this can start.",
+            + "with half the map sharing one. You approved this on 5 September: widen the six so every "
+            + "dollar lands somewhere real. It stays scheduled after the alpha unless you move it.",
     },
     { name: "After alpha — Autarky economy", status: "todo",
       brief: "Band model, derived demand, national pooling. No trade of any kind. Stop condition: the numbers stop surprising the designer.",
@@ -310,6 +332,10 @@ const BOARD = {
 
   // Decisions made on the owner's behalf and how they turned out. Corrections go BESIDE originals.
   log: [
+    { when: "2026-09-05", decision: "Built A1 from four finished design passes rather than re-running the four that died with the daily limit.",
+      outcome: "A judgement call, and I think the right one — the four that survived cover the money, the screen, the save file, and an audit of the code being replaced, and they reached the same conclusions independently. Re-running the other four would have bought a second opinion at the cost of a morning. If A1 comes out wrong, this is the first decision to look at." },
+    { when: "2026-09-05", decision: "Recorded your approval to widen the six industries and re-bake them from real government figures.",
+      outcome: "Scheduled, not started — it stays after the alpha where you put it. It is the change that takes the last invented numbers out from under your map." },
     { when: "2026-09-05", decision: "Adopted the addendum's new order — trade first, economy after — and ran A0 straight through as you instructed.",
       outcome: "A0 done and tagged v0.3 in one sitting. Two corrections to the addendum recorded: the AI already trades, and the recognition item restated a misreading." },
     { when: "2026-09-05", decision: "Told you the county data had no ports and raised it as a blocker.",

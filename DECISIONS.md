@@ -2534,3 +2534,59 @@ PROGRAMMER-RULES: check the thing the code actually reads, not the thing its nam
 **Also struck by the addendum:** the five-nation prediction exercise. The answer key computed for it
 (`docs/PHASE1-ANSWER-KEY.md`) is not wasted — its findings about the demand formulas' units and the
 invented industry data stand regardless, and matter when derived demand is built after alpha.
+
+### D169 — The six sectors will be widened and re-baked; Aaron approved it, it stays after alpha
+
+*2026-09-05.* The `sector-coverage` card on the Control Board was approved with no note at
+08:17Z. The card recommended **widening the six sectors so every dollar of a county's real output
+lands somewhere**, over the two alternatives (drop the missing 47.5%, breaking the design
+document's promise that sectors sum to real output; or spread it evenly, which is inventing again).
+The approval is therefore an approval of that recommendation.
+
+It supersedes nothing in D165 — that entry deferred the re-bake, and this one does not un-defer it.
+The re-bake still sits in the `After alpha — Honest industry data` phase. What changed is that the
+design question in front of it is now settled, so the phase is no longer blocked on Aaron.
+
+Measured coverage, unchanged from D165: 83.5% of county-industry figures come straight from
+published BEA data (with addenda), 99.6% of county totals are usable, and the present six sectors
+span 52.5% of GDP. Widening is what closes the other 47.5%.
+
+### D170 — A1 is built from four of eight design passes, not re-run
+
+*2026-09-05.* The A1 planning workflow died twice on session limits. Run 2 (`wf_27be10f9-9d9`)
+completed **all four `map:` agents** — model/settlement, UI/negotiation, persistence/determinism,
+and the reuse/retire audit of the existing trade code — and lost the four adversarial challengers
+and the synthesiser.
+
+The four results are extracted and kept (see the run's `journal.jsonl`). They agree with each other
+on every load-bearing point: a new `js/deals.js` IIFE modelled on `js/pacts.js`; ids from a
+serialized module counter, never the RNG; settlement as treasury-only money movement inside
+`World.advanceTurn`; `Moves.tradeFlows` reused unchanged as the deal's volume and price; the
+one-click bilateral trade and its per-partner cooldown retired; and — the point the whole stage
+hangs on — **no step writes to demand, supply, or the price index**. Four independent passes
+reaching the same architecture is most of what the four challengers were commissioned to test.
+
+Decided: build from these rather than spend a morning re-running the other four. The alternative
+buys a second opinion at the cost of the day, on a stage whose scope rule is already checkable by
+test (prices byte-identical before and after signing and after six turns of settlement — one of the
+tests the audit pass specified).
+
+**If A1 comes out wrong, look here first.**
+
+Three findings from the four passes, and what was done with each:
+
+- **Income scale (Aaron's).** A standing deal pays every turn what the click paid once per
+  `trade.cooldownTurns + 1 = 4` turns, so trade income per partner rises ~4x, more where a deal
+  runs 20 turns. This re-tunes the whole game around a richer world. On the board as
+  `deal-income-scale`.
+- **Consent (mine).** `resolveTrade` has no consent step: today an AI can impose a one-click trade
+  on the player, harmless because both sides gain. A 20-turn standing deal imposed the same way is
+  not harmless. A1 gives the player accept/decline, which the offer/counter-offer machinery needs
+  anyway.
+- **Ledger bloat (mine).** Logging settlement per deal per turn would push real news out of
+  `ledger.cap` (5000) within ~100 turns. A1 logs signing, renewal and expiry only; the running
+  total lives on the Deals screen.
+
+And one for Aaron that the addendum left open: whether a deal can be **broken early**. Recommended
+no for A1 — revocation-with-notice is already specified for A2. On the board as `deal-early-exit`.
+
