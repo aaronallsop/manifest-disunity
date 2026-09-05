@@ -123,13 +123,13 @@
 // ============================================================================
 const BOARD = {
   project: "Manifest Disunity",
-  updated: "2026-09-05 10:17",          // when you last republished, local time
+  updated: "2026-09-05 11:00",          // when you last republished, local time
 
   // Three or four measured figures. value: number|string, or null = "not yet measured".
   figures: [
     { label: "Alpha-track stages done",  value: "A0 of A0–A4" },
     { label: "Current version",         value: "v0.3" },
-    { label: "Tests green",             value: 866 },
+    { label: "Tests green",             value: 885 },
     { label: "Industry figures that are real, today",   value: "0%" },
     { label: "Industry figures real after the re-bake", value: "84%" },
   ],
@@ -137,13 +137,12 @@ const BOARD = {
   // The single most important true thing right now. tone: "bad" | "warn" | "ok" | "neutral".
   headline: {
     tone: "ok",
-    text: "You answered all four, so A1 is being built now: a trade becomes an agreement with a "
-        + "term, money arrives every quarter instead of once, and an offer can be answered with a "
-        + "counter-offer that changes the length. A deal will pay over a year what a click paid over "
-        + "a year, so trade is about commitment rather than sudden wealth, and how much stronger it "
-        + "gets is a slider we turn deliberately later. Your idea about walking out of a deal and "
-        + "paying for it in reputation is written down and belongs with the next stage. Nothing is "
-        + "waiting on you.",
+    text: "A trade is now a contract. You pick a partner and a length \u2014 six months, a year, two "
+        + "years, five \u2014 and the money arrives every quarter until it runs out, at the price you "
+        + "signed at whatever the market does afterwards. When it ends, the other side comes back "
+        + "and asks again, and you decide. It works: 885 checks pass and I have played it. Two "
+        + "pieces of the stage are still missing and they are named below. Nothing is waiting on "
+        + "you.",
   },
 
   // Only decisions that are genuinely the owner's. Ids are permanent.
@@ -196,18 +195,28 @@ const BOARD = {
       brief: "A trade becomes a standing agreement rather than a single click with a cooldown. Durations "
            + "of six months to five years, counter-offers that can change duration, expiry that prompts "
            + "renegotiation with countdowns, and a ledger of active deals and open offers.",
-      actual: "Half planned. Eight passes were commissioned — four to design it against the existing "
-            + "code, four to attack those designs. Four finished before the machine hit its daily "
-            + "limit, and they agree with one another on every point that matters, including the one "
-            + "that matters most: nothing any of them proposes touches the working economy. That is "
-            + "enough to build from without spending the morning re-running the other four. Two things "
-            + "they found are questions for you, above. Two were mine and are settled: an offer from "
-            + "another state now has to be accepted or refused rather than simply happening to you, "
-            + "and the news feed will record signing, renewal and expiry rather than every quarterly "
-            + "payment — which would have buried real news inside twenty-five years. Both of yours "
-            + "are answered and being built: a deal pays over a year what a click paid over a year, "
-            + "and deals run their term, with the length you are signing made the largest thing on "
-            + "the confirmation so five years is never agreed to by accident.",
+      actual: "Built and working, apart from two named pieces. What is there: you choose a partner "
+            + "and a length, and the panel shows what it pays a quarter, what it pays over the whole "
+            + "deal, and the month it runs to. The money arrives every quarter, not at signing. The "
+            + "price is frozen the day you sign, so a five-year deal is a bet on the market and the "
+            + "screen shows you what it was worth then against what it is worth now. A pair can only "
+            + "hold one deal at a time and what you have promised away stops being available to "
+            + "anybody else \u2014 together those replace the old rule that simply stopped you trading "
+            + "with the same neighbour for a year. When a deal runs out the other side asks again and "
+            + "you choose; warnings land a year, six months and three months before. And your card "
+            + "shows every deal you have, what each pays, and which is closest to running out.\n\n"
+            + "Two departures worth knowing. The first is good luck: because you ruled that a deal "
+            + "pays over a year what a click paid over a year, an AI signing a standard deal now "
+            + "earns exactly what its old click earned, over exactly the same span. So I moved the "
+            + "other sixty nations onto deals in this stage rather than waiting for the last one, "
+            + "at no cost to anything. The second was a fault I caught by playing it: an AI signed a "
+            + "four-year agreement with me without asking. Harmless when a trade was one click, not "
+            + "harmless when it holds your goods for a year \u2014 so a nation that wants a deal with "
+            + "you now has to ask, and you get a card. They still deal with each other directly.\n\n"
+            + "STILL MISSING, and both are in your brief: the other side never counters your offer, "
+            + "so choosing terms is a decision but not yet a negotiation; and there is no deals "
+            + "screen \u2014 your own card shows the five closest to expiring, but nothing lists them "
+            + "all or shows offers waiting.",
     },
     { name: "A2 — Transit and tolls", status: "todo",
       brief: "Transit agreements by mode — highway, rail, port — with tolls that compound along a route; Canada and Mexico as corridors at a flat 10%; revocation as a player action with a notice period.",
@@ -300,6 +309,10 @@ const BOARD = {
 
   // Decisions made on the owner's behalf and how they turned out. Corrections go BESIDE originals.
   log: [
+    { when: "2026-09-05", decision: "Let an AI nation sign a four-year deal with the player without asking, and found it by playing the build rather than by reading it.",
+      outcome: "A real fault, fixed the same hour. A trade being imposed on you did not matter when it was over the moment it happened; a contract that holds your goods for a year does. Other nations now have to ask, and you answer on a card. The tests did not catch it and would not have \u2014 it was only visible on screen." },
+    { when: "2026-09-05", decision: "Bounded what a save remembers about finished deals.",
+      outcome: "Caught by measuring rather than guessing: twenty-two quarters of a sixty-one-nation board made 737 deals, 673 of them already over, and every one was going into your save file for ever. They are now forgotten five years after they end, which is longer than anything on screen looks back." },
     { when: "2026-09-05", decision: "Asked you four questions before writing a line of A1, rather than building and asking after.",
       outcome: "All four answered in one sitting, and one of them turned into a design idea worth keeping — breaking a deal early and paying for it in reputation, which is now written down against the stage that already builds the machinery for it. A deal will pay over a year what a click paid over a year; deals run their term; testers wait for the alpha; the industry re-bake stays where you put it." },
     { when: "2026-09-05", decision: "Built A1 from four finished design passes rather than re-running the four that died with the daily limit.",
