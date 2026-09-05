@@ -325,6 +325,33 @@ const AI = (function () {
     }
 
     /*
+     * A CORRIDOR (A4), priced by WHAT IT UNLOCKS rather than by what it costs.
+     *
+     * A landlocked nation is not buying a road, it is buying the difference
+     * between having an export economy and not having one. So the term is the
+     * share of the way to a market that this one agreement opens: everything, if
+     * the neighbour is the last link in the chain; nothing, if the goods still
+     * have nowhere to go afterwards.
+     *
+     * Asking a neighbour who cannot themselves reach a market is worth exactly
+     * as much as it sounds, and this is what stops the AI buying passage into a
+     * cul-de-sac.
+     */
+    if (intent.type === 'transit') {
+      const before = Transit.toWorld(intent.nid, { tune, permit: Transit.permitFor(intent.nid) });
+      const after = Transit.toWorld(intent.nid, {
+        tune,
+        permit: (node, m) => (node === intent.target
+          ? { rate: preview.rate, transfer: true }
+          : Transit.permits(node, intent.nid, m)),
+      });
+      const was = before ? before.keep : 0;
+      const now = after ? after.keep : 0;
+      terms.push(term('What it opens up', 'ai.wTrade', now - was, Math.max(0, now - was), 'hold',
+        'how much of the way to a market this one agreement buys'));
+    }
+
+    /*
      * A PACT (M11.2), priced by EXPOSURE rather than by affection.
      *
      * A non-aggression pact is worth what it removes, and what it removes is
@@ -674,8 +701,40 @@ const AI = (function () {
    *
    * @returns {{nid, intent, result}} `intent` is null for a pass.
    */
+  /**
+   * ANSWER WHAT IS ON THE TABLE (A4), before deciding what to do.
+   *
+   * A nation that leaves requests unanswered while it goes shopping is not
+   * playing the same game as the player, who is stopped and asked. The AI reads
+   * the same rulebook the player is shown: `Moves.transitVerdict` decides a
+   * corridor, `Moves.plan` decides a trade, and both are the functions that
+   * judge the player when the player asks.
+   *
+   * Answering costs nothing and never uses the turn, which is the same rule the
+   * player plays under.
+   */
+  function answerOffers(nid, tune) {
+    if (typeof Transit !== 'undefined') {
+      for (const o of Transit.offersFor(nid)) {
+        const v = Moves.transitVerdict(nid, o.from, o.terms.rate, 0, tune);
+        Transit.answer(o.id, v && v.kind === 'decline' ? 'no' : 'grant', tune);
+      }
+    }
+    if (typeof Deals !== 'undefined') {
+      for (const o of Deals.offersFor(nid)) {
+        const p = Moves.plan({ type: 'trade', nid, target: o.from,
+          terms: { duration: o.terms.duration, autoRenew: o.terms.autoRenew,
+            priceMult: o.terms.priceMult } }, tune);
+        // The same test the player is held to: sign what you would have signed.
+        const yes = p.ok && p.verdict && p.verdict.kind === 'accept';
+        Deals.answer(o.id, yes ? 'renew' : 'lapse', tune);
+      }
+    }
+  }
+
   function takeTurn(nid, tune, rng) {
     if (!Game.getNation(nid)) return { nid, intent: null, result: null };
+    answerOffers(nid, tune);
     const intent = chooseMove(nid, tune, rng);
     // The army is pointed every turn, whether or not anything else happens: a
     // posture is not an action and a nation that passes still has one.

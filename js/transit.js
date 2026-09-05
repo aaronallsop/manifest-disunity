@@ -527,6 +527,48 @@ const Transit = (function () {
   /** The best way for a nation to reach a market outside the continent. */
   const toWorld = (nid, opts) => find(nid, WORLD, opts);
 
+  /**
+   * Every nation this one can reach through corridors it already holds, in ONE
+   * sweep rather than one search per candidate (A4).
+   *
+   * The distinction matters at this scale. Asking `find` whether each of sixty
+   * nations is reachable is sixty searches per nation and 3,600 a round, which
+   * measured at a quarter of a second on its own. One outward sweep answers the
+   * same question for everybody at once, and the AI only needs the SET — which
+   * partners exist — because `Moves.plan` prices the route properly afterwards.
+   */
+  function reachable(nid, opts) {
+    const o = opts || {};
+    const t = T(o.tune);
+    const g = graph();
+    if (!g.edges.has(nid)) return [];
+    const permit = o.permit || permitFor(nid, o.turn);
+    const maxHops = t.get('transit.maxHops');
+    const out = new Set();
+    let layer = new Set([nid]);
+    const usedAsHop = new Set([nid]);
+    for (let depth = 0; depth <= maxHops; depth++) {
+      const next = new Set();
+      for (const u of [...layer].sort()) {
+        const outs = g.edges.get(u);
+        if (!outs) continue;
+        for (const v of [...outs.keys()].sort()) {
+          if (isOutside(v) || v === nid) continue;
+          out.add(v);
+          if (depth >= maxHops || usedAsHop.has(v)) continue;
+          // Somebody may only be STEPPED THROUGH if they have granted passage.
+          const bits = outs.get(v);
+          const ok = [MODE.RIVER, MODE.PORT, MODE.RAIL, MODE.HIGHWAY]
+            .some((m) => (bits & m) && permit(v, m));
+          if (ok) { usedAsHop.add(v); next.add(v); }
+        }
+      }
+      if (!next.size) break;
+      layer = next;
+    }
+    return [...out].sort();
+  }
+
   /** Can these two trade at all, directly or through somebody? */
   function reaches(a, b, opts) {
     if (a === b) return false;
@@ -1032,7 +1074,7 @@ const Transit = (function () {
 
   return {
     MODE, MODE_NAME, MODE_LABEL, CANADA, MEXICO, WORLD, isOutside,
-    reset, graph, modesBetween, priceRoute, keep, find, toWorld, reaches, rivers,
+    reset, graph, modesBetween, priceRoute, keep, find, toWorld, reaches, reachable, rivers,
     live, get, permits, permitFor, forNation, grant, serve, withdraw,
     reneges, standing, remaining, tick, tickRegister, netFor, blockedAt,
     propose, offersFor, waiting, answer, decline: declineOffer,

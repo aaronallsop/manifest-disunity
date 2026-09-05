@@ -383,10 +383,12 @@ describe('Moves.legal — the AI\'s candidate list', () => {
     ok(moves.length > 3, `only ${moves.length} legal moves`);
     for (const m of moves) {
       equal(m.nid, '06');
-      // trade, treaty and aid joined the list in M11 — the candidate list is
-      // the AI's whole view of what it may do, so a move missing from here is a
-      // move fifty nations cannot make.
-      ok(['annex', 'unite', 'govern', 'release', 'autonomy', 'trade', 'treaty', 'aid']
+      // trade, treaty and aid joined the list in M11, and transit in A4 — the
+      // candidate list is the AI's whole view of what it may do, so a move
+      // missing from here is a move fifty nations cannot make. (California
+      // generates no transit candidates because it has its own ports; only a
+      // nation that cannot reach a market goes asking. See the transit suite.)
+      ok(['annex', 'unite', 'govern', 'release', 'autonomy', 'trade', 'treaty', 'aid', 'transit']
         .includes(m.type), `unexpected move type ${m.type}`);
       if (m.type === 'annex') {
         ok(m.areas.length > 0 && m.areas.length <= T().get('annex.budgetAreas'));

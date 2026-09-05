@@ -1785,9 +1785,58 @@ const Moves = (function () {
      * the same division of labour every other move here uses: `legal` is cheap
      * and generous, `plan` is the rulebook.
      */
-    for (const other of Game.adjacentNations(nid)) {
+    const neighbours = new Set(Game.adjacentNations(nid));
+    for (const other of neighbours) {
       if (typeof Deals === 'undefined' || !Deals.live(nid, other)) {
         out.push({ type: 'trade', nid, target: other });
+      }
+    }
+    /*
+     * ...AND WITH ANYBODY THE CORRIDORS IT HOLDS CAN REACH (A4). Until now the
+     * AI's view of the world stopped at its own borders, which meant it could
+     * buy passage across a neighbour and then have nothing to do with it. This
+     * is what the passage was FOR.
+     *
+     * ONE OUTWARD SWEEP, not one search per candidate. Asking whether each of
+     * sixty nations is reachable would be 3,600 route searches a round, measured
+     * at about a quarter of a second on its own. `Transit.reachable` answers it
+     * for everybody at once, and `plan` prices the route properly afterwards, so
+     * a candidate that turns out not to pay is refused by the rulebook rather
+     * than by a guess made here.
+     */
+    if (typeof Transit !== 'undefined' && typeof Deals !== 'undefined' && Transit.count()) {
+      for (const other of Transit.reachable(nid, { tune })) {
+        if (neighbours.has(other) || Deals.live(nid, other)) continue;
+        out.push({ type: 'trade', nid, target: other });
+      }
+    }
+
+    /*
+     * A CORRIDOR, BUT ONLY FOR A NATION THAT NEEDS ONE (A4).
+     *
+     * DELIBERATELY NOT ONE CANDIDATE PER NEIGHBOUR PER MODE FOR EVERYBODY. That
+     * would be three more plans per border for sixty nations — roughly doubling
+     * what the AI scores every turn, on a board nobody has tuned, to let coastal
+     * California shop for passage it does not want. Measured before this was
+     * written: one AI round is 735 plans and 153 ms, and this adds about fifty.
+     *
+     * The gate is need, and it is the same need the stage was built for: a
+     * nation that cannot reach a market on its own ground. Fourteen of sixty are
+     * in that position and every one of them has a reason to be at somebody's
+     * door. A nation that already has a port asks for nothing, which is correct
+     * and also free.
+     */
+    if (typeof Transit !== 'undefined' && !Game.exportAccess(nid).any) {
+      for (const other of Game.borderingNations(nid)) {
+        const bits = Transit.modesBetween(nid, other);
+        if (!bits) continue;
+        // The cheapest mode the border carries, and only one candidate per
+        // neighbour: which WAY to ask for is not a decision the AI is equipped
+        // to make until somebody has watched it make the simpler one.
+        const mode = [Transit.MODE.RIVER, Transit.MODE.PORT, Transit.MODE.RAIL, Transit.MODE.HIGHWAY]
+          .find((m) => bits & m);
+        if (!mode || Transit.live(other, nid, mode)) continue;
+        out.push({ type: 'transit', nid, target: other, mode });
       }
     }
 

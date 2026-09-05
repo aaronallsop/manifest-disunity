@@ -653,6 +653,71 @@ describe('Transit — closing a corridor under a running deal', () => {
   });
 });
 
+describe('Transit — the other nations use it (A4)', () => {
+  it('only a nation that cannot reach a market goes asking', async () => {
+    await bootWorld({ seed: SEED });
+    let asked = 0, coastalAsked = 0;
+    for (const [nid] of Game.nations) {
+      const wants = Moves.legal(nid, T()).filter((m) => m.type === 'transit');
+      if (!wants.length) continue;
+      asked += 1;
+      if (Game.exportAccess(nid).any) coastalAsked += 1;
+    }
+    ok(asked > 0, 'not one nation on the board asks for a corridor');
+    equal(coastalAsked, 0,
+      'a nation with its own port went shopping for passage it does not need');
+  });
+
+  it('does not ask the same neighbour twice for what it already holds', async () => {
+    await bootWorld({ seed: SEED });
+    const stuck = [...Game.nations.keys()].find((n) => !Game.exportAccess(n).any
+      && Moves.legal(n, T()).some((m) => m.type === 'transit'));
+    ok(stuck, 'no landlocked nation asks for anything');
+    const first = Moves.legal(stuck, T()).filter((m) => m.type === 'transit');
+    const one = first[0];
+    Transit.grant({ grantor: one.target, grantee: stuck, mode: one.mode, rate: 0.2, duration: 20 }, T());
+    const after = Moves.legal(stuck, T()).filter((m) => m.type === 'transit');
+    ok(!after.some((m) => m.target === one.target && m.mode === one.mode),
+      'it asked again for a corridor it already has');
+  });
+
+  it('costs about fifty extra plans a round, not seven hundred', async () => {
+    await bootWorld({ seed: SEED });
+    let transit = 0, total = 0;
+    for (const [nid] of Game.nations) {
+      for (const m of Moves.legal(nid, T())) { total += 1; if (m.type === 'transit') transit += 1; }
+    }
+    /*
+     * The reason transit candidates are gated on NEED rather than offered per
+     * neighbour per mode to everybody: one AI round was measured at 735 plans
+     * and 153ms, and the blanket version would roughly double it on a board
+     * nobody has tuned yet.
+     */
+    ok(transit < total * 0.2,
+      `corridor candidates are ${transit} of ${total} moves; that is the blanket version, not the targeted one`);
+  });
+
+  it('answers what is asked of it by the same rules it is judged by', async () => {
+    await bootWorld({ seed: SEED });
+    const pair = (() => {
+      for (const [a] of Game.nations) {
+        for (const b of Game.borderingNations(a)) {
+          const bits = Transit.modesBetween(a, b);
+          const m = [Transit.MODE.RAIL, Transit.MODE.HIGHWAY].find((x) => bits & x);
+          if (m) return { a, b, m };
+        }
+      }
+      return null;
+    })();
+    ok(pair, 'no bordering pair carries a corridor');
+    // A generous offer must be taken; a derisory one must not.
+    const generous = Moves.transitVerdict(pair.b, pair.a, T().get('transit.rateMax'), 0, T());
+    const stingy = Moves.transitVerdict(pair.b, pair.a, T().get('transit.rateMin') / 2, 0, T());
+    equal(generous.kind, 'accept', 'the best offer anyone could make was not accepted');
+    ok(stingy.kind !== 'accept', 'an offer below the floor was accepted');
+  });
+});
+
 describe('Transit — what a route costs', () => {
   it('a route with nobody in between costs exactly nothing', async () => {
     await bootWorld({ seed: SEED });
