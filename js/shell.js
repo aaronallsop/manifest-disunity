@@ -148,20 +148,33 @@ function renderTurnBanner() {
     <span class="tb-label" title="One turn is one ${Calendar.unit(TUNE)}. The game opened in ${Calendar.label(0, TUNE)}.">
       &middot; <strong id="world-date">${Calendar.label(World.getTurn(), TUNE)}</strong>
       <span class="tb-turn">turn <span id="world-turn">${World.getTurn()}</span></span></span>
-    ${store.dev ? '<button class="tb-pass" id="tb-advance" style="margin-left:0" title="Dev: step the world engine without playing a round">Step world &#9193;</button>' : ''}
+    ${store.dev ? `<button class="tb-pass" id="tb-advance" style="margin-left:0" title="Dev: pass one full round through the real turn path -- the same thing End turn does">Round +1</button>
+      <label class="tb-label" title="Dev: pass N rounds, stopping when something needs you">&times; <input id="tb-ff-n" type="number" min="1" max="200" value="10" style="width:3.5em"></label>
+      <button class="tb-pass" id="tb-ff" style="margin-left:0" title="Dev: fast-forward N rounds">Fast-forward &#9193;</button>` : ''}
     <button class="tb-pass" id="tb-pass">End turn &#9197;</button>`;
   document.getElementById('tb-jump').onclick = () => { if (!Actions.isActive()) { setMode('nations'); select('nation', you()); } };
   // Dev-only from M1.5: the world now advances on the round boundary, in
   // completeTurn. This button is the manual step control the M5 simulator grows
   // out of. It was the ONLY caller of World.advanceTurn, which is why a player
   // who never pressed it saw a completely static simulation.
+  /*
+   * THE DESYNC, and its fix (A0). This button used to call World.advanceTurn
+   * directly, which moved the world clock without ending any nation's turn --
+   * so `World.getTurn()` (the date) ran ahead of `TurnSystem.progress().round`
+   * and the two counters in this bar disagreed forever after. The world is
+   * meant to tick exactly once per completed round, inside TurnSystem.advance,
+   * and there is one path that does that honestly: the one End turn takes.
+   */
   const adv = document.getElementById('tb-advance');
   if (adv) adv.onclick = () => {
-    // Advancing the world re-renders the nation panel with live action buttons,
-    // letting an action be restarted on top of itself and losing the stashed
-    // colour mode (finding 37).
     if (Actions.isActive()) return flash('Finish or cancel the current action first.', 'warn');
-    World.advanceTurn(TUNE, store.rng); // emits once, from inside its own batch
+    completeTurn();
+  };
+  const ff = document.getElementById('tb-ff');
+  if (ff) ff.onclick = () => {
+    const n = Math.max(1, Math.min(200, Number(document.getElementById('tb-ff-n').value) || 1));
+    const ran = fastForward(n);
+    if (ran < n) flash(`Fast-forward stopped after ${ran} of ${n} rounds \u2014 something needs you.`, 'warn');
   };
   document.getElementById('tb-pass').onclick = passTurn;
 }
@@ -174,6 +187,12 @@ function renderTurnBanner() {
  * engine's own 1% that ran only when a human clicked "Advance world". A player
  * who never noticed the button played a game in which drift, party growth, GDP,
  * treasuries and the market never ran at all.
+ */
+/*
+ * @returns {boolean} true when the round STOPPED FOR THE PLAYER — a switch or
+ *   election offer, the end of the game, a crisis waiting for an answer — and
+ *   false when it completed and handed the next turn back. Fast-forward (A0)
+ *   reads this to know when to stop looping; nothing else needs it.
  */
 function completeTurn() {
   const mark = Ledger.mark();          // everything after this is news to the player
@@ -208,11 +227,11 @@ function completeTurn() {
    * "become the breakaway instead of going down with the parent" — and checking
    * for defeat first is precisely how you never get asked.
    */
-  if (offerSwitch(mark, name)) return;
+  if (offerSwitch(mark, name)) return true;
   // ...and if the player's own government was turned out and could refuse it,
   // that is their decision and nobody else's. After the switch offer, because
   // losing an election matters less than losing the country.
-  if (offerElection()) return;
+  if (offerElection()) return true;
   if (swept.playerGone) {
     /*
      * The nation you were playing no longer exists. M6.4 makes this a defeat
@@ -222,15 +241,37 @@ function completeTurn() {
      */
     store.playerName = name || store.playerName;
     deselect();
-    return showEnd(null);
+    showEnd(null);
+    return true;
   }
-  if (won) return showEnd(won);
+  if (won) { showEnd(won); return true; }
   // A crisis is waiting for an answer, and it is the only thing in this game
   // that stops to ask one (M7.4).
-  if (typeof Events !== 'undefined' && Events.waiting() && showCrisis()) return;
+  if (typeof Events !== 'undefined' && Events.waiting() && showCrisis()) return true;
   const next = you();
   if (next && Game.getNation(next)) { setMode('nations'); select('nation', next); }
   else deselect();
+  return false;
+}
+
+/*
+ * FAST-FORWARD (A0): play N rounds through the SAME path a pressed End turn
+ * takes, stopping the moment a round halts for the player. Not N calls to
+ * World.advanceTurn -- that is exactly the shortcut that desynchronised the two
+ * counters, because it moved the world clock without ending anybody's turn.
+ *
+ * Returns how many rounds actually ran, so the caller can say "stopped after
+ * 3 of 10: an election is waiting" rather than pretending it did ten.
+ */
+function fastForward(n) {
+  if (Actions.isActive()) { flash('Finish or cancel the current action first.', 'warn'); return 0; }
+  let ran = 0;
+  for (let i = 0; i < n; i++) {
+    const halted = completeTurn();
+    ran++;
+    if (halted) break;
+  }
+  return ran;
 }
 
 /* ------------------------------------------------------------------ */

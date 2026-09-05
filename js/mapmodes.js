@@ -229,7 +229,8 @@ const MapModes = (function () {
       const rows = economy.sectors
         .map((s, i) => `<span class="legend-key"><i style="background:${ECON_COLORS[i]}"></i>${s}</span>`)
         .join('');
-      return `<div class="legend-keys">${rows}</div>`;
+      // The split is an authored estimate everywhere it appears (Addendum A s4; D165).
+      return `<div class="legend-keys">${rows}<span class="legend-key est-tag" title="The split of output across the six sectors is an authored estimate, not a measured figure. The total is real.">est.</span></div>`;
     }
     if (mode === 'geographic') {
       if (!region) return '';

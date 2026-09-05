@@ -864,7 +864,7 @@ function renderNationEconomy(nid) {
     .map(({ s, i, d }) => `<div class="geo-row"><span><i class="econ-dot" style="background:${MapModes.ECON_COLORS[i]}"></i>${s}</span>
       <strong class="${d >= 0 ? 'surplus' : 'deficit'}">${d >= 0 ? '+' : '&minus;'}${fmtGdp(Math.abs(d) * 1e6)}</strong></div>`)
     .join('');
-  return `<div class="stat"><div class="label">Economy &middot; exportable surplus at market prices</div>
+  return `<div class="stat"><div class="label">Economy &middot; exportable surplus at market prices${estEconomy()}</div>
     <div class="value">${fmtGdp(exportable * 1e6)}</div>
     <div class="label" style="margin-top:8px">Resource surplus / deficit</div>${rows}</div>`;
 }
@@ -881,7 +881,7 @@ function renderEconomy(fips) {
       <span><i class="econ-dot" style="background:${MapModes.ECON_COLORS[i]}"></i>${s}</span>
       <strong>${fmtGdp(v * 1e6)}</strong></div>`)
     .join('');
-  return `<div class="stat"><div class="label">Economy &middot; dominant: ${escapeHtml(e.sectors[a.d])}</div>${rows}</div>`;
+  return `<div class="stat"><div class="label">Economy &middot; dominant: ${escapeHtml(e.sectors[a.d])}${estEconomy()}</div>${rows}</div>`;
 }
 
 /* geography tiers from the published editor map mode */
@@ -1011,6 +1011,20 @@ function renderNeighbors(fips) {
 }
 
 /* small "est." badge shown next to an estimated field */
+/*
+ * THE INDUSTRY SPLIT IS AN ESTIMATE, EVERYWHERE IT APPEARS (Addendum A s4; D165).
+ *
+ * A county's total output is real. The six-way split of it into sectors is
+ * not: it comes from six hand-authored templates assigned by a rule of thumb,
+ * and a little over half the map shares one of them. DESIGN.md's first
+ * principle is that a grounded estimate is flagged in the UI, and until the
+ * split is re-baked from real county-industry data this badge is what keeps
+ * the screen honest about it. Unconditional, because it is true of every Area.
+ */
+function estEconomy() {
+  return ' <span class="est-tag" title="The split of output across the six sectors is an authored estimate, not a measured figure. The total is real.">est.</span>';
+}
+
 function estTag(rec, ch) {
   if (!rec || !rec.est || !rec.est.includes(ch)) return '';
   return ' <span class="est-tag" title="Best estimate — see note below">est.</span>';

@@ -64,6 +64,14 @@
       <button class="btn ghost" id="reset">Reset overrides</button>
       <button class="btn ghost" id="copy" title="Merge the moved sliders into content/tunables.json">Save to tunables.json</button>
     </div>
+    <!-- A0: step the world the last run left behind, through the same clock a run
+         uses, so the round counter and the world turn stay together. -->
+    <div class="dev-run">
+      <button class="btn ghost" id="step1" title="Play one more round on the world the last run left">Round +1</button>
+      <label class="sub">&times; <input type="number" id="stepn" value="10" min="1" max="200" /></label>
+      <button class="btn ghost" id="stepn-go" title="Play N more rounds on the world the last run left">Fast-forward</button>
+      <span class="sub" id="clock"></span>
+    </div>
     <div id="tunes"></div>
   </aside>
 
@@ -385,9 +393,34 @@ el('copy').onclick = async () => {
   }
 };
 
+/* ---- A0: step the world a run left behind, on the same clock ---- */
+function showClock() {
+  const c = el('clock');
+  if (!c) return;
+  const last = Sim.last();
+  if (!last) { c.textContent = 'no world yet — run first'; return; }
+  const p = TurnSystem.progress();
+  const date = (typeof Calendar !== 'undefined') ? Calendar.label(World.getTurn(), last.tune) : '';
+  c.textContent = `${date} · turn ${World.getTurn()} · round ${p.round}`;
+}
+function stepWorld(n) {
+  if (busy || Sim.isRunning()) { el('status').textContent = 'a run is in progress'; return; }
+  if (!Sim.last()) { el('status').textContent = 'run the simulator first, then step it'; return; }
+  const t0 = performance.now();
+  let rows;
+  try { rows = Sim.step(n); }
+  catch (e) { el('status').textContent = String(e.message); return; }
+  el('status').textContent = `stepped ${rows.length} round${rows.length === 1 ? '' : 's'} in ${Math.round(performance.now() - t0)} ms`;
+  drawLog(Ledger.all());
+  showClock();
+}
+el('step1').onclick = () => stepWorld(1);
+el('stepn-go').onclick = () => stepWorld(Math.max(1, Math.min(200, Number(el('stepn').value) || 1)));
+
 await loadAuthored();
 buildTunes();
-run();
+await run();
+showClock();
 window.__DEV__ = { run, overrides, Sim };
 </script>
 </body>

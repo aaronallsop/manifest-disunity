@@ -107,7 +107,24 @@ const Sim = (function () {
    *   in — the single most important property for a tool you use while playing.
    * @returns {Promise<{series, summary, seed, turns}>}
    */
+  /*
+   * NOT RE-ENTRANT, and now it says so (A0). Two overlapping runs mutate the
+   * same module singletons -- Game, World, Ledger, TurnSystem -- and thrash
+   * each other into a state that never finishes. Measured: two 100-turn runs
+   * started on top of the dashboard's own auto-run had not completed in ten
+   * minutes, where one alone takes about forty seconds. Nothing prevented it;
+   * the dashboard's `busy` flag guards its own button and nobody else's.
+   */
+  let running = false;
+  let last = null;   // { tune, rng, turn } of the world the previous run left behind
+
   async function run(opts = {}) {
+    if (running) throw new Error('Sim.run is already in progress; it is not re-entrant');
+    running = true;
+    try { return await runInner(opts); } finally { running = false; }
+  }
+
+  async function runInner(opts = {}) {
     const seed = opts.seed == null ? 20260829 : opts.seed;
     const turns = opts.turns == null ? 50 : opts.turns;
 
@@ -195,8 +212,27 @@ const Sim = (function () {
       if (opts.onTurn) await opts.onTurn(t, series[series.length - 1]);
     }
 
+    last = { tune, rng, turn: turns };
     return { seed, turns, series, summary: summarise(series), events: Ledger.all().slice() };
     } finally { if (prevPolicy) AI.setPolicy(prevPolicy); }
+  }
+
+  /**
+   * Step the world the last run left behind by `n` more rounds (A0), through
+   * the same clock a run uses -- AI.round, and TurnSystem.advance over the
+   * wrap -- so the round counter and the world turn stay in lockstep. Returns
+   * one sample per round played, in the same shape as `run`'s series.
+   */
+  function step(n = 1) {
+    if (!last) throw new Error('nothing to step: run the simulator first');
+    if (running) throw new Error('a run is in progress');
+    const out = [];
+    for (let i = 0; i < n; i++) {
+      AI.round(last.tune, last.rng);
+      last.turn += 1;
+      out.push(sample(last.turn));
+    }
+    return out;
   }
 
   /**
@@ -232,7 +268,7 @@ const Sim = (function () {
     };
   }
 
-  return { run, sample, band, summarise };
+  return { run, step, sample, band, summarise, isRunning: () => running, last: () => last };
 })();
 
 /*
