@@ -711,7 +711,10 @@ const Moves = (function () {
    * everything else here is: one rulebook, asked the same question by a screen
    * and by fifty other nations, so the two can never answer differently.
    *
-   * WHAT A GRANTOR WEIGHS, all three of them things a country would:
+   * WHAT A GRANTOR WEIGHS, all four of them things a country would:
+   *   MODE      - what is actually being asked for. A port is not a road. See
+   *               `askMultFor` below: this is the ONE term that is about the
+   *               favour itself rather than about the two countries.
    *   SIZE      - the larger power holds out for a better cut.
    *   NEED      - what the toll would be worth against its own economy. The
    *               needier it is, the more readily it settles.
@@ -724,11 +727,34 @@ const Moves = (function () {
    * PURE, like the deal verdict: same world and same terms give the same answer
    * every time. A negotiation you can reroll is a slot machine.
    */
-  function transitVerdict(grantor, grantee, offered, total, tune) {
+  /*
+   * WHAT THE MODE IS WORTH TO THE GRANTOR, and it runs the opposite way to the
+   * friction in Transit: water is the cheapest way to MOVE and the dearest way
+   * to be LET IN. A port hands over berths, cranes, dockers and a customs hall;
+   * a road hands over a lane of a highway that was carrying traffic anyway.
+   *
+   * PORT IS THE BASELINE so `trade.transitToll` keeps the meaning it was tuned
+   * with, and the other modes are discounts off it. That direction is chosen
+   * deliberately: it can only ever LOWER an ask, so no offer a nation would
+   * have signed before this existed is refused because of it.
+   *
+   * An unknown or absent mode gets the baseline, which is the dearest — asking
+   * for something the game cannot name should never be the cheap way in.
+   */
+  function askMultFor(mode, tune) {
+    const t = T(tune);
+    if (typeof Transit === 'undefined' || mode == null) return 1;
+    if (mode === Transit.MODE.RIVER) return t.get('transit.riverAskMult');
+    if (mode === Transit.MODE.RAIL) return t.get('transit.railAskMult');
+    if (mode === Transit.MODE.HIGHWAY) return t.get('transit.roadAskMult');
+    return 1;                                    // port, and anything unnamed
+  }
+
+  function transitVerdict(grantor, grantee, offered, total, tune, mode) {
     const t = T(tune);
     const dS = Game.nationDemographics(grantee), dT = Game.nationDemographics(grantor);
     if (!dS || !dT) return null;
-    const base = t.get('trade.transitToll');
+    const base = t.get('trade.transitToll') * askMultFor(mode, t);
     const relSize = dT.gdp / (dS.gdp + dT.gdp);
     const sizeMult = 0.75 + 0.5 * relSize;
 
@@ -752,6 +778,13 @@ const Moves = (function () {
       Math.min(t.get('transit.rateMax'), base * sizeMult * relMult * needMult));
 
     const reasons = [];
+    if (mode != null && typeof Transit !== 'undefined') {
+      if (mode === Transit.MODE.PORT) {
+        reasons.push('A port is the most they can be asked for — their berths, their cranes, their people — and they price it that way.');
+      } else if (mode === Transit.MODE.HIGHWAY) {
+        reasons.push('It is only a road, which is the least they can be asked for.');
+      }
+    }
     if (relSize > 0.6) reasons.push('They are the larger power, so they hold out for a better cut.');
     else if (relSize < 0.4) reasons.push('You are bigger than them, so they will take less.');
     if (need > 0.5) reasons.push('The income would really help them.');
@@ -811,7 +844,7 @@ const Moves = (function () {
     const res = applyCapacity(tradeFlows(nid, target, tune), limit);
     const total = Math.max(res.total, 0);
     const offered = intent.rate == null ? null : intent.rate;
-    const verdict = transitVerdict(target, nid, offered, total, t);
+    const verdict = transitVerdict(target, nid, offered, total, t, mode);
     if (!verdict) return no('That nation no longer exists.');
     const rate = offered == null ? verdict.rate : offered;
     if (rate < t.get('transit.rateMin') || rate > t.get('transit.rateMax')) {
@@ -1927,7 +1960,7 @@ const Moves = (function () {
     // question `plan` and `legal` ask, rather than answering it a second way.
     tooStrongToAnnex, untouchable,
     // ...and of the trade rules (M11.1), for the same reason.
-    tradeFlows, applyCapacity, tradeCooldownLeft, markTraded, transitVerdict,
+    tradeFlows, applyCapacity, tradeCooldownLeft, markTraded, transitVerdict, askMultFor,
     // Exported so the "a purchase does not become a surplus" rule can be tested
     // as the arithmetic it is, rather than by contriving a world in which a
     // nation's production drifts across zero mid-contract.

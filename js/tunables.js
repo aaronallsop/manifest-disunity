@@ -746,6 +746,33 @@ export const SCHEMA = {
     label: 'Toll discount for a nation you already trade with',
     doc: 'How much cheaper a corridor is when the two nations also hold a live trade deal. The owner\'s figure for the alpha. It is the cheapest possible test of an idea worth far more work later: that a corridor should be a bargaining chip inside a trade negotiation rather than a separate transaction. If holding a deal and a corridor with the same neighbour turns out to be interesting, the full version (FUTURE-IDEAS F8 and F11) is worth building; if not, this cost almost nothing to find out.',
   },
+  /*
+   * WHAT A GRANT COSTS, BY MODE - and note this runs the OPPOSITE WAY to the
+   * friction above, on purpose. Water is the cheapest way to MOVE goods and the
+   * dearest way to be LET IN, because a port is the most intrusive thing a
+   * country can lend: your berths, your cranes, your dockers, your customs hall.
+   * A road grant is a lorry on a public highway. Those are not the same favour
+   * and they should not cost the same, which they did until 5 September 2026.
+   *
+   * PORT IS THE BASELINE - it takes the toll unmodified, so the number the game
+   * was already tuned against keeps its meaning and nothing that would be signed
+   * today is refused tomorrow. The other three are discounts off it.
+   */
+  'transit.riverAskMult': {
+    v: 0.95, min: 0.3, max: 1.5, step: 0.05, group: 'Trade',
+    label: 'A RIVER right costs this much of a port right',
+    doc: 'Barely a discount, because a river passage is still your locks, your channel and your dredging - but the water carries itself and there is no crane involved, so it is not quite the imposition a harbour is.',
+  },
+  'transit.railAskMult': {
+    v: 0.85, min: 0.3, max: 1.5, step: 0.05, group: 'Trade',
+    label: 'A RAIL right costs this much of a port right',
+    doc: 'A foreign train runs on your metals and takes a slot in a timetable you control, which is a real intrusion - but it is a rehearsed one, and it does not tie up a berth. Cheaper than a port, dearer than a road.',
+  },
+  'transit.roadAskMult': {
+    v: 0.75, min: 0.3, max: 1.5, step: 0.05, group: 'Trade',
+    label: 'A ROAD right costs this much of a port right',
+    doc: 'The cheapest thing to grant, because it is the least you are actually giving: a lorry on a public highway that was going to carry traffic anyway. At 0.75 a port right costs a THIRD more than a road right across the same border between the same two countries, which is the gap the owner asked for on 5 September 2026.',
+  },
   'transit.maxHops': {
     v: 3, min: 1, max: 6, step: 1, group: 'Trade',
     label: 'Most countries in between',

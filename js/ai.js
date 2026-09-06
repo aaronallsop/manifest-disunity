@@ -716,8 +716,26 @@ const AI = (function () {
   function answerOffers(nid, tune) {
     if (typeof Transit !== 'undefined') {
       for (const o of Transit.offersFor(nid)) {
-        const v = Moves.transitVerdict(nid, o.from, o.terms.rate, 0, tune);
-        Transit.answer(o.id, v && v.kind === 'decline' ? 'no' : 'grant', tune);
+        /*
+         * THROUGH THE PLANNER, exactly as the trade branch below does, and for
+         * the reason in the comment above this function: the AI is supposed to
+         * be judging by the rulebook the player is shown. It was not. It called
+         * the verdict directly with `total` hardcoded to 0, which sets the
+         * income the corridor would earn to nothing, which sets NEED to nothing
+         * — so one of the four things a grantor weighs was silently dead on the
+         * only path an AI ever uses it. A nation that badly needed the money
+         * held out exactly as hard as one that did not. Fixed 5 September 2026.
+         *
+         * Planning it also picks up the mode, so a nation asked for its harbour
+         * now answers as though it had been asked for its harbour.
+         */
+        const p = Moves.plan({
+          type: 'transit', nid: o.from, target: nid,
+          mode: o.terms.mode, rate: o.terms.rate, duration: o.terms.duration,
+          cap: o.terms.cap,
+        }, tune);
+        const refused = !p.ok || !p.verdict || p.verdict.kind === 'decline';
+        Transit.answer(o.id, refused ? 'no' : 'grant', tune);
       }
     }
     if (typeof Deals !== 'undefined') {
