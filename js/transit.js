@@ -41,7 +41,8 @@ const Transit = (function () {
    * must be able to name exactly one: the point of the tier system is that a
    * nation can wave the lorries through and refuse the ships.
    */
-  const MODE = { HIGHWAY: 1, RAIL: 2, PORT: 4, RIVER: 8 };
+  const SEA = { PACIFIC: 1, ATLANTIC: 2 };
+const MODE = { HIGHWAY: 1, RAIL: 2, PORT: 4, RIVER: 8 };
   const MODE_NAME = { 1: 'highway', 2: 'rail', 4: 'port', 8: 'river' };
   const MODE_LABEL = { 1: 'road', 2: 'rail', 4: 'port', 8: 'river' };
 
@@ -230,8 +231,26 @@ const Transit = (function () {
       }
       return list;
     };
-    basin((a) => a.pacificPorts);
+    const pacific = basin((a) => a.pacificPorts);
     const atlantic = basin((a) => a.atlanticPorts);
+
+    /*
+     * WHICH SEA EACH NATION IS ON, kept so the search can tell one from the
+     * other (5 September 2026). A2d closed the canal between the two basins and
+     * then left a door open beside it: Canada was given an Atlantic coast only,
+     * for exactly this reason, but MEXICO WAS GIVEN BOTH — and Mexico is a node
+     * you may pass through. Washington sailed to Mexico, Mexico sailed to
+     * Florida, and Seattle was trading with Boston by sea after all, for a flat
+     * ten per cent. The comment above line 198 asserted that this could not
+     * happen. It could, from the day A2d shipped.
+     *
+     * Mexico keeps both coasts, because it genuinely has both and a Californian
+     * shipment to Ensenada is not a trick. What it no longer has is a canal
+     * through the middle of it: see the basin check in `find`.
+     */
+    const seas = new Map();
+    for (const n of pacific) seas.set(n, (seas.get(n) || 0) | SEA.PACIFIC);
+    for (const n of atlantic) seas.set(n, (seas.get(n) || 0) | SEA.ATLANTIC);
 
     /*
      * ...AND THE LAKES REACH THE ATLANTIC THROUGH CANADA, which is the owner's
@@ -244,7 +263,7 @@ const Transit = (function () {
     // ...and the rivers, which are borders too, and cheaper ones (A2c).
     riverLayer(add);
 
-    cache = { key, nodes, edges };
+    cache = { key, nodes, edges, seas };
     return cache;
   }
 
@@ -514,7 +533,7 @@ const Transit = (function () {
       return x.chain < y.chain;
     };
 
-    let layer = new Map([[a, { keep: 1, hops: [], corridors: 0, chain: '', enteredBy: 0 }]]);
+    let layer = new Map([[a, { keep: 1, hops: [], corridors: 0, chain: '', sea: 0 }]]);
     let best = null;
     for (let depth = 0; depth <= maxHops; depth++) {
       const next = new Map();
@@ -533,6 +552,22 @@ const Transit = (function () {
              * are not countries and have no say (the owner's ruling).
              */
             if (u !== a && !isOutside(u) && !permit(u, m)) continue;
+            /*
+             * NO CANAL THROUGH ANYBODY (5 September 2026). Arriving at Canada or
+             * Mexico by sea and leaving by sea on the OTHER ocean is the Panama
+             * bypass wearing a different hat, and it was open from the day the
+             * basins were split: Mexico holds ports on both coasts, and a
+             * corridor node costs no permission to enter or leave.
+             *
+             * The rule is deliberately narrow — water in, water out, across two
+             * basins. Reaching Canada overland and shipping onward from there is
+             * still allowed, because that is what those goods would really do,
+             * and A2d says so in as many words.
+             */
+            if (isOutside(u) && m === MODE.PORT && st.sea) {
+              const dest = g.seas.get(v) || 0;
+              if (dest && !(dest & st.sea)) continue;
+            }
             if (v === b) {
               const cand = { keep: st.keep, hops: st.hops, chain: st.chain };
               if (better(cand, best)) best = { keep: st.keep, hops: st.hops.slice(), chain: st.chain };
@@ -557,7 +592,12 @@ const Transit = (function () {
               hops: st.hops.concat([{ node: v, mode: m, rate, corridor }]),
               corridors: st.corridors + (corridor ? 1 : 0),
               chain: `${st.chain}|${v}`,
-              enteredBy: m,
+              /*
+               * Which sea we are sitting in, and ONLY while sitting on a
+               * corridor node we sailed to. Everywhere else it is zero, so the
+               * check above costs nothing on the overwhelming majority of hops.
+               */
+              sea: (corridor && m === MODE.PORT) ? (g.seas.get(u) || 0) : 0,
             };
             if (better(cand, next.get(v))) next.set(v, cand);
           }

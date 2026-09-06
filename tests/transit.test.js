@@ -324,6 +324,53 @@ describe('Transit — two seas, not one ocean (A2d)', () => {
     }
   });
 
+  /*
+   * THE HOLE BESIDE THE DOOR (found 5 September 2026, fixed the same day).
+   *
+   * The test below this one checks that no DIRECT sea edge joins the basins,
+   * and it passed from the day A2d shipped. It was not enough. Canada was given
+   * an Atlantic coast only, precisely so it could not be used as a canal — but
+   * MEXICO WAS GIVEN BOTH, and a corridor node costs nothing to enter and needs
+   * nobody's permission to leave. So Washington sailed to Mexico, Mexico sailed
+   * to Florida, and the Panama ruling was defeated for a flat ten per cent
+   * while every test about it stayed green.
+   *
+   * This one runs the ROUTE SEARCH rather than reading the edges, which is why
+   * it catches what the other missed: with no agreement anywhere on the board,
+   * corridor nodes are the only things anybody can pass through, so any route
+   * this finds is a route through Canada or Mexico by definition.
+   */
+  it('THE PANAMA RULING HOLDS THROUGH A THIRD COUNTRY, not just between two', async () => {
+    await bootWorld({ seed: SEED });
+    const { pac, atl } = seas();
+    ok(pac.length && atl.length, 'one of the two oceans is empty — the test proves nothing');
+    let tried = 0;
+    for (const p of pac) {
+      for (const a2 of atl) {
+        tried += 1;
+        // No `permit`: nothing routes through any NATION, so a route found here
+        // can only have gone through Canada or Mexico.
+        const bySea = Transit.find(p, a2, {});
+        ok(!bySea, `${p} reached ${a2} through ${bySea && bySea.hops.map((h) => h.node).join(' → ')}`);
+      }
+    }
+    ok(tried > 40, `only ${tried} ocean-to-ocean pairs tried — the test proves nothing`);
+  });
+
+  it('but Mexico keeps both its coasts, because it really has both', async () => {
+    await bootWorld({ seed: SEED });
+    const { pac, atl } = seas();
+    // The fix must not have quietly amputated Mexico. A Pacific nation and an
+    // Atlantic one must each still be able to sell TO Mexico — it is a market,
+    // and only its use as a canal was ever the problem.
+    ok(Transit.modesBetween(pac[0], '@mexico') & Transit.MODE.PORT,
+      'a Pacific nation can no longer ship to Mexico at all');
+    ok(Transit.modesBetween(atl[0], '@mexico') & Transit.MODE.PORT,
+      'an Atlantic nation can no longer ship to Mexico at all');
+    ok(Transit.find(pac[0], '@mexico', {}), 'a Pacific nation cannot reach Mexico as a destination');
+    ok(Transit.find(atl[0], '@mexico', {}), 'an Atlantic nation cannot reach Mexico as a destination');
+  });
+
   it('THE PANAMA RULING: no sea link between the two oceans', async () => {
     await bootWorld({ seed: SEED });
     const { pac, atl } = seas();
@@ -807,6 +854,76 @@ describe('Transit — the other nations use it (A4)', () => {
     const stingy = Moves.transitVerdict(pair.b, pair.a, T().get('transit.rateMin') / 2, 0, T());
     equal(generous.kind, 'accept', 'the best offer anyone could make was not accepted');
     ok(stingy.kind !== 'accept', 'an offer below the floor was accepted');
+  });
+
+  /*
+   * WHAT IS BEING ASKED FOR CHANGES THE PRICE (5 September 2026).
+   *
+   * Until this, a nation charged the same for its harbour as for a lane of its
+   * motorway: `transitVerdict` had no mode argument at all. The owner's point
+   * is that they are not the same favour — a port grant puts foreign cargo
+   * through your cranes and your people.
+   *
+   * These run over EVERY bordering pair rather than one, because a single pair
+   * could sit against a clamp and prove nothing. The count assertions exist
+   * because the first version of this test passed on a board where no pair was
+   * ever compared.
+   */
+  it('a port right costs more than a road right between the same two nations', async () => {
+    await bootWorld({ seed: SEED });
+    const t = T();
+    const ask = (a, b, m) => Moves.transitVerdict(b, a, null, 0, t, m).rate;
+    const lo = t.get('transit.rateMin'), hi = t.get('transit.rateMax');
+
+    let compared = 0, ordered = 0;
+    for (const [a] of Game.nations) {
+      for (const b of Game.borderingNations(a)) {
+        if (!Transit.modesBetween(a, b)) continue;
+        const port = ask(a, b, Transit.MODE.PORT);
+        const river = ask(a, b, Transit.MODE.RIVER);
+        const rail = ask(a, b, Transit.MODE.RAIL);
+        const road = ask(a, b, Transit.MODE.HIGHWAY);
+
+        // The weak claim holds everywhere, clamp or no clamp: a discount off
+        // the port price can never come out ABOVE the port price.
+        ok(river <= port && rail <= port && road <= port,
+          `${a}->${b}: a cheaper mode asked more than a port`);
+
+        compared += 1;
+        // The strict ordering is only meaningful clear of both clamps.
+        if (port < hi - 1e-9 && road > lo + 1e-9) {
+          ordered += 1;
+          ok(port > river && river > rail && rail > road,
+            `${a}->${b}: modes not strictly ordered — port ${port.toFixed(4)}, `
+            + `river ${river.toFixed(4)}, rail ${rail.toFixed(4)}, road ${road.toFixed(4)}`);
+        }
+      }
+    }
+    ok(compared > 50, `only ${compared} bordering pairs compared — the test proved nothing`);
+    ok(ordered > 20, `only ${ordered} pairs sat clear of the clamps — the ordering is untested`);
+  });
+
+  it('an unnamed mode pays the dearest rate, never the cheapest', async () => {
+    await bootWorld({ seed: SEED });
+    const t = T();
+    const [a] = [...Game.nations.keys()];
+    const b = Game.borderingNations(a).find((x) => Transit.modesBetween(a, x));
+    ok(b, 'no bordering pair carries a corridor');
+    const port = Moves.transitVerdict(b, a, null, 0, t, Transit.MODE.PORT).rate;
+    equal(Moves.transitVerdict(b, a, null, 0, t, null).rate, port,
+      'a corridor with no mode named came out cheaper than a port');
+    equal(Moves.transitVerdict(b, a, null, 0, t).rate, port,
+      'a corridor with no mode argument at all came out cheaper than a port');
+  });
+
+  it('the mode multipliers are discounts, so nothing that would be signed is refused', async () => {
+    await bootWorld({ seed: SEED });
+    const t = T();
+    for (const m of ['transit.riverAskMult', 'transit.railAskMult', 'transit.roadAskMult']) {
+      const v = t.get(m);
+      ok(v > 0 && v <= 1, `${m} is ${v} — above 1 it would RAISE an ask, which is the one thing this must not do`);
+    }
+    equal(Moves.askMultFor(Transit.MODE.PORT, t), 1, 'port is no longer the baseline');
   });
 });
 
