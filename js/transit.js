@@ -937,10 +937,28 @@ const Transit = (function () {
    * clamp: what is debited here is a share of the credit `Deals.tick` made for
    * that same deal on this same turn, so it can never exceed it.
    *
-   * CONSERVATION IS THE INVARIANT. What every hop takes, plus what arrives, is
-   * exactly what the deal paid. The foreign corridors are the only leak, and
-   * they leak on purpose: the owner's ruling is that Canada's ten per cent is a
-   * cost nobody collects.
+   * MONEY IS NOT CONSERVED HERE, AND THAT IS DELIBERATE. An earlier version of
+   * this comment claimed conservation with the foreign corridors as the only
+   * leak. That was wrong, and wrong in the direction that matters: it would have
+   * had a reader trust a sum that does not balance. What is debited from the two
+   * parties is `1 - keep`; what is credited to the hops is only the sum of the
+   * `take`s. TWO things sit in the gap:
+   *
+   *   1. FRICTION, and it is the BIGGER of the two. `priceRoute` subtracts it
+   *      from what is carried without recording it in any leg, so nobody is paid
+   *      it. At the authored numbers a road hop's toll floor takes 5% while its
+   *      friction takes 25% of what is left — five times as much. It is
+   *      handling, transhipment and delay: real cost, no recipient.
+   *   2. THE FOREIGN CORRIDORS, which leak by the owner's explicit ruling —
+   *      Canada's ten per cent is a cost nobody collects, and `transfer: false`
+   *      is how that is spelled.
+   *
+   * So the invariant that actually holds is the weaker and true one: NOTHING IS
+   * CREATED. Every credit is a share of a debit made on the same deal on the same
+   * turn, so the hops between them can never be paid more than the two parties
+   * lost. `tests/transit.test.js` pins that, and pins the gap as expected rather
+   * than as an error — a conservation test written the other way round failed
+   * here once, and the test was the thing that was wrong.
    *
    * THE PRICE IS RECOMPUTED FROM THE STORED HOPS every turn rather than stored
    * as a multiplier. A float in the save that disagreed with the fold in its last
