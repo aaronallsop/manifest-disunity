@@ -37,6 +37,7 @@ git checkout stage/<previous>   # then: git checkout master
 | `stage/a3` | The trade network map |
 | `stage/a4` | The other sixty nations use the corridors |
 | `stage/a2d` | Two seas rather than one ocean; Panama shut |
+| `stage/a5` | What a right of way is worth, and the canal that was open after all |
 
 ---
 
@@ -257,6 +258,120 @@ would become the only remaining way to cross the continent for free. That is one
 and it wants your eye on it before it lands.
 
 **To undo it.** Nothing to undo — measurement only, written up here and in the design document.
+
+---
+
+### Run 1, entry 8 — The game was accusing neighbours of closing borders that had simply expired — *5 Sep, 20:10*
+
+**Not a decision, a small lie the game was telling.** An agreement that runs out and an agreement
+somebody closes both look the same to the code that checks whether goods can still cross, so the
+player was told "they closed the border" either way. The honest sentence already existed in the map
+and nothing could ever reach it. Now a corridor that has simply run out of turns says so.
+
+**To undo it.** `git revert` the commit "The game stops accusing a neighbour of closing a border".
+
+---
+
+### Run 1, entry 9 — I published a wrong number and then caught it myself — *5 Sep, 21:05*
+
+**What I said.** That a hundred turns took about 65 seconds and missed your sixty-second target. I
+put it on the board.
+
+**Why it was wrong.** I measured it with four browser tabs running. Timings on this machine swing
+30–40% with load — the same build measured 337ms and 642ms a round twenty minutes apart. Measured
+properly with nothing else open: **48.8 seconds. It passes.**
+
+**The related scare, also settled.** The per-round cost looked 4–8× worse than a figure recorded
+earlier in the project, and I had changed code in that path, so I checked rather than assumed.
+Interleaved comparison, identical worlds, nine repetitions each: 459ms for the build before tonight,
+441ms for the commit where the old figure was written, **398ms for tonight's build — the fastest of
+the three.** And the change I suspected never runs at all: there are zero corridor requests in a live
+round, so that branch is not entered.
+
+**What the old figure actually was.** Not a comparator. It was measured on the intact fifty-one-state
+board, not the shattered sixty-one, and checking out that exact commit and re-running its own
+measurement here gives 364–441ms. It described a different machine, not faster code.
+
+**To undo it.** Nothing to undo — measurement only. Rules 8 and 9 written so it does not recur.
+
+---
+
+## WIND-DOWN REPORT — Run 1
+
+### 1. Where it got to
+
+**954 tests green, nothing failing.** Tagged `stage/a5` — *"what a right of way is worth, and the
+canal that was open"*. 17 commits, all pushed. Every stage tag from `stage/a1` to `stage/a5` is on
+the remote, so any of it can be rolled back by somebody who is not me.
+
+**Two things I had called finished and were not**, both found by this run and both fixed:
+the Panama ruling was open through Mexico, and the design document was four stages behind.
+
+**Three of your five success measures now carry measured numbers, and all three pass:** a hundred
+turns in 48.8 seconds against a sixty-second target; the same seed producing an identical game twice,
+to the byte; a five-country resale chain keeping 18–43% against 90% for selling abroad. The other two
+belong to the autarky phase, which you parked.
+
+**Four deferred defects closed with evidence** (#3, #5, #7, #9), and one upgraded from a note to a
+scoped stage (#8).
+
+### 2. What is next, and what of it needs you
+
+Everything left needs you. That is the intended ending rather than a shortage of ideas:
+
+| | |
+|---|---|
+| **Distance** | The largest single improvement available. Measured tonight, deliberately not built. The trap: fix the sea without fixing the foreign corridors and every long haul reroutes through Canada. |
+| **Price haggling** | The economy spec's unmet Phase 3 checkpoint. The lever exists in the model and reaches no screen; the missing piece is a representation of *alternatives*, and it has a performance trap. |
+| **The industry re-bake** | Stopped, not forgotten. See entry 6. |
+| **Your written predictions** | Parked at your instruction (D175). |
+| **The stale playtest** | 132 commits behind, and yours to replace. |
+
+### 3. WHERE I WENT MOST HOG WILD
+
+Ranked by how much I made up. Worst first.
+
+**1. The four numbers that price a right of way.** Port 1.0, river 0.95, rail 0.85, road 0.75. The
+*direction* is yours — you said a harbour should cost more than a road — but the *sizes* are mine and
+nothing measures them. I made them discounts rather than premiums so they can only lower an ask,
+which is the safe direction, but a third could as easily have been a half.
+*Check first:* whether the fourteen landlocked nations can still afford to reach the sea. A port
+right is now the dearest thing on the board and the only thing that gets them out.
+
+**2. Where exactly to close the canal.** I refused water-in/water-out across two oceans and
+deliberately left overland-in/ship-out alone, on the grounds that a lorry to Mexico followed by a
+ship is a real journey and A2d's own text permits it. That is a judgement about where a rule ends,
+and a reasonable person could have drawn it tighter.
+*Check first:* whether any Pacific nation is reaching an Atlantic one by a route that feels like
+cheating. My test only covers pairs that could have gone by sea alone.
+
+**3. Reading "skip autarky" as *for this run* rather than *forever*.** You said one sentence; I built
+a parked-work mechanism around it. If you meant it permanently, the mechanism is wrong.
+
+**4. Stopping a job you had approved.** The re-bake. I think the reasons are strong and I know
+overriding a yes is not mine to do lightly.
+*Check first:* whether you agree that farming being ten times too large, and hunger being tuned
+against that, really is a blocker — or whether you would rather have it built and fixed after.
+
+### How it ended
+
+**Exit 2 — Aaron came back and said stop**, at 19:30, while the wind-down was already under way. No
+work was started after that; what was already in flight was landed and nothing else was begun.
+
+The Hog Wild switch on the board has been **unticked**, so a resumed run reads it and stops rather
+than continuing. That is the one time I write to that switch: turning it off on his explicit
+instruction takes power away rather than granting it, and leaving it ticked would have left the board
+contradicting what he had just said. **"Touch anything live" was left exactly as he set it** — it was
+flagged twice tonight and it is his to change.
+
+### 4. The counts
+
+- **Agents started: 7.** Four mapping the code for the design document, one on distances, one on the
+  industry data, one on the performance A/B.
+- **Tokens: about 1.17 million.** Roughly 270,000 from this session's own counter (14,993,000 at the
+  start of the run to 14,706,000 at the report) and about 900,000 spent by the seven agents. I cannot
+  break the agent figure down per agent, so read it as one total.
+- **Wall clock: one hour and forty-three minutes**, 17:52 to 19:35.
 
 ---
 
