@@ -67,3 +67,20 @@ Add one with `/rule` whenever a mistake earns it. Number them; never delete one.
    did not produce it produce it again** — a separate script, a separate agent, a separate method —
    and reconcile the difference to the unit. Here the two errors accounted for 6.45 points exactly,
    which is what turned "roughly right" into "wrong, and here is why".
+
+8. **Time nothing on this project with other tabs open, and never attribute a slowdown from a single
+   pass.** Cost: a wrong headline number published to Aaron's board on 5 September — "about 65
+   seconds, misses the target" — and an hour spent suspecting code that turned out to be innocent.
+   The same build measured 337 ms and 642 ms per round twenty minutes apart on the same machine;
+   single-pass figures here swing 30–40% with load. Measured properly, with nothing else running, a
+   hundred turns takes 48.8 seconds and passes. **To compare two builds, interleave them** — run
+   A, B, A, B in the same window with the same warm-up, and read the medians of several repetitions,
+   never one pass of each. And before blaming a change, count how often the changed code actually
+   runs: the prime suspect that night executed zero times a round.
+
+9. **A recorded number describes the machine that recorded it.** The project carried "83 ms a turn"
+   and a 137.5 ms baseline, and current code looked 4–8× worse against them. Checking out the exact
+   commit where 137.5 was written and re-running its own measurement gave 364–441 ms on this machine.
+   Nothing had got slower; the old figure was from somewhere else. The comment beside it was also
+   comparing a different board — the intact 51 states, not the shattered 61. **Before treating an old
+   figure as a baseline, reproduce it at the commit that wrote it.**

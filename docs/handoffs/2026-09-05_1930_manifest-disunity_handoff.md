@@ -44,8 +44,8 @@ The two errors reconcile to 6.45 points exactly. Board corrected. D178.
 
 | | |
 |---|---|
-| 100 turns headless | **~65 s** against a 60 s target — misses narrowly |
-| Cost per round | 650 ms (turns 1–25) → **753 ms peak** (26–50) → 515 ms (90–100) |
+| 100 turns headless | **48.8 s** against a 60 s target — **passes** |
+| Cost per round | 484 → 540 → 494 → 434 ms across the four quarters |
 | Same seed twice | **identical to the byte**; a different seed differs |
 | Five-hop chain | keeps **18.4% road / 34.3% rail / 42.6% water** against 90% selling direct |
 | Closest two ports, same sea | **16 miles** (Delaware–New Jersey) |
@@ -56,12 +56,21 @@ The two errors reconcile to 6.45 points exactly. Board corrected. D178.
 **Deferred #5 is closed and its worry refuted:** per-turn cost *falls* as a game lengthens. It tracks
 surviving nation count, not turn number. **Deferred #3 closed with evidence**, both halves.
 
-## Open, and mine to answer
+## Settled: no regression
 
-**Is the 565–753 ms per round a regression I caused on 5 September?** It is 4–8× the 83 ms/turn
-recorded earlier in the project. An A/B against `stage/a4` was running when this was written. If it
-says yes, the prime suspect is the AI corridor-answer path now going through the full planner.
-Recorded in deferred #5.
+An interleaved A/B with identical worlds, nine repetitions each, gave medians of **459 ms** for
+`stage/a4` (before tonight), **441 ms** for the commit where the old 137.5 ms figure was written, and
+**398 ms for current master** — the lowest of the three. The suspect is exonerated by direct count:
+`Transit.offersFor` returns zero offers across all nations in a live round, so the changed branch is
+never entered, and all transit planning together is 1.1% of a round.
+
+The old figures were never comparable: 137.5 ms was the *intact 51-state* board, its own shattered
+comparator in the same comment is 187.3 ms, and checking out that exact commit and re-running its own
+measurement here gives 364–441 ms. It described a different machine, not faster code.
+
+**One lesson worth keeping: timings here swing 30–40% with machine load.** My first pass said 65 s
+and "misses the target"; it was taken with four browser tabs running. Anything timed on this project
+must be timed with nothing else open.
 
 ## What genuinely needs Aaron
 

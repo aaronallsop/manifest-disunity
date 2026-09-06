@@ -128,14 +128,54 @@ const DealBook = (function () {
 
   /* ---- on the table -------------------------------------------------- */
 
+  /*
+   * CORRIDOR REQUESTS BELONG IN THE INBOX TOO (5 September 2026).
+   *
+   * A trade offer had a screen you could come back to; a request to cross your
+   * ground had only the card at the end of the round. Answer that card and it is
+   * gone, ignore it and there was nowhere to look it up — so half of a
+   * deliberately symmetrical system had an inbox and the other half did not.
+   *
+   * Same row shape as a trade offer, and the same rule about answers: they go
+   * through the model, never the DOM, so the decision cannot behave differently
+   * here and on the card.
+   */
+  function transitOffersHtml(me) {
+    if (typeof Transit === 'undefined' || !Transit.offersFor) return '';
+    const open = Transit.offersFor(me);
+    if (!open.length) return '';
+    const now = World.getTurn();
+    const rows = open.map((o) => {
+      const them = Game.getNation(o.from);
+      const expires = o.expires - now;
+      const label = Transit.MODE_LABEL[o.terms.mode] || 'passage';
+      const stuck = them && Game.exportAccess && !Game.exportAccess(o.from).any;
+      return `<div class="db-row db-offer">
+        <div class="db-who"><i class="dot" style="background:${them ? them.color : '#888'}"></i>${escapeHtml(them ? them.name : '?')}
+          <small>wants to cross your ground</small></div>
+        <div class="db-what"><div class="db-sec"><span>by ${escapeHtml(label)}</span>
+          <em class="db-drift">${stuck ? 'has no other way out' : 'has its own way out'}</em></div></div>
+        <div class="db-pay surplus">${Math.round(o.terms.rate * 100)}%<small>of what crosses</small></div>
+        <div class="db-when"><strong>${escapeHtml(termWords(o.terms.duration))}</strong>
+          <small>expires in ${expires} ${expires === 1 ? 'turn' : 'turns'}</small></div>
+        <div class="db-renew db-acts">
+          <button class="btn go db-grant" data-id="${escapeHtml(o.id)}">Let them through</button>
+          <button class="btn ghost db-refuse" data-id="${escapeHtml(o.id)}">No</button>
+        </div>
+      </div>`;
+    }).join('');
+    return `<h4 class="db-section">Asking to cross your ground</h4>${rows}`;
+  }
+
   function offersHtml(me) {
     const open = Deals.offersFor(me);
+    const corridors = transitOffersHtml(me);
     if (!open.length) {
-      return '<p class="ob-empty">Nothing on the table. When another nation wants a deal with you it '
-        + 'arrives here, and as a card at the end of the round.</p>';
+      return corridors || ('<p class="ob-empty">Nothing on the table. When another nation wants a deal with you it '
+        + 'arrives here, and as a card at the end of the round.</p>');
     }
     const now = World.getTurn();
-    return open.map((o) => {
+    return corridors + (corridors ? '<h4 class="db-section">Wanting to trade with you</h4>' : '') + open.map((o) => {
       const them = Game.getNation(o.from);
       const plan = Moves.plan({ type: 'trade', nid: me, target: o.from,
         terms: { duration: o.terms.duration, autoRenew: o.terms.autoRenew, priceMult: o.terms.priceMult } }, T());
@@ -223,7 +263,9 @@ const DealBook = (function () {
     if (!me) return flash('No nation is yours yet.', 'warn');
     if (which) tab = which;
     if (typeof Telemetry !== 'undefined') Telemetry.note('dealbook', { d: tab });
-    const nOpen = Deals.offersFor(me).length;
+    // Both kinds of request count, because both are things waiting on an answer.
+    const nOpen = Deals.offersFor(me).length
+      + ((typeof Transit !== 'undefined' && Transit.offersFor) ? Transit.offersFor(me).length : 0);
     const body = tab === 'offers' ? offersHtml(me)
       : (tab === 'routes' ? routesHtml(me) : runningHtml(me));
     openModal(`
@@ -253,6 +295,18 @@ const DealBook = (function () {
     });
     document.querySelectorAll('.db-no').forEach((b) => {
       b.onclick = () => { Deals.answer(b.dataset.id, 'lapse', T()); open(tab); };
+    });
+    // A corridor request, answered by the same call the end-of-round card makes.
+    document.querySelectorAll('.db-grant').forEach((b) => {
+      b.onclick = () => {
+        Transit.answer(b.dataset.id, 'grant', T());
+        flash('\u{1F6E7} They may cross your ground.', 'good');
+        Game.touch({ values: true });
+        open(tab);
+      };
+    });
+    document.querySelectorAll('.db-refuse').forEach((b) => {
+      b.onclick = () => { Transit.answer(b.dataset.id, 'refuse', T()); open(tab); };
     });
     // Ending a corridor goes through the Move, so it costs what it costs and
     // the neighbourhood hears about it — never straight into the register.

@@ -149,9 +149,12 @@ const BOARD = {
         + "Both jobs you flagged are done. Using somebody's harbour now costs a third more than "
         + "using their road, and the design document has caught up on the five stages it had fallen "
         + "behind. 953 checks pass. Three of your five success measures now carry real numbers "
-        + "instead of \u2018not yet measured\u2019, including one that had been an open worry for two "
-        + "days: the cost of a turn does NOT run away as a game gets longer \u2014 it peaks around "
-        + "turn fifty and falls after, because there are fewer countries left to think about.\n\n"
+        + "instead of \u2018not yet measured\u2019, and all three pass: a hundred turns runs in 48.8 "
+        + "seconds against your sixty-second target; the same seed gives the identical game twice, "
+        + "to the byte; and a five-country resale chain keeps 18\u201343% of the money against 90% for "
+        + "just selling abroad, so the long chain never pays. The worry that a turn gets slower the "
+        + "longer a game runs is dead \u2014 it peaks around turn fifty and falls after, because there "
+        + "are fewer countries left to think about.\n\n"
         + "ONE THING I DID NOT DO THAT YOU SAID YES TO. The industry re-bake is stopped, not "
         + "forgotten. Farming in the game is ten times larger than the real figures, and how much "
         + "food a person needs was tuned against that inflation \u2014 swap the data in without "
@@ -450,7 +453,7 @@ const BOARD = {
 
   // Success metrics. value null = "not yet measured". Never an estimate.
   numbers: [
-    { label: "100 turns run without the screen, target under 60 seconds", value: "about 65s — just misses" },
+    { label: "100 turns run without the screen, target under 60 seconds", value: "48.8s — meets it" },
     { label: "Same seed twice, identical results", value: "yes — identical to the byte" },
     { label: "States at stable equilibrium after 60 turns with no trade", value: null },
     { label: "Bands that are reachable and visible", value: null },

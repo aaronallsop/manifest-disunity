@@ -849,6 +849,16 @@ label.opt.auto-renew { display: flex; gap: 8px; align-items: center; margin-top:
 .db-acts .btn { padding: 4px 10px; font-size: 12px; }
 .db-total { margin-top: 10px; opacity: .8; }
 .ob-empty { opacity: .7; padding: 14px 4px; }
+/*
+ * A SECTION LABEL, not a column header. `.db-head` is the row of column names
+ * and is hidden on a narrow screen, which is right for column names and wrong
+ * for this: on the inbox tab these two labels are the only thing separating a
+ * request to cross your ground from a request to trade, and losing them on a
+ * phone would merge two different questions into one list.
+ */
+.db-section { margin: 14px 0 2px; font-size: 11px; text-transform: uppercase;
+  letter-spacing: .05em; opacity: .55; font-weight: 600; }
+.db-section:first-child { margin-top: 0; }
 @media (max-width: 700px) {
   .db-head { display: none; }
   .db-row { grid-template-columns: 1fr 1fr; }
