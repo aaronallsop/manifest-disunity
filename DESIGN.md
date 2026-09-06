@@ -951,6 +951,200 @@ one. The rule is identical for the player, except that the player is **asked**.
 
 ---
 
+## 6.7 Transit: moving goods across other people's ground
+
+A deal says two nations will trade. It does not say the goods can get there. **Transit is the layer
+that asks how**, and it is where the map stops being scenery: fourteen of the sixty-one nations have
+no port of any kind, and a border that carries no road and no rail is not a border for goods at all.
+
+### An agreement, not a right
+
+Passage is a **grant**: a standing permission from one nation to another, at a rate, for a term. It
+is **directed and per-mode** — Nevada carrying Idaho's goods is a different object from Idaho
+carrying Nevada's, and rail rights are not road rights — so a grant is keyed on the triple
+*grantor → grantee : mode*, never on the pair. One live grant per triple.
+
+**Closing one takes notice, and that is the drama.** The default notice is four turns. A grant under
+notice still carries goods for exactly its notice period, so a corridor holder who gives notice does
+not stop a deal, he starts a clock on it — and a deal whose route has gone pays **nothing** while its
+term keeps running down. A five-year contract can be burned to nothing by a neighbour who never
+touched it.
+
+The register also remembers. Closing corridors counts against a nation's standing, weighted at
+`transit.renegeWeight` against how many it holds, over the twenty-turn history window.
+
+### What a journey costs
+
+**A toll is charged on what reaches you, not on what set out.** That single rule is what makes long
+chains fail on their own rather than by decree. The first middleman on a route takes the most in
+absolute terms; the third takes a third as much, because it is charging its percentage of a much
+smaller parcel.
+
+**And every crossing loses something to nobody.** Friction — handling, transhipment, delay — is
+subtracted at each hop and collected by no one. It exists because compounding tolls alone are not
+enough: five hops at the negotiated floor would still deliver 77% of the money, which would make a
+resale chain across the continent a perfectly good business. Friction is what makes distance cost
+something regardless of how generous the middlemen are.
+
+**The modes are priced, not just permitted.** In A2 a mode was only a permission and rail cost
+exactly what road cost. Now:
+
+| Mode | Friction a crossing | Survives one crossing |
+|---|---|---|
+| Road | 0.25 — **the baseline** | 75% |
+| Rail | 0.15 | 85% |
+| Water — river and sea alike | 0.1125 | 89% |
+
+The road baseline of 0.25 is not a taste. It is the **lowest** number at which all three modes still
+fail the five-hop test, so it is the floor that keeps both the hierarchy and the thing the hierarchy
+is for.
+
+What that means end to end, at the negotiated floor of 5%:
+
+| Territories crossed | By road | By rail | By water |
+|---|---|---|---|
+| One | 71% | 81% | 84% |
+| Two | 51% | 65% | 71% |
+| Three — the cap | 36% | 53% | 60% |
+| Five | 18% | 34% | 43% |
+
+**Two neighbours pay nothing.** With nobody in between there is no hop to charge and no crossing to
+lose, and the money that arrives is exactly the money that was sent, to the last bit. The same is
+true of two ports on one sea and two nations on one stretch of river. Distance between them is not
+modelled yet — that is the honest gap in this section, and §12 records it.
+
+The negotiated rate runs from **5% to 60%**. Below the floor a corridor is not worth the paperwork;
+above the ceiling nobody would ship. And a corridor holder who is **also a trading partner charges
+half** — a flat, automatic discount, deliberately blunt, that makes the two systems pull in the same
+direction: the neighbour you trade with is the neighbour who lets you through cheaply.
+
+### Finding the route
+
+The search maximises **what survives**, not what is spent, and it is bounded at **three
+intermediaries**. Two decisions in it are worth recording because both were made against the obvious
+alternative:
+
+**It is not a shortest-path search.** The textbook algorithm settles each place at its cheapest depth
+and then reports "no route" when the only permitted way through needed a shallower one. Relaxing
+layer by layer instead keeps the best route at *each* depth, so the hop cap can never hide a route
+that would have fitted inside it.
+
+**And it does not use logarithms**, which is the textbook way to turn a chain of multiplications into
+a sum. `Math.log` is not guaranteed to give bit-identical answers in different browsers, and a saved
+game that replays differently because it was opened in a different browser is the worst class of bug
+this project can produce. Multiplying fractions is exactly rounded; the product only ever falls.
+
+Ties are broken by a total order — most surviving, then fewest hops, then alphabetically — because
+"whichever the loop happened to find first" is a replay divergence waiting to happen. Every loop over
+the graph runs in sorted order for the same reason.
+
+**Permission is asked while searching, not baked into the graph**, so the graph is rebuilt once a
+turn and every nation's question is answered against it. A route is then **re-priced from scratch**
+before it is handed back, so the price a nation is quoted can never disagree with the price it is
+charged.
+
+### The markets abroad
+
+**Canada, Mexico and the world market are places on the graph**, not menu options. Each is reached
+by real geography: Canada and Mexico by the counties that actually border them, or by sea from a
+nation with the right coast; the world market only through an ocean port, or through somebody else's.
+
+They behave differently from nations in three deliberate ways:
+
+- **They charge a flat ten per cent and credit nobody.** There is no negotiating with Canada, no
+  agreement to sign and no treasury to pay. That one number is the entire relationship — a ruling,
+  made structural: there is no path in the code by which Canada could acquire an opinion, a
+  treasury, or a veto.
+- **A route may duck outside once.** Not twice. One corridor keeps the Idaho-to-Minnesota case
+  alive without turning the two neighbours into a general-purpose bypass for the whole continent.
+- **Nothing comes back out of the world market.** It has no outgoing edges at all, so goods cannot be
+  laundered through it and reappear somewhere convenient.
+
+**Canada has no Pacific coast, and that is a deliberate lie about geography.** With one, Washington
+ships to Vancouver, Vancouver ships to Halifax, and Seattle is trading with Boston by sea — the
+closed Panama rule defeated by going the other way round. Mexico keeps both coasts, because nothing
+on the far side of Mexico connects onward.
+
+### The network map
+
+A tenth colour mode, **Trade routes**, which draws rather than colours: the counties keep their
+ownership colours and the network is an overlay above them. It shows **one nation's network at a
+time** — whoever is selected, or the player. Selecting a nation *is* the query.
+
+**A line is a straight line between two centres, and that is a decision.** The game knows which
+counties carry rail and interstate; it does not know where the rails run. A plausible curve along
+unsurveyed ground would be invention dressed as data, so the map is honest about being a diagram.
+
+Colour is the mode — amber road, pale blue rail, cyan water. Solid is yours, dashed is somebody
+else's ground, and **red is broken**. Three chips in the legend turn road, rail and water on and off;
+rivers ride with water, because to a player they are one decision rather than two.
+
+Four things get drawn: your deals — a routed one as a chain, so the countries standing between you
+and your partner are on screen; corridors you rent; corridors you grant, drawn in the direction the
+goods move; and the ways out that actually work today, to Canada, Mexico and the world market, which
+sit off the edges of the map rather than pretending to be places on it.
+
+**A broken link is the only thing you can click**, and it opens the card of whoever is blocking you.
+The tooltip says which: they closed the border, that country is gone, or the corridor is full. What
+it does not do is show you money — no thickness scale, no per-link value, no arrowheads. A rival's
+network is drawn in full, with no fog.
+
+### The deals screen
+
+The **register of what is still true**, as against the journal, which is the newspaper of what
+happened. Three tabs.
+
+**Running** lists every live deal: who with, what it moves, **what you signed at against what the
+index says now**, what it pays a turn net of carriage, when it ends, and whether it renews. If the
+goods cross somebody's ground that line says so — "−12% · through Nevada, Utah" — or, in red,
+"⚠ stopped at Nevada — they closed the border". This tab has **no buttons at all**. Deals run their
+term, and inventing a price for breaking one before anybody has played with deals would be tuning by
+construction.
+
+**Routes** is the corridor register, split into what you grant and what you use, with the toll shown
+green and incoming or red and outgoing. Here there *are* buttons, and they differ by side: a route
+you grant can be given notice; a route you use can be given up; either can be taken back while the
+notice is still running, which restores the route but not the reputation. Only the grantor pays a
+standing cost — walking away from a corridor you were renting costs you nothing but the corridor.
+
+**On the table** is the inbox: unanswered offers, oldest first, at most three at once, each standing
+two turns before it lapses. Sign or No, and both answers go through the same model call the
+end-of-round card uses, so the decision behaves identically wherever it is made.
+
+### Being asked
+
+Two things stop the round and put a full-screen card in front of the player, and they are
+deliberately the **same card shape**, so the player learns one thing about how this game asks a
+question rather than one per system.
+
+**A deal has run out, or somebody wants one.** One card serves both, because they are the same
+question — it shows what it ran, what it paid over its life, and the price it was signed at against
+today's index.
+
+**Somebody wants to cross your ground.** It names the mode, the term, the cut, and — the part that
+makes it a decision rather than a transaction — whether they are stuck: *"X has no port and no border
+crossing of its own — without a way through somebody, it cannot trade beyond its neighbours at all"*,
+or *"They have their own way out; this one is simply better for them."*
+
+Neither uses your turn to answer. An expired contract outranks a new request in the queue, because
+it is costing money every quarter it goes unanswered while the request costs nothing to leave
+waiting.
+
+### Negotiating
+
+You propose; they accept, counter, or decline, and say why in plain sentences. **The answer is a
+pure function of the world and the terms** — no dice, no clock — so proposing the same thing twice
+gets the same reply. There is nothing to grind and no reroll to shop for; what moves the answer is
+offering something the other side actually wants.
+
+A trade deal has exactly two levers: **how long**, and whether it renews itself. A counter can only
+ever move the term. A corridor has three: **which way** — rail, road or port, each its own agreement,
+with modes the border does not carry greyed out — **how long**, and **what you offer**, on a slider
+from 5% to 60% that opens *below* what they would ask, so it is a decision rather than a button you
+press yes to nine times out of ten.
+
+---
+
 ## 7. Movements, sentiment and secession
 
 Thirty-two regional movements spawn **once, at setup**, from `data/parties.json` (baked by
