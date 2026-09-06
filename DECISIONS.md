@@ -2883,3 +2883,49 @@ rules name as stop-and-ask apply at once — expensive to reverse, invalidates e
 question of how the game should feel with no measurement that settles it. **An approval obtained on a
 wrong description is not an approval.** Still worth doing; not worth doing quickly.
 
+---
+
+### D179 — All four stages happen in Claude Code, against one set of documents, 6 September
+
+**Aaron, 6 September 2026:**
+
+> "There are essentially four stages of this that we are doing: 1. Ideation and design
+> 2. Architecture and planning 3. Programming and verifying 4. Play testing. I was doing #4, you and
+> me are doing #3, but I was doing #1 and 2 in claude chat. The issue is that claude chat doesn't
+> really do a good job of reading through the documents like you do."
+
+**The problem, and it is a real one.** Design work done somewhere that cannot read the project
+invents things that contradict it. A rule already recorded, a number already measured, a decision
+already made — none of it is visible to a conversation with no access to the files, so the design it
+produces has to be reconciled by hand afterwards, and the reconciliation is where mistakes enter.
+
+**Decided.** All four stages run here, against the same documents, one stage at a time so that no
+two sessions edit the same files. Aaron's intention is to work through ideation himself, then turn
+the architecture loose to run unattended and review it, then turn the build loose the same way.
+
+**What this needs that did not exist, all three raised in the same conversation:**
+
+1. **A home for design in progress.** The project had `docs/spec/` for authoritative briefs,
+   `DESIGN.md` for what is built, `FUTURE-IDEAS.md` for what is deferred and `deferred.md` for known
+   defects — and nowhere for a system being thought about. `docs/design/` is now that place.
+2. **A precedence rule**, or one folder simply recreates the contradiction it was meant to remove.
+   **`DESIGN.md` stays the truth about what the game DOES; `docs/design/` holds what it is INTENDED
+   to do and is not built.** When a thing ships, its design note points at `DESIGN.md` and stops
+   being authoritative.
+3. **A definition of "done" for a design stage.** Code has tests; a design has nothing, and its
+   failure mode is not a bug but an elegant system that cannot describe a real situation. The answer
+   found in the same conversation, by accident, is that **worked examples are to a design what tests
+   are to code**: Aaron traced four things he had consumed in one day — milk, petrol, dishwasher
+   detergent, a pen — back through their inputs, and it exposed more about the model than any amount
+   of argument. A design stage ends with a set of concrete scenarios it must be able to narrate, each
+   traced through.
+
+**And a consequence for Hog Wild.** Everything in `docs/HOGWILD.md` is written for programming —
+commit, tag, test, revert. Running it over a design phase needs its own verification, because there
+is nothing to test and nothing to roll back. Recorded here rather than solved; the rules want writing
+before the mode is used that way.
+
+**First output of the new arrangement:** `docs/design/resources.md`, which is the resource
+conversation of 6 September written down — the three tiers, the physical units, capability versus
+allocation, the production chain, the six inputs and what is missing from them, the four worked
+examples, and Aaron's own verdict that it is all too complicated.
