@@ -448,3 +448,70 @@ to hand-tune a table of exceptions. It is the same missing piece the coastal-shi
 
 **Before it is worth doing.** After the economy alpha. It is a refinement of a mechanic nobody has
 played with yet, and the alpha may well say the flat version is fine.
+
+---
+
+## F14 — A turn should arrive as news, not as a number
+
+**Aaron, 6 September 2026, after playing:**
+
+> "The turn system is working but I think that there needs to be a bigger deal for new turn, I am
+> thinking that it is a news headline and underneath it is something that is going to impact the
+> game mechanics and there are some that are RNG for the whole game and for the beta we would create
+> some for 10 of the nations."
+
+**What it is.** A new turn currently changes a counter. This makes it an event: a **headline**, and
+underneath it **something that actually moves a rule** — not flavour text over an unchanged world.
+Three tiers, and the tiers are the design:
+
+1. **World events**, drawn at random, that hit everybody — a commodity shock, a bad winter, a
+   financial panic. These are the ones that make two games of the same map play differently.
+2. **National events**, hand-written for about ten specific nations, so that playing California is
+   not playing Ohio with a different colour. This is a beta job by his own framing.
+3. **Consequence, not colour.** Every headline names the rule it changed and for how long, so the
+   player can read the paper and then read it back off the map.
+
+**Why it is not now.** It is the strongest single idea for making the game feel alive, and it is a
+*game* feature rather than an economy one. Dropping it into the economy alpha would mean tuning the
+economy against a world that is being shocked at random — which is exactly the confound the alpha
+exists to avoid. It also wants the event ledger and the journal, both of which already exist, so the
+machinery is largely built.
+
+**What it would need.** An event object with a headline, a body, a duration and a set of tunable
+deltas; a draw that is seeded like everything else so the same seed gives the same history; and a
+rule that no two events may move the same tunable at once.
+
+---
+
+## F15 — Are counties too small a unit to be fun?
+
+**Aaron, 6 September 2026:**
+
+> "Counties - are they too granular for the game to actually be fun? Maybe a better way to break
+> things out would be to use approximate congressional district maps. Approximate because they don't
+> split cleanly."
+
+**The question behind it is the right one**, and it is about attention rather than data: 3,144
+counties merged into 1,688 Areas is still more places than anybody can hold in their head, and a
+player who cannot hold the map cannot plan on it.
+
+**What it would change.** 435 congressional districts against 1,688 Areas is roughly a quarter of
+the pieces. Districts are also *equal in population by construction*, which is a genuinely different
+game: today a nation's Areas vary enormously in weight, and moving one can matter fifty times more
+than moving another. Districts would make every piece worth about the same in people and wildly
+different in ground, which is a cleaner thing for a player to reason about.
+
+**Why "approximate" is the whole problem.** Districts do not nest inside counties — a county can
+hold several, and a district can straddle several counties. Every figure in this game is baked per
+county from federal data keyed on county FIPS: population, the six industries, ports, rail, border
+crossings, rivers. Re-baking onto districts means apportioning each of those across a boundary that
+does not follow the data, which introduces error into numbers currently taken straight from the
+source. It would also invalidate every save, every authored scenario, and the map-mode region tables.
+
+**The cheaper experiment first.** Raise the Area merge cap and re-bake — the merge is already
+deterministic and capped at 8 counties, so the same builder would produce a coarser map with no new
+data problem at all, and it would answer "is coarser more fun" for a fraction of the cost. If the
+answer is yes, districts become worth their price.
+
+**Before it is worth doing.** After the economy alpha, and probably after a playtest that asks
+directly whether the map feels too big.
