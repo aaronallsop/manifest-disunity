@@ -273,3 +273,95 @@ moves between places by commodity and by mode. It is the right data for a trade 
 data for a GDP model, and it describes flows *as they were when America was one country with no
 internal borders* — which is exactly the baseline this game needs. Not fetched; that reaches off
 Aaron's machine and is his call.
+
+---
+
+## Appendix A — the BEA sectors, and two ways to group them
+
+Measured 6 September 2026 from `build/raw/CAGDP2.zip`, the BEA county GDP file already in the
+project. The BEA publishes 34 lines per county, but most are subtotals; **fifteen are mutually
+exclusive and sum to exactly 100%**. Shares are of US GDP, 2024.
+
+| Share | Sector |
+|---:|---|
+| 21.4% | Finance, insurance, real estate, rental and leasing |
+| 13.0% | Professional and business services |
+| 11.3% | Government |
+| 9.8% | Manufacturing |
+| 8.7% | Education, health care and social assistance |
+| 6.3% | Retail trade |
+| 5.8% | Wholesale trade |
+| 5.4% | Information |
+| 4.5% | Construction |
+| 4.4% | Arts, entertainment, accommodation and food |
+| 3.4% | Transportation and warehousing |
+| 2.1% | Other services |
+| 1.6% | Utilities |
+| 1.4% | Mining, quarrying, oil and gas |
+| 0.9% | Agriculture, forestry, fishing and hunting |
+
+The BEA also publishes combined lines used when the parts are suppressed for privacy: Trade
+(wholesale + retail), Transportation and utilities, Manufacturing and information, and Natural
+resources and mining.
+
+### Mapping onto the six sectors the game has today
+
+| Game sector | Takes | Share of whole economy |
+|---|---|---:|
+| Agriculture | Agriculture, forestry, fishing | 0.9% |
+| Resource Extraction | Mining and oil/gas, plus utilities | 2.9% |
+| Manufacturing | Manufacturing plus construction | 14.3% |
+| Trade and Transportation | Wholesale, retail, transport and warehousing | 15.5% |
+| Finance | Finance, insurance, real estate | 21.4% |
+| Information Technology | Information plus professional and business services | 18.4% |
+| **(a seventh, non-traded)** | Government, health, education, hospitality, other services | **26.5%** |
+
+**The seventh bucket is the point.** Government alone is 11.3% and none of it is tradeable — nobody
+ships schooling to Nevada. Today those 26.5% are smeared across the six, which is why every sector
+reads larger than it is.
+
+Renormalised to the tradeable part, against what is baked today:
+
+| | Real | Baked today | |
+|---|---:|---:|---|
+| Agriculture | 1.3% | 9.4% | **divided by 7** |
+| Resource Extraction | 4.0% | 8.4% | halved |
+| Manufacturing | 19.4% | 18.4% | about right |
+| Trade and Transportation | 21.1% | 22.1% | about right |
+| Finance | 29.2% | 21.9% | up a third |
+| Information Technology | 25.1% | 19.7% | up a quarter |
+
+**Four of the six barely move.** The whole disagreement is concentrated in farming and mining, which
+is exactly where a game about a fractured continent cares most.
+
+**Two places the mapping does not fit cleanly, and both are judgement calls, not data:**
+
+- **Information Technology is the worst fit.** The BEA line called "Information" is publishing,
+  telecoms and broadcasting — *not* software. Software and computer systems design sit inside
+  Professional and Business Services alongside law and accountancy. So either IT means "Information"
+  alone at 5.4% and lawyers go in the seventh bucket, or IT means what is mapped above and the
+  sector is really "offices".
+- **Utilities into Extraction** is a choice. Power generation is closer to energy than to anything
+  else on the list, but it is genuinely distribution rather than extraction.
+
+### Two candidate structures, if the six are reopened
+
+Proposed before the tier system was arrived at; kept because the groupings may still be useful. Each
+was built by asking what a resource DOES in the game rather than what industry it belongs to.
+
+**Eight:** Food; Energy; Materials; Industry; Building (construction plus real estate); Logistics;
+Capital (finance and insurance); Services (information, professional, health, education, hospitality
+and other — about a third of the economy, and mostly untraded, which is why the bucket is large).
+
+**Ten:** the eight above, but splitting manufacturing into **Heavy industry** (durable goods, 5.2%)
+and **Consumer goods** (nondurable goods plus hospitality, 7.9%), and adding **Water**.
+
+**Water has no BEA line at all** — it is geography, not industry. That is exactly why it works: no
+value and absolute need, so it cannot be bought out of trouble, only shared or fought over.
+
+**The observation worth keeping from this exercise.** The five things that decide whether a nation
+survives — water, food, energy, materials, consumer goods — are about **12% of the economy between
+them**. The four that decide whether it is powerful — building, logistics, capital, knowledge — are
+the other 88%. That asymmetry is not a modelling problem to be fixed. It is the most interesting
+fact on the table, it is true of the real world, and it means a rich nation can be one bad harvest
+from crisis while a poor one can be unconquerable because it feeds itself.
