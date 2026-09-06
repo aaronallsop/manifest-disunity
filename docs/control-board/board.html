@@ -123,33 +123,42 @@
 // ============================================================================
 const BOARD = {
   project: "Manifest Disunity",
-  updated: "2026-09-05 17:35",          // when you last republished, local time
+  updated: "2026-09-05 18:59",          // when you last republished, local time
 
   // Three or four measured figures. value: number|string, or null = "not yet measured".
   figures: [
-    { label: "Economy-alpha stages done",  value: "all of A0–A4" },
+    { label: "Economy-alpha stages done",  value: "A0–A5" },
     { label: "Current version",         value: "v0.6" },
-    { label: "Tests green",             value: 948 },
+    { label: "Tests green",             value: 953 },
     { label: "Industry figures that are real, today",   value: "0%" },
     { label: "Industry figures real after the re-bake", value: "75%, not 84%" },
   ],
 
   // The single most important true thing right now. tone: "bad" | "warn" | "ok" | "neutral".
   headline: {
-    tone: "ok",
-    text: "Every stage of the ECONOMY alpha is built \u2014 and that distinction is yours and it is "
-        + "the right one, so it is now written that way everywhere. This is not the game alpha. It "
-        + "tests trade and nothing else, which is exactly why politics and separatists are switched "
-        + "off: isolation is what makes the answers worth having. The game alpha is the first time "
-        + "somebody plays the whole thing with every system on, and it asks questions none of these "
-        + "stages can \u2014 starting with the one that began this rebuild, whether there is again "
-        + "too much to think about. 948 checks pass, and the two seas are in: Pacific ports trade "
-        + "with each other, Atlantic and Gulf with each other, and the canal is shut between them. "
-        + "Nothing is waiting on you. There is plenty left that is not \u2014 nine things, listed in "
-        + "today's handoff \u2014 and two of them are faults rather than features: the design document "
-        + "has fallen four stages behind the game, which breaks this project's own first rule, and "
-        + "using somebody's port still costs the same as using their road, which you flagged this "
-        + "morning and I did not build. Both are first in the queue when Hog Wild runs.",
+    tone: "warn",
+    text: "THE FIRST HOG WILD RUN FOUND TWO THINGS I HAD TOLD YOU WERE FINISHED, AND THEY WERE NOT. "
+        + "The closed canal was open: Mexico had ports on both coasts and Mexico is somewhere goods "
+        + "pass through, so Washington sailed to Mexico, Mexico sailed to Florida, and Seattle was "
+        + "trading with Boston by sea for a flat ten per cent. Four checks guard that rule and all "
+        + "four passed, because they read the map and the hole was in the journey. Fixed, with a "
+        + "check that actually sails it. And the 84% I put on this board for the industry re-bake is "
+        + "wrong \u2014 it is 75%. I had counted a place as real when the government publishes only a "
+        + "combined figure covering two of our six trades, which gives the total and neither half. "
+        + "Corrected, and the correction is mine.\n\n"
+        + "Both jobs you flagged are done. Using somebody's harbour now costs a third more than "
+        + "using their road, and the design document has caught up on the five stages it had fallen "
+        + "behind. 953 checks pass. Three of your five success measures now carry real numbers "
+        + "instead of \u2018not yet measured\u2019, including one that had been an open worry for two "
+        + "days: the cost of a turn does NOT run away as a game gets longer \u2014 it peaks around "
+        + "turn fifty and falls after, because there are fewer countries left to think about.\n\n"
+        + "ONE THING I DID NOT DO THAT YOU SAID YES TO. The industry re-bake is stopped, not "
+        + "forgotten. Farming in the game is ten times larger than the real figures, and how much "
+        + "food a person needs was tuned against that inflation \u2014 swap the data in without "
+        + "resetting hunger in the same move and the whole continent starves on turn one. The six "
+        + "trades also only reach about half of a real economy. And it is the one change that "
+        + "reaches backwards into games you have already played. That is three of the four reasons "
+        + "my own rules say to stop and ask you, so I stopped and I am asking.",
   },
 
   // Only decisions that are genuinely the owner's. Ids are permanent.
@@ -429,11 +438,11 @@ const BOARD = {
 
   // Success metrics. value null = "not yet measured". Never an estimate.
   numbers: [
-    { label: "100 turns run without the screen, target under 60 seconds", value: null },
-    { label: "Same seed twice, identical results", value: null },
+    { label: "100 turns run without the screen, target under 60 seconds", value: "about 65s — just misses" },
+    { label: "Same seed twice, identical results", value: "yes — identical to the byte" },
     { label: "States at stable equilibrium after 60 turns with no trade", value: null },
     { label: "Bands that are reachable and visible", value: null },
-    { label: "Five-hop resale chain is unprofitable", value: null },
+    { label: "Five-hop resale chain is unprofitable", value: "yes — keeps 18–43% against 90% selling direct" },
   ],
 
   // Decisions made on the owner's behalf and how they turned out. Corrections go BESIDE originals.
