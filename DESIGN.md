@@ -596,8 +596,10 @@ already counted when they were produced.
 - **External** (Canada, Mexico, the world market): sell your whole positive surplus, at **45%** of
   the bilateral rate.
 - **Transit**: a landlocked nation reaches the market through a neighbour that has export access,
-  over a real rail or highway corridor, for a negotiated toll. The neighbour weighs your offer
-  against its size, its need and your political alignment, and accepts, counters or declines.
+  over a real road, railway, river or harbour, for a negotiated toll. Fourteen of the sixty-one
+  nations have no way out of their own — no port and no international border — so for them this is
+  not an optimisation, it is the whole of foreign trade. **§6.7 is the full account**: what a grant
+  is, what a journey costs, how a route is found, and how the markets abroad work.
 
 **Capacity** is the thing that makes the choice real. Ports, rail hubs and border gateways cap what
 a nation can physically move in a turn. Without it the world market absorbed a nation's entire
@@ -624,8 +626,10 @@ same reply. There is no reroll to grind and no way to shop for a yes; what moves
 trading with somebody who actually needs what you have. Measured on the opening board: a neighbour
 gaining 5% of a turn's income signs for five years, one gaining 0.2% counters at six months.
 
-The AI does not negotiate terms in this stage — it signs at the standard length. Teaching it to
-haggle is A4's job.
+**The other sixty nations play this too.** They ask each other for passage, weigh the offers by the
+same four things a player is weighed by, sign, and pay. What they do not do is haggle over the term
+— they sign at the standard length — and they never close a corridor on anybody. Both are recorded
+in §12 rather than implied here.
 
 **Expiry is the point.** At the end of a term the deal is re-planned against today's world: today's
 prices, today's surpluses, and a fresh check that both nations are alive, still bordering and still
@@ -1064,6 +1068,60 @@ They behave differently from nations in three deliberate ways:
 ships to Vancouver, Vancouver ships to Halifax, and Seattle is trading with Boston by sea — the
 closed Panama rule defeated by going the other way round. Mexico keeps both coasts, because nothing
 on the far side of Mexico connects onward.
+
+### The rivers, and the fifteen places somebody can stand
+
+**Four navigable corridors**, built from the real commercially-navigable waterways layer rather than
+drawn by hand: the **Mississippi** (105 counties), the **Ohio** (56), the **Missouri** (50), and the
+**Great Lakes** (81), which is not a river but is treated as one — every county on the lakeshore,
+ordered west to east.
+
+Each corridor is cut into **ordered segments** at its chokepoints. Everybody on the same stretch
+reaches everybody else on that stretch for nothing, exactly as two nations sharing a border do. To
+get from one stretch to the next you must pass the nation holding the gate between them — **and only
+between them.** A gate bridges the stretch above it and the stretch below it, never any other pair.
+That constraint is the whole mechanic: an early version connected every stretch of a river to every
+other, which put Minnesota one hop from Louisiana and silently deleted the chokepoints while every
+test stayed green.
+
+**Fifteen chokepoints, all real places:** the Soo Locks and the Straits of Mackinac, the Detroit and
+St. Clair Rivers, Niagara, the St. Lawrence outlet, the Chicago Sanitary and Ship Canal, the
+Ohio–Mississippi confluence at Cairo, the Missouri–Mississippi confluence at St. Louis, New Orleans
+and the Mouth of the Mississippi, the Houston Ship Channel, the Golden Gate, the Chesapeake entrance
+at Hampton Roads, and the Strait of Juan de Fuca.
+
+Holding one makes you an ordinary middleman with an extraordinary position. You can refuse passage
+outright; you can charge for it; and you can **give notice and strangle a contract you never signed**,
+because a deal whose route has closed pays nothing while its term runs down. Six of the gates are
+coastal and are therefore a private door to the world market.
+
+Ownership is by **Area**, not county, which has one consequence worth naming: Mackinac and the Soo
+Locks fall inside the same Area and can never be held by different nations.
+
+### Two seas, and the canal that is shut
+
+Not one ocean but two basins. **The Panama Canal is closed to the former American states** — which is
+also part of why the Union could not hold, since it cut the navy in half. Washington ships to
+California freely and to Maine not at all; Maine's goods go by land, which is what they would really
+do. Membership is by the **ground a nation holds**, not its name, so a nation that took both coasts
+would be on both seas. The Gulf counts as Atlantic.
+
+**A basin link is a direct edge and costs nothing**, exactly as a shared land border does. What it
+does not model is **distance**, and that is the largest single gap in this section: measured from the
+game's own map, the closest two ports on one sea are **16 miles** apart (Delaware and New Jersey) and
+the farthest are **2,578** (Hawaii and Washington), and those two journeys currently cost exactly the
+same. The median sea crossing is 707 miles against a median land border of 253, and 59% of same-sea
+pairs are further apart than the longest land border on the board. §12 records this rather than
+papering over it.
+
+**And the canal has been forced twice, in code rather than in fiction.** Canada was given an Atlantic
+coast only, deliberately, so that Canadian water could not bridge the two oceans. Mexico was then
+given both coasts, and Mexico is a place goods pass through — so Washington sailed to Mexico, Mexico
+sailed to Florida, and the rule was defeated for a flat ten per cent while four tests that guard it
+stayed green, because all four read the map's connections rather than running a journey. The rule now
+holds where it is actually meant to: **water in and water out, across two different oceans, is
+refused.** Arriving overland and shipping onward is still allowed, because that is what those goods
+would really do.
 
 ### The network map
 
@@ -1696,5 +1754,21 @@ account of where this model stops.
   carried the authored map modes across by inheriting each new Area’s region through its primary
   county, and `economy.json` and `parties.json` were re-baked from it. The validator’s
   22-county warning is gone; the save format is version 3 and refuses a version 2 document by name.
+- **Nothing in the transit layer has a length.** A crossing costs what its mode costs and nothing for
+  how far it goes. Measured from the game's own map on 5 September 2026: the closest two ports on one
+  sea are 16 miles apart and the farthest 2,578, priced identically; a Canada corridor spans 411 to
+  2,442 miles at one flat rate, and is the only edge in the game that pays no crossing cost at all.
+  Three open questions — whether coastal shipping should be free, whether a ship should still beat a
+  lorry over a short haul, and why a transcontinental corridor is flat-priced — are all the same
+  question, and it is this one. The raw material exists: the data build already computes county and
+  port centroids and throws the coordinates away.
+- **A trade deal cannot be haggled on price.** The model has the lever — a price split that moves
+  gain between seller and buyer without changing the total, validated against its own bounds — and no
+  screen anywhere sets it. So the negotiation is about the term and only the term, and a buyer with
+  no alternative pays exactly what a buyer with three alternatives pays. This is the single largest
+  gap between what the economy spec asks for and what is built.
+- **No AI nation ever closes a corridor.** They sign them, price them, and let them expire, but the
+  decision to cut somebody off is the player's alone. The machinery is symmetrical and only one side
+  uses it.
 - **`county_neighbors.json` is a pre-2015 Census vintage** with ~100 FIPS that no longer exist. It
   feeds the display-only "Neighbors" row; the simulation reads `adjacency.json`, which is current.
