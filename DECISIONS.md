@@ -2803,3 +2803,83 @@ band-and-derived-demand model gets retrofitted under a working game instead of s
 the foundation the spec's roadmap assumed. That is not a reason to build it tonight without him. It
 is a reason for the predictions to be near the top of his list.
 
+---
+
+### D176 — What a right of way is worth depends on what is being asked for, 5 September
+
+**Observed.** `Moves.transitVerdict` took no `mode` argument at all, so a nation charged the same for
+its harbour as for a lane of its motorway. Aaron flagged this on the morning of 5 September; it was
+called nearly free to build and then not built.
+
+**Decided.** A fourth term, and the only one about the favour rather than about the two countries.
+Port is the baseline — `trade.transitToll` keeps the meaning it was tuned with — and the others are
+discounts: river 0.95, rail 0.85, road 0.75.
+
+**The alternative rejected**, and it was tempting because the numbers already existed:
+`trade.railDiscount` 0.5 and `trade.highwayDiscount` 0.2, left over from the pre-A2 one-off transit
+screen and still wired into it. They encode how cheap a mode is to MOVE on, which is a different
+question from what it costs to be LET IN, and they place rail below road. Reusing them would have
+imported an argument nobody made.
+
+**Why discounts rather than a premium on ports.** A discount can only lower an ask, so nothing that
+would have been signed before this existed is refused because of it. If the sizes are wrong they are
+wrong in the safe direction. **The direction is defensible and the magnitudes are invented** — the
+first thing to check is whether the fourteen landlocked nations can still afford to reach the sea,
+since a port right is now the dearest thing on the board and the only thing that gets them out.
+
+**Note the deliberate inversion.** This runs opposite to the friction hierarchy, where water is
+cheapest. Water is the cheapest way to move goods and the dearest way to be let in, and the two
+together say something the game could not say before: the sea is cheap, and the harbour is not.
+
+---
+
+### D177 — The closed canal was open through Mexico, and the tests could not see it, 5 September
+
+**Observed.** A2d gave Canada an Atlantic coast only, with a long comment explaining that a Pacific
+one would let Washington reach Boston by sea. It then gave Mexico both coasts three lines later,
+asserting that nothing on the far side of Mexico connects onward. That was false when written: a
+corridor node costs nothing to enter and needs nobody's permission to leave, and one such hop is
+allowed per route. Washington → Mexico → Florida, for a flat ten per cent, cheaper than crossing its
+own continent.
+
+**Why it survived.** Four tests guard the ruling and all four read the graph's edges. The two oceans
+were never joined *directly*, so all four passed while the thing they exist to prevent happened
+through a third country. Now `docs/PROGRAMMER-RULES.md` rule 5.
+
+**Decided.** Water in, water out, across two different basins is refused; the sea a route sits in is
+tracked only while it stands on a corridor node it sailed to, so the check costs nothing on almost
+every hop.
+
+**Deliberately NOT decided: the flat-rate corridor.** Reaching Mexico or Canada overland and shipping
+onward is still allowed — that is what those goods would really do, and A2d says so. But it is also
+priced at a flat ten per cent with no crossing cost of any kind, which makes a foreign corridor the
+cheapest way across the continent regardless of distance. That is a design question with a
+measurement attached (see D178) and it is Aaron's, not mine.
+
+---
+
+### D178 — The industry re-bake is stopped, and the 84% was wrong, 5 September
+
+**Observed, by measuring it again rather than re-reading it.** The board carried "84% of industry
+figures real after the re-bake" from the morning of 5 September. Independently recomputed against the
+same government file: **77.0% of county sector cells and 75.4% at the Area level the game keys on.**
+The gap is method, not arithmetic — the earlier count scored a place as measured when only a
+*combined* line covering two of the six sectors was published, which gives the sum and neither part,
+and scored trade without requiring transport. The two errors account for 6.45 points exactly.
+
+**Two further findings, either of which alone would stop the job.** Agriculture is baked 10.2× above
+its real share, and `qol.foodPerCapita` was explicitly calibrated against that inflation — its own
+doc says so — so replacing the data without re-deriving hunger in the same change starves the
+continent on turn one. And the six sectors reach only about 51% of a real economy: government,
+construction, health, education and professional services have nowhere to land, so a faithful re-bake
+deletes half the map's income rather than making it honest.
+
+**And it reaches backwards.** `data/economy.json` is baked into the game and is not serialised into
+saves, so every existing save would come back different.
+
+**Decided: stopped, and brought back to Aaron.** He approved this on 5 September (D169), and that
+approval was for a job described as clean. It is not clean, and three of the four cases the Hog Wild
+rules name as stop-and-ask apply at once — expensive to reverse, invalidates existing games, and a
+question of how the game should feel with no measurement that settles it. **An approval obtained on a
+wrong description is not an approval.** Still worth doing; not worth doing quickly.
+
