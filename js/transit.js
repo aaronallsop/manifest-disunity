@@ -1100,7 +1100,22 @@ const MODE = { HIGHWAY: 1, RAIL: 2, PORT: 4, RIVER: 8 };
       if (isOutside(h.node)) continue;             // Canada asks nothing and refuses nothing
       if (!Game.getNation(h.node)) return { at: h.node, why: 'lost' };
       const g = live(h.node, grantee, h.mode, turn);
-      if (!g) return { at: h.node, why: 'revoked' };
+      /*
+       * AN AGREEMENT THAT RAN OUT IS NOT A BORDER THAT WAS CLOSED, and until
+       * 5 September the game said it was: `live` returns null for both, so every
+       * lapsed corridor was reported to the player as "they closed the border".
+       * That is an accusation, and it was sometimes false — the map has always
+       * carried a sentence for the honest case and no code path could reach it.
+       *
+       * A record that still exists, was never ended, and simply has no turns
+       * left on it, expired. Anything else really was closed or was never there.
+       */
+      if (!g) {
+        const id = byKey.get(gkey(h.node, grantee, h.mode));
+        const rec = id ? grants.get(id) : null;
+        const ranOut = rec && rec.status !== 'ended' && remaining(rec, turn) < 1;
+        return { at: h.node, why: ranOut ? 'expired' : 'revoked' };
+      }
       // A cap is a promise about volume, and a corridor over it carries the
       // older contract first — which is what a contract means.
       if (g.cap != null && loadOn(g, turn) > g.cap && !firstClaim(g, d, turn)) {

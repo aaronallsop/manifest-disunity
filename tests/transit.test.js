@@ -754,6 +754,32 @@ describe('Transit — closing a corridor under a running deal', () => {
       'the corridor was still carrying after its notice had run out');
   });
 
+  /*
+   * AN AGREEMENT THAT RAN OUT IS NOT AN ACCUSATION (5 September 2026).
+   *
+   * `live` returns null for a grant that expired and for one that was closed, so
+   * every lapsed corridor was reported to the player as "they closed the border"
+   * — blaming a neighbour for something they had not done. The map has carried a
+   * sentence for the honest case since it was written and no code path reached it.
+   */
+  it('a corridor that simply runs out says so, and does not blame the neighbour', async () => {
+    const r = await routedDeal();
+    const hop = r.deal.route.hops.find((h) => !h.corridor);
+    ok(hop, 'the route crosses nobody, so there is nothing to expire');
+    const g = Transit.live(hop.node, r.a, hop.mode);
+    ok(g, 'the hop it routes through has no grant behind it');
+
+    // Nobody serves notice and nobody closes anything: the term simply ends.
+    const after = g.since + g.duration;
+    equal(Transit.blockedAt(r.deal, after - 1), null,
+      'the corridor stopped carrying before its term was up');
+    const b = Transit.blockedAt(r.deal, after);
+    ok(b, 'a corridor kept carrying after its term ended');
+    equal(b.why, 'expired',
+      `a corridor that ran out of turns was reported as "${b.why}" — an accusation, not a fact`);
+    equal(b.at, hop.node, 'the wrong nation was named');
+  });
+
   it('a closed corridor stops the deal paying, and its term keeps running down', async () => {
     const r = await routedDeal();
     const hop = r.deal.route.hops.find((h) => !h.corridor);
