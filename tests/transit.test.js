@@ -21,6 +21,15 @@ import { bootWorld } from './world-fixture.js';
 const SEED = 20260829;
 const T = () => window.TUNE;
 
+/*
+ * A TRADE TERM READ FROM THE MENU, not written as a literal. These sites sign a
+ * deal in order to have a routed deal to test the corridor arithmetic against;
+ * the number of turns is incidental to every one of them, and hard-coding it
+ * meant six corridor tests went red the day the owner lengthened trade deals.
+ * The second entry, so the deal outlives the notice periods being tested.
+ */
+const TERM2 = () => T().get('deal.durations')[1];
+
 describe('Transit — the corridor graph describes the real map', () => {
   it('every LAND edge is a real shared land border', async () => {
     await bootWorld({ seed: SEED });
@@ -598,7 +607,7 @@ describe('Transit — the toll comes off the income, never out of the deal', () 
 
   it('a routed deal\'s GROSS settlement is what it would have been with no route', async () => {
     const pair = await routedWorld();
-    Moves.resolve({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: 8 } }, null, T());
+    Moves.resolve({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: TERM2() } }, null, T());
     const d = Deals.live(pair.a, pair.b);
     ok(d && d.route, 'the deal was signed without the route it needed');
     const gross = Deals.settlement(d, T());
@@ -609,7 +618,7 @@ describe('Transit — the toll comes off the income, never out of the deal', () 
 
   it('what everyone takes plus what arrives is exactly what the deal paid', async () => {
     const pair = await routedWorld();
-    Moves.resolve({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: 8 } }, null, T());
+    Moves.resolve({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: TERM2() } }, null, T());
     const d = Deals.live(pair.a, pair.b);
     const total = () => [...Game.nations.values()].reduce((s, n) => s + n.treasury, 0);
 
@@ -653,7 +662,7 @@ describe('Transit — the toll comes off the income, never out of the deal', () 
 
   it('every nation that carried the goods was actually paid for it', async () => {
     const pair = await routedWorld();
-    Moves.resolve({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: 8 } }, null, T());
+    Moves.resolve({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: TERM2() } }, null, T());
     const d = Deals.live(pair.a, pair.b);
     const gross = Deals.settlement(d, T());
     const paid = (gross.a + gross.b) * 1e6;
@@ -681,7 +690,7 @@ describe('Transit — the toll comes off the income, never out of the deal', () 
   it('routing leaves the price index byte-identical', async () => {
     const pair = await routedWorld();
     const before = JSON.stringify(Market.getPrices());
-    Moves.resolve({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: 8 } }, null, T());
+    Moves.resolve({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: TERM2() } }, null, T());
     const t0 = World.getTurn();
     for (let i = 0; i < 8; i++) { Deals.tick(T(), t0 + i, {}); Transit.tick(T(), t0 + i, {}); }
     equal(JSON.stringify(Market.getPrices()), before, 'carrying goods moved a price');
@@ -689,7 +698,7 @@ describe('Transit — the toll comes off the income, never out of the deal', () 
 
   it('a routed deal survives a save with its hops deep-copied', async () => {
     const pair = await routedWorld();
-    Moves.resolve({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: 8 } }, null, T());
+    Moves.resolve({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: TERM2() } }, null, T());
     const snap = JSON.parse(JSON.stringify(Deals.serialize()));
     Deals.loadState(snap);
     deepEqual(Deals.serialize(), snap, 'a routed deal did not survive its own round trip');
@@ -1108,7 +1117,7 @@ describe('Transit — what a route costs', () => {
 
     const full = Transit.permits(pair.b, pair.a, pair.m);
     close(full.rate, 0.4, 1e-12, 'the toll is not what was signed');
-    Moves.resolve({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: 8 } }, null, T());
+    Moves.resolve({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: TERM2() } }, null, T());
     const discounted = Transit.permits(pair.b, pair.a, pair.m);
     close(discounted.rate, 0.4 * (1 - T().get('transit.partnerDiscount')), 1e-12,
       'signing a trade deal did not make the corridor cheaper');

@@ -37,30 +37,111 @@ function findPair() {
 
 const treasury = (nid) => Game.getNation(nid).treasury;
 
-describe('Deals — the term', () => {
-  it('a four-turn deal pays four times and then stops', async () => {
+/*
+ * TERMS COME FROM THE MENU, NOT FROM A LITERAL (6 September 2026).
+ *
+ * These tests used to say `duration: 4`, which was fine while 4 was on the menu
+ * and stopped being fine the day the owner lengthened deals to 20/30/40/50/100:
+ * the planner refuses a duration outside the list rather than rounding it, so
+ * twenty-six tests would have gone red for a tuning change none of them were
+ * about. Reading the first two entries instead means the suite follows the menu
+ * wherever it goes, and a test that fails after this is failing about the thing
+ * it was written to check.
+ */
+const TERM = () => T().get('deal.durations')[0];
+const TERM2 = () => T().get('deal.durations')[1];
+
+/*
+ * SELLING THE SAME GOODS TWICE (found in play, 6 September 2026).
+ *
+ * `Moves.tradeFlows` has subtracted standing commitments since A1, so a nation
+ * that signed its whole wheat surplus to Kansas has none left for Nebraska. The
+ * EXTERNAL sale — Canada, Mexico, the world market — read the raw surplus
+ * instead, so the same bushels could be promised on a long contract and go on
+ * being sold abroad every four turns. Goods out of thin air, which the trade
+ * model says must never pay, and it was the most profitable thing in the game.
+ */
+describe('Deals — what is promised cannot also be sold abroad', () => {
+  it('a standing deal takes its volume out of what the world market will buy', async () => {
     await bootWorld({ seed: SEED });
     const pair = findPair();
     ok(pair, 'no tradeable neighbouring pair on this map');
-    const per = pair.plan.perTurn.me * 1e6;
+
+    /*
+     * BOTH SIDES ARE MEASURED, because only the SELLER's export list should
+     * shrink and which of the two is selling depends on whose surpluses mirror
+     * whose. The first version of this test watched the proposer alone and
+     * passed on a pair where the proposer was the buyer — proving nothing while
+     * looking like it proved everything.
+     */
+    const offered = (nid) => Actions.exportFlows(nid).reduce((s, f) => s + f.value, 0);
+    const beforeA = offered(pair.a), beforeB = offered(pair.b);
+    ok(beforeA + beforeB > 0, 'neither nation had anything to sell abroad — the test proves nothing');
+
+    Moves.resolve({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: TERM() } }, null, T());
+    ok(Deals.live(pair.a, pair.b), 'the deal did not sign, so nothing was committed');
+
+    const afterA = offered(pair.a), afterB = offered(pair.b);
+    ok((afterA < beforeA - 1e-9) || (afterB < beforeB - 1e-9),
+      'signing left both nations with everything still on offer to the world market — '
+      + `${pair.a}: ${beforeA.toFixed(1)} to ${afterA.toFixed(1)}, `
+      + `${pair.b}: ${beforeB.toFixed(1)} to ${afterB.toFixed(1)}. The same goods are being sold twice.`);
+    ok(afterA <= beforeA + 1e-9 && afterB <= beforeB + 1e-9,
+      'signing a deal INCREASED what somebody could sell abroad');
+  });
+
+  it('and it comes off the sector that was promised, not off the total', async () => {
+    await bootWorld({ seed: SEED });
+    const pair = findPair();
+    ok(pair, 'no tradeable neighbouring pair on this map');
+    const bySector = (nid) => {
+      const m = {};
+      for (const f of Actions.exportFlows(nid)) m[f.i] = f.vol;
+      return m;
+    };
+    const beforeA = bySector(pair.a), beforeB = bySector(pair.b);
+    Moves.resolve({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: TERM() } }, null, T());
+    const d = Deals.live(pair.a, pair.b);
+    ok(d, 'the deal did not sign');
+    const afterA = bySector(pair.a), afterB = bySector(pair.b);
+
+    let moved = 0;
+    for (const f of d.flows) {
+      for (const [before, after] of [[beforeA, afterA], [beforeB, afterB]]) {
+        if (!(f.i in before)) continue;
+        ok((after[f.i] || 0) <= before[f.i] + 1e-9,
+          `sector ${f.i} grew on an export list after being promised away`);
+        if ((after[f.i] || 0) < before[f.i] - 1e-9) moved += 1;
+      }
+    }
+    ok(moved > 0, 'no traded sector came off either nation\'s export list');
+  });
+});
+
+describe('Deals — the term', () => {
+  it('a deal pays once a turn for its whole term and then stops', async () => {
+    await bootWorld({ seed: SEED });
+    const pair = findPair();
+    ok(pair, 'no tradeable neighbouring pair on this map');
+    const term = TERM();
 
     const before = treasury(pair.a);
-    Moves.resolve({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: 4 } }, null, T());
+    Moves.resolve({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: term } }, null, T());
     equal(treasury(pair.a), before, 'a deal paid something at signing; the first money is the next tick');
 
     const d = Deals.live(pair.a, pair.b);
     ok(d, 'signing did not produce a live deal');
-    equal(d.duration, 4);
+    equal(d.duration, term);
 
     // Settle by hand so the assertion is about Deals.tick and nothing else.
     const t0 = World.getTurn();
-    for (let i = 0; i < 4; i++) Deals.tick(T(), t0 + i, {});
-    equal(d.paid, 4, 'a four-turn deal did not pay exactly four times');
+    for (let i = 0; i < term; i++) Deals.tick(T(), t0 + i, {});
+    equal(d.paid, term, `a ${term}-turn deal did not pay exactly ${term} times`);
     equal(d.status, 'expired', 'a deal that has run its term is still live');
     close(d.earnedA + d.earnedB > 0 ? d.earnedA : 1, d.earnedA, 1e-9);
 
     const paidSoFar = d.paid;
-    Deals.tick(T(), t0 + 4, {});
+    Deals.tick(T(), t0 + term, {});
     equal(d.paid, paidSoFar, 'an expired deal paid again');
   });
 
@@ -68,8 +149,8 @@ describe('Deals — the term', () => {
     await bootWorld({ seed: SEED });
     const pair = findPair();
     ok(pair, 'no tradeable neighbouring pair');
-    const plan = Moves.plan({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: 4 } }, T());
-    Moves.resolve({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: 4 } }, null, T());
+    const plan = Moves.plan({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: TERM() } }, T());
+    Moves.resolve({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: TERM() } }, null, T());
     const t0 = World.getTurn();
     const before = treasury(pair.a);
     Deals.tick(T(), t0, {});
@@ -108,21 +189,43 @@ describe('Deals — Aaron\'s income ruling (D171)', () => {
     const clickRhythm = T().get('trade.cooldownTurns') + 1;
     const oldLump = pair.plan.total * T().get('trade.gain');
     const plan = Moves.plan({ type: 'trade', nid: pair.a, target: pair.b,
-      terms: { duration: 4 } }, T());
+      terms: { duration: TERM() } }, T());
     close(plan.perTurn.me * clickRhythm, oldLump, Math.abs(oldLump) * 1e-9 + 1e-9,
       'a year of a deal no longer pays what a year of clicking paid — deal.rate and trade.cooldownTurns have drifted apart');
   });
 
-  it('the AI still values a default deal at exactly what it valued a click at', async () => {
+  /*
+   * REWRITTEN 6 SEPTEMBER 2026, and the invariant it protects survived the
+   * rewrite unchanged — which is the strongest evidence that the new horizon is
+   * the right number.
+   *
+   * It used to assert that `plan.gain`, the WHOLE-TERM take, equalled the old
+   * click at the default duration. That only held because the default was four
+   * turns. When the owner lengthened deals to 20-100 it would have gone red for
+   * a reason that had nothing to do with the ruling it guards — and worse, the
+   * thing it was guarding had already broken silently, because `AI.score`
+   * clamps this ratio at one turn of income and every long deal now saturates
+   * it.
+   *
+   * So the AI reads the PER-TURN take over `ai.tradeHorizon` turns instead, and
+   * the horizon is the old default term. The arithmetic below is therefore the
+   * same arithmetic as before, said in a way that no longer moves when the menu
+   * does.
+   */
+  it('the AI still values a deal at exactly what it valued a click at, whatever the term', async () => {
     await bootWorld({ seed: SEED });
     const pair = findPair();
     ok(pair, 'no tradeable neighbouring pair');
-    // `AI.score` reads preview.gain against a turn of income. Reporting the
-    // per-turn figure there would quarter every AI's appetite for trade, which
-    // is a Full-game behaviour change smuggled in under an economy stage.
     const oldLump = pair.plan.total * T().get('trade.gain');
-    close(pair.plan.gain, oldLump, Math.abs(oldLump) * 1e-9 + 1e-9,
-      'plan.gain is no longer the whole-term take at the default duration');
+    const horizon = T().get('ai.tradeHorizon');
+
+    for (const term of T().get('deal.durations')) {
+      const p = Moves.plan({ type: 'trade', nid: pair.a, target: pair.b,
+        terms: { duration: term } }, T());
+      ok(p.ok, `a ${term}-turn deal could not be planned at all`);
+      close(p.perTurn.me * horizon, oldLump, Math.abs(oldLump) * 1e-9 + 1e-9,
+        `at a ${term}-turn term the AI would value this deal differently from the click it replaced`);
+    }
   });
 
   it('the price split moves money between the parties and never changes the total', async () => {
@@ -130,9 +233,9 @@ describe('Deals — Aaron\'s income ruling (D171)', () => {
     const pair = findPair();
     ok(pair, 'no tradeable neighbouring pair');
     const even = Moves.plan({ type: 'trade', nid: pair.a, target: pair.b,
-      terms: { duration: 4, priceMult: 1 } }, T());
+      terms: { duration: TERM(), priceMult: 1 } }, T());
     const tilted = Moves.plan({ type: 'trade', nid: pair.a, target: pair.b,
-      terms: { duration: 4, priceMult: T().get('deal.priceMultMax') } }, T());
+      terms: { duration: TERM(), priceMult: T().get('deal.priceMultMax') } }, T());
     const sum = (p) => p.perTurn.me + p.perTurn.them;
     close(sum(tilted), sum(even), Math.abs(sum(even)) * 1e-9 + 1e-9,
       'the price split changed the joint gain; it is only allowed to move it');
@@ -179,7 +282,7 @@ describe('Deals — the counterparty has an opinion about the term', () => {
     const seen = [];
     for (const [nid] of Game.nations) {
       for (const other of Game.adjacentNations(nid)) {
-        const p = Moves.plan({ type: 'trade', nid, target: other, terms: { duration: 4 } }, T());
+        const p = Moves.plan({ type: 'trade', nid, target: other, terms: { duration: TERM() } }, T());
         if (!p.ok) continue;
         const flow = Game.treasuryFlow(other);
         seen.push({ share: (p.perTurn.them * 1e6) / Math.max(1, flow ? flow.income : 1),
@@ -201,11 +304,11 @@ describe('Deals — the counterparty has an opinion about the term', () => {
     ok(pair, 'no tradeable neighbouring pair');
     const before = Complexity.serialize();
     Complexity.applyPreset('economy');
-    const off = Moves.plan({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: 4 } }, T());
+    const off = Moves.plan({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: TERM() } }, T());
     ok(!off.verdict.reasons.some((r) => /history|dealt with you/i.test(r)),
       `Economy mode cited a relations reason: ${off.verdict.reasons.join(' ')}`);
     Complexity.applyPreset('full');
-    const on = Moves.plan({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: 4 } }, T());
+    const on = Moves.plan({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: TERM() } }, T());
     ok(on.verdict.reasons.some((r) => /history|dealt with you/i.test(r)),
       'Full mode dropped the relations reason');
     Complexity.init({ saved: before });
@@ -218,7 +321,7 @@ describe('Deals — the scope rule', () => {
     const pair = findPair();
     ok(pair, 'no tradeable neighbouring pair');
     const before = JSON.stringify(Market.getPrices());
-    Moves.resolve({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: 8 } }, null, T());
+    Moves.resolve({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: TERM2() } }, null, T());
     equal(JSON.stringify(Market.getPrices()), before, 'signing a deal moved a price');
   });
 
@@ -226,7 +329,7 @@ describe('Deals — the scope rule', () => {
     await bootWorld({ seed: SEED });
     const pair = findPair();
     ok(pair, 'no tradeable neighbouring pair');
-    Moves.resolve({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: 8 } }, null, T());
+    Moves.resolve({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: TERM2() } }, null, T());
     const before = JSON.stringify(Market.getPrices());
     const t0 = World.getTurn();
     for (let i = 0; i < 8; i++) Deals.tick(T(), t0 + i, {});
@@ -239,7 +342,7 @@ describe('Deals — one per pair, and what is promised is not available', () => 
     await bootWorld({ seed: SEED });
     const pair = findPair();
     ok(pair, 'no tradeable neighbouring pair');
-    Moves.resolve({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: 8 } }, null, T());
+    Moves.resolve({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: TERM2() } }, null, T());
     const again = Moves.plan({ type: 'trade', nid: pair.a, target: pair.b }, T());
     equal(again.ok, false, 'a pair signed twice');
     ok(/already have a deal/.test(again.reason), `unexpected refusal: ${again.reason}`);
@@ -252,7 +355,7 @@ describe('Deals — one per pair, and what is promised is not available', () => 
     const has = () => Moves.legal(pair.a, T())
       .some((m) => m.type === 'trade' && m.target === pair.b);
     ok(has(), 'the pair was not offered as a trade candidate to begin with');
-    Moves.resolve({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: 8 } }, null, T());
+    Moves.resolve({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: TERM2() } }, null, T());
     equal(has(), false, 'a partner with a live deal is still being offered');
   });
 
@@ -359,29 +462,35 @@ describe('Deals — expiry, renewal and the prompt', () => {
     await bootWorld({ seed: SEED });
     const pair = findPair();
     ok(pair, 'no tradeable neighbouring pair');
+    const term = TERM();
     Moves.resolve({ type: 'trade', nid: pair.a, target: pair.b,
-      terms: { duration: 2, autoRenew: true } }, null, T());
+      terms: { duration: term, autoRenew: true } }, null, T());
     const first = Deals.live(pair.a, pair.b);
     const t0 = World.getTurn();
-    Deals.tick(T(), t0, {});
-    Deals.tick(T(), t0 + 1, {});
+    // Run the term out. This used to be two hard-coded ticks for a two-turn deal.
+    for (let i = 0; i < term; i++) Deals.tick(T(), t0 + i, {});
     equal(first.status, 'renewed', 'an auto-renewing deal did not renew');
     const second = Deals.live(pair.a, pair.b);
     ok(second && second.id !== first.id, 'renewal did not produce a new deal');
     equal(second.renewedFrom, first.id);
-    equal(second.since, t0 + 2, 'the renewal double-paid or skipped a turn');
+    equal(second.since, t0 + term, 'the renewal double-paid or skipped a turn');
   });
 
   it('a deal the player is party to raises a renegotiation offer when it lapses', async () => {
     await bootWorld({ seed: SEED });
     const pair = findPair();
     ok(pair, 'no tradeable neighbouring pair');
-    Moves.resolve({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: 2 } }, null, T());
+    const term = TERM();
+    Moves.resolve({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: term } }, null, T());
     const t0 = World.getTurn();
-    Deals.tick(T(), t0, { player: pair.a });
-    equal(Deals.waiting(pair.a, t0), null, 'a prompt was raised before the deal ran out');
-    Deals.tick(T(), t0 + 1, { player: pair.a });
-    const offer = Deals.waiting(pair.a, t0 + 1);
+    // Every turn but the last: the deal is still running and must ask nothing.
+    for (let i = 0; i < term - 1; i++) {
+      Deals.tick(T(), t0 + i, { player: pair.a });
+      equal(Deals.waiting(pair.a, t0 + i), null,
+        `a prompt was raised ${i + 1} turns into a ${term}-turn deal`);
+    }
+    Deals.tick(T(), t0 + term - 1, { player: pair.a });
+    const offer = Deals.waiting(pair.a, t0 + term - 1);
     ok(offer, 'an expired player deal raised no renegotiation prompt');
     equal(offer.from, pair.b);
     equal(offer.kind, 'renew');
@@ -391,7 +500,7 @@ describe('Deals — expiry, renewal and the prompt', () => {
     await bootWorld({ seed: SEED });
     const pair = findPair();
     ok(pair, 'no tradeable neighbouring pair');
-    Moves.resolve({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: 2 } }, null, T());
+    Moves.resolve({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: TERM() } }, null, T());
     const t0 = World.getTurn();
     Deals.tick(T(), t0, { player: null });
     Deals.tick(T(), t0 + 1, { player: null });
@@ -416,17 +525,18 @@ describe('Deals — the save does not grow without bound', () => {
     await bootWorld({ seed: SEED });
     const pair = findPair();
     ok(pair, 'no tradeable neighbouring pair');
-    Moves.resolve({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: 2 } }, null, T());
+    const term = TERM();
+    Moves.resolve({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: term } }, null, T());
     const id = Deals.live(pair.a, pair.b).id;
     const t0 = World.getTurn();
-    Deals.tick(T(), t0, {});
-    Deals.tick(T(), t0 + 1, {});
+    for (let i = 0; i < term; i++) Deals.tick(T(), t0 + i, {});
+    const ended = t0 + term - 1;                 // the turn its last payment landed
     ok(Deals.get(id), 'a deal that ended this turn was forgotten immediately');
 
     const window = T().get('nation.historyWindow');
-    Deals.tick(T(), t0 + 1 + window, {});
+    Deals.tick(T(), ended + window, {});
     ok(Deals.get(id), 'a deal was forgotten while still inside the memory window');
-    Deals.tick(T(), t0 + 2 + window, {});
+    Deals.tick(T(), ended + 1 + window, {});
     equal(Deals.get(id), null, 'a finished deal is still in the save long after anyone can read it');
   });
 });
@@ -436,7 +546,7 @@ describe('Deals — save and restore', () => {
     await bootWorld({ seed: SEED });
     const pair = findPair();
     ok(pair, 'no tradeable neighbouring pair');
-    Moves.resolve({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: 8 } }, null, T());
+    Moves.resolve({ type: 'trade', nid: pair.a, target: pair.b, terms: { duration: TERM2() } }, null, T());
     Deals.tick(T(), World.getTurn(), {});
     const snap = JSON.parse(JSON.stringify(Deals.serialize()));
     Deals.loadState(snap);

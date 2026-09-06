@@ -315,7 +315,26 @@ const AI = (function () {
     if (intent.type === 'trade') {
       const flow = Game.treasuryFlow(intent.nid);
       const income = flow ? Math.max(1, flow.income) : 1;
-      const gain = (preview.gain || 0) * 1e6;
+      /*
+       * WHAT IT PAYS A TURN, OVER A FIXED HORIZON — not what it pays over its
+       * whole term, which is what this read until 6 September 2026.
+       *
+       * The whole-term figure was fine while every deal was four turns. When
+       * the owner lengthened the menu to 20-100, it broke in a way that would
+       * have been invisible: this term is CLAMPED to 1, and at twenty turns any
+       * deal the game itself calls valuable (six per cent of a turn's income,
+       * `deal.termAppetiteShare`) already saturates it. Every trade would have
+       * scored the same maximum — a marginal deal and a magnificent one alike —
+       * and it would have stopped responding to the term at all, while sitting
+       * permanently above the annexation terms it was deliberately tuned below.
+       *
+       * Judging the per-turn income over a FIXED horizon fixes both halves: the
+       * score discriminates again, and it no longer moves when the menu does.
+       * The horizon is the old default term, so every number tuned against the
+       * old behaviour keeps the value it was tuned with.
+       */
+      const perTurn = (preview.perTurn ? preview.perTurn.me : 0) * 1e6;
+      const gain = perTurn * tune.get('ai.tradeHorizon');
       terms.push(term('What it pays', 'ai.wTrade', gain, gain / income, 'hold'));
       const standing = typeof Relations !== 'undefined'
         ? Relations.score(intent.target, intent.nid, tune) : 0;

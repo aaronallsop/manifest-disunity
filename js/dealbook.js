@@ -25,12 +25,25 @@ const DealBook = (function () {
   const T = () => window.TUNE;
 
   /** '4 turns' as a person would say it, from the calendar's own month count. */
-  const SPELT = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
+  const SPELT = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine',
+    'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen',
+    'eighteen', 'nineteen', 'twenty', 'twenty-one', 'twenty-two', 'twenty-three', 'twenty-four',
+    'twenty-five'];
+  /*
+   * HALF YEARS, because the terms stopped landing on whole ones (6 Sep 2026).
+   * Thirty quarters is ninety months, which is seven and a half years and used
+   * to render as "90 months" beside a button reading "five years". The same
+   * function lives in `js/actions.js` for the panels; keep the two in step.
+   */
   function termWords(turns) {
     const months = turns * (T().peek('calendar.monthsPerTurn') || 3);
     if (months % 12 === 0) {
       const y = months / 12;
       return `${SPELT[y] || y} ${y === 1 ? 'year' : 'years'}`;
+    }
+    if (months > 12 && months % 6 === 0) {
+      const y = (months - 6) / 12;
+      return `${SPELT[y] || y} and a half years`;
     }
     return `${SPELT[months] || months} months`;
   }

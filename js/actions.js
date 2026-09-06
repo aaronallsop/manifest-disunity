@@ -354,14 +354,32 @@ const Actions = (function () {
     if (n) (n.tradeCooldown || (n.tradeCooldown = {}))[key] = World.getTurn();
   }
 
-  /** A nation's positive surplus by sector, valued at market prices ($M). */
+  /**
+   * A nation's positive surplus by sector, valued at market prices ($M).
+   *
+   * WHAT IS ALREADY PROMISED IS NOT AVAILABLE, and this line was missing until
+   * 6 September 2026. `Moves.tradeFlows` has subtracted standing commitments
+   * since A1 — a nation that has signed its whole wheat surplus to Kansas has
+   * none left to offer Nebraska — but the external sale read the raw surplus.
+   * So you could promise every bushel to a neighbour on a twenty-turn contract
+   * AND go on selling the same bushels to Canada every four turns. That is
+   * goods out of thin air, which is the one thing the trade model says must
+   * never pay, and it was the most profitable thing in the game.
+   *
+   * Same helper as the bilateral path, deliberately: one spelling of "free".
+   */
   function exportFlows(nid) {
     const ms = Market.nationSurplus(nid, TUNE);
     const prices = Market.getPrices();
     const e = MapModes.getEconomy();
     if (!ms || !prices || !e) return [];
+    const c = (typeof Deals === 'undefined' || typeof Moves === 'undefined')
+      ? null : Deals.committed(nid);
+    const free = (i) => (c && Moves.freeSurplus
+      ? Moves.freeSurplus(ms.surplus[i], c.bySector[i] || 0)
+      : ms.surplus[i]);
     return e.sectors
-      .map((s, i) => ({ i, s, vol: Math.max(0, ms.surplus[i]) }))
+      .map((s, i) => ({ i, s, vol: Math.max(0, free(i)) }))
       .filter((f) => f.vol > 1)
       .map((f) => ({ ...f, value: f.vol * (prices[f.i] / 100) }));
   }
@@ -725,10 +743,10 @@ const Actions = (function () {
     const them = Game.getNation(tid);
     if (!them) return renderTradePrompt();
     const bits = Transit.modesBetween(S, tid);
-    const durations = TUNE.peek('deal.durations');
+    const durations = TUNE.peek('transit.durations');
     if (!A.corridor || A.corridor.t !== tid) {
       const first = [Transit.MODE.RAIL, Transit.MODE.HIGHWAY, Transit.MODE.PORT].find((m) => bits & m);
-      const want = TUNE.peek('deal.defaultDuration');
+      const want = TUNE.peek('transit.defaultDuration');
       A.corridor = {
         t: tid, mode: first,
         duration: durations.includes(want) ? want : durations[0],
@@ -1069,12 +1087,28 @@ const Actions = (function () {
    * a change to how long a turn is renames every button rather than leaving
    * four hard-coded lies on the panel.
    */
-  const SPELT = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
+  const SPELT = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine',
+    'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen',
+    'eighteen', 'nineteen', 'twenty', 'twenty-one', 'twenty-two', 'twenty-three', 'twenty-four',
+    'twenty-five'];
+  /*
+   * HALF YEARS, because the terms stopped landing on whole ones (6 Sep 2026).
+   * When deals went to 20/30/40/50/100 quarters, three of the five buttons fell
+   * off the end of this function: thirty turns is ninety months, which is not a
+   * whole number of years, and it rendered as "90 months" beside a button
+   * saying "five years". A term the player cannot read is a term he cannot
+   * weigh. KEEP THIS IN STEP WITH `DealBook.termWords`, which is the same
+   * function and is the one the tests pin.
+   */
   function termWords(turns) {
     const months = turns * (TUNE.peek('calendar.monthsPerTurn') || 3);
     if (months % 12 === 0) {
       const y = months / 12;
       return `${SPELT[y] || y} ${y === 1 ? 'year' : 'years'}`;
+    }
+    if (months > 12 && months % 6 === 0) {
+      const y = (months - 6) / 12;
+      return `${SPELT[y] || y} and a half years`;
     }
     return `${SPELT[months] || months} months`;
   }

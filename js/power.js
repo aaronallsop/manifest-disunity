@@ -903,13 +903,26 @@ export function gatherInfluence(facts, turn, tune, ctx) {
     weight += other.gdp;
   }
 
-  // Trade partners inside the memory window: `tradeCooldown` is partner -> the
-  // world turn of the last deal, which is already a record of who you do
-  // business with. Reusing it beats inventing a second relations table that
-  // could disagree with the one the trade screens read.
+  /*
+   * Trade partners inside the memory window: `tradeCooldown` is partner -> the
+   * world turn of the last deal, which is already a record of who you do
+   * business with. Reusing it beats inventing a second relations table that
+   * could disagree with the one the trade screens read.
+   *
+   * COUNTRIES ONLY, and that qualification was missing until 6 September 2026.
+   * The external sale stamps the literal keys 'Canada', 'Mexico' and 'world'
+   * into this same record, so selling abroad was buying diplomatic reach as
+   * though the world market were a government that had taken your call. It is
+   * not one: the owner's ruling is that Canada and Mexico have no opinion and
+   * cannot be negotiated with, and Influence here means who deals with YOU.
+   * Three free partners, out of five, for clicking a button nobody answered.
+   */
   const recent = tune.get('nation.historyWindow');
   let partners = 0;
-  for (const k in n.tradeCooldown || {}) if (turn - n.tradeCooldown[k] <= recent) partners++;
+  for (const k in n.tradeCooldown || {}) {
+    if (!Game.getNation(k)) continue;                 // not a country, not a partner
+    if (turn - n.tradeCooldown[k] <= recent) partners++;
+  }
 
   return {
     turn,

@@ -664,14 +664,14 @@ export const SCHEMA = {
     doc: 'What one turn of a standing deal pays, as a share of what the old one-click trade paid outright. At 0.25 with a 4-turn deal, a year of a deal pays exactly what a year of clicking paid - which is the ruling (D171): a deal is about commitment, not sudden wealth, so nothing already tuned against the old rhythm (army upkeep, the price of annexing, recovery rates) has to be re-derived. At 1.0 a deal pays every turn what a click paid once every four, so trade income per partner is roughly four times what it was. This is the slider that turns trade up, deliberately, after the alpha has shown what it does.',
   },
   'deal.durations': {
-    v: [2, 4, 8, 20], kind: 'array', group: 'Trade',
+    v: [20, 30, 40, 50, 100], kind: 'array', group: 'Trade',
     label: 'Deal durations (turns)',
-    doc: 'The menu of terms a deal may be signed for, in world turns. A turn is a quarter (D163), so these read as six months, one year, two years and five years. A duration outside this list is refused by the planner rather than rounded, because the four buttons are the negotiation.',
+    doc: 'The menu of terms a deal may be signed for, in world turns. A turn is a quarter (D163), so these read as five, seven and a half, ten, twelve and a half and twenty-five years. THE OWNER RAISED THESE ON 6 SEPTEMBER 2026, from [2, 4, 8, 20], after playing: renewing a one-year contract every four turns is administration rather than a decision, and a real supply agreement between two countries is signed for decades. Note what it makes real - a deal holds the price it was signed at for its whole term, and prices move on the order of 15% over a hundred turns, so a long contract is now a genuine bet rather than a formality. A duration outside this list is refused by the planner rather than rounded, because the buttons ARE the negotiation.',
   },
   'deal.defaultDuration': {
-    v: 4, min: 1, max: 40, step: 1, group: 'Trade',
+    v: 20, min: 1, max: 100, step: 1, group: 'Trade',
     label: 'Default deal duration (turns)',
-    doc: 'The term a trade carries when no terms were named - what the AI signs in A1, and where the duration row opens. Must be a member of deal.durations; the panel snaps to the nearest member if it is not. At 4 with deal.rate 0.25, an AI signing a default deal earns exactly what its old click earned, spread over exactly the four turns it used to spend on cooldown.',
+    doc: 'The term a trade carries when no terms were named - what an AI signs, and where the duration row opens. MUST be a member of deal.durations: the planner refuses anything else outright, so a default outside the list silently stops every AI trade in the game rather than falling back. It was 4 until 6 September 2026 and moved with the menu.',
   },
   'deal.defaultAutoRenew': {
     v: 0, min: 0, max: 1, step: 1, group: 'Trade',
@@ -772,6 +772,24 @@ export const SCHEMA = {
     v: 0.75, min: 0.3, max: 1.5, step: 0.05, group: 'Trade',
     label: 'A ROAD right costs this much of a port right',
     doc: 'The cheapest thing to grant, because it is the least you are actually giving: a lorry on a public highway that was going to carry traffic anyway. At 0.75 a port right costs a THIRD more than a road right across the same border between the same two countries, which is the gap the owner asked for on 5 September 2026.',
+  },
+  /*
+   * CORRIDORS KEEP THEIR OWN TERMS, and this list exists because they did not.
+   * Until 6 September 2026 a right of way borrowed `deal.durations`, so when the
+   * owner lengthened TRADE deals to five-to-twenty-five years, every corridor
+   * silently became a twenty-five-year grant revocable on four turns of notice —
+   * a notice period of one part in twenty-five, for a thing he had not asked to
+   * change. These are the old numbers, kept, so that stage stays as it played.
+   */
+  'transit.durations': {
+    v: [2, 4, 8, 20], kind: 'array', group: 'Trade',
+    label: 'Corridor durations (turns)',
+    doc: 'The menu of terms a right of way may be granted for, in world turns - six months, one year, two years, five years. Deliberately SHORTER than the trade-deal menu: a supply contract is a commercial bet two governments make with each other, while passage across your ground is a permission you may want back, and the notice period only means something against a term it is a real fraction of.',
+  },
+  'transit.defaultDuration': {
+    v: 4, min: 1, max: 100, step: 1, group: 'Trade',
+    label: 'Default corridor duration (turns)',
+    doc: 'The term a corridor carries when none was named - what an AI asks for, and where the duration row opens. MUST be a member of transit.durations, for the same reason as the trade default: the planner refuses anything else, so a stale value here stops every AI corridor request in the game silently.',
   },
   'transit.maxHops': {
     v: 3, min: 1, max: 6, step: 1, group: 'Trade',
@@ -1073,6 +1091,11 @@ export const SCHEMA = {
     v: 0.9, min: 0, max: 4, step: 0.05, group: 'AI',
     label: 'AI: weight of what a trade deal pays',
     doc: 'The treasury income from a bilateral deal, as a share of a turn of gross income. Deliberately below wGrowth: a deal is small, safe and repeatable, and a nation that rated it against an annexation on money alone would never take ground again.',
+  },
+  'ai.tradeHorizon': {
+    v: 4, min: 1, max: 40, step: 1, group: 'AI',
+    label: 'AI: turns of a deal it weighs when deciding',
+    doc: 'How many turns of a deal an AI counts when judging whether signing is worth its turn. It weighs the PER-TURN income over this fixed horizon rather than the whole term, and that distinction is the whole point of the setting. Judging by the whole term looked fine while every deal ran four turns, but the score is clamped at one turn of gross income, so once terms lengthened to 20-100 every deal worth having hit the ceiling: a marginal deal and a magnificent one scored identically, and trade sat permanently above the annexation it was deliberately tuned below. At 4 - the old default term - every weight already tuned against the old behaviour keeps exactly the value it was tuned with, and the score no longer moves when the duration menu does.',
   },
   'ai.wAmity': {
     v: 1.1, min: 0, max: 4, step: 0.05, group: 'AI',

@@ -833,8 +833,16 @@ const Moves = (function () {
     if (typeof Recognition !== 'undefined' && !Recognition.canTrade(nid, target)) {
       return no(`${them.name} does not recognise you as a country, and a corridor is an agreement between two governments.`);
     }
-    const durations = t.get('deal.durations');
-    const duration = intent.duration == null ? t.get('deal.defaultDuration') : intent.duration;
+    /*
+     * A CORRIDOR HAS ITS OWN MENU. It borrowed the trade one until 6 September
+     * 2026, which meant lengthening trade deals silently lengthened every right
+     * of way with them. They are different promises: a supply contract is a bet
+     * two governments make, passage across your ground is a permission you may
+     * want back, and a four-turn notice means nothing against a hundred-turn
+     * grant.
+     */
+    const durations = t.get('transit.durations');
+    const duration = intent.duration == null ? t.get('transit.defaultDuration') : intent.duration;
     if (!durations.includes(duration)) {
       return no(`A corridor runs for ${durations.join(', ')} turns, not ${duration}.`);
     }
@@ -902,7 +910,7 @@ const Moves = (function () {
       agreementId: rec ? rec.id : null,
       terms: [
         { name: 'Toll', value: plan.rate, key: 'trade.transitToll' },
-        { name: 'Turns', value: plan.duration, key: 'deal.durations' },
+        { name: 'Turns', value: plan.duration, key: 'transit.durations' },
       ],
       text: `${b} will carry ${a}'s goods by ${label} for ${plan.duration} turns, at ${Math.round(plan.rate * 100)}%.`,
     });
