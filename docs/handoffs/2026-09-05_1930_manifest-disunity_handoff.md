@@ -81,3 +81,9 @@ Recorded in deferred #5.
 6. **`gh` installed**, so the repository's privacy is verified rather than assumed.
 7. **"Touch anything live" is ticked on the board** and I have left it alone. Nothing went to
    playtesters. If it was a mis-click it wants unticking.
+8. **The published playtest is 132 commits stale.** `origin/main` is a single orphan commit,
+   "Playtest build", and it predates deals-with-terms, all of transit, the rivers, the network map
+   and the Panama fix. `dist/` is gitignored, so nothing about the alpha track has ever reached it.
+   Harmless only because he has sent the link to nobody — anyone opening it today would play a much
+   smaller game and report on that. **Deliberately not refreshed:** putting a build in front of other
+   people is his in every mode and is the one thing Hog Wild explicitly does not unlock.

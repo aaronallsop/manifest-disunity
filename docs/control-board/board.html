@@ -411,6 +411,18 @@ const BOARD = {
   // Things only the owner can supply, and what happens if a machine supplies them instead.
   blocked: [
     {
+      what: "The playtest link on GitHub is a very old build, and only you can replace it",
+      ifAutomated: "Found on the night of 5 September, and it matters only because you have sent it to "
+                 + "nobody. The playable copy on GitHub is a single snapshot taken 132 steps ago — "
+                 + "before deals had terms, before anything could cross anybody else's ground, before "
+                 + "the rivers, before the trade map, and with the canal still open. Anyone opening that "
+                 + "link today would be playing a different and much smaller game and telling you "
+                 + "about THAT. I have deliberately not refreshed it: putting a build in front of other "
+                 + "people is yours in every mode, and it is the one thing going hog wild does not "
+                 + "unlock. Say the word and it is a two-minute job.",
+      damagedIfAutomated: false,
+    },
+    {
       what: "Your written predictions before Phase 1 and Phase 3 start",
       ifAutomated: "Your brief asks you to name, before each of those phases is built, which five states "
                  + "should be self-sufficient and which five structurally broken, and what a given deal "
