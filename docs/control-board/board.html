@@ -131,7 +131,7 @@ const BOARD = {
     { label: "Current version",         value: "v0.6" },
     { label: "Tests green",             value: 948 },
     { label: "Industry figures that are real, today",   value: "0%" },
-    { label: "Industry figures real after the re-bake", value: "84%" },
+    { label: "Industry figures real after the re-bake", value: "75%, not 84%" },
   ],
 
   // The single most important true thing right now. tone: "bad" | "warn" | "ok" | "neutral".
@@ -336,14 +336,22 @@ const BOARD = {
       status: "todo",
       brief: "Re-bake the six-sector split from real county-industry data if coverage permits; "
            + "otherwise keep the estimates but label them as estimates everywhere they appear.",
-      actual: "Not started, and deferred at your instruction — but now costed, and the answer is good. "
-            + "The real figures exist, they have been in the project since July, and the existing data "
-            + "build already opens that file and throws away everything except the single total. "
-            + "Measured: 84% of the industry figures can come straight from published government data "
-            + "and the rest can be filled in from each county's own real total and marked as "
-            + "estimates. Today it is nought per cent — six hand-written patterns behind 1,688 places, "
-            + "with half the map sharing one. You approved this on 5 September: widen the six so every "
-            + "dollar lands somewhere real. It stays scheduled after the economy alpha unless you move it.",
+      actual: "Not started — and the case for it has got weaker, not stronger. I checked my own "
+            + "homework tonight and the 84% I gave you was wrong. The real figure is 75%: the earlier "
+            + "count scored a place as measured when the government had published only a COMBINED "
+            + "total covering two of our six sectors, which tells you the sum and neither part. "
+            + "It also counted trade without transport. Corrected, and the correction is mine.\n\n"
+            + "Two harder things came out of the same check, and together they are why I did not "
+            + "build this tonight even though you approved it. Farming in the game today is TEN TIMES "
+            + "bigger than the real figures say it should be — and how much food a person needs was "
+            + "set against that inflated number, so replacing the data without also resetting hunger "
+            + "would starve the whole continent on the first turn. And the six sectors only reach "
+            + "half of a real economy: government, building, health, schools and professional work "
+            + "have nowhere to go, so a faithful re-bake would quietly delete half the map's income.\n\n"
+            + "It is also the one change that reaches backwards: the economy is baked into the game "
+            + "rather than into a save, so every game you have already played would come back "
+            + "different. That is the kind of thing my own rules say to stop and ask you about, so "
+            + "here it is, stopped and asked. Still worth doing. Not worth doing quickly.",
     },
     { name: "After the economy alpha — Autarky economy", status: "todo",
       brief: "Band model, derived demand, national pooling. No trade of any kind. Stop condition: the numbers stop surprising the designer.",

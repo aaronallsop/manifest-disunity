@@ -150,6 +150,116 @@ run of eight stages is eight chances to silently end the night.
 
 ---
 
+### Run 1, entry 4 — I invented the four numbers that price a right of way — *5 Sep, 18:10*
+
+**The question.** You said a port grant should cost more than a road grant. How much more, and where
+do rivers and railways sit between them?
+
+**Why I could not answer it.** It is a taste question about how the game should feel, and there is
+no measurement in the project that settles it. Nothing in the data says a harbour is worth a third
+more than a motorway rather than twice as much.
+
+**What I did, and what I turned down.** Port is now the baseline and the others are discounts off it:
+river 0.95, rail 0.85, road 0.75 — so a port right costs a third more than a road right between the
+same two nations. **The direction is the part I am confident about and the size is not.** Making the
+cheap modes cheaper, rather than ports dearer, means the change can only ever LOWER what somebody
+asks — so no offer that would have been signed before this existed is refused because of it, and if
+the numbers are wrong they are wrong in the safe direction.
+
+I rejected reusing the two figures already in the project for this (`trade.railDiscount` 0.5 and
+`trade.highwayDiscount` 0.2, left over from the old one-off transit screen). They encode how cheap
+each mode is to MOVE on, which is a different question from how much it costs to be LET IN, and
+they put rail below road — reusing them would have imported an argument nobody made.
+
+**What to check first if it feels wrong.** Whether landlocked nations can still afford to reach the
+sea at all. Fourteen of the sixty-one have no port and no border crossing, and a port right is now
+the dearest thing on the board and the only thing that gets them out. If they are strangled, the
+port multiplier is too high; if nothing changed, it is too low.
+
+**To undo it.** `git revert bb8157d`
+
+---
+
+### Run 1, entry 5 — The Panama ruling was open the whole time, through Mexico — *5 Sep, 18:20*
+
+**Not a decision — a fault, in something I told you was finished.** A2d landed on 5 September as
+"two seas, not one ocean; Panama shut". It was not shut. Canada was carefully given an Atlantic
+coast only, with a long comment explaining why. Mexico was given both coasts three lines further
+down, and Mexico is a place goods can pass through. **Washington sailed to Mexico, Mexico sailed to
+Florida, and Seattle was trading with Boston by sea for a flat ten per cent** — cheaper than any
+route across its own continent.
+
+**Why no test caught it.** Four tests guard that ruling and all four read the map's connections
+rather than running a journey. The two oceans were never joined *directly*, so all four passed, for
+a fortnight, while the thing they exist to prevent happened through a third country.
+
+**What I did.** Water in, water out, across two different oceans is now refused. Deliberately narrow:
+reaching Mexico or Canada overland and shipping onward is still allowed, because that is what those
+goods would really do. Mexico keeps both coasts, because it really has both and a Californian
+shipment to Ensenada is not a trick — what it no longer has is a canal through the middle of it. The
+new test runs the journey rather than reading the map, and counts the pairs it tried so it cannot
+pass by not running.
+
+**To undo it.** `git revert 37df85a`
+
+---
+
+### Run 1, entry 6 — I checked my own homework on the industry data, and it was wrong — *5 Sep, 18:35*
+
+**The correction, first.** The board has said "84% of industry figures real after the re-bake" since
+this morning. **It is 75%.** I measured it properly tonight and the earlier method counted a place as
+measured when the government had published only a COMBINED figure covering two of our six sectors —
+which tells you the sum and neither part — and counted trade while quietly not requiring transport.
+The board now says 75%. The number was mine and so is the correction.
+
+**Then the two things that stopped me building it.** You approved this re-bake and I did not do it,
+which needs an explanation rather than an excuse:
+
+1. **Farming in the game is ten times bigger than reality**, and how much food a person needs was
+   deliberately calibrated against that inflated figure — it says so in the setting's own note.
+   Replace the data without re-deriving hunger in the same change and the whole continent starves on
+   turn one.
+2. **The six sectors only reach about half of a real economy.** Government, construction, health,
+   education and professional work have nowhere to land. A faithful re-bake does not make the map
+   more real; it deletes half of everybody's income.
+
+**And it reaches backwards.** The economy is baked into the game rather than saved into a game, so
+every save you already have would come back different.
+
+**What I did.** Stopped, and wrote it down. My own rules name this exact case — a data re-bake, a
+thing expensive to reverse, a change that invalidates existing games — as one to bring to you rather
+than decide. The approval you gave was for a job I described as clean, and it is not clean.
+
+**To undo it.** Nothing to undo. No code changed; the board figure was corrected and this note
+written.
+
+---
+
+### Run 1, entry 7 — Distance now has a price tag, and it is bigger than I thought — *5 Sep, 18:40*
+
+**Measured tonight, from the project's own map**, because three separate questions were waiting on
+it. Distances are between the real ports of the sixty-one nations:
+
+- **Closest two ports on the same sea: 16 miles** (Delaware and New Jersey).
+- **Farthest: 2,578 miles** (Hawaii and Washington). Today those two journeys cost **exactly the
+  same**, because a sea crossing is one edge with no length.
+- **Median sea crossing 707 miles; median land border 253 miles.** Fifty-nine per cent of same-sea
+  pairs are further apart than the *longest* land border on the board.
+- Your own example, priced: **Washington to Oregon is 275 miles, Washington to Alaska is 1,264** — a
+  4.6× spread charged identically.
+- And the corridors abroad are worse: a Canada route spans **411 to 2,442 miles at one flat price**,
+  and it is the only edge in the game that pays no crossing cost at all.
+
+**What I did NOT do.** Build it. This is the largest single improvement available and it is a design
+change, not a repair — and the measurement turned up a trap worth stating plainly: **fix the sea
+without fixing the corridors and every long haul in the game reroutes through Canada**, because it
+would become the only remaining way to cross the continent for free. That is one change, not two,
+and it wants your eye on it before it lands.
+
+**To undo it.** Nothing to undo — measurement only, written up here and in the design document.
+
+---
+
 *The rest of Run 1's entries follow below as they happen, newest at the bottom of the run.*
 
 ---

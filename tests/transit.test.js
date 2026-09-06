@@ -344,9 +344,26 @@ describe('Transit — two seas, not one ocean (A2d)', () => {
     await bootWorld({ seed: SEED });
     const { pac, atl } = seas();
     ok(pac.length && atl.length, 'one of the two oceans is empty — the test proves nothing');
+
+    /*
+     * ONLY PAIRS THAT COULD ONLY HAVE GONE BY SEA, and this restriction is the
+     * rule rather than a convenience. The first version of this test asserted
+     * that no Pacific nation may reach an Atlantic one at all, and it failed on
+     * Hawaii reaching Texas — by sailing to Mexico and then travelling ON LAND.
+     * That is not the canal reopening; it is a ship followed by a lorry, and
+     * A2d permits it in as many words ("a Pacific nation still reaches Canada —
+     * overland... what it cannot do is use Canadian water as a bridge between
+     * two oceans").
+     *
+     * So both ends must be unable to touch Canada or Mexico by land. Then the
+     * only journey the graph could possibly build is water in, water out, which
+     * is exactly the thing that must be impossible.
+     */
     let tried = 0;
     for (const p of pac) {
+      if (Game.exportAccess(p).gateways) continue;
       for (const a2 of atl) {
+        if (Game.exportAccess(a2).gateways) continue;
         tried += 1;
         // No `permit`: nothing routes through any NATION, so a route found here
         // can only have gone through Canada or Mexico.
@@ -354,7 +371,7 @@ describe('Transit — two seas, not one ocean (A2d)', () => {
         ok(!bySea, `${p} reached ${a2} through ${bySea && bySea.hops.map((h) => h.node).join(' → ')}`);
       }
     }
-    ok(tried > 40, `only ${tried} ocean-to-ocean pairs tried — the test proves nothing`);
+    ok(tried > 10, `only ${tried} sea-only ocean-to-ocean pairs tried — the test proves nothing`);
   });
 
   it('but Mexico keeps both its coasts, because it really has both', async () => {
