@@ -1398,12 +1398,14 @@ Area merge has swallowed the reservations into Areas named after the towns besid
 - **Crow Creek** is inside the Beadle Area.
 
 *So there is no combination of Areas that is the Lakota nation and not also several white towns.*
-**Claude's proposal: Butte + Brown + Pennington, 3 Areas and about 271,000 people** — which is the
-only draw that includes Pine Ridge and Rosebud at all, and which means **the Lakota Nation opens
-holding Rapid City.** That is uncomfortable and it is also the most interesting thing about it: a
-tribal nation that inherited a city which did not choose it is the natural home for the **Rejoin**
-verb, which has no examples anywhere else on the board. The honest alternative is Butte + Brown
-alone — 2 Areas, 81,000 people, no Pine Ridge, and the smallest nation on the continent.
+
+**Ruling 53 — the Lakota Nation is Butte, Brown and Pennington: 3 Areas, about 271,000 people, and it
+holds Rapid City.** *(Aaron, 7 Sep.)* The only draw that includes Pine Ridge and Rosebud at all. The
+discomfort is the point: **a tribal nation that inherited a city which did not choose it** is a
+*Rejoin* movement waiting to happen, and the first example of that verb anywhere on the board. It is
+also viable — larger than Cascadia — where the accurate alternative (Butte and Brown alone, 81,000
+people, no Pine Ridge, no city) would be the smallest nation on the continent and eaten inside a
+decade, which is the failure Aaron already found in play with New England.
 
 *The Navajo Nation does not have this problem: Arizona and New Mexico counties are large and mostly
 unmerged, so it draws cleanly. This is specific to the Dakotas, where small counties merged hard.*
