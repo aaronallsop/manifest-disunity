@@ -663,6 +663,54 @@ RI 1 · A Free Texas NM 13 · Franklin NC 7, KY 6, TN 4, MD 3, VA 1 · Native Am
 MT 6, AK 4, ND 4, SD 4, OK 4, AZ 2 · New Confederacy 404 · and **zero** for Alaskan Independence,
 the Front Range Republic, El Paso United and the California Republic.
 
+**Ruling 18 — a reunification movement declares a winner, not a country.** *(Aaron, 7 Sep.)* When
+its core crosses the line it realises into whichever existing nation already holds the most of that
+core, and every other Area over the line becomes ground that wants to join *that* nation. Texas
+re-forms around whichever successor won the argument instead of a sixth Texas appearing. *Built,
+nearly: this is the frontier defection that already follows a declaration, with the "found a new
+nation" step skipped.* Aaron: "reunification movements are different from separatist movements
+because they are doing the exact opposite."
+
+**Ruling 19 — reunification movements exist at several scales, and are contests between
+claimants.** *(Aaron, 7 Sep.)* Not one restoration but many, each with its own field of nations
+competing to be the one it restores under:
+
+| Movement | What it restores | Who can win it |
+|---|---|---|
+| **A Free Texas** | Texas | the five Texan successors |
+| **California Republic** | California | the five Californian successors |
+| **The Confederacy** | the eleven Confederate states | the Deep South, the Carolinas, the Gulf nation, Appalachia, Central Florida — **and it cannot be done without Texas**, which is five nations away |
+| **The Thirteen Colonies** *(new)* | the original thirteen states, and the prize is **being the capital** | Washington D.C., the United States of New England, Philadelphia, New York City |
+
+**This answers what the New Confederacy is.** Its 537-Area homeland is four times too large for a
+Deep South separatist movement and exactly right for reunifying the Confederacy — the eleven states
+including the 106 Areas in Texas. It changes character rather than size. *(Supersedes S64's framing;
+the measurement stands.)*
+
+**S66 — The core is the shortlist.** Whoever holds most of the core wins, so authoring the core is
+authoring who is *allowed* to win. For the Thirteen Colonies that means a core of Boston, New York,
+Philadelphia and Washington, and nothing else — so the four capitals compete and nobody else can
+take the prize by holding farmland.
+
+**S67 — Can a nation back its own reunification movement?** Aaron: "Dallas could try to reunify
+Texas, or it could try to conquer the US." That implies a choice, and today a nation cannot help a
+movement at all. *Built: every movement carries an unused `sponsor` field — "a nation backing it" —
+reserved long ago for exactly this.* Open: what backing costs, whether it is the one action a turn,
+and **what the loser gets** — a Houston that spent four years building A Free Texas and then watched
+Dallas win it has funded the thing that ate it, which is a real gamble and probably the point.
+
+**S68 — Reunification is how stateless ground climbs back.** *(Claude, 7 Sep.)* Kentucky, Ohio and
+Michigan fracture into tier-3 governments. A movement to put Ohio back together, realising into
+whichever fragment holds most of its core, is the same mechanism pointed at a different scale — and
+it gives tier 3 an exit that is neither conquest nor permanence. *(Depends on politics' definition
+of tier 3.)*
+
+**S69 — Boston is inside the United States of New England.** Aaron named "Washington D.C., Boston,
+Philadelphia and New York City" as the four competing for the capital, but ruling 9 folded Boston
+into the USNE. So the claimant is the USNE — a six-state nation rather than a city — which makes the
+contest three cities and a country. Worth deciding on purpose: it is either a good asymmetry or a
+sign Boston should have stayed separate.
+
 **S65 — Realisation brings a fervour.** *(Aaron, 7 Sep.)* "When a nation is realised — at turn 0 or
 later — it should bring an extra fervour, like the citizens are willing to overlook certain things."
 Distinct from what is built: the honeymoon is four turns of borrowed Authority, whereas this is a
