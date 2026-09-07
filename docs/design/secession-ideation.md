@@ -1210,6 +1210,89 @@ what Expand reads to know a nation is short *(economy)*; what Reconquer and Expa
 government obeys them *(conquest)*; whether the six ideological movements become interest groups
 *(politics, and F3 in the ideas file)*.
 
+### The Movement Register, marked up — Aaron, 7 September
+
+Aaron went through all 32 in the published register. **27 rows changed, six struck, one added.** The
+five untouched keep Claude's proposal: Alaskan Independence, New Absaroka, Sonoran Republic, the
+Native American Confederation, Greater Idaho and the Farmers Union.
+
+**Ruling 44 — four verbs changed.** The Front Range Republic and Hawaiian Sovereignty become
+**Expand**; Blue-Collar Populist and Christian Nationalism become **Unify**, so two of the six
+"ideological" movements survived as real movements rather than being reclassified.
+
+**And that refines ruling 42 rather than contradicting it.** Expand and Reconquer are still the verbs
+that *arise from a condition* — but a condition can already be true on turn 0, so they can also be
+authored at setup. The Front Range Republic opens wanting to grow because of where it sits: Aaron —
+"their geography and central location, they have the ability to get a lot of money from trade going
+through them, and they have NORAD and air force bases." Hawaii opens the same way for the opposite
+reason — "as an island nation I could see them being both vulnerable for resources, but also because
+they have Pearl Harbor, which could be an interesting bonus to their military."
+
+**Ruling 45 — six struck, and they split two ways.** Filed in `docs/design/old-ideas.md`, not
+deleted. **Libertarians, Anarcho-Capitalist, Eastern Progressives and Techno-Autocrat** were struck
+because they are politics rather than movements — Aaron: "some of these movements that I struck became
+political things that I think we should move to work on later" — and they seed a seventh-alignment
+question now filed in `politics-ideation.md`. **Delmarva Republic and Fifty-First State** were struck
+as movements outright.
+
+**Ruling 46 — Canadian Refuge goes to the ideas file as F16.** Aaron added it and withdrew it in the
+same entry: border ground that puts itself under foreign protection, untouchable by force, trading
+north, and a foothold for encouraging other people's separatists. A Mexican equivalent with it. *"A
+little too much for now."*
+
+### What the notes added, and most of it is new mechanism
+
+**S87 — A choice point that decides a nation's whole game.** *(Aaron, on the Rio Grande Union.)* The
+movement grows along the river, and as it does **El Paso may either suppress it and conquer them, or
+join it as the leader of their cause — and joining forecloses its claim to reunify Texas.** "Essentially
+leaving Texas behind for this." This is the sharpest player decision anywhere in the round: a
+movement inside your borders that you can either crush or ride, at the price of the other future you
+were playing for.
+
+**S88 — A nation can change which movement it is the vehicle for.** *(Aaron, on El Paso United.)* El
+Paso "starts as one of the five Texas contenders and has the ability to become A Free Texas or Rio
+Grande." So a realised movement's nation is not permanently bound to it.
+
+**S89 — Two nations competing to lead a Unify movement.** *(Aaron, on Great Lakes Free Trade.)*
+"Superior and Rochester & Buffalo would be two rivals trying to make this happen." **That is ruling
+18's contest pattern applied to Unify rather than Reunify** — the same machinery, so a Unify movement
+also declares a winner rather than founding something from nothing.
+
+**S90 — A movement can unify an economic area without becoming a country.** *(Aaron, on Blue-Collar
+Populist.)* "They aren't trying to become a nation so much as an economic area, and if they leave to
+become a nation they would pick one then." So Unify has two endings — a bloc, or a country — and the
+name is chosen at the second. *This is the Farmers Union's shape too, and it connects to the bloc
+question already filed for diplomacy.*
+
+**S91 — A movement whose ground spans several nations and wants to merge them.** *(Aaron, on
+Cascadia.)* "Cascadia separates from California, but this movement would want to join with Washington
+and Oregon, and the movement would grow in those states to join them." Separate and Unify at once,
+depending which side of the border you stand on. *Also: the California Republic's reunification
+"would also include Cascadia", so the two movements want the same ground and cannot both win.*
+
+**S92 — A movement that only grows in certain settlement types.** *(Aaron, on the Northern Christian
+Kingdom.)* "This is a movement that should only grow in rural areas — and I am realising that it might
+be good to create a classification system on what constitutes rural, suburban and urban." **That
+classification now exists**, built for the armed-share map: 145 urban Areas, 723 suburban and 2,264
+rural, at 1,000 and 100 people per square mile. So this is available immediately, and it is a general
+lever — an urban movement and a rural one can share a homeland and never meet.
+
+**S93 — Movements can arrive late.** *(Aaron, on Franklin.)* "This one should be a movement that grows
+slowly or comes in later in the game." A start turn, or a growth rate below 1.0 — the machinery for
+the second exists, since Deseret already runs at 1.5.
+
+**S94 — A Reunify movement pressures its own government too.** *(Aaron, on A Free Texas.)* "It would
+want the government to reunify at any cost the state of Texas." So Reunify is not only a movement that
+picks a winner — inside a claimant it is also a demand on that government, which is Expand's shape.
+The two verbs may overlap more than the grid suggests.
+
+**S95 — The New Confederacy needs a different name.** *(Aaron.)* "This is the one that is most likely
+to happen if this happened, because the Confederacy is still strong as an ideology — but I feel like
+it would have a different name than just New Confederacy."
+
+**S96 — Acadiana and the Gulf Compact.** *(Aaron.)* "It could become part of the Gulf Compact, and the
+Gulf Compact could be a unified states." *Filed forward to governments and diplomacy.*
+
 **S65 — Realisation brings a fervour.** *(Aaron, 7 Sep.)* "When a nation is realised — at turn 0 or
 later — it should bring an extra fervour, like the citizens are willing to overlook certain things."
 Distinct from what is built: the honeymoon is four turns of borrowed Authority, whereas this is a

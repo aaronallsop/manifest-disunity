@@ -49,7 +49,34 @@ The story itself is recorded in `secession-ideation.md` §8.
    a thing a government does, with a domestic cost or reward — and what did it cost Illinois when
    Chicago walked out?
 
-8. **The fervour of a new country.** *(Aaron, 7 September — secession S65, ruling 16.)* A nation
+8. **Is there a seventh political alignment, and is it Libertarianism?** *(Aaron, 7 September, raised
+   three times in one sitting.)* On the Sagebrush Rebellion: "we might need to add another political
+   alignment with Libertarianism. We can keep politics in this table for now but when we get to the
+   politics section we can rework it." On the Central States Union: "this might be something where
+   they would be republican but support unions — including libertarian later would help solve some of
+   this." And by striking the **Libertarians** and **Anarcho-Capitalist** movements as politics
+   rather than movements. *Built: six ideologies at fixed points on an economic axis and a social
+   axis; `affinity` between any two falls out of the distance, so a seventh costs two numbers rather
+   than six hand-authored pairs. The open question is where it sits — a market-liberal corner exists
+   on the current axes, and **Techno-Autocrat has no home on them at all**, which is either an
+   argument for a third axis or for leaving it out.* See `docs/design/old-ideas.md`.
+
+9. **Political leaning is already being marked up.** The Movement Register carries an editable
+   leaning per movement and Aaron has been changing it — Deseret from Conservative Nationalist to
+   **Distributist** ("a law of consecration lite… the closest analogue would be Distributist, which
+   is a Catholic teaching"), the Central States Union and El Paso United to **Republican**, the
+   California Republic and the New England Revivalists to **Democrat**, the Rio Grande Union to
+   **Distributist**. His note on New England United asks whether Boston's Catholic population should
+   pull it toward Distributist too. **That column is this round's inbox**, already populated.
+
+10. **Coalitions between movements, and what happens after they win.** *(Aaron, on the State of
+    Jefferson.)* "This will be an interesting one that is fighting against the Greater Idaho movement
+    and possibly working together with them… unlike current American politics there are going to be
+    coalitions, so they might be somewhat aligned on politics and 100% aligned on separating, but once
+    done there will be more chaos." Two movements that want the same ground for different reasons can
+    ally to leave and then fall out. *Built: nothing — movements do not know about each other.*
+
+11. **The fervour of a new country.** *(Aaron, 7 September — secession S65, ruling 16.)* A nation
    that has just been realised carries "an extra fervour, like the citizens are willing to overlook
    certain things." What does a government get to do badly while it lasts — govern harshly, lose a
    war, let people go hungry? Is it a tolerance applied to grievance, a bonus to the stocks, or a
@@ -58,5 +85,5 @@ The story itself is recorded in `secession-ideation.md` §8.
    borrowed Authority against a proportional GDP cut — narrower than this, and the natural place to
    hang it.*
 
-9. **Autonomy, release and changing course live here** (per the plan) — three of the four answers to
+12. **Autonomy, release and changing course live here** (per the plan) — three of the four answers to
    a movement and their prices. Round 1 has proposed four more (`secession-ideation.md` S24–S27).

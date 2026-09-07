@@ -515,3 +515,48 @@ answer is yes, districts become worth their price.
 
 **Before it is worth doing.** After the economy alpha, and probably after a playtest that asks
 directly whether the map feels too big.
+
+---
+
+## F16 — A border region that puts itself under Canadian (or Mexican) protection
+
+**Aaron, 7 September 2026.** Added to the Movement Register as a movement called *Canadian Refuge*,
+and withdrawn in the same breath.
+
+> "To become their own state as a safe vassal of Canadian protection. If this happens Canada will
+> protect them (and trade will go through them to Canada) and you cannot attack them but you will be
+> able to influence other separatist movements growing. I am realizing that this is a little too much
+> for now so lets move this idea and one for Mexico to the future ideas."
+
+**What it is.** Ground along the northern border — the counties touching Canada and up to four
+counties deep — organises not for independence but for *protection*. It becomes its own state under a
+foreign guarantee: nobody on the continent may attack it, its trade runs north, and in exchange it is
+a permanent foreign foothold from which other separatist movements can be encouraged. A Mexican
+equivalent would do the same along the southern border.
+
+**Why it is interesting.** It is the only idea so far that makes Canada and Mexico *matter* rather
+than merely exist. Today they are geography — a flat toll and a route to the world market, with no
+opinion and no reach. This turns the northern border into a thing the continent has to think about,
+and it gives small border states a third option beside being eaten and standing alone.
+
+It also introduces the first piece of ground on the board that **cannot be taken by force**, which is
+a genuinely new strategic object: an untouchable neighbour is a permanent problem rather than a
+temporary one.
+
+**What it would touch.**
+
+- **Canada and Mexico would stop being geography and become actors** — which is a standing ruling
+  (D168, ruling 2) that would have to be revisited deliberately, not drifted past. That ruling exists
+  because giving them opinions was judged out of scope, and this is exactly the thing it excluded.
+- **A protection guarantee is a new diplomatic object** — closer to the alliance and vassal questions
+  filed in `diplomacy-ideation.md` than to anything built, and it would need the AI to understand
+  that some ground is simply not available.
+- **"Influence other separatist movements growing"** is sponsorship (secession ruling 21) pointed
+  across a border by a power that is not on the board.
+- The trade rerouting is nearly free: the Canada corridor already exists with its flat toll.
+
+**Before it is worth doing.** After the alliance, vassal and bloc questions are answered in the
+diplomacy round, because this is the most extreme version of all three at once — and after somebody
+has decided whether Canada and Mexico are allowed to want things. Aaron's own judgement is that it is
+too much for now, and the reason to keep it is that it is the best answer yet to a question the
+project has not otherwise asked: what are the neighbours *for*?
