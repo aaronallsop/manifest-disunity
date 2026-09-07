@@ -487,6 +487,7 @@ other rounds have been filed there as questions — `conquest-`, `politics-`, `d
 | 8 | Central Florida is the painted region — the Georgia line to Miami |
 | 9 | The United States of New England; Rochester-and-Buffalo takes Clinton and the Franklin–Essex–Hamilton Area; alliance and free-trade deal pre-signed |
 | 10 | **Superior is the Upper Peninsula plus the top of the Lower Peninsula** — Michigan ground only. The Wisconsin and Minnesota Areas of the painted Superior region stay with their states in the Farmers Union. The line across the Lower Peninsula is one of the five still to be drawn |
+| 11 | **When.** Texas declared about two years before the game opens — spring 2034 — with its bicentenary as the deadline it set itself. The game opens on 1 March 2036 (D163 stands) *after* everything in the story has happened: every nation above exists, every war in it has been fought, and the anniversary arrives with five governments each claiming to be the Texas that made it. Two years means every grudge is still fresh — eight turns of decay |
 
 ### The board this produces
 

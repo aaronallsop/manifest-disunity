@@ -10,10 +10,12 @@ The story itself is recorded in `secession-ideation.md` §8.
 
 ## Questions inherited from the story of the break-up (6 September)
 
-1. **When did it happen?** Still unanswered, and it dates every memory on the board. The story's
-   chain of events — secession, a war, an oil shock, protests, martial law, new nations forming —
-   takes at least a year to happen. Last spring, or a decade ago? *Built: memories decay by turn;
-   the honeymoon is four turns; the game opens 1 March 2036.*
+1. **When did it happen?** *Answered 6 September (secession ruling 11): Texas declared in spring
+   2034, two years before the opening; the game starts after the whole chain has run.* What remains
+   for this round: two years is eight turns of memory decay, and every back-dated grudge in the
+   story is stamped inside that window — the round should decide whether the opening memories are
+   dated to their real moments across the two years or all to "two years ago". *Built: memories
+   decay by turn; the honeymoon is four turns; the game opens 1 March 2036.*
 
 2. **What "the United States" is now, and what Reunification means.** A small armed federal remnant
    exists — Washington, its martial-law ring, the rest of Virginia and the Baltimore region — and
