@@ -1346,6 +1346,31 @@ piece of coast, only one of which can happen.* Nothing else on the board is cont
 movement you hope will one day petition you is a long game with a real risk, since it may petition
 your rival instead.
 
+**Ruling 51 — a movement is bound to counties, never to state lines.** *(Aaron, 7 Sep: "the movement
+shouldn't be bound to state lines — their goals might reflect state lines, but the movement should be
+bound to counties.")* A homeland is a set of ground and nothing else. **A state line may appear in
+what a movement *wants* — reunite Texas, annex eastern Oregon, an end to Denver's rules — and never
+in where it *is*.**
+
+**This settles the Deep South counterbalance (ruling 28) without a new category.** Movements that
+cross borders are not a special kind; they are ordinary movements whose homeland was painted across
+one. Franklin's spans five states today, the Northern Christian Kingdom's five, the Farmers Union's
+eight. What checks the giant is simply that **Christian Nationalism and the Confederacy reunification
+both grow inside it while Franklin's Appalachia pulls at its mountains from the north** — three
+claims on one nation, none of them its own.
+
+**And it exposes a defect in the baked data.** Roughly **fifteen of the thirty-two homelands are
+generated from state lists rather than drawn** — Christian Nationalism is "the Southern states, over
+100,000 people"; the Farmers Union is "the Plains and Midwest, under 100,000"; the New Confederacy is
+"the eleven Confederate states"; New England United, the Northern Christian Kingdom, Blue-Collar
+Populist and the two struck ideological ones are the same. **Eight of those span several states, so
+their edges follow state lines nobody chose.** Under this ruling those edges are accidents. *The map
+editor of ruling 26 is the fix: painting replaces the state-list rules, and it must paint per Area
+with no snapping to a state border.*
+
+*Consistent with what the project already learned for nations: home ground is a set of Areas stamped
+at birth, not a state code, and `homeSt` survives only as a display fact that no rule reads.*
+
 **S65 — Realisation brings a fervour.** *(Aaron, 7 Sep.)* "When a nation is realised — at turn 0 or
 later — it should bring an extra fervour, like the citizens are willing to overlook certain things."
 Distinct from what is built: the honeymoon is four turns of borrowed Authority, whereas this is a
