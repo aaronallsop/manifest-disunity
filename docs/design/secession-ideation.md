@@ -1030,6 +1030,61 @@ gets what automation cannot, and the design session may not write to `build/` or
    into a percentage before it could be used. RAND is the better source because it is already
    calibrated.
 
+### The armed-share map, computed — 7 September
+
+Aaron downloaded the RAND workbook by hand; this session read it, computed county land areas from
+the map geometry already in the repository, and ran the apportionment. **Everything below is
+measured, not estimated.** The raw file's home is `build/raw/`; the bake belongs to the programming
+session.
+
+**The source, now verified from the file itself** (superseding the search-index description in
+ruling 36): *RAND State-Level Firearm Ownership Database*, version 1.0, 1 April 2020 — the
+proportion of **adult, non-institutionalised residents** in each state and year who live in a
+household with a firearm, **1980–2016**, 1,850 rows, **50 states**.
+
+**The 2016 rates run 8.9% to 65.0%, median 40.0%, a 7.3× spread.** Montana 65.0, Wyoming 60.7,
+West Virginia 60.0, Idaho 57.8, Alaska 57.2 at the top; New Jersey 8.9, Massachusetts 9.0,
+Hawaii 9.1, Rhode Island 13.9, New York 14.5 at the bottom.
+
+**Method, and it checks out.** Land area came from the county polygons in `counties-10m.json`
+(spherical shoelace, latitude-corrected). Density gave the three buckets at 1,000 and 100 people per
+square mile — **145 urban, 723 suburban, 2,264 rural**. Weights 0.60/0.40/0.30, then scaled to the
+state total. **The largest state-total error after apportionment is 1.9 × 10⁻¹⁶** — exact to
+floating point, so the real state numbers survive intact and only the within-state split is
+estimated.
+
+**The result is a believable map with a 5× spread across the board:**
+
+| Region | Median armed share |
+|---|---:|
+| Ranchers — Wyoming and Montana | 65.0% |
+| Deseret corridor | 58.5% |
+| Appalachia | 49.9% |
+| Deep South | 46.9% |
+| United States of New England | 42.9% |
+| Chicago | 24.1% |
+| SoCal | 18.2% |
+| New York City | 12.5% |
+
+County extremes run 74.8% (rural West Virginia) to 7.6% (Honolulu). Population-weighted nationally it
+comes to **33.1%**, which sits inside the range real surveys report.
+
+**S83 — The premise about the six stateless regions is wrong, and the data is more interesting than
+the premise.** Ruling 32 assumed they are all high-gun, leave-us-alone country. Measured, **the six
+have a median armed share of 44.6% against 46.9% everywhere else — very slightly *lower*.** Wyoming
+(60.7), Kentucky (52.5) and Arkansas (51.8) are indeed high; **Ohio (41.9), Michigan (38.9) and New
+Mexico (35.9) are not**, and they drag the group below average. So a blanket "stateless ground is
+dear to hold" rule would be inventing a fact the map contradicts. Letting the data speak instead
+makes the six *different from each other* — Wyoming's fragments charge you and Ohio's do not — which
+is a better board than a uniform category.
+
+**S84 — Two gaps found in the running, both known problems.** **The District of Columbia has no RAND
+rate** — the dataset covers 50 states — and DC is a *nation* in this story, the federal remnant. It
+needs a value assigned by hand. And **Connecticut's nine planning regions have no computable land
+area**, because the map geometry still holds the eight abolished counties: 1,678 Areas of 1,688 got a
+figure, and the ten that did not are Connecticut. *This is the documented Connecticut special case
+biting a third time.*
+
 **S81 — Two of the three inputs are not on disk, and one cannot be computed.**
 
 - **State gun-ownership rates: absent, and must be fetched.** Nothing in the repository carries
