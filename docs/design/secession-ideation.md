@@ -744,6 +744,68 @@ a sponsor gets anything at all for losing.
 *they admitted our rebels are a country* — and funding them is worse. Does sponsorship create a
 memory, and does it draw a coalition? *(Shared with diplomacy, round 5.)*
 
+### The Four Corners, and how a realised nation spreads at setup — Aaron, 7 September
+
+**Ruling 23 — the Four Corners is settled three ways, and the leftovers are rolled.** The Navajo
+Nation keeps its cultural ground in Arizona and New Mexico; the Front Range Republic takes
+south-east Colorado; and **the counties nobody clearly owns are assigned by dice**, weighted — Utah
+ground leaning toward Utah and the Navajo Nation, Colorado ground toward the Navajo Nation and the
+Front Range Republic. Deseret is the third claimant on the Utah four.
+
+**Measured, and it complicates the ruling.** The painted "Navajo" region is 51 Areas and is not the
+Navajo Nation — it is the whole Hispano, Pueblo and Navajo Southwest: **all 22 New Mexico Areas
+outside the Frontier leaf, including Albuquerque and Santa Fe**; 19 Colorado Areas that include Baca,
+Bent, Prowers, Otero and Las Animas — the Arkansas River plains, which are south-*east* Colorado and
+ranching country; 6 in Arizona; and the 4 in south-east Utah. Taking it whole would make the Navajo
+Nation the largest power in the Southwest, leave almost no New Mexico to be stateless, and
+contradict ruling 3's trim to the Four Corners. *The real reservation spans north-east Arizona,
+north-west New Mexico and San Juan County, Utah — roughly ten Areas. That geography is from memory
+and unverified.*
+
+**Ruling 24 — a realised nation spreads outward at setup, in four rings of decaying odds.** The
+nation starts on its rolled core; the ground around it starts with separatist pressure, and some of
+it joins before turn 1. Distance is measured from the realised nation, and each ring's chance is a
+third of the one inside it.
+
+| Ring | Distance | Chance | How many may join |
+|---|---|---:|---|
+| **1** | touching the nation | 33% | up to **12** |
+| **2** | one further | 11% | up to **6** |
+| **3** | one further | 3.7% | up to **3** |
+| **4** | one further | 1% | **1** — ranked by population, the first to fire is the only one that joins |
+
+**Contiguity is repaired, not required.** When a ring fires somewhere detached, the counties needed
+to connect it back to the nation are added too — so a distant hit arrives with the road to it. Each
+allowance is reduced by whatever the outer rings and their connectors already took, so the total
+stays bounded.
+
+**And California is closed.** No Californian county except Riverside may join anybody this way, and
+they are not counted in the ring distances.
+
+**S72 — The deduction does not cost anything.** A tier-4 hit adds itself *plus* its connectors —
+call it four counties — and reduces tier 3's allowance by one. So a rare long reach makes a nation
+**bigger**, not differently shaped. If the intent is "a finger instead of a bulge", the deduction
+should count every county the outer ring actually added, connectors included.
+
+**S73 — The caps may never bind.** A Deseret of 31 Areas has roughly 25 touching it; at 33% that is
+about 8 expected against a cap of 12, and the outer rings are further under. So the odds are doing
+almost all the work and the allowances are a safety rail rather than a shape. Worth knowing before
+either number is tuned.
+
+**S74 — Counties or Areas?** The proposal is written in counties; the game runs on 1,688 merged
+Areas and every adjacency, homeland and border in it is per Area. Ring distance measured the two
+ways gives different maps.
+
+**S75 — What are the base odds for everybody else?** The 33/11/3.7/1 ladder is anchored to "the
+original odds for nations in the Mormon Corridor", and only Deseret has those. Greater Idaho, the
+Navajo Nation, Appalachia and the Front Range Republic need their own base — or one shared default
+that each can scale.
+
+**S76 — Why California, and should the rule be general?** The exclusion protects the five Californias
+from being drawn into somebody else's border. The same argument protects the five Texases, and the
+principle underneath may be simpler than a list: **a realised nation cannot spread into ground that
+is another realised movement's founding claim.** Riverside is the stated exception.
+
 **S65 — Realisation brings a fervour.** *(Aaron, 7 Sep.)* "When a nation is realised — at turn 0 or
 later — it should bring an extra fervour, like the citizens are willing to overlook certain things."
 Distinct from what is built: the honeymoon is four turns of borrowed Authority, whereas this is a
