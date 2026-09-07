@@ -713,10 +713,12 @@ Worth a footnote either way: the Continental Congress also sat in Baltimore, Ann
 Lancaster, York and Princeton, and **Baltimore is Washington's territory under this story**, so the
 capital's claim quietly includes a second former seat.*
 
-**S69 — Open: is Boston still inside the United States of New England?** Ruling 9 folded it in;
-ruling 20 takes it out of the capital contest, which does not by itself put it back on the map as a
-nation. If Boston becomes a city-state again the USNE falls from 49 Areas to 32 (ME 11, VT 8, CT 6,
-MA 4, NH 3) and loses its richest ground, which is most of the reason the merger was made.
+**Ruling 22 — Boston stays inside the United States of New England; it is simply not a claimant.**
+*(Aaron, 7 Sep.)* Ruling 9 stands and nothing on the map moves. New England was merged because its
+small states were being eaten in play, and Boston is the half that makes the merger worth having —
+without it the USNE would be 32 Areas of Maine, Vermont and the Berkshires, which is the nation that
+got eaten before. The capital contest is therefore **three cities competing for the crown, with a
+large northern neighbour that can tip it and cannot win it.**
 
 **Ruling 21 — a nation can fund a movement, and it is a standing commitment rather than a move.**
 *(Aaron, 7 Sep.)* You declare yourself its champion and pay a share of your treasury every quarter;
