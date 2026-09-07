@@ -341,7 +341,151 @@ ideology says how much.
 
 ---
 
-## 6. The scenarios this round has to be able to tell
+## 6b. CLOSING THE ROUND — five scenarios traced, 7 September 2026
+
+**Round 1 closed here.** Fifty-three rulings were made across one long session, many of them hours
+apart, and none of them had been checked against each other. These five were chosen because each runs
+through rulings made at different times. **Three narrate cleanly. Two stall, and a third is
+half-blocked** — those are recorded below as findings, because a contradiction found here is far
+cheaper than one found after the architect has built on it.
+
+### 1. Cascadia's first decade — **narrates, and exposes a missing threshold**
+
+Cascadia spawns in every game across 58 Areas of Oregon, Washington and northern California, green,
+cap 0.55, verb *Separate*. The **State of Jefferson** — red, also certain — sits on the same
+California and Oregon ground wanting the opposite thing. They cannot both grow in the same Area,
+because ideological match is multiplicative: the coast goes green, the inland goes red, and the model
+sorts them without anybody arbitrating. *That is the built model working exactly as designed.*
+
+As Cascadia strengthens it petitions (ruling 47), and Washington and Oregon compete to answer it
+(ruling 48). Whichever accepts stops being Washington or Oregon. If both refuse, ruling 49 runs its
+clock: the offer stands, the movement grows, and eventually it stops asking and declares alone.
+
+**But its core is Portland, Seattle, Clackamas and Pierce** — the two nations' own cities. So the
+moment its core crosses the secession threshold it declares a country *out of the capitals of both
+nations it was supposed to be petitioning*. **See finding A.**
+
+Meanwhile the California Republic claims the northern California third of the same ground. Three
+futures for one coast, and the first to fire takes it.
+
+### 2. El Paso's choice — **stalls on stateless ground**
+
+The Rio Grande Union grows along the river, petitions El Paso, and El Paso may suppress it, or accept
+and give up its claim to reunify Texas. That story is complete and it is the best decision in the
+round.
+
+**Except that its homeland is New Mexico, and New Mexico is a tier-3 stateless region.** Grievance
+reads the *holding nation's* quality of life, liberties, authority and war weariness — and ruling 31
+says stateless fragments are cheap: no elections, no movements, no AI. **A movement cannot grow
+against a government that has no stocks to be angry at. See finding B.**
+
+### 3. A Deseret that rolled badly — **narrates, and exposes a compounding failure**
+
+Ten Areas, the Wasatch Front alone. Forty-seven corridor Areas did not cede and open seeded at
+0.24–0.32 against a 0.40 threshold, carrying a 0.10 grudge and growing at 1.5×. Utah keeps 21 Areas,
+seventeen of which are quietly Deseret. Areas cross the line and defect, at most three a turn.
+Deseret grows back toward the corridor it should have had. **This is the game the whole design is
+aiming at, and it works.**
+
+**But ruling 13 pushes the other way.** A realised movement grows as fast as its nation is doing well
+against the holder, measured on quality of life, influence and authority — and a ten-Area Deseret is
+an unrecognised pariah with almost no influence, while Utah is a recognised state. So the movement
+grows *slower* precisely because the dice were unkind. **See finding C.**
+
+### 4. The Lakota Nation's Rapid City problem — **narrates, and settles an ambiguity**
+
+Three Areas, 271,000 people, of whom 190,000 are Rapid City. Ruling 17 widens the movement's homeland
+to the whole founding grant, so the Lakota movement *may* organise in Rapid City — but the homeland
+is only permission. **The share is still whatever sentiment produces, and in a non-indigenous city
+with a poor ideological match it is near zero.** So Rapid City is in the homeland, holds almost no
+members, and is therefore not loyal.
+
+Which leaves it open to a **Rejoin** movement wanting South Dakota back — red politics on red ground,
+so it grows fast. **The first example of that verb anywhere on the board, and it arrives without
+anybody authoring it.** *This trace settles that ruling 16's loyalty reads a movement's SHARE in an
+Area, not mere homeland membership. Recorded as finding E, because it was ambiguous until now.*
+
+### 5. A Tuesday — **stalls, and it is the same gate that has been open all round**
+
+You are Illinois. A movement stands at 31% in three Areas and rose two points last quarter. You have
+one action.
+
+Illinois's movements are the Farmers Union, Great Lakes Free Trade, Central States Union and
+Blue-Collar Populist — **all four are *Unify***. They do not want to leave; they want Illinois to join
+something. And the four answers a government has — release the ground, grant self-rule, change what
+you stand for, garrison it — **are all answers to a movement that wants to leave.** None of them
+means anything to a movement that wants you to sign a compact.
+
+The adjective says what would work: an *economic* Unify movement is bought off with a policy or
+money — adopt the price supports, join the bloc. **That lever does not exist.** See finding D.
+
+---
+
+## 6c. What the tracing found
+
+**A — The petition threshold must sit below the secession threshold, and nobody set one.** Ruling 47
+says a movement petitions "once it is strong enough"; ruling 39 says a *Separate* movement declares
+when its core is entirely over the line. If those are the same number, no movement ever petitions —
+it declares first. Cascadia would take Portland and Seattle rather than ask for them. **Blocks: the
+whole petition mechanism. Owner: diplomacy (round 5, ruling 50).**
+
+**B — Can a movement grow on stateless ground, and does stateless ground have stocks?** Grievance
+reads the holder's quality of life, liberties, authority and weariness. Ruling 31 makes tier-3
+fragments deliberately cheap. If they have no stocks, three of the six stateless regions — New
+Mexico, Kentucky and Wyoming — are ground where the central mechanic of the game cannot happen, and
+the Rio Grande Union, the Central States Union and the Sagebrush Rebellion have nowhere to grow.
+**Blocks: El Paso's choice, and roughly 176 Areas. Owner: politics (round 3, question 1).**
+
+**C — Three separate mechanisms all amplify the dice, and nothing was measured against the others.**
+Ruling 13 makes a badly-rolled nation's movement grow slower. S77 measured the ring ladder giving a
+minimal Deseret 1.6 Areas and a maximal one 19.9. Ruling 31's fragments are prey in proportion to how
+small they are. **Every one of these makes a bad roll worse.** The only damping is Deseret's 1.5×
+growth rate and its authored grudge — two numbers against three mechanisms, and the balance has never
+been measured. **Blocks nothing today; it is the first thing a tuning pass must look at.**
+
+**D — Five of the six verbs have no government response.** The four release valves answer *Separate*
+and nothing else. Unify, Reunify, Rejoin, Expand and Reconquer each need their own answer, and the
+adjective already says what shape it takes — a policy for *economic*, recognition for *cultural*, a
+share of the ground for *resource*. **None of those levers exists.** This is the Tuesday problem,
+now located precisely rather than felt vaguely. **Blocks: the player having anything to do about most
+movements. Owner: politics (round 3), which holds the four valves.**
+
+**E — Loyalty reads a movement's share, not its homeland.** Settled by the Lakota trace and recorded
+so it is not re-argued: ruling 17 gives a realised movement *permission* to organise on all its
+nation's ground; ruling 16's loyalty is the share it actually has there. A city that did not choose
+its nation is in the homeland and is not loyal.
+
+**F — Two certain movements sit on the same ground wanting opposite things, and the model handles
+it.** Cascadia and the State of Jefferson both spawn in every game across overlapping California and
+Oregon Areas. Multiplicative ideological match sorts them without arbitration. **Not a defect — a
+confirmation**, and the clearest argument yet for keeping that gate when the parked
+gate-or-modifier question is reopened.
+
+---
+
+## 6d. Round 1 — what was decided
+
+**Fifty-three rulings.** The shape of them:
+
+| | |
+|---|---|
+| **The story** | Texas declared in spring 2034, two years before the game opens; the chain from the oil stoppage to martial law to Deseret; 47 nations and six stateless regions; the board sorted with eleven rulings on its borders |
+| **The dice** | Every nation spawns in every game and only its *extent* rolls; movements carry the game-to-game variance; the player sees the roll before choosing |
+| **What a movement is** | A **verb** (six, in forward and backward pairs), an **adjective** (what would buy it off), and an **ideology** (the vehicle). REALIZED or GROWING. Bound to counties, never to state lines |
+| **How movements behave** | A realised movement's own ground is loyalty, not pressure; its homeland widens to its founding grant; reunification declares a winner rather than founding a sixth Texas; a movement petitions and nations compete to answer; refusing has a clock |
+| **The map** | Homelands are painted by hand in nested levels, not derived; 21 map jobs in three kinds; areas must overlap |
+| **Ground** | Stateless regions painted in fragments, cheap and prey; resistance is armed capacity × ideological willingness, computed from RAND and the county geometry |
+
+**Handed onward:** the fervour of a new country, the seventh political alignment, coalitions between
+movements and the four release valves → **politics**. The petition mechanism, alliances, vassals,
+blocs → **diplomacy**. What Expand reads → **economy**. What Expand and Reconquer cost → **conquest**.
+
+**Deliberately left open:** the ideology gate-or-modifier question; the New Confederacy's name; and
+findings A, B, C and D above, each with an owner.
+
+---
+
+## 6 (original). The scenarios this round has to be able to tell
 
 Traced against what is built. Where the build cannot yet tell the story, that is the finding.
 
