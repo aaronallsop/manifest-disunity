@@ -543,6 +543,51 @@ Lower Peninsula line is still to be drawn.
 Is voluntary federation a move nations under threat can make in play, or only a thing the story
 does before turn 0? *(Shared with conquest, question 7.)*
 
+### The dice, and movements tied to nations — Aaron, 6 September (later)
+
+**Ruling 12 — every nation spawns in every game; what rolls is its size.** Deseret's die — a core
+that always goes, a periphery that rolls piece by piece, cut-off ground left behind — is the model
+for every nation that gets one. No nation exists in some games and not others. **Separatist
+movements are spawned separately**, and that is where the game-to-game variance now lives.
+
+**S55 — A movement belongs to a nation first and an ideology second.** *(Aaron.)* "That separatist
+movement might be lined up along a certain political movement, but first and foremost it is tied to
+a nation." The Greater Idaho movement in the Oregon Areas that did not join; the Cascadia movement
+across the Pacific Northwest. *Built: a movement already carries a `nation` — "the country it
+realised into" — and once that nation exists its remaining homeland defects toward it along the
+frontier. What is not built is a movement whose nation exists before the movement ever declared,
+and ideology is currently the multiplicative gate on strength, not a secondary tie.*
+
+**S56 — Two kinds of movement: REALIZED and GROWING.** *(Aaron.)* Realized: its nation exists
+(Deseret, Greater Idaho, the Navajo Nation); the movement is the ground that wants to join it.
+Growing: no nation yet (Cascadia in this story); it declares one when its core crosses the line.
+*Built: the movement state machine already ends in `realized`, read off the map; the four states
+before it are what "growing" would contain.*
+
+**S57 — A realized movement grows as fast as its nation is doing well.** *(Aaron.)* "If Greater
+Idaho is doing really well compared to Oregon, then Greater Idaho is going to grow faster." A
+new driver: the *target's* condition against the *holder's*. *Built: every grievance term reads
+the holding nation only; nothing reads the nation a region would join. Migration already moves
+people along exactly this gradient — quality of life, liberties, output per head, toward the better
+neighbour — so the instinct has a home.*
+
+**S58 — Or the ideology it is loosely tied to drives growth.** *(Aaron, "note for later".)* A
+Christian-nationalist movement in the South grows faster if Atlanta has eclipsed everyone and
+turned the Deep South's government liberal. *Built, indirectly: liberties already fall when the
+governed sit far from the governing, and that grievance already feeds every movement whose ideology
+matches the ground. Most of this idea exists as a consequence rather than a rule.*
+
+**S59 — Two earlier questions fold into this model.** "Rolled opposition inside the Deep South"
+becomes *growing movements spawned by RNG inside it*. "Ground Houston took wanting to go back"
+becomes *a realized movement for the Gulf nation in the parishes Houston holds* — the aftermath rule
+applied to conquest, with no new machinery.
+
+**S60 — What keeps thirty-two movements from becoming one discontent meter.** *(Claude.)* The
+built model makes ideology multiplicative for a stated reason: without it, bad government alone
+produces any movement anywhere. If a movement is tied to a nation first, something else has to do
+that job — the homeland already does the *where*; the target's success would do the *how fast*;
+ideology could drop to a modifier. That trade wants deciding on purpose.
+
 ---
 
 *Sources, for whoever builds this: the authored scenario in `content/scenario-shattered.json`; the

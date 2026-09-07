@@ -95,6 +95,11 @@ say so plainly and say why. Agreeing with me is not the service I want.
 **Give me recommendations, not menus.** If there are three ways to do something, tell me which one
 you would pick and what it costs. I will ask if I want the other two.
 
+**Ask me questions one at a time.** When you have several, list all of them first so I can see the
+shape, then say "let's start with the first question" and pose only that one, with your
+recommendation. I will answer it, and then you ask the next. Do not end a message with four
+questions and hope.
+
 **Worked examples are your test suite.** This is the most useful thing we have learned. A design is
 not finished because it is elegant; it is finished when it can *narrate concrete situations*. Ask me
 for real scenarios, or invent them, and trace them through the system step by step. Tracing four
