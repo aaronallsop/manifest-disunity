@@ -902,11 +902,39 @@ Allegheny Republic**: "Rust Belt" is a pejorative nobody names themselves, and t
 mountains and river run through exactly this ground. *(Alternatives offered and not taken: the Delta
 Republic; the Susquehanna Republic.)*
 
-**S80 — Four of the Type A nations have no movement.** The Carolinas, the Deep South, Central Florida
-and the Allegheny Republic are category-3 states — born of unification, not of anyone organising. So
-"paint their reach" presumes they get a movement, which is the question asked of the Bay Area and not
-yet answered. Without one they have no loyal heartland under ruling 16 and nothing to paint beyond
-their own border.
+**Ruling 27 — the four Type A nations get no movement built into them.** *(Aaron, 7 Sep.)* The
+Carolinas, the Deep South, Central Florida and the Allegheny Republic were born of unification, not
+of anyone organising, and they stay that way: no founding movement, no loyal heartland, no reach.
+Their editor job is the border only. *(Supersedes Claude's recommendation to give three of them
+existing movements; S80's problem is answered by ruling 28 instead.)*
+
+**Ruling 28 — the Deep South is balanced by rising movements that cross state lines.** *(Aaron,
+7 Sep, deferred to a later discussion.)* Rather than a founding movement, the giant is checked from
+inside by *growing* movements — and the significant part is that they **cross state lines**, so they
+are not tied to any one nation's ground. That is a different animal from everything settled so far,
+where a movement belongs to a nation first (S55), and it is how ruling 4's counterbalance actually
+arrives. **To be designed later in this round.**
+
+**Ruling 29 — the two names are adopted: the Gulf Compact and the Allegheny Republic.** *(Aaron,
+7 Sep.)*
+
+**Ruling 30 — Central Florida gets no movement, and the Floribama leftovers go to it.** *(Aaron,
+7 Sep.)* Whatever the Gulf Compact does not take of the Floribama region joins Central Florida, and
+where there is no connection to Central Florida, the orphan joins whichever neighbour it touches with
+the largest population.
+
+**And the exception that makes it work, agreed the same day.** Measured: of Floribama's 21 Areas,
+**only Taylor County touches Central Florida**; thirteen touch the **Deep South**, four the Gulf
+Compact's other ground, and five touch nothing but Floribama. So the fallback as written would send
+Mobile, the Alabama Gulf coast and Biloxi to the giant — handing it a seaport and undoing ruling 7,
+which exists precisely to keep it landlocked.
+
+**Therefore: the Gulf Compact's core includes the Mississippi and Alabama Gulf counties and never
+rolls for them.** Only how far east into Florida it reaches is rolled, and what it does not take
+chains back to Central Florida through the panhandle. This comes from Aaron's own sentence — those
+counties "went in to support them" and are founders, while the Florida panhandle is hedged as
+"mainly up to Pensacola". The largest-neighbour fallback survives as a general safety net for any
+rolled nation's orphans; it simply does not decide this one.
 
 **S65 — Realisation brings a fervour.** *(Aaron, 7 Sep.)* "When a nation is realised — at turn 0 or
 later — it should bring an extra fervour, like the citizens are willing to overlook certain things."
