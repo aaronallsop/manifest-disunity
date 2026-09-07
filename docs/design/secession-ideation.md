@@ -1,0 +1,423 @@
+# Secessionist movements — ideation (round 1)
+
+**Stage 1 of five: IDEATION. Nothing here is judged, chosen, sized or ruled on.**
+Opened 6 September 2026. Round 1 of the plan in `IDEATION-PLAN.md`: the story, and the scoreboard
+every other system is measured against. Aaron's opening thread: *"the main thing is the story behind
+the break-apart and how that influences everything."*
+
+**The rule for this document** is the same as the economy's: an idea earns a place by having been
+had. Contradictions are correct at this stage. Ideas are numbered **S1** upward.
+
+**The division of labour, said plainly.** The story of how the country came apart is Aaron's to
+write — he is the filmmaker. What this document does is the systems designer's half: show what the
+game currently says about it (almost nothing), show the story the mechanics have already written by
+default, list the questions the story has to answer *because a rule reads the answer*, and start the
+idea bank from what is already latent in the build. When the story is written, the mechanisms in it
+get found and the bank grows.
+
+---
+
+## 0. What the game currently says about why the country came apart
+
+Everything, in full. Verified against the authored scenario and the text the opening newspaper prints:
+
+> *The United States has already come apart. Texas partitioned along its own cultural lines,
+> California along the coast and the mountains, and the Mormon Corridor is halfway out of the Union
+> with the argument still running.*
+>
+> *Texas dissolved into five successor states.*
+> *California dissolved into five successor states, and ceded the north to Cascadia.*
+> *Deseret declared itself out of the Mormon Corridor.*
+
+Plus one line that lives in the ideas file and has never been told to a player: the Panama Canal is
+shut to former American states, and a navy that cannot move between its own oceans is two navies.
+
+That is the whole of it. There is no *why*, no *when*, no *who did what to whom*. The game opens on
+1 March 2036, the eve of the Texas bicentenary — and nothing says whether the Union dissolved the
+week before or twenty years earlier.
+
+---
+
+## 1. The story that has already been written — by omission
+
+This is the most important section. **Where nobody wrote the story, a mechanical default wrote it
+instead**, and the defaults add up to a specific and rather bland history. Every line below is
+verified against the build.
+
+| The default says… | Because… |
+|---|---|
+| **1. It was peaceful.** | War weariness has a floor of zero and rises only with fighting, and nobody has fought. Sixty-one nations open fully rested |
+| **2. Nobody holds a grudge about it.** | The relations board opens quiet. The only memories on it are the corridor states' toward Deseret. Texas's five successors have no opinion of each other. The forty-nine have no opinion of Texas leaving |
+| **3. It was settled, and everyone agreed.** | The ten successors and Cascadia are *founding states* by construction — "the dissolution settled before turn 0" — recognised by everybody, with no honeymoon and no parent to earn a signature from. That includes Cascadia, a movement's government over ground that leans the other way, treated as a peer of Vermont on day one |
+| **4. Only Deseret is unfinished.** | It is the one nation born unrecognised, with a parent whose signature is the key |
+| **5. There is no United States.** | No nation is the federal government or claims to be. The District of Columbia is a nation of 702,250 people, exactly like Delaware. Nobody inherited a capital, a debt, a navy or a flag |
+| **6. It is undated.** | Nothing anywhere says when. This matters mechanically: memories decay, so "recently" is a number |
+| **7. Every movement wants the same thing.** | Thirty-two movements carry authored types — separatist, autonomist, ideological, reunification, economic, irredentist, indigenous, theocratic — and authored goals: *reunite Texas*, *return the federal land*, *a water compact*, *French in the schools*, *farm price supports*. **No rule reads any of it.** Every movement, on crossing the line, declares independence. Eight kinds of wanting, one kind of doing |
+| **8. Nobody backs anybody.** | Every movement has a slot for a sponsoring nation, reserved long ago and never filled |
+| **9. The grudge slot is empty.** | Of the six things that make a region angry, **the largest single weight belongs to the ground's own authored grievance** — a grudge older than whoever governs it. It is set on the corridor ground that voted to go and was cut off, and on nothing else. Some 1,650 of 1,688 Areas carry none |
+
+**Read together: the country dissolved recently or long ago, by universal consent, without a shot,
+leaving no hard feelings, no federal government, and no reason for anyone anywhere except the Mormon
+Corridor to be angry about it.** That is not a story anybody chose. It is what you get when the
+story is not written and the numbers default to zero.
+
+### How much of the scoreboard is already the story
+
+The formula that decides a region's anger, with its current weights:
+
+| Pressure | Weight | Whose system |
+|---|---:|---|
+| The ground's own grudge | **0.35** | **the story** |
+| How tired of war the country is | 0.22 | conquest |
+| How well its people are fed, treated and paid | 0.22 | economy |
+| How freely they may disagree | 0.20 | politics |
+| How firmly the government holds its ground | 0.18 | politics and conquest |
+| How powerful the country holding it is | 0.14 | conquest |
+
+Outside that sum: how closely the region's politics match the movement's *multiplies* everything
+(a well-run place cannot produce Deseret); a committed neighbour pulls with a weight of 0.42, larger
+than any single grievance; a garrison pushes back at 0.30. A region can gain at most 3.5 points of
+share a turn and lose 5, an Area leaves at 40%, and at most three Areas change hands a turn.
+
+**So the story already has the biggest seat at the table and is not sitting in it.** That is the
+finding this round starts from.
+
+---
+
+## 2. What the story has to decide
+
+Questions whose answers a rule reads. This is the systems designer's contribution to a filmmaker's
+story: not *what happened*, but *which parts of what happened the game will be able to hear*.
+
+| The story must say… | Which rule reads the answer | What changes with the answer |
+|---|---|---|
+| **When** it happened | Memories decay by turn; the honeymoon lasts four turns; "recently" in every relation | A break-up last spring is a live wound in every relation on the board. One twenty years old is history the young do not remember |
+| **How** — by agreement, by declaration, or by collapse, *for each successor* | Recognition already distinguishes a nation that was *released* (a country from day one) from one that *declared* (a pariah for years). Today every successor is filed as released | Whether Houston, or Cascadia, or the Bay Area opens as a peer or as a rebel; who has to sign whose paper first |
+| **Whether there was fighting**, and who fought whom | War weariness at open; the `warred`, `annexed` and `broke` memories; the force each nation opens holding | Whether Texas's five open exhausted and armed against each other or fresh; whether anybody's army is already on somebody's border |
+| **Who left first**, and who recognised them | The `seceded`, `lost`, `recognised` and `betrayed` memories — that last one is *you admitted our rebels were a country* | The opening grudge map. Who owes whom; who will never sign what |
+| **Why five Texases and not one** | A Free Texas is an authored *reunification* movement with an eleven-Area core, and today it would declare independence *from Dallas* — a sixth Texas | Whether the movement wants the five back together, or the Union back, or something else; and whether it is the villain or the hero of the Texas story |
+| **Why five Californias** | The California Republic is the same kind of movement — *reunite California, a Pacific republic* | Same question, on the other coast |
+| **Whether there is still a United States**, and whether anyone claims to be it | The Reunification victory counts seats of government, half the people, half the economy. The District of Columbia is a nation | If a rump federal government exists, reunification is *joining* something; if it does not, it is *building* something, and those are different games |
+| **What happened to the military** | The two seas and the shut canal; force is derived from population and wealth, so nobody inherited anything | Who has the carriers, the bases, the nuclear arsenal — or whether the story is that nobody does, and why |
+| **What happened to the money** — the dollar, the debt, federal transfers | The economy round will need this. A state that lived on federal money opens richer than it should | Whether Mississippi and New Mexico open in crisis; whether there is one currency or sixty |
+| **What happened to federal land** | The Sagebrush Rebellion's goal is *return the federal land*. In the West most of the ground is federal *(from memory: roughly four-fifths of Nevada — unverified)* | Who owns the West on day one, and whether that is a settled fact or the first thing everybody fights over |
+| **What happened to the reservations** | Two indigenous movements — sovereignty and land restoration — and a Navajo cultural leaf | Whether reservations are nations, autonomous ground, or nothing, on a board where sovereignty is the whole game |
+| **What each of the sixty-one believes about it** | The AI has no personality; its posture is derived from how frightened it is | A nation that believes it was wronged, or that it *won*, behaves differently — and today they all behave identically |
+| **Whether people moved** | Migration opens from the 2024 census; a real break-up would already have moved people | Whether the map opens sorted or unsorted; whether there are refugees on day one |
+
+---
+
+## 3. The idea bank
+
+### A. The story as mechanics
+
+**S1 — The backstory is a set of back-dated memories.** *(Claude, 6 Sep)* The game already has a
+closed vocabulary of fifteen things one nation can do to another — annexed, warred, witnessed,
+absorbed, broke, granted, traded, seceded, lost, recognised, betrayed, treatied, aided, reneged,
+revoked. Every grudge the story creates can be written in that vocabulary, dated before turn 0, and
+every rule that reads memories will hear it. No new mechanism; the story is data.
+
+**S2 — The grudge slot is the story's slot.** *(Claude, 6 Sep)* The largest weight in a region's
+anger is its own authored grievance, and it is set almost nowhere. The story of the break-up decides
+where it goes: the ground that voted to leave and was not allowed to; the ground that was traded away
+in the settlement; the ground whose capital was moved.
+
+**S3 — Each successor gets its own birth.** *(Claude, 6 Sep)* Released, declared, or collapsed —
+per successor, not per scenario. Houston might have negotiated its way out; Cascadia certainly did
+not. Recognition already knows the difference.
+
+**S4 — The break-up has a date, and the date is a number in every memory.** *(6 Sep)* Or several
+dates: Texas first, California later, the corridor still going.
+
+**S5 — Somebody is the United States.** *(open)* A rump federal nation — the District plus
+whoever stayed — that claims continuity, holds the debt and the flag, and is the thing
+Reunification means joining. Or nobody is, and the flag is up for grabs.
+
+**S6 — The forty-nine did not all stay for the same reason.** *(6 Sep)* Some stayed loyal, some
+were left behind, some are waiting to see. That is three personalities the AI does not have.
+
+**S7 — Nations open with opinions.** *(6 Sep)* The AI's posture is derived from fear alone. The
+story could give each nation a founding belief — wronged, victorious, abandoned, relieved — that
+colours what it wants.
+
+**S8 — The opening newspaper tells the story.** *(F12, 5 Sep, generalised)* The turn-0 edition
+prints three sentences. It could print the history, and it is the natural place for the canal.
+
+### B. What a movement wants
+
+**S9 — A movement's type decides what satisfies it.** *(Claude, 6 Sep — the largest gap found)*
+Eight kinds of wanting and one kind of doing. A *separatist* wants out. An *autonomist* wants
+self-rule and is satisfied by autonomy. An *economic* movement wants a policy and is satisfied by a
+government that adopts it. An *irredentist* wants a neighbour's ground. A *reunification* movement
+wants to *join* somebody, not leave. Today all eight declare independence.
+
+**S10 — A Free Texas should want Texas.** *(6 Sep)* When it crosses the line in Dallas, the sensible
+outcome is not a sixth Texas but a Dallas that wants union with Houston — or a Texas that re-forms
+around whichever successor the movement is strongest in.
+
+**S11 — Autonomists are the cheap ones.** *(6 Sep)* Acadiana wants French in the schools. That is a
+movement a government can *win*, and the win should be visible: grant it, and the movement goes home.
+
+**S12 — Economic movements are angry farmers with a homeland.** *(F3, 5 Sep, and this round)* The
+Farmers Union has a 257-Area core and wants price supports. That is the interest-groups idea already
+in the ideas file, and it turns out one is already on the map wearing a movement's name.
+
+**S13 — Irredentists are somebody else's problem.** *(6 Sep)* Greater Idaho wants eastern Oregon.
+The movement lives in Oregon's ground and wants to join Idaho. That is a movement that threatens one
+nation and *tempts* another — and today Idaho has no way to encourage it.
+
+**S14 — Indigenous movements want sovereignty, not statehood.** *(6 Sep)* Whether that is a nation,
+an autonomous zone, or a thing the game cannot yet represent is a story question first.
+
+**S15 — Movements have demands, and demands can be met short of independence.** *(6 Sep)* The
+generalisation of S9–S14: a movement is a list of things it wants, and each thing it gets takes some
+of the pressure off. Independence is what happens when nothing is given.
+
+### C. How a movement is born, grows and wins
+
+**S16 — Movements have leaders.** *(6 Sep)* One named person, like a nation's. Arrest them (a crisis
+that already exists), exile them, buy them, or watch them win an election. Today a movement is a
+share and a name.
+
+**S17 — Another nation can back a movement.** *(built-but-unused; 6 Sep)* The sponsor slot exists.
+Sponsoring a rebellion next door is the oldest move in the book, and the `betrayed` memory is
+already waiting to record how the parent feels about it.
+
+**S18 — Movements can be founded in play, not only at setup.** *(6 Sep)* All thirty-two spawn once
+at the start. A grievance with no authored movement to organise it goes nowhere: a badly governed
+place with no homeland cannot secede at all. That is a gap in the map where the central mechanic
+cannot happen.
+
+**S19 — Two movements can want the same ground.** *(6 Sep)* Franklin and the New Confederacy
+overlap; the Sagebrush Rebellion and Deseret overlap. What happens when both are over the line?
+
+**S20 — A movement can split, or moderate, or radicalise.** *(6 Sep)* Its ideology is fixed at
+authoring. A movement that has been suppressed for a decade is not the movement it was.
+
+**S21 — A movement can win without leaving — by winning the election.** *(6 Sep)* Elections exist
+and are lost. A movement with 45% of a nation is close to governing it. That is a different ending
+from secession and today it is not one.
+
+**S22 — Movement strength should be visible before it is dangerous.** *(built: latent → rising →
+armed → declared → realised)* The states exist and are read off the map. What the player is told at
+each is the design question.
+
+### D. What a government can do about it
+
+**S23 — The four answers, and the fact that they are priced.** *(built)* Release the ground, grant
+self-rule, change what you stand for, or garrison it. Four prices for one relief: the Area, revenue
+and authority, your own identity, or liberties. This is the best-designed part of the built system
+and the bank should extend it rather than replace it.
+
+**S24 — A fifth answer: negotiate with the movement.** *(6 Sep)* Sit down with it. Give it two of
+the five things it wants. This is S15 from the government's side, and it is the missing player verb.
+
+**S25 — A sixth: hold a referendum.** *(6 Sep)* Let the ground vote. Lose, and it leaves cleanly —
+released, a country from day one, no war. Win, and the movement is set back for years. A gamble with
+the honesty of the result depending on your liberties, exactly as a stolen election already does.
+
+**S26 — A seventh: buy them.** *(6 Sep)* Spend on the region — the way the harvest crisis already
+lets you spend on grain. Money as a release valve, with the economy round deciding what money is.
+
+**S27 — An eighth: partition it yourself.** *(6 Sep)* Draw the line before they do, and keep the
+half that wants you.
+
+**S28 — Every answer should make the next movement.** *(built for the garrison; 6 Sep for the rest)*
+A garrison makes the next movement. Appeasing a minority alienates the majority — built and
+measured. Releasing ground teaches the next region that leaving works. None of the answers should be
+free of a second-order cost, and today only two carry one.
+
+### E. Playing the other side
+
+**S29 — Going with the breakaway.** *(built)* When a movement declares out of your ground you may
+become it. Offered after the declaration so you decide knowing what actually left.
+
+**S30 — Playing as the movement before it declares.** *(6 Sep)* Choose Deseret at turn 0 as an
+organisation, not a nation: grow, recruit, provoke, wait for the moment. A different game on the
+same board, and the one most people who pick up a game called *Manifest Disunity* may expect.
+
+**S31 — Playing as the parent that wants to be left.** *(6 Sep)* Some governments would be glad to
+see a region go. The rules make that possible — release — and the story could make it a stance.
+
+### F. What secession does to everybody else
+
+**S32 — Recognition is the second half of secession.** *(built)* A declared nation is a pariah until
+enough of the continent, and above all its parent, signs. Refusing to sign is a weapon.
+
+**S33 — The neighbour that takes the refugees.** *(a crisis already exists)* When a nation comes
+apart, people arrive at the border. Open it or close it. That crisis exists; what it does to the
+receiving nation's own movements does not.
+
+**S34 — Defection along a frontier.** *(built)* Once a breakaway exists, ground next to it that
+crosses the line joins it, at most three Areas a turn. Declaring makes a country; defecting grows it.
+
+**S35 — The left-behind are the angriest.** *(built, for the corridor)* Ground that voted to leave
+and was cut off carries the strongest grudge on the map. The story could make that true elsewhere.
+
+**S36 — Losing ground costs the parent more than the ground.** *(built: authority falls with
+territory lost; a coalition reads the memory)* And it should cost the parent's *government*, at the
+next election, which it does.
+
+### G. The people
+
+**S37 — Migration is what makes the ground.** *(built)* People move toward people who think as they
+do; a divided nation sorts itself into homogeneous halves over a few decades; those halves are where
+a movement organises. Settlement dilutes a movement; departure shrinks it.
+
+**S38 — Expulsion is migration with the source forced.** *(named in the build, not built)* A
+government can move people out. The machinery is the migration system with one input changed.
+
+**S39 — Educated people leave a failing country first.** *(economy ideation, E37)* And a region that
+loses them loses the people who would have organised it — or the people who would have paid for it.
+
+**S40 — A region's anger reads the region, not only the nation.** *(built since M12)* Grievance
+blends the Area's own condition with its nation's, so a starving valley in a rich country is angry.
+The economy round needs to know that local quality of life is already a thing the formula reads.
+
+### H. Ideas already latent in the opening board
+
+**S41 — Austin.** The only blue Texan successor, holding the old Texas seat of government,
+surrounded by the four it just divorced. The story of Texas is Austin's story or it is nobody's.
+
+**S42 — Cascadia.** A green government over the State of Jefferson's ground. A country born with its
+own secession problem, and the only opening the game rates *brutal*.
+
+**S43 — Deseret's key.** Utah's signature unlocks the continent. The one piece of the story that is
+built end to end, and the model for how the others should work.
+
+**S44 — The corridor that stayed.** Elevated share, below the line on purpose, growing faster than
+anywhere else. The one place the grudge slot is used.
+
+**S45 — Cities leave.** *(seen once, in one saved game — unverified as a pattern)* The breakaways in
+Aaron's last play were Cook County out of Illinois, Santa Clara out of the Bay Area, and a re-formed
+Los Angeles: cities of the same politics as their parent. Worth checking whether the built model
+prefers to break cities off, and why, before the story assumes otherwise.
+
+---
+
+## 4. What secession needs from the other rounds
+
+The handover. Each later round inherits these as requirements, and the weights above say how much
+of the scoreboard each one is responsible for.
+
+**From the economy (round 4)** — 17% of grievance today, and the deepest term. Quality of life must
+be able to *fall* — from hunger, from a broken supply, from a blockade — visibly, for a reason a
+player can read, and recover when the cause is fixed. Today it is "deliberately near-saturated at
+peace". The economy ideation's E1 (food as a requirement) is the first thing this round demands of
+it. And it must fall *locally*: the formula already reads the Area's own condition.
+
+**From politics (round 3)** — 22%, and every one of the answers. Liberties must move with what a
+government chooses to do. Authority must be losable. Elections must be able to punish. And the four
+release valves, plus whichever of S24–S27 survive, need prices that are real and second-order costs
+that land.
+
+**From conquest (round 2)** — 34%, the largest share. War weariness that rises with fighting and
+falls only with peace. Occupation that is resented in proportion to who was taken. A garrison that
+holds ground down and radicalises it. And **one machine for making nations**: a civil war that goes
+badly and a movement that declares must produce the same kind of country, with the same birth,
+because they already share the machinery and must not grow apart.
+
+**From diplomacy (round 5)** — recognition of the new-born, who signs and who refuses; sponsorship
+of somebody else's movement; the `betrayed` memory; and what a pariah can and cannot do.
+
+**From events (round 6)** — shocks that land on grievance, and crises that offer the answers above
+as choices. Twelve exist and are symptoms; this round asks for causes.
+
+**From the board and identity (fixed)** — nothing changes, and one thing is a constraint everybody
+inherits: **match is multiplicative.** A well-run place cannot be radicalised into a movement whose
+ideology it does not share. Whatever the other rounds do to grievance, geography says where and
+ideology says how much.
+
+## 5. What the other rounds may demand of secession
+
+- **A region's anger must be explainable in one sentence.** The Why record exists; the sentence must
+  name a pressure and a system, so the player knows which screen to go to.
+- **A movement must be able to want something other than independence**, or politics has nothing to
+  negotiate with and the economy has nothing to buy off.
+- **Nation-making must be one machine**, so conquest's civil wars and secession's declarations do
+  not become two.
+- **The player must have a verb.** Not a choice among four penalties after the fact, but something to
+  do on a Tuesday while a region is at 31% and rising.
+
+---
+
+## 6. The scenarios this round has to be able to tell
+
+Traced against what is built. Where the build cannot yet tell the story, that is the finding.
+
+**1. The Mormon Corridor, as it stands.** *Built end to end.* Deseret opens holding the Wasatch Front
+and whatever else rolled its way, unrecognised. The corridor Areas that did not cede carry an
+elevated share below the line and the strongest grudge on the map, growing half again as fast as any
+other movement. Utah refuses to sign; the continent's willingness to recognise Deseret sits at 7% a
+turn. Utah signs; it jumps to 18%. Over forty turns the corridor's mean share runs from 0.30 to
+0.46. **This is the one story the game already tells, and it is the model for the rest: a grudge on
+the ground, a parent with a key, a pariah with a clock.**
+
+**2. Austin, turn one.** *Half tellable.* Blue, holding the old capital, surrounded by Dallas,
+Houston, San Antonio and El Paso. A Free Texas has its eleven-Area core somewhere in those five. Under
+the built rules, when it crosses the line it declares independence *from whichever successor holds
+its core* — a sixth Texas — and Austin's four neighbours have no memory of the divorce and no opinion
+of it. **The map is right and the story is absent.** The story has to say what A Free Texas wants,
+whom it blames, and whether Austin is its capital or its enemy.
+
+**3. Cascadia's first year.** *Tellable, and grim.* A green government over the State of Jefferson's
+heartland. Civil liberties open at 0.47, the lowest on the board, because the governed sit far from
+the governing. Jefferson's core is Humboldt and Shasta — inside Cascadia. Match is high, grievance is
+high, the neighbours are committed. Under the built rules Jefferson crosses the line within a few
+years and Cascadia loses its own founding ground. The player's four answers: release it (and
+Cascadia is five Areas), grant autonomy (and command less), change course to red (and stop being
+Cascadia), or garrison (and make the next movement). **This scenario works today. It is the strongest
+argument that the four answers are the right shape.**
+
+**4. The player's Tuesday.** *The gate.* You are Illinois. A movement stands at 31% in three Areas
+and rose two points last quarter. It is not over the line; nothing has happened; you have one action.
+Under the built rules you can grant autonomy now (revenue and authority, reversible), or wait. You
+cannot ask what it wants, offer it anything, or spend on it. **Every answer the game has is a
+response to a declaration, not to a rising.** That is the verb this round is missing and the reason
+S15, S24 and S25 are in the bank.
+
+**5. The reunification movement that makes a sixth country.** *A defect the story exposes.* A Free
+Texas at 40% across its core. The rules fire. A new nation is created — named by the red template,
+*Free State of Dallas* or similar — unrecognised, in its honeymoon, with a 12% transition cut, out of
+the ground of a successor that itself opened as a founding state. There are now six Texases and a
+movement whose goal was one. **The built system cannot tell the story its own authored content
+describes.**
+
+**6. The neighbour that comes apart.** *Partly built.* Louisiana fails; the crisis fires in
+Mississippi — open the border or close it. Open it and quality of life falls, standing rises. What
+does not happen: the arrivals do not carry their politics, do not join or dilute Mississippi's own
+movements, and Louisiana's breakaways are recognised or not by rules that have no idea Mississippi
+just took in its people. **The people move but the story does not travel with them.**
+
+---
+
+## 7. Questions for Aaron — the story is yours
+
+Not the whole story. The six answers that change the most rules, in the order they change them.
+
+1. **When did it happen, and was it one event or several?** Last year, or a generation ago; Texas
+   first and the rest following, or all at once. Every memory on the board is dated by this.
+2. **How did each of the eleven leave — by agreement, by declaration, or by collapse?** Houston
+   negotiating its way out and Cascadia seizing its ground are different births, and the game already
+   knows the difference. Today they are all filed as agreed.
+3. **Was there fighting, and who fought whom?** If the answer is yes anywhere, sixty-one rested
+   armies and a quiet relations board are wrong on turn one.
+4. **Is there still a United States, and does anybody claim to be it?** This decides what
+   Reunification means — joining something, or building it — and it decides what the District of
+   Columbia is.
+5. **What does A Free Texas want?** The five back together, the Union back, or Austin's head. It is
+   the largest authored story on the board and the rules currently make it produce a sixth Texas.
+6. **What happened to the four inheritances — the military, the money, the federal land, and the
+   reservations?** Each is a round's worth of consequences, and each is currently nothing.
+
+Answer any of them in a paragraph and the bank grows from it. Answer all six and round 1 has its
+story.
+
+---
+
+*Sources, for whoever builds this: the authored scenario in `content/scenario-shattered.json`; the
+opening newspaper text in `js/scenario.js`; the relations vocabulary in `js/relations.js`; the
+sentiment weights in `js/tunables.js` (`sent.*`, `secession.*`); movement definitions in
+`data/parties.json` and the authored table in `build/build_parties.py`; `DESIGN.md` §2.1, §3.1, §6.1,
+§6.2, §6.5, §6.6, §7. The Nevada federal-land figure is from memory and unverified. The observation
+in S45 is from a single saved game and is not a finding.*

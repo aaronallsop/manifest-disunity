@@ -92,7 +92,7 @@ Each round produces three things, and the third is what makes this a sequence ra
 | **3** | **Politics** | Owns two more pressures, and owns all four ways a government can answer a movement — give ground, give self-rule, change what you stand for, or send soldiers |
 | **4** | **Economy** | Already 84 entries deep and parked. This round *finishes* it against what rounds 1–3 have demanded of it, rather than starting it |
 | **5** | **Diplomacy** | Reaches the scoreboard only through the others, so it goes late and inherits. It is also the round where a *new* nation's problems land — recognition, alliances against a conqueror, being nobody |
-| **6** | **Events** | Things that happen that nobody chose. Reads from nothing and writes to everything, so it must go last: you cannot design a shock before you know what it is shocking |
+| **6** | **Events** | Things that happen that nobody chose. Reads from nothing and writes to everything, so it must go last: you cannot design a shock before you know what it is shocking. (Twelve authored *crises* already exist — a failed harvest, a general who will not march — but each is triggered by the nation's own condition, so they are symptoms with choices attached rather than shocks from outside. This round is about the shocks) |
 | **7** | **The things above** | What winning means, how the single action is spent, and what a nation is allowed to know. Collected as a running list through rounds 1–6, resolved here |
 
 ---
