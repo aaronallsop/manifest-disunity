@@ -752,7 +752,17 @@ south-east Colorado; and **the counties nobody clearly owns are assigned by dice
 ground leaning toward Utah and the Navajo Nation, Colorado ground toward the Navajo Nation and the
 Front Range Republic. Deseret is the third claimant on the Utah four.
 
-**Measured, and it complicates the ruling.** The painted "Navajo" region is 51 Areas and is not the
+**Ruling 25 — the Navajo Nation is the reservation, not the painted region.** *(Aaron, 7 Sep.)*
+Roughly ten Areas: **Apache, Navajo and Coconino** in Arizona; **McKinley, San Juan, Rio Arriba and
+Sandoval** in New Mexico; **San Juan** in Utah; and the Four Corners edge of Colorado. Everything
+else in the painted region returns to its state or enters the contested pool of ruling 23. *That
+geography is from memory and unverified; it wants checking against a real reservation boundary
+before anything is built on it.* This keeps ruling 3 intact, leaves New Mexico enough ground to be
+the stateless zone the story calls for, and gives the **Rio Grande Union** — a movement that already
+exists for exactly the Las Cruces-to-Taos corridor — somewhere to grow, instead of that ground being
+Navajo from turn 0.
+
+**Why the ruling was needed.** The painted "Navajo" region is 51 Areas and is not the
 Navajo Nation — it is the whole Hispano, Pueblo and Navajo Southwest: **all 22 New Mexico Areas
 outside the Frontier leaf, including Albuquerque and Santa Fe**; 19 Colorado Areas that include Baca,
 Bent, Prowers, Otero and Las Animas — the Arkansas River plains, which are south-*east* Colorado and
