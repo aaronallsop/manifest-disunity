@@ -843,6 +843,71 @@ asked to do its job as well.
 counties; a county cannot join anything on its own, and every adjacency, homeland and border in the
 game is per Area. All ring distances above are Area-level. *(Resolves S74.)*
 
+### The movement map editor — Aaron, 7 September
+
+**Ruling 26 — homelands are painted, not derived.** A second map mode in the editor already in the
+game, where Aaron paints each nation's ground by hand in nested levels: an outer boundary that is
+the whole possible extent, **sub-level 1** the main core, **sub-level 2** the ground most likely to
+join, sub-level 3 the next, and so on. This **replaces the ring ladder of ruling 24** as the way a
+nation's setup extent is decided. The reason it is better is that rings are geography-blind — they
+cannot tell that the Wasatch Front's western neighbours are empty desert and its northern ones are
+Idaho Mormon country — and painting gets the real shape.
+
+**Areas must be able to overlap.** One Area can be claimed by several movements at different levels,
+which is how contested ground exists at all. *This is the one part that is not free: the cultural map
+assigns each Area exactly one path down a tree, so a movement map needs each Area to carry a list of
+claims with a level on each. A new kind of map mode, not a new map. Architecture's problem, flagged
+here.*
+
+**One number per level does two jobs, and the game already works this way.** A level's chance is the
+chance it joins at setup; ground that rolls *no* becomes the movement's reach, carrying elevated
+sentiment and a grudge. That is exactly the corridor-that-stayed mechanism, generalised.
+
+### The twenty-one map jobs, and the three kinds
+
+**Type A — the border is known; the job is the reach.** *(6)*
+
+| | Painted today |
+|---|---|
+| United States of New England | 49 — ME 11, VT 8, NH 8, MA 12, CT 6, RI 4 |
+| Appalachia | 75 — WV 22, TN 19, VA 12, GA 7, KY 7, NC 6, SC 2 |
+| The Carolinas | 97 — NC 57, SC 27, GA 13 |
+| The Deep South | 133 — GA 48, AL 33, TN 32, MS 19, FL 1 |
+| Central Florida | 30 — all Florida |
+| The Allegheny Republic *(was Rust Belt)* | 57 — PA 35, NY 20, MD 2, less the North Country |
+
+**Type B — the border itself rolls.** *(9)*
+
+| | State today |
+|---|---|
+| Deseret | 57 corridor in five sub-regions, odds already tuned |
+| Navajo Nation | painted 51 → ~10 under ruling 25; draw from scratch |
+| Greater Idaho | nation 42 (ID 31, OR 11); movement homeland only 17 |
+| Front Range Republic | nation 42 (CO 37, WY 5); movement homeland only 11 |
+| The Gulf Compact *(was the Gulf nation)* | 66 — LA 32, MS 11, AR 10, FL 8, AL 5 |
+| **Houston** | how much of western Louisiana it actually took |
+| **Washington D.C.** | how far the martial-law ring and the Virginia absorption reached |
+| Lakota Nation | nothing — no border and no movement |
+| Superior | **the painted region is the wrong nation** — WI 6, MI 4, MN 2, where ruling 10 asks for Michigan ground only. A blank canvas over Michigan's 49 Areas |
+
+**Type C — ground that fractures into an unknown number of pieces.** *(6)* Arkansas · Wyoming · New
+Mexico · Kentucky · Ohio · Michigan. **This does not fit the tool**: the job is not one nation's
+extent and reach but *how a state comes apart*, and how many of the fragments end up governing
+themselves. It needs its own answer.
+
+**S79 — Two names.** The Gulf nation → **the Gulf Compact**: it was formed by neighbours agreeing to
+defend one of their own, an interstate compact is a real American instrument, and it covers the fact
+that the nation runs up the river into Arkansas as well as along the coast. The Rust Belt → **the
+Allegheny Republic**: "Rust Belt" is a pejorative nobody names themselves, and the Allegheny
+mountains and river run through exactly this ground. *(Alternatives offered and not taken: the Delta
+Republic; the Susquehanna Republic.)*
+
+**S80 — Four of the Type A nations have no movement.** The Carolinas, the Deep South, Central Florida
+and the Allegheny Republic are category-3 states — born of unification, not of anyone organising. So
+"paint their reach" presumes they get a movement, which is the question asked of the Bay Area and not
+yet answered. Without one they have no loyal heartland under ruling 16 and nothing to paint beyond
+their own border.
+
 **S65 — Realisation brings a fervour.** *(Aaron, 7 Sep.)* "When a nation is realised — at turn 0 or
 later — it should bring an extra fervour, like the citizens are willing to overlook certain things."
 Distinct from what is built: the honeymoon is four turns of borrowed Authority, whereas this is a
