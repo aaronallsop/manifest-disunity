@@ -1371,6 +1371,43 @@ with no snapping to a state border.*
 *Consistent with what the project already learned for nations: home ground is a set of Areas stamped
 at birth, not a state code, and `homeSt` survives only as a display fact that no rule reads.*
 
+### Superior, the Lakota Nation, and the New Confederacy's name — 7 September
+
+**Ruling 52 — the New Confederacy keeps its name for now, and it is marked for change.** *(Aaron.)*
+His objection stands and is recorded: "this is the one that is most likely to happen if this
+happened, because the Confederacy is still strong as an ideology — but I feel like it would have a
+different name than just New Confederacy." **Not renamed today; do not let this quietly become the
+final name.**
+
+**Superior — proposed, 11 Areas and about 813,000 people.** The Upper Peninsula is exactly four Areas
+on this map (Chippewa, Delta, Houghton, Marquette — 15 counties merged, 304,430 people), and the top
+of the Lower Peninsula adds seven: **Emmet** (the tip, Petoskey and Mackinaw City), **Otsego**
+(Gaylord), **Alpena**, **Grand Traverse** (Traverse City), **Wexford** (Cadillac), **Roscommon** and
+**Iosco** — 508,213 people. The line falls roughly Manistee to Bay City, which is where Michigan's own
+sense of "up north" sits. **Mason (Ludington) and Clare are the swing**, adding 153,000 and pushing
+the line a county south. Michigan's remaining ground — 22 Areas after Detroit's ten — is the tier-3
+stateless region.
+
+**S100 — The Lakota Nation cannot be drawn accurately on this map, and that is a data finding.** The
+Area merge has swallowed the reservations into Areas named after the towns beside them:
+
+- **Pine Ridge and Rosebud** — the two largest Lakota reservations — are both inside the **Pennington
+  Area**, whose name and 190,035 people are Rapid City's.
+- **Standing Rock and Cheyenne River** are split across the **Butte** and **Brown** Areas, the second
+  of which is Aberdeen, three hundred miles east.
+- **Crow Creek** is inside the Beadle Area.
+
+*So there is no combination of Areas that is the Lakota nation and not also several white towns.*
+**Claude's proposal: Butte + Brown + Pennington, 3 Areas and about 271,000 people** — which is the
+only draw that includes Pine Ridge and Rosebud at all, and which means **the Lakota Nation opens
+holding Rapid City.** That is uncomfortable and it is also the most interesting thing about it: a
+tribal nation that inherited a city which did not choose it is the natural home for the **Rejoin**
+verb, which has no examples anywhere else on the board. The honest alternative is Butte + Brown
+alone — 2 Areas, 81,000 people, no Pine Ridge, and the smallest nation on the continent.
+
+*The Navajo Nation does not have this problem: Arizona and New Mexico counties are large and mostly
+unmerged, so it draws cleanly. This is specific to the Dakotas, where small counties merged hard.*
+
 **S65 — Realisation brings a fervour.** *(Aaron, 7 Sep.)* "When a nation is realised — at turn 0 or
 later — it should bring an extra fervour, like the citizens are willing to overlook certain things."
 Distinct from what is built: the honeymoon is four turns of borrowed Authority, whereas this is a

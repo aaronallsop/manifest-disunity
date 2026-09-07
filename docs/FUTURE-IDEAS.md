@@ -560,3 +560,43 @@ diplomacy round, because this is the most extreme version of all three at once �
 has decided whether Canada and Mexico are allowed to want things. Aaron's own judgement is that it is
 too much for now, and the reason to keep it is that it is the best answer yet to a question the
 project has not otherwise asked: what are the neighbours *for*?
+
+---
+
+## F17 — A Free Texas is the movement that started all of this
+
+**Aaron, 7 September 2026.** Raised while confirming that a movement is bound to counties and only
+its *goals* refer to state lines.
+
+> "I like the idea of Free Texas being the original movement that spawned all of this. Like they were
+> the movement originally started when all 50 states were united."
+
+**What it is.** A Free Texas is not one movement among thirty-two. It is **the first one** — the
+movement that existed while the country was still whole, whose success in 2034 broke the Union, and
+which then survived its own victory to become the thing five rival Texases are now competing to
+inherit.
+
+**Why it is interesting.** It answers a question the backstory does not: *why Texas?* At present the
+story says Texas seceded and the consequences cascaded, but nothing says what Texas had that nobody
+else did. This gives it an organisation with a two-hundred-year name behind it — and it makes the
+game's opening date do double duty, since the bicentenary of the Republic falls on the second day of
+play and the movement that won independence is watching five governments argue over which of them
+is the heir.
+
+It also gives the movement a **different character from every other one on the board**. Everything
+else is trying to happen. A Free Texas already happened, and what it wants now is for the thing it
+made to stop being five things — which is why its verb is Reunify and why its members are inside all
+five successors at once.
+
+**What it would touch.**
+
+- Nothing mechanical. The movement exists, its homeland is baked, its verb is settled (ruling 18: a
+  reunification movement declares a winner rather than founding a sixth Texas) and its core already
+  spans all five claimants. **This is a story that fits the machinery rather than a change to it.**
+- The opening newspaper, whenever the game gets a voice to tell the backstory in — see F14 and F12,
+  both of which are waiting for the same thing.
+- It would want a founding date in the movement record, which nothing else has.
+
+**Before it is worth doing.** Whenever the backstory is written into the game rather than into
+`secession-ideation.md`. It costs nothing to adopt now as a fact about the world, and nothing depends
+on it, which is exactly why it can wait.
