@@ -571,6 +571,13 @@ the holding nation only; nothing reads the nation a region would join. Migration
 people along exactly this gradient — quality of life, liberties, output per head, toward the better
 neighbour — so the instinct has a home.*
 
+**Ruling 13 — "doing well" is quality of life, influence and authority.** *(Aaron, 6 Sep.)* The
+target-versus-holder comparison in S57 reads those three of the five stocks — not civil liberties,
+not war weariness. So a region is pulled toward a nation that feeds its people, that the world
+listens to, and that holds its own ground firmly. *Note: this is a different gradient from the one
+migration reads (quality of life and liberties), so ground and people can move by different logics;
+recorded, not argued.*
+
 **S58 — Or the ideology it is loosely tied to drives growth.** *(Aaron, "note for later".)* A
 Christian-nationalist movement in the South grows faster if Atlanta has eclipsed everyone and
 turned the Deep South's government liberal. *Built, indirectly: liberties already fall when the
@@ -586,7 +593,10 @@ applied to conquest, with no new machinery.
 built model makes ideology multiplicative for a stated reason: without it, bad government alone
 produces any movement anywhere. If a movement is tied to a nation first, something else has to do
 that job — the homeland already does the *where*; the target's success would do the *how fast*;
-ideology could drop to a modifier. That trade wants deciding on purpose.
+ideology could drop to a modifier. That trade wants deciding on purpose. *Parked by Aaron,
+7 September: "let's wait on that ideology until we get there." Claude's recommendation on the
+table when it is picked up: keep the gate for growing movements, make it a modifier for realised
+ones — a country you can see is a stronger argument than an idea.*
 
 ---
 
