@@ -53,4 +53,22 @@ The story itself is recorded in `secession-ideation.md` §8.
    already carries `betrayed` — "they admitted our rebels are a country" — and paying them is worse
    than admitting them; coalitions form on threat, which this would have to feed.*
 
-10. **Recognise lives here**, as built: costs no money, takes no action, priced with the parent.
+10. **The petition, and everything shaped like it — this round owns the mechanism.** *(Aaron,
+    7 September, secession rulings 47–50.)* Round 1 settled what a petition *is*: a movement that has
+    grown strong enough approaches the nation or nations that could carry it, on the model of Texas
+    asking to join the United States and being refused for years for reasons that had nothing to do
+    with Texas. It is a **standing offer**, not a one-shot; the answer can be *not yet*; **several
+    nations can be petitioned and compete for it**, decided by nerve rather than arithmetic, because
+    accepting costs the accepting nation whatever it was before — El Paso gives up its claim to
+    reunify Texas, Oregon stops being Oregon. **Refusing costs nothing immediately and everything
+    eventually**: the movement keeps growing, a rival may take it, and one refused often enough stops
+    asking and falls back to its own verb, becoming a country on your border that remembers.
+
+    **What this round owns:** how an offer is made, held open, bid for and withdrawn; whether a nation
+    can *solicit* a petition rather than wait to be asked (the other half of sponsorship, secession
+    ruling 21); whether a refused movement writes a memory, and which one — `betrayed` exists for a
+    related injury. *Built: negotiation exists for trade deals and corridors, with a term, a fixed
+    price and an expiry. A petition is the same shape pointed at territory and allegiance, which is
+    the reuse worth checking first.*
+
+11. **Recognise lives here**, as built: costs no money, takes no action, priced with the parent.

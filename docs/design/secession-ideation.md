@@ -1319,18 +1319,32 @@ claim to reunify Texas — Aaron: "essentially leaving Texas behind for this." O
 taking Cascadia stops being Oregon or Washington. **The price of accepting is the other future you
 were playing for**, which is what makes a petition a decision rather than a gift.
 
-**S97 — What does refusing cost?** Open. The movement presumably grows angrier, goes to a rival, or
-declares alone — and Texas's own history says a refusal can stand for years without killing the
-offer. Whether a refused movement remembers who refused it is a relations question.
+**Ruling 49 — refusing costs nothing immediately and everything eventually.** *(Aaron, 7 Sep.)* The
+offer stays on the table and the movement keeps growing, so the price of saying no is facing the same
+question again from a stronger position — while a rival may accept it out from under you. Oregon
+refusing Cascadia is Oregon betting that Washington will refuse too.
+
+**And a movement refused often enough stops asking.** It falls back to its own verb — Cascadia
+declares alone, the Rio Grande Union secedes rather than joining El Paso — and ground that could have
+been had peacefully becomes a country on your border that remembers being turned down. *Built: the
+`betrayed` memory already exists for a related injury.* So the standing offer has a clock even though
+no single refusal does.
+
+**Ruling 50 — petitions and everything like them belong to diplomacy.** *(Aaron, 7 Sep.)* This round
+established that a movement petitions, that nations compete to answer, and what refusal costs. **The
+mechanism itself — how an offer is made, held open, bid for and withdrawn — is round 5's**, along
+with the alliance, vassal and bloc questions already filed there. Anything further on petitions goes
+to `diplomacy-ideation.md` rather than here.
 
 **S98 — Three claims on the same ground in the Northwest.** Cascadia's movement spans Washington,
 Oregon and northern California; **Washington and Oregon compete to lead it**; and the California
 Republic's reunification claims the northern California part of it as well. *Three futures for one
 piece of coast, only one of which can happen.* Nothing else on the board is contested three ways.
 
-**S99 — Can a nation solicit a movement rather than waiting to be asked?** Open, and it is the other
-half of sponsorship (ruling 21): funding a movement you hope will one day petition you is a long game
-with a real risk, since it may petition your rival instead.
+**S99 — Can a nation solicit a movement rather than waiting to be asked?** *Moved to diplomacy
+(round 5, question 10) under ruling 50.* It is the other half of sponsorship (ruling 21): funding a
+movement you hope will one day petition you is a long game with a real risk, since it may petition
+your rival instead.
 
 **S65 — Realisation brings a fervour.** *(Aaron, 7 Sep.)* "When a nation is realised — at turn 0 or
 later — it should bring an extra fervour, like the citizens are willing to overlook certain things."
