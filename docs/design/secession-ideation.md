@@ -1163,6 +1163,53 @@ focus now is Texas, California and the eastern cities competing to restore the U
 Separate as its exact opposite and says plainly what happens: ground rejoins a nation it used to
 belong to. Alternatives considered: Revert, Restore, Loyalist, Homecoming.
 
+**Ruling 42 — three of the six verbs are born in play, not painted.** *(Aaron, 7 Sep.)* The three
+with no examples today are the three that **arise from a condition** rather than from an author's
+hand, which is why nothing in the data does them:
+
+| Verb | Fires when | What it would read |
+|---|---|---|
+| **Rejoin** | the state holding this ground governs it badly — for instance a separatist state that has turned aggressive and conquered | Authority, quality of life, war weariness, occupation *(all built)* |
+| **Expand** | the nation is short of something — resources, above all | the economy's coverage figures *(round 4)* |
+| **Reconquer** | the nation has lost ground | the `lost` relation memory *(built)* |
+
+**So S18 is answered.** Movements are founded during a game as well as at setup, and these three
+verbs are exactly the ones that arise. **Painted at setup: Unify, Reunify, Separate. Born in play:
+Rejoin, Expand, Reconquer.** All three triggers read quantities that already exist or are already
+being designed.
+
+**Ruling 43 — a movement is what people want; politics is how they get it.** *(Aaron, 7 Sep.)* The
+two systems are separate and must stay so. A movement carries a **verb** (what it wants done), an
+**adjective** (what it is about, and what would buy it off) and an **ideology** (the political
+vehicle it travels through). **The adjective constrains the ideology** — Aaron: "Christian
+nationalists wouldn't be socialists" — but it does not determine it, and the same want can travel
+through more than one politics.
+
+*Note: this cleanly separates two things the built model conflates. Today a movement simply HAS an
+ideology, and that ideology is the multiplicative gate on where it can grow. Under this ruling the
+ideology is the vehicle rather than the want, which is the frame in which the parked gate-or-modifier
+question should be reopened.*
+
+### Where the movement model stands, 7 September
+
+**A movement is three things.** A **verb** — one of six, and the whole of what the engine needs,
+because it decides what happens when the movement wins. An **adjective** — what it is about, and the
+only thing that says what would make it stop. An **ideology** — the politics it travels through,
+constrained by the adjective.
+
+**And it exists in one of two states:** REALIZED, its nation exists, so its own ground reads as
+loyalty (ruling 16) and its homeland covers that ground automatically (ruling 17); or GROWING, no
+nation yet, painted in levels that roll at setup (rulings 24, 26, 31).
+
+**Still open in this round:** which adjective each of the 26 real movements carries; what becomes of
+the six ideological ones; the Lakota movement, which does not exist; Superior's line; and the rising
+movements that cross state lines, parked by ruling 28.
+
+**Handed to other rounds:** the fervour of a new country and the four release valves *(politics)*;
+what Expand reads to know a nation is short *(economy)*; what Reconquer and Expand cost when the
+government obeys them *(conquest)*; whether the six ideological movements become interest groups
+*(politics, and F3 in the ideas file)*.
+
 **S65 — Realisation brings a fervour.** *(Aaron, 7 Sep.)* "When a nation is realised — at turn 0 or
 later — it should bring an extra fervour, like the citizens are willing to overlook certain things."
 Distinct from what is built: the honeymoon is four turns of borrowed Authority, whereas this is a
