@@ -816,6 +816,33 @@ from being drawn into somebody else's border. The same argument protects the fiv
 principle underneath may be simpler than a list: **a realised nation cannot spread into ground that
 is another realised movement's founding claim.** Riverside is the stated exception.
 
+**S77 — Measured: the ladder amplifies the dice instead of damping them.** *(7 September, Area-level
+adjacency, spread counted outside the corridor because the corridor has its own mechanism.)*
+
+| Deseret as rolled | Areas in rings 1–4 | Expected joiners at 33/11/3.7/1 | Ends at |
+|---|---|---:|---:|
+| minimal, 10 | 2, 5, 8, 8 | 0.7, 0.6, 0.3, 0.1 → **1.6** | ~12 |
+| mean, ~31 | 23, 35, 48, 41 | 7.6, 3.9, 1.8, 0.4 → **13.6** | ~45 |
+| maximal, 57 | 38, 49, 55, 51 | 12, 5.4, 2.0, 0.5 → **19.9** | ~77 |
+
+**A bad roll stays bad and a good roll runs away.** A minimal Deseret touches only two Areas outside
+the corridor, so the ladder can barely help it; a maximal one touches thirty-eight and gains twenty.
+Final size would span roughly **12 to 77 Areas — a sixfold range** on the flagship nation, where 77
+is larger than any Texan successor and 12 is the rump that gets eaten. The caps bind only in the
+maximal case, so in almost every game the allowances do nothing and the odds do all the work.
+
+At a first rung of 12% instead of 33% the same nations gain 0.6 and 7.4 — still amplifying, but
+inside a band the story can hold.
+
+**And the ladder is the wrong tool for the small case.** What rescues a Deseret that rolled badly is
+the corridor ground that did not cede, which already carries elevated sentiment, a standing grudge
+and a growth rate half again as fast. That mechanism exists and is measured; the rings should not be
+asked to do its job as well.
+
+**S78 — Counties or Areas: taken as mine, and it has to be Areas.** A nation owns Areas, not
+counties; a county cannot join anything on its own, and every adjacency, homeland and border in the
+game is per Area. All ring distances above are Area-level. *(Resolves S74.)*
+
 **S65 — Realisation brings a fervour.** *(Aaron, 7 Sep.)* "When a nation is realised — at turn 0 or
 later — it should bring an extra fervour, like the citizens are willing to overlook certain things."
 Distinct from what is built: the honeymoon is four turns of borrowed Authority, whereas this is a
