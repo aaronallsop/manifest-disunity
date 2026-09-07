@@ -584,6 +584,55 @@ that rolls; the six certain movements stay certain; no movement rolls past the l
 movements are **not only spawned at setup** — S18 is ruled in: other growing movements arise during
 the game. *Built: all thirty-two spawn once at setup; nothing founds a movement in play.*
 
+**Ruling 15 — the dice roll before the player chooses.** *(Aaron, 7 Sep.)* The board is rolled
+first, so the faction picker rates difficulty from the world as it actually came out and nobody
+picks a nation without knowing its size. *Built: this is how it already works.*
+
+### The realised movements, measured against their nations — 7 September
+
+Every movement whose nation exists on turn 0 under the story, its homeland resolved to Areas and
+compared with the ground that nation holds. **Measured** from `data/parties.json`, `data/areas.json`
+and the cultural map, not estimated.
+
+| Movement → its nation | Nation | Homeland | Inside | Reach beyond | Nation ground it cannot organise on |
+|---|---:|---:|---:|---|---|
+| Deseret → Deseret | 57 | 61 | 57 | UT 4 | — |
+| Alaskan Independence → Alaska | 23 | 23 | 23 | — | — |
+| New England United → USNE | 49 | 53 | 49 | CT 3, RI 1 | — |
+| A Free Texas → the five Texases | 106 | 119 | 106 | NM 13 | — |
+| California Republic → the five | 58 | 58 | 58 | — | — |
+| El Paso United → El Paso | 17 | 3 | 3 | — | **14** |
+| Front Range Republic → Front Range | 42 | 11 | 11 | — | **31** (CO 26, WY 5) |
+| Greater Idaho → Greater Idaho | 42 | 17 | 9 | OR 8 | **33** (ID 31, OR 2) |
+| Franklin → Appalachia | 75 | 65 | 44 | NC 7, KY 6, TN 4, MD 3, VA 1 | **31** (WV 15, GA 7, VA 6, SC 2, TN 1) |
+| Native American Confederation → Navajo | 51 | 36 | 12 | MT 6, AK 4, ND 4, SD 4, OK 4, AZ 2 | **39** (CO 19, NM 15, UT 3, AZ 2) |
+| New Confederacy → Deep South | 133 | 537 | 133 | **404** — TX 106, NC 63, FL 47, VA 45, LA 32, SC 29, AR 27, GA 20, TN 19, MS 11, AL 5 | — |
+
+**S61 — Four movements have already got what they wanted.** Alaskan Independence (independence),
+New England United (a regional federation), the Front Range Republic (independence, urban
+self-rule) and El Paso United (regional autonomy, exceeded — it is a nation). What does a realised
+movement do when its goal is met: dissolve, become the new nation's founding loyalty, or take a
+new goal?
+
+**S62 — A nation whose own founding ground cannot organise for it.** Appalachia holds 31 Areas
+outside Franklin's homeland — all 15 of West Virginia's among them — and the Front Range Republic
+31, and El Paso 14. *Built: the bake warns about exactly this — a movement whose country's founding
+ground sits outside its homeland is one the sentiment phase deletes on the turn after it is seeded.*
+Either the homelands widen to their nations, or those nations open with ground that cannot feel
+anything about them.
+
+**S63 — Two cores that span several nations at once.** A movement declares when its core is
+*entirely* over the line. A Free Texas's 11 core Areas are spread across all five Texases (Dallas 4,
+Houston 3, San Antonio 2, Austin 1, El Paso 1) and California Republic's 7 across four of the five
+Californias. So a reunification movement can only fire by organising in every rival simultaneously
+— and if it does, it makes one more nation rather than putting the old one back. *(S48 restated with
+the measurement behind it.)*
+
+**S64 — The New Confederacy is not a Deep South movement.** Its homeland is 537 Areas — the whole
+South including 106 in Texas and 63 in North Carolina — against a Deep South of 133. As the
+giant's own movement it is four times too large; as written it is a movement for a nation nobody in
+the story founds.
+
 **S58 — Or the ideology it is loosely tied to drives growth.** *(Aaron, "note for later".)* A
 Christian-nationalist movement in the South grows faster if Atlanta has eclipsed everyone and
 turned the Deep South's government liberal. *Built, indirectly: liberties already fall when the
