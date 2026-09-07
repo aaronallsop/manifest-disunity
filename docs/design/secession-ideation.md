@@ -578,6 +578,12 @@ listens to, and that holds its own ground firmly. *Note: this is a different gra
 migration reads (quality of life and liberties), so ground and people can move by different logics;
 recorded, not argued.*
 
+**Ruling 14 — growing movements roll at the start on Deseret's shape, and new ones arise in
+play.** *(Aaron, 7 Sep.)* Each growing movement has a core that is always organised and a periphery
+that rolls; the six certain movements stay certain; no movement rolls past the line at turn 0. And
+movements are **not only spawned at setup** — S18 is ruled in: other growing movements arise during
+the game. *Built: all thirty-two spawn once at setup; nothing founds a movement in play.*
+
 **S58 — Or the ideology it is loosely tied to drives growth.** *(Aaron, "note for later".)* A
 Christian-nationalist movement in the South grows faster if Atlanta has eclipsed everyone and
 turned the Deep South's government liberal. *Built, indirectly: liberties already fall when the
