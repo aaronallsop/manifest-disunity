@@ -1293,6 +1293,45 @@ it would have a different name than just New Confederacy."
 **S96 — Acadiana and the Gulf Compact.** *(Aaron.)* "It could become part of the Gulf Compact, and the
 Gulf Compact could be a unified states." *Filed forward to governments and diplomacy.*
 
+### The petition — Aaron, 7 September
+
+**Ruling 47 — a movement approaches a nation; the nation does not simply choose.** *(Aaron: "the Rio
+Grande Union would grow and at a certain point they would approach El Paso, similar to when Texas
+approached the USA back in the day.")* This supersedes Claude's framing of S87, in which the player
+was offered a choice once a movement grew visible. **The movement is the one that acts.** Once it is
+strong enough it petitions the nation or nations that could plausibly carry it, and that nation
+answers.
+
+**The parallel is worth keeping because it carries the mechanic.** *From memory and unverified in
+detail:* Texas won its independence in 1836 and then asked to join the United States, and was refused
+for the better part of a decade for reasons that had nothing to do with Texas — the sectional balance
+at home, and the fear of a war. **So a petition is a standing offer, not a one-shot**: it sits on the
+table, the answer can be *not yet*, and the reasons for refusing are the refusing nation's own
+politics rather than anything about the movement.
+
+**Ruling 48 — several nations can be petitioned, and they compete for it.** *(Aaron, on Cascadia:
+"the possibility of Oregon and Washington fighting to become the leader of Cascadia.")* So the
+petition is a contest in the same family as ruling 18's reunification contests — but decided by
+**nerve rather than arithmetic**, because accepting costs the accepting nation whatever it was before.
+
+**What accepting costs, and it is the point.** El Paso taking the Rio Grande Union forecloses its
+claim to reunify Texas — Aaron: "essentially leaving Texas behind for this." Oregon or Washington
+taking Cascadia stops being Oregon or Washington. **The price of accepting is the other future you
+were playing for**, which is what makes a petition a decision rather than a gift.
+
+**S97 — What does refusing cost?** Open. The movement presumably grows angrier, goes to a rival, or
+declares alone — and Texas's own history says a refusal can stand for years without killing the
+offer. Whether a refused movement remembers who refused it is a relations question.
+
+**S98 — Three claims on the same ground in the Northwest.** Cascadia's movement spans Washington,
+Oregon and northern California; **Washington and Oregon compete to lead it**; and the California
+Republic's reunification claims the northern California part of it as well. *Three futures for one
+piece of coast, only one of which can happen.* Nothing else on the board is contested three ways.
+
+**S99 — Can a nation solicit a movement rather than waiting to be asked?** Open, and it is the other
+half of sponsorship (ruling 21): funding a movement you hope will one day petition you is a long game
+with a real risk, since it may petition your rival instead.
+
 **S65 — Realisation brings a fervour.** *(Aaron, 7 Sep.)* "When a nation is realised — at turn 0 or
 later — it should bring an extra fervour, like the citizens are willing to overlook certain things."
 Distinct from what is built: the honeymoon is four turns of borrowed Authority, whereas this is a
