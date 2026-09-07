@@ -486,6 +486,7 @@ other rounds have been filed there as questions — `conquest-`, `politics-`, `d
 | 7 | The Gullah coast goes **whole to the Carolinas**; the Deep South opens without a seaport |
 | 8 | Central Florida is the painted region — the Georgia line to Miami |
 | 9 | The United States of New England; Rochester-and-Buffalo takes Clinton and the Franklin–Essex–Hamilton Area; alliance and free-trade deal pre-signed |
+| 10 | **Superior is the Upper Peninsula plus the top of the Lower Peninsula** — Michigan ground only. The Wisconsin and Minnesota Areas of the painted Superior region stay with their states in the Farmers Union. The line across the Lower Peninsula is one of the five still to be drawn |
 
 ### The board this produces
 
@@ -533,9 +534,9 @@ diplomacy's problem?
 structure "from the international to the local level." S18 revisited: where do movements come from
 that nobody authored?
 
-**S53 — Superior's shape.** The painted Superior region is Duluth, the Wisconsin north woods and the
-UP (WI 6, MI 4, MN 2). Aaron said the UP plus the top of the Lower Peninsula. One is drawn; the
-other needs drawing.
+**S53 — Superior's shape.** *Ruled, 6 September (ruling 10): the UP plus the top of the Lower
+Peninsula, Michigan ground only.* The painted Superior region (WI 6, MI 4, MN 2) is not used; the
+Lower Peninsula line is still to be drawn.
 
 **S54 — Consolidation as a defence.** New England merged because its small states were being eaten.
 Is voluntary federation a move nations under threat can make in play, or only a thing the story
