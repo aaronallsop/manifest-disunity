@@ -415,6 +415,134 @@ story.
 
 ---
 
+## 8. The story of the break-up — as told 6 September, and the rulings that followed
+
+**Brainstorm record, not design.** Aaron told the story in one message and then ruled on nine
+questions the sort of it raised. It is recorded here so it survives the session; everything in it
+is open to revision and none of it is yet in the authoritative brief. The parts that belong to
+other rounds have been filed there as questions — `conquest-`, `politics-`, `diplomacy-`,
+`events-` and `the-things-above-ideation.md`, and `economy-ideation.md` §L.
+
+### The story, in order
+
+1. **Texas secedes** — and in doing so its five regions fall out over who leads, so Dallas, Houston,
+   San Antonio, Austin and El Paso become five nations, each fighting to reunify Texas under itself.
+2. **The legitimacy of the United States is shaken**, and the **Bay Area** leaves California and
+   the Union as a tech city-state.
+3. **The Texas war halts American oil.** Washington refuses to treat the successors as sovereign, so
+   gas cannot ship out of Texas — and it will not send in the army for fear of what that does to its
+   standing abroad. **Extreme fuel shortages** follow; **trust in the federal government collapses**;
+   local powers step up to fill the gap.
+4. **Mass protests at the capital.** To forestall a coup, **martial law** in the counties around
+   Washington.
+5. **Deseret** forms out of the Mormon Corridor — not the Church governing, but Church members who
+   realised they were already doing everything a government does. It starts by RNG, as today; the
+   rest of the corridor opens under pressure to join. Its cession breaks Idaho, and **Greater Idaho**
+   — which had meant to stay — leaves instead. The mountains make the mountain states hard to
+   invade; Washington will not deal with them; **all trade funnels down through Arizona**.
+6. **The Farmers Union** — the governors of Minnesota, Wisconsin, Illinois, Indiana, Iowa,
+   Nebraska, Missouri and Kansas — sign to protect each other's farming and their corridors to
+   Canada and down the Mississippi. Not a state.
+7. **Oklahoma becomes Dallas's vassal**, a buffer. **Houston** wants the same from Louisiana — for
+   the river and the refineries — is refused, and **invades**, gambling the army will not come. It
+   does not. Louisiana's neighbours' militias push Houston back, but Houston keeps **western
+   Louisiana**. Those neighbours — the Mississippi-River counties of Mississippi and Arkansas, the
+   Gulf counties of Mississippi and Alabama, and the Florida panhandle to Pensacola for its naval
+   base — become **one nation with what is left of Louisiana** (the Gulf nation, unnamed).
+8. **What is left of Arkansas** becomes stateless — the first of Aaron's **three tiers**: a
+   recognised state, a secessionist state, and a **stateless society** small enough to run itself
+   and make its own deals.
+9. **The Navajo Nation** and a **Lakota / Dakota tribal nation** form. The rest of the Dakotas is
+   divided among Minnesota, Iowa, Nebraska and Montana. **Wyoming** goes stateless, charging tolls
+   on food bound for Deseret and Idaho. **New Mexico's remainder** goes stateless, prey for El Paso,
+   Oklahoma, the Navajo and the Front Range.
+10. **California** splits as Texas did. **Washington and western Oregon** ally; a **Greater
+    Cascadia movement** grows across both and northern California — a movement, not a nation.
+11. **The federal army marches into West Virginia** to reach Pennsylvania and makes an enemy of it:
+    West Virginia and the Southern Appalachians unite as **Appalachia**. **Alabama, Mississippi,
+    Tennessee and Georgia** unite as the Deep South. **The Carolinas** unite. **Miami** and
+    **Central Florida** stand alone.
+12. **Washington** absorbs the rest of Virginia and conquers Baltimore. **Philadelphia, New York,
+    Detroit and Chicago** become city-states; Chicago leaves the Farmers Union and takes north-west
+    Indiana. **The rest of Pennsylvania and New York** unite as the Rust Belt. **Rochester and
+    Buffalo** are one country in two parts. **Kentucky, Ohio and the rest of Michigan** fracture
+    into stateless ground; **Superior** forms in the north. **Alaska** and **Hawaii** stand alone.
+13. *(Added the same evening, from play.)* Maine, Vermont and New Hampshire were eaten early in
+    testing, so: all six New England states become the **United States of New England**, a
+    federated state; Rochester-and-Buffalo takes New York's Canada-border counties; and the two sign
+    an alliance and a twenty-year free-trade deal before the game starts — New England reaches the
+    lakes, Rochester reaches the ocean without Canada.
+
+### The nine rulings
+
+| # | Ruled |
+|---|---|
+| 1 | City-states are their painted metro regions on the cultural map. New Jersey, Delaware and Rhode Island cease to exist; Boston takes southern New Hampshire; Detroit takes Toledo. "Conquers Baltimore" read the same way — the Baltimore region, the rest of Maryland |
+| 2 | Iowa is in the Farmers Union |
+| 3 | Colorado becomes the **Front Range Republic**; the Navajo Nation is **trimmed to the Four Corners** and the ground around it opens wanting in — Deseret's mechanism generalised |
+| 4 | The Deep South is **one nation as written**, counterbalanced by separatist movements inside it |
+| 5 | Appalachia is the painted Southern Appalachia region, all 75 Areas — Knoxville, Chattanooga, eastern Kentucky and the western Carolinas included |
+| 6 | The Gulf nation **stops at the Tennessee line** — Memphis stays in the Deep South, Cairo with the Farmers Union — so no one owns the whole river |
+| 7 | The Gullah coast goes **whole to the Carolinas**; the Deep South opens without a seaport |
+| 8 | Central Florida is the painted region — the Georgia line to Miami |
+| 9 | The United States of New England; Rochester-and-Buffalo takes Clinton and the Franklin–Essex–Hamilton Area; alliance and free-trade deal pre-signed |
+
+### The board this produces
+
+| | |
+|---|---|
+| New states | 29 |
+| Original states surviving as themselves | 18 — WA, OR, NV, AZ, UT, MT, MN, IA, NE, KS, MO, WI, IL, IN, OK, AK, HI, DC |
+| **Total nations** | **47** (today's board is 61) |
+| Tier-3 stateless regions | 6 — Arkansas, Wyoming, New Mexico, Kentucky, Ohio, Michigan |
+| States that cease to exist | 31 |
+| New lines to draw | Five: the Navajo trim, the Lakota region, the Dakota four-way split, Houston's line in Louisiana, and Superior's shape. Everything else is the cultural map as painted, with three state-filters |
+
+**Facts checked against the data while sorting:** Rochester-and-Buffalo already holds both Great
+Lakes exits (Niagara in the Buffalo region, the St. Lawrence outlet in Rochester's). Clinton and
+Essex counties touch Vermont across Lake Champlain in the adjacency graph, so New England and
+Rochester share a border. Florida on the cultural map is exactly Miami 9, Central Florida 30,
+Floribama 8 and one Area in Montgomery — there is no separate north Florida.
+
+### New questions for this round, from the story
+
+**S46 — Born small and wanted widely, as a pattern.** Deseret's mechanism — a nation founded by RNG
+with its wider homeland opening under pressure to join — applied to the Navajo Nation, and perhaps
+the Front Range. Which nations get it, and does the pressure ever run the other way?
+
+**S47 — The Deep South counterbalanced from inside.** Which movements, matching which cities? Match
+is multiplicative, so this means authored movements whose politics fit Atlanta, Memphis, Nashville
+and Birmingham, not a higher grievance.
+
+**S48 — A reunification movement whose target is contested.** A Free Texas is what each of the five
+wants. Whom does the movement's ground join when it crosses the line — the strongest Texas, the
+nearest, the one it likes best?
+
+**S49 — Greater Cascadia as a movement over three former states**, not a nation — the reverse of
+today's board. What does a movement spanning Washington, western Oregon and northern California
+declare *into*?
+
+**S50 — A state dissolving into stateless ground.** Kentucky, Ohio and Michigan "fracture into
+3rd-tier governments" — secession with no successor nation. Is that a movement outcome, a collapse
+outcome, or a third thing? *(The definition of tier 3 is politics' question 1.)*
+
+**S51 — A city leaving a bloc.** Chicago walked out of the Farmers Union. Is that secession, or
+diplomacy's problem?
+
+**S52 — Movements born from institutions.** Deseret came from Church members who already had a
+structure "from the international to the local level." S18 revisited: where do movements come from
+that nobody authored?
+
+**S53 — Superior's shape.** The painted Superior region is Duluth, the Wisconsin north woods and the
+UP (WI 6, MI 4, MN 2). Aaron said the UP plus the top of the Lower Peninsula. One is drawn; the
+other needs drawing.
+
+**S54 — Consolidation as a defence.** New England merged because its small states were being eaten.
+Is voluntary federation a move nations under threat can make in play, or only a thing the story
+does before turn 0? *(Shared with conquest, question 7.)*
+
+---
+
 *Sources, for whoever builds this: the authored scenario in `content/scenario-shattered.json`; the
 opening newspaper text in `js/scenario.js`; the relations vocabulary in `js/relations.js`; the
 sentiment weights in `js/tunables.js` (`sent.*`, `secession.*`); movement definitions in

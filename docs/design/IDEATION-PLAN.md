@@ -97,6 +97,16 @@ Each round produces three things, and the third is what makes this a sequence ra
 
 ---
 
+### Where each round lives
+
+One document per round in this folder: `secession-ideation.md` (open), `conquest-ideation.md`,
+`politics-ideation.md`, `economy-ideation.md` (84 entries, parked), `diplomacy-ideation.md`,
+`events-ideation.md`, `the-things-above-ideation.md`. **The unopened ones are stubs, and they are not
+empty:** round 1's story handed each of them questions, filed on 6 September as the handover the
+plan describes. A round opens with its inbox already full.
+
+---
+
 ## What this costs, and the one decision it needs from Aaron
 
 **Roughly a session a round, and round 1 probably two**, because it is also inventing the language

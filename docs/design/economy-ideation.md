@@ -387,6 +387,49 @@ so nothing invented can be mistaken for something counted.
 
 ---
 
+## L. Inherited from the story of the break-up (6 September)
+
+Filed here from round 1. The story is recorded in `secession-ideation.md` §8; these are the parts
+of it that belong to the economy, left as questions.
+
+**E85 — The opening is an energy shock.** Texas's war halted oil production; gas could not leave
+Texas because the United States would not recognise its successors; "extreme gas shortages" broke
+the people's trust in Washington. Does the economy open in that state — fuel short everywhere,
+prices high, supply chains broken — or at its 2024 equilibrium as today? *Built: the economy opens
+at its published figures; the recognition trade block is exactly the mechanism the story describes.*
+
+**E86 — A corridor can be overloaded.** With the mountain states cut off, "all trade and
+transportation was funnelling down through Arizona… stressing Arizona's freight transportation
+capabilities." Does a corridor have a finite capacity that congests when everyone uses it? *Built:
+capacity belongs to a nation — its ports, rail hubs and gateways — and caps what it can move; a
+corridor has no capacity of its own.*
+
+**E87 — What a bloc does to an economy.** The Farmers Union protects its members' farming and their
+corridors to Canada and down the Mississippi. Free transit inside, a common front outside, price
+supports, shared storage? *(The relationship is diplomacy's; what it does to prices and routes is
+this round's.)*
+
+**E88 — Stateless ground charging tolls.** Wyoming as a tier-3 zone, "mainly just charging tolls to
+anyone shipping food to Deseret and new Idaho." Can ground with no state grant a corridor and take a
+toll, and where does the money go?
+
+**E89 — Refineries as prizes.** Houston wanted Louisiana for "Mississippi access and the oil
+processing plants." The story reaches for the refining arrow (E44) and treats refineries as assets
+that can be taken by force. Are they places on the map?
+
+**E90 — Free trade as two corridors.** The New England–Rochester "free trade deal" is really mutual
+transit at no toll in both directions, giving the Great Lakes a route to salt water that competes
+with the Canada corridor for the first time. Zero-toll corridors; and a term four times longer than
+the built five-year maximum.
+
+**E91 — The money.** The dollar, the federal debt and federal transfers — still unaddressed by the
+story. A state that lived on federal money opens richer than it should.
+
+**E92 — Federal land.** Still unaddressed. Most of the West's ground was federal, and the Sagebrush
+Rebellion's authored goal is to get it back.
+
+---
+
 ## Questions we have no idea for yet
 
 These are not ideas. They are holes, recorded so that ideation can aim at them.
