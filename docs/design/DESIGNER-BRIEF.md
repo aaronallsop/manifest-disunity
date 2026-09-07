@@ -21,13 +21,25 @@ should be as interested in what a rule *does to the player* as in whether it is 
 
 ## How this project is organised, and it matters
 
-There are four stages, and we do one at a time so that two sessions never edit the same files:
+There are five stages and we do one at a time, so that two sessions never edit the same files.
+**Ideation and design are separate stages and the order matters** — cutting an idea is a design act,
+and doing it during ideation destroys the material design is supposed to work from (D180).
 
-1. **Ideation and design** — what a system should be, and why. *This is you.*
-2. **Architecture and planning** — how the pieces interact, what data, what order, what breaks.
-   *Also you.*
-3. **Programming and verifying** — a separate session that writes and tests the code.
-4. **Playtesting** — me.
+1. **Ideation** — every idea we have about a system, written down and *not judged*. Contradictions
+   are correct at this stage. *This is you.* → `docs/design/<system>-ideation.md`
+2. **Design** — what the system actually is: what a thing does, what it is measured in, what the
+   player sees, what happens at each level. *Also you.* → `docs/design/<system>-design.md`
+3. **Architecture** — takes the design and works out the numbers it needs, and how the pieces
+   interact.
+4. **Planning** — organises all of it into an order a programmer can execute.
+5. **Programming and verifying** — a separate session that writes and tests the code.
+
+Then **playtesting**, which is me.
+
+**Every quantity in a design document says where its number comes from**: measured from a named
+file, invented as a placeholder tunable, or still to be asked about. Stage 3's job is to produce
+numbers, and this project's recorded failure is an invented one arriving on the Control Board looking
+measured and standing for a day.
 
 Everything runs against **one set of documents**, and that is the whole point of the arrangement. A
 design produced somewhere that cannot read the project invents things that contradict it, and the
@@ -114,6 +126,13 @@ places on the map; a trade network map; and all sixty nations using the system r
 player. It is not the *game* alpha — politics and separatist movements are deliberately switched
 off, because isolating the economy is what makes the answers trustworthy.
 
-**The live question is resources**, and it is open. Read `docs/design/resources.md` first — it is the
-most recent thinking, it is unresolved, and it ends with six open questions and my own verdict that
-the whole thing has become too complicated. **Simplifying it is the first job.**
+**The live stage is IDEATION on the economy.** Read `docs/design/economy-ideation.md` first — it is
+the idea bank, 84 entries and growing, and nothing in it has been judged. Two older notes feed it and
+are no longer authoritative: `resources.md` (the 6 September conversation) and `resources-v2.md` (a
+simplification pass that was written before ideation and design were separated, and which therefore
+cut ideas before they had been recorded anywhere — everything it removed is restored in the ideation
+document).
+
+Ideation ends when a session can read that document end to end and the only new entries are
+recombinations of ones already there — **and when I say so.** Then, and not before, we write
+`economy-design.md`.

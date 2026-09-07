@@ -2929,3 +2929,61 @@ before the mode is used that way.
 conversation of 6 September written down — the three tiers, the physical units, capability versus
 allocation, the production chain, the six inputs and what is missing from them, the four worked
 examples, and Aaron's own verdict that it is all too complicated.
+
+### D180 — Five stages, not four, and ideation gets a document of its own, 6 September
+
+**Aaron, 6 September 2026**, setting out how the design work runs:
+
+> "1. Ideation - Food should be a resource that is traded and you need to reach a certain ammount to
+> feed your citizens 2. Design - Food will be measured in gCalories in the game menu and shown to the
+> user as the average kCalories per day their citizens eat which and at each level there are different
+> negative effects 3. Architecht - Takes that design and actually creates the numbers that are needed
+> for this 4. Program manager - takes everything and organizes it in a way that is easiest for the
+> programmer to do 5. Programmer - does the programming."
+
+**What changed.** D179 recorded four stages, with ideation and design together as one and architecture
+and planning together as another. Both pairs are now split, giving five: ideation, design,
+architecture, planning, programming. Playtesting still follows and is still Aaron's.
+
+**Why this is not bookkeeping.** The first design note written under D179's arrangement —
+`docs/design/resources-v2.md` — did ideation and design in a single pass, and its simplification cut
+the model from nine tracked quantities to four before several of those ideas had been written down
+anywhere at all. Cutting is a design act. Performed during ideation it destroys the material that
+design is supposed to work from, and the only record of the cut ideas was a conversation. Under the
+new split that was the wrong order, and it was wrong in a way that would have been invisible in a
+month.
+
+**Corrected the same day.** Everything `resources-v2.md` removed is restored in
+`docs/design/economy-ideation.md` — the four-stage production chain, capital goods and the loop,
+depreciation, minimum viable scale, non-fungible labour, emigration of the educated, litres and
+megawatt-hours, and the eight- and ten-sector structures. `resources-v2.md` stays on disk as the
+record of the pass; it is a preview of stage 2 and is not authoritative.
+
+**The documents this stage owns.**
+
+| | |
+|---|---|
+| `docs/design/economy-ideation.md` | Stage 1. Every idea, unjudged, numbered E1 upward. Grows until Aaron closes it |
+| `docs/design/economy-design.md` | Stage 2. Not yet written. The artefact the architect receives |
+
+**Three judgements taken inside the ruling, all reversible on a word from Aaron.**
+
+1. **Scope.** This ideation round covers the economy and resources. F1 (sub-turns), F14 (a turn
+   arriving as news) and F15 (whether counties are too granular) were left out: they concern time,
+   presentation and the size of the map, and each wants its own round rather than being folded into
+   this one. Aaron's instruction was to pull the ideas from the ideas file in, and this narrows it.
+2. **`docs/FUTURE-IDEAS.md` was not emptied.** The idea was brought across in a few lines and the
+   long-form reasoning left where it is, with the F-numbers kept so the trail runs both ways.
+   Deleting the entries would break that file's own promise — that nothing is re-argued from
+   scratch — and would duplicate fifteen pages.
+3. **An end condition was written into the ideation document**, because a phase with no way to finish
+   does not finish: ideation ends when a session reads it end to end and the only new entries are
+   recombinations of ones already there, and when Aaron says so.
+
+**One proposal attached to the design stage, not yet ruled on.** Every quantity in the design document
+should be marked as one of *measure it from a named file*, *invent it as a placeholder tunable*, or
+*ask Aaron*. Stage 3's brief is to "actually create the numbers", and this project's recorded failure
+is an invented number arriving on the Control Board looking measured and standing for a day
+(D178, programmer rule 7). Without that column the architect will invent in good faith and the result
+will read as counted.
+
