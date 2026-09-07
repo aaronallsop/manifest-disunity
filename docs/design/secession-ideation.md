@@ -705,11 +705,42 @@ whichever fragment holds most of its core, is the same mechanism pointed at a di
 it gives tier 3 an exit that is neither conquest nor permanence. *(Depends on politics' definition
 of tier 3.)*
 
-**S69 — Boston is inside the United States of New England.** Aaron named "Washington D.C., Boston,
-Philadelphia and New York City" as the four competing for the capital, but ruling 9 folded Boston
-into the USNE. So the claimant is the USNE — a six-state nation rather than a city — which makes the
-contest three cities and a country. Worth deciding on purpose: it is either a good asymmetry or a
-sign Boston should have stayed separate.
+**Ruling 20 — the capital contest is Washington D.C., Philadelphia and New York City. Boston is
+out.** *(Aaron, 7 Sep: "let's keep Boston separate since they were never the capital of the USA.")*
+The three that remain each genuinely held the seat of government — New York 1785–1790, Philadelphia
+1790–1800, Washington since — and Boston never did. *Historical dates from memory and unverified.
+Worth a footnote either way: the Continental Congress also sat in Baltimore, Annapolis, Trenton,
+Lancaster, York and Princeton, and **Baltimore is Washington's territory under this story**, so the
+capital's claim quietly includes a second former seat.*
+
+**S69 — Open: is Boston still inside the United States of New England?** Ruling 9 folded it in;
+ruling 20 takes it out of the capital contest, which does not by itself put it back on the map as a
+nation. If Boston becomes a city-state again the USNE falls from 49 Areas to 32 (ME 11, VT 8, CT 6,
+MA 4, NH 3) and loses its richest ground, which is most of the reason the merger was made.
+
+**Ruling 21 — a nation can fund a movement, and it is a standing commitment rather than a move.**
+*(Aaron, 7 Sep.)* You declare yourself its champion and pay a share of your treasury every quarter;
+the movement grows faster on ground you do not hold; everyone can see you doing it. **The money
+comes out of what you would have spent on yourself** — Aaron: "Dallas can try to conquer and unify
+Texas as the leader, or they can spend money to influence others, and that also means they can't
+spend that money on their own state." *Built: the unused `sponsor` field on every movement, reserved
+for exactly this.*
+
+**And it is not only for reunification.** Aaron's own framing is the general case: "a nation lays
+claim to an area, and there are citizens of that area that want to be part of it, and the other
+country funds them to grow in size." So Idaho can fund Greater Idaho's movement in the Oregon ground
+it did not get, and the Gulf nation can fund one in the parishes Houston holds. **This is the first
+thing in the round that lets a player act on a movement rather than react to one** — and the first
+that lets them do it to somebody else.
+
+**S70 — What the loser has paid for.** If Houston funds A Free Texas for four years and Dallas is
+ahead when it fires, Houston has bought the thing that ate it. That is what makes sponsorship a
+gamble rather than a purchase, and it is probably the point — but it wants a decision about whether
+a sponsor gets anything at all for losing.
+
+**S71 — Being seen to fund somebody's rebels.** The relations vocabulary already has `betrayed` —
+*they admitted our rebels are a country* — and funding them is worse. Does sponsorship create a
+memory, and does it draw a coalition? *(Shared with diplomacy, round 5.)*
 
 **S65 — Realisation brings a fervour.** *(Aaron, 7 Sep.)* "When a nation is realised — at turn 0 or
 later — it should bring an extra fervour, like the citizens are willing to overlook certain things."

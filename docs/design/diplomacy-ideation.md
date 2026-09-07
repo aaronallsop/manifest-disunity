@@ -47,4 +47,10 @@ The story itself is recorded in `secession-ideation.md` §8.
 8. **Intervention.** Louisiana's neighbours came to its defence uninvited. Mutual defence without a
    treaty. *(Shared with conquest, question 2 there.)*
 
-9. **Recognise lives here**, as built: costs no money, takes no action, priced with the parent.
+9. **Funding somebody else's movement.** *(Aaron, 7 September — secession ruling 21, S71.)* A nation
+   pays a share of its treasury every quarter to grow a movement inside a neighbour, and everyone can
+   see it. Does that create a memory, and does it draw a coalition? *Built: the relations vocabulary
+   already carries `betrayed` — "they admitted our rebels are a country" — and paying them is worse
+   than admitting them; coalitions form on threat, which this would have to feed.*
+
+10. **Recognise lives here**, as built: costs no money, takes no action, priced with the parent.
