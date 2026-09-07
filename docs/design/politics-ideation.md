@@ -49,5 +49,14 @@ The story itself is recorded in `secession-ideation.md` §8.
    a thing a government does, with a domestic cost or reward — and what did it cost Illinois when
    Chicago walked out?
 
-8. **Autonomy, release and changing course live here** (per the plan) — three of the four answers to
+8. **The fervour of a new country.** *(Aaron, 7 September — secession S65, ruling 16.)* A nation
+   that has just been realised carries "an extra fervour, like the citizens are willing to overlook
+   certain things." What does a government get to do badly while it lasts — govern harshly, lose a
+   war, let people go hungry? Is it a tolerance applied to grievance, a bonus to the stocks, or a
+   budget that gets spent? And what happens when it runs out: does a people whose patience has
+   expired end up angrier than one that never had any? *Built: the honeymoon is four turns of
+   borrowed Authority against a proportional GDP cut — narrower than this, and the natural place to
+   hang it.*
+
+9. **Autonomy, release and changing course live here** (per the plan) — three of the four answers to
    a movement and their prices. Round 1 has proposed four more (`secession-ideation.md` S24–S27).

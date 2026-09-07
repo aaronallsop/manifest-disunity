@@ -425,6 +425,13 @@ the built five-year maximum.
 **E91 — The money.** The dollar, the federal debt and federal transfers — still unaddressed by the
 story. A state that lived on federal money opens richer than it should.
 
+**E93 — A new country's people will go hungry for it, for a while.** *(Aaron, 7 September —
+secession S65.)* If realisation brings a fervour in which citizens "overlook certain things", one of
+those things is shortage. So the same food coverage should hurt a two-year-old country less than a
+settled one — and hurt it much more when the fervour runs out. The economy decides how far that
+tolerance stretches and whether it applies to hunger at all, or only to money. *(Politics owns the
+fervour itself; this is the part that lands here.)*
+
 **E92 — Federal land.** Still unaddressed. Most of the West's ground was federal, and the Sagebrush
 Rebellion's authored goal is to get it back.
 

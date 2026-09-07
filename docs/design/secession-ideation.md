@@ -633,6 +633,29 @@ South including 106 in Texas and 63 in North Carolina — against a Deep South o
 giant's own movement it is four times too large; as written it is a movement for a nation nobody in
 the story founds.
 
+**Ruling 16 — a realised movement's own ground is loyalty, not pressure.** *(Aaron, 7 Sep, from
+play: "when playtesting an earlier version as Deseret it would show Deseret separatists as
+pressure.")* Where a movement's people sit inside the nation that movement founded, the same number
+is read the other way: ground that will not defect, resists occupation hardest if taken, and
+organises to come back if lost. A nation born from a movement has a heartland; a nation born from a
+border does not.
+
+**And it is a live defect, not only a design gap.** Verified 7 September: the three places that read
+a movement's strength all take *the largest movement share in an Area* with **no check on whose
+movement it is**, so a nation is charged for its own founding population three times over —
+its AI reads its heartland as maximum fraying and plays permanently defensive; the pressure map
+paints that heartland as its worst problem, which is what Aaron saw; and holding the ground it was
+founded to hold costs it an occupation surcharge for hostility. Filed as `deferred.md` #14.
+
+**S65 — Realisation brings a fervour.** *(Aaron, 7 Sep.)* "When a nation is realised — at turn 0 or
+later — it should bring an extra fervour, like the citizens are willing to overlook certain things."
+Distinct from what is built: the honeymoon is four turns of borrowed Authority, whereas this is a
+*tolerance* — a people that will put up with shortage, hardship and a government's mistakes because
+they have just got the country they wanted. Open questions for later: what it excuses (hunger? a
+poor government? a war?), how strong, how long it lasts, whether it decays or is spent, and what
+happens when it runs out — a people whose patience has expired may be angrier than one that never
+had any. *Cross-filed as a question to politics (round 3) and the economy (round 4).*
+
 **S58 — Or the ideology it is loosely tied to drives growth.** *(Aaron, "note for later".)* A
 Christian-nationalist movement in the South grows faster if Atlanta has eclipsed everyone and
 turned the Deep South's government liberal. *Built, indirectly: liberties already fall when the
