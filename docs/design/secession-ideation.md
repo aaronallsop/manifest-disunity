@@ -647,6 +647,22 @@ its AI reads its heartland as maximum fraying and plays permanently defensive; t
 paints that heartland as its worst problem, which is what Aaron saw; and holding the ground it was
 founded to hold costs it an occupation surcharge for hostility. Filed as `deferred.md` #14.
 
+**Ruling 17 — a realised movement's homeland widens to its nation's founding ground,
+automatically.** *(Aaron, 7 Sep.)* When a movement realises into a nation — at turn 0 or later —
+every Area that nation holds at founding joins the movement's homeland, derived rather than
+hand-authored. Without it, ruling 16's loyalty cannot exist where a nation's own movement was never
+able to organise: Appalachia holds 31 such Areas including all fifteen of West Virginia's, the Front
+Range Republic 31, El Paso 14. *This is the same principle the game already uses for home ground — a
+nation born in play is stamped with its founding grant, whatever states that spans — so it cannot go
+stale when the map is re-baked.*
+
+**The reach stays hand-authored.** The ground *outside* the nation that still wants in is the part
+that carries the story, and it is the only part of a realised movement's homeland anybody writes by
+hand. Measured today, that reach is: Deseret UT 4 · Greater Idaho OR 8 · New England United CT 3,
+RI 1 · A Free Texas NM 13 · Franklin NC 7, KY 6, TN 4, MD 3, VA 1 · Native American Confederation
+MT 6, AK 4, ND 4, SD 4, OK 4, AZ 2 · New Confederacy 404 · and **zero** for Alaskan Independence,
+the Front Range Republic, El Paso United and the California Republic.
+
 **S65 — Realisation brings a fervour.** *(Aaron, 7 Sep.)* "When a nation is realised — at turn 0 or
 later — it should bring an extra fervour, like the citizens are willing to overlook certain things."
 Distinct from what is built: the honeymoon is four turns of borrowed Authority, whereas this is a
