@@ -1114,6 +1114,55 @@ Republican vote, and vote is already in the model — so a rural red county occu
 government would be dear to hold twice over, once for capacity and once for willingness. That may be
 correct compounding or it may be too much; it wants measuring once the numbers exist.
 
+### What a movement is: a verb and an adjective — Aaron, 7 September
+
+**Ruling 39 — every movement has a VERB, and there are six.** Three things a movement can want done,
+each in a forward-looking form (make something new) and a backward-looking one (restore something
+that was). *The verb is the whole of what the engine needs: it decides what happens when the movement
+wins.*
+
+| | Forward — something new | Backward — something that was |
+|---|---|---|
+| **Nations merge** | **Unify** — several states solidify into one nation that never existed *(the Farmers Union)* | **Reunify** — a broken state is put back together *(Texas, California, the Confederacy, the USA)* |
+| **Ground leaves** | **Separate** — this ground stops being part of its state and becomes its own | **Rejoin** — ground that left, or was taken, wants to go back to a parent that still exists *(Utah counties inside Deseret, watching it fail)* |
+| **A nation takes** | **Expand** — a nation's own people push their government to take ground, for resources or otherwise | **Reconquer** — Louisiana's people demand the government take back the parishes Houston holds |
+
+**The last two are a different animal, and they are the answer to the missing player verb.**
+Unify, Reunify, Separate and Rejoin all move *the movement's own ground*. **Expand and Reconquer are
+pressure on your own government to move somebody else's** — a movement the player satisfies by
+*acting* rather than by conceding. Nothing in the game does this today. *(Shared with conquest,
+round 2, which owns what taking ground costs.)*
+
+**Ruling 40 — the old types become ADJECTIVES, not behaviours.** *(Aaron's question, and the answer
+is yes.)* Autonomist, economic, religious, cultural, indigenous, ideological, resource — these stop
+being what a movement *does* and become what it is *about*. Each verb can carry any adjective.
+
+**And this corrects Claude's earlier proposal.** The three-outcome collapse made "be given something"
+a third *outcome*; it is not an outcome, it is what the **adjective** does. **Every movement has a
+verb — what happens if it wins — and an adjective — what would make it stop wanting to.** That is
+strictly better, because it means an autonomist Separate movement can be bought off with self-rule
+while a religious Separate movement cannot, and both use the same machinery.
+
+**S85 — An adjective earns its place if it names a different thing a government could give.**
+
+| Adjective | What buys it off |
+|---|---|
+| **autonomist** | self-rule, short of leaving |
+| **economic** | a policy or money — price supports, a compact |
+| **cultural** | recognition — the language, the schools |
+| **indigenous** | sovereignty or land, which is a very large give |
+| **resource** | a share of what comes out of the ground |
+| **religious** | *nothing* — identity is not negotiable |
+| **ideological** | only by becoming them |
+
+**Ruling 41 — Aaron's own extension, parked deliberately:** a Deseret that shatters can grow a
+Deseret **Reunify** movement, if whoever holds the pieces governs them badly. *Saved for later; the
+focus now is Texas, California and the eastern cities competing to restore the USA.*
+
+**S86 — "Rejoin" is Claude's name for it; Aaron flagged the concept needed one.** It pairs with
+Separate as its exact opposite and says plainly what happens: ground rejoins a nation it used to
+belong to. Alternatives considered: Revert, Restore, Loyalist, Homecoming.
+
 **S65 — Realisation brings a fervour.** *(Aaron, 7 Sep.)* "When a nation is realised — at turn 0 or
 later — it should bring an extra fervour, like the citizens are willing to overlook certain things."
 Distinct from what is built: the honeymoon is four turns of borrowed Authority, whereas this is a
