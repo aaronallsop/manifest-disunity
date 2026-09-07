@@ -997,6 +997,39 @@ figure:
 This preserves the real state number exactly and carries the **est.** badge, which is the rule the
 project already applies to every apportioned figure.
 
+**Ruling 36 — the source is RAND, pulled once and baked, never fetched at runtime.** *(Aaron,
+7 Sep.)* This is already how every dataset in the project works and needs no new mechanism: the raw
+file lands in `build/raw/` and is documented in its README, a build script bakes it into `data/`, and
+the game only ever reads the baked output.
+
+**The dataset, identified 7 September.** *State-Level Estimates of Household Firearm Ownership*,
+RAND Corporation, **TL-354-LJAF**, 2020 — Schell, Peterson, Vegetabile, Scherling, Smart and Morral.
+Free to the public at `rand.org/pubs/tools/TL354.html`, distributed as a **zipped Excel file**. The
+measure is **the proportion of adults living in a household with a firearm**, annually per state,
+**1980–2016**, built by small-area estimation across 51 surveys combined with firearm suicides,
+hunting licences, magazine subscriptions and background checks. *This description comes from a search
+index summary, not from the RAND page itself: **rand.org returns 403 to automated fetching**, and the
+mirrored PDF yielded no extractable text here. Verify it against the page before citing it anywhere
+Aaron will read.*
+
+**So the download is Aaron's or the programming session's, not this one's.** One click in a browser
+gets what automation cannot, and the design session may not write to `build/` or `data/` in any case.
+
+**Three things about the source that matter to the design.**
+
+1. **It measures adults in a firearm household, not gun owners** — so multiplying by total population
+   overstates by the child share. **This is harmless**, and worth stating so nobody "fixes" it later:
+   the county figures are scaled to sum to the state total and then used as a *relative* resistance
+   measure, so a uniform overstatement cancels out completely. Aaron's simplification costs nothing.
+2. **It ends in 2016**, where every other figure in the game is 2024. A twenty-year-old number by the
+   game's own calendar. Acceptable for plausible believability; it must be documented as the vintage
+   it is.
+3. **The fallback, if RAND proves unusable:** a firearm-suicide proxy dataset covering 1949–2020 on
+   Harvard Dataverse (Kang & Rasich, *Data in Brief* 50, 2023). More recent and openly downloadable,
+   but it is a **proxy** — firearm suicides as a share of all suicides — so it would need calibrating
+   into a percentage before it could be used. RAND is the better source because it is already
+   calibrated.
+
 **S81 — Two of the three inputs are not on disk, and one cannot be computed.**
 
 - **State gun-ownership rates: absent, and must be fetched.** Nothing in the repository carries
