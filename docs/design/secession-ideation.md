@@ -1079,11 +1079,23 @@ makes the six *different from each other* — Wyoming's fragments charge you and
 is a better board than a uniform category.
 
 **S84 — Two gaps found in the running, both known problems.** **The District of Columbia has no RAND
-rate** — the dataset covers 50 states — and DC is a *nation* in this story, the federal remnant. It
-needs a value assigned by hand. And **Connecticut's nine planning regions have no computable land
-area**, because the map geometry still holds the eight abolished counties: 1,678 Areas of 1,688 got a
-figure, and the ten that did not are Connecticut. *This is the documented Connecticut special case
-biting a third time.*
+rate** — the dataset covers 50 states — and DC is a *nation* in this story, the federal remnant. And
+**Connecticut's nine planning regions have no computable land area**, because the map geometry still
+holds the eight abolished counties: 1,678 Areas of 1,688 got a figure, and the ten that did not are
+Connecticut. *This is the documented Connecticut special case biting a third time.*
+
+**Ruling 37 — the District of Columbia is assigned 6%, by hand, badged as an estimate.** *(Aaron,
+7 Sep.)* The densest jurisdiction in the country with the strictest firearm laws, so it belongs
+**below** Massachusetts and New Jersey at 8.9–9.0% rather than beside them. **The figure is invented
+and must carry the est. badge** — it is not a RAND number and must never be presented as one. *The
+reasoning is general knowledge, not a checked source.* The measured alternative that was rejected:
+Maryland's 16.7% as the nearest neighbour, defensible and about three times too high.
+
+**Ruling 38 — the stateless regions are not uniformly hard to hold; the data decides.** *(Aaron,
+7 Sep, accepting S83.)* Ruling 32's blanket premise is dropped. Wyoming's fragments cost a
+conqueror every quarter and Ohio's do not, because that is what the map says. **The six stateless
+regions are therefore not interchangeable**, which is a better board than a uniform category and
+means "stateless" describes how ground is governed rather than how hard it fights.
 
 **S81 — Two of the three inputs are not on disk, and one cannot be computed.**
 
