@@ -964,6 +964,56 @@ today the *cheapest* on the continent to occupy, which is exactly backwards for 
 alongside hostility. Not a movement: a fact about the place, like the authored grudge already is,
 and paintable as one more overlapping wash in the same editor.
 
+**Ruling 33 — "resists being governed" is general, painted everywhere, heaviest on the six.**
+*(Aaron, 7 Sep.)* One property across the continent rather than a flag that switches on for stateless
+ground. It survives a change of status — a Kentucky fragment annexed by the Deep South **stays**
+expensive to hold, which is the whole point — and it lets the map say that the mountain West and
+Appalachia are dearer to govern than the seaboard, whoever governs them.
+
+**Ruling 34 — resistance is capacity times willingness, and willingness is ideological.** *(Aaron,
+7 Sep: "if those sections align with the movement ideologies then you don't have to worry about
+it.")* Two terms and they do different jobs:
+
+- **Capacity — the armed share of the population.** A fact about the place, baked once at setup.
+- **Willingness — how far the governing ideology sits from the local one.** *Built: this is the
+  affinity function, and Civil Liberties already uses exactly it — "a state governing people who
+  broadly agree with it has no reason to restrict them."*
+
+**So an armed county governed by people it agrees with is quiet, and the same county governed by
+strangers is expensive.** Nothing new is needed for the second half.
+
+**Ruling 35 — how the armed share is estimated.** *(Aaron's method, 7 Sep.)* Apportion a real state
+total across its counties by urbanity, the same discipline the project uses for every other estimated
+figure:
+
+1. **State total** = state gun-ownership rate × state population.
+2. **County weight** by settlement type — **0.60 rural, 0.40 suburban, 0.30 urban**. *(Aaron's
+   rounding of Pew Research figures of 58 / 41 / 29 per cent of households, 2017. **The citation is
+   Aaron's and has not been verified by this session.** They are household rates being used as
+   person rates, which he notes and accepts as the simplification.)*
+3. **Scale to fit**, so the county figures sum exactly to the state total:
+   `armed(c) = pop(c) × weight(c) × stateTotal ÷ Σ(pop × weight) over that state`
+
+This preserves the real state number exactly and carries the **est.** badge, which is the rule the
+project already applies to every apportioned figure.
+
+**S81 — Two of the three inputs are not on disk, and one cannot be computed.**
+
+- **State gun-ownership rates: absent, and must be fetched.** Nothing in the repository carries
+  them. **Aaron's call, because it reaches off his machine.**
+- **Settlement type: absent, but derivable.** There is no urban/rural classification and no land
+  area anywhere — the population file has none and the county records carry only name, state,
+  population, GDP and vote. But the map geometry is on disk, so **land area is computable from the
+  county polygons in the offline bake**, and density then gives the three buckets. No fetch needed.
+- **The density thresholds are a decision, not a measurement.** Roughly 1,000 people per square mile
+  for urban and 100 for rural are the usual cuts, *from memory and unverified*. A continuous curve
+  through Aaron's three points would avoid arbitrary lines and is the alternative worth considering.
+
+**S82 — The double-count worth watching.** Armed share will correlate with rurality, rurality with
+Republican vote, and vote is already in the model — so a rural red county occupied by a blue
+government would be dear to hold twice over, once for capacity and once for willingness. That may be
+correct compounding or it may be too much; it wants measuring once the numbers exist.
+
 **S65 — Realisation brings a fervour.** *(Aaron, 7 Sep.)* "When a nation is realised — at turn 0 or
 later — it should bring an extra fervour, like the citizens are willing to overlook certain things."
 Distinct from what is built: the honeymoon is four turns of borrowed Authority, whereas this is a
