@@ -936,6 +936,34 @@ counties "went in to support them" and are founders, while the Florida panhandle
 "mainly up to Pensacola". The largest-neighbour fallback survives as a general safety net for any
 rolled nation's orphans; it simply does not decide this one.
 
+### Stateless ground — Aaron, 7 September
+
+**Ruling 31 — four or five fragments painted per region, and the dice decide how many have
+coalesced.** So Kentucky opens as five micro-states in one game and two in the next. About 25
+painted fragments across the six regions, resolving to somewhere between 12 and 25 entities at an
+average of seven Areas each. Small enough to be **prey** — a seven-Area micro-state is something
+Dallas or the Deep South can take in one move, which is what makes stateless ground the thing
+everyone is quietly expanding into rather than a second tier of ordinary countries. And **cheap**:
+no elections, no movements, no AI plotting annexations. They trade, they charge tolls, they get
+taken.
+
+**Measured, and it is why Type C needs new lines.** After the nations take their share the six hold
+roughly **176 Areas — about a tenth of the continent** — and the cultural map divides only one of
+them: Arkansas 17 (the Ozarks, one piece), Wyoming 15 (one), New Mexico ~29 (one), Kentucky ~36
+(one), **Ohio 49 in three** (Cincinnati 18, Corn Belt 17, Columbus 14), Michigan ~30 (one). The
+cultural map was drawn to group ground, not to break it.
+
+**Ruling 32 — stateless ground is no harder to take and dearer to hold.** *(Aaron, 7 Sep: high gun
+ownership, self-governing, leave-us-alone.)* Capture difficulty is unchanged; **occupation costs
+more**. The game already separates the two, so this touches upkeep and not the war rules.
+
+**The mechanism it needs, and it does not exist.** Occupation upkeep scales with `hostility(area)`,
+which is computed **purely from organised movement membership** — so ground with no movement is
+today the *cheapest* on the continent to occupy, which is exactly backwards for this. It needs a
+**per-Area property meaning "this ground resists being governed"**, read by the occupation formula
+alongside hostility. Not a movement: a fact about the place, like the authored grudge already is,
+and paintable as one more overlapping wash in the same editor.
+
 **S65 — Realisation brings a fervour.** *(Aaron, 7 Sep.)* "When a nation is realised — at turn 0 or
 later — it should bring an extra fervour, like the citizens are willing to overlook certain things."
 Distinct from what is built: the honeymoon is four turns of borrowed Authority, whereas this is a
