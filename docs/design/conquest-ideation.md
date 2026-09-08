@@ -757,6 +757,59 @@ exploit into rising tension. *Proposed, not ruled.*
 corridor's has three, deliberately, because a slider you always say yes to is not a decision. **A
 peace treaty wants the same discipline: few levers, each one a real choice.** *Open.*
 
+**Ruling 9 — what Hostile costs. (Aaron, 7 September 2026.)** Four things:
+
+1. **Tolls rise.** What they charge to move your goods across their ground goes up.
+2. **What they will accept as a toll rises.** They demand a bigger cut before agreeing to a crossing
+   at all. *This is my reading of "willingness to accept tolls rise" and it maps onto built
+   machinery — a corridor is negotiated on a slider from 5% to 60% that deliberately opens below what
+   the other side would ask, so "what they would ask" is a real number that can move. The other
+   possible reading is that a hostile nation becomes willing to pay more because it is cornered; if
+   that was the intent, this entry is wrong and cheap to fix.*
+3. **Movements grow faster where they match the other nation.** Oregon and Greater Idaho being
+   hostile makes the Greater Idaho movement inside Oregon grow faster. Targeted, not general.
+4. **Guarding the border costs more money.**
+
+**Aaron's third item replaces a mechanism I proposed, and replaces it with a better one.** I had
+suggested that a hostile border drags a nation's army outward, weakening the garrison at home, so
+that *all* of its separatists grow. His version reaches the same outcome directly and legibly, and it
+is **targeted at the movement that belongs to the nation you are quarrelling with** — which is a
+story a player can read off the map in one glance. The indirect version survives as an idea, below,
+because it says something his does not.
+
+**C76 — The indirect version, kept because it is a different claim.** *(Claude, superseded as the
+main mechanism by ruling 9.3.)* An army pointed outward is an army not holding the ground behind it.
+Ruling 9.3 grows *the neighbour's* movement inside you; this would raise the pressure on **all** your
+restless ground, because your soldiers are facing the wrong way. It is the general "a quarrel abroad
+weakens your grip at home" claim rather than the specific irredentist one.
+
+---
+
+#### ⚠ FINDING — ruling 9.3 closes a loop, and it is the first one in this round
+
+**Ruling 4's first cause and ruling 9's third effect are the same pair of nations pointing at each
+other:**
+
+> A movement grows inside you → **you and its nation become Hostile** *(ruling 4.1)* → **the movement
+> grows faster** *(ruling 9.3)* → you are more hostile → …
+
+**This is self-reinforcing, and it defeats ruling 7's cooling clock.** Hostility is supposed to turn
+back into Peace after a certain time. But if the cause of the hostility is a movement, and the
+hostility feeds the movement, **the cause never goes away and the clock never gets to fire.** Oregon
+and Greater Idaho would be hostile permanently.
+
+**Three things stand between this and a runaway, and none has been measured:**
+- Movement strength is **capped** per movement (Deseret's is 0.55–0.60), so the growth cannot run away
+  even if the loop never breaks.
+- Ideological match is **multiplicative**, so the movement can only grow where it already fits.
+- Sentiment is **rate-limited**, so a region takes years to turn either way.
+
+**It may also simply be correct.** Some rivalries are permanent, and a game in which Oregon and
+Greater Idaho never stop being hostile is not obviously wrong — it is the Kashmir answer. **The
+question is whether ruling 7's clock should decay on *time* or on *the cause going away*, and they
+give different games.** Recorded here rather than decided, and it is the first thing the closing trace
+of this round must run.
+
 ---
 
 ## 7. The scenarios this round has to be able to tell
@@ -784,12 +837,9 @@ fifty-three rulings did not.**
 
 Asked of Aaron in order, one at a time. Answered ones move up into §6 as rulings.
 
-1. ~~**What puts two nations into Hostile?**~~ **Answered — ruling 4.** *The other half — what
-   Hostile costs — was asked in the same breath and is still open. My proposal, unruled: no new deals
-   and no renewals; their tolls on your goods rise; they may shut a corridor on you; they will not
-   recognise you; and, the one that matters, **a hostile border pulls your army to the border and
-   away from your own restless ground, so a quarrel with a neighbour makes your own separatists
-   cheaper to grow.***
+1. ~~**What puts two nations into Hostile, and what does it cost?**~~ **Answered — rulings 4 and 9.**
+   *Unruled and still banked from my proposal: no new deals and no renewals with a hostile neighbour;
+   they will not recognise you; and they may shut a corridor on you (C67).*
 2. ~~**Is a state shared or one-sided?**~~ **Answered — ruling 5. Shared.** The one-sided version is
    **F18**.
 3. ~~**How does a state change?**~~ **Answered — rulings 6 and 7.** Declaring is taken alone; a
@@ -810,3 +860,6 @@ Asked of Aaron in order, one at a time. Answered ones move up into §6 as ruling
    Worth reopening earlier in the round rather than later.
 8. **Can a pair go from Peace straight to War**, or does something have to happen first? C72 assumes
    yes-but-expensively.
+9. **Does hostility cool on time, or only when its cause goes away?** Raised by the finding under
+   ruling 9 — the two give different games and ruling 7 says "a certain time", which the finding
+   shows can never arrive for a movement-driven quarrel.
