@@ -160,6 +160,59 @@ run one way. Subject runs one way by definition. *Open — see the questions in 
 
 ---
 
+### THE SPINE, continued — the rest of what makes a pair hostile
+
+*Ruling 4 gave five causes and invited more. These are the additions, and the first is the largest.*
+
+**C65 — The board does not open at Peace, and ruling 4's second cause says how many pairs do not.**
+Derived from round 1's ruling 19, which named the four reunification contests and who may win each:
+
+| Contest | Claimants | Hostile pairs it creates |
+|---|---:|---:|
+| **A Free Texas** | the five Texan successors — Dallas, Houston, San Antonio, Austin, El Paso | 10 |
+| **California Republic** | the five Californian successors | 10 |
+| **The Confederacy** | the Deep South, the Carolinas, the Gulf nation, Appalachia, Central Florida | 10 |
+| **The Thirteen Colonies** | Washington D.C., Philadelphia, New York City *(Boston out, ruling 20)* | 3 |
+| | | **33** |
+
+**Thirty-three pairs of nations open Hostile on cause 2 alone**, out of 1,081 possible pairs on a
+47-nation board — about 3%, and every one of them a story somebody can name. *Derived from ruling
+19's stated claimant fields, not measured from data; the five Californias are counted there but never
+named individually, so that row is a count and not a list.*
+
+**And that is before the wars that already happened.** Houston holds western Louisiana. The federal
+army marched into West Virginia. Chicago took north-west Indiana. The Gulf nation took the Florida
+panhandle for Pensacola. **A war that ended two years ago does not leave two nations at Peace** — it
+leaves them Hostile, or in a treaty one of them resents. *This is C46 upgraded: the opening board
+should be seeded with states, not only with memories.*
+
+**C66 — Refusing to recognise them.** Recognition is built, directed, and stored only where it is not
+the default. A nation you will not admit exists has an obvious and permanent reason to be hostile to
+you — and the game already measures that giving in is worth more than everything else combined.
+
+**C67 — Cutting off their way out.** Fourteen of the nations have no port and no foreign border and
+reach the world only across a neighbour's ground — measured. Shutting a corridor on one of them is
+close to an act of war, and `DESIGN.md` records that **no AI nation has ever closed one**: the
+machinery is symmetrical and only the player uses it. Ruling 4's cause 3 is the reason sixty nations
+have been waiting for.
+
+**C68 — Several nations eyeing the same unclaimed ground.** New Mexico's remainder is prey to El
+Paso, Oklahoma, the Navajo Nation and the Front Range Republic at once. Rivals before anybody moves,
+and the same shape as cause 2 pointed at ground rather than at an inheritance.
+
+**C69 — A garrison standing on ground somebody else calls home.** Appalachia holds all fifteen of
+West Virginia's Areas and Franklin's homeland reaches into six states. Occupying ground that is
+another nation's founding grant is cause 1 with soldiers on it.
+
+**C70 — Sheltering the people who fled them.** Migration is built and moves people toward people who
+think as they do. A nation collecting its neighbour's refugees is a fact the neighbour can resent.
+
+**C71 — Their government changed, and it changed away from you.** Elections are built and can swap a
+nation's ruling ideology. A neighbour swinging far from you is a diplomatic event that nobody chose
+and nobody can be blamed for — which makes it the purest possible expression of ruling 1.
+
+---
+
 ### A. What a war *is*
 
 *Ruling 1 settled the shape: a war is a standing state, not an event. What follows are the ideas
@@ -486,8 +539,12 @@ escalate, redeploy, sue for peace. Fighting is not an action. Deciding is.
   valves and should be one table, not two.
 - **From diplomacy (round 5):** guarantees, protectorates, peace treaties and who mediates. C29 and
   C34 are diplomacy objects with a military trigger.
-- **From the economy (round 4):** what a war costs to run, what a blockade actually stops, and what a
-  destroyed rail hub does to a corridor.
+- **From the economy (round 4), and ruling 4 makes two of these blocking:** what a war costs to run,
+  what a blockade actually stops, and what a destroyed rail hub does to a corridor. **And:**
+  **(a) desperation must bite** — a nation that cannot get a resource must actually suffer for it, or
+  ruling 4's third cause can never fire; **(b) a price must be settable by the seller**, or nobody can
+  charge the absurd price that cause names. Both are already recorded as gaps rather than being new
+  demands.
 - **From events (round 6):** a war that starts because somebody else's crisis made it.
 
 ## 5. What the other rounds may demand of this one
@@ -521,6 +578,45 @@ deferred to later in the round. The spine and the ideas hanging off it are at th
 becomes a property of the War state rather than a thing of its own — but the state machine is the
 better spine and it is Aaron's.*
 
+**Ruling 3 — a cease-fire is temporary and carries a set number of turns. (Aaron, 7 September 2026.)**
+It is the only one of the five states that cannot be a resting place. It is set for a term, it runs
+out, and something else must happen when it does. *This settles C58 and it settles it harder than I
+proposed: I suggested it "should probably expire"; Aaron has made expiry the definition. A cease-fire
+is a clock with all of war's costs running while it ticks, which means both sides are paying for the
+time they are using to decide.*
+
+**Ruling 4 — what puts two nations into Hostile. (Aaron, 7 September 2026.)** Five causes, in his
+words, and the round may add more:
+
+1. **One nation has a large growing movement inside the other.** *"Oregon is hostile with Greater
+   Idaho because the Greater Idaho movement is growing in their state."*
+2. **Two nations competing to reunify the same thing** — the Texases, the Californias, the eastern
+   capitals, and the others named below.
+3. **One nation desperate for a resource, and the other will not trade it or charges an absurd
+   price for it.**
+4. **One nation funding a movement inside another.**
+5. **Hostility inherited through alliances.** If A is allied to B, and C is allied to D, and A
+   attacks C and D, then **D becomes hostile with B**. You inherit your ally's enemies.
+
+**These five are not five mechanisms. They are five systems reaching into one place**, and that is
+ruling 1 working: cause 1 is secession reaching diplomacy, cause 2 is the board itself, cause 3 is
+the economy, cause 4 is a player's own deliberate act, and cause 5 is diplomacy folding back on
+itself. Not one of them is a military act. *A nation can arrive at the edge of war without ever
+having raised an army.*
+
+**Cause 5 depends on Allied, which Aaron deferred.** Not a contradiction — it is a cause that
+switches on when alliances exist, and it is an argument for taking Allied earlier in this round
+rather than later.
+
+**Cause 3 depends on two things the economy does not yet do**, and both are already written down as
+gaps:
+  - **Desperation has to bite.** The stated hollow spot in the current build is that *nothing bad
+    happens to a nation that does not trade*. Until it does, no nation can be desperate for anything.
+  - **A price has to be settable.** `DESIGN.md` records that the model has the price lever and no
+    screen anywhere sets it — *"the single largest gap between what the economy spec asks for and
+    what is built"*. "An absurdly high price" cannot be charged until somebody can charge it.
+  → **Recorded in §4 as what this round needs from round 4.**
+
 ---
 
 ## 7. The scenarios this round has to be able to tell
@@ -548,10 +644,18 @@ fifty-three rulings did not.**
 
 Asked of Aaron in order, one at a time. Answered ones move up into §6 as rulings.
 
-1. **What puts two nations into Hostile, and what does it cost them?** ◀ *asked 7 Sep*
-2. **Is a state shared or one-sided?** War is surely something both nations are in; hostility is a
-   feeling and feelings run one way. (C64.)
+1. ~~**What puts two nations into Hostile?**~~ **Answered — ruling 4.** *The other half — what
+   Hostile costs — was asked in the same breath and is still open. My proposal, unruled: no new deals
+   and no renewals; their tolls on your goods rise; they may shut a corridor on you; they will not
+   recognise you; and, the one that matters, **a hostile border pulls your army to the border and
+   away from your own restless ground, so a quarrel with a neighbour makes your own separatists
+   cheaper to grow.***
+2. **Is a state shared or one-sided?** ◀ *asked 7 Sep* — War is surely something both nations are in;
+   hostility is a feeling and feelings run one way. Ruling 4's own examples pull both ways. (C64.)
 3. **How does a state change — who chooses, who has to agree, and does it cost your one action?**
    Three kinds of transition: chosen, earned without choosing, and negotiated. (C56.)
 4. **Does a peace-treaty ever expire back into plain peace, or is it forever?**
-5. **Subject and Allied** — deferred by Aaron, to be reopened later in this round.
+5. **Subject and Allied** — deferred by Aaron, but ruling 4's fifth cause needs Allied to exist.
+   Worth reopening earlier in the round rather than later.
+6. **What ends a cease-fire when its term runs out** — war again, peace, or a forced choice? Ruling 3
+   made the clock; it did not say what the alarm does.
