@@ -11,7 +11,22 @@ are made.
 
 ---
 
-## 0. The three things written at the top of every round
+## 0. The frame, ruled by Aaron on the day the round opened
+
+> **"This isn't a war game. I don't want this to be a game of just war and conquering, where
+> economics and diplomacy help your war effort. I want a game where war impacts your economy and
+> your diplomacy and your internal relations, and they all interact."** — Aaron, 7 September 2026
+
+**This is the sentence every idea in this round is measured against**, and it points the arrows the
+opposite way to how a strategy game usually points them. Conquest is not the thing the other systems
+serve. It is a thing that *happens to* the other systems. An idea in this document earns its place by
+what it does to the economy, to the neighbours and to your own people — not by how well it wins wars.
+
+Recorded as **D181**, and as rulings 1 and 2 in §6.
+
+---
+
+## 0a. The three things written at the top of every round
 
 **One action per nation per turn, and it ends the turn.** Six components compete for one slot. Any
 idea below that assumes a decision every turn has taken that turn away from the other five, and this
@@ -67,7 +82,88 @@ purchase, and it protects the big from the bigger.
 
 ## 2. The idea bank
 
+### THE SPINE — seven states a pair of nations can be in (Aaron, 7 September, ruling 2)
+
+**This replaces "is there a war" with something better: two nations are *always* in one of seven
+named states, and war is only one of them.** Aaron's list, in his words, ordered from least
+constrained to most:
+
+| | What it means |
+|---|---|
+| **Peace** | You can do anything with the nation |
+| **Peace-treaty** | You signed a treaty with stipulations — trade, territory, repayment. **Breaking it has a huge impact** |
+| **Hostile** | Things have happened that bring you close to war without being at war. It has impacts |
+| **Cease-fire** | **All the impacts of war, but you cannot attack** |
+| **War** | Trade is prohibited and you may attack |
+| **Subject** | *Deferred by Aaron — later* |
+| **Allied** | *Deferred by Aaron — later* |
+
+**Why this is stronger than the thing it replaced.** I proposed a war object. What Aaron ruled is a
+*relationship*, which is the same shape as everything else in this game that has worked: recognition
+is a standing directed fact, a trade deal is a standing contract, a coalition is a standing set of
+named nations. A pair's state is one more standing fact, and every other system can read it.
+
+**And it does the thing the frame demands** — none of these five states is about fighting. Four of
+them are about what you are *not allowed to do*, which is exactly how war reaches an economy.
+
+**C55 — Peace is the default and costs nothing to store.** Recognition already works this way: a
+directed fact written down only where it is not the default, so the table is empty on turn 0 and
+never grows to n². Sixty nations at peace is an empty table.
+
+**C56 — The transitions are the game, not the states.** Each state is a short list of prohibitions;
+what is *interesting* is what moves a pair from one to the next, and there are three different kinds
+— one you **choose** (declare), one you **earn** without choosing (hostility accumulating from things
+you did for other reasons), and one you must **negotiate** (a cease-fire, a treaty). A game where
+you can slide into Hostile without ever deciding to is a game about consequences.
+
+**C57 — Declaring war breaks live contracts, and there is already a ruling about that.** Trade is a
+standing deal with a term of 2, 4, 8 or 20 turns. If war prohibits trade, then declaring war on a
+partner **breaks a signed agreement** — and Aaron has already ruled (Control Board, 5 September) that
+breaking a deal early damages your reputation, makes other nations warier of dealing with you, and
+raises what they ask, cooling over time. *So the economic price of a war arrives on the day it is
+declared, before a shot, and it is machinery that already exists.* This is the frame working.
+
+**C58 — A cease-fire needs a clock or nobody ever leaves it.** If a cease-fire carries all the costs
+of war, it is a waiting room and not a destination — which is right. But two AI nations will sit in
+one indefinitely, both bleeding, unless it either expires into war, expires into peace, or presses
+both sides toward a treaty. My instinct is that it should **expire**, and that whichever side lets it
+expire wears the blame.
+
+**C59 — Hostile is where most of this game will actually live**, and it is the state Aaron invented
+that no standard model has. Nobody is shooting, so nothing is dramatic — and yet it should be the
+state that costs the most *cumulatively*, because it is the one you spend decades in with the
+neighbour you dislike. Candidate causes: taking ground near them, sponsoring a movement inside them,
+refusing to recognise them, shutting a corridor they depend on, guaranteeing their enemy, or simply
+joining the coalition against them.
+
+**C60 — A peace-treaty's stipulations are the first standing obligations in the game.** Ground ceded,
+a sum repaid over N turns, a trade at a fixed rate, a promise not to return. `DESIGN.md` names
+"treaties honoured and broken" as an Influence term that was never built because no treaty object
+existed. This is that object, and Aaron's "huge impact" is that term finally having something to
+measure.
+
+**C61 — Your own people have an opinion about who you are at war with.** The frame says internal
+relations must feel it. A war against a neighbour your population feels kinship with is a different
+war from one against a stranger, and the ideological affinity that decides everything else in this
+game can decide this too, at no cost.
+
+**C62 — The state is what the neighbours read.** A coalition should form out of states rather than
+out of size alone: three nations Hostile to you is a fact about the world, and it is legible in a way
+"size share × (1 − influence)" never is.
+
+**C63 — The state belongs on the map, in one glance.** Sixty nations, five colours, and the player
+can see the shape of the continent's temper without opening a panel.
+
+**C64 — Whether a state is shared or one-sided is not the same answer for all seven.** War and a
+cease-fire and a treaty are things two nations are *in together*. Hostile is a feeling and feelings
+run one way. Subject runs one way by definition. *Open — see the questions in §8.*
+
+---
+
 ### A. What a war *is*
+
+*Ruling 1 settled the shape: a war is a standing state, not an event. What follows are the ideas
+about the state numbered 5 on the spine above.*
 
 **C1 — A war is a standing relationship with a term, exactly as a trade deal is.** The best
 structural idea the economy alpha produced was making trade a *standing contract* rather than a
@@ -408,7 +504,22 @@ escalate, redeploy, sue for peace. Fighting is not an action. Deciding is.
 
 ## 6. Rulings
 
-*None yet. Round 2 opened 7 September 2026.*
+**Ruling 1 — This is not a war game, and the arrows point the other way. (Aaron, 7 September 2026.)**
+War is not the thing the economy and diplomacy serve; it is a thing that happens *to* them. Every
+idea in this round is measured by what it does to the economy, to the neighbours and to a nation's own
+people. Recorded as D181 and quoted in full at §0.
+
+**Ruling 2 — A war is a standing state, and it is one of seven. (Aaron, 7 September 2026.)**
+Two nations are always in a named relationship: **Peace, Peace-treaty, Hostile, Cease-fire, War**, and
+later **Subject** and **Allied**. Peace permits everything. A peace-treaty carries stipulations —
+trade, territory, repayment — and **breaking it has a huge impact**. Hostile is what happens when
+events bring two nations close to war without war. A cease-fire carries **all the impacts of war
+except the ability to attack**. War **prohibits trade** and permits attack. Subject and Allied are
+deferred to later in the round. The spine and the ideas hanging off it are at the top of §2.
+
+*This supersedes my own proposal of a war object with named aims. The aims idea is not dead — it
+becomes a property of the War state rather than a thing of its own — but the state machine is the
+better spine and it is Aaron's.*
 
 ---
 
@@ -430,3 +541,17 @@ fifty-three rulings did not.**
    invading is cheaper. The player weighs a fed population against the anger of the ground they took.
 6. **A Tuesday, in a war.** One action, a front that is moving on its own, and something worth doing
    with the turn.
+
+---
+
+## 8. Open on the spine, after ruling 2
+
+Asked of Aaron in order, one at a time. Answered ones move up into §6 as rulings.
+
+1. **What puts two nations into Hostile, and what does it cost them?** ◀ *asked 7 Sep*
+2. **Is a state shared or one-sided?** War is surely something both nations are in; hostility is a
+   feeling and feelings run one way. (C64.)
+3. **How does a state change — who chooses, who has to agree, and does it cost your one action?**
+   Three kinds of transition: chosen, earned without choosing, and negotiated. (C56.)
+4. **Does a peace-treaty ever expire back into plain peace, or is it forever?**
+5. **Subject and Allied** — deferred by Aaron, to be reopened later in this round.

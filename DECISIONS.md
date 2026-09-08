@@ -2987,3 +2987,65 @@ is an invented number arriving on the Control Board looking measured and standin
 (D178, programmer rule 7). Without that column the architect will invent in good faith and the result
 will read as counted.
 
+
+---
+
+### D181 — This is not a war game, and two nations are always in one of seven named states, 7 September 2026
+
+**Two rulings from Aaron on the day round 2 (military conquest) opened, and the second follows from
+the first.**
+
+**The observation that prompted them.** Round 2 opened by putting one question to Aaron: does a war
+exist as a thing you are *in*, or does taking ground stay what it is today — a purchase? The question
+was worth asking because of something verified against the running annexation move that morning:
+unless a civil war fires **inside the attacker**, ground changes hands with no roll of any kind. The
+defender's Border allocation, its readiness and its measured armed population are read only as a
+multiplier on the attacker's own civil-war score. If that war does not trigger, the defender is never
+consulted at all. Taking land is shopping, and the only rule that has ever refused a purchase is the
+one protecting nations four times your size — which protects the big from the bigger and nobody else.
+
+**Ruling 1 — the arrows point the other way.** In Aaron's words: *"This isn't a war game. I don't want
+this to be a game of just war and conquering, where economics and diplomacy help your war effort. I
+want a game where war impacts your economy and your diplomacy and your internal relations, and they
+all interact."*
+
+This is a statement about what the game **is**, not about conquest, and it binds every round that
+follows. The usual strategy-game arrangement — an economy that funds an army, diplomacy that buys
+allies for a war — is explicitly rejected. Conquest is not the system the others serve; it is a
+system that happens *to* them. An idea earns its place by what it does to the economy, to the
+neighbours and to a nation's own people, not by how well it wins wars.
+
+**Ruling 2 — a war is a standing state, and it is one of seven.** Two nations are always in a named
+relationship with each other:
+
+| | |
+|---|---|
+| **Peace** | You can do anything with the nation |
+| **Peace-treaty** | A signed treaty with stipulations — trade, territory, repayment. **Breaking it has a huge impact** |
+| **Hostile** | Events have brought two nations close to war without war. It has impacts |
+| **Cease-fire** | **All the impacts of war, except that you cannot attack** |
+| **War** | Trade is prohibited, and you may attack |
+| **Subject** | Deferred by Aaron — later in the round |
+| **Allied** | Deferred by Aaron — later in the round |
+
+**What was rejected, and it was mine.** I proposed a war *object*: declared for a named aim, running
+on its own, ended by treaty or exhaustion. Aaron's answer is better and supersedes it. A war object
+is a special case bolted beside the model; a relationship state is the same shape as everything in
+this game that has already worked — recognition is a standing directed fact, a trade deal is a
+standing contract with a term, a coalition is a standing set of named nations. The war aims idea is
+not dead; it survives as a property of the War state rather than as a thing of its own.
+
+**Why the seven-state form serves ruling 1 specifically.** None of the five live states is about
+fighting. Four of them are lists of what a nation is *not allowed to do* — and prohibition is exactly
+how a war reaches an economy that never sees a soldier. One consequence is already visible and uses
+machinery that exists: a trade deal is a standing contract of 2, 4, 8 or 20 turns, and Aaron ruled on
+the Control Board on 5 September that breaking one early damages your reputation and raises what
+others ask of you, cooling over time. If War prohibits trade, then **declaring war on a trading
+partner breaks a signed contract on the day it is declared** — an economic and diplomatic price paid
+before a shot is fired.
+
+**Where this lands.** `docs/design/conquest-ideation.md` §0 and §6, with the spine and the ideas
+hanging off it at the head of the idea bank. Open questions on the spine — what causes Hostile,
+whether a state is shared or one-sided, how transitions happen and whether they cost the single
+action, and whether a peace-treaty expires — are listed in that document's §8 and are being put to
+Aaron one at a time.
