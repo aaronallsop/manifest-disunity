@@ -213,6 +213,42 @@ and nobody can be blamed for — which makes it the purest possible expression o
 
 ---
 
+### THE SPINE, continued — the ladder is a justification scale
+
+**C72 — What it costs you to attack somebody depends on the state you were in when you did it, and
+this is what makes the whole spine pay for itself.** *(Claude, 7 September, after ruling 7.)*
+
+The five states are not only a machine for tracking who is fighting whom. Read the other way, they
+are **a scale of how defensible your aggression is** — and the game already has three places to
+charge you: your standing abroad, your own people's tolerance, and the neighbours' willingness to
+gang up.
+
+| You attack somebody you were… | and it reads as | so it costs |
+|---|---|---|
+| **Hostile** with | the thing everyone saw coming | least — you have a grievance on the record, dated, that the game can name |
+| At **Peace** with | an outrage | a great deal — you had no quarrel and you started one |
+| in a **Peace-treaty** with | **a betrayal** | most — this is Aaron's "huge impact", and it is the top of this ladder rather than a separate rule |
+| in a **Cease-fire** with | breaking your word while the guns were quiet | most, and arguably worse than a treaty, because a cease-fire is the moment you were trusted |
+
+**Why this is worth having.** It answers three loose questions with one mechanism: what breaking a
+treaty costs (the top of the scale), why anybody would bother spending years being *seen* to be
+provoked (it makes the eventual war cheap), and what Hostile is actually *for* beyond being a mood —
+**it is the state you manoeuvre into before a war you intend to fight.** A player who understands that
+is playing diplomacy in order to make a war affordable, which is ruling 1 read backwards and is
+exactly the game Aaron described.
+
+**And the game already has the ledger to charge it to.** Influence falls with conquest scaled by how
+much standing you had; the memory list is dated and decaying; a coalition forms out of who resents
+you. Nothing new is needed to *pay* for this — only something that says how much.
+
+**C73 — Which of the three a cease-fire falls into is what the cease-fire is FOR.** A cease-fire is a
+timed negotiation with all of war's costs running while it ticks: agree terms and you leave by
+peace-treaty, agree to disengage without terms and you leave hostile, agree nothing and the guns
+restart. **The default on failure is war, and that is the pressure that makes the window mean
+something.** *Proposed, not ruled — see §8.*
+
+---
+
 ### A. What a war *is*
 
 *Ruling 1 settled the shape: a war is a standing state, not an event. What follows are the ideas
@@ -639,6 +675,46 @@ record stays exactly as it is. **The feelings run one way and keep every asymmet
 has; the state is the shared summary sitting on top of them.** Nothing is lost, and the two are not
 in conflict — they are answering different questions.
 
+**Ruling 6 — a war ends only by agreement, and refusing is allowed. (Aaron, 7 September 2026.)**
+*"If Houston is at war and it wants out of it and Dallas refuses then they are still at war."* No
+penalty attaches to refusing. **I proposed one and Aaron did not take it, and he is right** — a rule
+charging the refuser would be bolted on top of a system that already produces the cost. Dallas
+refusing peace is not free: it is at war, its weariness is rising, its trade with Houston is
+prohibited, and its own people are reading all three. **The frame from ruling 1 is what makes ruling 6
+safe.** War is expensive for the side that will not stop, and it is expensive without anybody writing
+a rule that says so.
+
+*The residual risk is recorded rather than argued: a player can be held in a war they cannot leave by
+an opponent willing to bleed. Whether that is drama or a trap is a question for the alpha, not for
+this round.*
+
+**Ruling 7 — every state has an exit, and three of the four are clocks. (Aaron, 7 September 2026.)**
+
+- **A cease-fire runs out into one of three states: War, Peace-treaty, or Hostile.**
+- **A peace-treaty runs out back into Peace.**
+- **Hostile turns back into Peace after a certain time.**
+
+**This closes the cycle, and the shape it makes is the good part:** the *only* two transitions that
+need both nations to agree are the ones into a cease-fire and into a peace-treaty. Everything else is
+either taken alone (declaring) or arrives on a clock (hostility cooling, a treaty maturing, a
+cease-fire expiring). **A pair of nations cannot get permanently stuck anywhere except War**, which is
+ruling 6 and is deliberate.
+
+| From | Leaves by | Into |
+|---|---|---|
+| **Peace** | the five causes of ruling 4 | Hostile |
+| **Peace** | one nation declaring | War |
+| **Hostile** | **time** | Peace |
+| **Hostile** | one nation declaring | War |
+| **War** | **both agreeing** | Cease-fire |
+| **War** | one side ceasing to exist | — |
+| **Cease-fire** | **its term running out** | War, Peace-treaty **or** Hostile |
+| **Peace-treaty** | **its term running out** | Peace |
+| **Peace-treaty** | being broken | *open — see §8* |
+
+*"A certain time" for hostility, and the term of a treaty, are placeholder tunables. Nothing about
+them is measured and nothing should be tuned during ideation.*
+
 ---
 
 ## 7. The scenarios this round has to be able to tell
@@ -674,12 +750,21 @@ Asked of Aaron in order, one at a time. Answered ones move up into §6 as ruling
    cheaper to grow.***
 2. ~~**Is a state shared or one-sided?**~~ **Answered — ruling 5. Shared.** The one-sided version is
    **F18**.
-3. **How does a state change — who chooses, who has to agree, and does it cost your one action?**
-   ◀ *asked 7 Sep* — Three kinds of transition: chosen, earned without choosing, and negotiated.
-   **Ruling 5 sharpens this:** if a state is shared, some transitions cannot be taken alone. You can
-   declare war by yourself; you cannot make peace by yourself. (C56.)
-4. **Does a peace-treaty ever expire back into plain peace, or is it forever?**
-5. **Subject and Allied** — deferred by Aaron, but ruling 4's fifth cause needs Allied to exist.
+3. ~~**How does a state change?**~~ **Answered — rulings 6 and 7.** Declaring is taken alone; a
+   cease-fire and a treaty need both; hostility, a treaty's maturity and a cease-fire's expiry are
+   clocks. *Still open within it: **does a transition cost your one action for the turn?** My
+   proposal, unruled — declaring costs an action, proposing a cease-fire or treaty costs an action,
+   becoming hostile costs nothing because you did not do it, and **being at war costs no action at
+   all**, because a ten-turn war that eats ten turns of decisions is the whole game.*
+4. ~~**Does a peace-treaty expire back into plain peace?**~~ **Answered — ruling 7. Yes.**
+5. **Which of the three states does a cease-fire fall into, and who decides?** ◀ *asked 7 Sep* —
+   Ruling 7 named the three exits and did not say what chooses between them. **C73 proposes** that
+   this is what the cease-fire is *for*: a timed negotiation, leaving by treaty if terms are agreed,
+   hostile if the two merely disengage, and back to war if nothing is agreed.
+6. **What does breaking a peace-treaty do?** Aaron has ruled it has "a huge impact" and not what
+   state it lands you in. **C72 proposes** that it is the top of a justification scale rather than a
+   rule of its own.
+7. **Subject and Allied** — deferred by Aaron, but ruling 4's fifth cause needs Allied to exist.
    Worth reopening earlier in the round rather than later.
-6. **What ends a cease-fire when its term runs out** — war again, peace, or a forced choice? Ruling 3
-   made the clock; it did not say what the alarm does.
+8. **Can a pair go from Peace straight to War**, or does something have to happen first? C72 assumes
+   yes-but-expensively.
