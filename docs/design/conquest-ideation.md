@@ -812,6 +812,70 @@ of this round must run.
 
 ---
 
+### THE SPINE, continued — how a war is actually fought
+
+**Ruling 10 — ground changes hands at the settlement, not turn by turn. (Aaron, 7 September 2026.)**
+Accepting the recommendation and the reason for it: if the border moved every turn, the map would
+become the scoreboard, players would watch the front instead of the country, and we would have built
+a war game after all. **The war is the leverage; the treaty is the game.** What a war is *for* is
+making the other side's position bad enough that they sign.
+
+*Its known cost, recorded honestly: a war with no visible front is harder to read, and risks becoming
+an abstract bill arriving every quarter. That is a presentation problem and it must be solved. The
+alternative's problem was that it changes what the game is about.*
+
+**Ruling 11 — war must be simple at the level the player touches it. (Aaron, 7 September 2026.)**
+*"I want it to be really simple from a user experience level. There isn't going to be troops / troop
+types / etc."* **This is a constraint on every idea in this document**, and several already in the bank
+fail it or need trimming to pass. It is consistent with what is built — force is deliberately one
+derived number with no counters, no stacks and no tokens — and it means the interesting complexity
+belongs in the *consequences* of a war rather than in its conduct.
+
+**Ruling 12 — how a fight resolves. (Aaron, 7 September 2026.)** *"I decide I want to invade / annex
+an area. It would create a number of my total available military for the field and compare it against
+the other nation's set aside for the border. There would be bonuses and negatives that will be
+decided later on — like good tech increases your chance, or if you are annexing an area that is a
+part of your separatist movement then that is a bonus as well. I do like the idea of a percentage
+chance — it feels like your generals analysed the data and are giving you a chance to win / succeed."*
+
+**Almost all of this is already built, and that is the useful thing to know.** Verified 7 September:
+
+- **The comparison exists exactly as described.** The game already computes the attacker's **Field**
+  strength against the defenders' **Border** strength as a share — `mine / (mine + theirs)` — adding
+  the border armies of any nations lined up against the attacker at a discount, and a modifier for
+  who is in charge.
+- **It is already shown to the player**, on the Area panel, captioned in plain English: *"How the
+  fight goes — an army at the end of its supply line."* It is displayed as a multiplier (×1.42)
+  rather than as odds.
+- **The distance penalty is already folded in**, off the same record that priced the attempt, so the
+  panel explains a refusal with the number that caused it.
+- **The preview machinery is exactly the right shape for a stated percentage.** Planning a move is a
+  pure function with no dice in it, returning a preview the player's panel renders and the AI scores
+  — *deliberately the same function*, so what the player is shown and what the AI believes can never
+  drift apart. A stated chance is what that arrangement was built to support.
+
+**So ruling 12 is largely a presentation change on top of a number that already exists** — plus the
+one structural change that matters: **it must fire on every attack**, rather than only when the
+attacker's own civil war happens to trigger (§1a).
+
+**C77 — The bonus and the penalty are the same number with its sign set by whether the locals agree
+with you.** Aaron named a bonus for attacking ground where your own separatist movement has members.
+That is the exact mirror of the defence C17 proposed — an armed population that hates you is a bad
+place to march into, and **the same armed population that agrees with you is help**. One measured
+quantity (RAND armed share apportioned by settlement density, 8.9%–65.0%, median 40.0%), one sign,
+decided by ideological match — which is how the sentiment model already decides everything else,
+multiplicatively. *This makes "liberating your own people" and "occupying strangers" the same formula
+read in two directions, and it is the cheapest coherence available in the round.*
+
+**C78 — What does losing cost?** Ruling 12 gives a chance to succeed and does not say what failure
+does. **If a failed attack costs only the turn, the percentage stops meaning anything** — a player
+simply attacks every turn until the dice agree, and a 30% chance is a three-turn delay rather than a
+risk. Candidates, and they are not exclusive: force spent and slow to recover, weariness, treasury,
+the defender's Area hardening against you, or the attempt itself moving the pair down the ladder
+(C72). *Open — see §8.*
+
+---
+
 ## 7. The scenarios this round has to be able to tell
 
 Traced at the close, per the lesson round 1 learned: **tracing scenarios found contradictions that
@@ -863,3 +927,10 @@ Asked of Aaron in order, one at a time. Answered ones move up into §6 as ruling
 9. **Does hostility cool on time, or only when its cause goes away?** Raised by the finding under
    ruling 9 — the two give different games and ruling 7 says "a certain time", which the finding
    shows can never arrive for a movement-driven quarrel.
+10. **When you win the roll, do you OWN the Area or are you STANDING on it?** ◀ *asked 7 Sep* —
+    Rulings 10 and 12 meet here. Ruling 10 says ground changes hands at the settlement; ruling 12
+    describes attacking an Area and winning. The reading that reconciles them is **occupied ≠ owned**:
+    winning puts you on the ground, the treaty makes it yours. *Asked rather than assumed, because it
+    decides what a treaty is for.*
+11. **What does losing an attack cost?** (C78.) Without a cost, the percentage is a delay rather than
+    a risk.
