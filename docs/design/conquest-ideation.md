@@ -708,12 +708,54 @@ ruling 6 and is deliberate.
 | **Hostile** | one nation declaring | War |
 | **War** | **both agreeing** | Cease-fire |
 | **War** | one side ceasing to exist | — |
-| **Cease-fire** | **its term running out** | War, Peace-treaty **or** Hostile |
+| **Cease-fire** | **its term running out** | Peace-treaty if one is signed, **otherwise Hostile** *(ruling 8)* |
+| **Cease-fire** | a counter-offer being sent | **Cease-fire, extended** *(ruling 8)* |
 | **Peace-treaty** | **its term running out** | Peace |
 | **Peace-treaty** | being broken | *open — see §8* |
 
 *"A certain time" for hostility, and the term of a treaty, are placeholder tunables. Nothing about
 them is measured and nothing should be tuned during ideation.*
+
+**Ruling 8 — a cease-fire ends in a negotiation, and its default is Hostile rather than War.
+(Aaron, 7 September 2026.)** *"At the end of a cease-fire there will be a peace treaty signed, or war
+will break out, or things will remain hostile. So at the end of a cease-fire there should be a
+question if you want to send them a peace treaty. If no peace treaty is signed then things remain
+hostile. If a peace treaty is sent they should be able to send a counter offer and the cease-fire
+would extend."*
+
+**This corrects my proposal in the direction that matters.** I said the default on failure should be
+war, on the argument that it is the pressure making the window mean something. Aaron's default is
+**Hostile**, and it is better: the guns do not restart because a clock ran out and nobody spoke.
+**War is still one of the three outcomes — it is simply reached by somebody declaring it**, which the
+machine already allows from Hostile and needs no rule of its own. *That last step is my reading
+rather than his words; it is the parsimonious one and I have taken it as the default rather than
+asking.*
+
+**And the machinery for it is built, playtested, and shaped exactly right.** `DESIGN.md`'s
+negotiation is already *"you propose; they accept, counter, or decline, and say why in plain
+sentences"*, delivered on a **full-screen card whose shape is deliberately shared across systems** so
+that a player learns one way this game asks a question. A peace treaty is a third use of a card they
+already know. Three properties it brings with it, all of them load-bearing here:
+
+- **Answering a card does not use your turn.** So the whole peace negotiation sits outside the
+  single-action budget — which is the answer to the worry that a long war eats a game that only
+  grants one decision a turn.
+- **The answer is a pure function of the world and the terms — no dice, no clock.** Proposing the
+  same thing twice gets the same reply. *"There is nothing to grind and no reroll to shop for."*
+- **Which means an extension is only bought by conceding something.** Re-sending terms already
+  refused changes nothing, so the cease-fire extends only when somebody actually moves. That is what
+  a negotiation is, and it falls out of a rule that was written for trade deals.
+
+**C74 — Each extension should be shorter than the last.** The one risk in ruling 8 is a pair of
+nations countering each other indefinitely and living in a cease-fire forever. War's costs running
+throughout is most of the answer — stalling hurts — but a window that narrows each time it reopens
+makes the negotiation *converge* rather than merely become expensive. Cheap, and it turns a possible
+exploit into rising tension. *Proposed, not ruled.*
+
+**C75 — What can go in a peace treaty is the open half of this.** Aaron has named the categories
+— trade, territory, repayment — and a trade deal's negotiation has exactly two levers while a
+corridor's has three, deliberately, because a slider you always say yes to is not a decision. **A
+peace treaty wants the same discipline: few levers, each one a real choice.** *Open.*
 
 ---
 
@@ -757,10 +799,10 @@ Asked of Aaron in order, one at a time. Answered ones move up into §6 as ruling
    becoming hostile costs nothing because you did not do it, and **being at war costs no action at
    all**, because a ten-turn war that eats ten turns of decisions is the whole game.*
 4. ~~**Does a peace-treaty expire back into plain peace?**~~ **Answered — ruling 7. Yes.**
-5. **Which of the three states does a cease-fire fall into, and who decides?** ◀ *asked 7 Sep* —
-   Ruling 7 named the three exits and did not say what chooses between them. **C73 proposes** that
-   this is what the cease-fire is *for*: a timed negotiation, leaving by treaty if terms are agreed,
-   hostile if the two merely disengage, and back to war if nothing is agreed.
+5. ~~**Which of the three states does a cease-fire fall into?**~~ **Answered — ruling 8.** A card
+   asks whether to send a treaty; a counter extends the cease-fire; nothing signed means Hostile.
+   *Still open within it: **what can go in a peace treaty** (C75), and whether each extension should
+   be shorter than the last (C74).*
 6. **What does breaking a peace-treaty do?** Aaron has ruled it has "a huge impact" and not what
    state it lands you in. **C72 proposes** that it is the top of a justification scale rather than a
    rule of its own.
