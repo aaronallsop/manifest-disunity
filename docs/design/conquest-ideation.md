@@ -463,6 +463,88 @@ is one move with a dial or two moves is the round's question, not the answer.
 
 ### I. Expand and Reconquer — the movements that want you to march
 
+**Ruling 16 — a movement makes DEMANDS, they are shown on a screen of their own, and every demand
+gets one of three answers. (Aaron, 7 September 2026.)**
+
+> *"There should be a new game mechanic that displays the movement's demands, as well as their
+> strength and support and any other info we decide later. So they might say something like: start a
+> war with this country. In each of these demands you can do one of three options: implement it,
+> decline to implement it, or tell them to wait — which they will do, but if you never implement it
+> that will make them more angry than if you just declined in the first place."*
+
+**✅ This closes round 1's finding D, which round 1 could not close and handed to politics.** Finding D
+said: *"Five of the six verbs have no government response. The four release valves answer Separate and
+nothing else. Unify, Reunify, Rejoin, Expand and Reconquer each need their own answer… Blocks: the
+player having anything to do about most movements."* Ruling 16 is the general form finding D was
+asking for. **It is not an answer for Expand; it is an answer for all six verbs at once**, because
+every movement can state what it wants and every statement can be met with yes, no, or not yet.
+
+**✅ And it is the Tuesday answer.** The ideation plan requires every round to say what a player
+actually *does*, on a Tuesday, with one action — and round 1's fifth traced scenario stalled on
+precisely this, with Illinois holding four movements it had no way to answer. **A screen of standing
+demands with three buttons is a thing to do on a Tuesday.** It is the first mechanism in either round
+that lets a player act on a movement rather than watch one.
+
+**The three answers, and why the third is the good one.**
+
+| | |
+|---|---|
+| **Implement it** | You do the thing. Support, and whatever the thing costs |
+| **Decline** | Honest, immediate, and cheaper than the third option done badly |
+| **Tell them to wait** | They will wait — **but never delivering angers them more than declining would have** |
+
+**"Wait" is a debt: you are borrowing patience at interest.** It is the same shape as C23's garrison,
+which buys quiet today and sells the next decade, and the same shape as the appeasement valve, which
+buys a region and pays at the next election. This game keeps producing "buy now, pay later" and it is
+what makes it a game about consequences rather than about optimisation. **The lesson it teaches is
+unusual and worth protecting: stringing somebody along costs more than saying no.** So "wait" is
+correct only when you *intend* to deliver and need time to get ready — never as a way to avoid the
+question.
+
+**C83 — A screen, not a card, and the game has a precedent for each.** The full-screen card is how
+this game asks a one-off question and is deliberately shared across systems; **the deals screen** is
+how it shows standing agreements. A movement's demands are standing, so this is a **movements screen**
+— the deals screen pointed at your own internal politics instead of at your neighbours.
+
+**C84 — Answering is free; obeying costs what the obeyed act costs.** *My proposal, unruled.*
+Answering a demand must not spend your one action — the game already establishes that answering a
+card *"does not use your turn"*, and a nation with four movements would otherwise lose four turns
+saying no. But **implementing** commits you to an act that costs whatever that act costs, and
+declaring a war is an action. So the screen is free and the obedience is not.
+
+**C85 — Every verb has a demand shape, and the adjective already says what would buy it off.**
+Round 1 established that a movement is a **verb**, an **adjective** and an **ideology**. The verb
+writes the demand; the adjective says what an alternative would look like:
+
+| Verb | What it demands |
+|---|---|
+| **Separate** | Let us go |
+| **Unify** | Join that compact |
+| **Reunify** | Put the old country back together, under us |
+| **Rejoin** | Give us back to them |
+| **Expand** | **Take that ground** |
+| **Reconquer** | **Get back what we lost** |
+
+**C86 — A demand names a target, and that is what turns a pressure into a map objective.** The Front
+Range Republic's Expand movement wants NORAD, the air bases and the trade corridor; Hawaii is short of
+resources and holds Pearl Harbor; the Gulf's Louisiana remnant wants the parishes Houston holds, and
+the dated memory of that loss already exists. **A demand that names Areas is something a player can
+click on.**
+
+**C87 — A demand should lapse when the world does.** If the nation a movement wants you to attack has
+ceased to exist, or you already hold the ground it wanted, the demand is met or void rather than
+standing forever.
+
+**C88 — The other sixty nations answer demands too, and this is where it pays for itself.** If only
+the player has internal politics, the board is a solitaire game with scenery. The AI already scores
+the same previews the player is shown, so **an AI nation obeying its own Expand movement is a war
+nobody authored** — and it is the cheapest possible source of wars that are not about the player.
+
+**C89 — What does the movement do when you decline?** Ruling 16 says declining is cheaper than
+promising and failing, and does not say what either costs. Candidates: it grows faster, it hardens
+toward Separate, it looks for a foreign sponsor — round 1 ruling 21 already lets a nation fund
+somebody else's movement — or it stops asking. *Open.*
+
 **C41 — A movement that demands you take ground is the mirror of one that demands you let ground go.**
 Two of the six verbs point outward. The government's answer is again several prices for one relief:
 obey and take the war, buy it off with what its adjective asks for, suppress it, or refuse and pay.
@@ -1067,3 +1149,8 @@ Asked of Aaron in order, one at a time. Answered ones move up into §6 as ruling
     ruling 13's reason for it is the war rather than the resentment. One line to correct if wrong.*
 13. **Can ground ever stop being occupied at all?** (C26, C81.) Ruling 13's ladder ends at "some
     negative outcomes", permanently.
+14. **What does a movement do when you decline its demand, and what does "wait" cost while it
+    waits?** (C89.) Ruling 16 says never-delivering is worse than declining, and does not price
+    either.
+15. **Does answering a demand cost your one action?** (C84.) My proposal, unruled: answering is free
+    because it is a screen, obeying costs whatever the obeyed act costs.
