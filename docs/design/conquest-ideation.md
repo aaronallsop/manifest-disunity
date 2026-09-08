@@ -931,6 +931,35 @@ est. badge.*
 occupation can ever end. Ruling 13 gives the ladder its first two rungs and stops at "still carrying
 some negative outcomes", permanently. *Open, and it is C26 unchanged.*
 
+**Ruling 14 — an attack has two outcomes, and failure costs what you already spent.
+(Aaron, 7 September 2026.)** *"Mapping this onto a realistic outcome there are two options: conquer,
+or fails to conquer. Which means if they don't conquer it they have paid the cost and that was their
+turn and didn't conquer anything."*
+
+**My proposal was over-engineering and it rested on a wrong premise.** I argued that a failed attack
+had to spend readiness, or the percentage would be a delay rather than a risk — reasoning from "if a
+failed attack costs only the turn". **It does not cost only the turn.** Verified in the code on
+7 September: the price of an attack is debited from the treasury *before* the roll is made, not after
+it. **The money is already gone whether you win or lose.** Three consequences follow and they are the
+whole answer:
+
+- **The odds price themselves.** At a 30% chance you pay roughly three and a third times the cost of
+  the Area to take it. Bad odds are automatically expensive, in exact proportion to how bad they are,
+  and nobody had to write a rule.
+- **The cost scales with the prize.** The price is per Area and per head, so a failed attack on a
+  city is a disaster and a failed attack on empty ground is a nuisance.
+- **And under the spine, attacking at all puts you in War** — trade prohibited, weariness climbing,
+  corridors shut. **So the real cost of a failed attack is that you are now in a war you are not
+  winning.** That is a far heavier price than the readiness penalty I proposed, and the spine was
+  already producing it.
+
+**C82 — The civil war is a consequence of SUCCESS, not of the fight, and the two must not be merged.**
+*Default taken, flagged rather than asked.* Ruling 14's two outcomes are about beating the defender.
+The existing civil war — triggered when what you swallowed flips your leading ideology or exceeds 15%
+of what you held — is about what winning does to *you*, and it keeps its own three outcomes. **They
+stack: you can take the ground and lose the country.** That is scenario 1 in §7 and it is the story
+this whole round exists to tell, so the two rolls should stay separate.
+
 ---
 
 ## 7. The scenarios this round has to be able to tell
@@ -987,8 +1016,8 @@ Asked of Aaron in order, one at a time. Answered ones move up into §6 as ruling
 10. ~~**When you win the roll, do you own the Area or are you standing on it?**~~ **Answered —
     ruling 13**, and in a third way: it is yours at once, shown paler on the map, and flagged by how
     you came by it. The treaty changes the **tenure**, not the border.
-11. **What does losing an attack cost?** ◀ *asked 7 Sep* (C78.) Without a cost, the percentage is a
-    delay rather than a risk.
+11. ~~**What does losing an attack cost?**~~ **Answered — ruling 14.** Two outcomes only, and the
+    price was paid before the roll. C78 is superseded.
 12. **Does `occupied-movement` apply while the war is still on, or only after a treaty?** *Default
     taken, flagged rather than asked: **yes, during the war too**, because the flag is about who the
     locals are and not about the war. But the transit prohibition still applies while at war, since
