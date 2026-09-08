@@ -1152,5 +1152,11 @@ Asked of Aaron in order, one at a time. Answered ones move up into §6 as ruling
 14. **What does a movement do when you decline its demand, and what does "wait" cost while it
     waits?** (C89.) Ruling 16 says never-delivering is worse than declining, and does not price
     either.
-15. **Does answering a demand cost your one action?** (C84.) My proposal, unruled: answering is free
+15. **Does an attack target ONE Area or up to three?** *(Found by the closing review, 8 Sep.)*
+    Ruling 12 says *"I decide I want to invade / annex **an area**"*, singular. What is built takes up
+    to **three Areas a turn**, and that cap is an anti-snowball device with a measured history — a
+    relative cap once took Wyoming from 27 to 1,167 Areas in nine turns. If an attack is one Area,
+    the cap changes meaning; if it is three, the percentage covers a package rather than a place.
+    Neither is assumed.
+16. **Does answering a demand cost your one action?** (C84.) My proposal, unruled: answering is free
     because it is a screen, obeying costs whatever the obeyed act costs.

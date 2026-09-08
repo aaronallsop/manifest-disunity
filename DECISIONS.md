@@ -3049,3 +3049,82 @@ hanging off it at the head of the idea bank. Open questions on the spine — wha
 whether a state is shared or one-sided, how transitions happen and whether they cost the single
 action, and whether a peace-treaty expires — are listed in that document's §8 and are being put to
 Aaron one at a time.
+
+---
+
+### D182 — The relationship spine: sixteen rulings that make war a state rather than an event, 8 September 2026
+
+**Round 2 of ideation (military conquest) opened and ran its first session on 7–8 September. D181
+recorded the frame and the first two rulings; this entry records what the remaining fourteen settled,
+because together they change the shape of the game and every later round inherits them.** The rulings
+themselves, with their reasoning and the ideas hanging off them, are in
+`docs/design/conquest-ideation.md` §6 and at the head of its idea bank. Nothing here is built.
+
+**What was decided.**
+
+- **A pair of nations is always in one named state** — Peace, Peace-treaty, Hostile, Cease-fire, War,
+  with Subject and Allied deferred inside the round. The state is **shared, not directed** (ruling 5);
+  the directed, decaying record of what one nation did to another is untouched and sits underneath it.
+  The one-sided variant of hostility was banked as **F18** rather than dropped.
+- **Every state has an exit and three of the four are clocks** (ruling 7). Only two transitions need
+  both nations to agree — into a cease-fire and into a treaty. A pair can be stuck in exactly one
+  place, War, which is deliberate: **a war ends only by agreement and refusing is allowed** (ruling 6).
+- **A cease-fire is a fixed term with all of war's costs running** (ruling 3), ending in a negotiation
+  whose **default is Hostile rather than War** (ruling 8). A counter-offer extends it.
+- **Five causes put two nations into Hostile** (ruling 4) and **not one of them is a military act** —
+  a movement growing across a border, rival claimants to the same inheritance, resource desperation
+  met with refusal or gouging, funding somebody's rebels, and hostility inherited through alliances.
+  **What it costs** (ruling 9): tolls rise, what they demand before granting a crossing rises,
+  matching movements grow faster inside you, and guarding the border costs more.
+- **Ground changes hands at the settlement** (ruling 10), war stays **simple where the player touches
+  it** — no troops, no troop types (ruling 11) — and **a fight is the attacker's Field against the
+  defender's Border, shown as a percentage** (ruling 12).
+- **Held ground carries one of three flags** (ruling 13): `occupied-war` while the war runs, which
+  raises unrest, hits the economy hard and **may not be granted to anybody else as a trade passage**;
+  `occupied` once a treaty is signed; `occupied-movement` where the matching movement is over 50% and
+  the occupier is that movement's nation. **So what settles at a treaty is the tenure, not the border
+  — a peace treaty is a title deed.**
+- **An attack has two outcomes and the price was paid before the dice** (ruling 14).
+- **A treaty has four levers** (ruling 15): territory, repayment capped at 1.25× what was spent on the
+  war, forced trade deals, and a term. Refusing keeps the war running, raising weariness and making
+  crises likelier.
+- **A movement states DEMANDS on a screen of their own, and each gets one of three answers** —
+  implement, decline, or tell them to wait, where never delivering after asking them to wait angers
+  them more than declining would have (ruling 16).
+
+**Three things this closed that were open.**
+
+1. **Round 1's finding D**, which round 1 could not close and handed to politics: five of the six
+   movement verbs had no government response, because the four release valves only ever answered
+   *Separate*. Ruling 16 is the general form — an answer for all six verbs at once.
+2. **The Tuesday question** the ideation plan requires every round to answer, and on which round 1's
+   fifth traced scenario stalled. A screen of standing demands with three buttons is a thing to do on
+   a Tuesday, and it is the first mechanism in either round that lets a player act on a movement
+   rather than watch one.
+3. **The risk logged under ruling 6** — that a player could be held in a war they cannot leave by an
+   opponent willing to bleed. Ruling 15 answers it with no new machinery: crises trigger over the
+   stocks and war weariness is one, and an election's single swing against an incumbent is built from
+   four things including war weariness. **The stubborn opponent's own electorate removes them.**
+
+**What was rejected, and most of it was mine.** A war *object* with named aims, superseded by the
+relationship state (D181). A penalty for refusing peace — unnecessary, because the frame already makes
+war expensive for the side that will not stop. A readiness cost for a failed attack — unnecessary, and
+argued from a false premise: verified in the code, the price of an attack is debited **before** the
+roll, so the money is gone either way and the odds price themselves. War restarting when a cease-fire
+lapses, replaced by Aaron's gentler and better default of Hostile. And an indirect mechanism whereby a
+hostile border drags the army outward and grows *all* your separatists, replaced by ruling 9's direct
+and targeted version and kept as C76 because it makes a different claim.
+
+**One finding recorded rather than solved.** Ruling 4's first cause and ruling 9's third effect close
+a loop: a movement growing makes you hostile, and hostility makes it grow. That defeats ruling 7's
+cooling clock, because the cause never goes away. Three existing brakes stand in the way — a
+per-movement cap, multiplicative ideological match, and rate-limited sentiment — and none has been
+measured against it. It may also be correct. **It is the first thing the closing trace of round 2 must
+run.**
+
+**Two numbers are placeholders and are marked as such**, per the rule that a design document says where
+every quantity comes from: the **50%** threshold on `occupied-movement` (stated, measured against
+nothing — and it sits *above* the 0.40 secession threshold, so every such Area was going to defect
+anyway, which means the two should be set against each other rather than independently), and the
+**1.25×** repayment cap, whose basis — the winner's war costs or the loser's — is one word that has
+not been settled.
