@@ -600,3 +600,48 @@ five successors at once.
 **Before it is worth doing.** Whenever the backstory is written into the game rather than into
 `secession-ideation.md`. It costs nothing to adopt now as a fact about the world, and nothing depends
 on it, which is exactly why it can wait.
+
+---
+
+## F18 — Relationship states that run one way
+
+**Aaron, 7 September 2026.** Raised and immediately deferred while settling the seven states two
+nations can be in (D181, conquest ideation rulings 2 and 5).
+
+> "I think down the road I could see a more complex version of the game being different, but for now
+> they are shared."
+
+**What it is.** Every relationship state — Peace, Peace-treaty, Hostile, Cease-fire, War, and later
+Subject and Allied — is currently **one shared fact held between a pair of nations**, true for both of
+them at once. The more complex version splits them: the *agreements* stay shared, because nobody
+signs a treaty alone and you cannot be at war with somebody who is not at war with you, but the
+*attitudes* run one way. **A nation could be hostile toward a neighbour that has not noticed.**
+
+**Why it is interesting.** It restores three things the shared model cannot say:
+
+- **A grievance nobody has registered.** El Paso can loathe Dallas while Dallas is busy with Houston.
+  A small nation nursing a resentment against a giant that has not looked at it is a real position to
+  play from, and it is arguably the position most of the board is in.
+- **Mutual hostility as a distinct, hotter state.** If hostility runs one way, then both sides being
+  hostile is a genuine escalation — the waiting room for war — and it comes free without inventing a
+  sixth state.
+- **A truer fit to the causes.** Four of the five causes Aaron gave for hostility are naturally
+  one-sided: a movement growing inside somebody, a nation refusing to sell, a nation funding
+  somebody's rebels, a hostility inherited through an ally. The shared model survives all of them
+  (the word describes the relationship rather than the emotion), but it survives them by rounding.
+
+**What it would touch.**
+
+- The state itself, wherever it is stored, and every place that reads it.
+- **Not the memory list**, which is already directed and stays that way under either model — the
+  dated, decaying record of what one nation has done to another is the thing that carries rivalry
+  today, and `DESIGN.md` is explicit that symmetrising it would delete the rivalry. The shared state
+  sits on top of directed feelings; this idea merely makes the top layer directed too.
+- The map view, which would need to show two colours on a border rather than one.
+- The AI, which would gain a genuinely asymmetric read of the world and would have to be checked for
+  it — a nation that does not know it is hated behaves differently from one that does.
+
+**Before it is worth doing.** After the shared model has been played. The question the alpha should
+answer is whether players ever *want* to be quietly hostile — whether the one-sided case turns up in
+play as a felt absence, or only as an elegance. This is not a fix waiting to happen; it is a
+refinement waiting for evidence.

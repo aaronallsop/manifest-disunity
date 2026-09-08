@@ -617,6 +617,28 @@ gaps:
     what is built"*. "An absurdly high price" cannot be charged until somebody can charge it.
   → **Recorded in §4 as what this round needs from round 4.**
 
+**Ruling 5 — a state is shared, not one-sided. (Aaron, 7 September 2026.)** All five live states are
+one fact held **between** a pair of nations, symmetric, for both of them at once. Aaron: *"I think
+down the road I could see a more complex version of the game being different, but for now they are
+shared."* **This is simpler than what I recommended and it survives every one of ruling 4's causes**,
+checked one by one — because the word describes the *relationship* and not the emotion. Greater
+Idaho, funding irredentism inside Oregon, is in a hostile relationship with Oregon whether or not it
+is enjoying itself. Two nations whose allies are shooting at each other are on opposite sides. A
+nation gouging a desperate neighbour knows it has a problem with them.
+
+**What it costs, said plainly:** a small nation can no longer nurse a grievance against a giant that
+has not noticed. El Paso cannot loathe Dallas while Dallas is busy with Houston — if El Paso is
+hostile, Dallas is hostile back. And the "both sides are hostile" upgrade I offered as free drama
+does not exist, because there is no one-sided hostility for it to be an upgrade *from*. **The
+one-sided version is filed as F18**, in Aaron's own words: the more complex version, down the road.
+
+**And it does *not* delete the rivalry, which is worth saying because the built model cares.** The
+dated, decaying record of what one nation has done to another is **directed**, and `DESIGN.md` is
+explicit that making it symmetric *"would be one line less code and would delete the rivalry"*. That
+record stays exactly as it is. **The feelings run one way and keep every asymmetry the game already
+has; the state is the shared summary sitting on top of them.** Nothing is lost, and the two are not
+in conflict — they are answering different questions.
+
 ---
 
 ## 7. The scenarios this round has to be able to tell
@@ -650,10 +672,12 @@ Asked of Aaron in order, one at a time. Answered ones move up into §6 as ruling
    recognise you; and, the one that matters, **a hostile border pulls your army to the border and
    away from your own restless ground, so a quarrel with a neighbour makes your own separatists
    cheaper to grow.***
-2. **Is a state shared or one-sided?** ◀ *asked 7 Sep* — War is surely something both nations are in;
-   hostility is a feeling and feelings run one way. Ruling 4's own examples pull both ways. (C64.)
+2. ~~**Is a state shared or one-sided?**~~ **Answered — ruling 5. Shared.** The one-sided version is
+   **F18**.
 3. **How does a state change — who chooses, who has to agree, and does it cost your one action?**
-   Three kinds of transition: chosen, earned without choosing, and negotiated. (C56.)
+   ◀ *asked 7 Sep* — Three kinds of transition: chosen, earned without choosing, and negotiated.
+   **Ruling 5 sharpens this:** if a state is shared, some transitions cannot be taken alone. You can
+   declare war by yourself; you cannot make peace by yourself. (C56.)
 4. **Does a peace-treaty ever expire back into plain peace, or is it forever?**
 5. **Subject and Allied** — deferred by Aaron, but ruling 4's fifth cause needs Allied to exist.
    Worth reopening earlier in the round rather than later.
