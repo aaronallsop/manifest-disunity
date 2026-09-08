@@ -953,6 +953,46 @@ whole answer:
   winning.** That is a far heavier price than the readiness penalty I proposed, and the spine was
   already producing it.
 
+**Ruling 15 — what goes in a peace treaty, and what refusing one costs.
+(Aaron, 7 September 2026.)** Four levers and no more:
+
+| Lever | |
+|---|---|
+| **Territory** | Which occupied Areas you keep. This is the lever that converts `occupied-war` into `occupied` |
+| **Repayment** | **Capped at 1.25× the cost of what was spent on the war** |
+| **Forced trade deals** | A deal on terms you set rather than terms they agreed |
+| **How long it runs** | Ruling 7 already says it lapses back into Peace at the end |
+
+**And refusing is not free:** *"If they say no then the war continues, which will increase war
+weariness and increase chances of bad things happening."*
+
+**⚠ The 1.25× needs one word settling and it is a number, so it is flagged rather than guessed.**
+Aaron's words are *"no more than 1.25 the cost of what **they** spent on the war."* Grammatically
+"they" is the other nation, giving **the loser's own war spending** as the basis — you cannot bleed a
+nation that never really fought, and a long hard war produces a large indemnity. The other reading is
+the classic indemnity one: **the winner's** costs plus a quarter. *I have taken the grammatical
+reading. Both are defensible and it is a one-line correction.*
+
+**Either way the cap does something important, and it is Aaron's not mine: war cannot be a
+money-making machine.** Whatever the basis, repayment is bounded by what a war cost rather than by
+what the loser owns. **So the cash is at best a refund with a margin, and the real prize is always
+the ground.** That is a stronger anti-snowball device than anything in §G, because it removes the
+incentive to farm weak neighbours for treasure rather than for territory.
+
+**And "bad things happening" is not vague — it is two built mechanisms.** Verified 7 September:
+
+- **Crises** are authored with *"a trigger over the stocks"*, and war weariness is one of the five
+  stocks. A war that drags makes the authored crises fire.
+- **Elections read war weariness directly.** A government gets one swing against its own population's
+  ideology, made of the four things it is answerable for — quality of life, authority, civil
+  liberties and **war weariness**.
+
+**✅ This closes the risk recorded under ruling 6.** I logged that a player could be held in a war
+they cannot leave by an opponent willing to bleed. Ruling 15 answers it without new machinery:
+**the stubborn opponent's own electorate removes them.** A government that will not make peace watches
+its weariness climb into an election it then loses, and a new government is a new person. Refusal is
+survivable for a while and not indefinitely, which is the correct shape.
+
 **C82 — The civil war is a consequence of SUCCESS, not of the fight, and the two must not be merged.**
 *Default taken, flagged rather than asked.* Ruling 14's two outcomes are about beating the defender.
 The existing civil war — triggered when what you swallowed flips your leading ideology or exceeds 15%
@@ -1005,7 +1045,10 @@ Asked of Aaron in order, one at a time. Answered ones move up into §6 as ruling
    be shorter than the last (C74).*
 6. **What does breaking a peace-treaty do?** Aaron has ruled it has "a huge impact" and not what
    state it lands you in. **C72 proposes** that it is the top of a justification scale rather than a
-   rule of its own.
+   rule of its own. *Sharper now that ruling 15 has given a treaty four enforceable terms: breaking
+   one means stopping the repayments, tearing up the forced trade, or taking the ground back.*
+6b. **Is the 1.25× repayment cap measured against the winner's war costs or the loser's?** One word,
+   and it is a number, so it is flagged rather than assumed. *(Ruling 15.)*
 7. **Subject and Allied** — deferred by Aaron, but ruling 4's fifth cause needs Allied to exist.
    Worth reopening earlier in the round rather than later.
 8. **Can a pair go from Peace straight to War**, or does something have to happen first? C72 assumes
