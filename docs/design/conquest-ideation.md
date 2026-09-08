@@ -876,6 +876,63 @@ the defender's Area hardening against you, or the attempt itself moving the pair
 
 ---
 
+### THE SPINE, continued — how held ground is held
+
+**Ruling 13 — ground you take is yours immediately, but it is held under a flag, and there are three
+flags. (Aaron, 7 September 2026.)**
+
+This answers question 10 in a third way, and better than either option I offered. I asked whether
+winning the roll makes an Area **owned** or merely **stood on**. Aaron's answer: it becomes your
+territory at once — *"it shows as my territory but with a different brightness of my map colour"* —
+and carries a modifier saying how you came by it.
+
+| Flag | When | What it does |
+|---|---|---|
+| **`occupied-war`** | You won the roll and the war is not settled | **Increases civil unrest and impacts the economy greatly.** You may use the ground in your own trade — **but you may not grant it to anybody else as a trade passage.** *"Even if I captured territory my allies wouldn't use it as a trade route while still at war."* |
+| **`occupied`** | A peace treaty was signed and you kept it | **All trade permitted**, and still carrying some negative outcomes |
+| **`occupied-movement`** | The matching movement is **over 50%** in that Area and the occupier is that movement's nation | Liberation rather than conquest |
+
+**This refines ruling 10 rather than contradicting it, and the refinement is the good part.** Ruling
+10 said ground changes hands at the settlement. What actually changes at the settlement is not the
+*border* — it is the **tenure**. The map moves when you win; the treaty is what launders
+`occupied-war` into `occupied`. **A peace treaty is a title deed**, and that is a far better reason to
+sign one than "the fighting stops".
+
+**The transit prohibition is the cleverest thing in this ruling and it is nearly free to build.** The
+game already routes goods across other nations' ground by negotiated corridor, already refuses routes,
+and already explains a broken one in plain words — *"they closed the border, that country is gone, or
+the corridor is full."* **"That ground is under occupation" is a fourth reason in a list that exists.**
+And it makes a captured corridor worthless until you settle, which means **a nation that fights for a
+trade route cannot use the route until it makes peace.** That is ruling 1 in a single mechanic.
+
+**C79 — The brightness is a stated requirement, not decoration.** Ruling 13 says the map shows held
+ground in a different brightness of your own colour. That is the answer to ruling 10's recorded cost —
+*"a war with no visible front is harder to read"*. **The front is visible after all: it is the pale
+part of your own country.** Recorded so the presentation problem is not solved twice.
+
+**C80 — `occupied-movement` is round 1's loyalty rule pointed at conquest, and it uses the same
+number.** Round 1's finding E settled that a movement's loyalty in an Area is **the share it actually
+has there**, not mere homeland membership. Ruling 13 reads the same share at a stated threshold. So
+the ground that will not defect from you and the ground that welcomes you when you take it are one
+quantity read at two points, which is the kind of coherence this project has been paying for
+elsewhere.
+
+**⚠ And the threshold has a consequence nobody has stated.** The secession threshold is **0.40** and
+movement caps run **0.55–0.60**. So a **50%** share is *above the line at which an Area would defect
+to that movement's nation on its own*, under the tier-1 frontier defection that is already built.
+**Every `occupied-movement` Area is ground that was going to come to you anyway** — invading merely
+takes it sooner and off the frontier. That may be exactly right: it makes the flag rare, it makes it
+mean something, and it gives a player a reason to be impatient. But **the 50% and the 0.40 should be
+related to each other rather than set independently**, or one will quietly make the other pointless.
+*The 50% is an invented placeholder, stated by Aaron and measured against nothing. It must carry the
+est. badge.*
+
+**C81 — Held ground needs a fourth state: ground that stops being occupied at all.** C26 asked whether
+occupation can ever end. Ruling 13 gives the ladder its first two rungs and stops at "still carrying
+some negative outcomes", permanently. *Open, and it is C26 unchanged.*
+
+---
+
 ## 7. The scenarios this round has to be able to tell
 
 Traced at the close, per the lesson round 1 learned: **tracing scenarios found contradictions that
@@ -927,10 +984,14 @@ Asked of Aaron in order, one at a time. Answered ones move up into §6 as ruling
 9. **Does hostility cool on time, or only when its cause goes away?** Raised by the finding under
    ruling 9 — the two give different games and ruling 7 says "a certain time", which the finding
    shows can never arrive for a movement-driven quarrel.
-10. **When you win the roll, do you OWN the Area or are you STANDING on it?** ◀ *asked 7 Sep* —
-    Rulings 10 and 12 meet here. Ruling 10 says ground changes hands at the settlement; ruling 12
-    describes attacking an Area and winning. The reading that reconciles them is **occupied ≠ owned**:
-    winning puts you on the ground, the treaty makes it yours. *Asked rather than assumed, because it
-    decides what a treaty is for.*
-11. **What does losing an attack cost?** (C78.) Without a cost, the percentage is a delay rather than
-    a risk.
+10. ~~**When you win the roll, do you own the Area or are you standing on it?**~~ **Answered —
+    ruling 13**, and in a third way: it is yours at once, shown paler on the map, and flagged by how
+    you came by it. The treaty changes the **tenure**, not the border.
+11. **What does losing an attack cost?** ◀ *asked 7 Sep* (C78.) Without a cost, the percentage is a
+    delay rather than a risk.
+12. **Does `occupied-movement` apply while the war is still on, or only after a treaty?** *Default
+    taken, flagged rather than asked: **yes, during the war too**, because the flag is about who the
+    locals are and not about the war. But the transit prohibition still applies while at war, since
+    ruling 13's reason for it is the war rather than the resentment. One line to correct if wrong.*
+13. **Can ground ever stop being occupied at all?** (C26, C81.) Ruling 13's ladder ends at "some
+    negative outcomes", permanently.
