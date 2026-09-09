@@ -2271,7 +2271,7 @@ nothing to build and is the only version in which the compulsory submission is a
 a formality.*
 
 **⚠ C127 — a compulsory submission collides with C116, and it is the expensive kind of collision.**
-*Question 3.* C116 took as a default that proposing a treaty **costs your action for the turn**. Ruling
+**Ruled — see ruling 36 below.** C116 took as a default that proposing a treaty **costs your action for the turn**. Ruling
 33 makes the proposal **mandatory**, so a war ending would silently eat the turn of *both* nations,
 whether or not either wanted peace — and under ruling 3 a cease-fire is a fixed term, so the turn it
 lands on is not chosen. **Either the compulsory submission is free, or every cease-fire quietly taxes
@@ -2345,6 +2345,34 @@ enemy is the material**: how long the war has run, what it has cost them, their 
 their own people are demanding it end. *None of this needs new machinery — it is the same standing
 facts the rest of the game already shows — but the design document must say which of them a player can
 see at the moment they write, because that list is the difference between a judgement and a gamble.*
+
+---
+
+**Ruling 36 — tabling a treaty is free, and C116 is amended. (Aaron, 9 September 2026, accepting the
+recommendation.)** C127 closes. **Finding B is now fully closed.**
+
+**The compulsory submission costs no action.** C116 charged for proposing a treaty on the reasoning
+that proposing is a choice. **Ruling 33 made it not a choice**, and a cease-fire runs for a fixed term
+set when it was signed (ruling 3), so the turn it lands on is not chosen either. Charging would mean
+**every cease-fire in the game silently taxed both nations a turn neither of them spent**, whether or
+not either wanted peace and whether or not anything was signed.
+
+**C116 as it now stands, with the amendment in place:**
+
+| Act | Costs your action? |
+|---|---|
+| Declaring war | **Yes** |
+| Proposing a cease-fire | **Yes** — still a choice |
+| **Tabling a treaty at a cease-fire's end** | **No — amended by ruling 36.** Compulsory, and on a turn you did not pick |
+| Accepting a treaty | **No.** But what it commits you to costs whatever that act costs |
+| Becoming Hostile | **No.** You did not do it |
+| Being at war | **No** |
+
+**⚠ The accepted cost.** Ending a war is now slightly **cheaper** than starting one, since declaring
+eats a turn and settling does not. *This is the right way round and it is C116's own principle running
+at the war's other end: Aaron ruled that a ten-turn war eating ten turns of decisions would be the
+whole game rather than a thing happening inside it. A peace that eats turns has the same fault in
+miniature.*
 
 ---
 
