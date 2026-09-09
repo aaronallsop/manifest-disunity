@@ -3374,3 +3374,44 @@ transit, the network map, AI nations trading unprompted. **Politics is not in it
 a politics mechanic costs the alpha nothing, and the three numbers it needs are exactly the kind this
 project has been burned by inventing: D185's own record notes that an invented number once reached
 the Control Board looking measured. **No placeholder was written.**
+
+---
+
+### D188 — A stateless society is counties with no government, and it is the cheapest road on the continent, 9 September 2026
+
+**Aaron's ruling**, answering the largest open question in round 3's inbox and the one round 1 called
+the biggest unbuilt mechanic in the story.
+
+> "A stateless society is a group of counties that are running without a government or anything."
+> "They have a set trading fee of 10%... you are going in and trading directly with people."
+> "They also have a set 5% toll... you will run trade through there but you are paying 5% along the
+> way to protect your trade and pay off people you meet along the way."
+
+**No government therefore no treasury, no army, no elections, no foreign policy.** Ground with people
+on it.
+
+**Derived and flagged as derived: both figures are COSTS, not transfers.** Nothing collects them —
+there is no institution to collect them, and Aaron's reasoning sends the money to people met along the
+road. That is precisely how `transit.foreignCorridorToll` already treats the Canada/Mexico corridor.
+
+**Checked against the build, and both numbers land on something.** The 10% trading fee is *exactly*
+the Canada/Mexico corridor cost. The 5% toll is *exactly* `transit.rateMin`, the lowest toll any
+nation in the game will sign. Against a 35% baseline transit toll, a 60% ceiling and a 25% road
+crossing cost that nobody collects, **this makes lawless ground the cheapest passage on the
+continent.**
+
+**And that answers C51, which round 2 handed forward unanswered.** C51 asked whether taking unclaimed
+ground should anger anybody at all. **It does now: it angers everyone who was routing through it**,
+because conquering the cheapest corridor on the map converts it into somebody's toll gate. Stateless
+ground gains a constituency that nobody designed. **It also closes round 1's finding B for conquest:**
+stateless ground has no stocks, because it has nothing to hold them.
+
+**Cost to build:** the trade half is nearly free — it is the shipped Canada/Mexico corridor mechanism
+pointed at different ground. **The ground is the expensive half**, since every Area belongs to a nation
+today.
+
+**Both figures become named tunables and are placeholders that stay put**, per Addendum A. **Nothing
+built this sitting.** No code, data or `DESIGN.md` touched.
+
+**Raised with Aaron and not yet answered:** whether it is deliberate that routing through lawless
+ground undercuts every government on the map, including Canada.

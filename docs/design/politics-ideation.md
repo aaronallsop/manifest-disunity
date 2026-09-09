@@ -210,7 +210,7 @@ buys is the economy's to say. Partition is release with extra steps and a hard m
 **And S28 applies to all of them: every answer must make the next movement.** Today only two of the
 four carry a second-order cost.
 
-### Q4 — What is a tier-3 stateless society?
+### Q4 — ~~What is a tier-3 stateless society?~~ **ANSWERED — ruling 3**
 
 *Inbox 1. The largest new mechanic in the story, and six regions open in it.*
 
@@ -319,7 +319,69 @@ movement. **Four prices for the same relief, and the player has to pick one.**
 
 ## 4. Rulings
 
-*Written as they happen. None yet.*
+*Written as they happen.*
+
+**Ruling 1** — three axes, and the roster named for real parties. Recorded at **P2** and in
+`DECISIONS.md` **D185**. Superseded in its roster by ruling 2.
+
+**Ruling 2** — ten positions, authoritarians at both outer ends, the drift partition, and the two
+conditions. Recorded at **P5** and **P6**, and in **D186**. The *falling* is deferred to
+`docs/FUTURE-IDEAS.md` **F19** (**D187**); the board is not.
+
+### Ruling 3 — What a stateless society is, and what it costs to trade with one
+
+**Aaron, 9 September 2026**, answering §3 Q4 and part of inbox question 1:
+
+> "A stateless society is a group of counties that are running without a government or anything."
+>
+> "They have a set trading fee of 10%. The logic is that you are going in and trading directly with
+> people."
+>
+> "They also have a set 5% toll. The logic is that you will run trade through there but you are
+> paying 5% along the way to protect your trade and pay off people you meet along the way."
+
+**What it settles.** A stateless society is **a group of counties with no government** — and
+therefore no treasury, no army, no elections and no foreign policy. It is ground with people on it.
+
+**Derived, not asserted, and correctable in one line: both figures are COSTS, not transfers.** There
+is no government, so there is no treasury for the money to arrive in, and Aaron's own reasoning sends
+it to *"people you meet along the way"* rather than to an institution. This is exactly how the build
+already treats the Canada/Mexico corridor — `transit.foreignCorridorToll`, whose note reads *"it is a
+COST rather than a transfer: nobody receives it."*
+
+**Measured against the build rather than assumed, and both numbers land somewhere that matters:**
+
+| | Aaron's figure | What it equals in the build today |
+|---|---|---|
+| Trading **with** stateless ground | **10%** | Exactly the Canada / Mexico corridor cost |
+| Routing **through** stateless ground | **5%** | Exactly `transit.rateMin` — **the lowest toll any nation will ever sign** |
+
+For scale: a nation's baseline transit toll is **35%**, the ceiling is **60%**, and every road border
+crossing costs a further **25%** that nobody collects.
+
+**The consequence, and it is large: lawless ground becomes the cheapest passage on the continent** —
+cheaper than Canada and Mexico at 10%, and level with the floor below which no government will ever
+sign.
+
+**This answers C51, which round 2 handed to round 3 and could not answer itself.** C51 asked
+*"whether taking unclaimed ground should anger anybody at all."* **It does now — it angers everybody
+who was routing through it**, because conquering the cheapest corridor on the map turns it into
+somebody's toll gate. **Stateless ground acquires a constituency without anyone designing it one**,
+which is the exact hole C51 was pointing at.
+
+**It also closes round 1's finding B for conquest's purposes:** stateless ground has no stocks,
+because it has no government to hold any.
+
+**What building it costs.** The trade half is nearly free — it is the Canada/Mexico corridor
+mechanism pointed at a different kind of ground, and that machinery is built and shipped. **The
+expensive half is the ground itself:** every Area belongs to a nation today and there is no
+nobody's-land.
+
+**Both figures become named tunables**, per the project rule that no number is a literal. Per Addendum
+A they are **placeholders that stay put** and are not tuned.
+
+**Still open inside inbox question 1:** one stateless entity per region or many; whether a region can
+grow back into a state; and whether a *state* can fall into one — that last path is parked in **F19**.
 
 ---
 
