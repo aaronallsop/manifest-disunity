@@ -1,3 +1,4 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found]){display:none!important}</style></head><body>
 <title>Manifest Disunity Control Board</title>
 <!--
   CONTROL BOARD TEMPLATE
@@ -123,11 +124,11 @@
 // ============================================================================
 const BOARD = {
   project: "Manifest Disunity",
-  updated: "2026-09-08 17:05",          // when you last republished, local time
+  updated: "2026-09-09 04:28",          // when you last republished, local time
 
   // Three or four measured figures. value: number|string, or null = "not yet measured".
   figures: [
-    { label: "Design rounds done",      value: "1 of 7, 2nd open" },
+    { label: "Design rounds done",      value: "2 of 7, 3rd next" },
     { label: "Economy-alpha stages done",  value: "A0–A5" },
     { label: "Current version",         value: "v0.6" },
     { label: "Tests green",             value: 956 },
@@ -138,58 +139,103 @@ const BOARD = {
   // The single most important true thing right now. tone: "bad" | "warn" | "ok" | "neutral".
   headline: {
     tone: "ok",
-    text: "THE GAME IS NOT BEING BUILT AT THE MOMENT AND THAT IS ON PURPOSE — we are designing it, "
-        + "and the last three sessions have all been talking rather than building. Nothing is broken. "
-        + "The 956 checks pass, and I ran them tonight rather than repeating a number from Friday.\n\n"
-        + "TONIGHT SETTLED WHAT WAR IS, AND YOU CHANGED THE SHAPE OF IT. You ruled first that this is "
-        + "not a war game — that war has to reach your economy, your neighbours and your own people "
-        + "rather than being the thing they all serve. Then you replaced my idea of a war with a much "
-        + "better one: two countries are ALWAYS in one of five named relationships — at peace, under "
-        + "a treaty, hostile, in a cease-fire, or at war — and four of the five are lists of what you "
-        + "are not allowed to do. That is how a war reaches an economy that never sees a soldier. "
-        + "Sixteen rulings in all, and they now cover every way in and out of each state, what each one "
-        + "costs, how a fight is decided, how captured ground is marked on the map, what goes in a "
-        + "peace treaty, and how a government answers its own people.\n\n"
-        + "THREE OF YOUR ANSWERS WERE BETTER THAN MINE AND I HAVE RECORDED WHY. I wanted to punish a "
-        + "country for refusing to make peace; you said no, and you were right — it is already "
-        + "bleeding, and its own voters throw it out. I wanted a failed attack to cost you your army; "
-        + "you said the cost is what you already spent, and I checked the game and you were right, "
-        + "because the money leaves the treasury before the dice are thrown. And I had a lapsed "
-        + "cease-fire restart the shooting; yours leaves the two sides merely hostile, which is gentler "
-        + "and truer.\n\n"
-        + "ONE THING I FOUND THAT NOBODY INTENDED, AND IT IS THE FIRST JOB NEXT TIME. Two of your own "
-        + "rules feed each other: a separatist movement growing inside your country makes you hostile "
-        + "with the country it belongs to, and being hostile makes that movement grow faster. So the "
-        + "hostility never cools, because the thing causing it keeps getting stronger. That may be "
-        + "right — some rivalries never end — but it needs deciding rather than discovering. It "
-        + "is the one card below.\n\n"
-        + "AND YOUR BACKUP IS NOW CONFIRMED. The GitHub tool you were asked to install is installed, so "
-        + "I could finally check rather than assume: everything is saved and pushed, and the repository "
-        + "is public exactly as you decided on Sunday. That question is off the list.",
+    text: "ROUND TWO IS FINISHED. Conquest is designed. Thirty-one rulings across two sittings, "
+        + "fifteen of them tonight, and every open question is now answered, deferred with a reason, "
+        + "or written down as a decision I took for you and flagged so you can reverse it in a line. "
+        + "Nothing is broken. No code or data was touched — this was a design session, and it wrote "
+        + "only documents.\n\n"
+        + "FOUR TIMES TONIGHT YOU ANSWERED A QUESTION WITH SOMETHING I HAD NOT OFFERED, AND EVERY ONE "
+        + "WAS BETTER. I asked whether a grudge fades on time or only when its cause goes; you said "
+        + "time, at a speed the causes set, and invented a sixth relationship — wary — to sit between "
+        + "hostile and peace. I asked whether hostility should stop trade or merely tax it; you said "
+        + "it honours what is already signed and forbids anything new, which turns the length of a "
+        + "trade deal into insurance against a friendship going bad. I asked whether a war indemnity "
+        + "is measured against the winner or the loser; you said whoever SENDS the offer — which "
+        + "means the game never has to decide who won a war, and it has no way to decide. And I "
+        + "proposed a sliding scale of shame for breaking a treaty; you said every neighbour but your "
+        + "allies turns hostile the same day, which is simpler and far heavier.\n\n"
+        + "TWO OF YOUR RULINGS DO MORE THAN YOU ASKED THEM TO. Saying that conquered ground settles "
+        + "faster under a government that gives people a better life turns out to be the strongest "
+        + "brake on conquest in the whole design: a prosperous country can digest what it takes and a "
+        + "struggling one never can. So conquest becomes a luxury of the successful — the opposite of "
+        + "how these games usually work, where conquest is how the poor get rich. And making Austin "
+        + "the real Texas while the other four are rebels hands a bankrupt, encircled, starving city "
+        + "a veto over four larger neighbours, because the one thing that makes a breakaway "
+        + "legitimate is the country it left saying so.\n\n"
+        + "THEN I TRACED ALL SIX TEST STORIES END TO END, WHICH IS HOW A ROUND CLOSES. Five of them "
+        + "narrate. One stalls, and it stalls on a hole you already know about — nothing bad happens "
+        + "yet to a country that cannot feed itself, so a hungry nation is not actually hungry and "
+        + "the player has nothing to weigh. That is the economy round's job and it was already on the "
+        + "list. Round one closed three-of-five, so this is better.\n\n"
+        + "THE TRACING FOUND SEVEN PROBLEMS, THREE OF THEM CONTRADICTIONS BETWEEN RULINGS MADE TONIGHT. "
+        + "That is exactly what it is for. Four I can fix or have already fixed. THREE NEED A LINE "
+        + "FROM YOU AND THEY ARE THE CARDS BELOW — including one I would rather you saw plainly: the "
+        + "board has SIX Californian successors and this design has been saying five since Sunday, "
+        + "which changes how many rivalries the game opens with.",
   },
 
   // Only decisions that are genuinely the owner's. Ids are permanent.
   decisions: [
     {
-      id: "hostility-cools",
-      title: "Should a grudge between two countries ever fade on its own?",
-      evidence: "You ruled two things last night that feed each other. One of the causes of two "
-              + "countries being hostile is a separatist movement growing across their border — "
-              + "Oregon and Greater Idaho, in your own example. And one of the effects of being "
-              + "hostile is that the very same movement grows FASTER. So the hostility never cools, "
-              + "because its cause keeps getting stronger. You also ruled that hostility turns back "
-              + "into peace after a certain time, and for this pair that clock can never run out.",
-      cost: "EITHER the grudge fades on time regardless, in which case the two countries drift back "
-          + "to peace and straight into hostility again, over and over, which is a wobble rather than "
-          + "a story. OR it only fades when the reason goes away, in which case some rivalries are "
-          + "permanent and a player can be stuck with a neighbour who will never forgive them. "
-          + "Neither costs anything to build; they simply give different games.",
-      recommendation: "The second — a feud that ends only when its cause does. A permanent enmity is "
-                    + "a better story than an oscillation, and it is truer to life. Three things "
-                    + "already stop it running away: a movement can only ever get so strong, it can "
-                    + "only grow where the local politics already suit it, and a region takes years "
-                    + "to turn. None of those has been measured against this yet, and doing that "
-                    + "measuring is the first job of the next design session whichever way you answer.",
+      id: "california-claimants",
+      title: "Which of the six Californian successors are actually fighting to reunify California?",
+      evidence: "This is a correction and it is mine. Since Sunday this design has said “the five "
+              + "Californian successors” and used that to count how many pairs of countries start "
+              + "out hostile. I went and read the map data tonight while tracing, and California "
+              + "breaks into SIX: Los Angeles, the Bay Area, Riverside, SoCal, Northern California "
+              + "and Cascadia. The note in my own document admitted the row was a count and never a "
+              + "list, and nobody had checked it.\n\n"
+              + "It matters because you ruled tonight that countries competing to put the same old "
+              + "country back together stay hostile with each other FOREVER. So this list decides "
+              + "which rivalries are permanent.",
+      cost: "If all six claim California, that corner of the map has fifteen permanently hostile "
+          + "pairs and the board opens with 38 of them in total. If Cascadia is its own thing and "
+          + "does not want California back, it is ten pairs and 33 in total. Neither is harder to "
+          + "build. The difference is whether Cascadia spends the whole game locked into a quarrel "
+          + "with five neighbours it may have nothing to do with.",
+      recommendation: "Cascadia is out. It is the one name on that list that is not a piece of "
+                    + "California — it is a different country with a different idea of itself, and it "
+                    + "reaches up into Oregon and Washington. The other five are all fighting over the "
+                    + "same inheritance and should be stuck with each other for good. That gives ten "
+                    + "pairs there and 33 across the board, which is the number everything else has "
+                    + "already been written against.",
+    },
+    {
+      id: "alliance-hops",
+      title: "When you catch your ally's enemies, do you catch your ally's ally's enemies too?",
+      evidence: "Two of your rulings meet here. You ruled that allies inherit each other's quarrels — "
+              + "if my friend falls out with someone, I have fallen out with them too. And you ruled "
+              + "tonight that breaking a peace treaty turns every neighbour but your allies hostile at "
+              + "once, which is about five countries in one move.\n\n"
+              + "Nothing says where that stops. If it passes along the whole chain of friendships, one "
+              + "broken treaty could turn most of the continent hostile in a single turn, through "
+              + "countries that have never met.",
+      cost: "One hop only is predictable and a player can see it coming: your friend's enemies, and no "
+          + "further. Letting it run the whole chain makes alliances genuinely frightening to join and "
+          + "makes one betrayal a continental event — which is dramatic once and probably unplayable "
+          + "as a habit. Neither is expensive.",
+      recommendation: "One hop. Your ally's enemies become yours; their ally's enemies do not. It "
+                    + "keeps alliances worth having, keeps the punishment for betrayal severe without "
+                    + "making it unbounded, and it is the version a player can reason about before "
+                    + "signing rather than after.",
+    },
+    {
+      id: "treaty-proposer",
+      title: "When a cease-fire runs out and both sides want to send a peace treaty, whose is on the table?",
+      evidence: "You ruled that a cease-fire ends with a question: do you want to send them a peace "
+              + "treaty? Both sides get asked. And you ruled that the repayment a treaty can demand is "
+              + "capped by what the war cost WHOEVER SENDS IT.\n\n"
+              + "So if both send one in the same turn, there are two treaties on the table with two "
+              + "different ceilings, and nothing says which is the real one. I only found this by "
+              + "walking the situation through step by step.",
+      cost: "Nothing, either way — this is a small rule and it is cheap whichever answer you give. It "
+          + "is here because getting it wrong quietly would show up much later as a negotiation that "
+          + "behaves strangely, and those are expensive to find.",
+      recommendation: "One offer on the table at a time, and the proposer is whoever sends first. The "
+                    + "other side may accept it, refuse it, or counter it — and a counter haggles "
+                    + "inside the ceiling the first offer set rather than replacing it with their own. "
+                    + "That keeps the number on screen stable while you argue about it, which is what "
+                    + "makes a negotiation readable.",
     },
   ],
 
@@ -435,31 +481,49 @@ const BOARD = {
             + "The lesson worth keeping: at the end I traced five real situations through everything we "
             + "had decided, and two of them jammed on contradictions that fifty-three rulings had not "
             + "caught. That is now how every round ends." },
-    { name: "Design round 2 — What war is, and what it does to everything else", status: "current",
+    { name: "Design round 2 — What war is, and what it does to everything else", status: "done",
       brief: "The same treatment for conquest — the system that owns four of the nine pressures pushing "
            + "a region toward leaving.",
-      actual: "OPEN, and the spine of it is settled after one sitting on 8 September. Sixteen rulings, "
-            + "eighty-nine ideas banked.\n\n"
-            + "Your first ruling set the direction and everything is measured against it: this is not a "
-            + "war game. War is not the thing your economy and your diplomacy serve — it is something "
-            + "that HAPPENS TO them. Then you replaced a war with something better: two countries are "
-            + "always in one of five named relationships, and four of the five are lists of what you "
-            + "may not do. That is how a war reaches an economy that never sees a soldier.\n\n"
-            + "What is now settled: every way into and out of each relationship, and that only two of "
-            + "them need both countries to agree. What hostility costs. That ground you capture is "
-            + "yours at once but shown in a paler shade and marked as taken in war — unusable as a "
-            + "trade route for anybody else until you sign, which means a country that fights for a "
-            + "trade route cannot use it until it makes peace. That a peace treaty is really a title "
-            + "deed. And a screen where your own separatists make DEMANDS you can grant, refuse, or "
-            + "tell to wait — where stringing them along costs more than saying no.\n\n"
-            + "Two useful things fell out that were not asked for. The demands screen answers a "
-            + "question round 1 could not: five of your six kinds of movement had no way for a "
-            + "government to respond at all. And the fight itself turns out to be mostly BUILT already "
-            + "— the game has been quietly working out your army against theirs, and showing it, and "
-            + "then only using it in one rare case.\n\n"
-            + "Still to do: whether captured ground can ever stop being captured, what saves a small "
-            + "country from a middling neighbour, whether real military bases go on the map, nuclear "
-            + "weapons, and alliances." },
+      actual: "CLOSED 9 September, two sittings, thirty-one rulings, and all six test stories traced "
+            + "at the end. Five narrate; one stalls on the economy round's known hole.\n\n"
+            + "Your first ruling set the direction: this is not a war game. War is not the thing your "
+            + "economy and diplomacy serve — it is something that HAPPENS TO them. Then you replaced a "
+            + "war with a relationship: two countries are always in one of six named states, and most "
+            + "of them are lists of what you may not do. That is how a war reaches an economy that "
+            + "never sees a soldier.\n\n"
+            + "SETTLED IN THE FIRST SITTING: every way into and out of each relationship; what "
+            + "hostility costs; that captured ground is yours at once but shown paler and marked as "
+            + "taken in war, so a country that fights for a trade route cannot use it until it makes "
+            + "peace; that a peace treaty is really a title deed; and a screen where your own "
+            + "separatists make demands you can grant, refuse, or tell to wait.\n\n"
+            + "SETTLED IN THE SECOND: a grudge fades on time at a speed its causes set, through a new "
+            + "sixth state called wary — except the countries fighting over the same inheritance, who "
+            + "never forgive each other at all. Hostility honours signed trade and forbids new. Austin "
+            + "is the legitimate Texas and the other four are rebels. An attack takes one county, and "
+            + "the three rules that used to refuse an attack outright are gone — replaced by prices, "
+            + "and by an electorate that gets tired. A county under attack produces nothing that turn "
+            + "whether or not it falls. Captured ground eventually becomes properly yours, faster "
+            + "where life is better than it was. Alliances exist and are deliberately thin. Breaking a "
+            + "treaty turns every neighbour but your allies hostile the same day. And there are three "
+            + "kinds of military base on the map, but no nuclear weapons.\n\n"
+            + "WHAT THE TRACING FOUND: seven problems, three of them contradictions between rulings "
+            + "made the same night. Four are mine to fix and three are the cards at the top of this "
+            + "page. It also found one accident worth keeping — because you ruled that stringing a "
+            + "movement along changes what it wants, a country CAN eventually talk its way out of a "
+            + "permanent rivalry, by disappointing its own hardliners until they stop asking. That is "
+            + "the only exit from a permanent feud in the whole design and nobody designed it." },
+    { name: "Design round 3 — Politics", status: "current",
+      brief: "The government's side of everything round 1 and round 2 described: how a country answers "
+           + "its own people, and the two remaining pressures that push a region toward leaving.",
+      actual: "NEXT, and it opens with its inbox already full. Round 1 left it the four ways a "
+            + "government can answer a separatist movement — give ground, give self-rule, change what "
+            + "you stand for, or send soldiers — and round 2 has just added the answer to the other "
+            + "five kinds of movement, which round 1 could not solve.\n\n"
+            + "It also inherits the ONE thing in the whole conquest design that asks for machinery "
+            + "that does not exist. Everything else round 2 decided re-points something already built. "
+            + "But you ruled that a movement you string along eventually changes what it WANTS — and "
+            + "nothing in the game has ever changed what a movement wants. That is real work and it "
+            + "belongs here." },
     { name: "After the economy alpha — Recognition, Canada, Mexico", status: "todo",
       brief: "Recognition score and ramp, border-state suspicion, Canada/Mexico as partners and as corridors, gray-market trade.",
       actual: "HALF DONE, AND PAUSED while the design rounds run. Canada and Mexico are real places on the trade map — reached by the "
@@ -532,6 +596,18 @@ const BOARD = {
 
   // Decisions made on the owner's behalf and how they turned out. Corrections go BESIDE originals.
   log: [
+    { when: "2026-09-09", decision: "Told you your own ruling made conquest FASTER when you had asked to slow it down.",
+      outcome: "Worth saying, and you kept the ruling anyway. You asked for one county per attack instead of three, and for the waiting period between attacks to go. But you only ever get one action a turn, so attacking was already limited to one strike a turn — the budget of three was never reachable. The waiting period was the thing actually holding conquest back, and removing it takes a long war from twelve counties over twenty turns to twenty. It is still the right call: the brake has moved from a rule that says no to an electorate that gets tired, and a player stopped by a rule learns nothing." },
+    { when: "2026-09-09", decision: "Corrected you on a fact rather than building on what you assumed.",
+      outcome: "You asked whether the right to cross somebody's ground is just a standing toll with no end date. It is not — it carries the same lengths a trade deal does, plus four turns' notice either way, and the game says so on screen. That mattered: your ruling that hostility freezes new agreements means Austin's roads now die by themselves when their terms run out, with nobody deciding and nobody paying the reputation cost that was supposed to be the brake. I had told you the opposite one message earlier." },
+    { when: "2026-09-09", decision: "Read the map data instead of trusting my own document about California.",
+      outcome: "Found an error I had been carrying since Sunday. The document says five Californian successors and the board has SIX — Cascadia is on the list. My own note admitted it was a count and never a list, and nobody had checked. It changes how many permanent rivalries the game opens with, so it is a card above rather than a correction buried here." },
+    { when: "2026-09-09", decision: "Did not pull the military base data when you asked me to.",
+      outcome: "Deliberate, and the reason is the rule that keeps two sessions from fighting over the same files: a design session writes documents and never touches the game's data. It is written up as a job with everything a building session needs. And to answer the joke properly — there is nothing here that could put you on a list. What the design needs is where a base is and which service runs it, which the Department of Defense publishes itself and which is on road signs. It needs nothing about what is inside them and would not use it." },
+    { when: "2026-09-09", decision: "Traced all six test stories at the close rather than declaring the round finished on the rulings.",
+      outcome: "Paid for itself again, as it did in round one. Seven problems, three of them contradictions between rulings you made the same night — including one that would have made your new punishment for treaty-breaking land on everybody EXCEPT the countries most tempted to break one, because they are already as hostile as they can get. It also showed that a story which could not be told before tonight now can: there is finally a reason a player can name for leaving a small rich neighbour alone." },
+    { when: "2026-09-09", decision: "Recommended four things you overruled, and recorded all four.",
+      outcome: "A grudge ending only when its cause goes (you said time, at a speed the causes set, and added a sixth state I had not thought of). Hostility taxing trade rather than freezing it (you said honour what is signed, forbid what is not — which made the length of a deal into insurance). An indemnity measured against the winner (you said whoever sends the offer, which means the game never has to decide who won). And a sliding scale of shame for breaking a treaty (you said every neighbour turns hostile at once, which is simpler and heavier). Four for four." },
     { when: "2026-09-08", decision: "Opened the conquest round by telling you the game has no war in it, rather than by asking you what war should be.",
       outcome: "Right, and it changed the question. I traced what actually happens when one country takes another's land: you pay, you pass a distance check, and the ground moves. Unless YOUR OWN country falls into civil war over what it swallowed, the defender is never consulted at all — not its army, not its readiness, not how armed its people are. A three-county state with its whole army on the border is, mechanically, a shop. The only rule that has ever refused a purchase protects countries four times your size, which protects the big from the bigger and nobody else." },
     { when: "2026-09-08", decision: "Proposed a war that you are IN, with named aims — and you replaced it with something better.",
@@ -548,7 +624,7 @@ const BOARD = {
       outcome: "Worth doing: it is 956, not the 954 the handoff had been carrying. All green, across 51 files, in five and a half minutes. Also found that the instructions claim the checks can be run a second, faster way — they cannot, and that is now written down as a small documentation job." },
     { when: "2026-09-05", decision: "Asked whether two coastal nations could simply sail to each other, rather than guessing.",
       outcome: "You answered it with something better than the question: not one ocean but two, Pacific with Pacific, Atlantic and Gulf together, and the Panama Canal shut between them because a navy that cannot move between its own oceans is two navies. It is built. Two Gulf neighbours no longer route their trade via Canada, and your rule caught a leak I would have missed — Canada has a Pacific coast in life, and the moment it had one here, Seattle could reach Boston by sea after all." },
-    { when: "2026-09-05", decision: "Let DESIGN.md fall four stages behind while building.",
+    { when: "2026-09-05", decision: "Let the design document fall four stages behind while building.",
       outcome: "WRONG, and it breaks this project's own first rule — that the design document and the behaviour change in the same commit, and that when they disagree the document is right. The rivers, the chokepoints, the two seas and the network map are all in the game and none of them are in the document. Found while listing what was left rather than by anything catching it. It is the first job on the list." },
     { when: "2026-09-05", decision: "Wrote “the alpha” everywhere and meant “the economy alpha”.",
       outcome: "Your correction, and it is not only wording. An economy alpha answers economy questions with everything else switched off, and the switching off is what makes the answers trustworthy. A GAME alpha is every system on at once, and it asks things none of these stages can — starting with whether there is too much to think about again, which is the complaint that began this whole rebuild. Renamed everywhere and written down properly. One thing it implies, which is now yours to do and does not exist yet: the game alpha needs its own set of questions about the WHOLE, written before anybody plays it." },
@@ -700,3 +776,5 @@ async function wire() {
 }
 wire();
 </script>
+
+</body></html>
