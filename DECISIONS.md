@@ -3187,3 +3187,59 @@ neighbour, every Texan carries a quadruple-accelerated separatist movement** aga
 threshold, and Texas reunifies itself by defection on a timer in every game — a script rather than a
 story. *Proposed default, flagged rather than asked: the bonus takes the largest matching quarrel, not
 the sum.* **This is now the first thing the closing trace of round 2 must run.**
+
+---
+
+### D184 — Round 2 of ideation closes: fifteen more rulings, six scenarios traced, seven findings, 9 September 2026
+
+**Military conquest is closed.** Thirty-one rulings across two sittings, 121 ideas banked, and all six
+scenarios traced end to end at the close. **Five narrate; one stalls, on a gap this project had already
+recorded and already owns.** Round 1 closed three-of-five, so the round improved on it.
+
+**The fifteen rulings made today, in one line each.** A grudge fades on **time**, at a speed the causes
+set, through a new sixth state called **Wary** — and the reunification contests are a permanent **floor**
+rather than a slow clock (17). Hostility **honours what is signed and permits nothing new**, for trade
+deals (18) and for corridors (20). **Austin is the legitimate Texas** and the other four successors are
+rebels (19). Hostility is resolved by time and by a diplomatic action handed to round 5, never by a
+treaty (21). The repayment cap is priced off **whoever sends the treaty** (22). What a war *costs* goes
+to round 4, and **an Area under attack produces nothing that turn whether or not it falls** (23). **One
+Area per attack**, with the per-turn cap and the cooldown removed (24), and the four-times-your-size
+shield removed with them (25). **Occupied ground eventually becomes your country**, at a speed set by
+whether life got better (26). **Allied** is taken and kept thin; **Subject** is deferred (27). Breaking
+a treaty **turns every neighbour but your allies hostile at once** (28). War may be declared from Peace,
+*"because there is no treaty — they are just at peace"* (29). Declining a movement's demand makes it
+**grow**; stringing it along makes it **change what it wants** (30). Three kinds of **base** as map
+geography, and **no nuclear weapons** (31).
+
+**Four of my recommendations were rejected and Aaron's replacements were better every time.** I proposed
+a cause-gated cooling clock; he gave time at a speed the causes set, plus a state I had not thought of.
+I proposed that hostility take the margin rather than the trade; he gave a rule that honours signatures
+and refuses new ones, which completed a four-step ladder of permission. I proposed the repayment cap be
+priced off the winner; he priced it off the proposer, **which means the game never has to decide who
+won — and it has no way to decide.** I proposed a justification ladder for breaking a treaty; he charged
+the cost to the audience instead of the victim.
+
+**And two rulings turned out to do more than they were asked to.** Quality of life as the digestion
+modifier (26) is, undesigned, **the strongest anti-snowball device in the round** — a prosperous nation
+can absorb what it takes and a struggling one cannot, so conquest becomes a luxury of the successful,
+inverting the usual logic in which conquest is how the poor get rich. And ruling 19 reversed Austin's
+fate: recognition is earned above all **by the state you broke away from giving in**, and Austin *is*
+that state — so a bankrupt, encircled, starving nation holds a veto over four larger ones.
+
+**Seven findings, recorded in `conquest-ideation.md` §7b with owners.** Three of them are contradictions
+between rulings made in the same session, which is what tracing is for. **Three need one line from
+Aaron:** whose treaty is on the table when a cease-fire ends and both sides may propose (B); whether
+alliance-inherited hostility is transitive, since one betrayal could otherwise turn the whole board (C);
+and which nations actually claim the California Republic, **since the board has six successors where the
+design has been saying five, and the answer decides whether 33 pairs open hostile or 38** (D).
+
+**What was verified in the build rather than assumed, and each changed an answer:** movement growth is
+geometric against a per-movement ceiling, which dissolved the runaway loop D182 left open; a corridor
+carries the same term lengths as a trade deal and is not a standing toll, which inverted what ruling 20
+does to Austin; the relations ledger has sixteen entry kinds and five of them are positive, so round 5
+inherits half a system; output is held per Area across six sectors, so an attack denies a named kind of
+production rather than income; and the cap-and-cooldown arithmetic showed that ruling 24 makes conquest
+**67% faster** rather than slower, which is the opposite of how it reads.
+
+**The one place this design asks for machinery that does not exist** is ruling 30's mutable movement
+verb. Everything else re-points something already built. Handed to round 3, which opens next.

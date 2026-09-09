@@ -1,8 +1,14 @@
 # Military conquest — ideation (round 2)
 
-**Status: OPEN. Opened 7 September 2026.** Round 1 (secession) closed with 53 rulings and six
-findings; this round inherits twelve questions from it and owns four of the nine pressures that
-decide whether a region turns against the country holding it.
+**Status: ✅ CLOSED, 9 September 2026. Thirty-one rulings, 121 ideas banked, all six scenarios traced,
+seven findings.** Opened 7 September. Round 1 (secession) closed with 53 rulings and six findings; this
+round inherited twelve questions from it and owned four of the nine pressures that decide whether a
+region turns against the country holding it.
+
+**Where to look:** §0 is the frame · the head of §2 is the spine · **§6 is the thirty-one rulings** ·
+**§7a is the closing trace and §7b the seven findings** · §8 is the question list, every entry now
+answered, deferred or taken as a flagged default. **Three findings need one line from Aaron: B, C and
+D.**
 
 **Nothing in this document is judged or decided.** Contradictions are correct at this stage. Ideas
 are numbered **C1** upward and are added, never cut — a design pass that cuts during ideation
@@ -2162,6 +2168,171 @@ fifty-three rulings did not.**
    invading is cheaper. The player weighs a fed population against the anger of the ground they took.
 6. **A Tuesday, in a war.** One action, a front that is moving on its own, and something worth doing
    with the turn.
+
+---
+
+## 7a. The close — all six traced, 9 September 2026
+
+**Five narrate. One stalls, on a gap that was already recorded and owned.** Round 1 closed with three
+of five narrating and two stalling, so this is the better result — but the tracing did its job again
+and produced **seven findings**, three of them contradictions between rulings made this same session.
+
+| | Scenario | Verdict |
+|---|---|---|
+| **1** | A conquest that pays for itself and costs you the country | ✅ **Narrates** — *finding A* |
+| **2** | A three-Area state not worth eating | ✅ **Narrates, and better than when it was written** |
+| **3** | A war that ends without either side destroyed | ✅ **Narrates** — *finding B* |
+| **4** | A government dragged into a war by its own people | ✅ **Narrates** — *finding G* |
+| **5** | A hungry nation with an army | ❌ **STALLS** — *finding E* |
+| **6** | A Tuesday, in a war | ✅ **Narrates, with its premise corrected** — *finding F* |
+
+---
+
+### 1. A conquest that pays for itself and costs the conqueror the country ✅
+
+**Traced.** A nation at Peace declares war (ruling 29) — its turn, and standing scaled by how much
+standing it had. It attacks one Area a turn with no cooldown (ruling 24), paying per Area and per head
+before each roll (ruling 14), the fight shown as its Field against their Border (ruling 12). Four
+turns, four Areas, each **producing nothing on the turn it was hit whether or not it fell** (ruling
+23). The ground is his at once, pale on the map, flagged `occupied-war` (ruling 13) — usable in his own
+trade but **grantable to nobody as a passage until he settles.** Both sides agree a cease-fire (ruling
+7); its term runs with all of war's costs (rulings 2, 3); a treaty converts `occupied-war` into
+`occupied` (ruling 13) and takes repayment capped at 1.25× *his own* war costs (ruling 22).
+
+**The treasury improves** — four Areas produce for ever against a one-off price and a bounded
+indemnity. **And the country turns.** War weariness rose with every war fought and every Area taken,
+falls **only** with peace, and is read by both the crises and the electorate.
+
+**⚠ And here is the loop the trace found, which is the scenario working rather than breaking.** Ruling
+26 digests occupied ground faster when the conqueror's quality of life beats what those people had.
+**War weariness lowers quality of life.** So a nation is at its least able to absorb conquests exactly
+while it is making them — and the only exit is to stop fighting, because weariness falls only with
+peace. *Conquer and hold, and the holding gets harder the longer you conquer.* **Nobody designed that;
+three separate rulings produced it.**
+
+---
+
+### 2. A three-Area state that is not worth eating ✅ — and ruling 26 is why
+
+**This scenario did not narrate before today.** Rulings 24 and 25 removed the per-turn cap, the
+cooldown and the four-times-your-size shield, so nothing structural protects Vermont any more: it is
+reachable, its Border is small, the fight percentage is good, and at $250M an Area plus $400 a head it
+is cheap.¹ **Every reason not to eat Vermont had just been deleted.**
+
+**Ruling 26 put one back, and it is the one the scenario asked for — a reason the panel can name.**
+Vermont's people live well. Quality of life has the widest turn-0 spread of the four stocks,
+**0.55–0.98**, and occupied ground is digested only when the new flag is an improvement on the old.
+**So a middling nation that takes Vermont holds it as occupied ground for ever** — resentful, expensive
+to garrison, never becoming part of the country.
+
+*The panel's sentence writes itself:* **"These people live better than yours do. They will never accept
+you."** **That is a legible, arithmetical reason to leave a small rich neighbour alone, and it protects
+exactly the nations that most needed protecting once the size shield went.**
+
+*Vermont and Wyoming are both confirmed as nations on the board: only Texas and California dissolve,
+and only Utah cedes.² Their individual quality-of-life figures are **not measured** — they are computed
+at run time and this session did not run the game.*
+
+---
+
+### 3. A war that ends without either side being destroyed ✅
+
+**Traced.** Declared from Peace (ruling 29). Two Areas taken. Both sides' weariness climbing, trade
+between them prohibited, corridors shut. **Both agree** a cease-fire — the only transition besides a
+treaty that needs both (ruling 7). Its term runs; a card asks each side whether to send a treaty
+(ruling 8); a counter-offer extends it, **each extension shorter than the last** (C118); the answer is
+a pure function of the world and the terms, so **an extension is only ever bought by conceding
+something.** A treaty is signed on four levers and no more (ruling 15), runs its term, and lapses back
+into Peace (ruling 7). **Breaking it early would turn every neighbour but their allies hostile**
+(ruling 28) — which is why they keep it.
+
+**Two things the trace turned up.**
+
+**The repayment number cannot be stated.** Ruling 22 prices it off the proposer's war costs and ruling
+23(a) defers what a war cost *means* to round 4. **So this scenario narrates its shape and not its
+figures** — honest, and already recorded as blocking in §4.
+
+**And ruling 18's protection is empty after a war.** "Hostile honours what is signed" can only matter
+for a pair that reaches Hostile *without* fighting, because a war has already broken every deal between
+them. *Not a contradiction; worth knowing, because it means ruling 18's real work is done in quarrels
+that never become wars.*
+
+---
+
+### 4. A government dragged into a war by its own people ✅
+
+**Traced.** An Expand movement states its demand on a screen of standing demands (ruling 16, C83);
+answering costs nothing (C117). **The target is now a real object** — ruling 31 makes an air base a
+measurable bonus to attack rather than an evocative name (C121). Three answers: implement and take the
+war, decline and watch it grow, or say wait and never deliver, at which point **it stops wanting the
+ground and starts wanting out** (ruling 30). *"The refusal costs it"* — ✅, and it costs it in two
+different currencies depending on how honestly the refusal was made.
+
+**⚠ And the trace found that every Expand demand inside a floor pair is a demand for war, by
+construction.** A nation permanently Hostile with its target (ruling 17(d)) can never buy the ground
+(ruling 18), never be granted passage to it (ruling 20), and never treaty for it (ruling 21). **There
+is no peaceful way to satisfy an irredentist movement pointed at a permanent enemy.** *That is how
+irredentism actually works, and it makes the Texas and California corners the violent parts of the map
+on purpose rather than by accident. Recorded, not flagged as broken.*
+
+---
+
+### 5. A hungry nation with an army ❌ STALLS
+
+**It stalls in its first sentence, and on a gap this project has already written down twice.**
+
+The scenario needs *"buying food is possible and expensive"* to be a real pressure. **It is not.** The
+project's own definition of done names the hollow spot: **nothing bad happens to a nation that does not
+trade.** Ruling 4's third cause of hostility carries the same requirement, recorded in §4 as blocking
+on round 4.
+
+**A nation cannot be hungry until hunger costs something. So the player has nothing to weigh.**
+
+*Everything downstream of the pressure is ready and waiting.* Output is held per Area across six named
+sectors,³ so **"a farming Area" is an identifiable, targetable object**; ruling 23 lets a nation switch
+one off without taking it; and ruling 26 guarantees that a *hungry* nation — poor, and therefore low on
+quality of life — **can never digest the fields it seizes.** *The scenario's own tension, "a fed
+population against the anger of the ground you took", is sharpened to a point by ruling 26 and cannot be
+played until round 4 makes desperation bite.*
+
+**Owner: round 4, already blocking. This trace adds no new work — it prices the delay.**
+
+---
+
+### 6. A Tuesday, in a war ✅ — with its premise corrected
+
+**As written, this scenario contradicts ruling 10.** It asks for *"a front that is moving on its own"*,
+and ruling 10 explicitly refused that: if the border moved every turn *"the map would become the
+scoreboard, players would watch the front instead of the country, and we would have built a war game
+after all."* **Nothing in this design advances a front by itself.**
+
+**It is rescued by ruling 24, and the rescue is better than the original.** Every one of sixty nations
+takes an action a turn, may attack every turn with no cooldown, and the AI scores the same previews the
+player is shown (C88). **The front moves on its own because the other side is moving it.**
+
+**And a Tuesday now has real choices**, which it did not have in round 1: attack one Area (your action);
+answer any number of your movements' demands (free — C117); propose a cease-fire (your action); re-point
+your force across **Garrison, Border, Field and now Ally** (C110); grant or revoke a corridor; recognise
+somebody. *Round 1's fifth scenario stalled precisely here, with Illinois holding four movements it had
+no way to answer. It would not stall now.*
+
+---
+
+## 7b. The seven findings
+
+| | Finding | Owner |
+|---|---|---|
+| **A** | **Ruling 26 makes home ground grow, and the built definition fixes it at founding.** `isHomeGround` calls itself *"THE one definition of home ground, and the only thing anything should ask"* — an origin state's soil, or the ground a nation was founded on, *"everything else it holds is occupied."*⁴ **Ruling 26 requires occupied ground to become home ground.** A one-line change to a function that declares itself the single source of truth, so it must be made deliberately rather than discovered | Whoever builds ruling 26 |
+| **B** | **At a cease-fire's end, nothing says whose treaty is on the table.** Ruling 8 asks *each* side whether to send one; ruling 22 prices the cap off **the proposer**. If both send, there are two caps and two treaties. *Proposed default: one treaty on the table at a time, the proposer is whoever sends first, and the other side may only accept, counter or decline — with C101's rule that a counter haggles inside the basis rather than re-basing it* | **Aaron — one line** |
+| **C** | **Alliance-inherited hostility has no hop limit, and one betrayal could turn the whole board.** Ruling 4's fifth cause spreads hostility through alliances; ruling 28 creates roughly five hostilities in a single act; ruling 27 makes an ally inherit them. **Nothing says whether an ally's ally inherits them too.** If it is transitive, one broken treaty propagates across the entire alliance graph. *Proposed default: **one hop only*** | **Aaron — one line** |
+| **D** | **The California floor has no claimant list, and the board has six successors where the design says five.** Verified: California dissolves into **Los Angeles, Bay Area, Riverside, SoCal, Northern California and Cascadia**.² C65 counted *"the five Californian successors"* and admitted the row was *"a count and not a list"*. **Cascadia is a distinct identity and may not claim the California Republic at all.** Ruling 17(d) makes those pairs permanently Hostile, so the list decides whether the board opens with **33 hostile pairs or 38** | **Aaron — name the claimants** |
+| **E** | **Scenario 5 stalls because desperation does not bite.** Already the project's known hollow spot and already blocking in §4 | Round 4 |
+| **F** | **Scenario 6's premise was ruled out by ruling 10 and is rescued by ruling 24.** *"A front that is moving on its own"* must be read as **the enemy is also acting**, or it will be taken as a requirement for something ruling 10 deliberately refused | This document — **done above** |
+| **G** | **✅ There is a way out of the permanent floor, and ruling 30 built it by accident.** C93 asked what could ever end a reunification contest and had no answer but conquest. **Ruling 30 gives one:** a government that strings its own reunification movement along until it gives up watches that movement **change its verb toward Separate** — and a nation whose people have stopped wanting the old country back **has stopped contesting the inheritance.** *The floor's cause is gone, so the floor lifts. A player can talk their way out of a permanent rivalry by disappointing their own irredentists for long enough — which is both true to life and the bleakest available way to make peace* | Recorded; round 3 builds it |
+
+*¹ `js/tunables.js`: `annex.costPerArea` = $250M, `annex.costPopScale` = $400/head. ²
+`content/scenario-shattered.json`. ³ `data/economy.json`, 1,688 Areas × 6 sectors. ⁴ `js/game.js`,
+`isHomeGround`. All verified 9 September 2026.*
 
 ---
 
