@@ -1,13 +1,51 @@
 # Politics — ideation (round 3)
 
-**Status: NOT OPENED.** Stub created 6 September 2026 to hold what round 1 handed it. Round 3 opens
-in its turn, per `IDEATION-PLAN.md`. Nothing here is judged or decided.
+**Status: OPEN. Opened 9 September 2026.** Round 1 (secession) closed 7 September with 53 rulings;
+round 2 (conquest) closed 9 September with 41. This round is third per `IDEATION-PLAN.md`.
 
-The story itself is recorded in `secession-ideation.md` §8.
+Nothing below §4 is decided. Rulings are written into §4 **as they happen**, not summarised at the
+end.
 
 ---
 
-## Questions inherited from the story of the break-up (6 September)
+## 1. What this round owns
+
+Politics owns **two of the nine pressures** that feed a region's anger — how freely people are
+allowed to disagree, and how firmly the government holds its own ground — and it owns **every answer
+a government can give to a movement**. That second thing is why this round matters more than its
+position in the order suggests: round 1 found that *five of the six movement verbs have no
+government response at all*, and that is the whole Tuesday problem in one sentence.
+
+Per the plan, this round also owns the seam marked **autonomy, release and changing course** — three
+of the four prices a government can pay to keep a region.
+
+### What is already built, verified 9 September 2026
+
+Read before proposing anything, so this round extends the machine rather than replacing it.
+
+| | State |
+|---|---|
+| **Six ideologies on two axes** | `content/ideologies.json`. Axes are **collective ↔ market** and **liberal ↔ traditional**. `affinity(a,b) = 1 - distance/maxDistance` drives coalitions, drift, liberty satisfaction, trade alignment, defection and AI diplomacy |
+| **The four release valves** | All four exist. **Release** ground (`release.costGdpShare` of the output goes with it, and a cooldown), **autonomy** per Area (the Area keeps most of what it raises; capped by share; cooldown), **change course** (`changeRulingIdeology` — needs a popular share for the mandate, costs treasury scaled by how far you move on the axes, and costs Authority), **garrison** (buys quiet, pays in civil liberties) |
+| **Elections** | Staggered by a hash of the nation id so fifty-one do not land together. The vote is the population's ideological mix, swung by the government's record on Quality of Life, Authority, Civil Liberties and war weariness. **They can be stolen** below a liberties threshold, at the price of a further liberties shock — and the player is *asked* rather than defaulted |
+| **Authority and civil liberties** | National stocks with per-Area versions blended in. Authority reads age, tenure, wars, solvency, cohesion, honeymoon, losses, occupation, overreach, autonomy and who is in charge. Liberties read the garrison, autonomy, occupation and the leader |
+| **The honeymoon** | Four turns of borrowed Authority against a proportional GDP cut |
+
+### What is not built, and this round is the first to ask for it
+
+- **A movement that changes what it wants** — round 2's ruling 30 (C120). The only piece of
+  machinery in the whole conquest design that does not re-point something that already exists.
+- **Ground that belongs to nobody.** Every Area belongs to a nation today. There is no
+  nobody's-land, and the story opens with six regions in one.
+- **Any answer to a movement that is not *Separate*.** Round 1's finding D.
+- **Movements that know about each other.** Coalitions do not exist.
+
+---
+
+## 2. The inbox — what rounds 1 and 2 handed this one
+
+**Preserved as filed. Nothing here is judged.** Round 1 filed items 1–12 on 6–7 September; round 2
+added the three marked ▶ on 9 September.
 
 1. **What is a tier-3 "stateless society"?** Aaron's three tiers: a *recognised state*, a
    *secessionist state*, and a *stateless society* — "areas small enough to run on their own and
@@ -77,13 +115,220 @@ The story itself is recorded in `secession-ideation.md` §8.
     ally to leave and then fall out. *Built: nothing — movements do not know about each other.*
 
 11. **The fervour of a new country.** *(Aaron, 7 September — secession S65, ruling 16.)* A nation
-   that has just been realised carries "an extra fervour, like the citizens are willing to overlook
-   certain things." What does a government get to do badly while it lasts — govern harshly, lose a
-   war, let people go hungry? Is it a tolerance applied to grievance, a bonus to the stocks, or a
-   budget that gets spent? And what happens when it runs out: does a people whose patience has
-   expired end up angrier than one that never had any? *Built: the honeymoon is four turns of
-   borrowed Authority against a proportional GDP cut — narrower than this, and the natural place to
-   hang it.*
+    that has just been realised carries "an extra fervour, like the citizens are willing to overlook
+    certain things." What does a government get to do badly while it lasts — govern harshly, lose a
+    war, let people go hungry? Is it a tolerance applied to grievance, a bonus to the stocks, or a
+    budget that gets spent? And what happens when it runs out: does a people whose patience has
+    expired end up angrier than one that never had any? *Built: the honeymoon is four turns of
+    borrowed Authority against a proportional GDP cut — narrower than this, and the natural place to
+    hang it.*
 
 12. **Autonomy, release and changing course live here** (per the plan) — three of the four answers to
-   a movement and their prices. Round 1 has proposed four more (`secession-ideation.md` S24–S27).
+    a movement and their prices. Round 1 has proposed four more (`secession-ideation.md` S24–S27).
+
+▶ 13. **The mutable movement verb — ruling 30, C120.** A movement whose government keeps declining it
+    **grows**; a movement whose government keeps *promising and never delivering* **changes what it
+    wants, toward *Separate***. A change of kind, not degree. **This is the only thing in the entire
+    conquest design that asks for machinery that does not exist**; everything else re-points
+    something already built.
+
+▶ 14. **The government's answer to *Expand* and *Reconquer***, beside round 1's four release valves.
+    **Aaron's instruction was one table, not two.**
+
+▶ 15. **Finding G — there is a way out of a permanent rivalry, and ruling 30 built it by accident.**
+    A government that strings its own reunification movement along until it gives up watches that
+    movement change its verb toward *Separate* — and a nation whose people have stopped wanting the
+    old country back has stopped contesting the inheritance, so the permanent hostility floor lifts.
+    *A player can talk their way out of a permanent rivalry by disappointing their own irredentists
+    for long enough.* Nobody designed it; it fell out of ruling 30. **Round 3 builds it.**
+
+---
+
+## 3. The spine — the questions, in the order they are asked
+
+Put to Aaron **one at a time**, in this order, each with a recommendation. Answered ones move into
+§4 as rulings and are struck through here.
+
+**Why this order.** Q1 first because it is the *language* every other question is written in and
+because the plan reserves it to Aaron explicitly. Q2 and Q3 next because they are the round's spine
+and the Tuesday problem. Q4 next because it is the largest new mechanic in the story. Then the rest,
+roughly by how much else depends on them.
+
+### Q1 — Is there a seventh political alignment, and is it Libertarian?
+
+*Inbox 8 and 9. Raised by Aaron three separate times in one sitting.*
+
+**The plan reserves this one.** `IDEATION-PLAN.md` rule 1: the board and Identity are fixed, and *"if
+a round finds itself wanting to change one, that is a finding worth stopping for — it is expensive
+and it is Aaron's."*
+
+**What it actually costs, measured rather than asserted.** The code is genuinely table-driven — the
+number six appears only in comments, and ideology ids appear as literals in just three files. So a
+seventh costs **two numbers and a colour** in the authored table. The real bill is elsewhere: the
+minority-ideology split that gives each cultural region its texture is **twenty hand-authored rows
+weighted over four ideologies**, and every one of them needs a fifth column. That is the honest
+price — a couple of hours of authoring, not a rebuild.
+
+**Recommendation: yes, add Libertarian; no, do not add a third axis.** Libertarian sits in the
+market-liberal corner — furthest along *market*, on the *liberal* side of the social axis — which is
+currently empty and which is exactly where the Sagebrush Rebellion's "return the federal land, county
+supremacy" belongs. It is also where the struck **Anarcho-Capitalist** movement sat, and the
+resonance with tier-3 stateless ground is not a coincidence. **Techno-Autocrat stays out**: it has no
+home on these axes, a third axis re-prices every affinity in the game, and it would buy one movement
+that Aaron has already struck.
+
+### Q2 — The one table: what can a government do about each of the six verbs?
+
+*Round 1's finding D, round 2's handover 14, and the Tuesday problem located precisely.*
+
+The four release valves answer ***Separate*** and nothing else. **Unify, Reunify, Rejoin, Expand and
+Reconquer have no government response at all** — which means that for five of the six things a
+movement can want, the player has nothing to do on a Tuesday.
+
+**Aaron's instruction is one table, not two**: the answers to *Expand* and *Reconquer* go in beside
+the four valves rather than into a separate list of their own.
+
+**Recommendation: the *adjective* decides the shape of the answer, not the verb.** Round 1 already
+observed this — "a policy for *economic*, recognition for *cultural*, a share of the ground for
+*resource*." That gives one table with six rows and a small number of answer-shapes reused across
+them, instead of thirty hand-authored pairs. The table itself is the deliverable and I will draft it
+for Aaron to mark up rather than ask him to invent it.
+
+### Q3 — Do the four proposed new valves join the table?
+
+*Round 1, S24–S27, unruled.* **Negotiate** with the movement (give it two of the five things it
+wants); **hold a referendum** (lose and it leaves cleanly, win and it is set back — with the honesty
+of the result depending on your liberties, exactly as a stolen election already works);
+**buy them** (spend on the region, the way the harvest crisis already lets you spend on grain);
+**partition it yourself** (draw the line first and keep the half that wants you).
+
+**Recommendation: take negotiate and referendum, defer buy, drop partition.** Negotiate is the
+missing *player verb* and the whole round needs one. Referendum reuses the stolen-election machinery
+and is the most dramatic single button in the game. Buying them waits for round 4, because what money
+buys is the economy's to say. Partition is release with extra steps and a hard map problem.
+
+**And S28 applies to all of them: every answer must make the next movement.** Today only two of the
+four carry a second-order cost.
+
+### Q4 — What is a tier-3 stateless society?
+
+*Inbox 1. The largest new mechanic in the story, and six regions open in it.*
+
+Does it have a government, a treasury, an army, elections? One entity per region or many? Can it grow
+into a state, and can a state fall into one?
+
+**Recommendation: it is ground with people and output and no government.** No treasury, no elections,
+no foreign policy, no army beyond the local resistance that already exists — and **many small ones
+per region, not one**, because the story says Kentucky, Ohio and Michigan "fracture into 3rd tier
+governments", plural. It can be annexed cheaply, which round 1 already priced. It can **grow into a
+state** if a movement realises on it. **A state cannot fall into one** in this version — that is a
+collapse mechanic and it belongs to a later pass.
+
+### Q5 — The mutable movement verb: what are the legal changes, and what triggers them?
+
+*Inbox 13, ruling 30, C120. The one piece of machinery that does not exist.*
+
+**Recommendation: one direction only, and only toward *Separate*.** A movement that is promised and
+not delivered walks toward wanting out, and never back. It fires on a clock — a count of promises
+made and unkept — rather than re-checking every turn, which is also what **C133** requires. And per
+**finding G**, when a reunification movement's verb flips, the permanent hostility floor its contest
+created lifts with it.
+
+### Q6 — Martial law: what is it, and for how long?
+
+*Inbox 2.* Garrison, liberties hit, suspended elections, all three?
+
+**Recommendation: it is the garrison you already have, declared nationally, plus the one thing the
+game cannot do yet — it suspends the election.** That gives martial law real teeth without inventing
+a second suppression system, and it puts the price exactly where the game already puts it: the
+liberties that let you do it are the liberties you spend doing it.
+
+### Q7 — Does the federal remnant open below its authority, and does anything fill a vacuum?
+
+*Inbox 5.* "The people's trust in the US government dropped dramatically and local powers started
+stepping up and filling in."
+
+**Recommendation: yes to the first, no to the second.** Authority opening below its target — and
+climbing back — is one seeded number and it tells the story. "Local powers filling in" is what
+movements and tier-3 ground already are; giving it a second mechanism would grow two answers to one
+question, which is the thing this plan exists to avoid.
+
+### Q8 — Is a federation a form of government, or a name?
+
+*Inbox 3, and Aaron raised it again on Acadiana: "the gulf compact could be a unified states? We can
+talk about that later in governments and diplomacy."*
+
+**Recommendation: a name, for now — and say why out loud.** Autonomy per Area already exists and
+already costs the centre revenue and authority, so a literal federation is *a weak government by
+construction* and the game can already build one. What is missing is a label and a reason to want it.
+Aaron has flagged it twice, so if he wants it as a real form this is where it lands, and it wants
+round 5 beside it.
+
+### Q9 — Coalitions between movements, and the chaos afterwards
+
+*Inbox 10.* Two movements that want the same ground for different reasons ally to leave, then fall
+out.
+
+**Recommendation: two movements with the same verb and overlapping ground may declare together, and
+the coalition dissolves the moment they succeed** — leaving two movements inside the new nation, both
+realised, wanting different things. That is Aaron's "once done there will be more chaos" and it costs
+almost nothing, because both halves already exist; only the pairing is new.
+
+### Q10 — The fervour of a new country: what does it buy, and what does it cost when it ends?
+
+*Inbox 11.* Tolerance, bonus, or a budget that gets spent? And is a people whose patience has expired
+angrier than one that never had any?
+
+**Recommendation: widen the honeymoon that exists rather than add a second thing.** Today it is four
+turns of borrowed Authority against a GDP cut; make it a *tolerance applied to grievance* as well, so
+a new country can genuinely govern badly for a while. **And yes — it should end worse than neutral.**
+A patience that has been spent is a grievance with a date on it, and that is the more interesting
+game.
+
+### Q11 — Is joining a bloc a domestic political act with a domestic price?
+
+*Inbox 7.* Seven governors signed the Farmers Union — and what did it cost Illinois when Chicago
+walked out?
+
+**Recommendation: yes.** Joining a bloc costs Authority with the share of your own people whose
+ideology is furthest from the bloc's — which needs no new machinery, because `affinity` already
+answers it. **The bloc itself is round 5's**; only its domestic bill is this round's.
+
+### Q12 — Is a nation's stance toward the old country a political fact it carries?
+
+*Inbox 4.* Greater Idaho "originally planned on staying in the union but then decided to leave
+altogether."
+
+**Recommendation: yes, and it is Q5's machinery pointed at nations instead of movements.** A nation
+carries a posture toward the remnant — loyal, gone, waiting — and it can change, on the same
+promise-and-disappointment clock. If Q5 is ruled, this is nearly free; if Q5 is refused, this should
+be refused with it rather than built separately.
+
+### The closing test — asked at the end of the round, not now
+
+**What does the player actually do about this, on a Tuesday, with one action?** Every round answers
+it before it closes. **And the scenarios get traced at the close** — tracing found contradictions in
+round 1 that fifty-three rulings had not, and seven findings in round 2 that forty-one had not.
+
+Round 3 owns scenario 3: *a government that chooses between its own identity and its territory.* A
+movement is over the line in three Areas; the government can hand the ground away, grant self-rule,
+change what it stands for and lose the majority that elected it, or send soldiers and make the next
+movement. **Four prices for the same relief, and the player has to pick one.**
+
+---
+
+## 4. Rulings
+
+*Written as they happen. None yet.*
+
+---
+
+## 5. The idea bank
+
+*Numbered P1, P2, … Unjudged. None yet.*
+
+---
+
+## 6. Findings
+
+*What this round discovered that nobody asked it. None yet.*
