@@ -1547,6 +1547,81 @@ something its enemies need.** *Not assumed either way.*
 
 ---
 
+**Ruling 22 — the repayment cap is measured against the war costs of whoever *sends* the treaty.
+(Aaron, 9 September 2026.)**
+
+> *"I would say that it would be the one sending the deal. So Utah invades Idaho. Idaho ends up
+> winning. They send a deal to Utah — some of their counties — but because the war cost them money,
+> Utah has to pay them 1.25 the cost of the war so far. (Or maybe Utah comes back and says they will
+> pay 0.5 the cost of their war and give the counties, and Idaho accepts.)"*
+
+**Neither "the winner's" nor "the loser's" — the *proposer's*. And it is better than both, for a
+reason that goes past this lever.**
+
+**It means the game never has to decide who won.** Ruling 10 already moves ground during the war and
+leaves the treaty to settle the tenure, so there is no victory flag anywhere in the system and nothing
+that declares a winner. A cap priced off "the winner" would have required inventing one. **A cap
+priced off the proposer needs nothing that does not already exist:** whoever opens the negotiation
+prices their demand against what the war cost *them*, and the other side accepts, counters or
+declines. *The asymmetry of a peace settlement falls out of who spoke first.*
+
+**Three properties, all of them good:**
+
+- **The number is observable to the nation using it.** A player knows what their own war cost. The
+  slider's maximum is a figure they can see, which is what a negotiation card needs.
+- **War still cannot be a money-making machine**, which is ruling 15's stated purpose. The ceiling is
+  1.25× your own outlay, so the best case is a 25% margin on money you have already spent. Spending
+  more to be allowed to demand more is a losing trade at every scale.
+- **It is symmetric, so an aggressor may demand too.** Utah invades, Utah wins, Utah takes ground *and*
+  bills Idaho for the cost of taking it. That is what a historical indemnity actually is, and it needs
+  no special case — an absurd demand is simply declined, and ruling 8 already makes the reply a pure
+  function of the world and the terms.
+
+**"The cost of the war so far" is a running total**, read at the moment the treaty is sent. So the
+ceiling moves while the war runs, and a nation that has been bleeding for twenty turns may ask for
+more than one that has been fighting for four.
+
+**C101 — A counter-offer haggles within the basis; it does not re-base it.** *Default taken, flagged
+rather than asked, because this is the same species of one-word ambiguity that left 1.25× unsettled
+for two days.* In Aaron's example Utah counters at **0.5** — a fraction of the number Idaho named,
+not a new cap computed from Utah's own costs. **The treaty under negotiation has one basis, set when
+it was opened.** The alternative would flip the maximum mid-negotiation for no reason the player could
+see. *One line to correct if wrong.*
+
+---
+
+#### ⚠ FINDING — traced against Aaron's own example, a defender can claim nothing
+
+**Ruling 22 works only if "the cost of the war" means more than what you spent attacking. In the
+example Aaron used to illustrate it, it does not — and Idaho's claim comes out at zero.**
+
+The one war cost this game currently debits is **the price of an attack**, taken from the treasury
+before each roll — per Area and per head.¹ **Idaho never attacked.** Utah invaded; Idaho defended and
+won. So Idaho's attack spending is **nothing**, 1.25× nothing is nothing, and the nation the rule was
+written to compensate **cannot ask for a penny.**
+
+**What a defensive war actually costs, and three of the four are already measurable:**
+
+| | |
+|---|---|
+| **Attacking** | The per-Area price, debited before the roll. **Zero for a pure defender** |
+| **Holding** | Occupation upkeep, which is superlinear in how many Areas you hold |
+| **Not trading** | War prohibits trade (ruling 2) and ruling 18 stops the deals being replaced. **The game knows exactly what a deal was worth** |
+| **Guarding** | Ruling 9.4 — a hostile or wartime border costs more to hold |
+
+**The third is the big one and it is the one that makes Idaho whole.** A defender's war is expensive
+precisely because it is not fought with money — it is fought by having your economy shut off. *A rule
+that counts only attack spending would price the invasion and ignore the damage.*
+
+**Recommendation, and it is question 10 rather than a default, because it sets the size of every
+indemnity in the game:** the cost of a war is **what the war took out of your treasury *and* out of
+your trade** — spent attacking, spent holding, and not earned because the fighting closed your
+markets.
+
+*¹ Verified 7 September and restated under ruling 14.*
+
+---
+
 ## 7. The scenarios this round has to be able to tell
 
 Traced at the close, per the lesson round 1 learned: **tracing scenarios found contradictions that
@@ -1592,8 +1667,13 @@ Asked of Aaron in order, one at a time. Answered ones move up into §6 as ruling
    state it lands you in. **C72 proposes** that it is the top of a justification scale rather than a
    rule of its own. *Sharper now that ruling 15 has given a treaty four enforceable terms: breaking
    one means stopping the repayments, tearing up the forced trade, or taking the ground back.*
-6b. **Is the 1.25× repayment cap measured against the winner's war costs or the loser's?** One word,
-   and it is a number, so it is flagged rather than assumed. *(Ruling 15.)*
+6b. ~~**Is the 1.25× repayment cap measured against the winner's war costs or the loser's?**~~
+   **Answered — ruling 22. Neither: the *proposer's*.** Whoever sends the treaty prices their demand
+   against what the war cost them, which means the game never has to decide who won.
+6c. **What counts as "the cost of a war"?** *(Raised by the finding under ruling 22, 9 September, and
+   it is blocking for the same lever.)* **If it means attack spending alone, a pure defender can claim
+   nothing** — which breaks the very example ruling 22 was made from. My recommendation: what the war
+   took out of your **treasury and your trade**.
 7. **Subject and Allied** — deferred by Aaron, but ruling 4's fifth cause needs Allied to exist.
    Worth reopening earlier in the round rather than later.
 8. **Can a pair go from Peace straight to War**, or does something have to happen first? C72 assumes
