@@ -2216,6 +2216,72 @@ besides Texas that dissolves, and Cascadia's nine Areas are all FIPS 06. Verifie
 
 ---
 
+**Ruling 33 — both sides table a treaty before the cease-fire ends, and the defender chooses first.
+(Aaron, 9 September 2026, closing finding B.)**
+
+> *"Lets say that the turn before the cease-fire ends each nation needs to submit a peace treaty to
+> the other nation. Then the defender gets the right of first refusal or acceptance."*
+
+**The rule.** On the turn before a cease-fire expires, **each nation must submit a peace treaty to the
+other** — it is compulsory, not offered. Then **the defender** — the nation that did not declare the
+war — **chooses first**, to accept or to refuse.
+
+**This supersedes the first half of ruling 8**, which had a card *asking* each side whether to send a
+treaty. Asking is now telling, and the timing is fixed to the turn before expiry rather than at it.
+*Ruling 8's default survives untouched: nothing signed means Hostile, not War.*
+
+**Why it beats what I recommended, which was one treaty and first-come.** My version handed the
+advantage to whoever moved first, which rewards haste and gives a nation reason to table terms before
+it knows what it wants. **Aaron's version hands the advantage to whoever was attacked** — which is the
+only asymmetry in this whole spine that favours the side that did not start it, and it arrives in the
+round that removed all three hard brakes on conquest (rulings 24 and 25).
+
+**And it resolves finding B without the game ever deciding who won.** Ruling 22 prices a demand
+against *the proposer's* own war costs, so two treaties simply carry two ceilings and each side asks
+for at most 1.25× what the war cost **them**. **The game needs to know only who declared**, which is a
+fact written down at the declaration rather than a judgement about the outcome. *That was ruling 22's
+whole virtue and it survives intact.*
+
+**Refusing peace is still allowed and still free (ruling 6) — it has just become more expressive.**
+A nation that wants no peace cannot now sit silent; it must table something. So refusal takes the form
+of **terms nobody would accept**, which is a sentence the other player can read, rather than a blank
+wall. *This is a better version of ruling 6 than ruling 6 had.*
+
+**⚠ C125 — the defender's own submitted treaty is almost certainly the counter, and that would delete
+a mechanic rather than add one.** *Claude's reading, unruled — question 1 below.* If both sides table
+terms blind and the defender refuses the attacker's, **the defender's own treaty is already on the
+table** and the attacker simply answers it. That gives a complete two-step — defender chooses, then
+attacker chooses, then Hostile — **and it means the separate counter-offer step no longer needs to
+exist.** C118's rule that each cease-fire extension is shorter than the last was built to stop two
+nations countering each other for ever; if there is exactly one round of offers, the exploit it was
+guarding against cannot happen. *A ruling that removes a tunable is worth more than one that adds one,
+which is why this is flagged rather than assumed.*
+
+**C126 — blind submission is the interesting version, and it is not what Aaron said.** *Claude's
+proposal, unruled — question 2.* If both nations write terms **on the same turn without seeing the
+other's**, each has to guess how badly the other wants out, and the defender's privilege is choosing
+between two sealed envelopes it helped write one of. If submission is open, the second writer simply
+undercuts the first and the defender's advantage collapses into ordinary haggling. *Blind costs
+nothing to build and is the only version in which the compulsory submission is a decision rather than
+a formality.*
+
+**⚠ C127 — a compulsory submission collides with C116, and it is the expensive kind of collision.**
+*Question 3.* C116 took as a default that proposing a treaty **costs your action for the turn**. Ruling
+33 makes the proposal **mandatory**, so a war ending would silently eat the turn of *both* nations,
+whether or not either wanted peace — and under ruling 3 a cease-fire is a fixed term, so the turn it
+lands on is not chosen. **Either the compulsory submission is free, or every cease-fire quietly taxes
+both sides a turn they did not spend.** *Recommendation: free, because C116's reason for charging was
+that proposing is a choice, and this one is not.*
+
+**C128 — who defends is fixed at the declaration and does not change hands.** *Default taken, flagged.*
+A war has one declarer (ruling 29) and that nation is the attacker for as long as the war lasts,
+through any number of cease-fires — **even if it is losing, and even if the defender has taken more
+ground than it lost.** The alternative, reassigning the role by who currently holds what, would require
+the game to judge who is winning, which is the thing ruling 22 was built to avoid. *One line to
+correct.*
+
+---
+
 ## 7. The scenarios this round has to be able to tell
 
 Traced at the close, per the lesson round 1 learned: **tracing scenarios found contradictions that
@@ -2389,7 +2455,7 @@ no way to answer. It would not stall now.*
 | | Finding | Owner |
 |---|---|---|
 | **A** | **Ruling 26 makes home ground grow, and the built definition fixes it at founding.** `isHomeGround` calls itself *"THE one definition of home ground, and the only thing anything should ask"* — an origin state's soil, or the ground a nation was founded on, *"everything else it holds is occupied."*⁴ **Ruling 26 requires occupied ground to become home ground.** A one-line change to a function that declares itself the single source of truth, so it must be made deliberately rather than discovered | Whoever builds ruling 26 |
-| **B** | **At a cease-fire's end, nothing says whose treaty is on the table.** Ruling 8 asks *each* side whether to send one; ruling 22 prices the cap off **the proposer**. If both send, there are two caps and two treaties. *Proposed default: one treaty on the table at a time, the proposer is whoever sends first, and the other side may only accept, counter or decline — with C101's rule that a counter haggles inside the basis rather than re-basing it* | **Aaron — one line** |
+| **B** | **✅ CLOSED by ruling 33 — both sides table one, the defender chooses first. Three follow-ons open: C125, C126, C127.** **At a cease-fire's end, nothing says whose treaty is on the table.** Ruling 8 asks *each* side whether to send one; ruling 22 prices the cap off **the proposer**. If both send, there are two caps and two treaties. *Proposed default: one treaty on the table at a time, the proposer is whoever sends first, and the other side may only accept, counter or decline — with C101's rule that a counter haggles inside the basis rather than re-basing it* | ✅ Answered 9 Sep |
 | **C** | **Alliance-inherited hostility has no hop limit, and one betrayal could turn the whole board.** Ruling 4's fifth cause spreads hostility through alliances; ruling 28 creates roughly five hostilities in a single act; ruling 27 makes an ally inherit them. **Nothing says whether an ally's ally inherits them too.** If it is transitive, one broken treaty propagates across the entire alliance graph. *Proposed default: **one hop only*** | **Aaron — one line** |
 | **D** | **✅ CLOSED by ruling 32 — the five are named and Cascadia is out; 33 pairs stands.** **The California floor has no claimant list, and the board has six successors where the design says five.** Verified: California dissolves into **Los Angeles, Bay Area, Riverside, SoCal, Northern California and Cascadia**.² C65 counted *"the five Californian successors"* and admitted the row was *"a count and not a list"*. **Cascadia is a distinct identity and may not claim the California Republic at all.** Ruling 17(d) makes those pairs permanently Hostile, so the list decides whether the board opens with **33 hostile pairs or 38** | ✅ Answered 9 Sep |
 | **E** | **Scenario 5 stalls because desperation does not bite.** Already the project's known hollow spot and already blocking in §4 | Round 4 |
