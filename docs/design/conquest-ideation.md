@@ -1765,6 +1765,31 @@ ruling.*
 
 ---
 
+**Ruling 25 — the four-times-your-size shield is removed. (Aaron, 9 September 2026, accepting the
+recommendation.)** Nothing refuses an attack on grounds of size any more. **All three of the
+hard-refusal brakes on conquest are now gone** — the per-turn cap, the cooldown and the shield — and
+what remains is entirely pricing:
+
+| What stops a hopeless attack now | How |
+|---|---|
+| **Reach** | Prices distance out from your seat of government and still refuses outright past a limit. *The one hard refusal that survives, and it is about geography rather than about size* |
+| **The fight itself** | Your Field against their Border as a share, shown before you commit |
+| **The price, debited before the dice** | A 5% chance costs twenty times the Area's price to land once (ruling 14) |
+| **Your own people** | War weariness rising with every war fought, read by crises and by elections |
+
+**Why this is the right shape and not merely a simplification.** The shield was the last rule in the
+conquest system that answered a player with *no* rather than with *that will cost you*. **It also
+silenced the strongest story on the board:** El Paso, permanently hostile to Dallas under ruling
+17(d), with a movement growing and a corridor shut, was forbidden by the rulebook from so much as
+trying. *The case where the fiction is loudest was the case the rules refused to allow.*
+
+**Its known cost, recorded rather than argued:** AI nations will now sometimes throw themselves at
+giants and lose, because only bad odds discourage them and the AI scores the same preview the player
+is shown. **If that reads as foolish in the alpha, the fix is to make the AI weigh the percentage
+harder — not to put the wall back.**
+
+---
+
 ## 7. The scenarios this round has to be able to tell
 
 Traced at the close, per the lesson round 1 learned: **tracing scenarios found contradictions that
@@ -1857,10 +1882,9 @@ Asked of Aaron in order, one at a time. Answered ones move up into §6 as ruling
 15. ~~**Does an attack target ONE Area or up to three?**~~ **Answered — ruling 24. One.** *And the
     per-turn cap and the four-turn cooldown are removed with it, which makes sustained conquest 67%
     faster rather than slower — see the finding under ruling 24.*
-15b. **Does the four-times-your-size shield survive ruling 24?** *(Raised by ruling 24, 9 September.)*
-    (C105.) It is called "the only thing that has ever stopped a purchase" in §1a, and it sits
-    awkwardly beside the sentence that justified removing the other two brakes. **Kept by default,
-    asked rather than assumed.**
+15b. ~~**Does the four-times-your-size shield survive ruling 24?**~~ **Answered — ruling 25. No.**
+    All three hard-refusal brakes on conquest are gone; only Reach still refuses, and only on
+    geography. Everything else is a price.
 
 *Superseded text of 15, kept for the record:* **Does an attack target ONE Area or up to three?** *(Found by the closing review, 8 Sep.)*
     Ruling 12 says *"I decide I want to invade / annex **an area**"*, singular. What is built takes up
