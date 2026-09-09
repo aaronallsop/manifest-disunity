@@ -1,14 +1,23 @@
 # Military conquest — ideation (round 2)
 
-**Status: ✅ CLOSED, 9 September 2026. Thirty-one rulings, 121 ideas banked, all six scenarios traced,
-seven findings.** Opened 7 September. Round 1 (secession) closed with 53 rulings and six findings; this
-round inherited twelve questions from it and owned four of the nine pressures that decide whether a
-region turns against the country holding it.
+**Status: ✅ FULLY CLOSED, 9 September 2026. Forty-one rulings, 127 ideas banked, all six scenarios
+traced, seven findings — and nothing outstanding is Aaron's.** Opened 7 September, closed across three
+sittings. Round 1 (secession) closed with 53 rulings and six findings; this round inherited twelve
+questions from it and owned four of the nine pressures that decide whether a region turns against the
+country holding it.
 
-**Where to look:** §0 is the frame · the head of §2 is the spine · **§6 is the thirty-one rulings** ·
-**§7a is the closing trace and §7b the seven findings** · §8 is the question list, every entry now
-answered, deferred or taken as a flagged default. **Three findings need one line from Aaron: B, C and
-D.**
+**Where to look:** §0 is the frame · the head of §2 is the spine · **§6 is the forty-one rulings** ·
+**§7a is the closing trace and §7b the seven findings** · §8 is the question list, every entry
+answered, deferred or taken as a flagged default.
+
+**Findings B, C and D were Aaron's and are answered** — rulings 32–40 — and **ruling 41 confirmed the
+seven defaults that had been taken without asking.** Of the rest: **A** goes to whoever builds ruling
+26, **E** to round 4, **G** to round 3.
+
+*This header was written when the round stood at 31 rulings and went stale the same day when the
+third sitting added ten more. Corrected 9 September. **If you are counting from this line, count from
+§6 instead** — a summary at the top of a long document is the thing most likely to be out of date, and
+this project has already lost a morning to exactly that.*
 
 **Nothing in this document is judged or decided.** Contradictions are correct at this stage. Ideas
 are numbered **C1** upward and are added, never cut — a design pass that cuts during ideation
