@@ -1263,6 +1263,88 @@ has not been individually confirmed against that measured list** — one check f
 
 ---
 
+**Ruling 18 — Hostile honours what is signed and permits nothing new. (Aaron, 9 September 2026.)**
+
+> *"If you have an ongoing trade deal it stays in place until the end of the trade deal but no new
+> ones can be signed with them."*
+
+**A third answer again, and it is better than either I offered.** I proposed that Hostile takes the
+margin rather than the trade; the alternative was a flat prohibition. Aaron's rule is neither: **what
+is signed runs to its term, and nothing new gets signed.** A quarrel does not cut the rope — it stops
+you tying another one.
+
+**It completes a four-step ladder of permission, and every step is now different from its
+neighbours.**
+
+| State | New deals | Deals already signed |
+|---|---|---|
+| **Peace** | Freely | Run |
+| **Wary** | **Yes, guarded** — Aaron: *"they will make a trade with you but are wary and cautious"* | Run |
+| **Hostile** | **None** | **Run to term, then die** |
+| **War** | None | **Prohibited — broken on the spot** |
+
+*This is what makes the spine worth having. Before ruling 18, Hostile and War differed only in whether
+you could attack. Now each of the four permits a measurably different amount, and a player can feel
+the difference between them without being told.*
+
+**C94 — Ruling 18 gives the deal term a meaning it did not have, at no cost.** A trade deal runs 2, 4,
+8 or 20 turns, and until now the term was a trade between price and flexibility. **Under ruling 18 a
+long deal is insurance against a relationship going bad.** Twenty turns with a neighbour you might one
+day quarrel with is a hedge; two turns is exposure. An existing lever acquires a second dimension and
+nothing had to be built. *This is the cheapest thing in the round.*
+
+**C95 — And it creates a real reason to prefer Hostile to War, which is the nastiest option the game
+has produced yet.** C57 established that declaring war on a trading partner **breaks** a signed
+agreement — and Aaron has already ruled (Control Board, 5 September) that breaking a deal early
+damages your reputation, makes other nations warier of dealing with you, and raises what they ask.
+**Ruling 18 lets deals *lapse* instead. No broken contract, no reputation cost.**
+
+So a nation that wants to strangle a neighbour without paying the price of being seen to has a move:
+**manoeuvre them into hostility and wait.** The trade dies on its own schedule, the ledger records
+nothing against you, and the victim watches a clock they cannot stop. *That is C72's justification
+ladder read from the other end — not "how cheaply can I attack them" but "how cheaply can I hurt them
+without attacking at all" — and it is the purest expression of ruling 1 in either round: a war that
+never happens, fought entirely through the economy.*
+
+**C96 — What Hostile does to a corridor is not settled by ruling 18, and for the fourteen
+transit-only nations it is the question that matters.** A trade deal says two nations will trade; a
+**transit grant** says the goods may cross somebody's ground, and they are different objects.¹ Ruling
+18 speaks only to deals. *See the question under the finding below.*
+
+---
+
+#### ⚠ FINDING — the corridor machinery already builds Aaron's rule, and it is crueller than the rule
+
+**Verified in `DESIGN.md`, 9 September.** A transit grant is *"a standing permission from one nation
+to another, at a rate, for a term"*, directed and per-mode. And three properties decide Austin's fate:
+
+- **Closing one takes notice — four turns by default** — and a grant under notice keeps carrying goods
+  for exactly that period. *"A corridor holder who gives notice does not stop a deal, he starts a
+  clock on it."*
+- **A deal whose route has gone pays nothing while its term keeps running down.** In the document's
+  own words: *"A five-year contract can be burned to nothing by a neighbour who never touched it."*
+- **Closing corridors counts against your standing**, weighted against how many you hold, over a
+  twenty-turn window.
+
+**So the third bullet is the brake, and it is the good part.** Strangling a neighbour by shutting
+their door is **not free** — it costs the strangler reputation, and it costs more the more corridors
+they hold. **Austin's survival therefore rests on four separate nations each deciding whether the
+pleasure of killing Austin is worth the standing it costs them.** Some will pay it and some will not,
+and it will differ between games. *That is the difference between a story and a script, and it is
+already built.*
+
+**And the second bullet is why Austin dies anyway, if they do.** Austin's deals are with nations
+beyond Texas, and ruling 18 protects those deals — they are not with a hostile nation, so they run.
+**But the goods still have to cross Dallas.** A revoked corridor leaves a live twenty-turn contract
+paying nothing for sixteen more turns, and ruling 18 does not let Austin replace it, because the only
+nations it can reach are the four it may no longer sign with. *Aaron's acceptance of Austin's death
+stands, and this is the mechanism: not a ban on trade, but a door closed by somebody willing to pay
+for closing it.*
+
+*¹ `DESIGN.md` §6.7, "An agreement, not a right". Verified 9 September.*
+
+---
+
 ## 7. The scenarios this round has to be able to tell
 
 Traced at the close, per the lesson round 1 learned: **tracing scenarios found contradictions that
@@ -1318,11 +1400,14 @@ Asked of Aaron in order, one at a time. Answered ones move up into §6 as ruling
    and in a third way.** **Time**, always running, at a **speed the causes set**; a new sixth state,
    **Wary**, between Hostile and Peace; and the reunification contests are a **permanent floor** at
    Hostile rather than a slow clock.
-9b. **Does Hostile permit trade at all?** *(Raised by ruling 17, 9 September, and it jumped the
-   queue.)* Nothing ruled says it does not — ruling 2 gives the trade prohibition to **War** alone and
-   ruling 9's four costs of Hostile are prices rather than bans. But **Aaron's acceptance of Austin's
-   death assumes a ban**, and the recognition precedent says a diplomatic status should take *the
-   margin, not the trade*. See the finding under ruling 17.
+9b. ~~**Does Hostile permit trade at all?**~~ **Answered — ruling 18, and in a third way again.**
+   What is signed **runs to its term**; **no new deals** can be signed. Neither the margin-only
+   version I recommended nor a flat ban.
+9c. **Does Hostile do to a transit corridor what ruling 18 does to a trade deal?** *(Raised by ruling
+   18, 9 September.)* (C96.) A grant is a different object from a deal, and for the fourteen
+   transit-only nations it is **the** object. My proposal, unruled: the exact parallel — **an existing
+   grant keeps running; no new grant may be made with a hostile nation; revoking one stays a choice
+   that costs standing, exactly as built.**
 10. ~~**When you win the roll, do you own the Area or are you standing on it?**~~ **Answered —
     ruling 13**, and in a third way: it is yours at once, shown paler on the map, and flagged by how
     you came by it. The treaty changes the **tenure**, not the border.
