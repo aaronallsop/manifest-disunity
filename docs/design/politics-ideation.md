@@ -406,6 +406,68 @@ asymmetry finding disappears, and because a board seeded from real American data
 party maps onto a corner**, so both must be split across the eight by cultural region. Authoring, not
 engineering, and the largest single job in the change. **Not started.**
 
+### P4 — Aaron's twelve, sorted: ten positions, not twelve
+
+**Aaron's list, 9 September, given as six opposed pairs:** Republicans/Democrats ·
+Communists/Fascists · Anarcho-Capitalists/Democratic Socialism · Liberal Anarchy/Christian
+Nationalism · Distributism/Digital Technocracy · Stateless/Despotism. **Proposed, not ruled.**
+
+**Why it felt tricky, which was his own word for it: the twelve are not twelve of the same kind of
+thing.** They are **eight corners**, **two centrists** and **two conditions**.
+
+| | Economy | Morals | Power | |
+|---|---|---|---|---|
+| **Fascism** | collective | conservative | authoritarian | corner |
+| **Distributism** | collective | conservative | libertarian | corner |
+| **Communism** | collective | progressive | authoritarian | corner |
+| **Democratic Socialism** | collective | progressive | libertarian | corner |
+| **Christian Nationalism** | neo-liberal | conservative | authoritarian | corner |
+| **Anarcho-Capitalism** | neo-liberal | conservative | libertarian | corner |
+| **Digital Technocracy** | neo-liberal | progressive | authoritarian | corner |
+| **Liberal Anarchy** | neo-liberal | progressive | libertarian | corner |
+| **Republicans** | middle | conservative | middle | the centre |
+| **Democrats** | middle | progressive | middle | the centre |
+
+**Stateless** and **Despotism** are not positions at all. Stateless is *ground with no government* —
+the tier-3 regions already in the story, and a condition of the map. Despotism is what *any*
+government becomes when it holds power with no liberties left, which the build already models as a
+stock. Neither is something a person votes for.
+
+**Aaron's eight fill all eight corners exactly — no gap, no duplicate — and he got there without
+working from the cube.** That is the strongest validation the three axes have had.
+
+**Three things this settles.**
+
+1. **Fascism was never missing.** It is the corner ruling 1 named *Union Party*. **The naming was too
+   gentle** — that corner's most famous occupant is fascism, and calling it after a minor 1936
+   American party hid the fact. Aaron's complaint was about the label, not the structure.
+2. **He was right about *Nationalist*.** Nationalism is not a coordinate — it appears at **both**
+   conservative-authoritarian corners and is a flavour laid over a position. That is exactly why
+   "Christian Nationalism is nationalism with an adjective" felt wrong: the parent term was never a
+   position in the first place.
+3. **Republicans and Democrats have nowhere to go among eight corners**, and his own list is what
+   brought the centre back. They are the middle economic band, split by morals.
+
+**Where his pairings and the geometry disagree, and the geometry is interesting.** Only one of his six
+pairs is a true diagonal.
+
+| His pair | What the cube says |
+|---|---|
+| Distributism / Digital Technocracy | **Exact opposites**, all three axes |
+| Anarcho-Capitalism / Democratic Socialism | Two axes apart. The true diagonals are **AnCap ↔ Communism** and **DemSoc ↔ Christian Nationalism** |
+| Liberal Anarchy / Christian Nationalism | Two axes apart. Liberal Anarchy's true opposite is **Fascism** |
+| **Communists / Fascists** | **Neighbours, not opposites** — they differ on morals alone and agree on both a collective economy and an authoritarian state. **The cube says the horseshoe is real**, and it was not authored |
+
+**Why ten works better than eight, measured rather than asserted.** A centrist sits **√2** from each of
+the four corners on its own moral side, while any two corners are **2** apart. So Republicans are
+closer to fascists, distributists, Christian nationalists and anarcho-capitalists than any two of
+those four are to each other — **the mainstream party is the great coalition-builder of its own half**,
+without being bland. And Republicans and Democrats are exactly **2** apart, the same distance as
+fascism and communism, which is a true and useful thing to be able to say about American politics.
+
+**This supersedes ruling 1's roster of eight** if Aaron takes it. The three axes and the naming
+principle — real names a player would recognise on a ballot — are unchanged.
+
 ### P3 — Three words for three things
 
 *Proposed in session, unruled.* **Ideology** is the cell — universal, permanent, eight of them,
