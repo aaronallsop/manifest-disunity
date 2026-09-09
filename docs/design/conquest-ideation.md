@@ -2410,7 +2410,7 @@ ruling 17 invented. Not recommended and not taken: it is more machinery for a di
 could attribute to a cause, and one hop already does the work. Recorded so it is not re-invented.*
 
 **⚠ C132 — does an inherited quarrel stop ruling 17's clock? If it does, the alliance is a permanent
-floor by the back door.** *Claude's finding, unruled.* Ruling 17(c) makes hostility fade on a clock
+floor by the back door.** **Ruled — see ruling 38 below.** Ruling 17(c) makes hostility fade on a clock
 whose **speed the live causes set**. An alliance is permanent while it stands, so an inherited quarrel
 is a cause that never clears — and the pair could never cool while the friendship lasts. **That is a
 thirty-fourth permanent quarrel arriving without anybody ruling one.** *Proposed: it slows the clock,
@@ -2474,6 +2474,41 @@ principal, and the two allies do not catch each other. *One rule, applied twice,
 *¹ `content/scenario-shattered.json`. Note the pair that stays at Peace, Nevada–Wyoming, is also the
 only pair here that shares no border — a coincidence rather than a cause: ruling 27 does not gate
 inheritance on geography, and C111 gates only whether an ally can open a second front.*
+
+---
+
+**Ruling 38 — an inherited quarrel slows the clock but never stops it, and it is the fastest-cooling
+hostility in the game. (Aaron, 9 September 2026, accepting the recommendation.)** C132 closes.
+
+**A quarrel you caught from a friend thaws toward Wary and on to Peace even while the alliance
+stands.** It was never your fight: you fell out with that nation because of who your friend is, not
+because of anything between the two of you. **Ruling 4's fifth cause is therefore the weakest drag on
+ruling 17's clock of any of the five** — present, so an alliance is not free, but never a floor.
+
+**No thirty-fourth permanent quarrel.** The thirty-three are the reunification contests and they were
+each decided on purpose (ruling 17(d), ruling 32). *An alliance was about to create more of them
+silently, every time two nations shook hands.*
+
+**The accepted cost.** Alliances get cheaper. What you inherit is a temporary drag rather than a
+standing condition, so allying with an aggressive neighbour hurts less than it otherwise would.
+*Aaron was offered the other version — the clock stops, an alliance genuinely binds you to your
+friend's enemies for as long as it lasts — and declined it on the ground that it manufactures
+permanent quarrels nobody chose.*
+
+**⚠ C133 — this forces inheritance to be an EVENT and not a standing condition, and the ruling is
+impossible otherwise.** *Claude's derivation, flagged rather than asked — one line to correct.* If
+ruling 4's fifth cause re-checked itself each turn, a thawed pair would snap straight back to Hostile
+the moment it reached Peace while the alliance still stood — **the exact blink ruling 17(b) invented
+Wary to prevent.** So the cause must **fire once**: when your ally acquires an enemy, or when you sign
+an alliance and import the enemies it already has. After that the quarrel is an ordinary hostility
+cooling on an ordinary clock, and **it does not re-fire while that same alliance and that same enmity
+persist.**
+
+**Which makes the fifth cause structurally unlike the other four**, and a design document has to carry
+the distinction: **causes 1–4 are conditions that hold the clock back while they are live; cause 5 is
+an event that starts a quarrel, plus the weakest condition of the five.** *A fresh war by the same
+ally against a different nation is a new event and fires again; the same war, still running, does
+not.*
 
 ---
 
