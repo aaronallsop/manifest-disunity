@@ -660,7 +660,15 @@ escalate, redeploy, sue for peace. Fighting is not an action. Deciding is.
   priced until it does. The government's answer to Expand and Reconquer sits beside the four release
   valves and should be one table, not two.
 - **From diplomacy (round 5):** guarantees, protectorates, peace treaties and who mediates. C29 and
-  C34 are diplomacy objects with a military trigger.
+  C34 are diplomacy objects with a military trigger. **And three things ruling 21 handed forward on
+  9 September, the first of which is now blocking:**
+  **(a) the diplomatic action that speeds a thaw** — ruled by Aaron to exist and deferred to round 5.
+  Without it, hostility can *only* be waited out, and the thirty-three pairs that open Hostile have
+  no move available to them at all. The ledger it writes to already exists (C99);
+  **(b) whether conquering the nation that withholds recognition ends the veto or makes it permanent**
+  (C100), which decides whether the Texas board resolves by diplomacy or by force;
+  **(c) what a nation gets for recognising somebody**, given that recognition is unilateral and
+  therefore the only thing two hostile nations can do to each other that is not violent.
 - **From the economy (round 4), and ruling 4 makes two of these blocking:** what a war costs to run,
   what a blockade actually stops, and what a destroyed rail hub does to a corridor. **And:**
   **(a) desperation must bite** — a nation that cannot get a resource must actually suffer for it, or
@@ -1474,6 +1482,71 @@ treaty already has its levers.*
 
 ---
 
+**Ruling 21 — hostility is resolved by time and by diplomacy, never by a treaty. (Aaron,
+9 September 2026.)**
+
+> *"Cease-fire can only result from a war. Hostile should only be resolved over time, but I think
+> there could be a diplomatic option (discussed later) where they would be basically improving
+> relations and it would speed things up."*
+
+**My proposal is rejected and the spine keeps its shape.** A peace treaty is not reachable from
+Hostile; a cease-fire comes only out of a war; ruling 7's table stands unchanged. **The answer to
+"what can two hostile nations do about it" is not an agreement — it is an *action*.** Somebody spends
+a turn improving relations, the clock runs faster, and only once the pair has cooled to Wary can they
+sign anything at all.
+
+*This is ruling 17(c) turned from a passive modifier into something a player does, and it is better
+that way: the thaw stops being weather and becomes a move.*
+
+**Its home is round 5, Diplomacy**, which the ideation plan already describes as the round where
+*"recognition, alliances against a conqueror, being nobody"* land. **Handed forward in §4 rather than
+designed here.**
+
+**C99 — The machinery for "improving relations" already exists, and it is richer than expected.**
+Verified 9 September. The dated, decaying, directed memory list is **not** the all-negative vocabulary
+this document assumed. Sixteen kinds, and five of them are good things:¹
+
+| Good | Bad |
+|---|---|
+| `granted` handed us ground · `traded` did business with us · **`recognised` admitted we are a country** · `treatied` signed a pact with us · `aided` paid for something of ours | `annexed` · `warred` · `witnessed` · `absorbed` · `broke` · `seceded` · `lost` · **`betrayed` recognised our breakaway** · `reneged` |
+
+**So a diplomatic thaw does not need a new ledger — it needs an action that writes one of five entries
+that already have weights.** Round 5 inherits a half-built system rather than a blank page.
+
+---
+
+#### ⚠ FINDING — Austin's asset is a veto, not a currency, and that is a better game than selling it
+
+**Rulings 18, 20 and 21 together mean Austin can never sign anything with any of its four
+neighbours.** Not a deal, not a corridor, not a treaty — and the floor of ruling 17(d) means the
+thaw of ruling 21 can never carry those pairs below Hostile either. **The only instrument left
+between Austin and a Texan neighbour is a war**, which is the one door ruling 7 leaves open.
+
+**But recognition needs no instrument, because it is unilateral.** One nation simply admits another
+exists. No negotiation, no agreement, no state requirement. **So Austin's asset works after all — as
+a thing it can withhold rather than a thing it can sell.**
+
+**And withholding is enormous.** Under ruling 19 the four rebels open unrecognised, which costs each
+of them: no bilateral trade with anyone who does not recognise them, a smuggler's rate on the world
+market, no seat in a coalition, and a standing deficit on Influence. **Austin, bankrupt and encircled,
+holds four larger nations down by refusing to sign — and the game already measures the parent's
+signature as worth more than every other route to recognition combined.**
+
+*So the Texas corner opens as: one starving nation with a veto, and four crippled ones who can only
+take it by force. Austin's game is to stay alive long enough to matter, and the four have a reason to
+attack it that is nothing to do with its land.* **That is scenario 2 in §7 — "a three-Area state that
+is not worth eating" — inverted into a state that is worth eating for a reason the panel can name.**
+
+**C100 — Does conquering Austin end the veto, or make it permanent?** *Open, and it is round 5's.*
+If Austin ceases to exist, do the four become recognised by default — inheriting legitimacy from the
+nation they destroyed — or does killing the only country that could ever have legitimised them leave
+them pariahs for good? **The first makes conquest the answer; the second makes Austin's survival
+something its enemies need.** *Not assumed either way.*
+
+*¹ `js/relations.js`, `KINDS` and `LABELS`. Verified 9 September.*
+
+---
+
 ## 7. The scenarios this round has to be able to tell
 
 Traced at the close, per the lesson round 1 learned: **tracing scenarios found contradictions that
@@ -1539,11 +1612,12 @@ Asked of Aaron in order, one at a time. Answered ones move up into §6 as ruling
 9d. **Should the opening board seed recognition against the four Texan rebels?** **Answered — ruling
    19, yes**, and it reverses Austin's fate. *Recorded as a departure from the scenario's stated
    "the relations board starts quiet" principle.*
-9e. **Can a peace treaty be proposed from Hostile, rather than only from a cease-fire?** *(Raised by
-   the finding under ruling 20, 9 September.)* **As things stand, two hostile nations have no
-   instrument of any kind — no deal, no corridor, and a treaty only via a war.** Austin cannot sell
-   the recognition ruling 19 just gave it. My proposal: **yes, and it is the only door through the
-   floor.**
+9e. ~~**Can a peace treaty be proposed from Hostile?**~~ **Answered — ruling 21. No.** Hostility is
+   resolved by time, sped by a **diplomatic action** handed forward to round 5. Two hostile nations
+   have no instrument but war — and Austin's recognition turns out not to need one, because
+   withholding it is unilateral. See the finding under ruling 21.
+9f. **Does conquering Austin end its veto or make the rebels pariahs for good?** (C100.) *Round 5's,
+   but this round created it.*
 10. ~~**When you win the roll, do you own the Area or are you standing on it?**~~ **Answered —
     ruling 13**, and in a third way: it is yours at once, shown paler on the map, and flagged by how
     you came by it. The treaty changes the **tenure**, not the border.
