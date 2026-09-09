@@ -1919,6 +1919,78 @@ where protectorates and guarantees live.*
 
 ---
 
+**Ruling 28 — breaking a peace treaty turns every neighbour but your allies hostile, at once.
+(Aaron, 9 September 2026.)**
+
+> *"Breaking a peace treaty lessens your relations to all of the nations around you. Let's say that
+> unless you are allied to a country, any country that you border immediately turns hostile. (Because
+> if they are willing to break a peace treaty, might we be next?)"*
+
+**This is a rule of its own after all, and it is heavier than the justification ladder I recommended.**
+The cost of betrayal is not charged to the victim — **it is charged to the audience.** Every nation
+whose ground touches yours reads what you did as a forecast about themselves.
+
+**Sized against the board:** a nation borders **4.9 others on average**, and the most-connected border
+**eight**.¹ **So breaking one treaty typically makes five nations hostile in a single turn** — five
+sets of rising tolls, five borders costing more to hold, five neighbours whose matching movements now
+grow faster inside you, and under ruling 18 **no new trade deal with any of them.** *That is "a huge
+impact" delivered in one line, and it needs no severity table.*
+
+**⚠ And it gives Allied a second job nobody designed.** Ruling 27's alliance was about inheriting
+quarrels and lending soldiers. **Ruling 28 makes it insulation from your own bad faith** — the one
+kind of neighbour who does not turn on you. *At first reading that looks like a way to buy the right
+to betray. It is not, and the brake is ruling 27 itself: **your allies inherit your quarrels.** An
+ally who shields you from your betrayal catches all five of the hostilities it generated. **Allying
+with a treaty-breaker is ruinously expensive**, so the shield is real but nobody will hold it for
+you twice.*
+
+**C113 — Any breach is a breach.** *Default taken, flagged rather than asked.* Ruling 15 gave a treaty
+four levers, so there are four ways to break one — stop the repayments, tear up the forced trade, take
+the ground back, or attack. **All four trigger ruling 28 identically.** A graduated version would need
+a severity scale nobody has asked for, and ruling 11 says the player-facing layer stays simple. *One
+line to correct if a missed payment should cost less than an invasion.*
+
+**C114 — And it makes a treaty's term the thing you are actually buying.** A treaty **lapsing** costs
+nothing (ruling 7). **Breaking it costs five hostile borders.** So the term is a promise about how long
+you can hold your nerve, and a long treaty is a long exposure. *This is exactly C94's shape — the term
+of an agreement as the thing that carries the risk — arriving independently for the second time in
+this round, which is a sign the game has found a grammar of its own.*
+
+---
+
+#### ⚠ FINDING — the punishment saturates precisely where betrayal is most tempting
+
+**Ruling 28 turns your neighbours Hostile. Ruling 17(d) says some neighbours are *already* Hostile,
+permanently, and can never be anything else.**
+
+**So the five Texan successors can break treaties with each other at almost no cost.** Dallas betraying
+Houston should turn San Antonio, Austin and El Paso hostile — **and all three already are, for ever.**
+The state cannot get worse, so the punishment does not land. **The nations with the most enemies have
+the least to lose from betrayal**, which is the exact reverse of what ruling 28 intends.
+
+**And it undoes ruling 19.** Austin's whole game is selling its recognition for the one instrument that
+reaches through the floor — a peace treaty. **If a Texan can tear that treaty up and pay nothing,
+Austin's only door has a broken lock** and the asset ruling 19 gave it is worthless after all.
+
+**Proposed answer: the state saturates, the ledger does not.** Breaking a treaty also writes
+**`reneged`** — *"they broke a pact they had signed with us"* — against every neighbour. That entry
+already exists, and it is already the **heavy** one: the vocabulary deliberately does *not* use it for
+closing a corridor, reserving it for a nation that invades a country it had signed with, *"and is
+weighted accordingly."*² **`reneged` is a dated, decaying magnitude, and nothing floors it.** Coalitions
+form out of it, Influence reads it, and recognition is earned against it — **none of the three has a
+floor.**
+
+*So a serial betrayer in the Texas corner pays in standing what it cannot be made to pay in state: the
+neighbours cannot get angrier, but the continent can, and it does. **Austin's treaty gets its lock
+back**, because the four are held to it by everyone who is watching rather than by each other.*
+**Recommended, and the closing trace will run it.**
+
+*¹ `data/adjacency.json`, state level: mean 4.90, maximum 8 (Tennessee, Missouri), minimum 2. **A
+proxy** — the game's board is 61 nations cut from 51 states, so the true nation-level figure is
+somewhat higher. ² `js/relations.js`. Both verified 9 September.*
+
+---
+
 ## 7. The scenarios this round has to be able to tell
 
 Traced at the close, per the lesson round 1 learned: **tracing scenarios found contradictions that
@@ -1960,10 +2032,10 @@ Asked of Aaron in order, one at a time. Answered ones move up into §6 as ruling
    asks whether to send a treaty; a counter extends the cease-fire; nothing signed means Hostile.
    *Still open within it: **what can go in a peace treaty** (C75), and whether each extension should
    be shorter than the last (C74).*
-6. **What does breaking a peace-treaty do?** Aaron has ruled it has "a huge impact" and not what
-   state it lands you in. **C72 proposes** that it is the top of a justification scale rather than a
-   rule of its own. *Sharper now that ruling 15 has given a treaty four enforceable terms: breaking
-   one means stopping the repayments, tearing up the forced trade, or taking the ground back.*
+6. ~~**What does breaking a peace-treaty do?**~~ **Answered — ruling 28, and heavier than C72's
+   ladder.** **Every nation you border except your allies turns Hostile at once** — about five of
+   them, measured. *The finding under ruling 28 records where the punishment saturates and what is
+   proposed instead.*
 6b. ~~**Is the 1.25× repayment cap measured against the winner's war costs or the loser's?**~~
    **Answered — ruling 22. Neither: the *proposer's*.** Whoever sends the treaty prices their demand
    against what the war cost them, which means the game never has to decide who won.
