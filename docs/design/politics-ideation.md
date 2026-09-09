@@ -447,6 +447,60 @@ bars — but the ratio should be a decision rather than an accident.
 
 **Both figures become named tunables**, per the project rule. **Nothing built.**
 
+### Ruling 5 — Enveloped territory: over 500,000 it is a nation, under it a stateless society
+
+**Aaron, 9 September 2026, superseding ruling 4's threshold AND its outcome.** Ruling 4 is struck
+through below rather than removed, per the project rule.
+
+> "There were times when parts of a country would lose ground to another and parts of its territory
+> would be enveloped by the other nation or the other nation and another nation so that country has no
+> way to reach that part of their country. If that happens and it is **more than 500,000 people it is
+> a nation**, if it is **less it is a stateless society**."
+
+**~~Ruling 4: severed sections totalling more than 2,000,000 become a stateless society.~~
+SUPERSEDED.** It had big ground going stateless and small ground staying attached, which is backwards
+from every other statement of what stateless ground is. **Ruling 5 turns it the right way up.**
+
+| Enveloped territory | Becomes |
+|---|---|
+| **more than 500,000 people** | **a nation** — big enough to stand on its own |
+| **500,000 or fewer** | **a stateless society** — counties running without a government |
+
+**This is now consistent with the tier-3 definition it used to contradict.** Aaron's original words
+were *"areas small enough to run on their own and make their own deals, and naturally fairly
+libertarian or anarchist"* — **small**. Ruling 5 delivers exactly that, and it disposes of the finding
+raised against ruling 4: a severed metro becomes a country, a severed stretch of sparse countryside
+goes stateless. **Los Angeles cut off becomes a nation; forty counties of eastern Montana cut off
+become a stateless society.** That is the right way round, and it matches the six regions that open
+stateless being rural rather than urban.
+
+**And it is simpler than what it replaces — worth naming, because complexity is the usual complaint.**
+**The threshold stopped being a gate and became a fork.** Under ruling 4 the number decided *whether
+anything happened at all*, which left a silent third case — enveloped ground below the bar that just
+persisted, ungovernable and unmodelled. Under ruling 5 **every enveloped region becomes something**;
+the size only decides which. There is no third case, and **the second condition Aaron reserved in F20
+may no longer be needed at all** — a fork does not need a gate's guard.
+
+**Two population bars now exist for becoming a nation, and the harder one is on the case nobody
+chose.** The build carries `nation.minPop` = **250,000** for a *chosen* breakaway — a movement that
+organised, fought and won. Ruling 5 sets **500,000** for territory that was merely cut off. **That
+ordering is correct and should be recorded as deliberate rather than inherited:** a breakaway arrives
+with leadership, a claim and a reason to cohere; enveloped ground arrives with none of those, so it
+needs more mass to hold together. **Whether the two should be one tunable or two is open.**
+
+**A trap in the detection, flagged before it is built.** The test must be *"cut off by other nations'
+land"*, **not** *"not contiguous"*. An island is not enveloped by anybody — it is across water. A
+naive contiguity test detaches every overseas holding the moment it is acquired: Alaska is 740,133
+people and Hawaii about 1.4 million, so both would clear 500,000 and declare themselves the turn any
+nation took them. The build already knows the difference — `js/factions.js` reasons about *"an island
+has no land neighbours"* — so the distinction exists to be reused rather than invented.
+
+**Measured, for scale.** 500,000 is **0.15%** of the country and sits just under **Wyoming
+(587,618)**, the smallest real state — an honest floor for *"this is a country"*. **148 counties clear
+it on their own**, against 292 at the old 250,000 bar.
+
+**Both figures become named tunables. Nothing built.**
+
 ---
 
 ## 5. The idea bank

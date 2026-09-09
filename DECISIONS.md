@@ -3458,3 +3458,47 @@ territory is not new machinery; and a movement's homeland binds to Areas rather 
 nation, so a movement on ungoverned ground needs no special case.
 
 **Nothing built.** No code, data or `DESIGN.md` touched. Both figures become named tunables.
+
+---
+
+### D190 — Enveloped territory: over 500,000 it is a nation, under it a stateless society, 9 September 2026
+
+**Supersedes D189's threshold and its outcome.** D189 stands in the record; it is not edited away.
+
+**Aaron's ruling.** When a country loses ground and part of its territory ends up **enveloped by
+another nation, or by two**, with no way to reach it:
+
+- **more than 500,000 people → it becomes a nation**
+- **500,000 or fewer → it becomes a stateless society**
+
+**This inverts D189, and the inversion is the fix.** D189 had severed ground going stateless once it
+passed **two million**, which put big regions into statelessness and left small ones attached — the
+opposite of every other statement in this design about what stateless ground is. The finding raised
+against it was that a population-only test *"strands Chicago and never strands Montana."* **Ruling 5
+turns it the right way up:** a severed metro becomes a country, sparse severed countryside goes
+stateless. It now agrees with Aaron's own tier-3 words — *"areas small enough to run on their own…
+naturally fairly libertarian or anarchist"* — and with the six opening stateless regions being rural.
+
+**And it is simpler than what it replaces, which is worth recording because the usual complaint runs
+the other way.** **The threshold stopped being a gate and became a fork.** Under D189 the number
+decided whether anything happened at all, leaving a silent third case: enveloped ground below the bar,
+ungovernable and unmodelled. Under D190 every enveloped region becomes *something*. **F20's reserved
+second condition may no longer be needed** — a fork does not need a gate's guard — and F20 is updated
+to say so rather than left standing as an open worry.
+
+**Two population bars now exist, and the harder one is on the case nobody chose.** `nation.minPop` is
+**250,000** for a chosen breakaway — a movement that organised, fought and won. Enveloped ground needs
+**500,000**. **Recorded as deliberate:** a breakaway arrives with leadership, a claim and a reason to
+cohere; enveloped ground arrives with none of those and needs more mass to hold together. Whether the
+two should be one tunable or two is left open.
+
+**A trap flagged before anyone builds it.** The detection must be **"cut off by other nations' land"**,
+not **"not contiguous"**. An island is not enveloped by anybody. A naive contiguity test would detach
+every overseas holding the moment it was acquired — Alaska is 740,133 and Hawaii about 1.4 million, so
+both clear 500,000 and would declare themselves on the turn any nation took them. The build already
+reasons about *"an island has no land neighbours"*, so the distinction exists to be reused.
+
+**Measured.** 500,000 is **0.15%** of the country and sits just below **Wyoming (587,618)**, the
+smallest real state. **148 counties clear it alone**, against 292 at the 250,000 bar.
+
+**Nothing built.** Both figures become named tunables.

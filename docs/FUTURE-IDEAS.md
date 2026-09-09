@@ -751,3 +751,15 @@ is chosen and a stranding is not — but it should be a decision.
 
 **What would have to be true before it is worth doing.** Ruling 4 built at all, which needs stateless
 ground to exist, which does not today. **Not in the alpha.**
+
+**UPDATE, 9 September 2026 — largely answered the same day it was filed.** Ruling 5 replaced ruling
+4's threshold and inverted its outcome: enveloped territory over 500,000 people becomes **a nation**,
+and 500,000 or fewer becomes **a stateless society**. **The concern this entry was written about is
+gone** — a population test now sorts metros into countries and sparse countryside into stateless
+ground, which is the right way round and needs no extent condition to rescue it.
+
+**The threshold also stopped being a gate and became a fork**, so there is no longer a "nothing
+happens" case for a second condition to guard. **What remains open here is smaller:** whether the
+chosen-breakaway bar (`nation.minPop`, 250,000) and the enveloped bar (500,000) should be one tunable
+or two, and whether time-since-severed or distance-from-capital should modify either. Kept open rather
+than closed, because neither has been played.
