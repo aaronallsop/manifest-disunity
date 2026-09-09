@@ -2262,8 +2262,8 @@ nations countering each other for ever; if there is exactly one round of offers,
 guarding against cannot happen. *A ruling that removes a tunable is worth more than one that adds one,
 which is why this is flagged rather than assumed.*
 
-**C126 — blind submission is the interesting version, and it is not what Aaron said.** *Claude's
-proposal, unruled — question 2.* If both nations write terms **on the same turn without seeing the
+**C126 — blind submission is the interesting version, and it is not what Aaron said.** **Ruled — see
+ruling 35 below.** If both nations write terms **on the same turn without seeing the
 other's**, each has to guess how badly the other wants out, and the defender's privilege is choosing
 between two sealed envelopes it helped write one of. If submission is open, the second writer simply
 undercuts the first and the defender's advantage collapses into ordinary haggling. *Blind costs
@@ -2316,6 +2316,35 @@ written.** With no second chance, a treaty tabled too greedily is not a bargaini
 walked back — it is a war that continues. *That is a good pressure, and it is the argument for C126's
 blind submission: if you can see the other side's terms before writing your own, there is no risk in
 the envelope at all.*
+
+---
+
+**Ruling 35 — the two treaties are written blind. (Aaron, 9 September 2026, accepting the
+recommendation.)** C126 closes.
+
+Both nations write their terms **on the same turn, neither seeing the other's** until both are in.
+Then the defender opens both and chooses (rulings 33 and 34).
+
+**Why it had to be this and not the open version.** Ruling 34 removed the second chance, which made
+the envelope the whole drama — and an envelope you write *after* reading theirs carries no risk at
+all. Open submission would let the second writer undercut the first by a fraction, collapse the
+defender's privilege into ordinary haggling, and turn a compulsory submission into a formality.
+**Blind is what makes it a decision.** You have to price your demand against being wrong in both
+directions: **too much and you get nothing; too little and you have left money on a table you cannot
+return to.**
+
+**⚠ The accepted cost.** A nation can table terms the other side would obviously never take and only
+learn it a turn later, so **a war can continue on a misjudgement**. Aaron was told this and took it.
+*It is also the first place in the round where a player is punished for misreading another nation
+rather than for miscounting — which is the kind of mistake this game should be making possible.*
+
+**C130 — blind submission needs the game to tell you what you are guessing about, or it is a coin
+toss.** *Claude's note, unruled — flagged for the design stage rather than asked.* A sealed bid is
+only a decision if the player has something to reason from. **What a nation already knows about its
+enemy is the material**: how long the war has run, what it has cost them, their war weariness, whether
+their own people are demanding it end. *None of this needs new machinery — it is the same standing
+facts the rest of the game already shows — but the design document must say which of them a player can
+see at the moment they write, because that list is the difference between a judgement and a gamble.*
 
 ---
 
