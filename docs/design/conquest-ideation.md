@@ -1589,7 +1589,15 @@ declines. *The asymmetry of a peace settlement falls out of who spoke first.*
 ceiling moves while the war runs, and a nation that has been bleeding for twenty turns may ask for
 more than one that has been fighting for four.
 
-**C101 — A counter-offer haggles within the basis; it does not re-base it.** *Default taken, flagged
+**C101 — ~~A counter-offer haggles within the basis; it does not re-base it.~~ MOOT FROM RULING 34,
+9 September — there is no counter-offer any more.** *The reasoning is kept because the ambiguity it
+caught was real; the mechanic it governed is gone. Ruling 34 gives exactly one round of offers, both
+written blind (ruling 35) and each priced against its own author's war costs (ruling 22), so neither
+treaty is a modification of the other and there is no basis to haggle inside.* **Ruling 34 has now
+retired two rules written the day before it — C101 and C118 — which is the second time today that
+settling a question deleted machinery rather than adding it.**
+
+*Superseded text:* **A counter-offer haggles within the basis; it does not re-base it.** *Default taken, flagged
 rather than asked, because this is the same species of one-word ambiguity that left 1.25× unsettled
 for two days.* In Aaron's example Utah counters at **0.5** — a fraction of the number Idaho named,
 not a new cap computed from Utah's own costs. **The treaty under negotiation has one basis, set when
@@ -2431,6 +2439,11 @@ scenario — only Texas and California dissolve, and Utah survives with Deseret 
 **The last row is the same single hop as Utah–Wyoming, pointing the other way.** Nevada is Utah's ally;
 Idaho is Utah's enemy; that is one hop by ruling 27's plain words — *"your ally's enemies become
 Hostile with you."*
+
+**✅ RULED, 9 September: reading (a). Aaron: "Agree with your recomendation."** The traced table above
+stands, Nevada and Idaho are Hostile, and the example needs one word. *Recorded as part of ruling 37
+rather than as a ruling of its own, because it settles what ruling 37 already meant rather than adding
+to it.*
 
 **Two readings, and they are not the same rule:**
 
