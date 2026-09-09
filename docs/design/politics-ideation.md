@@ -334,9 +334,16 @@ existing two axes, the whole scheme is rebuilt on **three** axes, each with a lo
 
 | Axis | Low ↔ high | What it decides in the game |
 |---|---|---|
-| **Economy** | collective ↔ capitalist | Trade alignment |
-| **Morals** | conservative ↔ progressive | Moral alignment, who tolerates whom |
-| **Government power** | authoritarian ↔ libertarian | *New.* What a population will forgive |
+| **Economy** | collective · middle · **neo-liberal** | Trade alignment |
+| **Morals** | conservative · middle · progressive | Moral alignment, who tolerates whom |
+| **Government power** | authoritarian · middle · libertarian | *New.* What a population will forgive |
+
+**Aaron's terminology, 9 September: the high end of the economic axis is *neo-liberal*, not
+*capitalist*.** That is the word the game uses.
+
+**Aaron took the full twenty-seven**, middles included, over the eight corners. **The reference table
+is `docs/design/political-spectrum.md`** — all 27 named, with real-world analogues and no game
+content in it at all, which was his instruction. This document does not duplicate it.
 
 **The arithmetic, corrected in session.** Aaron's first enumeration listed nine cells and tied
 government power to morals — every conservative authoritarian, every progressive libertarian. That
@@ -353,39 +360,29 @@ others, and that asymmetry disappears.** Adding back the dead centre alone — n
 because the centre is closer to all eight corners than any corner is to its nearest neighbour.
 **Recommended and put to Aaron; not yet ruled.**
 
-### P2 — The eight corners, named, with their real-world analogues
+### P2 — The twenty-seven positions, named, with their real-world analogues
 
-*Drafted 9 September at Aaron's request. Four of the eight are already the game's existing words.*
+**Superseded in session.** This began as eight corners; **Aaron took the full twenty-seven with the
+middles in**, and asked for the table as a standalone reference containing **real-world examples
+only** — no movements, no nations, nothing from the game. It is
+**`docs/design/political-spectrum.md`**, written 9 September, and it is the authority. Nothing is
+restated here.
 
-| # | Economy | Morals | Power | Proposed name | Real-world analogues |
-|---|---|---|---|---|---|
-| **1** | collective | conservative | authoritarian | **National Collectivist** | Peronism; Ba'athism; Franco's Falange; Iran's clerical republic; **Huey Long's Share Our Wealth** |
-| **2** | collective | conservative | libertarian | **Distributist** | Chesterton and Belloc; the **Mormon United Order**; the Amish and Hutterites; the Catholic Worker; the Grange |
-| **3** | collective | progressive | authoritarian | **Socialist** | Marxism–Leninism; Cuba; Chávez's Venezuela; the Jacobins |
-| **4** | collective | progressive | libertarian | **Communalist** | Anarcho-syndicalism (Catalonia 1936); **Bookchin's communalism**; Rojava; the Zapatistas; bioregional Greens |
-| **5** | capitalist | conservative | authoritarian | **Conservative Nationalist** | **Pinochet's Chile**; Orbán's Hungary; Singapore's PAP; integralism; **the Confederacy itself** |
-| **6** | capitalist | conservative | libertarian | **Libertarian** | **Rothbard's paleolibertarianism**; the Sagebrush Rebellion and county supremacy; the Bundy standoffs; Robert Taft's Old Right; the Anti-Federalists |
-| **7** | capitalist | progressive | authoritarian | **Technocrat** | **Technocracy Inc. (1933)**; Saint-Simon; Burnham's managerial revolution; the network state; Robert Moses |
-| **8** | capitalist | progressive | libertarian | **Market Liberal** | Mill; Cato and *Reason*; **Barlow's cyberlibertarians**; the German FDP and Dutch D66 |
+**Two things the table settles that were open questions in §2.**
 
-**Where the current six go.** Four survive unchanged — Conservative Nationalist to 5, Distributist to
-2, Socialist to 3, Democratic Socialist to 4 (renamed **Communalist**, which is more accurate; the DSA
-is statist and cell 4 is not). **The two party brands dissolve**: Republican splits across 5, 6 and 1,
-Democrat across 8, 4 and 3. Three cells are new — 1, 7 and 8 — and cell 6 is the one Aaron asked for
-by name.
+1. **A collective economy with conservative morals now has a home** — three of them, at positions
+   1, 2 and 3. That combination did not exist on the old two axes, and the note in the register
+   asking for a party that is economically pro-union and socially traditional is answered by the
+   *axis*, not by adding an alignment. The seventh-alignment request is resolved by being made moot.
+2. **The market-liberal and technocratic corners now exist** — positions 21, 25 and 27. Those were
+   the two positions with nowhere to sit, and they are on opposite faces of the same cube, which is
+   why one extra alignment could never have housed both.
 
-**Two things this table settles that were open.**
-
-1. **The Central States Union problem is cell 1.** Aaron's note — *"they would be republican but
-   support unions"* — is a collective economy with conservative morals, which had no home on the old
-   two axes and has one now. He proposed adding Libertarianism to solve it; it is actually solved by
-   the axis, not the alignment.
-2. **Cell 6 is crowded and that is a finding, not a fault.** Sagebrush, Greater Idaho, the State of
-   Jefferson, New Absaroka, Alaskan Independence and both struck movements all land there. The
-   dominant political flavour of a secession map is *leave us alone*, which is what the game is about.
-
-**Cell 1 and cell 7 currently have no movement in them at all** — 7 only had the struck
-Techno-Autocrat. Worth knowing before the register is re-pointed.
+**What re-pointing costs, and it is the real bill.** The map is seeded from 2024 county results as
+Republican, Democrat and other. Under twenty-seven positions **neither major party maps across**: a
+Republican in Alabama and a Republican in Vermont are not in the same cell, so both must be
+distributed by cultural region the way the small "other" share already is. **Authoring, not
+engineering**, and the largest single job in this change.
 
 ### P3 — Three words for three things
 
