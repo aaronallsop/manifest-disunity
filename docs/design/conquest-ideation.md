@@ -1182,7 +1182,9 @@ the stock already owns.*
 ---
 
 **C90 — What Wary costs should be ruling 9's four costs at a fraction, and one of them at zero.**
-*Claude's proposal, unruled.* Ruling 9 gave Hostile four costs. The natural shape for Wary:
+**Partly superseded by ruling 39 — the shape is an acceptance multiplier, not four scaled costs. The
+third row below is NOT answered by ruling 39 and is still open.** *Claude's proposal, kept for the
+third row.* Ruling 9 gave Hostile four costs. The natural shape for Wary:
 
 | Ruling 9's cost of Hostile | In Wary |
 |---|---|
@@ -2509,6 +2511,48 @@ the distinction: **causes 1–4 are conditions that hold the clock back while th
 an event that starts a quarrel, plus the weakest condition of the five.** *A fresh war by the same
 ally against a different nation is a new event and fires again; the same war, still running, does
 not.*
+
+---
+
+**Ruling 39 — what Wary costs is a percentage multiplier on acceptance, and the figure belongs to the
+design stage. (Aaron, 9 September 2026.)** Partly supersedes C90.
+
+> *"I think that when we get to the design and economy we can get that exactly but my thought is that
+> they would have a percentage multiplier on acceptance."*
+
+**A Wary nation is less willing to agree to what you propose** — trade deals, transit, treaties,
+alliances — by a single percentage. **The magnitude is deferred to stage 3 and is not invented here.**
+*Recorded per the project's rule that every quantity says where its number comes from: this one is
+"still to be asked about", deliberately, and no placeholder is put in its place.*
+
+**Why this is better than the four scaled costs I proposed, and it is not only that it is simpler.**
+**It completes a ladder whose top and bottom ruling 18 had already built.** Ruling 18 says a Hostile
+pair may keep what is signed and **sign nothing new**. So:
+
+| State | Can you make a new deal? |
+|---|---|
+| **Hostile** | **No.** Ruling 18 |
+| **Wary** | **Yes — but they are less willing.** Ruling 39 |
+| **Peace** | **Yes** |
+
+*Hostile is a door that is shut, Wary is a door that sticks, Peace is a door that opens. That is one
+idea at three settings rather than three unrelated rules, and the middle rung was the one missing.*
+
+**And it is one tunable instead of four.** C90 would have had Aaron setting four fractions to describe
+a single feeling. *A design pass that only adds structure has done half the work — this one removed
+three numbers.*
+
+**⚠ C134 — Wary is now a soft cost, and it is invisible to a nation that wants nothing.** *Consequence,
+recorded rather than objected to.* Tolls and border upkeep are charged whether or not you act. **An
+acceptance multiplier costs you nothing until you ask for something.** So a self-sufficient nation
+sitting still feels Wary not at all, and a nation trying to build a trade network feels it constantly.
+*That is arguably correct — Wary should be mild, and it should bite the ambitious — but it means Wary
+cannot be the thing that pressures a passive player, and nothing else in this round is either.*
+
+**⚠ AND THE LOAD-BEARING ROW IS STILL OPEN.** Ruling 39 answers what Wary costs *the two nations in
+it*. It says nothing about **C90's third row: whether a Wary neighbour's matching movements still grow
+faster inside you.** That is not a magnitude and cannot be deferred to stage 3 — **it is whether a
+mechanism applies at all**, and it decides whether Wary is an exit or a trap. *Asked separately.*
 
 ---
 
