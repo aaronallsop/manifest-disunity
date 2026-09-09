@@ -700,3 +700,54 @@ deliberately.**
 current — `DECISIONS.md` D185 and D186, and `docs/design/politics-ideation.md` P5 and P6. **Only the
 falling is deferred.** The register at
 `https://claude.ai/code/artifact/bc72d871-db3b-4e2d-8363-6909e491abe7` carries both conditions.
+
+---
+
+## F20 — What else, besides two million people, makes stranded ground go stateless
+
+**Aaron, 9 September 2026**, deferring the second half of his own rule as he made it.
+
+> "I think there should be a rule that if those sections together are more than 2,000,000 citizens
+> **and maybe something else (not sure yet we can figure that out later in future ideas)** it becomes
+> a stateless society."
+
+**What it is.** Ruling 4 says territory severed from its nation and surrounded by other states becomes
+a stateless society once the severed sections together pass **2,000,000 citizens**. Aaron wanted a
+second condition alongside it and did not know yet what it should be. This is the placeholder for it.
+
+**Why it needs one, measured against the real map.** 340.1 million people across 3,143 counties, and a
+median county of 26,138.
+
+- **2,000,000 is 0.59% of the country.**
+- **Seventeen counties are already over it on their own.** Los Angeles is 9.76M by itself.
+- **It takes 507 of the smallest counties to reach it.**
+
+**So a population-only threshold fires the instant a dense metro is severed and effectively never
+fires in the countryside** — which is backwards from where statelessness belongs. Aaron's own tier-3
+description is *"areas small enough to run on their own… naturally fairly libertarian or anarchist"*,
+and the six regions that open stateless are Arkansas, Wyoming, New Mexico, Kentucky, Ohio and
+Michigan. **As written, the rule strands Chicago and never strands Montana.**
+
+**The recommendation, for whoever picks this up.** Add an **extent** condition and require *both* — a
+minimum number of Areas as well as the population floor. The build already carries the two halves for
+new nations, `nation.minAreas` and `nation.minPop`, though it ORs them: *"a breakaway chunk stands
+alone on Areas OR on population, whichever it clears first."* **Stranding wants AND rather than OR**,
+because the thing being tested is whether a government can still administer distant ground, and one
+dense county is not distant ground.
+
+**Two other candidates worth weighing before settling:** how far the severed piece is from the
+capital, and how many turns it has been severed — a region cut off for two quarters is an emergency,
+one cut off for twenty is a fact.
+
+**The caution this project has already paid for.** `nation.minAreas` records that at 3 Areas,
+*"75 of the 88 nations a fifty-turn game produced were released fragments rather than anything anyone
+had fought for."* **An automatic threshold that manufactures map objects has turned this map to
+confetti once.** Stateless ground is a cheaper object than a nation, so the failure would be milder —
+but it is the same shape and it should be measured before it ships.
+
+**And one ratio to set deliberately rather than inherit.** `nation.minPop` is 250,000, so the stranding
+threshold is currently **eight times the bar for becoming a whole country**. Defensible — a breakaway
+is chosen and a stranding is not — but it should be a decision.
+
+**What would have to be true before it is worth doing.** Ruling 4 built at all, which needs stateless
+ground to exist, which does not today. **Not in the alpha.**

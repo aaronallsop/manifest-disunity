@@ -383,6 +383,70 @@ A they are **placeholders that stay put** and are not tuned.
 **Still open inside inbox question 1:** one stateless entity per region or many; whether a region can
 grow back into a state; and whether a *state* can fall into one — that last path is parked in **F19**.
 
+**Confirmed by Aaron when the undercut was put to him:** the 5% is deliberate and the reasoning is the
+mechanic. *"You aren't dealing with governments, you are dealing with people and communities. No
+tolls, no nothing."* Lawless ground is cheap **because** there is no state on it to charge you.
+
+### Ruling 4 — Stranded ground goes stateless, and a movement can rise from it
+
+**Aaron, 9 September 2026**, closing the rest of inbox question 1.
+
+> "In play testing there would be times where a civil war would happen or trying to unite a nation
+> would cause a nation to break apart and it would have a section of their country cut off from them
+> and surrounded by other states. I think there should be a rule that if those sections together are
+> more than 2,000,000 citizens and maybe something else (not sure yet we can figure that out later in
+> future ideas) it becomes a stateless society."
+>
+> "And of course a movement can rise out of a stateless society."
+
+**The rule.** Territory severed from its nation — by a civil war, or by a union that shattered — and
+surrounded by other states **becomes a stateless society** once the severed sections together exceed
+**2,000,000 citizens**. A further condition is wanted and is **deliberately deferred to
+`docs/FUTURE-IDEAS.md` F20** at Aaron's instruction.
+
+**And stateless ground is a stage, not a terminus: a movement can rise out of it.** That closes the
+open half of inbox question 1 — *can it grow back into a state?* **Yes, the same way anywhere else
+does.** The full life cycle is now: **stranded → stateless → a movement organises → a nation.** The
+distinction that makes it coherent is that *nobody chose* a stranded region — it has no claim and no
+organising principle, only people who woke up on the wrong side of a line. A movement is what supplies
+the missing thing.
+
+**What the build already gives this for nothing.** Contiguity is computed (`js/graph.js` — *"contiguous
+AND same owner is one call"*), so detecting severed territory is not new machinery. And a movement's
+homeland is bound to Areas rather than to a parent nation, so a movement on ungoverned ground needs no
+special case.
+
+**Measured, not assumed — and this is the finding.** Against the real map: **340.1 million people
+across 3,143 counties, median county 26,138.**
+
+| | |
+|---|---|
+| 2,000,000 as a share of the country | **0.59%** |
+| Counties already over 2,000,000 **on their own** | **17** — Los Angeles alone is 9.76M, Cook 5.18M, Harris 5.01M |
+| Smallest counties needed to reach 2,000,000 | **507** |
+
+**So two million people is one big city, or five hundred rural counties.** A threshold in *population*
+fires the moment a dense metro is severed and effectively never fires in the countryside. **That is
+backwards from where statelessness belongs**: Aaron's own tier-3 description is *"areas small enough to
+run on their own… naturally fairly libertarian or anarchist"*, and the six regions that open stateless
+— Arkansas, Wyoming, New Mexico, Kentucky, Ohio, Michigan — are not metros. **As written the rule
+strands Chicago and never strands Montana.**
+
+**And a second, related caution from this project's own measured history.** `nation.minAreas` records
+what happened the last time an automatic threshold spawned entities: at 3 Areas, *"75 of the 88 nations
+a fifty-turn game produced were released fragments rather than anything anyone had fought for."*
+**A rule that manufactures new map objects from fragments has turned this map to confetti once
+already.** Stateless ground is a cheaper object than a nation — no government, no army, no diplomacy —
+so the failure would be milder, but it is the same shape.
+
+**One number to compare it against, which nobody had put side by side.** The build already carries
+`nation.minPop` = **250,000**: *"a breakaway chunk stands alone on Areas OR on population, whichever it
+clears first."* **Aaron's stranding threshold is eight times the bar for becoming a whole country.**
+That is not incoherent — a breakaway is *chosen* and a stranding is not, and the two deserve different
+bars — but the ratio should be a decision rather than an accident.
+
+**Both figures become named tunables**, per the project rule. **Nothing built.**
+
 ---
 
 ## 5. The idea bank

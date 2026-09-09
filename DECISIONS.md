@@ -3415,3 +3415,46 @@ built this sitting.** No code, data or `DESIGN.md` touched.
 
 **Raised with Aaron and not yet answered:** whether it is deliberate that routing through lawless
 ground undercuts every government on the map, including Canada.
+
+---
+
+### D189 — Stranded ground goes stateless, a movement can rise from it, and the threshold fires on cities, 9 September 2026
+
+**Aaron's ruling, closing the rest of round 3's inbox question 1.** Territory severed from its nation
+by a civil war or a shattered union, and surrounded by other states, **becomes a stateless society**
+once the severed sections together exceed **2,000,000 citizens**. A second condition is wanted and is
+deferred to **F20** at his instruction. **And a movement can rise out of stateless ground**, which
+closes the open half of the question — *can it grow back into a state?* Yes.
+
+**The life cycle is now complete: stranded → stateless → a movement organises → a nation.** What makes
+it coherent is that nobody *chose* a stranded region; it has no claim and no organising principle, only
+people on the wrong side of a line. A movement supplies the missing thing.
+
+**Also confirmed this sitting:** the 5% stateless toll undercutting every government on the map,
+Canada included, is deliberate. Aaron: *"you aren't dealing with governments you are dealing with
+people and communities. No tolls, no nothing."*
+
+**THE FINDING, measured against the real map and put to Aaron.** 340.1 million people across 3,143
+counties, median county 26,138. **2,000,000 is 0.59% of the country. Seventeen counties clear it on
+their own** — Los Angeles is 9.76M by itself — **and it takes 507 of the smallest counties to reach
+it.** So two million people is one big city, or five hundred rural counties. **A population-only
+threshold fires the moment a dense metro is severed and effectively never fires in the countryside**,
+which is backwards from where statelessness belongs: the six regions that open stateless are Arkansas,
+Wyoming, New Mexico, Kentucky, Ohio and Michigan. **As written the rule strands Chicago and never
+strands Montana.** Recommendation carried in F20: require extent as well as population, and AND them
+rather than OR them.
+
+**And the caution from this project's own history.** `nation.minAreas` records that at 3 Areas,
+*"75 of the 88 nations a fifty-turn game produced were released fragments rather than anything anyone
+had fought for."* An automatic threshold that manufactures map objects has made this map confetti once.
+Stateless ground is a cheaper object than a nation, so a repeat would be milder — same shape.
+
+**One ratio surfaced that nobody had put side by side:** `nation.minPop` is **250,000**, so the
+stranding threshold is **eight times the bar for becoming a whole country**. Defensible, since a
+breakaway is chosen and a stranding is not, but it should be decided rather than inherited.
+
+**What the build already gives this for nothing:** contiguity is computed, so detecting severed
+territory is not new machinery; and a movement's homeland binds to Areas rather than to a parent
+nation, so a movement on ungoverned ground needs no special case.
+
+**Nothing built.** No code, data or `DESIGN.md` touched. Both figures become named tunables.
