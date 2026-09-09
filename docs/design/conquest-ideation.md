@@ -1864,6 +1864,61 @@ told a player never to conquer at all.*
 
 ---
 
+**Ruling 27 — Allied is taken now and kept thin; Subject is deferred; and the soldiers you lend are a
+lever you set. (Aaron, 9 September 2026.)**
+
+> *"Correct. If you are allied you share soldiers — but that should be a lever that you set, and if
+> you also border the country you could attack and invade as well."*
+
+**Allied exists. Subject goes to round 5.** The recommendation is accepted with two additions, and
+both of them make it better.
+
+**What Allied does, and it is four things:**
+
+| | |
+|---|---|
+| **You inherit their quarrels** | Your ally's enemies become Hostile with you. **This is ruling 4's fifth cause, and it can finally fire** |
+| **You lend soldiers — by a lever you set** | *Aaron's addition.* Not automatic and not all of it |
+| **You may join their war, if you border the enemy** | *Aaron's addition.* Permitted, never compelled |
+| **You cannot be at war with them** | And an alliance cannot be formed while hostile |
+
+**Deliberately absent:** any obligation to declare war, any shared sight of the map, any automatic
+entry into a fight. **An alliance spreads *hostility*, not *war*** — which spreads tension across the
+board without spending sixty nations' turns, and keeps the continent from collapsing into two blocs
+and one long war. *That is the version ruling 1 permits.*
+
+**C110 — The lever should be a fourth slice of the allocation that already exists.** *Claude's design,
+taken as the default because Aaron asked for a lever and left its shape open.* Force is already
+pointed three ways — **Garrison** (quiet at home), **Border** (expensive to attack), **Field** (your
+own attacks landing) — with readiness following the allocation slowly, measured at **under 60%** of a
+standing posture after a one-turn switch. **Add a fourth: *Ally*.**
+
+Three things fall out of it for free:
+
+- **Helping costs exactly what it should.** Soldiers pledged to a friend are soldiers not holding your
+  border and not landing your attacks. The lever is a real decision because the pie does not grow.
+- **It is slow to set up and slow to take back**, because readiness already lags the allocation. *You
+  cannot lend an army on the turn your ally is invaded, and you cannot yank it home the turn you are.*
+- **It needs no new arithmetic.** The fight already adds the border armies of nations lined up against
+  an attacker **at a discount**. The pledged slice joins an ally's fight by that same discount — *one
+  built mechanism, pointed at a friend instead of an enemy.*
+
+**C111 — Geography decides what kind of ally you can be, and that is Aaron's second addition doing
+real work.** A distant ally can only ever **lend soldiers**. An ally who **borders the enemy** can lend
+soldiers *and* open a second front, because attacking is permitted wherever Reach allows. **So the
+value of an alliance is not the size of the friend but where they stand**, and a small neighbour of
+your enemy is worth more than a giant on the far coast. *That is the map mattering, which is what this
+game is for.*
+
+**C112 — Why Subject was deferred, recorded so the reason survives.** A subject nation still exists but
+does not decide for itself — and **every nation in this game gets exactly one action a turn.** A
+subject that keeps its action is not subject; one that loses it leaves a player with no game to play.
+That is a real problem and it deserves its own conversation. **Annex takes ground and Unite absorbs a
+whole nation; Subject is the awkward middle, and nothing in this round needs it.** *Handed to round 5,
+where protectorates and guarantees live.*
+
+---
+
 ## 7. The scenarios this round has to be able to tell
 
 Traced at the close, per the lesson round 1 learned: **tracing scenarios found contradictions that
@@ -1915,8 +1970,9 @@ Asked of Aaron in order, one at a time. Answered ones move up into §6 as ruling
 6c. ~~**What counts as "the cost of a war"?**~~ **Deferred to round 4 by ruling 23**, and recorded
    in §4 as blocking for ruling 22's lever. *Aaron's steer: lost income from the counties fought over
    counts, which is the direction my recommendation pointed.*
-7. **Subject and Allied** — deferred by Aaron, but ruling 4's fifth cause needs Allied to exist.
-   Worth reopening earlier in the round rather than later.
+7. ~~**Subject and Allied**~~ **Answered — ruling 27. Allied taken, Subject deferred to round 5.**
+   Allied is kept thin: it spreads hostility rather than war, lends soldiers by a lever, and permits
+   but never compels joining a fight. **Ruling 4's fifth cause can now fire.**
 8. **Can a pair go from Peace straight to War**, or does something have to happen first? C72 assumes
    yes-but-expensively.
 9. ~~**Does hostility cool on time, or only when its cause goes away?**~~ **Answered — ruling 17,
