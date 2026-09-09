@@ -394,3 +394,16 @@ having to assert that they are.
 
 The eight corners are **1, 3, 7, 9, 19, 21, 25 and 27**. The one position bordering everything is
 **14**.
+
+---
+
+## The editable register
+
+This document is also published as a register Aaron can edit in the browser, at
+**https://claude.ai/code/artifact/e2ebf889-7ab9-4448-a707-60203b4c9605**
+
+Names, descriptions and examples are all editable, each position carries a notes field, and a
+position can be struck. Edits are saved per position and are read back with the Artifact tool:
+`action: read_db`, `db_op: list`, collection **`positions`** (document ids `p01`–`p27`), plus
+`meta/notes` for the whole-scheme note. **The register is the live copy once Aaron has marked it up;
+this file is the version he was given.**

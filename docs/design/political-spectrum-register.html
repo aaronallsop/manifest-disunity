@@ -1,0 +1,256 @@
+<title>The Political Spectrum</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
+<style>
+:root{
+  --ground:#F2F3EF; --surface:#FBFBFA; --surface-2:#E9EBE4; --sunk:#EDEEE8;
+  --ink:#1A1E1B; --ink-2:#565C55; --ink-3:#878D84;
+  --rule:#D9DCD3; --rule-2:#C4C8BC;
+  --accent:#26564E; --accent-soft:#DEE9E5; --accent-rule:#9CBDB4;
+  --strike:#8A3A2C; --strike-soft:#F0E2DE;
+  --seg-off:#D5D9CE;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  --serif:"Newsreader",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#141714; --surface:#1B1F1B; --surface-2:#242923; --sunk:#191D19;
+    --ink:#E9EBE5; --ink-2:#A5ABA1; --ink-3:#7A8077;
+    --rule:#31362F; --rule-2:#3E443C;
+    --accent:#84C1B4; --accent-soft:#1F302C; --accent-rule:#3D5D56;
+    --strike:#DE8B78; --strike-soft:#33211C;
+    --seg-off:#343A32;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#141714; --surface:#1B1F1B; --surface-2:#242923; --sunk:#191D19;
+  --ink:#E9EBE5; --ink-2:#A5ABA1; --ink-3:#7A8077;
+  --rule:#31362F; --rule-2:#3E443C;
+  --accent:#84C1B4; --accent-soft:#1F302C; --accent-rule:#3D5D56;
+  --strike:#DE8B78; --strike-soft:#33211C;
+  --seg-off:#343A32;
+}
+*{box-sizing:border-box}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.65;margin:0}
+.page{max-width:860px;margin:0 auto;padding:56px 28px 120px}
+h1{font-family:var(--serif);font-weight:400;font-size:44px;line-height:1.08;letter-spacing:-.015em;margin:0 0 14px;text-wrap:balance}
+.deck{font-size:17px;color:var(--ink-2);max-width:62ch;margin:0 0 34px}
+.deck em{font-style:italic;color:var(--ink)}
+.axes{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);margin:0 0 30px}
+.ax{background:var(--surface);padding:16px 18px}
+.ax h2{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);margin:0 0 8px}
+.ax p{margin:0;font-size:14px;color:var(--ink-2);line-height:1.55}
+.ax b{font-weight:500;color:var(--ink)}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:13px 0;margin:0 0 34px}
+.tally{font-family:var(--mono);font-size:12.5px;color:var(--ink-2);letter-spacing:.02em}
+.tally b{color:var(--ink);font-weight:500}
+.status{font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3)}
+.status.on{color:var(--accent)}
+.status.warn{color:var(--strike)}
+.docnote{margin:0 0 44px}
+label.fl{display:block;font-family:var(--mono);font-size:10.5px;font-weight:500;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--ink-3);margin:0 0 6px}
+textarea,input.nm{width:100%;font-family:inherit;color:var(--ink);background:var(--surface);
+  border:1px solid var(--rule);border-radius:3px;padding:10px 12px;font-size:15px;line-height:1.6;resize:none}
+textarea{display:block;overflow:hidden}
+textarea:focus,input.nm:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:transparent}
+textarea::placeholder{color:var(--ink-3)}
+h2.layer{font-family:var(--serif);font-weight:400;font-size:15px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink-2);margin:56px 0 4px;padding-bottom:10px;border-bottom:2px solid var(--ink)}
+h2.layer:first-of-type{margin-top:8px}
+.layer-sub{font-size:14px;color:var(--ink-3);margin:0 0 26px;font-style:italic;font-family:var(--serif)}
+.card{border-bottom:1px solid var(--rule);padding:26px 0 28px}
+.card.struck .hd,.card.struck .body{opacity:.42}
+.card.struck input.nm{text-decoration:line-through}
+.hd{display:flex;align-items:baseline;gap:14px}
+.num{font-family:var(--mono);font-size:13px;font-weight:500;color:var(--ink-3);min-width:26px;padding-top:2px}
+input.nm{font-family:var(--serif);font-size:27px;font-weight:400;letter-spacing:-.01em;padding:2px 6px;
+  border-color:transparent;background:transparent;flex:1;min-width:0}
+input.nm:hover{border-color:var(--rule-2)}
+.edited{font-family:var(--mono);font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--accent);
+  background:var(--accent-soft);border:1px solid var(--accent-rule);border-radius:2px;padding:2px 6px;white-space:nowrap}
+.coords{display:flex;gap:26px;flex-wrap:wrap;margin:12px 0 20px;padding-left:40px}
+.co{display:flex;align-items:center;gap:9px}
+.co .k{font-family:var(--mono);font-size:9.5px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+.segs{display:flex;gap:2px}
+.sg{width:13px;height:5px;background:var(--seg-off);border-radius:1px}
+.sg.on{background:var(--accent)}
+.co .v{font-size:12.5px;color:var(--ink-2)}
+.body{padding-left:40px;display:flex;flex-direction:column;gap:16px}
+.mine{background:var(--accent-soft);border-left:3px solid var(--accent);border-radius:0;padding:13px 15px}
+.mine label.fl{color:var(--accent)}
+.mine textarea{background:var(--surface);border-color:var(--accent-rule)}
+.tools{display:flex;align-items:center;gap:18px;padding-left:40px;margin-top:16px}
+button{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  background:none;border:none;padding:4px 0;color:var(--ink-3);cursor:pointer;border-bottom:1px solid transparent}
+button:hover{color:var(--ink);border-bottom-color:var(--rule-2)}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+button.st[aria-pressed="true"]{color:var(--strike);border-bottom-color:var(--strike)}
+button.rv{margin-left:auto}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (prefers-reduced-motion:no-preference){.status{transition:color .2s}}
+@media (max-width:620px){
+  .page{padding:36px 18px 90px} h1{font-size:34px}
+  .coords,.body,.tools{padding-left:0}
+}
+</style>
+
+<div class="page">
+<h1>The political spectrum</h1>
+<p class="deck">Three axes, three positions on each, twenty-seven places a party can stand. Every one of them has been held by somebody real — this is the reference of who. <em>Edit anything: the names, the descriptions, the examples. Your changes are saved as you type.</em></p>
+
+<div class="axes">
+  <div class="ax"><h2>Economy</h2><p>Who allocates. <b>Collective</b> — the community or the state owns and directs. <b>Neo-liberal</b> — markets and private ownership decide.</p></div>
+  <div class="ax"><h2>Morals</h2><p>What the good life looks like. <b>Conservative</b> — inherited custom, faith and family are the standard. <b>Progressive</b> — the standard is arrived at, and revised.</p></div>
+  <div class="ax"><h2>Government power</h2><p>How much coercion the state may use on people, <b>independent of what it is using it for</b>. The axis most spectrums leave out.</p></div>
+</div>
+
+<div class="bar">
+  <span class="tally" id="tally">27 positions</span>
+  <span class="status" id="status">Connecting</span>
+</div>
+
+<div class="docnote">
+  <label class="fl" for="docnote">Notes on the whole scheme</label>
+  <textarea id="docnote" rows="2" placeholder="Anything about the three axes themselves, positions you think should merge, names you want changed wholesale."></textarea>
+</div>
+
+<div id="list"></div>
+</div>
+
+<script>
+const AXES=[["Economy",["collective","middle","neo-liberal"]],["Morals",["conservative","middle","progressive"]],["Government power",["authoritarian","middle","libertarian"]]];
+const LAYERS=[["Layer one — a collective economy","The community or the state owns and directs."],["Layer two — a mixed economy","Markets where they work, the state where they do not."],["Layer three — a neo-liberal economy","Markets and private ownership decide."]];
+const DATA=[
+{n:1,c:[0,0,0],name:"National Collectivism",desc:"The state runs the economy on behalf of a traditional people, and it does not ask permission. Welfare and nationalisation from the left; church, family and nation from the right; no meaningful check on either.",ex:"Peronism (Argentina) — state-directed industry, Catholic traditionalism, personalist rule\nBa'athism (Syria, Iraq) — Arab socialism, social conservatism, a single party\nFalangism and national syndicalism under Franco\nSalazar's Estado Novo in its corporatist phase\nThe Islamic Republic of Iran — a foundation-dominated economy under clerical authority\nHuey Long's Share Our Wealth (Louisiana, 1934)\nStrasserism — the anti-capitalist wing of national socialism"},
+{n:2,c:[0,0,1],name:"Christian Democracy",desc:"A large state sector and a generous welfare system, built explicitly on religious social teaching, operating through ordinary constitutional politics.",ex:"Democrazia Cristiana (Italy) — the IRI state holding company alongside Catholic social doctrine\nFianna Fáil under de Valera — protectionist, Catholic, democratic\nAdenauer's CDU and the confessional origins of the social market\nBismarck's social insurance — state pensions to bind workers to a traditional order\nLaw and Justice (Poland) — large family transfers, social conservatism, elected"},
+{n:3,c:[0,0,2],name:"Distributism",desc:"Property held widely rather than by the state or by capital; morals held tightly; power pushed down to the smallest unit that can hold it. Communal but voluntary.",ex:"Chesterton and Belloc, and The Servile State\nSubsidiarity in Catholic social teaching — Rerum Novarum, Quadragesimo Anno\nThe Mormon United Order and the law of consecration\nAmish, Hutterite and Mennonite communities\nThe Catholic Worker Movement — Dorothy Day and Peter Maurin\nThe Grange and agrarian cooperative populism"},
+{n:4,c:[0,1,0],name:"Bureaucratic Socialism",desc:"State ownership without a moral crusade attached. The revolution is over, the ministries remain, and the ideology has become paperwork.",ex:"The Soviet Union under Brezhnev — stagnation, ideology as ritual\nTito's Yugoslavia — market socialism, deliberate neutrality on moral questions\nNasser's Egypt — Arab socialism run by officers\nNe Win's Burmese Way to Socialism\nPost-war state holding sectors run as ends in themselves"},
+{n:5,c:[0,1,1],name:"Social Democracy",desc:"Public ownership of the commanding heights, mainstream social attitudes, and ordinary parliamentary government. The post-war settlement.",ex:"Attlee's Labour (1945–51) — coal, rail, steel, the health service\nSwedish social democracy under Erlander and Palme\nAustria's SPÖ and the social partnership\nNehru's Congress — the Planning Commission inside a working democracy\nThe post-war consensus in Britain and western Europe"},
+{n:6,c:[0,1,2],name:"Mutualism",desc:"Wealth held in common through voluntary association rather than the state. Cooperatives, not ministries.",ex:"Proudhon's mutualism\nThe Rochdale Pioneers and the cooperative movement\nMondragón — a federation of worker cooperatives\nGuild socialism (G. D. H. Cole)\nFriendly societies, building societies and credit unions\nSyndicalism in its non-doctrinal forms"},
+{n:7,c:[0,2,0],name:"Vanguard Socialism",desc:"The state owns everything, the future justifies everything, and a disciplined minority decides what the future is.",ex:"Marxism–Leninism — Lenin's What Is to Be Done? and the party as vanguard\nCuba under Castro\nMaoism and the Cultural Revolution\nThe Jacobins and the Committee of Public Safety\nBolivarianism under Chávez and Maduro\nThe Sandinistas in their first decade"},
+{n:8,c:[0,2,1],name:"Democratic Socialism",desc:"Common ownership and social liberalisation, pursued by winning elections and accepting the result when you lose them.",ex:"Allende's Popular Unity in Chile — elected, socialist, constitutional\nThe Front Populaire (France, 1936) and Mitterrand's 1981 programme\nLabour under Corbyn; the Democratic Socialists of America\nSyriza in Greece\nThe Independent Labour Party and British ethical socialism"},
+{n:9,c:[0,2,2],name:"Libertarian Socialism",desc:"Held in common, decided face to face, and nobody above the assembly. The stateless left.",ex:"Kropotkin's anarcho-communism\nThe CNT-FAI in Catalonia, 1936–37\nMurray Bookchin's social ecology and communalism\nDemocratic confederalism in Rojava, built explicitly on Bookchin\nThe Zapatistas and the autonomous municipalities of Chiapas\nThe Diggers and the commune movement"},
+{n:10,c:[1,0,0],name:"Statist Conservatism",desc:"Markets where they work and the state where they do not, in service of an inherited social order, with elections that do not really threaten anyone.",ex:"Singapore's People's Action Party — state-linked capital, social conservatism, managed politics\nPutin's United Russia — oligarchic capitalism and Orthodox traditionalism\nPark Chung-hee's South Korea — chaebol developmentalism under military rule\nErdoğan's AKP\nSalazar's Portugal in its later technocratic phase"},
+{n:11,c:[1,0,1],name:"One Nation Conservatism",desc:"The mainstream centre-right of the democratic world: a mixed economy taken as settled, traditional instincts, constitutional restraint.",ex:"Macmillan's Conservatives and the One Nation tradition\nGaullism in France\nThe CDU/CSU in Germany\nJapan's Liberal Democratic Party\nEisenhower Republicans"},
+{n:12,c:[1,0,2],name:"Localist Conservatism",desc:"A mixed economy, traditional life, and power kept at the parish, the county or the canton. Not anti-government — anti-distant-government.",ex:"Swiss cantonalism and the Landsgemeinde\nThe Anti-Federalists and Jeffersonian agrarian republicanism\nHome rule and subsidiarity movements\nFront Porch Republic and the localist-conservative revival\nThe Benedict Option and withdrawal-into-community arguments"},
+{n:13,c:[1,1,0],name:"Bureaucratic Authoritarianism",desc:"Rule for the sake of order, with no economic doctrine and no moral programme. The technocrats and the officers agree only that somebody competent should be in charge.",ex:"The Brazilian military government, 1964–85 — the case O'Donnell named the type after\nThe Argentine and Chilean juntas in their administrative aspect\nEgypt under Sisi\nFranco after 1959, depoliticised and developmentalist\nCaudillismo and personalist military rule generally"},
+{n:14,c:[1,1,1],name:"The Centre",desc:"A mixed economy, moderate social attitudes, ordinary constitutional democracy. The position of the median voter in almost every functioning democracy, and the one most often mistaken for having no politics at all.",ex:"The post-war Western consensus\nErhard's social market economy\nThe Third Way — Clinton's New Democrats, Blair's New Labour\nMacron's En Marche and continental radical centrism\nGrand coalitions wherever they form"},
+{n:15,c:[1,1,2],name:"Federalism",desc:"Not a programme so much as a rule about where decisions are taken: as close to the people affected as the problem allows.",ex:"The Swiss Confederation as a constitutional system\nSubsidiarity as a principle of European treaty law\nTocqueville's associational America and civic republicanism\nCommunitarianism (Amitai Etzioni)\nThe Anti-Federalist case in its civic rather than agrarian form"},
+{n:16,c:[1,2,0],name:"Authoritarian Modernism",desc:"Progress imposed from above on a population that did not ask for it, by a state that considers the matter settled.",ex:"Kemalist Turkey — the alphabet reform, the hat law, forced secularisation\nThe Shah's White Revolution — land reform and women's suffrage alongside SAVAK\nMeiji Japan and compressed modernisation by decree\nProgressive-era eugenics and compulsory sterilisation, upheld in Buck v. Bell\nHigh modernist state planning — cities built for a citizen who did not exist yet"},
+{n:17,c:[1,2,1],name:"New Deal Liberalism",desc:"A regulated mixed economy and a widening circle of rights, delivered through ordinary majorities.",ex:"The New Deal coalition and Roosevelt\nThe Great Society under Johnson\nCanada's Liberals under either Trudeau\nThe SPD in Germany and the PvdA in the Netherlands\nLabour under Wilson"},
+{n:18,c:[1,2,2],name:"Participatory Democracy",desc:"Progressive ends pursued by dissolving hierarchies rather than capturing them. Suspicious of the state even while asking it for things.",ex:"The Port Huron Statement and Students for a Democratic Society\nThe counterculture and the commune movement\nDie Grünen in their founding anti-statist phase\nE. F. Schumacher's Small Is Beautiful\nIvan Illich — Deschooling Society, conviviality, institutional critique"},
+{n:19,c:[2,0,0],name:"National Conservatism",desc:"Free markets and traditional morals, with a state strong enough to protect the second from the consequences of the first.",ex:"Pinochet's Chile — the Chicago Boys, Catholic traditionalism and a junta in one government\nOrbán's Hungary and “illiberal democracy”\nIntegralism (Adrian Vermeule)\nChristian Reconstructionism (R. J. Rushdoony) and dominion theology\nColonial Hong Kong in its socially conservative administration"},
+{n:20,c:[2,0,1],name:"Fusionist Conservatism",desc:"The deliberate welding of free-market economics to social traditionalism, contested at elections. The dominant right-wing formula of the late twentieth century.",ex:"Frank Meyer's fusionism at National Review; Buckley\nReagan and Thatcher\nThe Heritage Foundation and the think-tank right\nHoward's Liberal Party in Australia\nThe Republican Party, roughly 1980 to 2010"},
+{n:21,c:[2,0,2],name:"Paleolibertarianism",desc:"Free markets, inherited morals, and as little state as can be managed — ideally none. Culturally traditional and radically anti-government at the same time.",ex:"Murray Rothbard and Lew Rockwell; the Mises Institute\nAnarcho-capitalism — Rothbard's For a New Liberty, Hoppe's Democracy: The God That Failed\nRobert Taft's Old Right — anti-New Deal and anti-interventionist\nRon Paul\nThe Sagebrush Rebellion and the county-supremacy movement\nThe Free State Project"},
+{n:22,c:[2,1,0],name:"Market Authoritarianism",desc:"Maximum economic freedom, minimum political freedom, and no opinion whatsoever about how you live.",ex:"Colonial Hong Kong — laissez-faire administration without representation\nThe Gulf states — Dubai and the UAE: open markets, absolute monarchy\nChile's Chicago Boys in their purely technical aspect\nStructural adjustment imposed on states without democratic mandate\nSpecial economic zones governed outside ordinary politics"},
+{n:23,c:[2,1,1],name:"Liberal Centrism",desc:"Markets, moderation and institutions. The governing common sense of the late twentieth century, argued for on grounds of efficiency rather than morality.",ex:"The Washington Consensus\nThe Mont Pelerin Society as it filtered into governing practice\nGermany's FDP; the Orange Book wing of the Liberal Democrats\nThe editorial position of The Economist"},
+{n:24,c:[2,1,2],name:"Minarchism",desc:"The state reduced to courts, contracts and defence, and nothing said about what people should do with the resulting freedom.",ex:"Nozick's Anarchy, State, and Utopia\nMilton Friedman and Capitalism and Freedom\nThe Libertarian Party in the United States\nHayek's constitutional writing — The Constitution of Liberty\nSeasteading and charter-city proposals"},
+{n:25,c:[2,2,0],name:"Technocracy",desc:"Markets are efficient, progress is measurable, expertise is real — and voting mostly gets in the way of all three.",ex:"Technocracy Incorporated (Howard Scott, 1933), a genuine American mass movement\nSaint-Simon — the original argument for rule by industrialists and engineers\nJames Burnham's The Managerial Revolution\nRobert Moses, who rebuilt New York and never won an election\nNeo-cameralism (Curtis Yarvin) and the network state (Balaji Srinivasan)\nThe Progressive-era expert commission"},
+{n:26,c:[2,2,1],name:"Social Liberalism",desc:"Open markets, open societies, and ordinary democratic politics. Cosmopolitan by instinct.",ex:"D66 in the Netherlands\nMacron on economics\nThe New Democrats and the Democratic Leadership Council\nCanada's Liberals on trade and immigration\nThe Davos consensus and its critics' name for it"},
+{n:27,c:[2,2,2],name:"Classical Liberalism",desc:"Let people trade, let people be, and keep the state small in both directions. Free markets and social permissiveness as one argument rather than two.",ex:"John Stuart Mill — On Liberty and the harm principle\nCato and Reason — free trade, drug legalisation, open borders, marriage equality, one position\nJohn Perry Barlow's Declaration of the Independence of Cyberspace; the EFF\nThe cypherpunks and the early internet\nBleeding-heart libertarianism"}];
+
+const pid=n=>"p"+String(n).padStart(2,"0");
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const edits={};let DB=null,docNote="";
+const $=id=>document.getElementById(id);
+
+function grow(t){t.style.height="auto";t.style.height=(t.scrollHeight+2)+"px"}
+function cur(d){const e=edits[pid(d.n)]||{};return{name:e.name??d.name,desc:e.desc??d.desc,ex:e.ex??d.ex,note:e.note??"",strike:!!e.strike}}
+function dirty(d){const e=edits[pid(d.n)];if(!e)return false;
+  return (e.name!=null&&e.name!==d.name)||(e.desc!=null&&e.desc!==d.desc)||(e.ex!=null&&e.ex!==d.ex)||!!e.note||!!e.strike}
+
+function coords(c){return AXES.map(([k,vals],i)=>
+  `<span class="co"><span class="k">${esc(k)}</span><span class="segs">${
+    [0,1,2].map(j=>`<span class="sg${j===c[i]?" on":""}"></span>`).join("")
+  }</span><span class="v">${esc(vals[c[i]])}</span></span>`).join("")}
+
+function card(d){const v=cur(d),id=pid(d.n);
+  return `<article class="card${v.strike?" struck":""}" id="c-${id}">
+    <div class="hd"><span class="num">${d.n}</span>
+      <input class="nm" id="nm-${id}" value="${esc(v.name)}" aria-label="Name of position ${d.n}">
+      <span class="edited" id="ed-${id}" ${dirty(d)?"":'hidden'}>edited</span></div>
+    <div class="coords">${coords(d.c)}</div>
+    <div class="body">
+      <div><label class="fl" for="ds-${id}">What it is</label>
+        <textarea id="ds-${id}" rows="2">${esc(v.desc)}</textarea></div>
+      <div><label class="fl" for="ex-${id}">Real-world examples — one per line</label>
+        <textarea id="ex-${id}" rows="4">${esc(v.ex)}</textarea></div>
+      <div class="mine"><label class="fl" for="no-${id}">Your notes</label>
+        <textarea id="no-${id}" rows="1" placeholder="What you want changed, kept, merged or renamed.">${esc(v.note)}</textarea></div>
+    </div>
+    <div class="tools">
+      <button class="st" id="st-${id}" aria-pressed="${v.strike}">${v.strike?"Struck — restore":"Strike this position"}</button>
+      <button class="rv" id="rv-${id}" ${dirty(d)?"":'hidden'}>Revert to original</button>
+    </div></article>`}
+
+function render(){
+  $("list").innerHTML=LAYERS.map((L,li)=>
+    `<h2 class="layer">${esc(L[0])}</h2><p class="layer-sub">${esc(L[1])}</p>`+
+    DATA.filter(d=>d.c[0]===li).map(card).join("")).join("");
+  DATA.forEach(wire);
+  document.querySelectorAll("textarea").forEach(grow);
+  tally()}
+
+function tally(){const n=DATA.filter(dirty).length,s=DATA.filter(d=>cur(d).strike).length;
+  $("tally").innerHTML=`<b>27</b> positions &nbsp;·&nbsp; <b>${n}</b> edited${s?` &nbsp;·&nbsp; <b>${s}</b> struck`:""}`}
+
+const norm=o=>JSON.stringify({name:o&&o.name,desc:o&&o.desc,ex:o&&o.ex,note:o&&o.note,strike:!!(o&&o.strike)});
+const body=(o,d)=>({name:o.name??d.name,desc:o.desc??d.desc,ex:o.ex??d.ex,note:o.note||"",strike:!!o.strike});
+
+let timers={};
+function save(id){clearTimeout(timers[id]);timers[id]=setTimeout(async()=>{
+  if(!DB)return;
+  try{ setStatus("Saving","");
+    if(id==="__doc"){await DB.doc("meta/notes").set({note:docNote,savedAt:new Date().toISOString()})}
+    else{const d=DATA.find(x=>pid(x.n)===id);
+      await DB.doc("positions/"+id).set({...body(edits[id]||{},d),n:d.n,savedAt:new Date().toISOString()})}
+    setStatus("Saved","on")}
+  catch(e){setStatus("Not saved","warn")}},700)}
+
+function setStatus(t,c){const s=$("status");s.textContent=t;s.className="status "+c}
+
+function wire(d){const id=pid(d.n),E=edits[id]||(edits[id]={});
+  const on=(el,f)=>{el.addEventListener("input",()=>{f(el.value);grow(el);flag(d);save(id)})};
+  on($("ds-"+id),v=>E.desc=v); on($("ex-"+id),v=>E.ex=v); on($("no-"+id),v=>E.note=v);
+  const nm=$("nm-"+id);
+  nm.addEventListener("input",()=>{E.name=nm.value;flag(d);save(id)});
+  $("st-"+id).addEventListener("click",()=>{E.strike=!E.strike;save(id);refresh(d)});
+  $("rv-"+id).addEventListener("click",()=>{delete edits[id];
+    if(DB)DB.doc("positions/"+id).delete().then(()=>setStatus("Saved","on")).catch(()=>setStatus("Not saved","warn"));
+    refresh(d)})}
+
+function flag(d){const id=pid(d.n),f=dirty(d);
+  $("ed-"+id).hidden=!f; $("rv-"+id).hidden=!f; tally()}
+
+function refresh(d){const id=pid(d.n),el=$("c-"+id);
+  el.outerHTML=card(d); wire(d);
+  $("c-"+id).querySelectorAll("textarea").forEach(grow); tally()}
+
+render();
+$("docnote").addEventListener("input",e=>{docNote=e.target.value;grow(e.target);save("__doc")});
+
+const take=s=>{const d=s.data()||{};return{name:d.name,desc:d.desc,ex:d.ex,note:d.note,strike:!!d.strike}};
+const typing=()=>{const a=document.activeElement;return !!(a&&a.matches&&a.matches("textarea,input"))};
+
+(async()=>{
+  if(typeof claude==="undefined"||!claude.use){setStatus("Read only — changes not kept","warn");return}
+  const db=await claude.use("db");
+  if(!db){setStatus("Read only — changes not kept","warn");return}
+  DB=db;
+  try{
+    const snap=await db.collection("positions").get();
+    snap.docs.forEach(s=>{edits[s.id]=take(s)});
+    const m=await db.doc("meta/notes").get();
+    if(m.exists){const d=m.data()||{};if(d.note){docNote=d.note;$("docnote").value=d.note}}
+    render(); grow($("docnote")); setStatus("Saved","on");
+    db.collection("positions").onSnapshot(qs=>{
+      let ch=false;
+      qs.docs.forEach(s=>{const nv=take(s);
+        if(norm(nv)!==norm(edits[s.id])){edits[s.id]=nv;ch=true}});
+      if(ch&&!typing())render()
+    },()=>setStatus("Not saved","warn"))
+  }catch(e){setStatus("Read only — changes not kept","warn")}
+})();
+</script>
