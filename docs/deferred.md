@@ -20,3 +20,23 @@ Move an item to `DECISIONS.md` when it is fixed or deliberately closed.
 | 13 | `DESIGN.md` says twice that treaties and aid do not exist — §4.1 ("neither mechanic exists: there is no treaty object and no transfer of money between nations") and §12 ("No treaties and no aid"). Both are built: M11.2 added a non-aggression pact as a move with a cooldown and a minimum standing, aid as a move that transfers a share of the donor's treasury and buys patronage, and three relation kinds for them (`treatied`, `aided`, `reneged`). The AI scores both. The design document is behind the code on a point it states as a deliberate absence, which is the one kind of staleness §12 exists to prevent. Found 6 September by the design session while reading the relations vocabulary; not fixed because the design session does not edit `DESIGN.md`. | Documentation only; nothing in play is wrong. Correct §4.1 and §12 in the next programming session, and check whether Influence's "treaties honoured and broken" and "aid given" terms were wired when the mechanics landed. | 2026-09-06, design session |
 | 14 | **A nation is charged three times over for its own founding movement.** The three places that read a movement's strength all take the LARGEST movement share in an Area with no check on whose movement it is: `Sentiment.pressure` (js/sentiment.js:416), which `AI.strain` (js/ai.js:46) maxes across a nation's own ground, and `Game.hostility` (js/game.js:1589), which multiplies occupation upkeep. So Deseret — holding the corridor its own movement organised — reads its heartland as maximum strain and plays permanently defensive via `ai.strainPosture`; the pressure map paints that heartland as its worst problem, which is what Aaron saw in play; and if it takes the corridor Areas that did not cede, it pays a hostility surcharge for occupying people loyal to it. The same applies to every nation founded by a movement. **The fix is one predicate — a movement whose `nation` is the holder is loyalty, not pressure** — but it is three call sites and it changes AI posture, the map and the treasury, so it wants measuring rather than patching. Aaron's ruling 16 in `docs/design/secession-ideation.md`. | Found in play; the design round owns the rule and the programming session owns the change. Not urgent for the economy alpha, where movements are switched off. | 2026-09-07, Aaron in play + verified by the design session |
 | 15 | `README.md` says the test suite is "written so the same files run under `node --test` unchanged if Node ever appears on this machine." Node 24.19.0 is on this machine and they do not: `node --test tests/` fails immediately with MODULE_NOT_FOUND before a single test runs, because the suites are plain browser scripts that expect globals (`window.TUNE`, `Game`, …) rather than ES module imports. The documented browser path works exactly as described — `python server.py`, then `tests/run.html` — and gave **956 green across 51 files in 335.9s on 8 September 2026**. Only the Node claim is false. | Documentation only; the browser path is the real one and it works. Found by the design session, which does not edit `README.md`. Correct the sentence in the next programming session, or make the claim true. | 2026-09-08, design session |
+
+## 16 — Military base data has not been pulled
+
+**Raised 9 September 2026 by ruling 31 of round 2 (conquest ideation).** The design now depends on
+three kinds of military base existing on the map — Army (manpower), Air Force (attack), Naval (coastal
+attack, and trade through ports). **No base data exists in `data/` and none has been sourced.**
+
+**This is a programming-session task, not a design one**, which is why it was recorded rather than
+done: a design session does not write to `data/` or `build/`.
+
+**What it needs:** installation name, branch, county FIPS, and a size figure (personnel or acreage) so
+the bonus can scale. All of it from public federal sources — the Department of Defense publishes
+installation locations and branches itself. **Nothing about capability, stockpiles or readiness is
+needed or wanted.**
+
+**One decision to take before the bake:** the services outnumber the three types. Proposed default,
+recorded in the round document as C123's neighbour — Marine Corps → Army, Coast Guard → Naval, Space
+Force → Air Force, joint bases by dominant function.
+
+**Blocks:** nothing yet. The rulings that depend on it are design, not build.

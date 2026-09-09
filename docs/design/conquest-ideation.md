@@ -2080,6 +2080,70 @@ exist rather than re-pointing something that does.*
 
 ---
 
+**Ruling 31 — three kinds of base, on the map as geography; and no nuclear weapons. (Aaron,
+9 September 2026.)**
+
+| Base | What it gives the nation holding it |
+|---|---|
+| **Army base** | A bonus to **manpower** |
+| **Air Force base** | A bonus to **attack** |
+| **Naval base** | A bonus to **coastal attacks**, *and* a bonus to **world / Mexico / Canada trade through ports** |
+
+**No nuclear weapons.** Not deferred — decided. *The reason recorded so it is not reopened as an
+oversight: everything ruled this round works because conquest is slow, expensive and paid for by your
+own population over decades. A weapon that removes a nation in one action is either usable, in which
+case every other system becomes scenery, or unusable, in which case it is an ornament. The deterrence
+version is a diplomacy object wearing a warhead and would belong to round 5 if it belonged anywhere.*
+
+**⚠ The naval base is the one that makes this a good ruling rather than a decorative one.** Army and
+Air Force bases pay only a nation that fights. **The naval base pays a nation that never fights at
+all**, because it improves trade through ports — and the economy already distinguishes **ocean ports,
+which reach the world market directly, from Great Lakes ports, which reach it only through the Canada
+corridor.** *So the most contested ground on the map is valuable to everybody, not only to aggressors.
+That is ruling 1 in a table row: a military asset whose main effect is economic.*
+
+**C121 — Bases turn the movements' named targets into real objects.** C86 and C43 already have the
+Front Range Republic's Expand movement demanding **NORAD** and Hawaii holding **Pearl Harbor** — named
+because they were evocative, with nothing behind them. **Ruling 31 puts something behind them.** A
+movement demanding a base is now demanding a specific, measurable shift in what its nation can do,
+which is what C43 said every round must produce and could not.
+
+**C122 — And bases are ground, so ruling 26 applies to them.** A captured base is `occupied` until the
+population accepts it, and then it is simply yours. **So a base is the most valuable single-Area
+objective on the board and a permanent shift in the balance if you can digest it** — which, under
+ruling 26, you can only do if your quality of life is better than what those people had. *A poor
+nation can take an air base and never really own it.*
+
+**⚠ C123 — Air Force bases sharpen the raid, and the risk in C102/C104 goes up with them.** An attack
+bonus raises the odds on every strike, and under ruling 24 a nation may strike every turn with no
+cooldown while ruling 23 switches the target off whether or not the strike lands. **A nation holding
+several air bases is the one for which raiding is cheapest.** *Recorded so the measurement in C104 is
+run against a well-equipped attacker rather than an average one.*
+
+---
+
+### What the base data has to say, and where it comes from
+
+*Design-stage note only. **The pull itself is a programming-session job** — this round writes in
+`docs/design/` and does not touch `data/` or `build/`.*
+
+**There is nothing sensitive in what this needs, and that is worth stating plainly.** The design needs
+**where a major installation is and which branch runs it** — facts the Department of Defense publishes
+itself, annually, and which are on road signs. **It needs nothing about capability, stockpiles,
+readiness or anything classified**, and would not use it if offered. Public federal sources carry
+installation name, branch, and location, which is the whole requirement.
+
+**What a row needs:** the installation's **name**, its **branch**, its **county FIPS** — so it can be
+folded into the Area the county belongs to — and a **size** figure, personnel or acreage, so the bonus
+can scale rather than being flat for a depot and a headquarters alike.
+
+**One mapping question the data will force, flagged now:** Aaron named three types and the services are
+more than three. **Default proposed: Marine Corps → Army, Coast Guard → Naval, Space Force → Air
+Force**, and joint bases classified by their dominant function. *One line to correct, and it should be
+correct before the bake rather than after.*
+
+---
+
 ## 7. The scenarios this round has to be able to tell
 
 Traced at the close, per the lesson round 1 learned: **tracing scenarios found contradictions that
