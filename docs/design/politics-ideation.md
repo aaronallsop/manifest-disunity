@@ -325,7 +325,76 @@ movement. **Four prices for the same relief, and the player has to pick one.**
 
 ## 5. The idea bank
 
-*Numbered P1, P2, … Unjudged. None yet.*
+*Numbered P1, P2, … Unjudged.*
+
+### P1 — The three-axis cube, and the eight corners
+
+**Aaron's, 9 September, replacing Q1 entirely.** Rather than adding a seventh alignment to the
+existing two axes, the whole scheme is rebuilt on **three** axes, each with a low and a high end:
+
+| Axis | Low ↔ high | What it decides in the game |
+|---|---|---|
+| **Economy** | collective ↔ capitalist | Trade alignment |
+| **Morals** | conservative ↔ progressive | Moral alignment, who tolerates whom |
+| **Government power** | authoritarian ↔ libertarian | *New.* What a population will forgive |
+
+**The arithmetic, corrected in session.** Aaron's first enumeration listed nine cells and tied
+government power to morals — every conservative authoritarian, every progressive libertarian. That
+makes the third axis a copy of the second, and it deletes the two positions that motivated adding it
+at all: **Sagebrush** (capitalist, conservative, *libertarian*) and **Techno-Autocrat** (capitalist,
+progressive, *authoritarian*) both live off that diagonal. Three positions per axis gives **27**;
+**two positions per axis gives 8** — the corners of the cube, and the shape Aaron took.
+
+**Aaron's own finding, and it is a good one: extremism is structurally isolating, and nobody has to
+write a rule saying so.** On a 3×3×3 cube a corner touches 3 neighbours, an edge 4, a face-centre 5
+and the middle 6. It falls out of the geometry, so it can never drift out of sync with anything.
+**Note the cost of dropping to 8: every cell becomes a corner, every corner touches exactly three
+others, and that asymmetry disappears.** Adding back the dead centre alone — nine — restores it,
+because the centre is closer to all eight corners than any corner is to its nearest neighbour.
+**Recommended and put to Aaron; not yet ruled.**
+
+### P2 — The eight corners, named, with their real-world analogues
+
+*Drafted 9 September at Aaron's request. Four of the eight are already the game's existing words.*
+
+| # | Economy | Morals | Power | Proposed name | Real-world analogues |
+|---|---|---|---|---|---|
+| **1** | collective | conservative | authoritarian | **National Collectivist** | Peronism; Ba'athism; Franco's Falange; Iran's clerical republic; **Huey Long's Share Our Wealth** |
+| **2** | collective | conservative | libertarian | **Distributist** | Chesterton and Belloc; the **Mormon United Order**; the Amish and Hutterites; the Catholic Worker; the Grange |
+| **3** | collective | progressive | authoritarian | **Socialist** | Marxism–Leninism; Cuba; Chávez's Venezuela; the Jacobins |
+| **4** | collective | progressive | libertarian | **Communalist** | Anarcho-syndicalism (Catalonia 1936); **Bookchin's communalism**; Rojava; the Zapatistas; bioregional Greens |
+| **5** | capitalist | conservative | authoritarian | **Conservative Nationalist** | **Pinochet's Chile**; Orbán's Hungary; Singapore's PAP; integralism; **the Confederacy itself** |
+| **6** | capitalist | conservative | libertarian | **Libertarian** | **Rothbard's paleolibertarianism**; the Sagebrush Rebellion and county supremacy; the Bundy standoffs; Robert Taft's Old Right; the Anti-Federalists |
+| **7** | capitalist | progressive | authoritarian | **Technocrat** | **Technocracy Inc. (1933)**; Saint-Simon; Burnham's managerial revolution; the network state; Robert Moses |
+| **8** | capitalist | progressive | libertarian | **Market Liberal** | Mill; Cato and *Reason*; **Barlow's cyberlibertarians**; the German FDP and Dutch D66 |
+
+**Where the current six go.** Four survive unchanged — Conservative Nationalist to 5, Distributist to
+2, Socialist to 3, Democratic Socialist to 4 (renamed **Communalist**, which is more accurate; the DSA
+is statist and cell 4 is not). **The two party brands dissolve**: Republican splits across 5, 6 and 1,
+Democrat across 8, 4 and 3. Three cells are new — 1, 7 and 8 — and cell 6 is the one Aaron asked for
+by name.
+
+**Two things this table settles that were open.**
+
+1. **The Central States Union problem is cell 1.** Aaron's note — *"they would be republican but
+   support unions"* — is a collective economy with conservative morals, which had no home on the old
+   two axes and has one now. He proposed adding Libertarianism to solve it; it is actually solved by
+   the axis, not the alignment.
+2. **Cell 6 is crowded and that is a finding, not a fault.** Sagebrush, Greater Idaho, the State of
+   Jefferson, New Absaroka, Alaskan Independence and both struck movements all land there. The
+   dominant political flavour of a secession map is *leave us alone*, which is what the game is about.
+
+**Cell 1 and cell 7 currently have no movement in them at all** — 7 only had the struck
+Techno-Autocrat. Worth knowing before the register is re-pointed.
+
+### P3 — Three words for three things
+
+*Proposed in session, unruled.* **Ideology** is the cell — universal, permanent, eight of them,
+and it cannot move because it *is* a location. **Party** is an organisation inside **one nation**
+that occupies a cell and contests that nation's elections; Dallas and Vermont can both hold a
+Libertarian party and they are two different parties. **Movement** is unchanged and already works.
+The payoff: **a party can move through the cube and an ideology cannot** — which is the *change
+course* valve, priced by the geometry rather than by a tunable.
 
 ---
 
