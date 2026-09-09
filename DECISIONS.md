@@ -3350,3 +3350,27 @@ split by region.
 **Nothing built.** No code, data or `DESIGN.md` touched. Register rebuilt at
 `https://claude.ai/code/artifact/bc72d871-db3b-4e2d-8363-6909e491abe7` — collection `parties`,
 documents `p01`-`p12`.
+
+
+---
+
+### D187 — The falling mechanic is deferred to after the alpha; the board is not, 9 September 2026
+
+**Aaron, minutes after designing it:** *"we can work on that later and actually lets save that for
+future ideas after the alpha build."*
+
+**What is deferred.** Only the *mechanic* — what despotism buys, what it costs in standing, how far
+"too far" is, and whether statelessness works the same way in reverse. Recorded as **F19** in
+`docs/FUTURE-IDEAS.md` with the reasoning, Aaron's own words, and what would have to be true before
+it is worth doing.
+
+**What is not deferred.** The three axes, the ten positions, the layout with authoritarians at both
+outer ends, and the drift partition — all ruled in D185 and D186 and all current. **Despotism and
+Stateless stay named on the board**, because the shape needs them: a corner with nothing beyond it is
+not a corner, and the four authoritarian corners are only extreme relative to something.
+
+**Why this is the right call and not merely his.** The alpha track is A0-A4, which is trade — deals,
+transit, the network map, AI nations trading unprompted. **Politics is not in it at all.** Deferring
+a politics mechanic costs the alpha nothing, and the three numbers it needs are exactly the kind this
+project has been burned by inventing: D185's own record notes that an invented number once reached
+the Control Board looking measured. **No placeholder was written.**

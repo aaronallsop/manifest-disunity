@@ -496,6 +496,13 @@ not set.
 **Only the two centrist parties stand over solid ground.** Every one of the eight corners has a
 trapdoor under it.
 
+**DEFERRED the same sitting, at Aaron's instruction: the *falling* goes to `docs/FUTURE-IDEAS.md`
+F19, to be picked up after the alpha build.** The board, the ten positions and the drift partition
+below are **ruled and current**; what despotism buys, what it costs in standing, and how far "too
+far" is are **not being answered now** and no placeholder was invented for any of them. The two
+conditions stay named on the board because the shape needs them — a corner with nothing beyond it is
+not a corner.
+
 ### P6 — The drift is an exact partition, and it is the opening move
 
 **Aaron, 9 September:** *"at the start of the game we have republicans and democrats and they could

@@ -645,3 +645,58 @@ signs a treaty alone and you cannot be at war with somebody who is not at war wi
 answer is whether players ever *want* to be quietly hostile — whether the one-sided case turns up in
 play as a felt absence, or only as an elegance. This is not a fix waiting to happen; it is a
 refinement waiting for evidence.
+
+---
+
+## F19 — Despotism and statelessness: falling off the political board
+
+**Aaron, 9 September 2026.** Designed in the politics round and deferred in the same sitting, to be
+picked up **after the alpha build**.
+
+> "Stateless and despotism would be things you could fall into. So Fascism and christian nationalism
+> would become despots with no parties and one party rule and then same thing with communism and
+> digital technocracy."
+>
+> "That would add a fun mechanic where if you go too far you get more power (full state control) but
+> also nations don't like you as much and other things we can figure out later."
+
+**What it is.** The ten political positions sit on a board with morals running across it and state
+power running from authoritarian at both *outer* ends to libertarian in the middle. Past the edges lie
+two conditions that are **not parties**, because nobody stands for election as either:
+
+- **Despotism**, off either authoritarian end. One party or none. Full command of the state, and every
+  other nation treating you as what you have become.
+- **Stateless**, out through the libertarian middle. The government dissolves into ground with people
+  on it, output coming off it, and nobody in charge.
+
+**Only the two centrist parties stand over solid ground.** Each of the eight corners has a trapdoor
+under it.
+
+**Why it is interesting.** Three reasons, and the third was not designed.
+
+First, it closes the horseshoe *mechanically* rather than as an observation. The geometry already
+makes fascism and communism neighbours — they differ on morals alone and agree on both a collective
+economy and an authoritarian state. This makes them **arrive at the same destination**, which is the
+strongest available statement of that.
+
+Second, it is a genuine trade rather than a penalty: **power bought at the price of standing.** That
+is the shape this game already uses everywhere — a garrison buys quiet and costs liberties, autonomy
+buys quiet and costs revenue.
+
+Third, **statelessness already exists in the story and this gives it a second way in.** Six regions
+open in it, and it is the largest unbuilt mechanic in round 1's inbox. Today the only stateless ground
+is ground that never had a government; this adds ground whose government *let go*.
+
+**What it would touch.** The change-course valve; civil liberties and authority; recognition, and how
+other nations price you; and whatever answers round 3's first question about what a stateless region
+actually is. **Nothing in the economy alpha.**
+
+**What would have to be true before it is worth doing.** The alpha build finished — this is politics
+and the alpha track is trade. And three numbers picked that nobody has picked: what despotism buys,
+what it costs in standing, and how far "too far" is. **No placeholder was invented for any of them,
+deliberately.**
+
+**Where the design already is.** The board, the ten positions and the drift partition are ruled and
+current — `DECISIONS.md` D185 and D186, and `docs/design/politics-ideation.md` P5 and P6. **Only the
+falling is deferred.** The register at
+`https://claude.ai/code/artifact/bc72d871-db3b-4e2d-8363-6909e491abe7` carries both conditions.
