@@ -2051,6 +2051,35 @@ prohibition on granting that ground to anyone else as a trade passage is about *
 
 ---
 
+**Ruling 30 — declining makes a movement grow; stringing it along makes it want something else.
+(Aaron, 9 September 2026, accepting the recommendation.)** C89 closes.
+
+| Your answer | What the movement does |
+|---|---|
+| **Implement** | You pay whatever the act costs. Satisfied, for now |
+| **Decline** | **It grows faster.** An honest enemy inside your own country, wanting what it always wanted — harder |
+| **Wait, and never deliver** | **It changes its verb toward *Separate*.** It stops asking you for things and starts wanting out |
+
+**Why the third is a change of kind rather than of degree, which is the whole point.** Ruling 16 said
+never-delivering angers a movement more than declining would have. **If that were only a larger growth
+number, a player would use "wait" as a cheap delay and absorb the difference.** Making it convert the
+movement's *aim* is the only version in which Aaron's own lesson holds: **stringing somebody along
+costs more than saying no**, and "wait" is correct only when you intend to deliver.
+
+*It also produces the game's grimmest sentence in one move: **a movement that asked you to march
+becomes a movement that wants to leave.** You were asked for a war and, by refusing to answer, you
+bought a secession.*
+
+**C120 — This is new machinery and it is round 3's to build.** Round 1 established that a movement is
+a **verb**, an **adjective** and an **ideology**, and nothing in the built game ever changes the verb.
+**Ruling 30 makes the verb mutable**, which is a real change to what a movement *is*. The faster-growth
+half is cheap — `growthRate` already exists as a per-movement multiplier on the rise. **The verb change
+is not**, and the ideation plan gives round 3 *"all four ways a government can answer a movement"*.
+*Recorded here, handed there, and flagged as the one place this round asks for something that does not
+exist rather than re-pointing something that does.*
+
+---
+
 ## 7. The scenarios this round has to be able to tell
 
 Traced at the close, per the lesson round 1 learned: **tracing scenarios found contradictions that
@@ -2141,9 +2170,10 @@ Asked of Aaron in order, one at a time. Answered ones move up into §6 as ruling
     gets a fourth rung and modifiers set the speed; **Aaron's named modifier is quality of life**,
     not the ideological match I recommended — which quietly makes conquest a luxury of the
     prosperous. C26 and C81 close.
-14. **What does a movement do when you decline its demand, and what does "wait" cost while it
-    waits?** (C89.) Ruling 16 says never-delivering is worse than declining, and does not price
-    either.
+14. ~~**What does a movement do when you decline, and what does "wait" cost?**~~ **Answered —
+    ruling 30.** Declining makes it **grow**; never delivering makes it **change its verb toward
+    Separate**. A change of kind, not of degree — which is the only version in which "wait" is
+    genuinely dangerous. C89 closes; the verb change is handed to round 3 (C120).
 15. ~~**Does an attack target ONE Area or up to three?**~~ **Answered — ruling 24. One.** *And the
     per-turn cap and the four-turn cooldown are removed with it, which makes sustained conquest 67%
     faster rather than slower — see the finding under ruling 24.*
