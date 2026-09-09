@@ -2549,7 +2549,29 @@ sitting still feels Wary not at all, and a nation trying to build a trade networ
 *That is arguably correct — Wary should be mild, and it should bite the ambitious — but it means Wary
 cannot be the thing that pressures a passive player, and nothing else in this round is either.*
 
-**⚠ AND THE LOAD-BEARING ROW IS STILL OPEN.** Ruling 39 answers what Wary costs *the two nations in
+**Ruling 40 — a Wary neighbour's movements do NOT grow faster inside you. Off, not reduced. (Aaron,
+9 September 2026, accepting the recommendation.)** C90 now closes in full.
+
+**Ruling 9's third cost of Hostile is switched off entirely the moment a pair steps down to Wary.**
+Their people's ideas stop spreading among yours.
+
+**This is the row that decides whether Wary is an exit or a trap, and it is not a magnitude.** The
+third cost is what makes a quarrel self-sustaining: their ideas spread inside you → you hold a live
+grievance → the grievance is a cause → ruling 17(c) slows the clock → their ideas keep spreading. **At
+any value above zero, Wary manufactures its own cause and no pair ever reaches Peace** — a second
+Hostile wearing a politer name. *A state whose whole job is to be an exit has to let people out.*
+
+**The accepted cost.** A cooled quarrel leaves **nothing behind at home**. The neighbour you fell out
+with stops stirring anything up among your people the moment you step down, which is a clean break for
+something that was recently a real enmity. *Aaron was told and took it.*
+
+**Wary, complete, in three lines:** they are less willing to agree to anything you propose (ruling 39,
+magnitude at stage 3); the material costs of Hostile apply at a fraction; and **their movements do not
+grow inside you at all** (ruling 40).
+
+---
+
+**⚠ AND THE LOAD-BEARING ROW WAS STILL OPEN — closed above by ruling 40.** Ruling 39 answers what Wary costs *the two nations in
 it*. It says nothing about **C90's third row: whether a Wary neighbour's matching movements still grow
 faster inside you.** That is not a magnitude and cannot be deferred to stage 3 — **it is whether a
 mechanism applies at all**, and it decides whether Wary is an exit or a trap. *Asked separately.*
