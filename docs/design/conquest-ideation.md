@@ -669,7 +669,9 @@ escalate, redeploy, sue for peace. Fighting is not an action. Deciding is.
   (C100), which decides whether the Texas board resolves by diplomacy or by force;
   **(c) what a nation gets for recognising somebody**, given that recognition is unilateral and
   therefore the only thing two hostile nations can do to each other that is not violent.
-- **From the economy (round 4), and ruling 4 makes two of these blocking:** what a war costs to run,
+- **From the economy (round 4), and ruling 4 makes two of these blocking — ruling 23 makes a third:**
+  **what a war costs to run, which ruling 23 deferred here explicitly and which ruling 22's repayment
+  lever cannot be priced without**;
   what a blockade actually stops, and what a destroyed rail hub does to a corridor. **And:**
   **(a) desperation must bite** — a nation that cannot get a resource must actually suffer for it, or
   ruling 4's third cause can never fire; **(b) a price must be settable by the seller**, or nobody can
@@ -1622,6 +1624,77 @@ markets.
 
 ---
 
+**Ruling 23 — the cost of a war belongs to the economy of war; and an Area under attack produces
+nothing that turn, whether or not it falls. (Aaron, 9 September 2026.)**
+
+> *"I think that the cost of war will be something that we need to create when we get to the economy
+> section of war. My thought is that if Idaho is attacked they would lose income from those counties.
+> And maybe that is another thing. If a county is attacked — even if not conquered — it doesn't
+> produce any income that turn."*
+
+**(a) The definition is deferred, and it is the right call.** What a war costs is an economy question
+and this round would be inventing it in the wrong place. **Handed to round 4**, where §4 already
+carries the entry — now marked blocking, because ruling 22's repayment lever cannot be priced until
+it lands.
+
+**(b) An attack switches an Area off for the turn.** This is a new mechanic and it is the first thing
+in the round that gives a **failed** attack a consequence for the defender.
+
+**⚠ It refines ruling 14 and the refinement is worth stating.** Ruling 14 said an attack has two
+outcomes and a failure costs you what you already spent — *"that was their turn and they didn't
+conquer anything."* **Under ruling 23 a failed attack is no longer nothing.** It cost the defender a
+turn of that Area's production. So a 30% attack is not 70% wasted; it is 30% conquest and 100%
+denial. *The arithmetic of attacking changes, and it changes in the direction ruling 1 points: the
+attack's reliable effect is economic and its unreliable effect is territorial.*
+
+---
+
+#### ⚠ FINDING — the machinery exists, it is sector-aware, and that makes the mechanic bigger than "lost income"
+
+**Verified 9 September: output is already held per Area as a six-element vector, one figure per
+sector, across 1,688 Areas.**¹ The six are **Agriculture, Resource Extraction, Manufacturing, Trade &
+Transportation, Finance, Information Technology.**
+
+**So "this Area produces nothing this turn" is a mask on a number that already exists — and it does
+not deny *income*, it denies a *named kind of production*.** Attacking the wrong farms is a food
+shortage. Attacking a Trade & Transportation Area is an attack on the thing that moves everything
+else.
+
+**And that joins this mechanic to ruling 4's third cause of hostility.** A nation desperate for a
+resource because a neighbour will not sell it can now *take the neighbour's production offline*
+instead — or be driven to war by exactly that being done to it. **An attack becomes a way to make
+somebody need something**, which is a far more interesting act than a way to take ground.
+
+*The mechanic Aaron described as denying income turns out to deny supply, and the game already knows
+which Areas make what. Recorded because it means this is worth more than it cost to say.*
+
+---
+
+**C102 — The raid, and it is the risk in ruling 23.** If an attack denies a turn of output whether or
+not it succeeds, then **attacking with no intention of winning becomes a strategy**: pay the price,
+lose the roll on purpose, switch off a rich Area, repeat. Three things stand in the way and none has
+been measured:
+
+- **The attack price is charged per Area *and per head***, so switching off a rich Area costs more in
+  proportion to its being worth switching off.
+- **It costs your one action for the turn**, and a nation raiding is a nation not doing anything else.
+- **Ruling 23 raises what the victim may demand** under ruling 22, because their lost production is a
+  war cost — so raiding a nation makes its eventual indemnity larger. *A pleasing loop: the more you
+  hurt them without beating them, the more they can bill you for.*
+
+**The open question is whether the price of an attack exceeds one turn of the target's output.** If it
+does not, raiding dominates. *Measurable, and it is stage 3's — flagged here so it is measured rather
+than discovered.*
+
+**C103 — And it puts a price on the one-Area-or-three question that was not there before.** §8's
+question 15 asks whether an attack targets one Area or up to three. **Under ruling 23 that is no
+longer only a question about conquest — it decides whether a single action denies one Area's
+production or three.** A three-Area strike is three times the raid for the same turn.
+
+*¹ `data/economy.json`. Verified 9 September.*
+
+---
+
 ## 7. The scenarios this round has to be able to tell
 
 Traced at the close, per the lesson round 1 learned: **tracing scenarios found contradictions that
@@ -1670,10 +1743,9 @@ Asked of Aaron in order, one at a time. Answered ones move up into §6 as ruling
 6b. ~~**Is the 1.25× repayment cap measured against the winner's war costs or the loser's?**~~
    **Answered — ruling 22. Neither: the *proposer's*.** Whoever sends the treaty prices their demand
    against what the war cost them, which means the game never has to decide who won.
-6c. **What counts as "the cost of a war"?** *(Raised by the finding under ruling 22, 9 September, and
-   it is blocking for the same lever.)* **If it means attack spending alone, a pure defender can claim
-   nothing** — which breaks the very example ruling 22 was made from. My recommendation: what the war
-   took out of your **treasury and your trade**.
+6c. ~~**What counts as "the cost of a war"?**~~ **Deferred to round 4 by ruling 23**, and recorded
+   in §4 as blocking for ruling 22's lever. *Aaron's steer: lost income from the counties fought over
+   counts, which is the direction my recommendation pointed.*
 7. **Subject and Allied** — deferred by Aaron, but ruling 4's fifth cause needs Allied to exist.
    Worth reopening earlier in the round rather than later.
 8. **Can a pair go from Peace straight to War**, or does something have to happen first? C72 assumes
