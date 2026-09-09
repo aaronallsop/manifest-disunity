@@ -2376,6 +2376,94 @@ miniature.*
 
 ---
 
+**Ruling 37 — inherited hostility travels exactly one hop. (Aaron, 9 September 2026, accepting the
+recommendation.)** Closes finding C.
+
+**Your ally's enemies become Hostile with you. Their ally's enemies do not.**
+
+**The reason that decided it is ruling 27's own.** Ruling 27 made an alliance spread *hostility* and
+not *war* expressly to keep the continent from *"collapsing into two blocs and one long war."*
+**Transitive inheritance is a closure over the alliance graph**: every set of nations linked by
+friendship ends up holding one identical list of enemies, which is a bloc. *Unbounded spread would not
+merely over-apply ruling 27 — it would undo the thing ruling 27 was built to prevent.*
+
+**And one hop is the only depth a player can read.** Before signing you can look at who your friend has
+fallen out with. Nobody can audit a chain of friendships three deep, and under transitivity a nation
+would routinely turn hostile because of an act it could not see, by a nation it has never dealt with.
+*A punishment with no lesson attached.*
+
+**The accepted cost.** Alliances are now noticeably safe to join, and betrayal stays severe but
+bounded: five hostile borders (ruling 28) plus whatever your allies catch, and no further.
+
+**C131 — the decay version, banked and not taken.** Inherited hostility could arrive one notch weaker
+per step — your ally's enemy makes you **Hostile**, their ally's enemy makes you merely **Wary**
+(ruling 17), dying out on its own after two hops. *Prettier than a hard cutoff and it uses the state
+ruling 17 invented. Not recommended and not taken: it is more machinery for a diffuse effect no player
+could attribute to a cause, and one hop already does the work. Recorded so it is not re-invented.*
+
+**⚠ C132 — does an inherited quarrel stop ruling 17's clock? If it does, the alliance is a permanent
+floor by the back door.** *Claude's finding, unruled.* Ruling 17(c) makes hostility fade on a clock
+whose **speed the live causes set**. An alliance is permanent while it stands, so an inherited quarrel
+is a cause that never clears — and the pair could never cool while the friendship lasts. **That is a
+thirty-fourth permanent quarrel arriving without anybody ruling one.** *Proposed: it slows the clock,
+never stops it. An inherited quarrel should be **the coolest kind of hostility there is** and should
+fade even while the alliance holds, because it was never your fight. Asked separately.*
+
+---
+
+#### Ruling 37 traced — Aaron's own example, and the pair it gets wrong
+
+*Aaron, 9 September:* **"Utah is allied with Nevada. Idaho is allied with Wyoming. Utah invades
+Idaho. Wyoming is enemies with Utah. Idaho and Wyoming are not enemies with Nevada."**
+
+**A real board configuration, not a hypothetical.** All four exist as nations in the shattered
+scenario — only Texas and California dissolve, and Utah survives with Deseret ceded out of it.¹
+
+| Pair | Hops | State | Aaron's example |
+|---|---|---|---|
+| Utah – Nevada | — | **Allied** | ✓ |
+| Idaho – Wyoming | — | **Allied** | ✓ |
+| Utah – Idaho | — | **War** | ✓ |
+| **Utah – Wyoming** | **1** — Wyoming's ally's enemy | **Hostile** | ✓ *"Wyoming is enemies with Utah"* |
+| **Nevada – Wyoming** | **2** — an ally's ally's enemy | **Peace** | ✓ *"Wyoming [is] not enem[ies] with Nevada"* |
+| **⚠ Nevada – Idaho** | **1** — Nevada's ally's enemy | **HOSTILE** | ✗ *"Idaho… not enemies with Nevada"* |
+
+**The last row is the same single hop as Utah–Wyoming, pointing the other way.** Nevada is Utah's ally;
+Idaho is Utah's enemy; that is one hop by ruling 27's plain words — *"your ally's enemies become
+Hostile with you."*
+
+**Two readings, and they are not the same rule:**
+
+**(a) Aaron miscounted**, having written the two non-principals as one phrase. Then the traced table
+above is right and the example needs one word.
+
+**(b) Aaron means something real that no ruling has said: you inherit quarrels aimed *at* your ally,
+but not quarrels your ally *starts*.** Wyoming catches Utah because its friend was attacked. Nevada
+does not catch Idaho because its friend did the attacking, and Idaho is the victim. *That is a
+defensible rule and it would mean an aggressor cannot drag its friends' diplomacy down with it.*
+
+**The case against (b), and it is why the recommendation is (a).** **Ruling 5 makes a state shared,
+not directed** — the pair is in a condition and it does not decompose into who feels what. So the
+question is not whether *Nevada* has a grievance against Idaho; it is whether the **pair** is in
+conflict. **And Idaho's grievance is real and sufficient**: Nevada is allied to the nation invading it,
+may lend Nevada's soldiers to that invasion by ruling 27's lever, and may open a second front if it
+borders Idaho, which it does. *A nation that is materially assisting your invader is not at peace with
+you, whatever it feels about you.*
+
+**Reading (b) also makes inheritance one-directional**, catching quarrels aimed at your ally but not
+ones it starts — which is harder to explain than one hop, and **lets a nation dodge the cost of whom it
+befriends.** *Ruling 28 already celebrates that cost: "allying with a treaty-breaker is ruinously
+expensive." Reading (b) would make allying with an aggressor free.*
+
+**And the traced table under (a) has a symmetry that (b) breaks:** each ally catches the other side's
+principal, and the two allies do not catch each other. *One rule, applied twice, from both ends.*
+
+*¹ `content/scenario-shattered.json`. Note the pair that stays at Peace, Nevada–Wyoming, is also the
+only pair here that shares no border — a coincidence rather than a cause: ruling 27 does not gate
+inheritance on geography, and C111 gates only whether an ally can open a second front.*
+
+---
+
 ## 7. The scenarios this round has to be able to tell
 
 Traced at the close, per the lesson round 1 learned: **tracing scenarios found contradictions that
