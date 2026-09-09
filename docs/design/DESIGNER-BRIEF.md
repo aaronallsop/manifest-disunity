@@ -55,6 +55,7 @@ to prevent.
 |---|---|
 | `CLAUDE.md` | The project's own rules |
 | `DESIGN.md` | **The truth about what the game currently DOES.** Long. Read the sections relevant to your topic |
+| `docs/design/IDEATION-PLAN.md` | **The seven rounds, in order, and which one is live.** Read this before you open any round document — it is what tells you which one you are in |
 | `docs/design/` | Design in progress — what is *intended* and not built. Your home |
 | `DECISIONS.md` | Every non-trivial choice, dated, with the alternative that was rejected. Read the last twenty |
 | `docs/spec/` | The authoritative briefs. **You may read these; you may not change them without asking me** |
@@ -131,13 +132,24 @@ places on the map; a trade network map; and all sixty nations using the system r
 player. It is not the *game* alpha — politics and separatist movements are deliberately switched
 off, because isolating the economy is what makes the answers trustworthy.
 
-**The live stage is IDEATION on the economy.** Read `docs/design/economy-ideation.md` first — it is
-the idea bank, 84 entries and growing, and nothing in it has been judged. Two older notes feed it and
-are no longer authoritative: `resources.md` (the 6 September conversation) and `resources-v2.md` (a
-simplification pass that was written before ideation and design were separated, and which therefore
-cut ideas before they had been recorded anywhere — everything it removed is restored in the ideation
-document).
+**The live stage is IDEATION, and it runs in seven rounds set out in `docs/design/IDEATION-PLAN.md`.
+Read that plan before you open anything else in this folder — it says which round is live.** As of
+9 September 2026:
 
-Ideation ends when a session can read that document end to end and the only new entries are
-recombinations of ones already there — **and when I say so.** Then, and not before, we write
-`economy-design.md`.
+| Round | Where it stands |
+|---|---|
+| **1. Secessionist movements** | ✅ Closed 7 September 2026 — 53 rulings, five scenarios traced, findings A–F |
+| **2. Military conquest** | ✅ Closed 9 September 2026 — 31 rulings, 121 ideas, all six scenarios traced. **Findings B, C and D are on the Control Board waiting for Aaron** |
+| **3. Politics** | ◀ **NEXT.** Round 2 handed it two things: a movement that changes what it wants when it is strung along, and the government's answer to *Expand* and *Reconquer* beside the four release valves |
+| **4. Economy** | 84 entries banked and **parked**. This round *finishes* the economy against what rounds 1–3 demand of it, rather than starting it |
+| **5–7. Diplomacy · Events · The things above** | Stubs with full inboxes. Not open |
+
+**The economy is round 4, not the live round.** `economy-ideation.md` is the idea bank and nothing in
+it has been judged; two older notes feed it and are no longer authoritative — `resources.md` (the
+6 September conversation) and `resources-v2.md` (a simplification pass written before ideation and
+design were separated, which therefore cut ideas before they had been recorded anywhere; everything
+it removed is restored in the ideation document).
+
+**A round ends when a session can read its document end to end and the only new entries are
+recombinations of ones already there, when all of its scenarios have been traced — and when I say
+so.** Then, and not before, that system gets its `<system>-design.md`.
