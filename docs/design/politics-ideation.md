@@ -360,29 +360,51 @@ others, and that asymmetry disappears.** Adding back the dead centre alone — n
 because the centre is closer to all eight corners than any corner is to its nearest neighbour.
 **Recommended and put to Aaron; not yet ruled.**
 
-### P2 — The twenty-seven positions, named, with their real-world analogues
+### P2 — RULED: eight parties at the corners, named for real parties
 
-**Superseded in session.** This began as eight corners; **Aaron took the full twenty-seven with the
-middles in**, and asked for the table as a standalone reference containing **real-world examples
-only** — no movements, no nations, nothing from the game. It is
-**`docs/design/political-spectrum.md`**, written 9 September, and it is the authority. Nothing is
-restated here.
+**Ruling 1 (D185), 9 September.** Three axes — **economy** (collective · **neo-liberal**), **morals**
+(conservative · progressive) and **government power** (authoritarian · libertarian), the third being new.
+**Two ends per axis, so eight parties, one at each corner of the cube.** Each is named for a **real
+political party**, seven of the eight American, because what a player meets on a ballot is a party and
+not an ideological family — Aaron's reason, and the correct one.
 
-**Two things the table settles that were open questions in §2.**
+| # | Economy | Morals | Power | Party |
+|---|---|---|---|---|
+| 1 | collective | conservative | authoritarian | **Union Party** (US, 1936) |
+| 2 | collective | conservative | libertarian | **People's Party** (US, 1892) |
+| 3 | collective | progressive | authoritarian | **Communist Party** |
+| 4 | collective | progressive | libertarian | **Industrial Workers of the World** (US, 1905) |
+| 5 | neo-liberal | conservative | authoritarian | **America First Party** |
+| 6 | neo-liberal | conservative | libertarian | **Constitution Party** (US, 1992) |
+| 7 | neo-liberal | progressive | authoritarian | **Technocracy Incorporated** (US, 1933) |
+| 8 | neo-liberal | progressive | libertarian | **Libertarian Party** (US, 1971) |
 
-1. **A collective economy with conservative morals now has a home** — three of them, at positions
-   1, 2 and 3. That combination did not exist on the old two axes, and the note in the register
-   asking for a party that is economically pro-union and socially traditional is answered by the
-   *axis*, not by adding an alignment. The seventh-alignment request is resolved by being made moot.
-2. **The market-liberal and technocratic corners now exist** — positions 21, 25 and 27. Those were
-   the two positions with nowhere to sit, and they are on opposite faces of the same cube, which is
-   why one extra alignment could never have housed both.
+**The geometry, and it is free.** Each corner borders exactly three others — the ones it shares two
+axes with — and disagrees with exactly one on everything. The opposed pairs are **1–8, 2–7, 3–6 and
+4–5**. No rule has to assert who can coalition with whom; the shape already says.
 
-**What re-pointing costs, and it is the real bill.** The map is seeded from 2024 county results as
-Republican, Democrat and other. Under twenty-seven positions **neither major party maps across**: a
-Republican in Alabama and a Republican in Vermont are not in the same cell, so both must be
-distributed by cultural region the way the small "other" share already is. **Authoring, not
-engineering**, and the largest single job in this change.
+**The twenty-seven are parked, not discarded** (Aaron: *"save this for later"*). They are the space the
+eight are the corners of, and the reason for parking is the open problem he named: how twenty-seven
+positions reconcile with the few parties that actually appear in one nation. **`political-spectrum.md`
+and its register both survive intact.**
+
+**Two things the ruling settles that were open questions in §2.**
+
+1. **The seventh-alignment request is resolved by being made moot.** A collective economy with
+   conservative morals now exists (positions 1 and 2), which is what the register's
+   "pro-union but socially traditional" note was asking for. The axis was missing, not the alignment.
+2. **The market-liberal and technocratic corners now exist** (6, 7 and 8). Those were the two positions
+   with nowhere to sit, and they are *opposite* corners — which is why one added alignment could never
+   have housed both.
+
+**Recorded against the ruling, and not to be re-raised:** I recommended nine, the eight plus the dead
+centre, because with the middles gone every position borders exactly three others and Aaron's own
+asymmetry finding disappears, and because a board seeded from real American data is mostly moderate.
+**He chose eight twice, knowing the cost.** If coalitions later feel flat, the centre is three numbers.
+
+**What it still owes.** The 2024 county seed gives Republican, Democrat and other; **neither major
+party maps onto a corner**, so both must be split across the eight by cultural region. Authoring, not
+engineering, and the largest single job in the change. **Not started.**
 
 ### P3 — Three words for three things
 

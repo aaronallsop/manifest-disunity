@@ -3243,3 +3243,67 @@ production rather than income; and the cap-and-cooldown arithmetic showed that r
 
 **The one place this design asks for machinery that does not exist** is ruling 30's mutable movement
 verb. Everything else re-points something already built. Handed to round 3, which opens next.
+
+---
+
+### D185 — Politics is rebuilt on three axes; eight parties are taken and the twenty-seven are parked, 9 September 2026
+
+**What was observed.** Round 3 opened by asking whether to add a seventh political alignment —
+Libertarianism — which Aaron had raised three separate times while marking up the Movement Register.
+Checking the build first showed the cost was far lower than the ideation plan had assumed: the code is
+genuinely table-driven, the number six appears only in comments, and ideology ids are literals in three
+files. A seventh would have cost two numbers and a colour, plus re-weighting twenty authored region
+recipes.
+
+**Aaron rejected the question rather than answering it, and was right to.** The two alignments with
+nowhere to sit — a market-liberal one and a technocratic one — were homeless for *opposite* reasons on
+the *same* missing dimension. The built social axis runs liberal to traditional, which is a claim about
+values; neither of those two is a claim about values. Both are claims about **who may compel whom**.
+One alignment could never have housed both, because they sit at opposite ends of an axis that did not
+exist.
+
+**Decided: three axes — economy, morals, government power.** The third is new and it is the one most
+spectrums leave out. **The economic axis's high end is *neo-liberal*, not *capitalist*** — Aaron's
+terminology, and the word the game uses.
+
+**A correction made in session, and it mattered.** Aaron's first enumeration listed nine positions and
+tied government power to morals: every conservative authoritarian, every progressive libertarian. That
+makes the third axis a copy of the second, and it deletes exactly the two positions that motivated
+adding it. Three positions per axis gives **twenty-seven**; two gives **eight**.
+
+**Aaron's own finding, kept because it is good and falls out of the geometry rather than a rule:**
+extremism is structurally isolating. On the full cube a corner borders three positions, an edge four, a
+face-centre five, and the dead centre six. Nobody has to write that down and it can never drift out of
+sync with anything.
+
+**Decided: the eight corners, each named for a real political party.** Seven of the eight are genuine
+American parties or organisations — the Union Party of 1936, the People's Party of 1892, the Communist
+Party, the Industrial Workers of the World, the America First Party, the Constitution Party, Technocracy
+Incorporated and the Libertarian Party. Named parties rather than ideological families because what a
+player meets is a ballot, not a taxonomy. **That was Aaron's reason and it is the correct one.**
+
+**The alternative rejected, and its cost, recorded so it is not re-argued.** I recommended **nine** —
+the eight corners plus the dead centre — on two grounds: with the middles gone every position is a
+corner bordering exactly three others, so Aaron's own asymmetry disappears and all eight play the same;
+and a country seeded from real American voting data is mostly moderate, so a set with no centre makes
+every citizen an extremist on all three axes. **Aaron chose eight, twice.** The cost is real and is
+accepted knowingly. If the board later feels shrill or the coalitions feel flat, the dead centre is the
+first thing to add back and it costs three numbers.
+
+**The twenty-seven are parked, not discarded.** Aaron: *"Can we save this for later."* They are the map
+of the space the eight are the corners of, and the open problem he named — how twenty-seven positions
+reconcile with the handful of parties that actually show up in a nation — is the reason. Both the
+reference document and the editable register survive intact.
+
+**What this still owes.** The map is seeded from 2024 county results as Republican, Democrat and other.
+Under this scheme **neither major party maps across** — a Republican in Alabama and one in Vermont are
+not the same party — so both must be split across the eight by cultural region, the way the small
+"other" share already is. That is authoring rather than engineering, and it is the largest single job in
+the change. **It has not been started and nothing has been built.** No code, data or `DESIGN.md` was
+touched.
+
+**Where it lives.** `docs/design/political-spectrum.md` is the twenty-seven with real-world analogues;
+the registers are at
+`https://claude.ai/code/artifact/e2ebf889-7ab9-4448-a707-60203b4c9605` (twenty-seven, collection
+`positions`) and
+`https://claude.ai/code/artifact/bc72d871-db3b-4e2d-8363-6909e491abe7` (eight, collection `parties`).
