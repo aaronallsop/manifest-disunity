@@ -1109,7 +1109,7 @@ they cannot leave by an opponent willing to bleed. Ruling 15 answers it without 
 its weariness climb into an election it then loses, and a new government is a new person. Refusal is
 survivable for a while and not indefinitely, which is the correct shape.
 
-**C82 — The civil war is a consequence of SUCCESS, not of the fight, and the two must not be merged.**
+**C82 — The civil war is a consequence of SUCCESS, not of the fight, and the two must not be merged.** **✅ CONFIRMED by Aaron, 9 September — ruling 41.**
 *Default taken, flagged rather than asked.* Ruling 14's two outcomes are about beating the defender.
 The existing civil war — triggered when what you swallowed flips your leading ideology or exceeds 15%
 of what you held — is about what winning does to *you*, and it keeps its own three outcomes. **They
@@ -1203,7 +1203,7 @@ standing facts and none needs new machinery: **a live trade deal**, **a granted 
 **recognising them** *(measured as worth more than everything else combined)*, and **being in a
 coalition together rather than on opposite sides of one**. *Proposed, not ruled.*
 
-**C92 — The floor in (d) needs one word: does it freeze the state, or only the floor?**
+**C92 — The floor in (d) needs one word: does it freeze the state, or only the floor?** **✅ CONFIRMED by Aaron, 9 September — ruling 41.**
 *Default taken, flagged rather than asked.* Two Texans at Hostile can still declare war, sign a
 cease-fire and sign a peace treaty — the floor stops them **descending below Hostile**, it does not
 stop them moving. So a Dallas–Houston peace treaty is possible, it runs its term, and when it lapses
@@ -1860,7 +1860,7 @@ live: **soldiers hold an occupied county quiet but slow its acceptance, because 
 boots does not become you.** Garrison hard and it never becomes yours; garrison lightly and it may
 settle, or it may rise. *Another buy-now-pay-later, which is the shape this game keeps arriving at.*
 
-**C109 — The comparison runs live, and drops out when there is nobody to compare to.** *Default taken,
+**C109 — The comparison runs live, and drops out when there is nobody to compare to.** **✅ CONFIRMED by Aaron, 9 September — ruling 41.** *Default taken,
 flagged rather than asked.* Quality of life is measured against **the nation the ground was taken
 from, as things stand now** rather than as they stood on the day it was taken — so a county grows
 gladder it left if its old country declines, and more resentful if the old country prospers. **If that
@@ -1960,7 +1960,7 @@ ally who shields you from your betrayal catches all five of the hostilities it g
 with a treaty-breaker is ruinously expensive**, so the shield is real but nobody will hold it for
 you twice.*
 
-**C113 — Any breach is a breach.** *Default taken, flagged rather than asked.* Ruling 15 gave a treaty
+**C113 — Any breach is a breach.** **✅ CONFIRMED by Aaron, 9 September — ruling 41.** *Default taken, flagged rather than asked.* Ruling 15 gave a treaty
 four levers, so there are four ways to break one — stop the repayments, tear up the forced trade, take
 the ground back, or attack. **All four trigger ruling 28 identically.** A graduated version would need
 a severity scale nobody has asked for, and ruling 11 says the player-facing layer stays simple. *One
@@ -2050,7 +2050,7 @@ Proposing a cease-fire or a treaty costs your turn. **Becoming Hostile costs not
 not do it.** And **being at war costs no action at all** — a ten-turn war that ate ten turns of
 decisions would be the whole game rather than a thing happening inside it.
 
-**C117 — Answering a movement's demand is free; obeying costs what the obeyed act costs.** *(C84,
+**C117 — Answering a movement's demand is free; obeying costs what the obeyed act costs.** **✅ CONFIRMED by Aaron, 9 September — ruling 41.** *(C84,
 now taken.)* Answering a card already does not use a turn, and a nation holding four movements would
 otherwise lose four turns saying no. **Implementing commits you to an act that costs whatever that act
 costs** — and declaring a war is an action.
@@ -2065,7 +2065,7 @@ guard against.** *Kept visible rather than deleted: this is a tunable that was i
 default, and then found unnecessary within a day — which is the cheapest possible version of that
 mistake and worth being able to see.*
 
-**C119 — `occupied-movement` applies during the war, and the transit ban still applies too.**
+**C119 — `occupied-movement` applies during the war, and the transit ban still applies too.** **✅ CONFIRMED by Aaron, 9 September — ruling 41.**
 *(§8 q12, now taken.)* The flag is about **who the locals are**, which does not wait for a treaty. The
 prohibition on granting that ground to anyone else as a trade passage is about **the war**, which does.
 *The two answers differ because the two rules have different reasons, and ruling 13 states both.*
@@ -2288,7 +2288,7 @@ lands on is not chosen. **Either the compulsory submission is free, or every cea
 both sides a turn they did not spend.** *Recommendation: free, because C116's reason for charging was
 that proposing is a choice, and this one is not.*
 
-**C128 — who defends is fixed at the declaration and does not change hands.** *Default taken, flagged.*
+**C128 — who defends is fixed at the declaration and does not change hands.** **✅ CONFIRMED by Aaron, 9 September — ruling 41.** *Default taken, flagged.*
 A war has one declarer (ruling 29) and that nation is the attacker for as long as the war lasts,
 through any number of cease-fires — **even if it is losing, and even if the defender has taken more
 ground than it lost.** The alternative, reassigning the role by who currently holds what, would require
@@ -2578,6 +2578,23 @@ mechanism applies at all**, and it decides whether Wary is an exit or a trap. *A
 
 ---
 
+**Ruling 41 — the seven outstanding defaults are confirmed as written. (Aaron, 9 September 2026:
+"all fine".)** **Round 2 is now closed with nothing outstanding that is Aaron's.**
+
+Every default taken by a session rather than ruled by him, put to him as one list and confirmed
+unchanged: **C82** the civil-war roll and the attack roll stay separate and stack · **C92** the
+permanent floor freezes the floor and not the relationship · **C109** conquered people compare
+themselves to their old country as it stands now · **C113** any of the four ways to break a treaty
+costs the same · **C117** answering a movement is free and obeying costs what the act costs ·
+**C119** `occupied-movement` applies from the day the ground is taken while the transit ban waits for
+the war to end · **C128** the attacker stays the attacker for the life of the war.
+
+*Recorded as a ruling rather than as seven tags because it is one act by Aaron and because the record
+should show that these were taken as defaults first and confirmed afterwards, not ruled from the
+start.*
+
+---
+
 ## 7. The scenarios this round has to be able to tell
 
 Traced at the close, per the lesson round 1 learned: **tracing scenarios found contradictions that
@@ -2600,6 +2617,14 @@ fifty-three rulings did not.**
 ---
 
 ## 7a. The close — all six traced, 9 September 2026
+
+> **ROUND 2 IS FULLY CLOSED, 9 September 2026 — 41 rulings.** The trace below produced seven findings;
+> **A, E and G were never Aaron's**, and **B, C and D were put to him and are now answered** by
+> rulings 32 through 40, with ruling 41 confirming the seven defaults that had been taken without
+> asking. **Nothing in this round is waiting on Aaron.** What remains is owned elsewhere: **finding A**
+> by whoever builds ruling 26, **finding E** by round 4, **finding G** by round 3, and **C130** by the
+> design stage. *The nine rulings made after the close are gathered under "The close's own findings,
+> ruled after it" in §6.*
 
 **Five narrate. One stalls, on a gap that was already recorded and owned.** Round 1 closed with three
 of five narrating and two stalling, so this is the better result — but the tracing did its job again
