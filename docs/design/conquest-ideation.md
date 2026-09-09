@@ -2045,10 +2045,15 @@ now taken.)* Answering a card already does not use a turn, and a nation holding 
 otherwise lose four turns saying no. **Implementing commits you to an act that costs whatever that act
 costs** — and declaring a war is an action.
 
-**C118 — Each cease-fire extension is shorter than the last.** *(C74, now taken.)* War's costs run
+**C118 — ~~Each cease-fire extension is shorter than the last.~~ SUPERSEDED BY RULING 34,
+9 September.** *(C74, taken and then removed the same day.)* The reasoning was: war's costs run
 throughout, so stalling already hurts; a window that narrows each time it reopens makes the
-negotiation **converge** rather than merely become expensive. It turns a possible exploit — two
-nations countering each other for ever — into rising tension.
+negotiation **converge** rather than merely become expensive. It turned a possible exploit — two
+nations countering each other for ever — into rising tension. **Ruling 34 removes the exploit at
+source by allowing exactly one round of offers, so there is nothing left for a shrinking window to
+guard against.** *Kept visible rather than deleted: this is a tunable that was invented, taken as a
+default, and then found unnecessary within a day — which is the cheapest possible version of that
+mistake and worth being able to see.*
 
 **C119 — `occupied-movement` applies during the war, and the transit ban still applies too.**
 *(§8 q12, now taken.)* The flag is about **who the locals are**, which does not wait for a treaty. The
@@ -2248,7 +2253,7 @@ of **terms nobody would accept**, which is a sentence the other player can read,
 wall. *This is a better version of ruling 6 than ruling 6 had.*
 
 **⚠ C125 — the defender's own submitted treaty is almost certainly the counter, and that would delete
-a mechanic rather than add one.** *Claude's reading, unruled — question 1 below.* If both sides table
+a mechanic rather than add one.** **Ruled — see ruling 34 below.** If both sides table
 terms blind and the defender refuses the attacker's, **the defender's own treaty is already on the
 table** and the attacker simply answers it. That gives a complete two-step — defender chooses, then
 attacker chooses, then Hostile — **and it means the separate counter-offer step no longer needs to
@@ -2279,6 +2284,38 @@ through any number of cease-fires — **even if it is losing, and even if the de
 ground than it lost.** The alternative, reassigning the role by who currently holds what, would require
 the game to judge who is winning, which is the thing ruling 22 was built to avoid. *One line to
 correct.*
+
+---
+
+**Ruling 34 — the defender's own tabled treaty is the counter, and there is exactly one round of
+offers. (Aaron, 9 September 2026, accepting the recommendation.)** C125 closes.
+
+**The whole negotiation, end to end:**
+
+| | |
+|---|---|
+| **Turn before expiry** | **Both nations table a treaty.** Compulsory (ruling 33) |
+| **Then** | **The defender** accepts the attacker's, or refuses |
+| **On a refusal** | **The defender's own treaty is already on the table.** It is promoted automatically — there is no second submission and no meeting in the middle |
+| **Then** | **The attacker** accepts it, or refuses |
+| **If neither accepts** | **Hostile** — ruling 8's default, untouched |
+
+**What this deletes, which is the point of it.** C118 made each cease-fire extension shorter than the
+last, and existed solely to stop two nations countering each other for ever. **One round of offers
+makes that impossible, so the rule and its tunable are gone.** *A ruling that removes a number Aaron
+would otherwise have to tune is worth more than one that adds one.*
+
+**⚠ The cost, stated because it was accepted with open eyes.** The end of a war is now **brisk**. Two
+sets of terms, two answers, done — no haggling, no splitting the difference, no drawn-out summit. A
+war ends the way a sealed auction ends rather than the way a negotiation does. *Aaron was told this
+before ruling and took it. If negotiation-as-negotiation is ever wanted, this is the ruling to
+reopen, and the thing to add back is a middle step rather than C118's window.*
+
+**C129 — this makes the two envelopes the whole drama, which raises the stakes on how they are
+written.** With no second chance, a treaty tabled too greedily is not a bargaining position that gets
+walked back — it is a war that continues. *That is a good pressure, and it is the argument for C126's
+blind submission: if you can see the other side's terms before writing your own, there is no risk in
+the envelope at all.*
 
 ---
 
