@@ -1695,6 +1695,76 @@ production or three.** A three-Area strike is three times the raid for the same 
 
 ---
 
+**Ruling 24 — one Area per attack, and the per-turn cap and the cooldown both go. (Aaron,
+9 September 2026.)**
+
+> *"One area per attack, and I want to remove the 3 per turn and cooling down period. If a nation has
+> the money and manpower they can attack and organize as big of an attack as they want."*
+
+**An attack names one place.** Ruling 12's *"I decide I want to invade / annex **an area**"* is taken
+literally, and the stated percentage covers a place rather than a package. **The absolute cap of three
+Areas a turn and the four-turn wait between annexations are both removed**; what a nation can do is
+bounded by **money, manpower and reach** rather than by a rule that says no.
+
+---
+
+#### ⚠ FINDING — this makes conquest 67% FASTER, not slower, and the reason matters
+
+**Measured against the running game, 9 September.**¹
+
+| | Rate |
+|---|---|
+| **Today** — a burst of **3** Areas, then a **4-turn** wait | **3 Areas per 5 turns = 0.6 a turn** |
+| **Under ruling 24** — 1 Area, every turn, no wait | **1.0 a turn** |
+
+**So the tightening is smaller than the loosening.** "One per attack instead of three" sounds like a
+two-thirds cut and is not one: **one action per turn already capped attacking at one strike a turn**,
+so the budget of three was never reachable in the first place — it was a cap on a thing the action
+budget had already capped harder. **The cooldown was the device that actually throttled the long run,
+and it is the one being removed.** Twenty turns of war now takes twenty Areas where it used to take
+twelve.
+
+**I support the change anyway, and the reason it is safe is not the obvious one.** It is not safe
+because one-per-attack is stricter. It is safe because **the brake has moved from the rulebook to the
+electorate.**
+
+**War weariness is a stock of its own.** It rises with wars fought and with ground taken, it falls
+**only** with peace, and two built systems read it: **crises trigger over the stocks**, and an
+**election** gives the population one swing against an incumbent built from four things, of which
+weariness is one. *A nation attacking every single turn drives its own weariness up without pause and
+is removed by its own voters.*
+
+**That is ruling 1 exactly.** The limit on conquest stops being a rule that refuses you and becomes a
+country that will not carry it. **A player who is stopped by the cooldown learns nothing; a player who
+is stopped by an election has been taught what the game is about.** *The device Aaron removed was the
+kind this game keeps replacing with consequences, and this is the same move made once more.*
+
+*And the anti-snowball history is not endangered, because it was never about this number.* Wyoming's
+27 Areas becoming 1,167 in nine turns happened under a **relative** cap — a multiple of your own size,
+which compounds. The absolute cap replaced it. **An absolute cap of one, arriving by way of the action
+budget, cannot compound at all.**
+
+*¹ `js/tunables.js`: `annex.budgetAreas` = 3, `annex.cooldownTurns` = 4. Verified 9 September.*
+
+---
+
+**⚠ C104 — Ruling 24 makes the raid in C102 unbounded in time, and that moves the measurement from
+"should be checked" to "must be checked before alpha".** Under the cooldown, attacking to deny rather
+than to win was available in a burst once every five turns. **With no cooldown it is available every
+turn, for ever.** The whole question is whether the price of an attack — **$250M per Area plus $400 a
+head**¹ — exceeds a turn of that Area's output. If it does not, a nation can profitably switch off a
+neighbour's best county every turn indefinitely, and nothing in the rules stops it. *Stage 3's
+measurement; recorded here because ruling 24 is what made it urgent.*
+
+**C105 — Two brakes were not named and are kept by default.** *Flagged rather than assumed.* Ruling 24
+removes the cap and the cooldown. It does not mention **Reach** — the bounded search out from your seat
+of government that prices distance and refuses a move outright past a limit — or the **four-times-your-
+size shield**, which makes a neighbour more than 4× your population *and* GDP untouchable. **Both
+survive.** *But see the question below: the shield sits awkwardly with the sentence that justified this
+ruling.*
+
+---
+
 ## 7. The scenarios this round has to be able to tell
 
 Traced at the close, per the lesson round 1 learned: **tracing scenarios found contradictions that
@@ -1784,7 +1854,15 @@ Asked of Aaron in order, one at a time. Answered ones move up into §6 as ruling
 14. **What does a movement do when you decline its demand, and what does "wait" cost while it
     waits?** (C89.) Ruling 16 says never-delivering is worse than declining, and does not price
     either.
-15. **Does an attack target ONE Area or up to three?** *(Found by the closing review, 8 Sep.)*
+15. ~~**Does an attack target ONE Area or up to three?**~~ **Answered — ruling 24. One.** *And the
+    per-turn cap and the four-turn cooldown are removed with it, which makes sustained conquest 67%
+    faster rather than slower — see the finding under ruling 24.*
+15b. **Does the four-times-your-size shield survive ruling 24?** *(Raised by ruling 24, 9 September.)*
+    (C105.) It is called "the only thing that has ever stopped a purchase" in §1a, and it sits
+    awkwardly beside the sentence that justified removing the other two brakes. **Kept by default,
+    asked rather than assumed.**
+
+*Superseded text of 15, kept for the record:* **Does an attack target ONE Area or up to three?** *(Found by the closing review, 8 Sep.)*
     Ruling 12 says *"I decide I want to invade / annex **an area**"*, singular. What is built takes up
     to **three Areas a turn**, and that cap is an anti-snowball device with a measured history — a
     relative cap once took Wyoming from 27 to 1,167 Areas in nine turns. If an attack is one Area,
