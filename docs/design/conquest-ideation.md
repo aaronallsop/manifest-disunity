@@ -1991,6 +1991,66 @@ somewhat higher. ² `js/relations.js`. Both verified 9 September.*
 
 ---
 
+**Ruling 29 — a nation may declare war straight from Peace, and the reason is the whole ladder.
+(Aaron, 9 September 2026.)**
+
+> *"Yes — because there is no treaty. They are just at peace."*
+
+**That sentence is the principle the entire justification ladder was missing.** C72 ranked the five
+states by how defensible an attack from each one was, and ranked them by *feel*. Aaron has given the
+rule underneath: **what you are charged for is breaking a promise, and Peace is not a promise. It is
+the absence of a quarrel.**
+
+| You attack from | Because | It costs |
+|---|---|---|
+| **Hostile** | there was a quarrel, dated and on the record | **least** |
+| **Peace** | there was no promise — only no quarrel | **your standing**, and it scales with how much you had *(ruling 29)* |
+| **Peace-treaty** | **you made a promise and broke it** | **every neighbour but your allies turns Hostile** *(ruling 28)* |
+| **Cease-fire** | you made that promise while the guns were quiet | **the same, and worse for when you did it** |
+
+**So the ladder is priced by whether you gave your word and how recently** — not by a table of
+severities somebody invented. *Two rungs are consequences the game already computes and two are ruling
+28. Nothing here is a rule for its own sake.*
+
+**And it leaves the surprise attack in a game about a country coming apart**, which it should. The
+alternative — forcing a pair through Hostile before War — would have been a fourth hard refusal in a
+system from which rulings 24 and 25 have just removed three. *The session's pattern held: walls become
+prices.*
+
+**C115 — Hostile is now demonstrably worth manoeuvring into**, which is what C72 claimed and could not
+prove. Standing lost to conquest **scales with the standing you had**, so a well-regarded nation
+attacking a friend pays more than a pariah attacking an enemy. **Spending two years being visibly
+provoked makes the eventual war cheaper.** A player who works that out is using diplomacy to make a war
+affordable, which is ruling 1 read backwards and is the most interesting thing the six states do.
+
+---
+
+### Four defaults taken rather than asked, 9 September
+
+*Each is one line to overturn. Recorded here so they are visible rather than buried.*
+
+**C116 — Changing state costs your action; being at war does not.** Declaring war costs your turn.
+Proposing a cease-fire or a treaty costs your turn. **Becoming Hostile costs nothing, because you did
+not do it.** And **being at war costs no action at all** — a ten-turn war that ate ten turns of
+decisions would be the whole game rather than a thing happening inside it.
+
+**C117 — Answering a movement's demand is free; obeying costs what the obeyed act costs.** *(C84,
+now taken.)* Answering a card already does not use a turn, and a nation holding four movements would
+otherwise lose four turns saying no. **Implementing commits you to an act that costs whatever that act
+costs** — and declaring a war is an action.
+
+**C118 — Each cease-fire extension is shorter than the last.** *(C74, now taken.)* War's costs run
+throughout, so stalling already hurts; a window that narrows each time it reopens makes the
+negotiation **converge** rather than merely become expensive. It turns a possible exploit — two
+nations countering each other for ever — into rising tension.
+
+**C119 — `occupied-movement` applies during the war, and the transit ban still applies too.**
+*(§8 q12, now taken.)* The flag is about **who the locals are**, which does not wait for a treaty. The
+prohibition on granting that ground to anyone else as a trade passage is about **the war**, which does.
+*The two answers differ because the two rules have different reasons, and ruling 13 states both.*
+
+---
+
 ## 7. The scenarios this round has to be able to tell
 
 Traced at the close, per the lesson round 1 learned: **tracing scenarios found contradictions that
@@ -2045,8 +2105,9 @@ Asked of Aaron in order, one at a time. Answered ones move up into §6 as ruling
 7. ~~**Subject and Allied**~~ **Answered — ruling 27. Allied taken, Subject deferred to round 5.**
    Allied is kept thin: it spreads hostility rather than war, lends soldiers by a lever, and permits
    but never compels joining a fight. **Ruling 4's fifth cause can now fire.**
-8. **Can a pair go from Peace straight to War**, or does something have to happen first? C72 assumes
-   yes-but-expensively.
+8. ~~**Can a pair go from Peace straight to War?**~~ **Answered — ruling 29. Yes**, *"because there
+   is no treaty — they are just at peace."* That sentence gives the justification ladder the principle
+   it was missing: **you are charged for breaking a promise, and Peace is not one.**
 9. ~~**Does hostility cool on time, or only when its cause goes away?**~~ **Answered — ruling 17,
    and in a third way.** **Time**, always running, at a **speed the causes set**; a new sixth state,
    **Wary**, between Hostile and Peace; and the reunification contests are a **permanent floor** at
@@ -2096,5 +2157,5 @@ Asked of Aaron in order, one at a time. Answered ones move up into §6 as ruling
     relative cap once took Wyoming from 27 to 1,167 Areas in nine turns. If an attack is one Area,
     the cap changes meaning; if it is three, the percentage covers a package rather than a place.
     Neither is assumed.
-16. **Does answering a demand cost your one action?** (C84.) My proposal, unruled: answering is free
-    because it is a screen, obeying costs whatever the obeyed act costs.
+16. ~~**Does answering a demand cost your one action?**~~ **Default taken — C117.** Free to answer,
+    costly to obey.
