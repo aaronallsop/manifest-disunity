@@ -91,12 +91,16 @@ constrained to most:
 | | What it means |
 |---|---|
 | **Peace** | You can do anything with the nation |
+| **Wary** | *Added by ruling 17.* Trade and dealings are permitted, but guarded. **The step every cooling grudge passes through on its way back to Peace** |
 | **Peace-treaty** | You signed a treaty with stipulations — trade, territory, repayment. **Breaking it has a huge impact** |
 | **Hostile** | Things have happened that bring you close to war without being at war. It has impacts |
 | **Cease-fire** | **All the impacts of war, but you cannot attack** |
 | **War** | Trade is prohibited and you may attack |
 | **Subject** | *Deferred by Aaron — later* |
 | **Allied** | *Deferred by Aaron — later* |
+
+*Ruling 2 said seven states and named five live ones. **Ruling 17 makes it six live states and eight
+in total.** Everything below written before 9 September says "five states"; read it as six.*
 
 **Why this is stronger than the thing it replaced.** I proposed a war object. What Aaron ruled is a
 *relationship*, which is the same shape as everything else in this game that has worked: recognition
@@ -786,7 +790,9 @@ ruling 6 and is deliberate.
 |---|---|---|
 | **Peace** | the five causes of ruling 4 | Hostile |
 | **Peace** | one nation declaring | War |
-| **Hostile** | **time** | Peace |
+| **Hostile** | **time** | ~~Peace~~ **Wary** *(ruling 17)* |
+| **Wary** | **time** | **Peace** *(ruling 17)* |
+| **Wary** | the five causes of ruling 4 | back to Hostile *(ruling 17)* |
 | **Hostile** | one nation declaring | War |
 | **War** | **both agreeing** | Cease-fire |
 | **War** | one side ceasing to exist | — |
@@ -891,6 +897,18 @@ Greater Idaho never stop being hostile is not obviously wrong — it is the Kash
 question is whether ruling 7's clock should decay on *time* or on *the cause going away*, and they
 give different games.** Recorded here rather than decided, and it is the first thing the closing trace
 of this round must run.
+
+**✅ CLOSED by ruling 17 (9 September), and by a third answer neither option contained.** The clock
+runs on **time** and always runs; a live cause **slows it** rather than stopping it. So the loop
+cannot lock a pair in place — it can only make them cool slowly. And the brake weakens on its own,
+because movement growth is geometric: each movement closes a fraction of the gap to **its own
+ceiling** every turn,¹ so a movement that is being fed grows fastest when it is young and barely at
+all once it has filled up. **Hostility over a separatist movement is therefore hardest to escape when
+the movement is new, and eases as the situation becomes chronic** — which is the right curve, and
+nobody designed it. See ruling 17 for what replaced this finding.
+
+*¹ Verified in `DESIGN.md` 9 September: world-turn phase 3, plus the per-movement `growthCap`
+(0.25 for a nuisance, 0.60 for a country in waiting) and `growthRate` tunables.*
 
 ---
 
@@ -1084,6 +1102,167 @@ this whole round exists to tell, so the two rolls should stay separate.
 
 ---
 
+### THE SPINE, continued — how a grudge ends
+
+**Ruling 17 — a grudge fades on time, there is a sixth state between Hostile and Peace, and the
+reunification rivalries never fade at all. (Aaron, 9 September 2026.)**
+
+> *"I think that grudge should fade over time. Maybe there is another state — wary — in between
+> hostile and peace — so you can still trade with them and interact and they will make a trade with
+> you but are wary and cautious. I think though having a trade deal and other things could increase
+> how fast that state changes. but like you said if there is a growing movement or something else
+> that would slow down how fast they get to peace.*
+>
+> *I also think that all five texas states start hostile and they will all stay feeling that way at a
+> minimum. Same with California, and the other city states trying to reunify the USA. That way it
+> creates impositions and challenges. I think Austin would be wiped out pretty quickly because they
+> have no trade possibility then, but that is ok with me."*
+
+**Four parts, and the third is one I did not offer.**
+
+**(a) The clock is real and it always runs.** I proposed that hostility should end only when its
+cause cleared, with Aaron's clock as a cooling-off period afterwards. **Rejected.** Time is what ends
+a grudge.
+
+**(b) There is a sixth state, and it is called Wary.** It sits between Hostile and Peace. **Trade and
+dealings are permitted** — the other nation will make a deal with you — but guarded. A cooling grudge
+passes *through* it rather than jumping to Peace.
+
+**(c) The causes set the speed of the clock rather than gating it.** A trade deal and other good
+standing make a pair cool **faster**; a growing movement or another live cause makes them cool
+**slower**. *This is the part I missed, and it is better than either option I put in front of him.* I
+framed the question as cause **or** time. The answer is **time, at a speed the causes set** — which
+gets the permanent-rivalry feel where a cause is genuinely live, without a pair ever locking solid,
+and without the state machine ever blinking.
+
+**(d) The reunification contests are a floor, not a rate.** All five Texan successors stay Hostile
+with each other **at a minimum, permanently**. The same for the five Californias and for the eastern
+capitals contesting the Union. Cause 2 of ruling 4 does not slow a clock — it **removes** one. Hostile
+is the best those pairs can ever be, and the only way out is for the contest itself to end.
+
+**Why (b) and (c) together fix the flicker I warned about.** The objection to a pure clock was that a
+pair with a live cause would expire into Peace, be re-checked, and snap back to Hostile — a
+relationship that blinks rather than fades. Wary absorbs it: the step down from Hostile is to a
+guarded peace, so even a pair that sours again moves Hostile → Wary → Hostile, which reads as *a
+relationship that keeps going wrong* rather than as a machine glitching. And because a live cause
+slows the clock, most such pairs never reach the step in the first place.
+
+**And it makes Hostile leave a mark.** Under the old shape a quarrel ended and the world forgot. Now
+every quarrel is followed by a period in which the two nations deal with each other *cautiously* —
+which is the diplomatic equivalent of the dated, decaying memory list the game already keeps, and
+sits on top of it exactly the way ruling 5 said a state should.
+
+---
+
+**⚠ NAMING — Aaron wrote "weary"; recorded here as "Wary", and it is one word to correct.**
+From his own description — *"you can still trade with them and interact… but are wary and cautious"* —
+the sense is plainly *wary*: guarded, watchful. **"Weary" is already taken and heavily so:** war
+weariness is one of the five power stocks, it rises with fighting and falls only with peace, and both
+the crises and the elections read it. A diplomatic state called Weary would put two unrelated things
+under one word on the same screens. *Renamed on that ground alone. If Aaron meant the state to carry
+the tiredness sense, the word to use is something else again — Cold, Guarded, Cool — but not the one
+the stock already owns.*
+
+---
+
+**C90 — What Wary costs should be ruling 9's four costs at a fraction, and one of them at zero.**
+*Claude's proposal, unruled.* Ruling 9 gave Hostile four costs. The natural shape for Wary:
+
+| Ruling 9's cost of Hostile | In Wary |
+|---|---|
+| Their tolls on your goods rise | **Rise, less** |
+| What they demand before granting a crossing rises | **Rises, less** |
+| Movements matching them grow faster inside you | **Zero** — this is the cost that makes a quarrel self-sustaining, and Wary is the state a quarrel goes to *die* in |
+| Guarding the border costs more | **Costs more, less** |
+
+**The third row is the load-bearing one.** If Wary still accelerated the neighbour's movement inside
+you, it would keep its own cause alive and the pair would never reach Peace — the exact loop ruling 17
+was answering. *Setting it to zero is what makes Wary an exit rather than a second Hostile.*
+
+**C91 — "Other things" that speed the thaw are already built, and they are the same four the game
+uses everywhere.** Aaron named a trade deal and left the rest open. The candidates all exist as
+standing facts and none needs new machinery: **a live trade deal**, **a granted transit corridor**,
+**recognising them** *(measured as worth more than everything else combined)*, and **being in a
+coalition together rather than on opposite sides of one**. *Proposed, not ruled.*
+
+**C92 — The floor in (d) needs one word: does it freeze the state, or only the floor?**
+*Default taken, flagged rather than asked.* Two Texans at Hostile can still declare war, sign a
+cease-fire and sign a peace treaty — the floor stops them **descending below Hostile**, it does not
+stop them moving. So a Dallas–Houston peace treaty is possible, it runs its term, and when it lapses
+they land back on the floor rather than in Peace. **That makes a treaty between mirror images a thing
+you have to keep renewing rather than a thing that solves anything**, which is the right feel and it
+falls out of the floor without a rule of its own.
+
+**C93 — The floor ends when the contest does.** Ruling 19 of round 1 named the four contests and who
+may win each. If one claimant wins outright — or if a claimant ceases to exist — the contest is over
+and the floor goes with it. **A game where Dallas unites Texas is a game where the floor lifts.**
+*Proposed, not ruled, and it is the only exit (d) has.*
+
+---
+
+#### ⚠ FINDING — the accelerant stacks, and Texas is where it shows
+
+**Ruling 9's third cost now runs forever on thirty-three pairs, and on ten of them it runs four times
+at once.**
+
+Ruling 17(d) makes the five Texan successors permanently Hostile with each other — ten pairs. Ruling
+9.3 says hostility makes the movement matching the other nation grow faster inside you. But **A Free
+Texas is one movement with five claimants**, so for Dallas, the movement accelerated by its quarrel
+with Houston is *the same movement* accelerated by its quarrels with San Antonio, Austin and El Paso.
+
+**If the acceleration stacks per hostile neighbour, every Texan nation carries a permanently
+quadruple-accelerated separatist movement**, with a ceiling up to 0.60 against a secession threshold
+of 0.40. Areas cross the line, defect to whichever claimant they sit closest to, and **Texas reunifies
+itself by defection on a timer, the same way, in every game.** That is a script rather than a story.
+
+**Proposed default, flagged rather than asked: the acceleration does not stack — a movement takes the
+largest bonus among the hostile pairs that match it, not the sum.** One quarrel and four quarrels then
+differ in *kind* rather than by a factor of four, which is also the honest reading of ruling 9.3: the
+mechanism is "your quarrel feeds their friends inside you", and Dallas's four quarrels are with people
+who all want the same thing.
+
+**This is the first thing the closing trace of this round must run**, in place of the loop that ruling
+17 closed. Scenario 2 in §7 is where it will show.
+
+---
+
+#### ⚠ FINDING — Austin's death is accepted, but the reason Aaron gave is not the reason it happens
+
+**Aaron accepts that Austin may be wiped out early: *"they have no trade possibility then, but that
+is ok with me."* The acceptance stands. The mechanism needs correcting, because it is not a trade
+ban — it is transit dependence.**
+
+**Nothing yet ruled says Hostile prohibits trade.** Ruling 2 gives that prohibition to **War** alone,
+and ruling 9's four costs of Hostile are all *prices*, not bans. The proposal that a hostile pair
+cannot open or renew a deal is banked under §8 question 1 and **has never been ruled**.
+
+**What actually strangles Austin is the map.** Austin holds thirteen Areas in central Texas with **no
+ocean port and no international border** — it is one of the fourteen nations that reach the world only
+across a neighbour's ground.² Under 17(d) all four of those neighbours are permanent enemies. So
+ruling 9's first two costs — their tolls rise, and what they demand before granting a crossing rises —
+apply to **the whole of Austin's foreign trade, forever**. It does not need a ban. It needs a toll.
+
+**And the project has already answered a version of this question, in the other direction.** When a
+nation is unrecognised it loses bilateral trade with everyone who will not admit it exists — but the
+world market stays open to it at a smuggler's rate, **deliberately**, because *"refusing external
+trade outright would make an unrecognised landlocked state unplayable and would also be untrue — what
+an unrecognised country loses is the margin, not the trade."*³ **That is the precedent, and it says a
+diplomatic status should take the margin rather than the trade.** Austin's case is harder, because
+Austin has no world market of its own to be given a haircut on.
+
+**So the open question is now urgent and it jumped the queue: does Hostile permit trade at all?**
+Aaron's Austin sentence assumes it does not. The recognition precedent says it should. **The two
+answers give a very different Austin** — squeezed, or dead — and he has accepted the harsher one
+without being asked the question directly.
+
+*² Austin's encirclement by Dallas, Houston, San Antonio and El Paso is stated in round 1's second
+traced scenario and restated by Aaron. "No port and no international border" is plain geography for
+central Texas and is consistent with the measured count of fourteen transit-only nations, **but Austin
+has not been individually confirmed against that measured list** — one check for stage 3.*
+*³ `DESIGN.md`, recognition. Verified 9 September.*
+
+---
+
 ## 7. The scenarios this round has to be able to tell
 
 Traced at the close, per the lesson round 1 learned: **tracing scenarios found contradictions that
@@ -1135,9 +1314,15 @@ Asked of Aaron in order, one at a time. Answered ones move up into §6 as ruling
    Worth reopening earlier in the round rather than later.
 8. **Can a pair go from Peace straight to War**, or does something have to happen first? C72 assumes
    yes-but-expensively.
-9. **Does hostility cool on time, or only when its cause goes away?** Raised by the finding under
-   ruling 9 — the two give different games and ruling 7 says "a certain time", which the finding
-   shows can never arrive for a movement-driven quarrel.
+9. ~~**Does hostility cool on time, or only when its cause goes away?**~~ **Answered — ruling 17,
+   and in a third way.** **Time**, always running, at a **speed the causes set**; a new sixth state,
+   **Wary**, between Hostile and Peace; and the reunification contests are a **permanent floor** at
+   Hostile rather than a slow clock.
+9b. **Does Hostile permit trade at all?** *(Raised by ruling 17, 9 September, and it jumped the
+   queue.)* Nothing ruled says it does not — ruling 2 gives the trade prohibition to **War** alone and
+   ruling 9's four costs of Hostile are prices rather than bans. But **Aaron's acceptance of Austin's
+   death assumes a ban**, and the recognition precedent says a diplomatic status should take *the
+   margin, not the trade*. See the finding under ruling 17.
 10. ~~**When you win the roll, do you own the Area or are you standing on it?**~~ **Answered —
     ruling 13**, and in a third way: it is yours at once, shown paler on the map, and flagged by how
     you came by it. The treaty changes the **tenure**, not the border.

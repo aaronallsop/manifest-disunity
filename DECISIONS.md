@@ -3128,3 +3128,62 @@ nothing — and it sits *above* the 0.40 secession threshold, so every such Area
 anyway, which means the two should be set against each other rather than independently), and the
 **1.25×** repayment cap, whose basis — the winner's war costs or the loser's — is one word that has
 not been settled.
+
+---
+
+### D183 — A grudge fades on time at a speed the causes set, there is a sixth state called Wary, and the reunification rivalries never fade, 9 September 2026
+
+**Ruling 17 of round 2.** The Control Board card asked whether hostility cools on a clock or only when
+its cause goes away. **Aaron answered with a third thing that neither option contained**, and it is
+better than the one I recommended.
+
+**What was decided, in four parts.**
+
+1. **The clock is real and always runs.** My proposal — that hostility ends only when its cause
+   clears, with the clock as a cooling-off period afterwards — was rejected. Time ends a grudge.
+2. **A sixth state, Wary, sits between Hostile and Peace.** Trade and dealings are permitted but
+   guarded; the other nation will still make a deal with you. Every cooling grudge passes through it.
+3. **The causes set the clock's speed rather than gating it.** A trade deal and other good standing
+   cool a pair faster; a growing separatist movement or another live cause cools them slower.
+4. **The four reunification contests are a permanent floor, not a slow clock.** The five Texan
+   successors, the five Californians and the eastern capitals stay Hostile with each other at a
+   minimum, for good. Aaron: *"That way it creates impositions and challenges."*
+
+**Why part 3 is the good part.** I framed the question as cause **or** time and argued that a pure
+clock would make a pair with a live cause *blink* — expire into Peace, be re-checked, snap back to
+Hostile. Aaron's answer is **time at a speed the causes set**, which gets the permanent-rivalry feel
+without any pair locking solid; and the new Wary state absorbs the blink, because the step down from
+Hostile is to a guarded peace rather than to a clean one.
+
+**And the loop that D182 recorded unsolved is closed by it.** A movement growing makes you hostile and
+hostility makes it grow, which under a cause-gated clock meant the quarrel could never end. Under
+ruling 17 a live cause only *slows* the clock — and the brake weakens on its own, because movement
+growth is geometric against a per-movement ceiling (verified in `DESIGN.md`, 9 September). **Hostility
+over a separatist movement is hardest to escape when the movement is new and eases as the situation
+becomes chronic.** Nobody designed that curve; it falls out of machinery that already exists.
+
+**What was rejected:** my cause-gated clock (part 1), on Aaron's judgement that grudges should fade.
+
+**Two corrections recorded against the ruling rather than argued.**
+
+- **Aaron wrote "weary"; it is recorded as "Wary".** From his own description — guarded, cautious,
+  still willing to trade — the sense is *wary*. **"Weary" is already taken:** war weariness is one of
+  the five power stocks, read by both crises and elections. One word to correct if he meant otherwise.
+- **Austin's death is accepted, but not for the reason given.** Aaron accepts Austin may be wiped out
+  early — *"they have no trade possibility then, but that is ok with me"* — which assumes Hostile bans
+  trade. **Nothing ruled says it does.** Ruling 2 gives the trade prohibition to War alone and ruling
+  9's costs of Hostile are prices, not bans. What actually strangles Austin is that it has no port and
+  no international border and reaches the world only across ground now permanently hostile, so ruling
+  9's toll costs apply to the whole of its foreign trade forever. **And the project answered a version
+  of this question the other way once already:** an unrecognised nation keeps the world market at a
+  smuggler's rate, deliberately, because a total block *"would make an unrecognised landlocked state
+  unplayable and would also be untrue"*. **Whether Hostile permits trade at all is now an open
+  question and it jumped the queue.**
+
+**One new finding, replacing the one D182 left open as the trace's first job.** A Free Texas is *one*
+movement with five claimants, so under the floor in part 4 every Texan nation is permanently hostile
+with four neighbours who all match the same movement. **If ruling 9's growth bonus stacks per hostile
+neighbour, every Texan carries a quadruple-accelerated separatist movement** against a 0.40 secession
+threshold, and Texas reunifies itself by defection on a timer in every game — a script rather than a
+story. *Proposed default, flagged rather than asked: the bonus takes the largest matching quarrel, not
+the sum.* **This is now the first thing the closing trace of round 2 must run.**
