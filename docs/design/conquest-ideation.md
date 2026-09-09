@@ -1345,6 +1345,135 @@ for closing it.*
 
 ---
 
+**Ruling 19 — Austin is the legitimate Texas, and the other four are rebels. (Aaron,
+9 September 2026.)**
+
+> *"In the story Texas fell apart, so we will say that because they were going to secede from the
+> union peacefully, Austin is recognised as the actual state of Texas by all other nations — whereas
+> El Paso, Dallas, Houston and San Antonio are all seen as secessionist movements. That would give
+> Austin a bonus while the others have negatives."*
+
+**This is a story ruling with an enormous mechanical consequence, and the mechanism is already
+built.** Recognition in this game is a directed fact — who admits that you exist — and `legitimacy` is
+the share of the continent, by weight, that admits it. **What it costs to be a pariah is four things,
+all built:** no bilateral trade with anyone who does not recognise you, a smuggler's rate on the world
+market, no seat in a coalition, and a standing deficit on Influence.¹
+
+**⚠ And it reverses Austin's fate completely. This is the best thing in the round.**
+
+Recognition is **earned every turn** — by standing, by kinship, by having lasted, by being too big to
+ignore — and, **worth more than all of them combined, by the state you broke away from giving in.**¹
+
+**The state Dallas, Houston, San Antonio and El Paso broke away from is Texas. Under ruling 19,
+Austin *is* Texas.**
+
+So Austin — landlocked, ringed by four permanent enemies, holding no route to the world and rated
+*brutal* by the game's own faction picker — **holds the single most valuable diplomatic asset on the
+board, and four different nations each need their own copy of it.** Its whole game becomes selling
+recognition to its enemies, one at a time, for the passage it cannot otherwise buy.
+
+*The scale of the asset is measured, not guessed: in a played game, Texas's chance of recognising the
+State of Jefferson ran at **0.07 a turn** while California called it a rebellion and **0.24** the
+moment California signed — and Jefferson went from 14% recognition to 100% in twelve turns.¹*
+
+**C97 — Austin stops being a difficulty setting and becomes a *different game*.** Every other nation
+on the board plays economy-and-territory. Austin plays one hand of cards it can never draw more of.
+It is bankrupt, encircled, and holds four keys; it can sell them for corridors, or hold them to keep
+four enemies weak, and it cannot do both. *That is a genuinely distinct opening rather than a hard
+one, and it came out of a story instinct rather than a mechanic.*
+
+**C98 — The four rebels get a shared problem and a reason to hate each other more than they hate
+Austin.** All four need the same signature from the same nation, and Austin can only sell it four
+times. **They are competing for Austin's favour while permanently hostile to it and to each other.**
+That is a four-way auction nobody designed, running under a floor that guarantees none of them can
+ever be friends. *The Texas board is now the most interesting corner of the map, and it is where the
+closing trace should look hardest.*
+
+**⚠ DEPARTURE — this is the first deliberate asymmetry on the opening relations board, and the
+scenario says the board opens quiet.** The shattered scenario writes only back-dated `lost` entries
+for the Deseret cession, and its own note is explicit: *"Utah does NOT open refusing recognition: the
+relations board starts quiet and the player watches it sour."*² Ruling 19 seeds recognition against
+four nations on turn 0, which reverses that principle for the Texas corner.
+
+**I support it, and the argument is already in this document.** C46 and C65 both say the opening board
+should be seeded with **states**, not only with memories — *"a war that ended two years ago does not
+leave two nations at Peace."* Ruling 19 is that argument applied to recognition instead of hostility.
+It is a change to scenario **content**, not to geography or to the ideologies, so it does not touch
+the two things §0a says are fixed. *Recorded as a departure so that nobody later reads the "starts
+quiet" note as still governing and treats this as a bug.*
+
+*¹ `DESIGN.md`, recognition. Verified 9 September.*
+*² `content/scenario-shattered.json`, the `relations` note. Verified 9 September.*
+
+---
+
+**Ruling 20 — a corridor behaves under hostility exactly as a trade deal does. (Aaron,
+9 September 2026.)** *"I still think that it should stay the same though."* Existing grants run; no
+new grant may be made with a hostile nation.
+
+**⚠ BUT THE RULING WAS MADE ON A PREMISE THAT IS WRONG, AND THE CONSEQUENCE FLIPS. Asked, not
+assumed.**
+
+Aaron asked: *"Tolls don't have trade deal term lengths right? They are just set tolls?"*
+
+**They are not.** Verified in the running game, 9 September. A corridor is negotiated with **the same
+term lengths a trade deal has**, and the player-facing text says so in as many words: *"It lasts the
+term you agree, they take a cut of what passes, and either side can end it with four turns'
+notice."*³ The panel shows a live corridor as *"N more turns at X%"*. **A corridor is a term contract
+with a notice period on top, not a standing toll.**
+
+| | Trade deal | Corridor |
+|---|---|---|
+| A term you choose | ✅ | ✅ **the same lengths** |
+| A rate | ✅ | ✅ up to a 60% ceiling⁴ |
+| Notice to end early | — | ✅ **4 turns**, either side |
+| Ending it costs your standing | ✅ *(D of 5 Sept)* | ✅ **weighted ×2**⁴ |
+
+*The four-turn notice is deliberately set to match the largest expiry warning a trade deal gives, "so
+a player learns one rhythm for **something you rely on is ending** rather than two."⁴ The two objects
+were built to feel the same, which is why the premise was a reasonable one to hold.*
+
+**What this does to Austin, and it is the opposite of what I told Aaron one message ago.** I said the
+brake was that strangling Austin costs the strangler standing, so four nations each have to *decide*
+to pay for it. **That brake only applies to revocation.** If corridors have terms and ruling 20 blocks
+renewal, then **Austin's routes die by themselves when their terms run out. Nobody decides. Nobody
+pays. Nobody even acts.** The game strangles Austin on a clock while all four Texans stand still.
+
+**And there is a second consequence, which is structural and worse — see the finding.**
+
+*³ `js/actions.js`, the corridor panel. ⁴ `js/tunables.js`: `transit.noticeTurns` = 4,
+`transit.renegeWeight` = 2, toll ceiling 0.60. Verified 9 September.*
+
+---
+
+#### ⚠ FINDING — two hostile nations now have no way to agree on anything at all
+
+**Put rulings 18 and 20 together with ruling 7 and a door closes that nobody meant to close.**
+
+- **Ruling 18:** hostile nations may sign no new trade deal.
+- **Ruling 20:** hostile nations may grant no new corridor.
+- **Ruling 7:** a **peace-treaty** is reached only from a **cease-fire**, and a cease-fire is reached
+  only from **War**.
+
+**So the only instrument by which two hostile nations can come to terms is a war.** The thirty-three
+pairs that open Hostile — and the ten Texan pairs that are hostile *permanently* under ruling 17(d) —
+must fight each other before they can agree on so much as a road.
+
+**This lands hardest on the nation ruling 19 just made interesting.** Austin holds four keys its
+enemies need and **has no legal instrument with which to sell one.** It cannot trade the recognition
+for a deal or for passage, because both are barred by hostility. Ruling 19 hands Austin a priceless
+asset and rulings 18 and 20 leave it no way to spend it. *That is not drama; it is a gap.*
+
+**Proposed answer, and it is the next question rather than a default, because it changes the shape of
+the spine:** let a **peace treaty be proposed from Hostile**, not only from a cease-fire. Two hostile
+nations would then have exactly one instrument — the heavyweight, formally negotiated, term-limited
+one, whose four levers already include trade — and the floor in ruling 17(d) would have exactly one
+door through it. **Mirror-image rivals could deal, but only formally, only temporarily, and only by
+renewing.** *That is the right feel, and it needs no new machinery: the negotiation card exists and a
+treaty already has its levers.*
+
+---
+
 ## 7. The scenarios this round has to be able to tell
 
 Traced at the close, per the lesson round 1 learned: **tracing scenarios found contradictions that
@@ -1403,11 +1532,18 @@ Asked of Aaron in order, one at a time. Answered ones move up into §6 as ruling
 9b. ~~**Does Hostile permit trade at all?**~~ **Answered — ruling 18, and in a third way again.**
    What is signed **runs to its term**; **no new deals** can be signed. Neither the margin-only
    version I recommended nor a flat ban.
-9c. **Does Hostile do to a transit corridor what ruling 18 does to a trade deal?** *(Raised by ruling
-   18, 9 September.)* (C96.) A grant is a different object from a deal, and for the fourteen
-   transit-only nations it is **the** object. My proposal, unruled: the exact parallel — **an existing
-   grant keeps running; no new grant may be made with a hostile nation; revoking one stays a choice
-   that costs standing, exactly as built.**
+9c. ~~**Does Hostile do to a transit corridor what ruling 18 does to a trade deal?**~~ **Answered —
+   ruling 20. The same.** *But the ruling was made on the premise that corridors are standing tolls
+   with no term, and they have terms — the same ones a trade deal has. The consequence is harsher
+   than intended and it is question 9e.*
+9d. **Should the opening board seed recognition against the four Texan rebels?** **Answered — ruling
+   19, yes**, and it reverses Austin's fate. *Recorded as a departure from the scenario's stated
+   "the relations board starts quiet" principle.*
+9e. **Can a peace treaty be proposed from Hostile, rather than only from a cease-fire?** *(Raised by
+   the finding under ruling 20, 9 September.)* **As things stand, two hostile nations have no
+   instrument of any kind — no deal, no corridor, and a treaty only via a war.** Austin cannot sell
+   the recognition ruling 19 just gave it. My proposal: **yes, and it is the only door through the
+   floor.**
 10. ~~**When you win the roll, do you own the Area or are you standing on it?**~~ **Answered —
     ruling 13**, and in a third way: it is yours at once, shown paler on the map, and flagged by how
     you came by it. The treaty changes the **tenure**, not the border.
