@@ -468,6 +468,75 @@ fascism and communism, which is a true and useful thing to be able to say about 
 **This supersedes ruling 1's roster of eight** if Aaron takes it. The three axes and the naming
 principle — real names a player would recognise on a ballot — are unchanged.
 
+### P5 — RULED: the board, the drift, and the two things you fall into
+
+**Ruling 2, 9 September, superseding ruling 1's roster.** Aaron took P4's ten and made two changes,
+both his.
+
+**1. Authoritarian sits at both outer ends.** Morals run across the board; within each moral half,
+power runs from authoritarian on the *outside* to libertarian on the *inside*.
+
+| | cons / **auth** | cons / lib | prog / lib | prog / **auth** |
+|---|---|---|---|---|
+| **Collective** | Fascism | Distributism | Democratic Socialism | Communism |
+| **Middle** | *Republicans, across both conservative columns* | | *Democrats, across both progressive columns* | |
+| **Neo-liberal** | Christian Nationalism | Anarcho-Capitalism | Liberal Anarchy | Digital Technocracy |
+
+**This makes the horseshoe visible.** Fascism sits at the far left edge and Communism at the far
+right, and P4 had already found by arithmetic that they are *neighbours* rather than opposites. Now
+the picture says it too: both ends run off the board into the same place.
+
+**2. Despotism and Stateless become things you fall into.** Not parties — nobody stands for election
+as either. **Off either authoritarian end → Despotism**: one party or none, full command of the
+state, and every other nation treating you as what you have become. **Out through the libertarian
+middle → Stateless**: the government dissolves into ground with people on it and nobody in charge.
+**Aaron's mechanic: going too far buys power and costs standing.** The exchange rate is deliberately
+not set.
+
+**Only the two centrist parties stand over solid ground.** Every one of the eight corners has a
+trapdoor under it.
+
+### P6 — The drift is an exact partition, and it is the opening move
+
+**Aaron, 9 September:** *"at the start of the game we have republicans and democrats and they could
+drift into four different categories each."*
+
+**Verified, and tighter than stated.** A centrist holds the middle on economy and on power and sits
+at one end of morals. The corners reachable without changing morals are exactly those varying the
+other two axes: **2 × 2 = four** for each centrist, and **4 + 4 = 8 covers every corner once**. No
+corner is unreachable; no corner is reachable from both.
+
+| From | Economy | Power | Corner |
+|---|---|---|---|
+| **Republicans** | collective | authoritarian | Fascism |
+| | collective | libertarian | Distributism |
+| | neo-liberal | authoritarian | Christian Nationalism |
+| | neo-liberal | libertarian | Anarcho-Capitalism |
+| **Democrats** | collective | authoritarian | Communism |
+| | collective | libertarian | Democratic Socialism |
+| | neo-liberal | authoritarian | Digital Technocracy |
+| | neo-liberal | libertarian | Liberal Anarchy |
+
+**Leaving the centre is two questions with two answers each** — which way on the economy, which way
+on state power — and morals is the thing you do not change. That is politically true: parties
+rearrange their economics and their tolerance for coercion far more readily than they change the
+moral coalition that elected them.
+
+**The consequence nobody asked for, recorded because it is load-bearing: crossing the moral line is
+the expensive move.** A Republican party cannot become Communist. It would have to become Democrat
+first — measured, √6 direct against 2 through the centre — which makes moral realignment the rarest
+and slowest change on the board, exactly as it has been in American history.
+
+**This re-points the existing *change course* valve** rather than asking for new machinery: the build
+already has `changeRulingIdeology`, gated on popular share, priced in treasury by distance moved, and
+costing Authority. **Two of the four release valves now have a geometry behind them instead of a
+tunable.**
+
+**Still owed, and smaller than it was:** the 2024 county seed gives Republican, Democrat and other,
+and under this scheme **the two big parties DO map straight across** — they are positions 1 and 2.
+Only the small "other" share needs splitting by cultural region, across the eight corners. **Ruling 2
+shrinks the job D185 called the largest single piece of authoring in the change.**
+
 ### P3 — Three words for three things
 
 *Proposed in session, unruled.* **Ideology** is the cell — universal, permanent, eight of them,

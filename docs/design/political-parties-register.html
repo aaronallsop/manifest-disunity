@@ -1,4 +1,4 @@
-<title>The Eight Parties</title>
+<title>The Ten Parties</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
 <style>
 :root{
@@ -6,7 +6,9 @@
   --ink:#1A1E1B; --ink-2:#565C55; --ink-3:#878D84;
   --rule:#D9DCD3; --rule-2:#C4C8BC;
   --accent:#26564E; --accent-soft:#DEE9E5; --accent-rule:#9CBDB4;
-  --seg-off:#D5D9CE;
+  --mid:#8A4A2C; --mid-soft:#F5E6DE; --mid-rule:#C99A7E;
+  --fall:#5F5E5A; --fall-soft:#EDEBE4; --fall-rule:#B4B2A9;
+  --seg-off:#D5D9CE; --warn:#8A3A2C;
   --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
   --serif:"Newsreader",Georgia,"Times New Roman",serif;
@@ -16,27 +18,44 @@
   --ink:#E9EBE5; --ink-2:#A5ABA1; --ink-3:#7A8077;
   --rule:#31362F; --rule-2:#3E443C;
   --accent:#84C1B4; --accent-soft:#1F302C; --accent-rule:#3D5D56;
-  --seg-off:#343A32;}}
+  --mid:#E0A183; --mid-soft:#33211C; --mid-rule:#6E4634;
+  --fall:#9A9A93; --fall-soft:#26261F; --fall-rule:#4A4A44;
+  --seg-off:#343A32; --warn:#DE8B78;}}
 :root[data-theme="dark"]{
   --ground:#141714; --surface:#1B1F1B; --sunk:#20241F;
   --ink:#E9EBE5; --ink-2:#A5ABA1; --ink-3:#7A8077;
   --rule:#31362F; --rule-2:#3E443C;
   --accent:#84C1B4; --accent-soft:#1F302C; --accent-rule:#3D5D56;
-  --seg-off:#343A32;}
+  --mid:#E0A183; --mid-soft:#33211C; --mid-rule:#6E4634;
+  --fall:#9A9A93; --fall-soft:#26261F; --fall-rule:#4A4A44;
+  --seg-off:#343A32; --warn:#DE8B78;}
 *{box-sizing:border-box}
 body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.65;margin:0}
-.page{max-width:880px;margin:0 auto;padding:56px 28px 120px}
+.page{max-width:900px;margin:0 auto;padding:56px 28px 120px}
 h1{font-family:var(--serif);font-weight:400;font-size:46px;line-height:1.06;letter-spacing:-.015em;margin:0 0 14px;text-wrap:balance}
 .deck{font-size:17px;color:var(--ink-2);max-width:63ch;margin:0 0 30px}
 .deck em{font-style:italic;color:var(--ink)}
+
+.board{overflow-x:auto;margin:0 0 34px}
+.bg{display:grid;grid-template-columns:78px 26px repeat(4,minmax(96px,1fr)) 26px;gap:4px;min-width:600px}
+.bh{font-family:var(--mono);font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);text-align:center;line-height:1.35;padding-bottom:3px}
+.br{font-family:var(--mono);font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);display:flex;align-items:center;line-height:1.35}
+.bc{border-radius:3px;padding:9px 5px;text-align:center;font-size:11.5px;line-height:1.25;
+  display:flex;align-items:center;justify-content:center;min-height:50px}
+.bc.k{background:var(--accent-soft);border:1px solid var(--accent-rule);color:var(--accent)}
+.bc.m{background:var(--mid-soft);border:1px solid var(--mid-rule);color:var(--mid)}
+.bf{background:var(--fall-soft);border:1px solid var(--fall-rule);color:var(--fall);border-radius:3px;
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;
+  display:flex;align-items:center;justify-content:center;text-align:center}
+.bf.v{writing-mode:vertical-rl;transform:rotate(180deg)}
+.bf.h{padding:6px}
+
 .bar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
-  border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:13px 0;margin:0 0 34px}
+  border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:13px 0;margin:0 0 32px}
 .tally{font-family:var(--mono);font-size:12.5px;color:var(--ink-2)}
 .tally b{color:var(--ink);font-weight:500}
 .status{font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3)}
-.status.on{color:var(--accent)}
-.status.warn{color:#8A3A2C}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .status.warn{color:#DE8B78}}
+.status.on{color:var(--accent)} .status.warn{color:var(--warn)}
 label.fl{display:block;font-family:var(--mono);font-size:10.5px;font-weight:500;letter-spacing:.13em;
   text-transform:uppercase;color:var(--ink-3);margin:0 0 6px}
 textarea,input.nm{width:100%;font-family:inherit;color:var(--ink);background:var(--surface);
@@ -44,35 +63,40 @@ textarea,input.nm{width:100%;font-family:inherit;color:var(--ink);background:var
 textarea{display:block;overflow:hidden}
 textarea:focus,input.nm:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:transparent}
 textarea::placeholder{color:var(--ink-3)}
-.docnote{margin:0 0 46px}
-.card{border-top:2px solid var(--ink);padding:24px 0 34px}
-.hd{display:flex;align-items:baseline;gap:14px}
+.docnote{margin:0 0 44px}
+h2.sec{font-family:var(--serif);font-weight:400;font-size:15px;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--ink-2);margin:52px 0 4px;padding-bottom:9px;border-bottom:2px solid var(--ink)}
+h2.sec:first-of-type{margin-top:0}
+.sub{font-family:var(--serif);font-style:italic;font-size:14.5px;color:var(--ink-3);margin:0 0 24px}
+.card{border-bottom:1px solid var(--rule);padding:22px 0 26px}
+.hd{display:flex;align-items:baseline;gap:13px}
 .num{font-family:var(--mono);font-size:13px;font-weight:500;color:var(--ink-3);min-width:22px;padding-top:3px}
-input.nm{font-family:var(--serif);font-size:31px;font-weight:400;letter-spacing:-.012em;padding:2px 6px;
+input.nm{font-family:var(--serif);font-size:29px;font-weight:400;letter-spacing:-.012em;padding:2px 6px;
   border-color:transparent;background:transparent;flex:1;min-width:0}
 input.nm:hover{border-color:var(--rule-2)}
 .edited{font-family:var(--mono);font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--accent);
   background:var(--accent-soft);border:1px solid var(--accent-rule);border-radius:2px;padding:2px 6px;white-space:nowrap}
-.coords{display:flex;gap:28px;flex-wrap:wrap;margin:12px 0 22px;padding-left:36px}
-.co{display:flex;align-items:center;gap:9px}
+.coords{display:flex;gap:24px;flex-wrap:wrap;margin:11px 0 18px;padding-left:35px}
+.co{display:flex;align-items:center;gap:8px}
 .co .k{font-family:var(--mono);font-size:9.5px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
 .segs{display:flex;gap:2px}
-.sg{width:15px;height:5px;background:var(--seg-off);border-radius:1px}
+.sg{width:14px;height:5px;background:var(--seg-off);border-radius:1px}
 .sg.on{background:var(--accent)}
-.co .v{font-size:13px;color:var(--ink-2)}
-.body{padding-left:36px;display:flex;flex-direction:column;gap:16px}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-@media (max-width:680px){.two{grid-template-columns:1fr}}
-.rel{padding-left:36px;margin:20px 0 0;font-size:13.5px;color:var(--ink-2);
-  background:var(--sunk);border-left:3px solid var(--rule-2);padding:11px 15px;margin-left:36px}
+.co .v{font-size:12.5px;color:var(--ink-2)}
+.body{padding-left:35px;display:flex;flex-direction:column;gap:15px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+@media (max-width:700px){.two{grid-template-columns:1fr}}
+.rel{margin:18px 0 0 35px;background:var(--sunk);border-left:3px solid var(--rule-2);padding:11px 15px;
+  font-size:13.5px;color:var(--ink-2)}
 .rel b{font-weight:500;color:var(--ink)}
 .rel .lb{font-family:var(--mono);font-size:9.5px;font-weight:500;letter-spacing:.12em;
   text-transform:uppercase;color:var(--ink-3);display:block;margin-bottom:3px}
 .rel .row+.row{margin-top:7px}
-.mine{background:var(--accent-soft);border-left:3px solid var(--accent);padding:13px 15px;margin-top:4px}
+.rel.f{border-left-color:var(--fall)}
+.mine{background:var(--accent-soft);border-left:3px solid var(--accent);padding:13px 15px;margin-top:3px}
 .mine label.fl{color:var(--accent)}
 .mine textarea{background:var(--surface);border-color:var(--accent-rule)}
-.tools{display:flex;padding-left:36px;margin-top:14px}
+.tools{display:flex;padding-left:35px;margin-top:13px}
 button{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
   background:none;border:none;padding:4px 0;color:var(--ink-3);cursor:pointer;border-bottom:1px solid transparent}
 button:hover{color:var(--ink);border-bottom-color:var(--rule-2)}
@@ -82,63 +106,113 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 </style>
 
 <div class="page">
-<h1>The eight parties</h1>
-<p class="deck">Two ends on each of three axes — economy, morals, government power — gives eight corners, and every one of them is a party somebody has actually stood for election as. <em>Change any name you don't like. Your edits are saved as you type.</em></p>
+<h1>The ten parties</h1>
+<p class="deck">The game opens with two parties and eight places they can go. Drift off either end and you become a despot; drift out of the middle and the government dissolves. <em>Change any name you don't like — your edits are saved as you type.</em></p>
+
+<div class="board"><div class="bg">
+<div></div><div></div>
+<div class="bh">conservative<br>authoritarian</div><div class="bh">conservative<br>libertarian</div>
+<div class="bh">progressive<br>libertarian</div><div class="bh">progressive<br>authoritarian</div><div></div>
+<div class="br">Collective<br>economy</div>
+<div class="bf v" style="grid-row:2/span 3">Despotism</div>
+<div class="bc k">Fascism</div><div class="bc k">Distributism</div>
+<div class="bc k">Democratic Socialism</div><div class="bc k">Communism</div>
+<div class="bf v" style="grid-row:2/span 3">Despotism</div>
+<div class="br">Middle<br>economy</div>
+<div class="bc m" style="grid-column:3/span 2">Republicans</div>
+<div class="bc m" style="grid-column:5/span 2">Democrats</div>
+<div class="br">Neo-liberal<br>economy</div>
+<div class="bc k">Christian Nationalism</div><div class="bc k">Anarcho-Capitalism</div>
+<div class="bc k">Liberal Anarchy</div><div class="bc k">Digital Technocracy</div>
+<div class="bf h" style="grid-column:4/span 2">Stateless</div>
+</div></div>
 
 <div class="bar">
-  <span class="tally" id="tally"><b>8</b> parties</span>
+  <span class="tally" id="tally"><b>10</b> parties &nbsp;·&nbsp; <b>2</b> conditions</span>
   <span class="status" id="status">Connecting</span>
 </div>
 
 <div class="docnote">
   <label class="fl" for="docnote">Notes on the set as a whole</label>
-  <textarea id="docnote" rows="2" placeholder="Names that don't sit right, a corner you'd rather define differently, anything about the eight together."></textarea>
+  <textarea id="docnote" rows="2" placeholder="Names that don't sit right, a position you'd define differently, how falling into despotism or statelessness should work."></textarea>
 </div>
 
 <div id="list"></div>
 </div>
 
 <script>
-const AXES=[["Economy",["collective","neo-liberal"]],["Morals",["conservative","progressive"]],["Government power",["authoritarian","libertarian"]]];
+const AXES=[["Economy",["collective","middle","neo-liberal"]],["Morals",["conservative","progressive"]],["Government power",["authoritarian","middle","libertarian"]]];
+const SEGS=[3,2,3];
+const SECT={
+ start:["Where the game starts","Both hold the middle on the economy and on state power. What separates them is morals — and that is the one thing neither can change without going through the other."],
+ rep:["Where the Republicans can go","Four corners, reached by two choices: which way on the economy, and which way on state power. Morals stay where they are."],
+ dem:["Where the Democrats can go","The same two choices, from the other side of the moral line."],
+ fall:["What you fall into","Not parties. Nobody stands for election as either of these — they are what happens when a party stops being one."]};
 const DATA=[
-{n:1,c:[0,0,0],name:"Union Party",
- desc:"Take the fortunes and share them out, keep the church and the family exactly where they are, and do not let anybody stand in the way of either. Economically radical and socially immovable.",
- from:"The Union Party (United States, 1936) — William Lemke's presidential run, carrying Huey Long's Share Our Wealth programme after Long's assassination, with Father Coughlin behind it.",
- also:"Justicialist Party (Argentina) — Perón's own party\nArab Socialist Ba'ath Party (Syria, Iraq)\nNational Union (Portugal) — Salazar's Estado Novo\nFalange Española"},
-{n:2,c:[0,0,1],name:"People's Party",
- desc:"Land, credit and the grain elevator held in common by the people who use them; morals inherited and not up for discussion; and no authority above the county that anybody trusts.",
- from:"The People's Party (United States, 1892) — the Populists. Cooperatives, the sub-treasury plan, direct election of senators, and a deep suspicion of every distant power.",
- also:"The Nonpartisan League (North Dakota, 1915) — farmer-owned state banks and mills\nThe Distributist League (Britain, 1926) — Chesterton and Belloc\nThe Grange\nThe Catholic Worker Movement"},
-{n:3,c:[0,1,0],name:"Communist Party",
- desc:"The state owns it, the future justifies it, and a disciplined minority decides what the future is. The most complete answer on offer, and it does not take questions.",
- from:"The Communist Party — the form taken by Lenin's vanguard everywhere it was copied, from the CPSU to the CPUSA.",
- also:"Communist Party of Cuba\nUnited Socialist Party of Venezuela\nSandinista National Liberation Front (Nicaragua)\nWorkers' Party of Korea"},
-{n:4,c:[0,1,1],name:"Industrial Workers of the World",
- desc:"One big union, everything held in common, decided in the hall by the people who showed up — and no boss, no boss's government, and no boss's morals.",
- from:"The Industrial Workers of the World (United States, 1905) — the Wobblies. Revolutionary syndicalism organised through the union rather than the ballot.",
- also:"CNT-FAI (Catalonia, 1936)\nDie Grünen in their founding anti-statist phase\nPeace and Freedom Party (California)\nThe Zapatistas (Chiapas)"},
-{n:5,c:[1,0,0],name:"America First Party",
- desc:"Open markets, closed borders, old values, and a government strong enough to protect the second two from the first. Business is free; you are not.",
- from:"The America First Party — a name that has been used more than once in American politics, most recently in 2002, and the clearest label for markets plus tradition plus a hard hand.",
- also:"Fidesz (Hungary) — the fullest working example\nIndependent Democratic Union (Chile) — the party of the Pinochet settlement\nNational Renewal (Chile)"},
-{n:6,c:[1,0,1],name:"Constitution Party",
- desc:"Free markets, inherited faith, and a federal government cut back to almost nothing. Culturally traditional and radically anti-government in the same breath, which is the combination most spectrums cannot draw.",
- from:"The Constitution Party (United States, 1992) — free enterprise, Christian moral order, and the federal government confined to its enumerated powers.",
- also:"The Old Right — Robert Taft, anti-New Deal and anti-interventionist\nThe Mises Institute and the paleolibertarians\nThe Free State Project (New Hampshire)\nThe Anti-Federalists"},
-{n:7,c:[1,1,0],name:"Technocracy Incorporated",
- desc:"Markets are efficient, progress is measurable, expertise is real, and voting mostly gets in the way of all three. Rule by the people who can actually do the sums.",
- from:"Technocracy Incorporated (United States, 1933) — a genuine American mass movement proposing that engineers and scientists administer the continent as a single unit.",
- also:"The Progressive Party of 1912 — Roosevelt's expert commissions\nPeople's Action Party (Singapore)\nThe network state and neo-cameralist proposals\nSaint-Simon, the original"},
-{n:8,c:[1,1,1],name:"Libertarian Party",
- desc:"Let people trade, let people be, and keep the government small in both directions at once. Free markets and social permissiveness argued as one position rather than two.",
- from:"The Libertarian Party (United States, 1971) — free trade, drug legalisation, open borders and marriage equality, all from the same premise.",
- also:"D66 (Netherlands)\nFree Democratic Party (Germany)\nThe Cato Institute and Reason\nThe cypherpunks and the early internet"}];
+{n:1,s:"start",c:[1,0,1],name:"Republicans",
+ desc:"A mixed economy taken as settled, traditional instincts, and no appetite for tearing up the constitution. Half of where the country starts, and one of the two best-connected positions on the board.",
+ from:"The Republican Party (United States) — as it governs rather than as it campaigns.",
+ also:"One Nation Conservatism (Britain)\nGaullism (France)\nThe CDU/CSU (Germany)\nJapan's Liberal Democratic Party",
+ to:[3,4,5,6]},
+{n:2,s:"start",c:[1,1,1],name:"Democrats",
+ desc:"A regulated mixed economy, a widening circle of rights, and change pursued through ordinary majorities rather than around them. The other half of where the country starts.",
+ from:"The Democratic Party (United States) — the New Deal coalition and what became of it.",
+ also:"The New Deal and the Great Society\nCanada's Liberals\nThe SPD (Germany)\nLabour under Wilson (Britain)",
+ to:[7,8,9,10]},
+{n:3,s:"rep",c:[0,0,0],name:"Fascism",
+ desc:"The state directs the economy on behalf of a traditional people and permits nobody to obstruct it. Economically radical, socially immovable, and impatient with procedure.",
+ from:"Italian fascism and its imitators — the corporate state, the single party, the nation as the only legitimate body.",
+ also:"Falange Española\nThe Estado Novo (Portugal)\nThe Union Party (US, 1936)\nStrasserism",
+ f:"Despotism"},
+{n:4,s:"rep",c:[0,0,2],name:"Distributism",
+ desc:"Property spread as widely as it will go, morals inherited and not up for discussion, and no authority above the parish that anybody trusts.",
+ from:"The Distributist League (Britain, 1926) — Chesterton and Belloc: smallholding, subsidiarity, and the servile state as the enemy.",
+ also:"The Mormon United Order\nAmish and Hutterite communities\nThe Catholic Worker Movement\nThe Nonpartisan League (North Dakota)",
+ f:"Stateless"},
+{n:5,s:"rep",c:[2,0,0],name:"Christian Nationalism",
+ desc:"Free markets, an established faith, and a state strong enough to protect the second from the consequences of the first.",
+ from:"The American Christian nationalist movement — dominion theology, Rushdoony's Reconstructionism, Vermeule's integralism.",
+ also:"Fidesz (Hungary)\nThe Independent Democratic Union (Chile)\nFranco's National Catholicism",
+ f:"Despotism"},
+{n:6,s:"rep",c:[2,0,2],name:"Anarcho-Capitalism",
+ desc:"Free markets, inherited faith, and no state at all — every service a contract, every dispute a private court.",
+ from:"Murray Rothbard's anarcho-capitalism — For a New Liberty, and Hoppe's Democracy: The God That Failed.",
+ also:"The Constitution Party (US)\nThe Mises Institute\nThe Free State Project (New Hampshire)\nRobert Taft's Old Right",
+ f:"Stateless"},
+{n:7,s:"dem",c:[0,1,0],name:"Communism",
+ desc:"The state owns it, the future justifies it, and a disciplined minority decides what the future is.",
+ from:"The Communist Party — Lenin's vanguard, and the form it took everywhere it was copied.",
+ also:"Communist Party of Cuba\nMaoism and the Cultural Revolution\nThe Sandinistas (Nicaragua)\nUnited Socialist Party of Venezuela",
+ f:"Despotism"},
+{n:8,s:"dem",c:[0,1,2],name:"Democratic Socialism",
+ desc:"Common ownership and social liberation, decided by the people it is being done to, and no vanguard permitted to decide on their behalf.",
+ from:"The democratic-socialist tradition — Allende's Popular Unity, elected and constitutional to the end.",
+ also:"The Industrial Workers of the World (US, 1905)\nCNT-FAI (Catalonia, 1936)\nBookchin's communalism\nThe DSA",
+ f:"Stateless"},
+{n:9,s:"dem",c:[2,1,0],name:"Digital Technocracy",
+ desc:"Markets are efficient, progress is measurable, expertise is real — and voting mostly gets in the way of all three.",
+ from:"Technocracy Incorporated (US, 1933), engineers administering the continent as one machine, updated for the network.",
+ also:"The network state and neo-cameralism\nSaint-Simon\nBurnham's managerial revolution\nSingapore's People's Action Party",
+ f:"Despotism"},
+{n:10,s:"dem",c:[2,1,2],name:"Liberal Anarchy",
+ desc:"Let people trade, let people be, and keep the state small in both directions until one day it is not there at all.",
+ from:"The Libertarian Party (US, 1971) followed to its conclusion — free trade, open borders, and nobody's business but your own.",
+ also:"Mill's On Liberty\nCato and Reason\nBarlow's cyberlibertarians\nD66 (Netherlands)",
+ f:"Stateless"},
+{n:11,s:"fall",cond:1,name:"Despotism",
+ desc:"One party, or none. Power is total and answers to nobody. You get full command of the state — and everybody outside it treats you as what you have become.",
+ from:"Reached from the four authoritarian corners: Fascism and Christian Nationalism off one end, Communism and Digital Technocracy off the other. They arrive at the same place, which is the whole argument of the horseshoe.",
+ also:""},
+{n:12,s:"fall",cond:1,name:"Stateless",
+ desc:"The government dissolves. Ground with people on it, output coming off it, and nobody in charge — free to make its own arrangements and unable to defend them.",
+ from:"Reached from the four libertarian corners: Distributism, Anarcho-Capitalism, Democratic Socialism and Liberal Anarchy.",
+ also:""}];
 
-const pid=n=>"c"+n;
+const pid=n=>"p"+String(n).padStart(2,"0");
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const edits={};let DB=null,docNote="";
 const $=id=>document.getElementById(id);
-const nameOf=n=>{const d=DATA.find(x=>x.n===n);return cur(d).name};
+const nameOf=n=>{const d=DATA.find(x=>x.n===n);return d?cur(d).name:""};
 
 function grow(t){t.style.height="auto";t.style.height=(t.scrollHeight+2)+"px"}
 function cur(d){const e=edits[pid(d.n)]||{};
@@ -147,45 +221,49 @@ function dirty(d){const e=edits[pid(d.n)];if(!e)return false;
   return(e.name!=null&&e.name!==d.name)||(e.desc!=null&&e.desc!==d.desc)||
         (e.from!=null&&e.from!==d.from)||(e.also!=null&&e.also!==d.also)||!!e.note}
 
-const diff=(a,b)=>a.c.reduce((k,v,i)=>k+(v===b.c[i]?0:1),0);
-const nbrs=d=>DATA.filter(o=>o.n!==d.n&&diff(d,o)===1);
-const opp=d=>DATA.find(o=>diff(d,o)===3);
-
 function coords(c){return AXES.map(([k,vals],i)=>
   `<span class="co"><span class="k">${esc(k)}</span><span class="segs">${
-    [0,1].map(j=>`<span class="sg${j===c[i]?" on":""}"></span>`).join("")
+    Array.from({length:SEGS[i]},(_,j)=>`<span class="sg${j===c[i]?" on":""}"></span>`).join("")
   }</span><span class="v">${esc(vals[c[i]])}</span></span>`).join("")}
+
+function rel(d){
+  if(d.to)return `<div class="rel"><div class="row"><span class="lb">Can drift into</span>${
+    d.to.map(n=>`<b>${esc(nameOf(n))}</b>`).join(" · ")}</div></div>`;
+  if(d.f)return `<div class="rel f"><div class="row"><span class="lb">Go too far and you fall into</span><b>${esc(d.f)}</b></div></div>`;
+  return ""}
 
 function card(d){const v=cur(d),id=pid(d.n);
   return `<article class="card" id="k-${id}">
-    <div class="hd"><span class="num">${d.n}</span>
-      <input class="nm" id="nm-${id}" value="${esc(v.name)}" aria-label="Name of party ${d.n}">
+    <div class="hd"><span class="num">${d.cond?"":d.n}</span>
+      <input class="nm" id="nm-${id}" value="${esc(v.name)}" aria-label="Name ${d.n}">
       <span class="edited" id="ed-${id}" ${dirty(d)?"":"hidden"}>edited</span></div>
-    <div class="coords">${coords(d.c)}</div>
-    <div class="body">
-      <div><label class="fl" for="ds-${id}">What it stands for</label>
+    ${d.cond?"":`<div class="coords">${coords(d.c)}</div>`}
+    <div class="body"${d.cond?' style="padding-left:35px"':""}>
+      <div><label class="fl" for="ds-${id}">${d.cond?"What it is":"What it stands for"}</label>
         <textarea id="ds-${id}" rows="2">${esc(v.desc)}</textarea></div>
-      <div class="two">
-        <div><label class="fl" for="fr-${id}">The real party it is named for</label>
+      ${d.cond?`<div><label class="fl" for="fr-${id}">How you get there</label>
+        <textarea id="fr-${id}" rows="2">${esc(v.from)}</textarea></div>`
+      :`<div class="two">
+        <div><label class="fl" for="fr-${id}">The real thing it is named for</label>
           <textarea id="fr-${id}" rows="3">${esc(v.from)}</textarea></div>
         <div><label class="fl" for="al-${id}">Others in this corner — one per line</label>
           <textarea id="al-${id}" rows="3">${esc(v.also)}</textarea></div>
-      </div>
+      </div>`}
       <div class="mine"><label class="fl" for="no-${id}">Your notes</label>
         <textarea id="no-${id}" rows="1" placeholder="A better name, a different definition, anything that is wrong.">${esc(v.note)}</textarea></div>
     </div>
-    <div class="rel">
-      <div class="row"><span class="lb">Shares two axes with — its natural coalition</span>${
-        nbrs(d).map(o=>`<b>${esc(nameOf(o.n))}</b>`).join(" · ")}</div>
-      <div class="row"><span class="lb">Agrees with on nothing</span><b>${esc(nameOf(opp(d).n))}</b></div>
-    </div>
+    ${rel(d)}
     <div class="tools"><button id="rv-${id}" ${dirty(d)?"":"hidden"}>Revert to original</button></div>
   </article>`}
 
-function render(){$("list").innerHTML=DATA.map(card).join("");
+function render(){
+  $("list").innerHTML=Object.keys(SECT).map(k=>
+    `<h2 class="sec">${esc(SECT[k][0])}</h2><p class="sub">${esc(SECT[k][1])}</p>`+
+    DATA.filter(d=>d.s===k).map(card).join("")).join("");
   DATA.forEach(wire);document.querySelectorAll("textarea").forEach(grow);tally()}
+
 function tally(){const n=DATA.filter(dirty).length;
-  $("tally").innerHTML=`<b>8</b> parties${n?` &nbsp;·&nbsp; <b>${n}</b> edited`:""}`}
+  $("tally").innerHTML=`<b>10</b> parties &nbsp;·&nbsp; <b>2</b> conditions${n?` &nbsp;·&nbsp; <b>${n}</b> edited`:""}`}
 function setStatus(t,c){const s=$("status");s.textContent=t;s.className="status "+c}
 
 const norm=o=>JSON.stringify({name:o&&o.name,desc:o&&o.desc,from:o&&o.from,also:o&&o.also,note:o&&o.note});
@@ -202,20 +280,20 @@ function save(id){clearTimeout(timers[id]);timers[id]=setTimeout(async()=>{
   catch(e){setStatus("Not saved","warn")}},700)}
 
 function wire(d){const id=pid(d.n),E=edits[id]||(edits[id]={});
-  const on=(el,f)=>el.addEventListener("input",()=>{f(el.value);grow(el);flag(d);save(id)});
+  const on=(el,f)=>{if(el)el.addEventListener("input",()=>{f(el.value);grow(el);flag(d);save(id)})};
   on($("ds-"+id),v=>E.desc=v);on($("fr-"+id),v=>E.from=v);
   on($("al-"+id),v=>E.also=v);on($("no-"+id),v=>E.note=v);
   const nm=$("nm-"+id);
-  nm.addEventListener("input",()=>{E.name=nm.value;flag(d);save(id);names()});
+  nm.addEventListener("input",()=>{E.name=nm.value;flag(d);save(id);links()});
   $("rv-"+id).addEventListener("click",()=>{delete edits[id];
     if(DB)DB.doc("parties/"+id).delete().then(()=>setStatus("Saved","on")).catch(()=>setStatus("Not saved","warn"));
     const el=$("k-"+id);el.outerHTML=card(d);wire(d);
-    $("k-"+id).querySelectorAll("textarea").forEach(grow);names();tally()})}
+    $("k-"+id).querySelectorAll("textarea").forEach(grow);links();tally()})}
 
-function names(){DATA.forEach(d=>{const r=$("k-"+pid(d.n)).querySelector(".rel");
-  r.innerHTML=`<div class="row"><span class="lb">Shares two axes with — its natural coalition</span>${
-    nbrs(d).map(o=>`<b>${esc(nameOf(o.n))}</b>`).join(" · ")}</div>`+
-    `<div class="row"><span class="lb">Agrees with on nothing</span><b>${esc(nameOf(opp(d).n))}</b></div>`})}
+function links(){DATA.filter(d=>d.to).forEach(d=>{
+  const r=$("k-"+pid(d.n)).querySelector(".rel");
+  if(r)r.innerHTML=`<div class="row"><span class="lb">Can drift into</span>${
+    d.to.map(n=>`<b>${esc(nameOf(n))}</b>`).join(" · ")}</div>`})}
 
 function flag(d){const id=pid(d.n),f=dirty(d);
   $("ed-"+id).hidden=!f;$("rv-"+id).hidden=!f;tally()}

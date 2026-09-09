@@ -3307,3 +3307,46 @@ the registers are at
 `https://claude.ai/code/artifact/e2ebf889-7ab9-4448-a707-60203b4c9605` (twenty-seven, collection
 `positions`) and
 `https://claude.ai/code/artifact/bc72d871-db3b-4e2d-8363-6909e491abe7` (eight, collection `parties`).
+
+---
+
+### D186 — Ten positions, authoritarians at both ends, and two conditions you fall into, 9 September 2026
+
+**Supersedes D185's roster of eight. The three axes and the naming principle are unchanged.**
+
+**Ten positions.** Republicans and Democrats hold the middle of the economy and power axes, split by
+morals. Eight corners around them: Fascism, Distributism, Christian Nationalism and Anarcho-Capitalism
+on the conservative side; Communism, Democratic Socialism, Digital Technocracy and Liberal Anarchy on
+the progressive side. **Aaron's own list of twelve produced all eight corners exactly, arrived at
+without working from the cube** — the strongest validation the three axes have had. The other four of
+his twelve were two centrists and two conditions, which is why the set had felt incoherent to him.
+
+**Aaron's layout: authoritarian at both outer ends.** Fascism at the far left, Communism at the far
+right, libertarian corners inside. **This makes the horseshoe visible.** The arithmetic had already
+found that fascism and communism are *neighbours* — they differ on morals alone and agree on both a
+collective economy and an authoritarian state — and the layout now says it: both ends run off the
+board into the same place.
+
+**Aaron's mechanic: Despotism and Stateless are conditions you fall into, not parties.** Off either
+authoritarian end is **Despotism** — one party or none, full command of the state, and a standing
+penalty with every other nation. Out through the libertarian middle is **Stateless** — the government
+dissolves into ground with people on it and nobody in charge. **Only the two centrist parties stand
+over solid ground; every corner has a trapdoor under it.** The exchange rate between power gained and
+standing lost is deliberately not set.
+
+**The drift is an exact partition — Aaron spotted it, and it verifies tighter than he put it.** A
+centrist reaches four corners by answering two questions: which way on the economy, which way on state
+power. Morals stay put. Four each, eight in total, every corner reachable from exactly one starting
+party. **So crossing the moral line is the expensive move**: a Republican party cannot become Communist
+without becoming Democrat first, which makes moral realignment the slowest change on the board — as it
+has been in American history.
+
+**Two things this quietly fixes.** It re-points the built *change course* valve instead of asking for
+new machinery; that valve is already gated on popular share and priced by distance moved. And it
+shrinks the job D185 called the largest single piece of authoring: under ten positions the two major
+parties **do** map straight across from the 2024 county seed, leaving only the small "other" share to
+split by region.
+
+**Nothing built.** No code, data or `DESIGN.md` touched. Register rebuilt at
+`https://claude.ai/code/artifact/bc72d871-db3b-4e2d-8363-6909e491abe7` — collection `parties`,
+documents `p01`-`p12`.
