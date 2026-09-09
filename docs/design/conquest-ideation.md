@@ -1790,6 +1790,80 @@ harder — not to put the wall back.**
 
 ---
 
+**Ruling 26 — occupied ground eventually becomes your country, and how fast depends on whether life
+got better. (Aaron, 9 September 2026.)**
+
+> *"It does eventually become your country and there will be certain modifiers that would either make
+> it slow down or speed up. So a county that was conquered by a nation that has a higher quality of
+> life than the one it originally was in would be more willing to accept that they are a part of a new
+> state."*
+
+**The ladder gets its fourth rung and C26/C81 close.** `occupied-war` → `occupied` at the treaty
+(ruling 13) → **ordinary ground**, given time and the right conditions. A conquest is no longer a mark
+carried for the rest of the game.
+
+**And the modifier Aaron named is not the one I recommended, which is the point of asking.** I proposed
+**ideological match** — the thing that already decides everything else in this game. Aaron's is
+**quality of life**: people accept a new flag if life under it is better. *That is materialist rather
+than ideological, and it is a truer account of how populations actually settle.*
+
+**⚠ It is also, without being designed as one, the strongest anti-snowball device in the round.**
+
+Quality of Life is one of the five power stocks, and **its turn-0 spread across the board is
+0.55–0.98** — nearly two to one, the widest band of the four.¹ So the modifier does not apply evenly;
+it sorts the continent. **A prosperous, well-governed nation can digest what it takes. A struggling one
+cannot, and its conquests stay indigestible for ever.**
+
+*That inverts the logic of almost every strategy game, in which conquest is how a poor nation becomes
+rich. Here **you have to be doing well already to absorb anything**, and a desperate nation that seizes
+its neighbour's fields is left holding ground that will never become its own. Conquest is a luxury of
+the successful. Nobody had to write a rule saying so.*
+
+**C106 — The machinery it stands on already exists and is already authoritative.** The game has one
+definition of home ground — *"THE one definition, and the only thing anything should ask. An origin
+state's soil is every Area of its state; a nation born in play holds the ground it was founded on.
+**Everything else it holds is occupied**"*² — so ruling 13's three flags and ruling 26's countdown both
+sit on a function that is already written and already the single source of the answer.
+
+**C107 — The other candidate modifiers, banked not ruled.** Aaron said *"certain modifiers"*, plural,
+and named one. The rest of the plausible list, all of them reading quantities that exist:
+
+| Speeds acceptance | Slows it |
+|---|---|
+| **Higher quality of life than they had** *(Aaron, ruled)* | Lower quality of life than they had |
+| **Ideological match** with your government — the multiplicative term behind everything else | A population that sits far from you |
+| **`occupied-movement`** — they wanted you *(ruling 13)* | **`occupied-war`** — the war is not even over |
+| **Their old nation no longer exists** — there is nowhere to go home to | Their old nation is thriving next door |
+| Wider civil liberties than they had | **A heavy garrison** — see C108 |
+| **Migration**, which already moves people toward people who think as they do | |
+
+**C108 — The garrison should be the player's lever on this, and it fills the hole round 1 left.**
+Round 1 asked conquest for four things and got three; **the fourth was a garrison that holds ground
+down *and radicalises it*, where today suppression only subtracts.** Ruling 26 gives it somewhere to
+live: **soldiers hold an occupied county quiet but slow its acceptance, because a population under
+boots does not become you.** Garrison hard and it never becomes yours; garrison lightly and it may
+settle, or it may rise. *Another buy-now-pay-later, which is the shape this game keeps arriving at.*
+
+**C109 — The comparison runs live, and drops out when there is nobody to compare to.** *Default taken,
+flagged rather than asked.* Quality of life is measured against **the nation the ground was taken
+from, as things stand now** rather than as they stood on the day it was taken — so a county grows
+gladder it left if its old country declines, and more resentful if the old country prospers. **If that
+nation no longer exists, the comparison drops out** and acceptance runs at its base rate, which is
+C107's "nowhere to go home to" arriving by the same route. *One line to correct if the frozen version
+was intended; the live one costs nothing extra and tells a better story.*
+
+**⚠ What ruling 26 gives up, stated plainly.** Conquest becomes a viable **long** game again. A patient
+player who takes ground that fits them, garrisons it lightly and waits will end up with a larger
+ordinary country and no standing penalty on the map. **The permanent cost of conquest now lives
+entirely in war weariness and in what the neighbours remember** — the world remembers, and the map
+moves on. *That split is deliberate and it is the answer to C81's complaint that the old ladder quietly
+told a player never to conquer at all.*
+
+*¹ `DESIGN.md`, turn-0 bands across the 51 nations. ² `js/game.js`, `isHomeGround`. Verified
+9 September.*
+
+---
+
 ## 7. The scenarios this round has to be able to tell
 
 Traced at the close, per the lesson round 1 learned: **tracing scenarios found contradictions that
@@ -1874,8 +1948,10 @@ Asked of Aaron in order, one at a time. Answered ones move up into §6 as ruling
     taken, flagged rather than asked: **yes, during the war too**, because the flag is about who the
     locals are and not about the war. But the transit prohibition still applies while at war, since
     ruling 13's reason for it is the war rather than the resentment. One line to correct if wrong.*
-13. **Can ground ever stop being occupied at all?** (C26, C81.) Ruling 13's ladder ends at "some
-    negative outcomes", permanently.
+13. ~~**Can ground ever stop being occupied at all?**~~ **Answered — ruling 26. Yes.** The ladder
+    gets a fourth rung and modifiers set the speed; **Aaron's named modifier is quality of life**,
+    not the ideological match I recommended — which quietly makes conquest a luxury of the
+    prosperous. C26 and C81 close.
 14. **What does a movement do when you decline its demand, and what does "wait" cost while it
     waits?** (C89.) Ruling 16 says never-delivering is worse than declining, and does not price
     either.
