@@ -826,6 +826,15 @@ competing to be the one it restores under:
 | **The Confederacy** | the eleven Confederate states | the Deep South, the Carolinas, the Gulf nation, Appalachia, Central Florida — **and it cannot be done without Texas**, which is five nations away |
 | **The Thirteen Colonies** *(new)* | the original thirteen states, and the prize is **being the capital** | Washington D.C., the United States of New England, Philadelphia, New York City |
 
+**⚠ Two rows of this table were counts and not lists, and one of them was wrong for two days.**
+*Added 9 September 2026; the ruling above is unchanged.* Row 2's *"the five Californian successors"*
+was never named here, and the map actually breaks California into **six** pieces. **Round 2's ruling
+32 names the five** — Los Angeles, the Bay Area, Riverside, SoCal and Northern California — **and puts
+Cascadia outside the contest.** Row 4 was cut to three claimants by **ruling 20** the same day, Boston
+being removed; the row above still lists four and should be read against ruling 20. *Together the two
+corrections are what make the board's 33 permanent quarrels a figure that can be rebuilt from this
+table rather than taken on trust.*
+
 **This answers what the New Confederacy is.** Its 537-Area homeland is four times too large for a
 Deep South separatist movement and exactly right for reunifying the Confederacy — the eleven states
 including the 106 Areas in Texas. It changes character rather than size. *(Supersedes S64's framing;

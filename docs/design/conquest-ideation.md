@@ -2150,6 +2150,72 @@ correct before the bake rather than after.*
 
 ---
 
+### The close's own findings, ruled after it
+
+**Ruling 32 — five nations claim California, and Cascadia is not one of them. (Aaron, 9 September
+2026, closing finding D.)**
+
+> *"Cascadia is out and it adds a challenge because they will be fighting with potentially a larger
+> problem down the road if Oregon and Washington unites."*
+
+**The claimant list, named at last.** The **California Republic** may be won by **Los Angeles**, the
+**Bay Area**, **Riverside**, **SoCal** and **Northern California**. Under ruling 17(d) those five sit
+on a permanent floor at Hostile with one another — **ten quarrels that never end.** Cascadia claims
+nothing and is claimed by nobody.
+
+**The board therefore opens with 33 permanent quarrels, and the figure is now built rather than
+asserted.** Five Texans make ten, five Californians ten, the five Confederate claimants ten, and the
+three cities contesting the capital three.¹ *This replaces a number that had been carried since Sunday
+as "a count and not a list".*
+
+**⚠ The reason printed on the Control Board card was false, and the ruling is right anyway.** The card
+argued Cascadia should be excluded because it *"reaches up into Oregon and Washington"*. It does not:
+all nine of its Areas are ex-Californian, the far north of the state, and neither Oregon nor Washington
+dissolves on this board or cedes anything to anyone.² **The three true reasons**: the scenario's own
+sentence already reads *"California dissolved into five successor states, and ceded the north to
+Cascadia"*, distinguishing inheritance from cession; Cascadia is governed by **the movement that made
+it** rather than by the plurality living there, so it is a country founded on the wish to be out of
+California; and its ground is the State of Jefferson's heartland and leans the other way, so it opens
+with an organised opposition at home before it takes on anyone else's flag.²
+
+---
+
+**C124 — Cascadia's real rival is to the north, and it is a nation that does not exist yet. (Aaron,
+9 September 2026.)** *Banked, not ruled.* Aaron's reason for excluding Cascadia was not that it is
+safe but that its danger points the other way: **if Oregon and Washington unite, the new nation is the
+Cascadia the name belongs to**, and the small country holding nine Californian counties is suddenly a
+pretender rather than a homeland.
+
+**Why this is worth more than the ruling it came from.** It is **the same shape as round 1's ruling
+22** — three cities contesting the capital *"with a large northern neighbour that can tip it and cannot
+win it"* — pointed at a different corner and running the other way. There, the big neighbour is barred
+from the prize. Here, a big neighbour could **become** it.
+
+**And it needs machinery that ruling 19's table does not have.** Every reunification contest so far
+restores a country that **existed** — Texas, California, the Confederacy, the Thirteen Colonies — and
+its claimant field is fixed on the day the board opens. A Cascadia contest would restore a country
+that **never existed**, and its strongest claimant would have to be **created in play** by two nations
+uniting. *A claimant field that can gain a member mid-game is new, and Unite is the machinery that
+would do it — which this plan already gives to conquest.*
+
+**Three questions it opens, none of them answered here:**
+- Does a **Unite** produce a nation that can enter an existing contest, or only found new ones?
+- If Oregon and Washington unite, does Cascadia-the-small **lose** its claim, or fight for it from
+  behind — and is losing a claim different from never having had one?
+- Ruling 17(d) makes claimants permanently Hostile. **If a contest can gain a claimant in play, the
+  permanent floor can be laid down mid-game** — a nation that was at Peace for forty turns becoming
+  unforgivable the quarter its neighbour merges.
+
+*Filed for round 5's inheritance and flagged to round 3's Unite work. It is the first idea in this
+round that the closing trace could not have found, because it is about a nation that is not on the
+board.*
+
+*¹ Composed from round 1's ruling 19 and ruling 20 claimant lists, verified 9 September 2026: C(5,2)
++ C(5,2) + C(5,2) + C(3,2) = 33. ² `content/scenario-shattered.json` — California is the only state
+besides Texas that dissolves, and Cascadia's nine Areas are all FIPS 06. Verified 9 September 2026.*
+
+---
+
 ## 7. The scenarios this round has to be able to tell
 
 Traced at the close, per the lesson round 1 learned: **tracing scenarios found contradictions that
@@ -2325,7 +2391,7 @@ no way to answer. It would not stall now.*
 | **A** | **Ruling 26 makes home ground grow, and the built definition fixes it at founding.** `isHomeGround` calls itself *"THE one definition of home ground, and the only thing anything should ask"* — an origin state's soil, or the ground a nation was founded on, *"everything else it holds is occupied."*⁴ **Ruling 26 requires occupied ground to become home ground.** A one-line change to a function that declares itself the single source of truth, so it must be made deliberately rather than discovered | Whoever builds ruling 26 |
 | **B** | **At a cease-fire's end, nothing says whose treaty is on the table.** Ruling 8 asks *each* side whether to send one; ruling 22 prices the cap off **the proposer**. If both send, there are two caps and two treaties. *Proposed default: one treaty on the table at a time, the proposer is whoever sends first, and the other side may only accept, counter or decline — with C101's rule that a counter haggles inside the basis rather than re-basing it* | **Aaron — one line** |
 | **C** | **Alliance-inherited hostility has no hop limit, and one betrayal could turn the whole board.** Ruling 4's fifth cause spreads hostility through alliances; ruling 28 creates roughly five hostilities in a single act; ruling 27 makes an ally inherit them. **Nothing says whether an ally's ally inherits them too.** If it is transitive, one broken treaty propagates across the entire alliance graph. *Proposed default: **one hop only*** | **Aaron — one line** |
-| **D** | **The California floor has no claimant list, and the board has six successors where the design says five.** Verified: California dissolves into **Los Angeles, Bay Area, Riverside, SoCal, Northern California and Cascadia**.² C65 counted *"the five Californian successors"* and admitted the row was *"a count and not a list"*. **Cascadia is a distinct identity and may not claim the California Republic at all.** Ruling 17(d) makes those pairs permanently Hostile, so the list decides whether the board opens with **33 hostile pairs or 38** | **Aaron — name the claimants** |
+| **D** | **✅ CLOSED by ruling 32 — the five are named and Cascadia is out; 33 pairs stands.** **The California floor has no claimant list, and the board has six successors where the design says five.** Verified: California dissolves into **Los Angeles, Bay Area, Riverside, SoCal, Northern California and Cascadia**.² C65 counted *"the five Californian successors"* and admitted the row was *"a count and not a list"*. **Cascadia is a distinct identity and may not claim the California Republic at all.** Ruling 17(d) makes those pairs permanently Hostile, so the list decides whether the board opens with **33 hostile pairs or 38** | ✅ Answered 9 Sep |
 | **E** | **Scenario 5 stalls because desperation does not bite.** Already the project's known hollow spot and already blocking in §4 | Round 4 |
 | **F** | **Scenario 6's premise was ruled out by ruling 10 and is rescued by ruling 24.** *"A front that is moving on its own"* must be read as **the enemy is also acting**, or it will be taken as a requirement for something ruling 10 deliberately refused | This document — **done above** |
 | **G** | **✅ There is a way out of the permanent floor, and ruling 30 built it by accident.** C93 asked what could ever end a reunification contest and had no answer but conquest. **Ruling 30 gives one:** a government that strings its own reunification movement along until it gives up watches that movement **change its verb toward Separate** — and a nation whose people have stopped wanting the old country back **has stopped contesting the inheritance.** *The floor's cause is gone, so the floor lifts. A player can talk their way out of a permanent rivalry by disappointing their own irredentists for long enough — which is both true to life and the bleakest available way to make peace* | Recorded; round 3 builds it |
