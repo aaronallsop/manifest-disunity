@@ -963,24 +963,44 @@ conceding.** Releasing ground gives away **territory**; becoming the movement gi
 and keeps the territory, minus whatever walks out under ruling 9's price. Those are different enough
 that collapsing them would hide a real choice from the player. **One line to correct if wrong.**
 
-### Ruling 11a — The "remove the want" column belongs to the ADJECTIVE, not the verb
+### Ruling 11a — The "remove the want" column belongs to the ADJECTIVE, and there are five of them
 
-**Proposed, not ruled.** The one cell nobody could fill was *what makes a Unify movement stop wanting
+**RULED 9 September 2026.** The one cell nobody could fill was *what makes a Unify movement stop wanting
 to merge*. Working it produced a structural answer that applies to the whole column.
 
 **Round 1's ruling 40 already said it and nobody carried it forward:** *"Every movement has a verb —
 what happens if it wins — and an adjective — what would make it stop wanting to."* **The adjective IS
 the remove-the-want column.** Four of the five moves are the verb's; that one is the adjective's.
 
-| Adjective *(movements)* | What removes the want |
-|---|---|
-| **cultural** *(6)* | recognition — let them be what they are, inside your state |
-| **autonomist** *(5)* | self-rule — **the same cell as *concede less*, so these two collapse** |
-| **ideological** *(4)* | change course **·built** |
-| **resource** *(3)* | a share of what the ground produces |
-| **economic** *(3)* | deliver the prosperity they think merging would bring, by other means |
-| **religious** *(2)* | religious liberty, or establishment |
-| **indigenous** *(2)* | sovereignty over their own land; restitution |
+**Seven adjectives became five.** Aaron asked whether religious/ideological and resource/economic
+should merge. **The test used, and it is reusable: two adjectives merge when the same government act
+cures both.**
+
+| Adjective *(movements)* | What removes the want | Merged in |
+|---|---|---|
+| **autonomist** *(7)* | self-rule, and giving land back — **the same cell as *concede less*, so these two collapse** | **indigenous** |
+| **cultural** *(6)* | recognition — let them be what they are, inside your state | |
+| **ideological** *(6)* | change course **·built** | **religious** |
+| **resource** *(3)* | a share of what its own ground produces | |
+| **economic** *(3)* | deliver the prosperity by other means — national policy | |
+
+**Why religious merged.** Both are cured by **the government adopting a position**, and under the
+three-axis spectrum a religious movement *is* an ideological one sitting at the traditional end of
+morals. Deseret wants to live under a communal-traditional order; the Northern Christian Kingdom wants
+a religious government. **Nothing is lost.**
+
+**Why resource did NOT merge with economic, though Aaron asked.** They land in different parts of the
+machine. **Resource** is *"this region keeps a share of what its own ground produces"* — revenue
+forgone locally and permanently, which re-points the **autonomy** machinery. **Economic** is national
+policy — tariffs, compacts — which re-points the **trade** machinery and costs standing with every
+neighbour. **Merging them would hide a price difference that is the whole reason the choice is
+interesting**, and it would surface only when somebody tried to build one cure and found it was two.
+
+**Indigenous merged into autonomist**, by the same test and not originally asked: the Native American
+Confederation and Hawaiian Sovereignty both want *sovereignty and land restoration*, and the Sagebrush
+Rebellion wants *"return the federal land, county supremacy"* — the same two acts. **Read from
+Aaron's approval of the table rather than stated by him; one word to reverse.** Movements keep their
+own names and goals either way, so nothing a player reads changes.
 
 **So a Unify movement's cure depends on why it wants to merge, not on the merging.** Three of the five
 are economic — fix the prosperity and the compact stops mattering — and two are ideological, which is
@@ -990,7 +1010,7 @@ the *change course* valve that already exists. **Nothing new is needed for eithe
 
 1. **An autonomist movement is the cheapest kind to satisfy**, because its cheap substitute and its
    cure are the same act. Five of the twenty-five reviewed are autonomist.
-2. **The whole design is 6 verbs + 7 adjectives + 5 moves = 18 things, not 42 authored cells.** The
+2. **The whole design is 6 verbs + 5 adjectives + 5 moves = 16 things, not 42 authored cells.** The
    table is generated rather than written, which is the same economy the ideology axes buy.
 
 **Still open:** whether answering a movement costs the turn's action. Round 2's **C117** took the

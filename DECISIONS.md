@@ -3638,3 +3638,47 @@ ideology axes buy.
 default *free to answer, costly to obey* without asking, and it has never been confirmed.
 
 **Nothing built.** No code, data or `DESIGN.md` touched.
+
+---
+
+### D194 — Seven adjectives become five, and one proposed merge was refused, 9 September 2026
+
+**Ruling 11a is now ruled.** Aaron asked whether religious/ideological and resource/economic should
+merge — *"would it make the game easier"*. **One did, one did not, and a third he had not asked about
+did.**
+
+**The test, and it is reusable: two adjectives merge when the same government act cures both.**
+
+| Adjective | Movements | What removes the want |
+|---|---|---|
+| **autonomist** *(+ indigenous)* | 7 | self-rule, and giving land back |
+| **cultural** | 6 | recognition |
+| **ideological** *(+ religious)* | 6 | change course — **built** |
+| **resource** | 3 | a share of what its own ground produces |
+| **economic** | 3 | national policy — prosperity by other means |
+
+**Religious merged into ideological.** Both are cured by the government adopting a position, and under
+D186's three axes a religious movement *is* an ideological one at the traditional end of morals.
+Nothing lost.
+
+**Resource did NOT merge into economic, and Aaron's suggestion was refused with reasons.** They land in
+different parts of the machine: **resource** is revenue forgone locally and permanently, re-pointing
+the **autonomy** machinery; **economic** is national policy, re-pointing the **trade** machinery and
+costing standing with every neighbour. **Merging them would hide a price difference that is the whole
+reason the choice is interesting** — and it would surface only when someone tried to build one cure and
+found it was two.
+
+**Indigenous merged into autonomist** — not asked about, and stronger than either candidate he named.
+The Native American Confederation and Hawaiian Sovereignty both want sovereignty and land restoration;
+the Sagebrush Rebellion wants *"return the federal land, county supremacy."* Same two acts.
+**Read from his approval of the summary table rather than stated in words, and flagged as such — one
+word reverses it.** Movements keep their own names and goals regardless, so nothing a player reads
+changes.
+
+**The design is now 6 verbs + 5 adjectives + 5 moves = 16 things**, generating a table that would
+otherwise be 42 authored cells.
+
+**Still open on this table:** whether answering a movement costs the turn's action. Round 2's **C117**
+took *free to answer, costly to obey* as a default without asking, and it has never been confirmed.
+
+**Nothing built.**
