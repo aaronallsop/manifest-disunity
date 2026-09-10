@@ -585,6 +585,73 @@ place.
 four-in-a-thousand rate as a peacetime state, or higher because a militia is mobilised and a state is
 not. **No figure invented.**
 
+### Ruling 8 — Past 40% the countdown to civil war begins
+
+**Aaron, 9 September 2026**, answering the question ruling 6 opened and rejecting the recommendation.
+
+> "I think in that instance the countdown to civil war would begin. So it would be if a movement gets
+> more than 40% but if any combined movements are more than 40% combined it starts a timer (I am
+> thinking something like each turn there is an X% chance of civil war starting and the higher the
+> percentage of a movement gets the greater the risk)."
+
+**My recommendation is struck.** I proposed that an Area past 40% with no single winner goes
+**stateless**. **Aaron's is a pressure rather than an outcome**, and it is the better shape: the
+government does not lose the ground, it lives with a rising chance of the thing that takes the ground
+away. It also matches how the rest of this game already works — probabilities per turn rather than
+switches.
+
+**Single or combined, the same bar.** One movement past 40%, or several summing past 40%, starts the
+same clock. **Per-turn chance of civil war, rising with the share.** No figure named, and **none
+invented.**
+
+**What is built, and it is the sharp part.** `js/civilwar.js` is a complete resolver — scoring by
+size ratio, summed dice, three outcomes (**victory · partial · fall apart**) — and its header says
+what fires it:
+
+> *"Triggered by an annexation when any of these hold: the annexation flips the nation's plurality
+> party, the annexed counties' GDP exceeds the nation's current GDP, the annexed counties' population
+> exceeds the nation's current population."*
+
+**All three triggers are about taking too much. There is no internal path to civil war at all.** A
+nation can be half organised against itself and never risk one. **Ruling 8 adds a trigger to an engine
+that already exists** — which is the cheap half — but the resolver is framed around an annexation, in
+`before / added / after` demographics, and **a movement-driven war has no "added".** That framing has
+to be answered before it is built. **Flagged, not solved.**
+
+**THE SCALE QUESTION, and it is Aaron's.** The built 40% (`secession.countyThreshold`) is **per
+Area** — the share of *one county* a movement must organise before that county leaves. Aaron's
+arithmetic in ruling 6 is **per nation** — *"I am Oregon and now I have 26% of my population."*
+**Two different measurements now both use 40%.** Whether that is one number used twice or two numbers
+that happen to match is not decided, and it matters: a nation at 40% overall may have no single county
+anywhere near 40%, and a nation with three counties past 40% may sit at 5% nationally.
+
+### Ruling 9 — A government can give up and join the movement
+
+**Aaron, 9 September 2026.** A fifth answer to a movement, and the one nobody had proposed.
+
+> "There should also be a mechanic that if a nation has over a certain number of a movement that the
+> government can adjust and join in with the movement. Example — Oregon has a rising cascadia movement
+> and they say **Looks like we are cascadaia now.** There would be some penalties, maybe counties with
+> movements larger than theirs would leave for their movements?"
+
+**This is a fifth release valve and it is the strongest of them.** The four built valves answer a
+movement by giving ground, giving self-rule, changing what the government stands for, or sending
+soldiers. **Ruling 9 answers it by becoming it.** Changing course changes an ideology; this changes an
+identity.
+
+**Aaron's own price is elegant and self-balancing: adopt one movement and every county where a
+*different* movement is stronger walks out to that one.** In the Oregon case — adopt Cascadia, and
+every county where Greater Idaho leads leaves immediately. **You solve half the problem by handing
+over the other half.**
+
+**What is built, and it is NOT this.** Round 1's S29 — *"going with the breakaway"* — is marked built,
+and it is `Game.setPlayer`: **the player changes seats** to the new nation after a declaration has
+already happened. **Ruling 9 is the opposite in every respect**: the *nation* transforms, nothing has
+declared yet, no split occurs unless the price triggers it, and the player stays where they are. It is
+new machinery, though the county-handover half re-points what release already does.
+
+**No threshold named — Aaron's *"over a certain number"* — and none invented.**
+
 ---
 
 ## 5. The idea bank

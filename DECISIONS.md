@@ -3548,3 +3548,45 @@ Oregon on the same knife edge at 26 / 26**, which is good evidence the numbers s
 thousand rate as a peacetime state or higher, a militia being mobilised where a state is not.
 
 **Nothing built.** No code, data or `DESIGN.md` touched.
+
+---
+
+### D192 — Past 40% a civil war clock starts, and a government may join the movement instead, 9 September 2026
+
+**Ruling 8 — the countdown.** Aaron struck the recommendation that an Area past 40% with no single
+winner goes stateless, and replaced an outcome with a pressure: **one movement past 40%, or several
+summing past 40%, starts a per-turn chance of civil war that rises with the share.** The government
+does not lose the ground; it lives with a rising risk of the thing that takes the ground away. That
+matches how the rest of the game already works. **No figure named and none invented.**
+
+**The finding under it.** `js/civilwar.js` is a complete, tested resolver — size-ratio scoring, summed
+dice, three outcomes — and **every one of its triggers is an annexation**: a flipped plurality, or
+annexed counties out-massing the annexer in GDP or population. **There is no internal path to civil war
+in this game at all.** A nation can be half organised against itself and never risk one. Ruling 8 adds
+a trigger to an engine that exists, which is the cheap half — **but the resolver is framed in
+`before / added / after` demographics and a movement-driven war has no "added".** That framing must be
+answered before it is built. Flagged, not solved.
+
+**The scale question, raised with Aaron and open.** The built 40% (`secession.countyThreshold`) is
+**per Area**. Aaron's coalition arithmetic is **per nation** — *"I am Oregon and now I have 26% of my
+population."* **Two different measurements now both carry 40%.** Whether that is one number used twice
+or two that coincide is undecided, and it matters: a nation at 40% overall may have no single county
+near it, and a nation with three counties past 40% may sit at 5% nationally.
+
+**Ruling 9 — a government may join the movement.** *"Looks like we are Cascadia now."* **A fifth
+release valve, and the strongest.** The four built valves answer a movement by giving ground, giving
+self-rule, changing what the government stands for, or sending soldiers; **this one answers by becoming
+it.** Changing course changes an ideology; this changes an identity.
+
+**Aaron's own price is self-balancing:** adopt one movement and every county where a *different*
+movement is stronger walks out to that one. In the Oregon case, adopting Cascadia hands over every
+county Greater Idaho leads. **You solve half the problem by conceding the other half.**
+
+**What is built is not this.** Round 1's S29, *"going with the breakaway"*, is `Game.setPlayer` — the
+**player changes seats** to a nation that has already declared. Ruling 9 is the opposite in every
+respect: the **nation** transforms, nothing has declared, no split occurs unless the price triggers it,
+and the player does not move. New machinery, though the county-handover half re-points release.
+
+**No threshold named for ruling 9** — Aaron's *"over a certain number"* — **and none invented.**
+
+**Nothing built.** No code, data or `DESIGN.md` touched.
