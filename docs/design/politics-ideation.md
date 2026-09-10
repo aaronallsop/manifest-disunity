@@ -652,6 +652,37 @@ new machinery, though the county-handover half re-points what release already do
 
 **No threshold named — Aaron's *"over a certain number"* — and none invented.**
 
+### Ruling 10 — The two forties are two dials with two jobs, and the values go to the architect
+
+**Aaron, 9 September 2026:** *"Not sure — is this something we can figure out in the architecture
+stage?"*
+
+**Half of it yes, and by his own definition.** D180 sets the architect's job as *"takes that design and
+actually creates the numbers that are needed for this."* **Any question of the form "what value" is the
+architect's**, and both forties are that. **Deferred, correctly.**
+
+**But the other half needed no deferring, because Aaron had already answered it without being asked.**
+The question raised against ruling 8 was whether the built 40% and his 40% are the same number. **They
+are not the same measurement and they do not do the same job, so there was never a conflict:**
+
+| Measured | Over its bar | Consequence |
+|---|---|---|
+| **One county's** organised share | that county leaves with the movement | **built** — `secession.countyThreshold` |
+| **A whole nation's** total movement share | the civil war clock starts ticking | **ruling 8** |
+
+**They compose, and the pair tells two stories the game could not tell before.** A county at 45% in a
+nation at 10% is one furious corner that secedes cleanly while the country carries on. **A nation at
+45% with no single county past 40% is a country thinly angry everywhere — nothing secedes, and it tears
+itself apart instead.** The second is new; nothing in the build can produce it.
+
+**So the only instruction forward is a plumbing one: two tunables, not one shared constant**, so moving
+the county bar never silently moves the national one. That is the architect's, and it is trivial.
+
+**The general rule, extracted so this call can be made without asking again.** Under D180: *what should
+happen* is ideation's; *what is measured, and what the effects are at each level* is design's; **the
+values are the architect's.** A question reaches Aaron only when the answer would change what a
+playtester sees happen.
+
 ---
 
 ## 5. The idea bank
