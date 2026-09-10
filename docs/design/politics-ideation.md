@@ -501,6 +501,90 @@ it on their own**, against 292 at the old 250,000 bar.
 
 **Both figures become named tunables. Nothing built.**
 
+### Ruling 6 — A coalition is a shared enemy, and it is measured as total movement share
+
+**Aaron, 9 September 2026**, rejecting the recommendation put to him and replacing it with something
+simpler.
+
+> "I think that movements only work together when they are fighting against the state. So greater
+> idaho and cascadia would fight together against the state."
+>
+> "In practical terms though the way I think it would work mechanically is that I am Oregon and now I
+> have 26% of my population for the cascadia movement and 26% for the greater idaho movement and that
+> would cause a problem."
+
+**My recommendation is struck.** I proposed three conditions — same verb, shared ground, and close
+enough on the political board to stand each other. **Aaron removed all three.** Movements do not need
+to agree, negotiate, or like one another. **They are working together by virtue of being inside the
+same government, and nothing else.**
+
+**Name the simplification, because the usual complaint runs the other way.** There is now **no
+coalition object at all** — nothing to form, hold, track, break or dissolve, and no alliance state
+between movements. **The coalition is an arithmetic fact about the government:** what share of my
+people are in a movement, counting all of them. Two movements that despise each other still both
+count against you.
+
+**And it disposes of Aaron's own "more chaos afterwards" without a rule for it.** They were never
+allied — they were simultaneously against you. Remove the government they were both pushing on and
+there is nothing holding them together, which is precisely the chaos he described on the State of
+Jefferson.
+
+**The build already half-agrees, and its code contradicts its own explanation.** `Game.hostility(f)`
+measures how hostile an Area is to whoever holds it, and its note reads:
+
+> *"The strongest organised movement's share of it. **A movement IS opposition to the state that
+> governs the Area** — that is what M4.1 made them — so the share it has organised is the readiest
+> measure of how expensive the place is to sit on."*
+
+**The sentence argues for the sum and the code takes the maximum:**
+`for (const m in c.mov) { const s = c.mov[m] / pop; if (s > worst) worst = s; }`
+
+**Ruling 6 makes the code agree with its own reasoning.** It is one line. The result stays inside
+0..1 naturally, because a movement's members are a slice of the Area's population and the slices
+cannot sum past the whole.
+
+**Aaron's 26 / 26 is calibrated to a threshold he was not told about.** `secession.countyThreshold` is
+**0.40** — the share a movement must organise before an Area will leave. **26% is under it. 52% is
+over it.** Neither movement can take a county alone; together they take it. Whether he knew the number
+or arrived at it by instinct, the example lands exactly in the gap the mechanic creates.
+
+**THE QUESTION IT OPENS, and it is Aaron's.** The leave test is written *per movement*. If the total
+crosses 40% and no single movement has, **which movement takes the Area?** *Recommendation: none of
+them — it goes stateless.* An Area whose government has lost control while no successor has won it is
+ungoverned by definition, and ruling 5 already built the object for that. **Not decided.**
+
+### Ruling 7 — Movement members join the militia, not the army
+
+**Aaron, 9 September 2026**, flagged by him as belonging to the population work.
+
+> "Once we get to population — the larger the movement size the less people from that movement will
+> join the military and instead join the movement militia."
+
+**What is built.** `Military.of` computes `manpower = pop × mil.manpowerShare`, and
+`mil.manpowerShare` is **0.004** — four in a thousand, a peacetime standing force. **There is no
+movement term in it at all.** A nation half of whose people are organised against it currently fields
+exactly the same army as one with no movements whatsoever.
+
+**Worked against the real Oregon**, 4,272,371 people, at Aaron's 26 / 26:
+
+| | Today | Under ruling 7 |
+|---|---|---|
+| State army | **17,089** | **8,202** |
+| Cascadian militia | — | **4,443** |
+| Greater Idaho militia | — | **4,443** |
+
+**The state beats either militia comfortably — 1.8 to 1 — and loses to both of them together, 8,202
+against 8,886.** Nobody tuned that. It falls out of Aaron's two figures meeting a manpower rate set
+long before for an unrelated reason.
+
+**So two independent mechanics put Oregon on the same knife edge at 26 / 26**: the secession threshold
+(26 under, 52 over) and now the manpower split. That is a strong sign the numbers are in the right
+place.
+
+**Left open, and it is a tunable rather than a design question:** whether a militia arms at the same
+four-in-a-thousand rate as a peacetime state, or higher because a militia is mobilised and a state is
+not. **No figure invented.**
+
 ---
 
 ## 5. The idea bank

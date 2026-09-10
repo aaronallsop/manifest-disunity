@@ -3502,3 +3502,49 @@ reasons about *"an island has no land neighbours"*, so the distinction exists to
 smallest real state. **148 counties clear it alone**, against 292 at the 250,000 bar.
 
 **Nothing built.** Both figures become named tunables.
+
+---
+
+### D191 — A coalition is a shared enemy, not an agreement; and movement members arm themselves, 9 September 2026
+
+**Aaron struck the recommendation put to him and replaced it with something simpler.** I proposed that
+two movements could work together if they shared a verb, shared ground, and sat close enough on the
+political board to tolerate each other. **He removed all three conditions.** *"Movements only work
+together when they are fighting against the state."*
+
+**Ruling 6. There is no coalition object.** Nothing forms, holds, breaks or dissolves; there is no
+alliance state between movements. **The coalition is an arithmetic fact about the government** — what
+share of my people are in a movement, counting all of them. Two movements that despise each other both
+count against you. **This is a simplification and it is recorded as one**, since the usual complaint
+runs the other way. It also disposes of Aaron's own *"more chaos afterwards"* without a rule: they were
+never allied, only simultaneously against you, so removing the government removes the only thing they
+had in common.
+
+**The build already half-agrees, and its code contradicts its own comment.** `Game.hostility(f)` is
+documented as *"a movement IS opposition to the state that governs the Area"* — an argument for the
+sum — and then takes the **maximum** single movement and discards the rest. **Ruling 6 makes the code
+agree with its own reasoning, and it is one line.** The result stays within 0..1 naturally.
+
+**Aaron's example is calibrated to a threshold he was never told about.** `secession.countyThreshold`
+is **0.40**. His 26% is under it; his 26 + 26 = 52% is over it. Neither movement takes a county alone;
+together they take it.
+
+**One question this opens and it is his, not mine.** The leave test is written *per movement*. If the
+total crosses 40% and no single movement has, **which movement takes the Area?** Recommended: none —
+it goes stateless, since an Area whose government has lost control while no successor has won it is
+ungoverned by definition, and D190 already built that object. **Not decided.**
+
+**Ruling 7. Movement members join the militia rather than the army.** `Military.of` computes manpower
+as `pop × mil.manpowerShare` at **0.004**, with **no movement term whatsoever** — a nation half
+organised against itself currently fields the same army as one with no movements at all.
+
+**Worked against the real Oregon** (4,272,371 people) at 26 / 26: the state army falls from **17,089**
+to **8,202**, and each militia stands at **4,443**. **The state beats either militia 1.8 to 1 and
+loses to both together, 8,202 against 8,886.** Nobody tuned that; it falls out of Aaron's two figures
+meeting a manpower rate set long ago for an unrelated reason. **Two independent mechanics now put
+Oregon on the same knife edge at 26 / 26**, which is good evidence the numbers sit in the right place.
+
+**Left open as a tunable, with no figure invented:** whether a militia arms at the same four-in-a-
+thousand rate as a peacetime state or higher, a militia being mobilised where a state is not.
+
+**Nothing built.** No code, data or `DESIGN.md` touched.
