@@ -1113,6 +1113,61 @@ middle step now has an engine rather than an assertion.
 warning about. The Rio Grande Union, the Central States Union and the Sagebrush Rebellion keep their
 homelands.
 
+### P8 — Martial law: fewer rules, not more soldiers
+
+**Proposed 9 September 2026 at Aaron's request — "how do you think martial law should work based on
+everything else in the game". Not ruled.**
+
+**The constraint that decides the shape.** `mil.garrisonHalf` is documented as **PER AREA**, and says
+why: *"which is what stops a large empire suppressing everything at once: a garrison spread over sixty
+Areas is not the garrison of a nation with four."* **Any martial law that simply suppresses everywhere
+breaks that on purpose.** So martial law must not be more force.
+
+**The proposal: martial law is a LEGAL state, not a military one. It does not give you soldiers — it
+takes away the rules the soldiers you already have are operating under.**
+
+| | |
+|---|---|
+| **Declared over** | a chosen set of Areas, the way release and autonomy already work. The story's version is regional — the 12 Areas around Washington |
+| **What it does there** | **multiplies the suppression an existing garrison produces.** No garrison in an Area, no effect in it — a nation with no army gets nothing from declaring it |
+| **What it does nationally** | **suspends the election** — the one thing nothing in the game can do — *if* it covers enough of the country |
+| **What it costs** | civil liberties in every Area under it, at a multiple of a garrison's rate; and **Authority nationally**, because a government that suspends elections has announced it cannot win one |
+| **What ends it** | nothing hard. **The cost compounds each turn it holds.** Round 2 removed all three hard brakes on conquest and left only prices; this follows that taste |
+
+**It obeys the law this game states three times in its own tunables** — *"a garrison buys quiet now and
+buys the grievance that feeds the next movement… without which suppression is a free answer to
+secession and the whole valve is a button you would always press."* **Martial law suppresses the
+symptom and feeds the disease**: the movement share falls while it holds, and the liberties it burns
+raise the grievance that regrows it faster.
+
+**Against ruling 8's civil war clock:** it slows the clock while it holds and speeds up what the clock
+is measuring. Buying time at compound interest.
+
+**THE PART WORTH KEEPING, and it fell out rather than being designed.** The game already has a way to
+stay in power against a vote: **stealing the election**, available only when Civil Liberties are below
+**`election.stealBelow` = 0.32**, costing **0.12** more. **So the two are available at opposite ends of
+the same scale, and neither is strictly better:**
+
+- **A rotten government** — liberties already under 0.32 — **steals quietly and cheaply.** It is
+  barely a change from what it already was.
+- **A decent government** — liberties well above 0.32 — **cannot steal at all.** Its only option is to
+  declare martial law openly, and it pays far more, because it had further to fall.
+
+**That is scenario 3 of the whole plan, arriving from an unexpected direction:** *a government that
+chooses between its own identity and its territory.* A decent government in a crisis must lose power
+honestly or become the thing it was elected to prevent. **Elections run every 16 turns — four years —
+so the choice is rare and it lands hard.**
+
+**Where it sits in ruling 11's table:** it is the **Suppress** move at national scale, and the only
+move in the game that touches an election.
+
+**Three questions for Aaron.** How much of the country must be under it before the election is
+suspended — anywhere, or a threshold share? Does declaring it cost the turn's action (recommended:
+yes to declare, **free to lift**, so no government is ever trapped by its own emergency)? And may the
+AI declare it?
+
+**No numbers invented.** Every figure quoted above is one already in the build.
+
 ### P3 — Three words for three things
 
 *Proposed in session, unruled.* **Ideology** is the cell — universal, permanent, eight of them,
