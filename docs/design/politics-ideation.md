@@ -906,6 +906,63 @@ and under this scheme **the two big parties DO map straight across** — they ar
 Only the small "other" share needs splitting by cultural region, across the eight corners. **Ruling 2
 shrinks the job D185 called the largest single piece of authoring in the change.**
 
+### P7 — The one table: five moves, six verbs, and the four built valves are already the answer
+
+**Proposed 9 September 2026, not ruled.** This is round 1's finding D and Aaron's instruction that the
+answers to *Expand* and *Reconquer* go in **one table, not two**.
+
+**The discovery that makes it one table.** The four built valves are not four ad-hoc levers for
+*Separate*. **They are four general moves, and nobody noticed because they were only ever aimed at one
+verb:**
+
+| The built valve | The general move |
+|---|---|
+| Release the ground | **Concede** — give them exactly what they want |
+| Grant autonomy | **Concede less** — a cheaper substitute that scratches the itch |
+| Change course | **Remove the want** — fix the cause so they stop wanting it |
+| Garrison | **Suppress** — force |
+
+**Ruling 9 adds a fifth: become them.** Concede everything, including your identity.
+
+**So the table is five moves against six verbs, and almost nothing has to be invented** — most cells
+are re-pointings of machinery that exists.
+
+| Verb *(authored movements)* | Concede | Concede less | Become them | Remove the want | Suppress |
+|---|---|---|---|---|---|
+| **Separate** *(15)* | release the ground **·built** | autonomy **·built** | ruling 9 | raise quality of life; change course **·built** | garrison **·built** |
+| **Rejoin** *(0)* | hand it back to its old parent | autonomy | — | **govern it better** | garrison |
+| **Unify** *(5)* | merge with the neighbour | **join a bloc** — the form without the substance | ruling 9 | deliver what they think merging would bring | garrison |
+| **Reunify** *(3)* | put the state back together | a treaty short of merger | ruling 9 | **string them along until the verb changes** *(round 2 ruling 30)* | garrison |
+| **Expand** *(2)* | go and take it | **buy it rather than take it** | — | **stop being short** *(round 4's)* | garrison |
+| **Reconquer** *(0)* | go and take it back | **get it by treaty** *(round 2's machinery)* | — | renounce the claim *(finding G)* | garrison |
+
+**Four things this turns up.**
+
+1. **Weighted by what is actually on the board, the hole is 40%, not five-sixths.** Finding D counted
+   verbs. Counting *movements*: **Separate is 15 of the 25 reviewed — 60%** — so the four built valves
+   already answer three movements in five. Unify 5, Reunify 3, Expand 2. **The gap is real and it is
+   smaller than the verb count makes it sound.**
+2. **Rejoin and Reconquer have no authored movements at all.** Both are born in play only. Two of
+   finding D's "five verbs with no answer" currently have nothing to answer.
+3. **Rejoin is the only verb curable by governing better.** Round 1's ruling 42 triggers it on
+   authority, quality of life, war weariness and occupation — all things the government controls about
+   itself. **Every other verb needs you to give something away, act abroad, or suppress. This one you
+   fix by being better.** Nothing else on the board has that property.
+4. **"Join a bloc" is the cheap answer to Unify — which answers inbox item 7 as a by-product.** Round 1
+   asked whether joining a bloc is a political act with a domestic price. It is: **it is the
+   concede-less move for a Unify movement**, giving them integration without a merger. The bloc itself
+   stays round 5's.
+
+**The empty cells are informative rather than missing.** *Become them* does not apply to Expand or
+Reconquer, because adopting an expansionist programme is simply obeying it — the cell collapses into
+Concede. **The verbs with fewer moves are the ones that squeeze the player hardest**, which is a
+feature worth keeping rather than filling in.
+
+**Open, and Aaron's:** whether *become them* is a fifth move or the maximum of conceding; what removes
+a Unify movement's want, since three of the five are economic and that answer belongs to round 4; and
+whether answering costs the turn's action — round 2's C117 default was **free to answer, costly to
+obey**, taken without asking.
+
 ### P3 — Three words for three things
 
 *Proposed in session, unruled.* **Ideology** is the cell — universal, permanent, eight of them,
