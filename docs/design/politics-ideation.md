@@ -906,9 +906,9 @@ and under this scheme **the two big parties DO map straight across** — they ar
 Only the small "other" share needs splitting by cultural region, across the eight corners. **Ruling 2
 shrinks the job D185 called the largest single piece of authoring in the change.**
 
-### P7 — The one table: five moves, six verbs, and the four built valves are already the answer
+### Ruling 11 — The one table: five moves, six verbs, and the built valves were the answer all along
 
-**Proposed 9 September 2026, not ruled.** This is round 1's finding D and Aaron's instruction that the
+**RULED 9 September 2026.** Aaron on the structure below: *"That is the general shape - yes."* This is round 1's finding D and Aaron's instruction that the
 answers to *Expand* and *Reconquer* go in **one table, not two**.
 
 **The discovery that makes it one table.** The four built valves are not four ad-hoc levers for
@@ -958,10 +958,43 @@ Reconquer, because adopting an expansionist programme is simply obeying it — t
 Concede. **The verbs with fewer moves are the ones that squeeze the player hardest**, which is a
 feature worth keeping rather than filling in.
 
-**Open, and Aaron's:** whether *become them* is a fifth move or the maximum of conceding; what removes
-a Unify movement's want, since three of the five are economic and that answer belongs to round 4; and
-whether answering costs the turn's action — round 2's C117 default was **free to answer, costly to
-obey**, taken without asking.
+**Default taken rather than asked, and flagged: *become them* is a fifth move, not the maximum of
+conceding.** Releasing ground gives away **territory**; becoming the movement gives away **identity**
+and keeps the territory, minus whatever walks out under ruling 9's price. Those are different enough
+that collapsing them would hide a real choice from the player. **One line to correct if wrong.**
+
+### Ruling 11a — The "remove the want" column belongs to the ADJECTIVE, not the verb
+
+**Proposed, not ruled.** The one cell nobody could fill was *what makes a Unify movement stop wanting
+to merge*. Working it produced a structural answer that applies to the whole column.
+
+**Round 1's ruling 40 already said it and nobody carried it forward:** *"Every movement has a verb —
+what happens if it wins — and an adjective — what would make it stop wanting to."* **The adjective IS
+the remove-the-want column.** Four of the five moves are the verb's; that one is the adjective's.
+
+| Adjective *(movements)* | What removes the want |
+|---|---|
+| **cultural** *(6)* | recognition — let them be what they are, inside your state |
+| **autonomist** *(5)* | self-rule — **the same cell as *concede less*, so these two collapse** |
+| **ideological** *(4)* | change course **·built** |
+| **resource** *(3)* | a share of what the ground produces |
+| **economic** *(3)* | deliver the prosperity they think merging would bring, by other means |
+| **religious** *(2)* | religious liberty, or establishment |
+| **indigenous** *(2)* | sovereignty over their own land; restitution |
+
+**So a Unify movement's cure depends on why it wants to merge, not on the merging.** Three of the five
+are economic — fix the prosperity and the compact stops mattering — and two are ideological, which is
+the *change course* valve that already exists. **Nothing new is needed for either.**
+
+**Two consequences worth keeping.**
+
+1. **An autonomist movement is the cheapest kind to satisfy**, because its cheap substitute and its
+   cure are the same act. Five of the twenty-five reviewed are autonomist.
+2. **The whole design is 6 verbs + 7 adjectives + 5 moves = 18 things, not 42 authored cells.** The
+   table is generated rather than written, which is the same economy the ideology axes buy.
+
+**Still open:** whether answering a movement costs the turn's action. Round 2's **C117** took the
+default **free to answer, costly to obey** without asking, and it has never been confirmed.
 
 ### P3 — Three words for three things
 

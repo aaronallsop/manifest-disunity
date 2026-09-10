@@ -3590,3 +3590,51 @@ and the player does not move. New machinery, though the county-handover half re-
 **No threshold named for ruling 9** — Aaron's *"over a certain number"* — **and none invented.**
 
 **Nothing built.** No code, data or `DESIGN.md` touched.
+
+---
+
+### D193 — The one table: five moves against six verbs, and the adjective owns one column, 9 September 2026
+
+**Ruling 11.** Aaron confirmed the structure: *"That is the general shape - yes."*
+
+**The discovery that made it one table rather than two.** The four built release valves are **not four
+ad-hoc levers for *Separate***. They are four **general moves**, unrecognised as general only because
+they had never been aimed at another verb: **Concede** (release the ground), **Concede less**
+(autonomy), **Remove the want** (change course), **Suppress** (garrison). **D192's ruling 9 adds a
+fifth — Become them.** Five moves against six verbs fills the whole table with re-pointings of
+machinery that already exists.
+
+**Default taken and flagged: *become them* is a fifth move, not the maximum of conceding.** Releasing
+ground gives away territory; becoming the movement gives away identity and keeps the territory. Too
+different to collapse without hiding a choice from the player. One line to correct.
+
+**Ruling 11a, proposed not ruled: the remove-the-want column belongs to the ADJECTIVE.** Round 1's
+ruling 40 already said *"every movement has a verb — what happens if it wins — and an adjective — what
+would make it stop wanting to"*, and nobody carried it into the table. **Four of the five moves are the
+verb's; that one is the adjective's.** It fills the cell nobody could fill — what stops a Unify
+movement wanting to merge — by making the answer depend on *why* it wants to merge: three of the five
+are economic (deliver the prosperity, not the compact) and two are ideological (the *change course*
+valve, already built).
+
+**Four things the table turned up.**
+
+1. **Weighted by movements rather than verbs, the hole is 40%, not five-sixths.** Finding D counted
+   verbs. **Separate is 15 of the 25 reviewed — 60%** — so the built valves already answer three
+   movements in five.
+2. **Rejoin and Reconquer have no authored movements at all**; both are born in play only, so two of
+   the "five verbs with no answer" have nothing yet to answer.
+3. **Rejoin is the only verb curable by governing better.** Round 1 triggers it on authority, quality
+   of life, war weariness and occupation — all things a government controls about itself. Every other
+   verb needs you to give something away, act abroad, or suppress.
+4. **"Join a bloc" is the concede-less move for Unify**, which answers round 1's inbox item 7 as a
+   by-product: joining a bloc is a domestic political act, and it is integration without a merger.
+
+**Two economies recorded.** An **autonomist** movement is the cheapest kind to satisfy, because its
+cheap substitute and its cure are the same act. And **the design is 6 verbs + 7 adjectives + 5 moves =
+18 things rather than 42 authored cells** — the table is generated, not written, the same economy the
+ideology axes buy.
+
+**Still open:** whether answering a movement costs the turn's action. Round 2's **C117** took the
+default *free to answer, costly to obey* without asking, and it has never been confirmed.
+
+**Nothing built.** No code, data or `DESIGN.md` touched.
