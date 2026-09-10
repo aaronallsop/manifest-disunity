@@ -1016,6 +1016,74 @@ the *change course* valve that already exists. **Nothing new is needed for eithe
 **Still open:** whether answering a movement costs the turn's action. Round 2's **C117** took the
 default **free to answer, costly to obey** without asking, and it has never been confirmed.
 
+### Ruling 12 — Demands are free, mandatory, and answered before the turn can move
+
+**Aaron, 9 September 2026**, confirming round 2's C117 default and adding to it.
+
+> "Responding to them is not counted as part of your turn and it is something you have to do before
+> you can move on. So a notification will appear with some text (we will figure that out later) but
+> like **MOVEMENT DEMANDS:** with the list of their demands."
+
+**C117 is confirmed — free to answer, costly to obey — and Aaron made it *mandatory*.** A turn now has
+two phases: **answer every demand on the table**, which costs nothing, and then **take your one
+action**. The wording of the notification is deliberately left for later.
+
+**THE PRECEDENT, and it is the largest thing in this ruling.** `IDEATION-PLAN.md` rule 3 says: *"One
+action per nation, and it ends the turn. Six components are competing for one slot. Any idea that
+assumes it gets a decision every turn has just taken that turn away from the other five."*
+
+**Ruling 12 is the first thing in the whole design to get a guaranteed decision every turn without
+spending the action.** It is the right call for movements — the pressure is the point, and making the
+player pay an action to say *no* would mean whole turns spent refusing people — **but every other
+component will now want the same channel, and the answer has to be no unless it earns it the same
+way.** Recorded so the precedent is deliberate rather than discovered.
+
+**Volume, measured before it was worried about.** Movements whose homeland touches each state:
+**median 2, worst 5** — and the worst is **Oregon**, which is the nation Aaron used for his own
+example. Eight states have one or none. **A mandatory phase is two cards on a normal turn and five on
+the hardest, which is a rhythm rather than a wall.**
+
+**No deadlock is possible**, because refusing is always available and always free. It is not free of
+consequence — round 2's ruling 30 makes a refused movement **grow**, and a strung-along one **change
+what it wants**.
+
+**What is built: nothing.** There is no petition or demand machinery in the game at all — the only
+`demand` in the code is the economic kind in `market.js`.
+
+**And ruling 12 pulls round 1's finding A forward, out of the round that owns it.** Finding A: *"the
+petition threshold must sit below the secession threshold, and nobody set one… if those are the same
+number, no movement ever petitions — it declares first. Cascadia would take Portland and Seattle
+rather than ask for them."* It was filed to **diplomacy, round 5**. **A mandatory per-turn demand
+phase cannot be built without knowing when a movement starts demanding, so finding A is now this
+round's and it is blocking.** No number invented.
+
+### Finding D — Ruling 3 and ruling 4 contradict each other on stateless ground
+
+**Found while tracing ruling 12 against round 1's open findings, and it is mine to own: I closed round
+1's finding B too confidently in ruling 3.**
+
+- **Ruling 3** says stateless ground has **no stocks** — no government, so nothing to hold quality of
+  life, liberties, authority or weariness.
+- **Ruling 4** says **a movement can rise out of a stateless society.**
+- **Round 1's finding B** is the collision: *grievance reads the holder's quality of life, liberties,
+  authority and weariness.* **With no holder there is no grievance, and grievance is what makes
+  movements grow.** Finding B names the casualties — *"three of the six stateless regions… and the Rio
+  Grande Union, the Central States Union and the Sagebrush Rebellion have nowhere to grow."*
+
+**Ruling 3 marked finding B closed *"for conquest's purposes"*, which was true and insufficient.** Its
+second half — whether a movement can grow on ungoverned ground — was left standing and then
+contradicted by ruling 4 an hour later.
+
+**Proposed resolution, not ruled: on stateless ground a movement grows by ATTRACTION rather than
+GRIEVANCE.** The growth model already has two terms — the movement's own rate against its ceiling,
+and a diffusion pull from neighbouring Areas — and only the grievance term needs a holder. **A
+stateless region has nobody to be aggrieved at; what it has is neighbours joining something and people
+who agree with them.** That is thematically right and it needs no new machinery, only permission for
+the grievance term to be absent rather than zero.
+
+**This is Aaron's to confirm**, because it decides whether roughly 176 Areas are live ground or dead
+ground.
+
 ### P3 — Three words for three things
 
 *Proposed in session, unruled.* **Ideology** is the cell — universal, permanent, eight of them,
