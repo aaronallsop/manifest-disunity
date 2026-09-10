@@ -1081,8 +1081,37 @@ stateless region has nobody to be aggrieved at; what it has is neighbours joinin
 who agree with them.** That is thematically right and it needs no new machinery, only permission for
 the grievance term to be absent rather than zero.
 
-**This is Aaron's to confirm**, because it decides whether roughly 176 Areas are live ground or dead
-ground.
+### Ruling 13 — On ungoverned ground a movement grows by attraction, not grievance
+
+**Aaron, 9 September 2026:** *"Correct."* **Finding D closes, and with it round 1's finding B — both
+halves this time.**
+
+**Verified against the model, and it is subtraction rather than addition.** `js/sentiment.js` computes:
+
+```
+grievance = w_qol * (1 - quality of life) + liberties + weak nation + weak authority + weariness
+pull      = w_nbr * tanh(k * SUM over neighbours of their share)
+target    = clamp01( base * (grievance + pull) - suppression )
+```
+
+**Every input to `grievance` belongs to a holder.** Quality of life, civil liberties, national power,
+authority, war weariness — all of them are facts about a government. **`pull` needs nothing but
+neighbours, and `base` is the ideological match.** So on stateless ground the rule is simply
+**`target = base × pull`**: grievance is *absent* rather than zero, and the movement grows on who its
+neighbours are and whether these people agree with it. **One term drops out. Nothing is invented.**
+
+**The consequence nobody asked for, and it is a good one: `suppression` also drops out.** Suppression
+comes from a garrison, and **there is no government on stateless ground to garrison it.** So a
+movement there grows **entirely unopposed** — no grievance to accelerate it, and no force able to hold
+it down.
+
+**That makes stateless regions the natural incubators of movements**, which completes the life cycle
+rulings 4 and 5 built: **stranded → stateless → a movement organises, unopposed → a nation.** The
+middle step now has an engine rather than an assertion.
+
+**And roughly 176 Areas become live ground rather than dead scenery** — the thing finding B was
+warning about. The Rio Grande Union, the Central States Union and the Sagebrush Rebellion keep their
+homelands.
 
 ### P3 — Three words for three things
 
