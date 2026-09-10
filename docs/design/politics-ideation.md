@@ -737,4 +737,64 @@ course* valve, priced by the geometry rather than by a tunable.
 
 ## 6. Findings
 
-*What this round discovered that nobody asked it. None yet.*
+*What this round discovered that nobody asked it.*
+
+### Finding A — The Farmers Union is a 983-county movement Aaron has never reviewed
+
+**`data/parties.json` carries 32 movements. The Movement Register Aaron marked up on 7 September
+carried 31 of them.** The one that has never been in front of him is **The Farmers Union** — and it is
+not small.
+
+| | |
+|---|---|
+| Counties | **983** — the second largest movement in the game, behind only the New Confederacy's 1,142 |
+| Population | **22,638,807** |
+| Ideology | `orange` (Distributist) · type `economic` · spawn chance 0.5 · growth cap 0.30 |
+| Goals | *farm price supports, rural credit* |
+| **Verb** | **NONE. It has never been given one**, because it was never reviewed |
+
+**It overlaps five other movements on the ground** and none of those pairs can be judged, because a
+coalition rule keyed on the verb cannot read a movement that has not got one.
+
+**And there is a category question underneath it.** Round 1 filed the Farmers Union into politics as
+inbox item 7 — *"Seven governors signed the Farmers Union"* — which describes **a diplomatic bloc that
+governments join**, not a popular movement that grows in counties. **The data says movement; the story
+says bloc. Nobody has said which it is.** Aaron's, and it is asked.
+
+### Finding B — Coalitions are common, and the network has two hubs nobody placed there
+
+Measured across the 26 live movements (the six Aaron struck excluded), 325 possible pairs:
+
+| | |
+|---|---|
+| Pairs whose homelands **overlap at all** | **40** (12%) |
+| Of those, pairs that **share a verb** — the coalition candidates | **22** |
+| Pairs that overlap but **want different things** — rivals on the same ground | **13** |
+| Pairs blocked from judgement by the Farmers Union having no verb | **5** |
+
+**Two movements are hubs, and neither was designed to be.** The **Northern Christian Kingdom** shares
+ground and a verb with **six** others; the **Native American Confederation** with **seven**. Both are
+broad, thin homelands across the interior West, so they touch everything. **The two hubs of the entire
+western separatist network are a Christian-nationalist movement and an indigenous-sovereignty
+movement — and they overlap each other on six counties.**
+
+### Finding C — Aaron's example is real, and there is a better one beside it
+
+**Checked rather than accepted.** *State of Jefferson × Greater Idaho* — his example — **do overlap:
+5 counties, 500,494 people, and both want to Separate.** It works.
+
+**But Jefferson's most entangled relationship is with Cascadia, at three times the size:**
+
+| Pair | Shared counties | People | Verbs |
+|---|---|---|---|
+| Jefferson × **Cascadia** | **16** | 1,187,341 | both *Separate* |
+| Jefferson × California Republic | 10 | 607,941 | *Separate* vs *Reunify* — **rivals** |
+| Jefferson × Greater Idaho | 5 | 500,494 | both *Separate* |
+| Greater Idaho × Cascadia | 4 | 492,300 | both *Separate* |
+
+**Jefferson and Cascadia are the textbook case of what Aaron described**, and better than the one he
+named: *"100% aligned on separating"* — both Separate — while being about as far apart politically as
+two movements get, Cascadia sitting at the collective-progressive end and Jefferson at the
+neo-liberal-conservative one. **Round 1's finding F had already noticed this pair and read it as pure
+rivalry.** Under a coalition rule they are allies first and enemies afterwards, which is the whole
+idea.
