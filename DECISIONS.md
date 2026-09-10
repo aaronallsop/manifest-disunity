@@ -3682,3 +3682,48 @@ otherwise be 42 authored cells.
 took *free to answer, costly to obey* as a default without asking, and it has never been confirmed.
 
 **Nothing built.**
+
+---
+
+### D195 — Martial law is a legal state, not a military one, and the one-action rule is going to change, 10 September 2026
+
+**Ruling 14.** Martial law removes the rules the soldiers you already have are operating under. **It
+gives no soldiers.** It multiplies an existing garrison and does nothing at all in an Area you do not
+hold, so a nation with no army gets nothing from declaring it. **That shape was forced by a constraint
+already in the build:** `mil.garrisonHalf` is per Area *"which is what stops a large empire suppressing
+everything at once"*, and any martial law that simply suppresses everywhere breaks that on purpose.
+
+**Aaron's three answers.** The election is suspended **only above 50% of the nation** — his note:
+*"which also means that conquering too much could be a bad thing."* **It costs one action**, deferred
+because *"we need to change the whole one action per turn."* **The AI may declare it**, with an
+architecture note to bound it in both directions.
+
+**What it costs:** civil liberties in every Area under it, above a garrison's rate; and **Authority
+nationally**, because a government that suspends elections has announced it cannot win one. **Nothing
+ends it** — the cost compounds, following round 2's taste of prices rather than hard brakes.
+
+**The result that fell out rather than being designed.** Stealing an election is available only below
+`election.stealBelow` = **0.32** liberties. **So a rotten government steals quietly and cheaply, and a
+decent government cannot steal at all** and must declare openly at far greater cost, having further to
+fall. **Neither is strictly better and they sit at opposite ends of the same scale** — which is
+scenario 3 of the whole plan, *a government choosing between its own identity and its territory*,
+arriving from an unexpected direction. Elections run every 16 turns, so the choice is rare and lands
+hard.
+
+**Finding E — Aaron's "conquering too much is bad" is true, and the mechanism is the posture, not the
+size.** Measured: Areas are built to a **50,000-person floor**; force is `pop × 0.004` split three ways
+between garrison, border and field; suppression is half at **200 per Area**. To hold half your Areas
+needs `100 × Areas` garrisoning — **≈12% of your army at the map's average density of 201,000 per Area,
+and ≈50% at the Area floor.** **So size never blocks it; density does, and conquest lowers density
+because the cheap ground is the empty ground.** The bite is not *"too big to suspend an election"* but
+**"choose between suspending elections and campaigning abroad"** — the force martial law needs at home
+is exactly the Field force you wanted for more conquest.
+
+**And readiness is rate-limited**, so a government cannot flip to garrison on the turn it needs martial
+law. **It is a posture committed to several turns earlier, not a panic button.**
+
+**Handed to round 7:** Aaron's statement that the one-action-per-turn rule needs changing, filed in
+`the-things-above-ideation.md` with ruling 12's free-and-mandatory exception beside it, since that
+exception should be designed in rather than grandfathered.
+
+**Nothing built.** No code, data or `DESIGN.md` touched.

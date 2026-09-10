@@ -38,3 +38,38 @@ The story itself is recorded in `secession-ideation.md` §8.
 6. **The single action, against a story full of standing arrangements.** Vassalage, alliances, blocs
    and free-trade corridors are all things a nation *maintains* rather than *does*. Do they cost the
    one action a turn, or live outside it as Recognise already does?
+
+
+---
+
+## Handed forward from round 3 (politics), 10 September 2026
+
+**A1 — Aaron has signalled that the one-action-per-turn rule itself needs changing.** Asked whether
+declaring martial law should cost the turn's action, he answered:
+
+> "It would cost one action - but lets move that to the mechanics stage because **we need to change
+> the whole one action per turn**."
+
+**This round owns that**, per `IDEATION-PLAN.md`: *"what winning means, how the single action is
+spent, and what a nation is allowed to know."* **It is now an instruction rather than an open
+question.**
+
+**Two things from round 3 that bear on it, and they pull in opposite directions.**
+
+1. **Ruling 12 already cut a hole in the rule.** Answering a movement's demands is **free and
+   mandatory** — a guaranteed decision every turn that does not spend the action. **It is the first
+   thing in the whole design to get one**, and it was recorded as a deliberate exception precisely
+   because every other component will now want the same channel. If the one-action rule is being
+   reworked anyway, that exception should be designed in rather than grandfathered.
+2. **Rule 3 of the plan is the thing being changed**, and its reasoning still stands: *"One action per
+   nation, and it ends the turn. Six components are competing for one slot. Any idea that assumes it
+   gets a decision every turn has just taken that turn away from the other five."* **Whatever replaces
+   it has to answer that argument, not ignore it.**
+
+**Also relevant: `docs/FUTURE-IDEAS.md` F1 — sub-turns.** Aaron's own idea of quarterly decisions with
+monthly execution is the most developed alternative to the single action already on file, and D163
+chose today's clock as its outer clock deliberately *so that nothing was foreclosed*.
+
+**Deferred from round 3 pending this:** whether declaring martial law costs the turn's action (ruling
+14, question 2). Aaron's answer was *yes, one action* — but he moved it here because the unit it is
+priced in is the thing being redefined.

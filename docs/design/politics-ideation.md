@@ -1113,10 +1113,10 @@ middle step now has an engine rather than an assertion.
 warning about. The Rio Grande Union, the Central States Union and the Sagebrush Rebellion keep their
 homelands.
 
-### P8 — Martial law: fewer rules, not more soldiers
+### Ruling 14 — Martial law: fewer rules, not more soldiers
 
-**Proposed 9 September 2026 at Aaron's request — "how do you think martial law should work based on
-everything else in the game". Not ruled.**
+**RULED 10 September 2026.** Proposed at Aaron's request — *"how do you think martial law should work
+based on everything else in the game"* — and ruled with his three answers below.
 
 **The constraint that decides the shape.** `mil.garrisonHalf` is documented as **PER AREA**, and says
 why: *"which is what stops a large empire suppressing everything at once: a garrison spread over sixty
@@ -1161,12 +1161,50 @@ so the choice is rare and it lands hard.**
 **Where it sits in ruling 11's table:** it is the **Suppress** move at national scale, and the only
 move in the game that touches an election.
 
-**Three questions for Aaron.** How much of the country must be under it before the election is
-suspended — anywhere, or a threshold share? Does declaring it cost the turn's action (recommended:
-yes to declare, **free to lift**, so no government is ever trapped by its own emergency)? And may the
-AI declare it?
+**Aaron's three answers, 10 September 2026.**
+
+1. **The election is suspended only when martial law covers over 50% of the nation.** His own note:
+   *"which also means that conquering too much could be a bad thing."*
+2. **It costs one action** — *"but lets move that to the mechanics stage because **we need to change
+   the whole one action per turn**."* **Deferred**, and the second half of that sentence is the bigger
+   statement; filed to round 7 in `the-things-above-ideation.md`.
+3. **The AI may declare it**, with a note to the architecture stage to make sure it *"doesn't [go] in
+   either direction too much"* — neither constantly nor never.
 
 **No numbers invented.** Every figure quoted above is one already in the build.
+
+### Finding E — "Conquering too much is bad" is true, and the mechanism is the posture, not the size
+
+**Aaron's instinct on the 50% threshold is right and the reason is not the one it looks like.**
+Measured against the build rather than reasoned about:
+
+| | |
+|---|---|
+| Areas are built to a floor of | **50,000 people**, at most 8 counties |
+| Force | `pop × 0.004` |
+| Force splits three ways | **garrison · border · field**, an even third each by default |
+| Suppression is half at | **200 troops per Area** |
+
+**To hold half your Areas at half-suppression you need `100 × Areas` on garrison duty.** Run against
+the two ends of the density range:
+
+| A nation whose Areas average | Share of your whole army needed on garrison |
+|---|---|
+| **201,000 people** *(the map's average)* | **≈12%** — trivial, well inside the default third |
+| **50,000 people** *(the Area floor)* | **≈50%** — half your army, taken from Field and Border |
+
+**So size alone never blocks it.** What blocks it is **density**, and conquest lowers density
+*because the cheap ground is the empty ground*. **The bite is therefore not "you are too big to
+suspend an election" — it is "you must choose between suspending elections and campaigning
+abroad."** The force martial law needs at home is exactly the force you wanted in Field to conquer
+more.
+
+**And a second constraint makes it a commitment rather than a lever.** `js/military.js`: readiness is
+rate-limited, *"so switching everything to Field the turn before you invade buys you nothing, and a
+standing posture is worth more than a reaction."* **The same is true in reverse: you cannot flip to
+garrison on the turn you need martial law.** A government must already have been facing inward.
+**Martial law is not a panic button. It is a posture you committed to several turns before you knew
+you would need it** — which is both truer to life and a better game.
 
 ### P3 — Three words for three things
 
