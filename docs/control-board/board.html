@@ -1,5 +1,7 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found]){display:none!important}</style></head><body>
 <title>Manifest Disunity Control Board</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Chakra+Petch:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
 <!--
   CONTROL BOARD TEMPLATE
   ======================
@@ -25,64 +27,241 @@
     - Every figure in `figures` and `numbers` is measured this session or shown as null
       (renders as "not yet measured").
     - No file paths, function names or ticket numbers anywhere in BOARD.
+
+  ---------------------------------------------------------------------------
+  LIVERIES — how a project gets its own colour
+  ---------------------------------------------------------------------------
+  Set `livery` in the BOARD object to one of: tower, mars, violet, deep, slate.
+  Leave it out and the board uses `tower`, the Control Tower's own near-black.
+
+  A livery retints THE GROUND and picks the STRUCTURE accent. It must never
+  touch the three signal colours, because each of those means one thing on
+  every board in the fleet:
+
+      red     something is holding for you
+      green   done, or running clear
+      yellow  the page is warning you about its own trustworthiness
+
+  If red became a decoration on one board, red would stop being a signal on all
+  of them. So the livery blocks below set ground, ink, and accent only — the
+  signals are defined once, above them, and are never overridden.
+
+  Two things every livery has been measured against, and any new one must be:
+    1. Every ink reads at 4.5:1 or better on every ground it sits on.
+    2. The structure accent is at least 40 degrees of hue from all three
+       signals, so structure can never be misread as a signal.
+
+  Do not invent a livery by eye. Add it to scripts/check-livery.py in the rules
+  repository, run it, and paste in the CSS it prints. It rejects a palette that
+  fails either test — an amber accent, for instance, is refused because it lands
+  21 degrees from the stale-warning yellow.
+
+  Known cost of a tinted ground: on `mars` the red alerts sit on a warm ground,
+  so they catch the eye slightly less than on `tower`. They stay well above the
+  contrast floor, and carry a bracket and a left bar as well as their colour.
 -->
 <style>
-  :root {
-    --bg: #f6f5f2; --panel: #ffffff; --ink: #1c1b19; --muted: #6b6862; --line: #e2dfd8;
-    --accent: #2d5be3; --ok: #1f7a3f; --warn: #b8860b; --bad: #b3261e; --bad-bg: #fbeae8;
-    --ok-bg: #e7f5ec; --warn-bg: #fbf3dd; --chip: #eeece7;
-  }
-  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
-    --bg: #141412; --panel: #1e1d1a; --ink: #ece9e2; --muted: #a09c93; --line: #33312c;
-    --accent: #7ea1ff; --ok: #6fce8c; --warn: #e2b74a; --bad: #ff7b72; --bad-bg: #3a1c19;
-    --ok-bg: #16301f; --warn-bg: #352c12; --chip: #2a2925;
-  } }
-  :root[data-theme="dark"] {
-    --bg: #141412; --panel: #1e1d1a; --ink: #ece9e2; --muted: #a09c93; --line: #33312c;
-    --accent: #7ea1ff; --ok: #6fce8c; --warn: #e2b74a; --bad: #ff7b72; --bad-bg: #3a1c19;
-    --ok-bg: #16301f; --warn-bg: #352c12; --chip: #2a2925;
-  }
-  body { background: var(--bg); color: var(--ink); font: 15px/1.5 -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; }
-  main { max-width: 900px; margin: 0 auto; padding: 20px 16px 60px; }
-  h1 { font-size: 22px; margin: 0; }
-  h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 32px 0 10px; }
-  .masthead { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: baseline; justify-content: space-between; }
-  .updated { color: var(--muted); font-size: 13px; }
-  .figures { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-top: 14px; }
-  .fig { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; }
-  .fig b { display: block; font-size: 22px; line-height: 1.1; }
-  .fig span { color: var(--muted); font-size: 12px; }
-  .headline { margin-top: 18px; padding: 14px 16px; border-radius: 10px; border: 1px solid var(--line); background: var(--panel); font-size: 17px; }
-  .headline.bad { background: var(--bad-bg); border-color: var(--bad); }
-  .headline.warn { background: var(--warn-bg); border-color: var(--warn); }
-  .headline.ok { background: var(--ok-bg); border-color: var(--ok); }
-  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin-bottom: 12px; }
-  .card h3 { margin: 0 0 6px; font-size: 16px; }
-  .card p { margin: 6px 0; }
-  .label { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
-  .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 10px; }
-  button { font: inherit; padding: 7px 14px; border-radius: 8px; border: 1px solid var(--line); background: var(--chip); color: var(--ink); cursor: pointer; }
-  button.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
-  textarea { width: 100%; box-sizing: border-box; font: inherit; padding: 8px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); min-height: 60px; }
-  .answered { color: var(--ok); font-weight: 600; }
-  .rail { display: flex; gap: 6px; flex-wrap: wrap; }
-  .phase { flex: 1 1 120px; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel); font-size: 13px; }
-  .phase.done { background: var(--ok-bg); border-color: var(--ok); }
-  .phase.current { background: var(--warn-bg); border-color: var(--warn); font-weight: 600; }
-  .perm { display: flex; gap: 12px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid var(--line); }
-  .perm input { margin-top: 5px; transform: scale(1.3); }
-  .risk { font-size: 11px; padding: 2px 7px; border-radius: 6px; background: var(--chip); color: var(--muted); white-space: nowrap; }
-  .risk.high { background: var(--bad-bg); color: var(--bad); }
-  .risk.med { background: var(--warn-bg); color: var(--warn); }
-  table { width: 100%; border-collapse: collapse; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
-  th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; font-size: 14px; }
-  th { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; }
-  .twocol { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-  @media (max-width: 640px) { .twocol { grid-template-columns: 1fr; } }
-  .quote { border-left: 3px solid var(--line); padding-left: 10px; color: var(--muted); font-style: italic; }
-  .status { font-size: 13px; color: var(--muted); margin-top: 8px; min-height: 1.2em; }
-  .status.bad { color: var(--bad); }
-  .wrap { overflow-x: auto; }
+/* ---------------------------------------------------------------------------
+   CONTROL BOARD — painted in the Control Tower's language, so the board and the
+   page it is building read as one system.
+   Committed dark: this is a HUD, not a document. It paints its own ground in
+   every colour and does not follow the host theme.
+   The three RGB channels each mean exactly one thing, as on the Tower:
+     R  holding for you      G  done / running clear      B  structure
+   Acid yellow has one job: a warning about the board's own trustworthiness.
+   --------------------------------------------------------------------------- */
+:root{
+  color-scheme:dark;
+
+  /* SIGNALS — these mean something. A livery must never override them. */
+  --r:#FF2E63; --r-soft:rgba(255,46,99,.11); --r-line:rgba(255,46,99,.45);
+  --g:#00E08C; --g-soft:rgba(0,224,140,.10); --g-line:rgba(0,224,140,.42);
+  --y:#FCEE0A; --y-soft:rgba(252,238,10,.09); --y-line:rgba(252,238,10,.40);
+
+  --disp:"Chakra Petch",system-ui,sans-serif;
+  --body:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+
+/* ---------------------------------------------------------------------------
+   LIVERIES — ground and accent only. Generated by scripts/check-livery.py and
+   measured; see the note at the top of this file before adding one.
+   --------------------------------------------------------------------------- */
+/* tower   the default. Near-black with a blue-violet cast, as the Control Tower. */
+:root{
+  --void:#08090C; --deck:#0E1117; --deck-2:#141924; --sunk:#1A2030;
+  --grid:#151B27; --rule:#222A3B; --rule-2:#2E3850;
+  --ink:#E4E9F2; --ink-2:#97A3BA; --ink-3:#7C88A0;
+  --b:#3DA9FC; --b-soft:rgba(61,169,252,.11); --b-line:rgba(61,169,252,.45);
+  --glow:rgba(61,169,252,.33);
+}
+
+/* mars    dark oxide red, like rust under low light. */
+[data-livery="mars"]{
+  --void:#0B0605; --deck:#170D0A; --deck-2:#21130F; --sunk:#2B1A15;
+  --grid:#1F120E; --rule:#3D241D; --rule-2:#523026;
+  --ink:#F4E9E5; --ink-2:#C2A79F; --ink-3:#998079;
+  --b:#5AB3FF; --b-soft:rgba(90,179,255,.11); --b-line:rgba(90,179,255,.45);
+  --glow:rgba(90,179,255,.33);
+}
+
+/* violet  deep purple-black. */
+[data-livery="violet"]{
+  --void:#09070E; --deck:#120F1C; --deck-2:#191527; --sunk:#211C33;
+  --grid:#171323; --rule:#2C2542; --rule-2:#3C3358;
+  --ink:#EBE7F5; --ink-2:#A79FC0; --ink-3:#8983A1;
+  --b:#A77BFF; --b-soft:rgba(167,123,255,.11); --b-line:rgba(167,123,255,.45);
+  --glow:rgba(167,123,255,.33);
+}
+
+/* deep    deep sea. Very dark blue-green. */
+[data-livery="deep"]{
+  --void:#04090A; --deck:#0A1416; --deck-2:#0F1D20; --sunk:#14282C;
+  --grid:#0D191C; --rule:#1E373C; --rule-2:#2A4B52;
+  --ink:#E2F0F2; --ink-2:#93B0B5; --ink-3:#709196;
+  --b:#3DA9FC; --b-soft:rgba(61,169,252,.11); --b-line:rgba(61,169,252,.45);
+  --glow:rgba(61,169,252,.33);
+}
+
+/* slate   neutral graphite, no cast at all. */
+[data-livery="slate"]{
+  --void:#0A0B0C; --deck:#131517; --deck-2:#1B1E21; --sunk:#23272B;
+  --grid:#17191C; --rule:#2E3338; --rule-2:#40474E;
+  --ink:#E9ECEF; --ink-2:#A3ACB5; --ink-3:#868F97;
+  --b:#3DA9FC; --b-soft:rgba(61,169,252,.11); --b-line:rgba(61,169,252,.45);
+  --glow:rgba(61,169,252,.33);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; color:var(--ink); font-family:var(--body); font-size:16px; line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  background:
+    linear-gradient(var(--grid) 1px, transparent 1px) 0 0/100% 46px,
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0/46px 100%,
+    var(--void);
+}
+main{max-width:1000px; margin:0 auto; padding:26px 20px 90px}
+a{color:var(--b)}
+:focus-visible{outline:2px solid var(--b); outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important; animation:none!important}}
+
+/* the recurring bevelled corner */
+.card,.fig,.headline{clip-path:polygon(0 9px, 9px 0, 100% 0, 100% calc(100% - 9px), calc(100% - 9px) 100%, 0 100%)}
+
+/* ---------------- masthead ---------------- */
+.masthead{position:relative; border:1px solid var(--rule); overflow:hidden;
+  background:linear-gradient(180deg, var(--b-soft), transparent 62%), var(--deck);
+  padding:22px 22px 18px; display:flex; flex-wrap:wrap; gap:14px 24px;
+  align-items:flex-end; justify-content:space-between}
+.masthead::before{content:""; position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg, var(--r) 0 33.3%, var(--g) 33.3% 66.6%, var(--b) 66.6% 100%)}
+.masthead::after{content:""; position:absolute; inset:0; pointer-events:none;
+  background:repeating-linear-gradient(180deg, rgba(255,255,255,.022) 0 1px, transparent 1px 3px)}
+h1{margin:0; position:relative; z-index:1;
+  font-family:var(--disp); font-size:38px; font-weight:700; line-height:.96;
+  letter-spacing:.06em; text-transform:uppercase;
+  text-shadow:0 0 26px var(--glow)}
+.updated{position:relative; z-index:1; text-align:right;
+  font-family:var(--mono); font-size:10.5px; letter-spacing:.11em;
+  line-height:2; color:var(--ink-3); text-transform:uppercase}
+@media (max-width:640px){.updated{text-align:left}}
+
+/* ---------------- section headings ---------------- */
+h2{font-family:var(--mono); font-size:10.5px; font-weight:500; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--ink-3); margin:34px 0 11px;
+  padding-bottom:7px; border-bottom:1px solid var(--rule)}
+
+/* ---------------- measured figures ---------------- */
+.figures{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:1px; background:var(--rule); border:1px solid var(--rule); margin-top:16px}
+.fig{clip-path:none; background:var(--deck-2); padding:11px 14px 12px;
+  border-left:3px solid var(--b)}
+.fig b{display:block; font-family:var(--disp); font-size:27px; font-weight:700; line-height:1.1;
+  color:var(--b); font-variant-numeric:tabular-nums; letter-spacing:.02em}
+.fig span{display:block; margin-top:4px; font-family:var(--mono); font-size:9.5px;
+  letter-spacing:.13em; text-transform:uppercase; color:var(--ink-2)}
+
+/* ---------------- the one true thing ---------------- */
+.headline{margin-top:16px; padding:16px 18px; font-size:15.5px; color:var(--ink);
+  border:1px solid var(--rule); border-left:3px solid var(--c, var(--b));
+  background:linear-gradient(90deg, var(--c-soft, var(--b-soft)), transparent 72%), var(--deck-2)}
+.headline.bad{--c:var(--r); --c-soft:var(--r-soft)}
+.headline.warn{--c:var(--y); --c-soft:var(--y-soft)}
+.headline.ok{--c:var(--g); --c-soft:var(--g-soft)}
+
+/* ---------------- cards ---------------- */
+.card{position:relative; background:var(--deck); border:1px solid var(--rule);
+  border-left:3px solid var(--rule-2); padding:15px 17px 16px; margin-bottom:11px}
+.card h3{margin:0 0 7px; font-family:var(--disp); font-size:19px; font-weight:600;
+  letter-spacing:.045em; line-height:1.16; text-transform:uppercase}
+.card p{margin:7px 0; color:var(--ink-2)}
+.card p:first-child{margin-top:0}
+
+/* a decision is the one thing holding for you — R, with a corner bracket */
+[data-decision]{border-left-color:var(--r);
+  background:linear-gradient(90deg, var(--r-soft), transparent 58%), var(--deck)}
+[data-decision]::before{content:""; position:absolute; top:-1px; right:-1px;
+  width:15px; height:15px; border-top:2px solid var(--r); border-right:2px solid var(--r)}
+
+.label{display:inline-block; font-family:var(--mono); font-size:9.5px; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--ink-3); margin-bottom:2px}
+.quote{border-left:3px solid var(--rule-2); padding-left:11px; color:var(--ink-2);
+  font-style:normal}
+.twocol{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+@media (max-width:640px){.twocol{grid-template-columns:1fr}}
+
+/* ---------------- controls ---------------- */
+.row{display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-top:12px}
+button{font-family:var(--mono); font-size:10.5px; letter-spacing:.11em; text-transform:uppercase;
+  padding:9px 15px; border:1px solid var(--rule-2); background:var(--sunk); color:var(--ink-2);
+  cursor:pointer; transition:box-shadow .14s, color .14s, border-color .14s}
+button:hover{color:var(--ink); border-color:var(--ink-3)}
+button.primary{border-color:var(--b); color:var(--b); background:var(--b-soft)}
+button.primary:hover{box-shadow:0 0 18px -2px var(--b)}
+textarea{width:100%; font-family:var(--body); font-size:15px; padding:10px 11px;
+  border:1px solid var(--rule-2); background:var(--sunk); color:var(--ink); min-height:64px}
+.answer{margin-top:9px; color:var(--ink-2); font-size:14.5px}
+.answered{color:var(--g); font-family:var(--mono); font-size:10.5px; letter-spacing:.11em;
+  text-transform:uppercase}
+
+/* ---------------- progress rail ---------------- */
+.rail{display:flex; gap:3px; flex-wrap:wrap}
+.phase{flex:1 1 140px; padding:10px 12px; border:1px solid var(--rule);
+  border-top:2px solid var(--rule-2); background:var(--deck-2);
+  font-family:var(--mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--ink-3)}
+.phase.done{border-top-color:var(--g); color:var(--g); background:var(--g-soft)}
+.phase.current{border-top-color:var(--r); color:var(--r); background:var(--r-soft);
+  box-shadow:0 0 18px -6px var(--r)}
+
+/* ---------------- permissions ---------------- */
+.perm{display:flex; gap:13px; align-items:flex-start; padding:12px 0;
+  border-bottom:1px solid var(--rule); color:var(--ink-2); font-size:14.5px}
+.perm:last-of-type{border-bottom:0}
+.perm input{margin-top:4px; width:17px; height:17px; flex:none;
+  accent-color:var(--b); cursor:pointer}
+.risk{font-family:var(--mono); font-size:9.5px; letter-spacing:.11em; text-transform:uppercase;
+  padding:3px 8px; white-space:nowrap; border:1px solid var(--rule-2);
+  color:var(--ink-3); background:var(--sunk)}
+.risk.med{border-color:var(--y-line); color:var(--y); background:var(--y-soft)}
+.risk.high{border-color:var(--r-line); color:var(--r); background:var(--r-soft)}
+
+/* ---------------- saving state ---------------- */
+.status{margin-top:9px; min-height:1.2em; font-family:var(--mono); font-size:10px;
+  letter-spacing:.09em; text-transform:uppercase; color:var(--ink-3)}
+.status.bad{color:var(--r)}
+
+/* ---------------- the record ---------------- */
+.wrap{overflow-x:auto}
+table{width:100%; border-collapse:collapse; border:1px solid var(--rule);
+  background:var(--deck-2)}
+th,td{text-align:left; padding:11px 13px; border-bottom:1px solid var(--rule);
+  vertical-align:top; font-size:14px; color:var(--ink-2)}
+th{background:var(--sunk); color:var(--ink-3); font-family:var(--mono); font-weight:500;
+  font-size:9.5px; letter-spacing:.13em; text-transform:uppercase; white-space:nowrap}
+td:first-child{font-family:var(--mono); font-size:11.5px; color:var(--ink-3); white-space:nowrap}
+tr:last-child td{border-bottom:0}
 </style>
 
 <main>
@@ -124,6 +303,7 @@
 // ============================================================================
 const BOARD = {
   project: "Manifest Disunity",
+  livery: "tower",                      // tower | mars | violet | deep | slate
   updated: "2026-09-09 12:40",          // when you last republished, local time
 
   // Three or four measured figures. value: number|string, or null = "not yet measured".
@@ -656,6 +836,7 @@ const esc = (s) => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&l
 const fmt = (v) => (v === null || v === undefined || v === "") ? "not yet measured" : v;
 
 function render() {
+  document.documentElement.dataset.livery = BOARD.livery || "tower";
   document.title = BOARD.project + " — Control Board";
   $("title").textContent = BOARD.project;
   $("updated").textContent = "Updated " + BOARD.updated;
@@ -735,5 +916,3 @@ async function wire() {
 }
 wire();
 </script>
-
-</body></html>
