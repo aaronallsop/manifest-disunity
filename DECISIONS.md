@@ -3727,3 +3727,16 @@ law. **It is a posture committed to several turns earlier, not a panic button.**
 exception should be designed in rather than grandfathered.
 
 **Nothing built.** No code, data or `DESIGN.md` touched.
+
+### D196 — The Control Board source file had the published page's wrapper baked into it
+**Board maintenance, 10 September 2026.** The board source in this project was not a source file at
+all: it was a saved copy of the *published* page, carrying the artifact viewer's own
+`<!doctype html>…<body>` header and `</body></html>` footer around the real content. Every other
+project's board source is clean. It had not caused a visible fault, because publishing tolerated the
+extra wrapper, but it meant the file could not be rebuilt from the shared board template without
+first being unwrapped — which is how it was found.
+
+Stripped the wrapper, leaving the content byte-identical, then rebuilt the board from the shared
+template like every other project. The board's own data was verified unchanged against the live
+published version before and after: identical, apart from the one line naming this project's colour.
+
