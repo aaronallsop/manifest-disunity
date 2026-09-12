@@ -4086,3 +4086,29 @@ authority below where it should be opens already losing that race.
 **And the inbox story tells itself.** Greater Idaho "originally planned on staying in the union but then
 decided to leave altogether" — meant to stay, strung along, want flipped, gone for good. No rule was
 written for Greater Idaho.
+
+### D206 — The remnant opens weak because its losses are seeded, not because a number says so
+**Round 3 ruling 24, 11 September 2026**, answering Q7 — *"Agreed"*.
+
+**Part one, decided.** The federal remnant opens with its authority below where it should be, and the
+mechanism is to **seed the history rather than the number**: authority already reads recent losses, so
+writing the states it actually lost into its record when the world is made produces the low authority
+from the model itself — and lets it climb back on its own as those losses age out of the window. No new
+tunable and no invented figure. **It is a pattern already chosen**, not a new idea: round 2 settled the
+same question for pre-game wars, which leave grudges, tiredness and armies out of position written into
+the world at creation.
+
+**The argument that makes it compulsory, read from the build.** Authority is also raised by Age ("turns
+since founding") and Tenure ("turns this ideology has governed"), and **the remnant is the only nation
+on the board that is not brand new**. Leave its losses unwritten and the country that has just lost half
+of itself opens as the best-governed nation in the game, above sixty newborn neighbours — on the opening
+screen.
+
+**And ruling 23 raised the stakes while this sat in the inbox:** provinces stop waiting one by one and
+can never be won back, so the remnant opens already losing a race it cannot stop, and how far below it
+starts decides how much of the country is still reachable.
+
+**Part two, decided: nothing new fills the vacuum.** "Local powers stepping up and filling in" is what
+movements and ungoverned ground already are. A separate mechanism would be two answers to one question
+and both would need tuning. **This round has now declined to build something four times** — S24, S27,
+the second vacuum mechanism, and the coalition object ruling 6 disposed of.

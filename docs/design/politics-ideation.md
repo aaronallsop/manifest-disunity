@@ -14,10 +14,10 @@ un-started. Update it whenever a spine question is answered.*
 
 | | |
 |---|---|
-| **Rulings made** | **23** (§4 and §5), plus findings A–F (§5, §6) |
-| **Spine questions answered** | **Q1** *(replaced by P1 and rulings 1–2)* · **Q2** *(rulings 11, 11a)* · **Q3** *(ruling 21)* · **Q4** *(ruling 3)* · **Q5** *(ruling 22)* · **Q6** *(ruling 14)* · **Q9** *(ruling 6)* · **Q12** *(ruling 23)* |
+| **Rulings made** | **24** (§4 and §5), plus findings A–F (§5, §6) |
+| **Spine questions answered** | **Q1** *(replaced by P1 and rulings 1–2)* · **Q2** *(rulings 11, 11a)* · **Q3** *(ruling 21)* · **Q4** *(ruling 3)* · **Q5** *(ruling 22)* · **Q6** *(ruling 14)* · **Q9** *(ruling 6)* · **Q7** *(ruling 24)* · **Q12** *(ruling 23)* |
 | **Part answered** | **Q11** — ruling 11 point 4 makes joining a bloc the *concede-less* move for a **Unify** movement; whether it also costs Authority at home is still open |
-| **Still open** | **Q7** · **Q8** · **Q10** · **Q11**'s domestic price |
+| **Still open** | **Q8** · **Q10** · **Q11**'s domestic price |
 | **Waiting on Aaron** | **Nothing.** Both board cards are answered — the Farmers Union by ruling 15, and ruling 6's opened question by ruling 20. **Ruling 15's four questions are all answered** — 1 by ruling 16, 2 by ruling 17, 3 by ruling 18, and 4 by ruling 19 as a flagged default. The proposal-spam exploit named in ruling 16 is closed by ruling 18: proposals run on the movement's clock, not the player's. **Finding A is ANSWERED by ruling 15**: the Farmers Union is a movement and its verb is Unify |
 | **Still to do before the round closes** | the closing test — *what does the player do about this on a Tuesday, with one action?* — and **trace scenario 3** |
 
@@ -258,7 +258,7 @@ game cannot do yet — it suspends the election.** That gives martial law real t
 a second suppression system, and it puts the price exactly where the game already puts it: the
 liberties that let you do it are the liberties you spend doing it.
 
-### Q7 — Does the federal remnant open below its authority, and does anything fill a vacuum?
+### Q7 — ~~Does the federal remnant open below its authority, and does anything fill a vacuum?~~ **ANSWERED — ruling 24**
 
 *Inbox 5.* "The people's trust in the US government dropped dramatically and local powers started
 stepping up and filling in."
@@ -1676,6 +1676,39 @@ the remnant opens with its authority below where it should be, it opens *already
 **The inbox story now tells itself.** Greater Idaho *"originally planned on staying in the union but
 then decided to leave altogether"* — they meant to stay; the movement asking for it was strung along;
 its want flipped; and the country is gone for good. **No rule was written for Greater Idaho.**
+
+### Ruling 24 — The remnant opens weak because its losses are written into the world, not because a number says so
+
+**RULED 11 September 2026** — *"Agreed"* — answering **Q7**, inbox item 5: *"The people's trust in the
+US government dropped dramatically and local powers started stepping up and filling in."*
+
+**Part one: yes, it opens below where it should be — and the honest way is to seed the HISTORY, not
+the number.** Authority already reads **recent losses**. Write the states the remnant actually lost
+into its record when the world is made, and the low authority **falls out of the model** — then climbs
+back on its own as those losses age out of the window. **No new tunable and no invented figure.**
+
+**This is a pattern already chosen rather than a new idea.** Round 2 settled the same question for the
+fighting that happened before turn one: *"the wars that happened before the game opens will leave real
+marks — grudges, tiredness, armies out of position… history can simply be written into it when the
+world is made."* Q7 is that decision applied to one more stock.
+
+**THE ARGUMENT THAT MAKES IT COMPULSORY, read from the build.** Authority is also raised by **Age**
+(*"turns since founding"*) and **Tenure** (*"turns this ideology has governed"*). **The remnant is the
+only nation on the board that is not brand new.** Leave its losses unwritten and the country that has
+just lost half of itself opens as **the best-governed nation in the game**, above sixty newborn
+neighbours. That is the opening screen, and it would be backwards.
+
+**And ruling 23 raised the stakes while this question sat in the inbox.** Provinces stop waiting one by
+one and can never be won back. **So the remnant opens already losing a race it cannot stop, and how far
+below it starts decides how much of the country is still reachable.** Q7 stopped being a flavour
+question the moment ruling 23 landed.
+
+**Part two: no, nothing new fills the vacuum.** *"Local powers stepping up and filling in"* is what
+**movements** and **ungoverned ground** already are — a region organising against a government that
+cannot hold it, and ground with nobody governing it at all. A separate mechanism would be two answers
+to one question, and both would need tuning. **This round has now declined to build something four
+times** (S24, S27, the second vacuum mechanism, and the coalition object ruling 6 disposed of), which
+is worth counting.
 
 ### Finding F — The two largest Unify movements share 504 counties, and both want the same thing
 
