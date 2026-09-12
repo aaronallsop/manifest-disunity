@@ -14,11 +14,11 @@ un-started. Update it whenever a spine question is answered.*
 
 | | |
 |---|---|
-| **Rulings made** | **17** (§4 and §5), plus findings A–F (§5, §6) |
+| **Rulings made** | **19** (§4 and §5), plus findings A–F (§5, §6) |
 | **Spine questions answered** | **Q1** *(replaced by P1 and rulings 1–2)* · **Q2** *(rulings 11, 11a)* · **Q4** *(ruling 3)* · **Q6** *(ruling 14)* · **Q9** *(ruling 6)* |
 | **Part answered** | **Q11** — ruling 11 point 4 makes joining a bloc the *concede-less* move for a **Unify** movement; whether it also costs Authority at home is still open |
 | **Still open** | **Q3** · **Q5** · **Q7** · **Q8** · **Q10** · **Q11**'s domestic price · **Q12** |
-| **Waiting on Aaron** | **Ruling 6's opened question** — when the *total* movement share crosses 40% and no single movement has, which movement takes the Area? *(recommendation: none of them, it goes stateless)*. And **ruling 15's questions 3-4** — whether asking once satisfies the movement, and whether proposing costs the turn's action (**1 answered by ruling 16, 2 by ruling 17**). The proposal-spam exploit named in ruling 16 is still unbraked. **Finding A is ANSWERED by ruling 15**: the Farmers Union is a movement and its verb is Unify |
+| **Waiting on Aaron** | **Ruling 6's opened question** — when the *total* movement share crosses 40% and no single movement has, which movement takes the Area? *(recommendation: none of them, it goes stateless)*. **Ruling 15's four questions are all answered** — 1 by ruling 16, 2 by ruling 17, 3 by ruling 18, and 4 by ruling 19 as a flagged default. The proposal-spam exploit named in ruling 16 is closed by ruling 18: proposals run on the movement's clock, not the player's. **Finding A is ANSWERED by ruling 15**: the Farmers Union is a movement and its verb is Unify |
 | **Still to do before the round closes** | the closing test — *what does the player do about this on a Tuesday, with one action?* — and **trace scenario 3** |
 
 ---
@@ -1416,6 +1416,53 @@ its enemy when writing a blind peace treaty. It wants one answer covering both.
 **Still open from ruling 15:** whether asking once satisfies the movement, and whether proposing costs
 the turn's action. **The exploit named in ruling 16 is still unbraked** — nothing ruled so far stops a
 government proposing every turn to farm the neighbour's movement upward.
+
+### Ruling 18 — Asking discharges the demand, and the movement comes back pointing somewhere else
+
+**RULED 11 September 2026** — *"Agreed"* — answering ruling 15's question 3.
+
+**The demand names a neighbour. Asking that neighbour discharges it.** Later the movement raises it
+again, pointing at whichever neighbour is now the likeliest *yes* — **which will often be the one who
+said "let's think about it", because that answer grew their appetite** (ruling 16). Your last approach
+is what makes the next one warmer.
+
+**THE MOVEMENT IS CLEVER FOR FREE.** It points at whichever neighbour scores highest under **ruling
+17** — their people's appetite, warmed by political closeness, cooled by your weight, gated by the
+relationship. The same calculation that decides the answer also decides who gets asked, so nothing new
+has to be written and the movement never asks you to do something obviously hopeless.
+
+**AND THIS IS THE BRAKE THE LAST TWO RULINGS WERE MISSING.** The exploit named in ruling 16 — propose
+every turn, farm the neighbour's movement upward, wait until their government carries the demand —
+**closes by itself, because the proposal runs on the MOVEMENT's clock rather than the player's.** You
+do not ask when you like; you ask when your own people demand it. To ask more often you would need
+your own movement bigger, and a bigger movement is a worse problem than the one you were solving.
+
+**Refusing to ask stays the expensive branch.** Round 2 already built the screen where a movement's
+demands are granted, refused, or told to wait; refusing feeds the grievance that grows the movement.
+
+**Rejected, and it was put to him:** the demand never discharges until a union actually exists, sitting
+there getting angrier. Truer to a movement with one idea, but **a country with an unlucky neighbour
+would carry a permanent penalty it could not clear by doing anything right.**
+
+**Deferred, not invented:** how long "for a while" is. It joins the tunables with ruling 15's **X%**.
+
+**Filed for round 5:** whether a government may propose a union with **no movement demanding it** — a
+nation-to-nation act rather than an answer to its own people. That is diplomacy's question, not this
+round's.
+
+### Ruling 19 — Proposing costs the turn's action, by precedent rather than by a new decision
+
+**DEFAULT TAKEN 11 September 2026, not asked — one line to reverse.** Ruling 15's question 4 is
+already answered by rulings this round has made.
+
+**Ruling 12** settled it in principle: **answering a demand is free and mandatory; obeying it is
+costly.** Making the proposal *is* obeying, so it costs the turn's one action, exactly as granting
+autonomy or releasing ground does. Nothing about a union is special enough to need its own rule.
+
+**The caveat is Aaron's own, and it is bigger than this ruling.** At **ruling 14** he wrote: *"lets move
+that to the mechanics stage because we need to change the whole one action per turn."* That is filed in
+round 7 with ruling 12's free-and-mandatory exception beside it. **When the one-action rule changes,
+this ruling changes with it** — it is a consequence of that rule, not an independent decision.
 
 ### Finding F — The two largest Unify movements share 504 counties, and both want the same thing
 

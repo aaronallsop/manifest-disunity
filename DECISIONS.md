@@ -3917,3 +3917,37 @@ writing a blind peace treaty; both want one answer.
 
 **Still open:** whether asking once satisfies the movement, and whether proposing costs the turn's one
 action. The proposal-spam exploit recorded in D199 is still unbraked.
+
+### D201 — Asking discharges the demand, the movement comes back elsewhere, and that is what closes the exploit
+**Round 3 rulings 18 and 19, 11 September 2026.** The last two of ruling 15's four questions.
+
+**Ruling 18, agreed by Aaron.** The demand names a neighbour; **asking that neighbour discharges it**,
+and the movement raises it again later pointing at whichever neighbour is now the likeliest yes — often
+the one that said *"let's think about it"*, because that answer grew their appetite. **The movement is
+clever for free**: it points at whoever scores highest under ruling 17, so the calculation that decides
+the answer also decides who gets asked, and it never sends the player somewhere hopeless.
+
+**The part worth keeping: this is the brake the previous two rulings were missing.** D199 recorded a
+dominant strategy — propose every turn, farm the neighbour's movement upward, wait until their own
+government carries the demand. **It closes by itself, because the proposal runs on the movement's clock
+rather than the player's.** You ask when your own people demand it, and asking more often would mean a
+bigger movement at home, which is a worse problem than the one being solved. No rule had to be written
+to forbid anything.
+
+**Rejected**, and it was put to him: a demand that never discharges until a union exists. Truer to a
+single-issue movement, but a country with an unlucky neighbour would carry a permanent penalty it could
+not clear by doing anything right.
+
+**Ruling 19 — a default taken rather than asked, one line to reverse.** Does proposing cost the turn's
+one action? **Yes, by precedent**: ruling 12 settled that answering a demand is free and mandatory
+while obeying it is costly, and making the proposal is obeying. It costs what granting autonomy or
+releasing ground costs. Nothing about a union is special enough to need its own rule. **The caveat is
+Aaron's own**, from ruling 14: *"we need to change the whole one action per turn"* — filed in round 7.
+When that rule changes, this one changes with it, because it is a consequence of that rule rather than
+an independent decision.
+
+**Deferred, not invented:** how long a discharged demand stays quiet. Joins ruling 15's **X%** in the
+tunables.
+
+**Filed for round 5:** whether a government may propose a union with no movement demanding it — a
+nation-to-nation act rather than an answer to its own people.
