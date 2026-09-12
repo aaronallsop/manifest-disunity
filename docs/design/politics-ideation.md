@@ -19,12 +19,12 @@ un-started. Update it whenever a spine question is answered.*
 
 | | |
 |---|---|
-| **Rulings made** | **38** (§4 and §5), plus findings A–G (§5, §6) |
+| **Rulings made** | **40** (§4 and §5), plus findings A–G (§5, §6) |
 | **Spine questions answered** | **Q1** *(replaced by P1 and rulings 1–2)* · **Q2** *(rulings 11, 11a)* · **Q3** *(ruling 21)* · **Q4** *(ruling 3)* · **Q5** *(ruling 22)* · **Q6** *(ruling 14)* · **Q9** *(ruling 6)* · **Q10** *(ruling 38)* · **Q7** *(ruling 24)* · **Q8** *(ruling 25)* · **Q11** *(ruling 37)* · **Q12** *(ruling 23)* |
 | **Part answered** | *(none)* |
 | **Still open** | **No spine question is open. All twelve are answered** (Q10 by ruling 38). **The federation is finished** — all seven of ruling 25's questions answered (rulings 26-36), plus separate peace (35) and ruling 31's open half (33) |
 | **Waiting on Aaron** | **Nothing.** Both board cards are answered — the Farmers Union by ruling 15, and ruling 6's opened question by ruling 20. **Ruling 15's four questions are all answered** — 1 by ruling 16, 2 by ruling 17, 3 by ruling 18, and 4 by ruling 19 as a flagged default. The proposal-spam exploit named in ruling 16 is closed by ruling 18: proposals run on the movement's clock, not the player's. **Finding A is ANSWERED by ruling 15**: the Farmers Union is a movement and its verb is Unify |
-| **Still to do before the round closes** | the closing test — *what does the player do about this on a Tuesday, with one action?* — and **trace scenario 3** |
+| **Still to do before the round closes** | **re-map the 26 live movements onto the ten positions** (inbox 9) · the closing test — *what does the player do about this on a Tuesday, with one action?* · **trace scenario 3**, checking the federation cascade and ruling 37's irony · C133's one-line correction · an owner for each finding |
 
 ---
 
@@ -2244,6 +2244,54 @@ the only free years it will ever get.
 
 **Deferred, not invented:** how far below baseline, and for how long. Joins ruling 15's X%, ruling 18's
 quiet period, ruling 20's margin and ruling 22's count.
+
+### Ruling 39 — A vassal keeps its own government, and its people blame that government
+
+**RULED 11 September 2026** — agreed without change — answering **inbox item 6**: *Oklahoma submits to
+Dallas. Who governs Oklahoma, and can its people object?*
+
+**The vassal keeps its own government.** That is what makes it a vassal rather than a conquest, and the
+build already draws the distinction between ground you hold and ground that is yours.
+
+**Its people object to their OWN government, not to the overlord.** Movements grow inside Oklahoma
+against Oklahoma's government, and **submitting drags that government's Authority the same way granting
+self-rule already does** — a government that has handed its foreign policy to somebody else has
+announced something about itself, exactly as ruling 14 said of suspending an election.
+
+**No new machinery.** The relationship itself — what submission *is*, what the overlord gets — stays
+**diplomacy's, in round 5**. What round 3 owed was only the domestic half, and the domestic half is two
+existing terms.
+
+### Ruling 40 — Three words for three things: ideology, party, movement
+
+**RULED 11 September 2026** — agreed without change — adopting **P3**, proposed in session on
+9 September and unruled until now.
+
+| Word | What it means |
+|---|---|
+| **Ideology** | **A position on the board.** Universal, permanent, and it **cannot move, because it *is* a location** |
+| **Party** | **An organisation inside one nation** that occupies a position and contests that nation's elections. Dallas and Vermont can both hold a Libertarian party and they are **two different parties** |
+| **Movement** | Unchanged, and already works |
+
+**THE PAYOFF, and it is why this is worth a ruling rather than a glossary.** **A party can move across
+the board and an ideology cannot.** So *change course* — round 1's third release valve — is **priced by
+how far the party moves**, not by a number somebody picked. The geometry does the work that a tunable
+was doing.
+
+**It also removes a real ambiguity:** today one word does both jobs, so "the nation's ideology" and "the
+movement's ideology" mean different kinds of thing and nobody noticed.
+
+### Deferred by Aaron — what a player can see about another nation
+
+**11 September 2026:** *"lets not worry about now and wait until the next phase."*
+
+**Not answered, and deliberately.** The question — can a player read another nation's Authority and
+Influence, or only the reasons behind its answer — was raised twice: by round 2 as **C130** (what you
+can see of an enemy when writing blind peace terms) and by **ruling 17** (what you can see of a
+neighbour before proposing a union). **They want one answer and they get it at the design stage, not
+here.** The recommendation on file, for whoever picks it up: *you see reasons, not numbers* — the trade
+panel's existing pattern, which names whose ground is in the way and what it costs without exposing the
+arithmetic.
 
 ### Finding F — The two largest Unify movements share 504 counties, and both want the same thing
 
