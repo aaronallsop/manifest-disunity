@@ -134,18 +134,18 @@ off, because isolating the economy is what makes the answers trustworthy.
 
 **The live stage is IDEATION, and it runs in seven rounds set out in `docs/design/IDEATION-PLAN.md`.
 Read that plan before you open anything else in this folder — it says which round is live.** As of
-**11 September 2026** — and if the newest handoff disagrees with this table, **check the commits since
+**12 September 2026** — and if the newest handoff disagrees with this table, **check the commits since
 that handoff was written before believing either**:
 
 | Round | Where it stands |
 |---|---|
 | **1. Secessionist movements** | ✅ Closed 7 September 2026 — 53 rulings, five scenarios traced, findings A–F |
-| **2. Military conquest** | ✅ **Fully closed 9 September 2026 — 41 rulings, 134 ideas**, all six scenarios traced. Findings B, C and D **were** Aaron's and are answered. **Nothing outstanding is his** |
-| **3. Politics** | ◀ **OPEN AND PART-WAY THROUGH — 14 rulings.** Ruled so far: the one table of what a government can do about each kind of movement; what a region with no government is; the civil war clock; how a movement grows on ungoverned ground; and martial law. **Seven spine questions are still open, and two things are Aaron's: the Farmers Union's verb, and who takes an Area when the total movement share crosses the line but no single movement does.** The round's own status block, at the head of `politics-ideation.md`, is the detail |
-| **4. Economy** | 84 entries banked and **parked**. This round *finishes* the economy against what rounds 1–3 demand of it, rather than starting it |
+| **2. Military conquest** | ✅ **Fully closed 9 September 2026 — 41 rulings, 127 ideas** (numbered C1–C131; four numbers unused, two reused — counted 12 September), all six scenarios traced. Findings B, C and D **were** Aaron's and are answered. **Nothing outstanding is his** |
+| **3. Politics** | ✅ **Closed 11 September 2026 — 41 rulings** plus the half-ruling 11a, **10 findings**, scenario 3 traced, all 26 live movements re-placed on the ten positions. Closed by Aaron on the Control Board, 12 September 02:41. **Nothing outstanding is his.** §9 of `politics-ideation.md` is what it hands to rounds 4, 5 and 7 |
+| **4. Economy** | ◀ **LIVE.** **93 entries banked** (E1–E93, counted 12 September). This round *finishes* the economy against what rounds 1–3 demand of it, rather than starting it |
 | **5–7. Diplomacy · Events · The things above** | Stubs with full inboxes. Not open |
 
-**The economy is round 4, not the live round.** `economy-ideation.md` is the idea bank and nothing in
+**The economy is the live round.** `economy-ideation.md` is the idea bank and nothing in
 it has been judged; two older notes feed it and are no longer authoritative — `resources.md` (the
 6 September conversation) and `resources-v2.md` (a simplification pass written before ideation and
 design were separated, which therefore cut ideas before they had been recorded anywhere; everything
