@@ -2310,7 +2310,7 @@ single heir: on three axes it splits between **Christian Nationalism** (authorit
 
 | Movement | Was | Placed at | |
 |---|---|---|---|
-| A Free Texas | Republican | **Republicans** | **?** *"reunify Texas at any cost" reads authoritarian — Fascism is the alternative* |
+| **A Free Texas** | Republican | **FASCISM** | **RULED by Aaron, 11 Sep:** *"I like a free texas being fascist because that could be apart of the story that it was taken over by a fascist bloc."* The placement is now a piece of story, not a translation |
 | Acadiana | Distributist | **Distributism** | |
 | Alaskan Independence | Republican | **Republicans** | **?** *independence plus resource royalties is libertarian; Anarcho-Capitalism is the alternative* |
 | Blue-Collar Populist | Distributist | **Distributism** | industrial policy and tariffs — collective and conservative |
@@ -2346,18 +2346,31 @@ movements are excluded.*
 
 | Position | Movements |
 |---|---|
-| **Republicans** | 9 |
+| **Republicans** | 8 |
 | **Distributism** | 7 |
 | **Democrats** | 4 |
 | **Christian Nationalism** | 3 |
 | **Democratic Socialism** | 2 |
-| **Anarcho-Capitalism** | 1 |
-| **Fascism · Communism · Digital Technocracy · Liberal Anarchy** | **0 each** |
+| **Anarcho-Capitalism** | 1 — the Sagebrush Rebellion, confirmed by Aaron |
+| **Fascism** | 1 — **A Free Texas**, ruled by Aaron |
+| **Communism · Digital Technocracy · Liberal Anarchy** | **0 each** |
 
-**Four of the ten positions carry no movement at all, and three of those four are the authoritarian
-corners.** Not one authored movement is collective-and-authoritarian (Communism), market-and-
-authoritarian-and-progressive (Digital Technocracy), or collective-conservative-authoritarian
-(Fascism).
+**Three of the ten positions carry no movement at all** — and after Aaron put A Free Texas on Fascism,
+only **one** authoritarian corner is still empty (Communism; Digital Technocracy and Liberal Anarchy are
+the other two vacancies). No authored movement is collective-and-progressive-and-authoritarian (Communism) or
+market-and-progressive (Digital Technocracy, Liberal Anarchy).
+
+**AND AARON'S ONE CHANGE IS THE MOST CONSEQUENTIAL PLACEMENT ON THE BOARD.** A Free Texas wants to
+**Reunify** — to put Texas back together *at any cost* — and it is now **fascist**, because the story is
+that it was taken over by a fascist bloc. Three things follow without being written:
+
+1. **The Texas contest now has a villain.** Five claimants contest the same inheritance and the
+   movement driving the fight sits on the hardest corner of the board.
+2. **Ruling 22's exit becomes a choice with a moral price.** A Texas government can escape the
+   permanent rivalry only by **disappointing its own fascists until they give up** — and ruling 22 then
+   turns them into separatists inside its own ground.
+3. **Ruling 31 bites hardest here.** No Texas claimant may join a union, so there is no peaceful road
+   to one Texas at all: it is conquest, or it is nothing.
 
 **This is probably correct rather than a gap, and it is worth saying why.** A separatist movement is
 people organising *against* a government; the authoritarian corners are what governments become, not
