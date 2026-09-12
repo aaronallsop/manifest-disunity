@@ -3788,3 +3788,56 @@ other movement pairs cannot be judged until it has one. And **ruling 6's opened 
 *total* movement share in an Area crosses the 40% threshold but no single movement has, which
 movement takes the Area? *(Recommendation on file: none of them, it goes stateless.)* Both are now
 cards on the board.
+
+### D198 — The Farmers Union is a movement that wants a union, and a Unify movement's demand is a diplomatic act
+**Round 3 ruling 15, 11 September 2026.** Finding A asked whether the Farmers Union — 983 counties,
+22.6 million people, the one movement never in front of Aaron — is a popular movement or the bloc of
+governors the story describes, and what it wants. **Aaron: a movement, seeking "to unify the entire
+farmers movement into a solid state entity", and it must be hard to achieve because of the trade
+arteries a united farm state would hold.** The governors' bloc becomes a separate object for round 5.
+The five movement pairs that could not be judged without a verb are unblocked.
+
+**The part that is general, and it is new machinery.** *"They are trying to get their government to do
+something, create a union… if a country has X% of the farmers movement the demand would be that they
+start asking their neighbors, so to propose. And depending on how things go the proposal could go one
+of two ways — positive or negative. Positive would be that they agree and negative would be that they
+feel like the nation is trying to consolidate power."* **So a Unify movement does not demand a merger;
+it demands that the government go and ASK.** The answer is another nation's to give.
+
+**Observed, and it is why the ruling is right.** Ruling 11's table gave *Concede* for **Unify** as
+"merge with the neighbour". That is **the only cell in the whole table a government cannot deliver by
+itself** — every other move acts on its own people, ground or policy. This one needs a yes from
+somebody else, so for Unify, conceding is an **attempt that can fail**. Nothing else in the design has
+that shape. It also supplies the round's missing player verb from an unexpected direction: Q3 asked
+whether *negotiate* should be added, and here the movement makes you negotiate on its behalf.
+
+**Measured rather than assumed, against the game's own trade data.** Three of the fifteen chokepoints
+sit inside Farmers Union ground — the **Soo Locks**, the **Straits of Mackinac** and **Cairo**, the
+Ohio–Mississippi confluence — along with 164 counties on named waterways (47 Mississippi, 39 Missouri,
+16 Ohio, 16 Illinois), 23 ports, 47 Great Lakes counties and 4 border crossings. **A united farm state
+would hold a fifth of the continent's gates.** Aaron's premise stands on the data.
+
+**A correction carried into the same entry.** The movement was put to Aaron in session as "the second
+largest in the game". True **by ground** (983 counties, behind the New Confederacy's 1,142) and that is
+how finding A stated it — but **by people it is fourth of the six Unify movements**: Christian
+Nationalism 96.9m, Blue-Collar Populist 70.1m, Great Lakes Free Trade 23.7m, Farmers Union 22.6m, New
+England United 15.4m, Central States Union 10.0m. It is the movement with the most ground and the
+fewest people on it. The ruling is unaffected; the framing was too heavy.
+
+**Finding F, measured while pricing this.** The Farmers Union and the Blue-Collar Populists overlap on
+**504 counties and 15.1 million people — two-thirds of the Farmers Union's own population — and both
+want Unify.** Under ruling 6 they sum against the same government; under this ruling they would both
+be demanding proposals to neighbours, for two different unions, on the same ground, in the same turn.
+The largest coalition on the board, and nobody designed it.
+
+**Rejected:** (a) taking it off the movement list and treating it only as a bloc of governors, which
+would have deleted the largest source of pressure in the interior. (b) Giving it **Separate**, which
+was offered as the alternative: with 983 counties spread evenly across thirteen states and no home
+state, there is nothing for it to walk out of.
+
+**Deferred, not invented:** the **X%** share at which the demand fires. No placeholder was
+substituted; it joins the tunables at the mechanics stage beside ruling 39's Wary multiplier.
+
+**Open and asked in order:** what a neighbour's *yes* actually produces; what decides positive or
+negative; whether asking once satisfies the movement; and whether proposing costs the turn's one
+action.

@@ -14,11 +14,11 @@ un-started. Update it whenever a spine question is answered.*
 
 | | |
 |---|---|
-| **Rulings made** | **14** (§4 and §5), plus findings A–E (§5, §6) |
+| **Rulings made** | **15** (§4 and §5), plus findings A–F (§5, §6) |
 | **Spine questions answered** | **Q1** *(replaced by P1 and rulings 1–2)* · **Q2** *(rulings 11, 11a)* · **Q4** *(ruling 3)* · **Q6** *(ruling 14)* · **Q9** *(ruling 6)* |
 | **Part answered** | **Q11** — ruling 11 point 4 makes joining a bloc the *concede-less* move for a **Unify** movement; whether it also costs Authority at home is still open |
 | **Still open** | **Q3** · **Q5** · **Q7** · **Q8** · **Q10** · **Q11**'s domestic price · **Q12** |
-| **Waiting on Aaron, and never carded** | **Finding A** — the Farmers Union has no verb and nobody has said whether it is a movement or a bloc; **five other pairs cannot be judged until it has one**. And **ruling 6's opened question** — when the *total* movement share crosses 40% and no single movement has, which movement takes the Area? *(recommendation: none of them, it goes stateless)* |
+| **Waiting on Aaron** | **Ruling 6's opened question** — when the *total* movement share crosses 40% and no single movement has, which movement takes the Area? *(recommendation: none of them, it goes stateless)*. And **the four questions ruling 15 opens**, starting with what a neighbour's *yes* actually produces. **Finding A is ANSWERED by ruling 15**: the Farmers Union is a movement and its verb is Unify |
 | **Still to do before the round closes** | the closing test — *what does the player do about this on a Tuesday, with one action?* — and **trace scenario 3** |
 
 ---
@@ -1221,6 +1221,107 @@ standing posture is worth more than a reaction."* **The same is true in reverse:
 garrison on the turn you need martial law.** A government must already have been facing inward.
 **Martial law is not a panic button. It is a posture you committed to several turns before you knew
 you would need it** — which is both truer to life and a better game.
+
+### Ruling 15 — The Farmers Union wants a union, and a Unify movement's demand is that YOU go and ask
+
+**RULED 11 September 2026**, answering finding A and the board card `farmers-union`. Aaron, verbatim:
+
+> "The Famers Union would be a movement that seeks to unify the entire farmers movement into a solid
+> state entity. Because it would control the huge trading arteries in the USA it should be something
+> that is hard to actually do. I think that it needs to be different because they are trying to get
+> their government to do something, create a union. So if a country has X% of the farmers movemnet
+> the demand would be that they start asking their neighbors, so to propose. And depending on how
+> things go the proposal could go one of two ways - positive or negative. Positive would be that they
+> agree and negative would be that they feel like the nation is trying to consolidate power or
+> something ismiliar."
+
+**Three things are settled.**
+
+1. **It is a MOVEMENT, not a bloc of governors, and its verb is *Unify*.** The story's "seven
+   governors signed the Farmers Union" is a separate object and goes to round 5 with the other blocs.
+   The five pairs blocked by finding A are unblocked.
+2. **A united farm state must be hard to achieve**, because of what it would hold. Checked rather
+   than assumed — see the measurement below. His premise is true.
+3. **A Unify movement's demand is a DIPLOMATIC ACT the government must perform, not a merger it must
+   deliver.** Past a share of the population, the demand is *go and propose to your neighbours*. The
+   neighbour's answer can be **positive** — they agree — or **negative**: they read the approach as a
+   nation trying to consolidate power.
+
+**WHAT THIS CHANGES IN RULING 11's TABLE, and it is structural.** The *Concede* cell for **Unify**
+read "merge with the neighbour". That is now known to be **the only cell in the whole table that the
+government cannot deliver by itself.** Every other move acts on your own people, your own ground or
+your own policy — release, autonomy, change course, garrison, become them. This one needs **another
+nation to say yes**, so for Unify, *Concede* is not an act but an **attempt, and it can fail.**
+Nothing else in the design has that shape, and it is why Aaron is right that Unify "needs to be
+different".
+
+**And it hands the round its player verb from a direction nobody proposed.** Q3 asked whether
+*negotiate* should join the table as the missing thing a player DOES on a Tuesday. Here the movement
+makes you negotiate — with a neighbour, on its behalf, and you can be refused.
+
+**THE NUMBER IS DEFERRED, NOT INVENTED.** Aaron wrote **X%** and no figure was substituted. It joins
+the tunables at the mechanics stage, beside ruling 39's Wary multiplier. *(An invented number
+reaching his board looking measured has cost this project a day once already.)*
+
+**THE MEASUREMENT — his premise about the arteries, checked against the game's own trade data.**
+
+| | |
+|---|---|
+| Chokepoints in the game | **15** |
+| Chokepoints inside Farmers Union ground | **3** — the **Soo Locks**, the **Straits of Mackinac**, and **Cairo**, the Ohio-Mississippi confluence |
+| Its counties on a named waterway | **164** — 47 Mississippi, 39 Missouri, 16 Ohio, 16 Illinois, 12 Lake Michigan |
+| Its counties with a port / on the Great Lakes / on a national border | **23 / 47 / 4** |
+
+**So "it would control the huge trading arteries" is true**, and specifically: a single farm state
+would hold **a fifth of the continent's gates**, including the one the river work named as the gate
+between the Ohio and the Mississippi. Being hard to build is not a balance decision bolted on — it is
+what the map says the prize is worth.
+
+**A CORRECTION TO WHAT AARON WAS TOLD IN THIS SESSION.** The Farmers Union was put to him as "the
+second largest movement in the game". True **by ground** — 983 counties, behind only the New
+Confederacy's 1,142, which is how finding A stated it. **By people it is fourth of the six Unify
+movements**, and not close:
+
+| Unify movement | Counties | People |
+|---|---|---|
+| Christian Nationalism | 255 | **96,886,368** |
+| Blue-Collar Populist | 693 | **70,123,744** |
+| Great Lakes Free Trade | 103 | 23,731,284 |
+| **The Farmers Union** | **983** | **22,638,807** |
+| New England United | 68 | 15,386,085 |
+| Central States Union | 215 | 9,998,817 |
+
+It is the movement with **the most ground and the fewest people on it**, which is exactly what a farm
+movement should be. It does not change the ruling; it changes how frightening the thing is. It is
+wide, not heavy.
+
+**FOUR QUESTIONS THIS OPENS. None answered, asked in this order.**
+
+1. **If the neighbour says yes, what actually happens?** One nation, or something short of a merger?
+2. **What decides positive or negative?**
+3. **Does asking once satisfy the demand**, or does the movement keep demanding until a union exists?
+4. **Does making the proposal cost the turn's one action?** *(Ruling 12: answering is free, obeying is
+   costly — and proposing is obeying.)*
+
+### Finding F — The two largest Unify movements share 504 counties, and both want the same thing
+
+**Measured while pricing ruling 15.** The Farmers Union and the **Blue-Collar Populists** overlap on
+**504 counties and 15.1 million people — two-thirds of the Farmers Union's entire population.** Both
+want **Unify**.
+
+| Farmers Union overlaps | Counties | People |
+|---|---|---|
+| **Blue-Collar Populist** | **504** | **15,104,223** |
+| Central States Union | 90 | 2,544,724 |
+| Great Lakes Free Trade | 30 | 1,069,101 |
+
+**Under ruling 6 they sum against the same government**, and under ruling 15 they would both be
+demanding that it go and ask its neighbours — for two different unions, on the same ground, in the
+same turn. The farm belt and the rust belt are the same counties in the middle of the country, and
+nobody designed that: it fell out of two authored homelands overlapping.
+
+**It is also the largest coalition on the board.** Finding B measured the coalition candidates before
+the Farmers Union had a verb, so this pair was not in that count.
 
 ### P3 — Three words for three things
 
