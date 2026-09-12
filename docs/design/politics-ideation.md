@@ -2618,7 +2618,20 @@ movement organises **0.40** of it. Nine of the twenty-six live movements have a 
 | Acadiana | 0.35 | 1,527,231 |
 | El Paso United | 0.35 | 944,471 |
 
-**155 million people — 32% of everyone inside any movement.**
+**CORRECTED AT SIGN-OFF, and the first figure was wrong.** The nine movements' homelands sum to
+**154,923,803 people — but homelands overlap, so that counts a county once per movement covering it,
+and the total is larger than the population of the United States.** Counted over **distinct counties**:
+
+| | Counties | People |
+|---|---|---|
+| Inside a movement that cannot reach the line alone | **1,526** | **117,847,633** |
+| Inside any live movement at all | 3,046 | 306,317,668 |
+| **Share** | | **38%** |
+
+**So the true figure is 118 million people and 38%, not 155 million and 32%** — the population was
+overstated and the share understated, by the same mistake. *(Found by reviewing this session's own work
+before sign-off. The tell was there to be seen: 485 million summed is more people than the country
+has.)*
 
 **But the finding splits in two, and only one half is a problem.**
 
