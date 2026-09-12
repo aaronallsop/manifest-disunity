@@ -14,10 +14,10 @@ un-started. Update it whenever a spine question is answered.*
 
 | | |
 |---|---|
-| **Rulings made** | **32** (§4 and §5), plus findings A–G (§5, §6) |
+| **Rulings made** | **33** (§4 and §5), plus findings A–G (§5, §6) |
 | **Spine questions answered** | **Q1** *(replaced by P1 and rulings 1–2)* · **Q2** *(rulings 11, 11a)* · **Q3** *(ruling 21)* · **Q4** *(ruling 3)* · **Q5** *(ruling 22)* · **Q6** *(ruling 14)* · **Q9** *(ruling 6)* · **Q7** *(ruling 24)* · **Q8** *(ruling 25)* · **Q12** *(ruling 23)* |
 | **Part answered** | **Q11** — ruling 11 point 4 makes joining a bloc the *concede-less* move for a **Unify** movement; whether it also costs Authority at home is still open |
-| **Still open** | **Q10** · **Q11**'s domestic price · **ruling 25's federation questions 5-7** *(1 by ruling 26, 2 by ruling 27, 3 by rulings 28 and 29, 4 by ruling 30)*, plus **can one member make a separate peace?** and **ruling 31's open half: does the modifier block ALL unions or only ones containing a rival? — finding G measures what the broad version costs** |
+| **Still open** | **Q10** · **Q11**'s domestic price · **ruling 25's federation questions 5-7** *(1 by ruling 26, 2 by ruling 27, 3 by rulings 28 and 29, 4 by ruling 30)*, plus **can one member make a separate peace?** *(ruling 31's open half is closed by ruling 33: nothing is suppressed)* |
 | **Waiting on Aaron** | **Nothing.** Both board cards are answered — the Farmers Union by ruling 15, and ruling 6's opened question by ruling 20. **Ruling 15's four questions are all answered** — 1 by ruling 16, 2 by ruling 17, 3 by ruling 18, and 4 by ruling 19 as a flagged default. The proposal-spam exploit named in ruling 16 is closed by ruling 18: proposals run on the movement's clock, not the player's. **Finding A is ANSWERED by ruling 15**: the Farmers Union is a movement and its verb is Unify |
 | **Still to do before the round closes** | the closing test — *what does the player do about this on a Tuesday, with one action?* — and **trace scenario 3** |
 
@@ -2066,6 +2066,30 @@ losing one does not leave the player with nothing.
 rivals of *each other*, so **a southern federation can contain at most one of them**, plus any number of
 non-claimants. **The South cannot be one country while the contest is live — but it can be a federation
 built around whichever claimant joins first.** Nobody wrote that; it is ruling 30 and ruling 31 meeting.
+
+### Ruling 33 — Nothing is suppressed: the federation IS the answer to a union nobody can give
+
+**RULED 11 September 2026** — *"Your recomendation is correct"* — closing the open half of ruling 31 and
+**overturning the suppression** Aaron first asked for, on his own distinction from ruling 32.
+
+**No movement is barred from growing anywhere.** Christian Nationalism grows where it was authored to
+grow — 255 counties, 96.9 million people, 89% of it on contested ground — and **finding G's 88.6 million
+people stay in the game.**
+
+**The reason it is safe is ruling 11's table.** A movement that wants a union has two answers, not one.
+The full concession — *merge into a single state* — is forbidden between rivals by ruling 31. **The
+cheap one — the federation — is not.** So a Confederate claimant facing Christian Nationalism is not
+cornered; it has exactly one route open, and it is the one the table hands it.
+
+**AND THE PROBLEM BECOMES AN ENGINE.** The largest union-seeking movement in the game turns into **the
+thing that builds the South's federation**, because its government cannot give it a country and gives it
+a club instead. Then ruling 31 bites: **at most one claimant can be in any federation**, so whoever
+builds first locks the other four out of their own region. **A race, produced by three rulings that were
+not designed together.**
+
+**The count of what this round has declined to build stands at five** — S24, S27, the second vacuum
+mechanism, ruling 6's coalition object, and now this suppression, which was asked for and then made
+unnecessary by the design rather than argued away.
 
 ### Finding F — The two largest Unify movements share 504 counties, and both want the same thing
 
