@@ -14,10 +14,10 @@ un-started. Update it whenever a spine question is answered.*
 
 | | |
 |---|---|
-| **Rulings made** | **29** (§4 and §5), plus findings A–F (§5, §6) |
+| **Rulings made** | **30** (§4 and §5), plus findings A–F (§5, §6) |
 | **Spine questions answered** | **Q1** *(replaced by P1 and rulings 1–2)* · **Q2** *(rulings 11, 11a)* · **Q3** *(ruling 21)* · **Q4** *(ruling 3)* · **Q5** *(ruling 22)* · **Q6** *(ruling 14)* · **Q9** *(ruling 6)* · **Q7** *(ruling 24)* · **Q8** *(ruling 25)* · **Q12** *(ruling 23)* |
 | **Part answered** | **Q11** — ruling 11 point 4 makes joining a bloc the *concede-less* move for a **Unify** movement; whether it also costs Authority at home is still open |
-| **Still open** | **Q10** · **Q11**'s domestic price · **ruling 25's federation questions 4-7** *(1 by ruling 26, 2 by ruling 27, 3 by rulings 28 and 29)*, plus **can one member make a separate peace?** |
+| **Still open** | **Q10** · **Q11**'s domestic price · **ruling 25's federation questions 5-7** *(1 by ruling 26, 2 by ruling 27, 3 by rulings 28 and 29, 4 by ruling 30)*, plus **can one member make a separate peace?** and **ruling 30's collision: can two permanent rivals be in the same federation?** |
 | **Waiting on Aaron** | **Nothing.** Both board cards are answered — the Farmers Union by ruling 15, and ruling 6's opened question by ruling 20. **Ruling 15's four questions are all answered** — 1 by ruling 16, 2 by ruling 17, 3 by ruling 18, and 4 by ruling 19 as a flagged default. The proposal-spam exploit named in ruling 16 is closed by ruling 18: proposals run on the movement's clock, not the player's. **Finding A is ANSWERED by ruling 15**: the Farmers Union is a movement and its verb is Unify |
 | **Still to do before the round closes** | the closing test — *what does the player do about this on a Tuesday, with one action?* — and **trace scenario 3** |
 
@@ -1931,6 +1931,42 @@ diplomacy score nobody can see.
 signed *before* joining run out their term; the reverse case — what a departing member keeps — is not
 ruled and is smaller than it looks, because inside the federation there were no negotiated agreements
 to keep.
+
+### Ruling 30 — Inside a federation you are at peace with every member. Full stop
+
+**RULED 11 September 2026.** Aaron: *"Save that for future ideas but for now if you are apart of a
+federation you are peaceful to every member."* **The recommendation — hostile no, wary yes — was
+narrowed**: membership forces **peace**, not merely non-hostility. The wary texture is parked as
+`docs/FUTURE-IDEAS.md` **F23**.
+
+**Why the simple version is defensible, and probably better.** Hostility and membership were already a
+contradiction in the machinery: the flat rate is automatic and unrefusable while hostility forbids new
+agreements, so two members at war would be forced to trade freely and forbidden to trade at all. **Aaron
+removed the middle case as well**, which means membership is a single fact with no gradations — and this
+project's record is that the simpler version of a rule has outlived the textured one more often than
+not.
+
+**To attack somebody you are federated with, you leave first.** That is ruling 29 with nothing added:
+**declaring on a fellow member IS leaving.**
+
+**AND IT IS WHAT MEMBERSHIP IS ACTUALLY WORTH.** Ruling 26 asked a nation to give up the right to
+squeeze its neighbours. This is the return: **inside a federation, the people next to you cannot turn on
+you without first paying to walk out.** For a small state beside a large one, that is the entire
+proposition — and with ruling 28 it is the whole defensive case in two sentences.
+
+**A COLLISION WITH ROUND 2, FOUND HERE AND NOT RULED.** Round 2 settled that nations contesting the same
+inheritance — the five Texases, the five Californias, five Confederate claimants, three eastern capitals,
+**33 pairs** — **never forgive each other**. It is the one grudge in the design that nothing clears.
+**"Peaceful to every member" would clear it the moment two rivals joined the same federation.** Two
+readings, and it is Aaron's:
+
+1. **Permanent rivals cannot be in the same federation.** The rivalry survives; the federation is
+   refused. *Leaning: this one — a trade club should not erase the only permanent thing in the design,
+   and it makes a lovely map fact: there can be no federation across Texas until the contest is settled.*
+2. **Membership overrides even permanent hostility** — joining is the one act that ends a forever-war,
+   beside ruling 22's finding-G exit.
+
+**Asked, not assumed.**
 
 ### Finding F — The two largest Unify movements share 504 counties, and both want the same thing
 

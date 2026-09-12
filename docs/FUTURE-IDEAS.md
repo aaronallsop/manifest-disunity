@@ -812,3 +812,25 @@ It also needs the answer to a question still open: what actually happens when a 
 **What it needs before it can be designed:** whether membership is a stock that can decay at all, or a
 binary; and whether the member or its people carry the disappointment — a government that wanted a war
 is not the same thing as a population that did.
+
+## F23 — Members who quietly resent each other: wary inside a federation
+
+**Aaron's, 11 September 2026** — *"Save that for future ideas"* — parked while ruling 30 was made.
+
+**The idea.** Round 2 built six relationship states, one of which is **wary**: less willing to agree to
+what you propose, and — the interesting half — **their politics stop leaking into your country
+entirely**. Ruling 30 makes federation members simply *peaceful* to one another. The parked version
+allows them to be **wary** as well: still trading at the flat rate, still bound to defend each other, but
+refusing each other's proposals and closing their borders to each other's ideology.
+
+**Why it is worth keeping.** Rulings 27 and 28 together guarantee resentment — **the money flows to the
+gate-holders and the protection flows to the weak** — inside an institution whose leader those same
+members elect. A federation of people who quietly resent each other is the truer picture, and the
+machinery for it already exists; it is one state applied to a pair that happens to share a membership.
+
+**Why it is not built now.** It puts a gradation inside a fact Aaron deliberately made binary, and the
+whole federation is one evening old. It should wait until a federation has actually been played.
+
+**What it needs first:** whether wariness between members affects the leadership election — a member that
+is wary of the leader is the obvious seed of a faction — and whether it changes the flat toll at all, or
+is purely political.
