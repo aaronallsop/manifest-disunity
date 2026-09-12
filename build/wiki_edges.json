@@ -1,0 +1,3742 @@
+{
+  "version": 1,
+  "_what_this_is": "Authored, and CANDIDATES ONLY. A script cannot say why two pages connect; these were derived from the rulings and are seeded into each page once, for a writer to keep, rewrite or delete. They are never regenerated over.",
+  "edges": [
+    {
+      "from": "Grievance",
+      "to": "Movements",
+      "relation": "FEEDS",
+      "evidence": "js/sentiment.js:12 — target = clamp01(base * (grievance + pull) - suppression)",
+      "clause": "A region's anger is the fuel a movement grows on.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Grievance",
+      "to": "Civil war",
+      "relation": "FEEDS",
+      "evidence": "Round 3 ruling 8, docs/design/politics-ideation.md:608",
+      "clause": "Anger raises movement share; past forty per cent the civil-war clock starts.",
+      "confidence": "probable"
+    },
+    {
+      "from": "Grievance",
+      "to": "Release valves",
+      "relation": "TRIGGERS",
+      "evidence": "Round 3 ruling 11, docs/design/politics-ideation.md:929",
+      "clause": "The four valves exist to answer the anger this page measures.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Grievance",
+      "to": "Occupation",
+      "relation": "FEEDS",
+      "evidence": "DESIGN.md:491 — superlinear occupation surcharge; js/sentiment.js:139 suppression term",
+      "clause": "Angry ground is dearer to hold, and the bill rises faster than the map.",
+      "confidence": "probable"
+    },
+    {
+      "from": "Grievance",
+      "to": "Secession",
+      "relation": "EXPLAINS",
+      "evidence": "docs/design/IDEATION-PLAN.md:35 — \"Secession is not a leaf. It is the scoreboard.\"",
+      "clause": "Secession is the scoreboard, and this page is how the score is kept.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Grievance",
+      "to": "People",
+      "relation": "COSTS",
+      "evidence": "DESIGN.md:1435 — \"suppression costs you the people who can leave\"",
+      "clause": "Govern badly and the people who can leave, leave.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Movements",
+      "to": "Movement demands",
+      "relation": "TRIGGERS",
+      "evidence": "Round 2 ruling 16, docs/design/conquest-ideation.md:485",
+      "clause": "A movement that has grown enough starts making demands of its government.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Movements",
+      "to": "Civil war",
+      "relation": "TRIGGERS",
+      "evidence": "Round 3 ruling 8, docs/design/politics-ideation.md:608",
+      "clause": "Movements past forty per cent together start the countdown to civil war.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Movements",
+      "to": "Backing a movement",
+      "relation": "GATES",
+      "evidence": "Round 1 ruling 47, docs/design/secession-ideation.md:1451",
+      "clause": "The movement approaches you; a nation cannot simply pick one to back.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Movements",
+      "to": "The federal remnant",
+      "relation": "FEEDS",
+      "evidence": "Round 3 ruling 23, docs/design/politics-ideation.md:1649",
+      "clause": "Whether a country still waits for the old union is read off its movements.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Movements",
+      "to": "Unions",
+      "relation": "TRIGGERS",
+      "evidence": "Round 3 ruling 15, docs/design/politics-ideation.md:1230",
+      "clause": "A movement that wants a union demands that you go and ask a neighbour.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Movements",
+      "to": "Homelands",
+      "relation": "FEEDS",
+      "evidence": "Round 1 rulings 17 and 51, docs/design/secession-ideation.md:794 and :1502",
+      "clause": "Every movement is a painted patch of counties, never a state line.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Movements",
+      "to": "Reunification contests",
+      "relation": "FEEDS",
+      "evidence": "Round 1 ruling 18, docs/design/secession-ideation.md:810",
+      "clause": "A reunification movement declares a winner among claimants, not a new country.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Movements",
+      "to": "Military",
+      "relation": "COSTS",
+      "evidence": "Round 3 ruling 7, docs/design/politics-ideation.md:576",
+      "clause": "People in a movement join its militia instead of your army.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Backing a movement",
+      "to": "Movements",
+      "relation": "FEEDS",
+      "evidence": "Round 1 ruling 21, docs/design/secession-ideation.md:876",
+      "clause": "Your money makes the movement grow faster on ground you do not hold.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Backing a movement",
+      "to": "Economy",
+      "relation": "COSTS",
+      "evidence": "Round 1 ruling 21, docs/design/secession-ideation.md:876",
+      "clause": "Every quarter you pay is a quarter not spent on your own country.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Backing a movement",
+      "to": "Hostility",
+      "relation": "TRIGGERS",
+      "evidence": "Round 2 ruling 4, cause 4, docs/design/conquest-ideation.md:735",
+      "clause": "Funding rebels inside a neighbour is one of the five roads to hostility.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Backing a movement",
+      "to": "Reunification contests",
+      "relation": "FEEDS",
+      "evidence": "Round 1 ruling 21, docs/design/secession-ideation.md:876",
+      "clause": "Dallas can buy the argument over Texas instead of fighting it.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Backing a movement",
+      "to": "Diplomacy",
+      "relation": "GATES",
+      "evidence": "Round 1 ruling 50, docs/design/secession-ideation.md:1486",
+      "clause": "Petitions, offers and everything like them are diplomacy's, not secession's.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Backing a movement",
+      "to": "Diplomatic states",
+      "relation": "FEEDS",
+      "evidence": "Round 1, S71, docs/design/secession-ideation.md:892 (inside ruling 21's section)",
+      "clause": "Being seen to fund somebody's rebels is remembered, and worse than recognising them.",
+      "confidence": "probable"
+    },
+    {
+      "from": "The Shattering",
+      "to": "Nations of the Shattering",
+      "relation": "EXPLAINS",
+      "evidence": "Round 1 ruling 11, docs/design/secession-ideation.md:634",
+      "clause": "Every nation on the board exists because of what happened here.",
+      "confidence": "certain"
+    },
+    {
+      "from": "The Shattering",
+      "to": "The opening roll",
+      "relation": "FEEDS",
+      "evidence": "Round 1 ruling 11, docs/design/secession-ideation.md:634",
+      "clause": "The game opens after the story has finished; the dice only set sizes.",
+      "confidence": "certain"
+    },
+    {
+      "from": "The Shattering",
+      "to": "Reunification contests",
+      "relation": "FEEDS",
+      "evidence": "Round 1 ruling 11, docs/design/secession-ideation.md:634",
+      "clause": "The bicentenary arrives with five governments each claiming to be Texas.",
+      "confidence": "certain"
+    },
+    {
+      "from": "The Shattering",
+      "to": "Diplomatic states",
+      "relation": "FEEDS",
+      "evidence": "Round 1 ruling 11, docs/design/secession-ideation.md:634",
+      "clause": "Two years is eight turns, so every grudge on the board is still fresh.",
+      "confidence": "certain"
+    },
+    {
+      "from": "The Shattering",
+      "to": "The federal remnant",
+      "relation": "FEEDS",
+      "evidence": "Round 3 ruling 24, docs/design/politics-ideation.md:1685",
+      "clause": "What Washington lost is written into its record before the first turn.",
+      "confidence": "certain"
+    },
+    {
+      "from": "The Shattering",
+      "to": "Events",
+      "relation": "FEEDS",
+      "evidence": "docs/design/events-ideation.md:13-20 (round 6 inbox, question 1)",
+      "clause": "The break-up is a chain of events, and the chain could run again.",
+      "confidence": "probable"
+    },
+    {
+      "from": "The Shattering",
+      "to": "Story",
+      "relation": "FEEDS",
+      "evidence": "docs/design/secession-ideation.md §8, cited at events-ideation.md:7 and diplomacy-ideation.md:5",
+      "clause": "This is the opening chapter every other story page hangs from.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Nations of the Shattering",
+      "to": "The opening roll",
+      "relation": "FEEDS",
+      "evidence": "Round 1 ruling 12, docs/design/secession-ideation.md:692",
+      "clause": "Every nation appears in every game; only its size is rolled.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Nations of the Shattering",
+      "to": "Reunification contests",
+      "relation": "FEEDS",
+      "evidence": "Round 1 ruling 19, docs/design/secession-ideation.md:818",
+      "clause": "The successor states are the claimants competing to restore what broke.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Nations of the Shattering",
+      "to": "Homelands",
+      "relation": "FEEDS",
+      "evidence": "Round 1 ruling 17, docs/design/secession-ideation.md:794",
+      "clause": "A nation born of a movement makes all its founding ground that movement's heartland.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Nations of the Shattering",
+      "to": "Movements",
+      "relation": "GATES",
+      "evidence": "Round 1 rulings 27 and 30, docs/design/secession-ideation.md:1058 and :1074",
+      "clause": "Four nations are deliberately built with no movement inside them at all.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Nations of the Shattering",
+      "to": "The board",
+      "relation": "FEEDS",
+      "evidence": "Round 1 rulings 5, 6, 7 and 10, docs/design/secession-ideation.md:634 table; DESIGN.md:152",
+      "clause": "Each nation is a set of real counties, drawn on the real map.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Nations of the Shattering",
+      "to": "Resistance",
+      "relation": "FEEDS",
+      "evidence": "Round 1 ruling 37, docs/design/secession-ideation.md:1240",
+      "clause": "Washington's armed share was set by hand at six per cent, badged an estimate.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Nations of the Shattering",
+      "to": "Story",
+      "relation": "EXPLAINS",
+      "evidence": "Round 1 ruling 29, docs/design/secession-ideation.md:1071 (the Gulf Compact, the Allegheny Republic)",
+      "clause": "The names on the map are the story's, and were chosen deliberately.",
+      "confidence": "probable"
+    },
+    {
+      "from": "Reunification contests",
+      "to": "Hostility",
+      "relation": "TRIGGERS",
+      "evidence": "Round 2 ruling 4 cause 2 (:735) and ruling 17(d) (:1132); claimant lists at ruling 32 (:2179)",
+      "clause": "Two nations claiming the same inheritance are hostile, and never stop being.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Reunification contests",
+      "to": "Unions",
+      "relation": "BLOCKS",
+      "evidence": "Round 3 ruling 31, docs/design/politics-ideation.md:1976",
+      "clause": "A claimant may never join a union; it must win the argument first.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Reunification contests",
+      "to": "Federation",
+      "relation": "BLOCKS",
+      "evidence": "Round 3 ruling 31, docs/design/politics-ideation.md:1976",
+      "clause": "There can be no federation across Texas until somebody has won Texas.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Reunification contests",
+      "to": "Movements",
+      "relation": "FEEDS",
+      "evidence": "Round 1 ruling 18, docs/design/secession-ideation.md:810",
+      "clause": "The movement crowns whichever claimant already holds most of the old country.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Reunification contests",
+      "to": "Diplomatic states",
+      "relation": "GATES",
+      "evidence": "Round 2 ruling 19, docs/design/conquest-ideation.md:1375",
+      "clause": "Austin is the legitimate Texas; the other four open as rebels.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Reunification contests",
+      "to": "Backing a movement",
+      "relation": "FEEDS",
+      "evidence": "Round 1 ruling 21, docs/design/secession-ideation.md:876",
+      "clause": "A claimant can pay to grow the movement rather than march for it.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Reunification contests",
+      "to": "The federal remnant",
+      "relation": "FEEDS",
+      "evidence": "Round 1 rulings 19 and 20, docs/design/secession-ideation.md:818 and :861",
+      "clause": "Three eastern capitals contest the old union's seat; Boston is out.",
+      "confidence": "certain"
+    },
+    {
+      "from": "The federal remnant",
+      "to": "Movements",
+      "relation": "FEEDS",
+      "evidence": "Round 3 ruling 23, docs/design/politics-ideation.md:1649; Round 1 ruling 42, secession-ideation.md:1319",
+      "clause": "Govern well and provinces grow movements that want to come back.",
+      "confidence": "certain"
+    },
+    {
+      "from": "The federal remnant",
+      "to": "Authority",
+      "relation": "COSTS",
+      "evidence": "Round 3 ruling 24, docs/design/politics-ideation.md:1685",
+      "clause": "It opens weak because everything it lost is written into its record.",
+      "confidence": "certain"
+    },
+    {
+      "from": "The federal remnant",
+      "to": "Reunification contests",
+      "relation": "FEEDS",
+      "evidence": "Round 1 ruling 19, docs/design/secession-ideation.md:818",
+      "clause": "The old union is one of the four things the board is fighting to restore.",
+      "confidence": "certain"
+    },
+    {
+      "from": "The federal remnant",
+      "to": "Movement demands",
+      "relation": "FEEDS",
+      "evidence": "Round 3 rulings 22 and 23, docs/design/politics-ideation.md:1594 and :1649",
+      "clause": "Every broken promise abroad is a province that stops waiting, for good.",
+      "confidence": "certain"
+    },
+    {
+      "from": "The federal remnant",
+      "to": "Diplomacy",
+      "relation": "FEEDS",
+      "evidence": "docs/design/diplomacy-ideation.md:28-31 (round 5 inbox, question 4)",
+      "clause": "Does Washington open recognising nobody, and cut itself off from everyone?",
+      "confidence": "probable"
+    },
+    {
+      "from": "The federal remnant",
+      "to": "Story",
+      "relation": "EXPLAINS",
+      "evidence": "Round 3 ruling 24, docs/design/politics-ideation.md:1685; secession-ideation.md §8 inbox item 5",
+      "clause": "Trust in Washington collapsed and local powers filled the gap.",
+      "confidence": "certain"
+    },
+    {
+      "from": "The federal remnant",
+      "to": "Playing",
+      "relation": "COSTS",
+      "evidence": "Round 3 ruling 23, docs/design/politics-ideation.md:1649",
+      "clause": "It plays against a clock it cannot stop, which nothing else in the game does.",
+      "confidence": "certain"
+    },
+    {
+      "from": "The opening roll",
+      "to": "Nations of the Shattering",
+      "relation": "FEEDS",
+      "evidence": "Round 1 ruling 12, docs/design/secession-ideation.md:692",
+      "clause": "The dice set how big each country starts, never whether it exists.",
+      "confidence": "certain"
+    },
+    {
+      "from": "The opening roll",
+      "to": "Movements",
+      "relation": "FEEDS",
+      "evidence": "Round 1 ruling 14, docs/design/secession-ideation.md:725",
+      "clause": "Growing movements roll a core that always holds and a periphery that may not.",
+      "confidence": "certain"
+    },
+    {
+      "from": "The opening roll",
+      "to": "Homelands",
+      "relation": "FEEDS",
+      "evidence": "Round 1 ruling 26, docs/design/secession-ideation.md:1001 (superseding ruling 24's ring ladder at :928)",
+      "clause": "Setup extent comes from painted ground, not from rings around a centre.",
+      "confidence": "certain"
+    },
+    {
+      "from": "The opening roll",
+      "to": "Stateless society",
+      "relation": "FEEDS",
+      "evidence": "Round 1 ruling 31, docs/design/secession-ideation.md:1094",
+      "clause": "Four or five fragments are painted per region; the dice say how many held together.",
+      "confidence": "certain"
+    },
+    {
+      "from": "The opening roll",
+      "to": "Playing",
+      "relation": "GATES",
+      "evidence": "Round 1 ruling 15, docs/design/secession-ideation.md:731",
+      "clause": "The board is rolled before you choose, so you pick knowing the sizes.",
+      "confidence": "certain"
+    },
+    {
+      "from": "The opening roll",
+      "to": "The board",
+      "relation": "FEEDS",
+      "evidence": "Round 1 ruling 23, docs/design/secession-ideation.md:902",
+      "clause": "The Four Corners is settled three ways and the leftovers are rolled.",
+      "confidence": "certain"
+    },
+    {
+      "from": "The opening roll",
+      "to": "Resistance",
+      "relation": "FEEDS",
+      "evidence": "Round 1 rulings 35 and 36, docs/design/secession-ideation.md:1138 and :1153",
+      "clause": "How armed each county is, is baked once at setup and never changes.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Homelands",
+      "to": "Movements",
+      "relation": "GATES",
+      "evidence": "Round 1 ruling 51, docs/design/secession-ideation.md:1502",
+      "clause": "A movement lives where its counties are, and nowhere else.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Homelands",
+      "to": "Resistance",
+      "relation": "FEEDS",
+      "evidence": "Round 1 ruling 16, docs/design/secession-ideation.md:780",
+      "clause": "A nation's founding ground resists an occupier hardest of all.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Homelands",
+      "to": "Occupation",
+      "relation": "COSTS",
+      "evidence": "Round 1 ruling 16, docs/design/secession-ideation.md:780; deferred.md #14 recorded there",
+      "clause": "Take somebody's heartland and you have taken the ground that fights back.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Homelands",
+      "to": "Nations of the Shattering",
+      "relation": "FEEDS",
+      "evidence": "Round 1 ruling 17, docs/design/secession-ideation.md:794",
+      "clause": "When a movement becomes a country, its country becomes its homeland.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Homelands",
+      "to": "The board",
+      "relation": "FEEDS",
+      "evidence": "Round 1 rulings 26 and 51, docs/design/secession-ideation.md:1001 and :1502",
+      "clause": "Homelands are painted on the county map, by hand, like everything else here.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Homelands",
+      "to": "Reunification contests",
+      "relation": "FEEDS",
+      "evidence": "Round 1 ruling 17, docs/design/secession-ideation.md:794 (\"the reach stays hand-authored\")",
+      "clause": "The ground outside a country that still wants in is what carries the story.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Stateless society",
+      "to": "Economy",
+      "relation": "COSTS",
+      "evidence": "Round 3 ruling 3, docs/design/politics-ideation.md:351",
+      "clause": "Ten per cent to trade with them, five to pass through — and nobody collects it.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Stateless society",
+      "to": "Movements",
+      "relation": "FEEDS",
+      "evidence": "Round 3 ruling 13, docs/design/politics-ideation.md:1105",
+      "clause": "With no government to push against or hold them down, movements grow unopposed.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Stateless society",
+      "to": "Authority",
+      "relation": "BLOCKS",
+      "evidence": "Round 3 ruling 3, docs/design/politics-ideation.md:351",
+      "clause": "No government means no treasury, no army, no elections, no foreign policy.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Stateless society",
+      "to": "Nations of the Shattering",
+      "relation": "TRIGGERS",
+      "evidence": "Round 3 rulings 5 and 13, docs/design/politics-ideation.md:470 and :1105",
+      "clause": "Stranded, then lawless, then organised, then a country — the whole life cycle.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Stateless society",
+      "to": "Civil war",
+      "relation": "FEEDS",
+      "evidence": "Round 3 ruling 20, docs/design/politics-ideation.md:1472",
+      "clause": "Two movements can bring a government down together and neither inherits it.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Stateless society",
+      "to": "Resistance",
+      "relation": "FEEDS",
+      "evidence": "Round 1 ruling 38, docs/design/secession-ideation.md:1247 (dropping ruling 32's blanket premise)",
+      "clause": "Lawless ground is not uniformly hard to hold; the real data decides.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Stateless society",
+      "to": "The board",
+      "relation": "FEEDS",
+      "evidence": "Round 3 ruling 3, docs/design/politics-ideation.md:351",
+      "clause": "Lawless ground is the cheapest passage on the continent, and everyone routes through it.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Military bases",
+      "to": "Military",
+      "relation": "FEEDS",
+      "evidence": "Round 2 ruling 31, docs/design/conquest-ideation.md:2113",
+      "clause": "An army base buys manpower, an air base buys attacks that land.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Military bases",
+      "to": "Economy",
+      "relation": "FEEDS",
+      "evidence": "Round 2 ruling 31, docs/design/conquest-ideation.md:2113 and the note at :2128",
+      "clause": "A naval base pays a nation that never fights, by improving trade through ports.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Military bases",
+      "to": "Movement demands",
+      "relation": "FEEDS",
+      "evidence": "Round 2, C121, docs/design/conquest-ideation.md:2135",
+      "clause": "A movement demanding NORAD is now demanding something real and measurable.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Military bases",
+      "to": "Taking ground",
+      "relation": "FEEDS",
+      "evidence": "Round 2, C123, docs/design/conquest-ideation.md:2145",
+      "clause": "Whoever holds the air bases is the nation for whom raiding is cheapest.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Military bases",
+      "to": "Occupation",
+      "relation": "COSTS",
+      "evidence": "Round 2, C122, docs/design/conquest-ideation.md:2141",
+      "clause": "A poor nation can capture an air base and never really own it.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Military bases",
+      "to": "The board",
+      "relation": "FEEDS",
+      "evidence": "Round 2 ruling 31, docs/design/conquest-ideation.md:2160-2172",
+      "clause": "Bases are geography: a name, a branch, a county, a size.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Military bases",
+      "to": "War",
+      "relation": "EXPLAINS",
+      "evidence": "Round 2 ruling 31, docs/design/conquest-ideation.md:2118-2124",
+      "clause": "There are no nuclear weapons, and that was decided rather than deferred.",
+      "confidence": "certain"
+    },
+    {
+      "from": "War",
+      "to": "Economy",
+      "relation": "BLOCKS",
+      "evidence": "Round 2 ruling 2, docs/design/conquest-ideation.md:113; C57 at :138. NOT BUILT — see the war/trade note.",
+      "clause": "War prohibits trade and tears up the deals you had already signed.",
+      "confidence": "certain"
+    },
+    {
+      "from": "War",
+      "to": "Taking ground",
+      "relation": "GATES",
+      "evidence": "Round 2 rulings 2 and 12, docs/design/conquest-ideation.md:113 and :959",
+      "clause": "War is the state in which you are allowed to attack at all.",
+      "confidence": "certain"
+    },
+    {
+      "from": "War",
+      "to": "Cease-fire",
+      "relation": "GATES",
+      "evidence": "Round 2 ruling 6, docs/design/conquest-ideation.md:789",
+      "clause": "A war ends only when both sides agree, and refusing is allowed.",
+      "confidence": "certain"
+    },
+    {
+      "from": "War",
+      "to": "Peace treaty",
+      "relation": "FEEDS",
+      "evidence": "Round 2 ruling 15, docs/design/conquest-ideation.md:1081; ruling 22 at :1569",
+      "clause": "What the war cost you is what sets the bill you may present.",
+      "confidence": "certain"
+    },
+    {
+      "from": "War",
+      "to": "People",
+      "relation": "COSTS",
+      "evidence": "DESIGN.md:374 (war weariness); Round 2 ruling 23, conquest-ideation.md:1652",
+      "clause": "A decade of fighting is paid for at home, and only peace repays it.",
+      "confidence": "certain"
+    },
+    {
+      "from": "War",
+      "to": "Occupation",
+      "relation": "TRIGGERS",
+      "evidence": "Round 2 rulings 10 and 13, docs/design/conquest-ideation.md:942 and :1006",
+      "clause": "Ground you win is yours at once, but only under an occupier's flag.",
+      "confidence": "certain"
+    },
+    {
+      "from": "War",
+      "to": "Diplomatic states",
+      "relation": "FEEDS",
+      "evidence": "Round 2 ruling 29, docs/design/conquest-ideation.md:2019",
+      "clause": "You may declare straight from peace; the ladder is a cost, not a gate.",
+      "confidence": "certain"
+    },
+    {
+      "from": "War",
+      "to": "Federation",
+      "relation": "COSTS",
+      "evidence": "Round 3 ruling 29, docs/design/politics-ideation.md:1905",
+      "clause": "Declare against the federation's wishes and you leave it the same day.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Taking ground",
+      "to": "Economy",
+      "relation": "COSTS",
+      "evidence": "Round 2 ruling 23, docs/design/conquest-ideation.md:1652",
+      "clause": "A region under attack produces nothing that quarter, win or lose.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Taking ground",
+      "to": "Occupation",
+      "relation": "TRIGGERS",
+      "evidence": "Round 2 ruling 13, docs/design/conquest-ideation.md:1006",
+      "clause": "Every acre you win arrives flagged as occupied until you make peace.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Taking ground",
+      "to": "The turn",
+      "relation": "COSTS",
+      "evidence": "Round 2 ruling 24 and its finding, docs/design/conquest-ideation.md:1723 and :1736",
+      "clause": "One action a turn already means one attack a turn, cooldown or not.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Taking ground",
+      "to": "Resistance",
+      "relation": "FEEDS",
+      "evidence": "Round 1 rulings 32 and 33, docs/design/secession-ideation.md:1109 and :1120",
+      "clause": "Some ground is dear to hold whoever holds it, and that never changes hands.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Taking ground",
+      "to": "Authority",
+      "relation": "COSTS",
+      "evidence": "DESIGN.md:370 — authority is cut by territory lost, occupation and overreach",
+      "clause": "Wars won firm your grip; overreach loosens it.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Taking ground",
+      "to": "Civil war",
+      "relation": "TRIGGERS",
+      "evidence": "js/civilwar.js:4-7 — triggered by an annexation flipping the plurality, GDP or population",
+      "clause": "Bite off more than you are and your own country comes apart.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Taking ground",
+      "to": "Peace treaty",
+      "relation": "FEEDS",
+      "evidence": "Round 2 ruling 22, docs/design/conquest-ideation.md:1569",
+      "clause": "What you spent taking ground is the basis for what you may demand back.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Taking ground",
+      "to": "Unions",
+      "relation": "BLOCKS",
+      "evidence": "Round 3 ruling 17, docs/design/politics-ideation.md:1371 (the default on recent conquest)",
+      "clause": "A neighbour fresh from taking ground is frightening, and frightening cools a yes.",
+      "confidence": "probable"
+    },
+    {
+      "from": "Occupation",
+      "to": "Economy",
+      "relation": "COSTS",
+      "evidence": "DESIGN.md:491-493 — superlinear surcharge, treasury into deficit near 110 occupied Areas",
+      "clause": "Held ground costs more the more of it you hold, and the curve bends upward.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Occupation",
+      "to": "Grievance",
+      "relation": "FEEDS",
+      "evidence": "Round 2 ruling 13, docs/design/conquest-ideation.md:1016 (the occupied-war row)",
+      "clause": "Ground held while the war runs raises unrest and hurts the economy badly.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Occupation",
+      "to": "Alliances",
+      "relation": "BLOCKS",
+      "evidence": "Round 2 ruling 13, docs/design/conquest-ideation.md:1016",
+      "clause": "Your allies will not route cargo across ground you are still fighting over.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Occupation",
+      "to": "Peace treaty",
+      "relation": "GATES",
+      "evidence": "Round 2 ruling 13, docs/design/conquest-ideation.md:1006-1031",
+      "clause": "The treaty is the title deed; without it the ground stays under a soldier's flag.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Occupation",
+      "to": "Resistance",
+      "relation": "COSTS",
+      "evidence": "Round 1 ruling 32, docs/design/secession-ideation.md:1109",
+      "clause": "Ground that resists being governed is no harder to take and far dearer to keep.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Occupation",
+      "to": "The board",
+      "relation": "FEEDS",
+      "evidence": "Round 2, C79, docs/design/conquest-ideation.md:1043",
+      "clause": "The front line is the pale part of your own country on the map.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Occupation",
+      "to": "Authority",
+      "relation": "COSTS",
+      "evidence": "DESIGN.md:370",
+      "clause": "A country that governs by garrison has announced it cannot govern otherwise.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Occupation",
+      "to": "People",
+      "relation": "GATES",
+      "evidence": "Round 2 ruling 26, docs/design/conquest-ideation.md:1818 (and C109 confirmed by ruling 41)",
+      "clause": "Conquered people become yours only if life here is better than life there.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Resistance",
+      "to": "Occupation",
+      "relation": "COSTS",
+      "evidence": "Round 1 rulings 32 and 33, docs/design/secession-ideation.md:1109 and :1120",
+      "clause": "How hard a place is to govern is a fact about the place, not about you.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Resistance",
+      "to": "Ideology",
+      "relation": "FEEDS",
+      "evidence": "Round 1 ruling 34, docs/design/secession-ideation.md:1126",
+      "clause": "An armed county governed by people it agrees with is quiet.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Resistance",
+      "to": "People",
+      "relation": "FEEDS",
+      "evidence": "Round 1 ruling 35, docs/design/secession-ideation.md:1138",
+      "clause": "Capacity is how many people here are armed, spread by how rural they are.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Resistance",
+      "to": "The board",
+      "relation": "FEEDS",
+      "evidence": "Round 1 ruling 33, docs/design/secession-ideation.md:1120",
+      "clause": "It is painted everywhere, heaviest on the six lawless regions.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Resistance",
+      "to": "Stateless society",
+      "relation": "CONTRADICTS",
+      "evidence": "Round 1 ruling 38, docs/design/secession-ideation.md:1247 (measured: 44.6% against 46.9%)",
+      "clause": "Lawless ground turned out slightly less armed than everywhere else, not more.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Resistance",
+      "to": "Civil war",
+      "relation": "FEEDS",
+      "evidence": "Round 3 ruling 7, docs/design/politics-ideation.md:576",
+      "clause": "An armed population is who a militia is made of.",
+      "confidence": "probable"
+    },
+    {
+      "from": "Resistance",
+      "to": "Military",
+      "relation": "FEEDS",
+      "evidence": "Round 1 ruling 34, docs/design/secession-ideation.md:1126",
+      "clause": "The armed share is the ceiling on what anybody here can put in the field.",
+      "confidence": "probable"
+    },
+    {
+      "from": "Civil war",
+      "to": "Nations of the Shattering",
+      "relation": "TRIGGERS",
+      "evidence": "docs/design/IDEATION-PLAN.md:89 — \"a civil war that goes badly makes new nations\"",
+      "clause": "A civil war that goes badly enough puts new countries on the board.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Civil war",
+      "to": "Stateless society",
+      "relation": "TRIGGERS",
+      "evidence": "Round 3 rulings 4 and 5, docs/design/politics-ideation.md:410 and :470",
+      "clause": "Ground cut off by a civil war and too small to stand goes lawless.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Civil war",
+      "to": "Movements",
+      "relation": "FEEDS",
+      "evidence": "Round 3 ruling 7, docs/design/politics-ideation.md:576",
+      "clause": "The bigger a movement grows, the more of its people arm for it instead of you.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Civil war",
+      "to": "Military",
+      "relation": "COSTS",
+      "evidence": "Round 3 ruling 7, docs/design/politics-ideation.md:576 (Oregon worked at 26/26: 8,202 against 8,886)",
+      "clause": "A country half organised against itself fields half an army.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Civil war",
+      "to": "Taking ground",
+      "relation": "GATES",
+      "evidence": "js/civilwar.js:4-7",
+      "clause": "Today the only thing that starts one is taking too much at once.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Civil war",
+      "to": "Release valves",
+      "relation": "TRIGGERS",
+      "evidence": "Round 3 rulings 8 and 9, docs/design/politics-ideation.md:608 and :648",
+      "clause": "Past forty per cent the clock runs, and a government may simply give in.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Civil war",
+      "to": "The board",
+      "relation": "FEEDS",
+      "evidence": "Round 3 ruling 20, docs/design/politics-ideation.md:1472",
+      "clause": "A region nobody won goes ungoverned, and its edges pick a neighbour instead.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Diplomatic states",
+      "to": "Economy",
+      "relation": "GATES",
+      "evidence": "Round 2 ruling 2, docs/design/conquest-ideation.md:100-117",
+      "clause": "Each state is a short list of what you may not do, and trade is on it.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Diplomatic states",
+      "to": "War",
+      "relation": "GATES",
+      "evidence": "Round 2 rulings 7 and 29, docs/design/conquest-ideation.md:802 and :2019",
+      "clause": "Any state can become war by one nation deciding it has.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Diplomatic states",
+      "to": "Hostility",
+      "relation": "GATES",
+      "evidence": "Round 2 rulings 7 and 17, docs/design/conquest-ideation.md:802 and :1132",
+      "clause": "Hostility cools on a clock into wary, and wary into peace.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Diplomatic states",
+      "to": "Cease-fire",
+      "relation": "GATES",
+      "evidence": "Round 2 rulings 7 and 8, docs/design/conquest-ideation.md:802 and :832",
+      "clause": "A cease-fire has a fixed term and three ways out of it.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Diplomatic states",
+      "to": "Peace treaty",
+      "relation": "GATES",
+      "evidence": "Round 2 ruling 7, docs/design/conquest-ideation.md:802",
+      "clause": "A treaty runs its term and then quietly becomes peace again.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Diplomatic states",
+      "to": "Alliances",
+      "relation": "GATES",
+      "evidence": "Round 2 ruling 27, docs/design/conquest-ideation.md:1892",
+      "clause": "You cannot ally with somebody you are hostile toward, nor fight an ally.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Diplomatic states",
+      "to": "Unions",
+      "relation": "GATES",
+      "evidence": "Round 3 ruling 17, docs/design/politics-ideation.md:1371",
+      "clause": "A hostile neighbour cannot say yes; a wary one says yes less often.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Diplomatic states",
+      "to": "Federation",
+      "relation": "CONTRADICTS",
+      "evidence": "Round 3 rulings 30 and 31, docs/design/politics-ideation.md:1940 and :1976",
+      "clause": "Inside a federation everybody is at peace, so the permanent quarrels must stay outside.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Hostility",
+      "to": "Economy",
+      "relation": "BLOCKS",
+      "evidence": "Round 2 ruling 18, docs/design/conquest-ideation.md:1293",
+      "clause": "Deals already signed run their term; no new deal may be signed.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Hostility",
+      "to": "Economy",
+      "relation": "COSTS",
+      "evidence": "Round 2 ruling 9, items 1 and 2, docs/design/conquest-ideation.md:873",
+      "clause": "What they charge to carry your goods goes up, and so does what they will accept.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Hostility",
+      "to": "Movements",
+      "relation": "FEEDS",
+      "evidence": "Round 2 ruling 9 item 3 (:873), switched off at Wary by ruling 40 (:2561)",
+      "clause": "Their movement grows faster inside you — and stops dead when the quarrel cools.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Hostility",
+      "to": "Unions",
+      "relation": "BLOCKS",
+      "evidence": "Round 3 ruling 17, docs/design/politics-ideation.md:1371",
+      "clause": "Checked before anything else: a hostile nation cannot agree to join you.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Hostility",
+      "to": "Peace treaty",
+      "relation": "BLOCKS",
+      "evidence": "Round 2 ruling 21, docs/design/conquest-ideation.md:1504",
+      "clause": "There is no treaty out of hostility — only time, or a war.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Hostility",
+      "to": "War",
+      "relation": "TRIGGERS",
+      "evidence": "Round 2 ruling 7, docs/design/conquest-ideation.md:802-830",
+      "clause": "Hostility is where most of the board lives, and where wars are declared from.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Hostility",
+      "to": "Military",
+      "relation": "COSTS",
+      "evidence": "Round 2 ruling 9 item 4, docs/design/conquest-ideation.md:873",
+      "clause": "Guarding a hostile border costs money every quarter, forever.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Hostility",
+      "to": "Reunification contests",
+      "relation": "FEEDS",
+      "evidence": "Round 2 ruling 17(d) (:1132), claimants named by ruling 32 (:2179) — 33 permanent pairs",
+      "clause": "Thirty-three pairs of claimants are hostile on turn one and never cool.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Cease-fire",
+      "to": "Peace treaty",
+      "relation": "GATES",
+      "evidence": "Round 2 rulings 33, 34 and 35, docs/design/conquest-ideation.md:2243, :2309, :2341",
+      "clause": "Both sides table terms blind before it ends; the defender chooses first.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Cease-fire",
+      "to": "Taking ground",
+      "relation": "BLOCKS",
+      "evidence": "Round 2 ruling 2, docs/design/conquest-ideation.md:111",
+      "clause": "All the costs of war, and you may not attack.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Cease-fire",
+      "to": "Hostility",
+      "relation": "TRIGGERS",
+      "evidence": "Round 2 ruling 8, docs/design/conquest-ideation.md:832 and the restatement at :2321",
+      "clause": "Nothing signed by the deadline and you fall back to hostile, not to war.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Cease-fire",
+      "to": "Economy",
+      "relation": "COSTS",
+      "evidence": "Round 2 ruling 2, docs/design/conquest-ideation.md:111",
+      "clause": "It is a waiting room that charges you war prices while you wait.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Cease-fire",
+      "to": "War",
+      "relation": "GATES",
+      "evidence": "Round 2 ruling 6, docs/design/conquest-ideation.md:789",
+      "clause": "It is the only door out of a war, and both sides must open it.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Cease-fire",
+      "to": "The turn",
+      "relation": "FEEDS",
+      "evidence": "Round 2 ruling 36, docs/design/conquest-ideation.md:2370",
+      "clause": "Putting terms on the table is free; ending a war is cheaper than starting one.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Cease-fire",
+      "to": "Playing",
+      "relation": "FEEDS",
+      "evidence": "Round 2, C130, docs/design/conquest-ideation.md:2357",
+      "clause": "Terms are written blind, so what you can see of them decides everything.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Peace treaty",
+      "to": "Occupation",
+      "relation": "GATES",
+      "evidence": "Round 2 ruling 13, docs/design/conquest-ideation.md:1006-1031",
+      "clause": "Signing is what turns ground you are standing on into ground you own.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Peace treaty",
+      "to": "Economy",
+      "relation": "COSTS",
+      "evidence": "Round 2 rulings 15 and 22, docs/design/conquest-ideation.md:1081 and :1569",
+      "clause": "Repayment is capped against what the war cost whoever sent the terms.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Peace treaty",
+      "to": "Hostility",
+      "relation": "TRIGGERS",
+      "evidence": "Round 2 ruling 28, docs/design/conquest-ideation.md:1947",
+      "clause": "Break one and every neighbour but your allies turns hostile at once.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Peace treaty",
+      "to": "Alliances",
+      "relation": "GATES",
+      "evidence": "Round 2 ruling 28, docs/design/conquest-ideation.md:1947",
+      "clause": "Allies are the one exception; friendship insulates you from your own bad faith.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Peace treaty",
+      "to": "Diplomatic states",
+      "relation": "FEEDS",
+      "evidence": "Round 2 ruling 7, docs/design/conquest-ideation.md:802",
+      "clause": "When its term runs out the pair simply goes back to peace.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Peace treaty",
+      "to": "War",
+      "relation": "GATES",
+      "evidence": "Round 2 ruling 6, docs/design/conquest-ideation.md:789",
+      "clause": "Refusing terms is allowed, and a war can run on because somebody said no.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Peace treaty",
+      "to": "Federation",
+      "relation": "GATES",
+      "evidence": "Round 3 ruling 35, docs/design/politics-ideation.md:2128",
+      "clause": "A federation makes peace as one; a member wanting out must leave first.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Peace treaty",
+      "to": "Playing",
+      "relation": "COSTS",
+      "evidence": "Round 2 ruling 35, docs/design/conquest-ideation.md:2341-2356",
+      "clause": "The first place the game punishes you for misreading a person, not a number.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Alliances",
+      "to": "Hostility",
+      "relation": "FEEDS",
+      "evidence": "Round 2 rulings 27, 37 and 38, docs/design/conquest-ideation.md:1892, :2398, :2491",
+      "clause": "You inherit your ally's enemies — one hop only, and it cools fastest.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Alliances",
+      "to": "Military",
+      "relation": "COSTS",
+      "evidence": "Round 2 ruling 27 and C110, docs/design/conquest-ideation.md:1892 and :1917",
+      "clause": "Soldiers lent to a friend are soldiers not holding your own border.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Alliances",
+      "to": "War",
+      "relation": "BLOCKS",
+      "evidence": "Round 2 ruling 27, docs/design/conquest-ideation.md:1892",
+      "clause": "You cannot be at war with an ally, and never have to join theirs.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Alliances",
+      "to": "Taking ground",
+      "relation": "GATES",
+      "evidence": "Round 2 ruling 27 and C111, docs/design/conquest-ideation.md:1892 and :1929",
+      "clause": "You may open a second front only if you border their enemy.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Alliances",
+      "to": "Peace treaty",
+      "relation": "BLOCKS",
+      "evidence": "Round 2 ruling 28, docs/design/conquest-ideation.md:1947-1986",
+      "clause": "Allies do not turn on you when you break somebody else's treaty.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Alliances",
+      "to": "Diplomacy",
+      "relation": "FEEDS",
+      "evidence": "Round 2, C112, docs/design/conquest-ideation.md:1935",
+      "clause": "Subjects, protectorates and guarantees were all handed forward, not built.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Alliances",
+      "to": "Federation",
+      "relation": "FEEDS",
+      "evidence": "Round 3 ruling 25, docs/design/politics-ideation.md:1718",
+      "clause": "An alliance is two states; a federation is many, and that is the whole difference.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Alliances",
+      "to": "The board",
+      "relation": "FEEDS",
+      "evidence": "Round 2, C111, docs/design/conquest-ideation.md:1929",
+      "clause": "A small neighbour of your enemy is worth more than a giant on the far coast.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Unions",
+      "to": "Movement demands",
+      "relation": "TRIGGERS",
+      "evidence": "Round 3 ruling 15, docs/design/politics-ideation.md:1230",
+      "clause": "The only demand your government cannot satisfy alone — somebody else must say yes.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Unions",
+      "to": "The turn",
+      "relation": "COSTS",
+      "evidence": "Round 3 ruling 19, docs/design/politics-ideation.md:1458",
+      "clause": "Making the proposal spends your one action for the quarter.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Unions",
+      "to": "Movements",
+      "relation": "FEEDS",
+      "evidence": "Round 3 rulings 16 and 18, docs/design/politics-ideation.md:1311 and :1425",
+      "clause": "\"Let us think about it\" grows the same movement inside their country.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Unions",
+      "to": "Authority",
+      "relation": "GATES",
+      "evidence": "Round 3 ruling 17, docs/design/politics-ideation.md:1371",
+      "clause": "Size, authority and influence together are what make you frightening to join.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Unions",
+      "to": "Reunification contests",
+      "relation": "BLOCKS",
+      "evidence": "Round 3 ruling 31, docs/design/politics-ideation.md:1976",
+      "clause": "The claimants to a broken country may never join one.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Unions",
+      "to": "Federation",
+      "relation": "CONTRADICTS",
+      "evidence": "Round 3 ruling 32, docs/design/politics-ideation.md:2038",
+      "clause": "A union is one state; a federation is a union of states. Different wants.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Unions",
+      "to": "Nations of the Shattering",
+      "relation": "TRIGGERS",
+      "evidence": "Round 3 ruling 16, docs/design/politics-ideation.md:1311",
+      "clause": "A yes makes two countries one, and everybody in it a full member.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Unions",
+      "to": "Diplomacy",
+      "relation": "FEEDS",
+      "evidence": "Round 3 ruling 18, docs/design/politics-ideation.md:1425 (filed for round 5)",
+      "clause": "Whether a government may propose with nobody demanding it is still open.",
+      "confidence": "probable"
+    },
+    {
+      "from": "Federation",
+      "to": "Economy",
+      "relation": "COSTS",
+      "evidence": "Round 3 rulings 25, 26 and 27, docs/design/politics-ideation.md:1718, :1796, :1831",
+      "clause": "A flat ten per cent replaces every deal members had with each other.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Federation",
+      "to": "Hostility",
+      "relation": "BLOCKS",
+      "evidence": "Round 3 ruling 30, docs/design/politics-ideation.md:1940",
+      "clause": "Inside a federation you are at peace with every member. Full stop.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Federation",
+      "to": "War",
+      "relation": "TRIGGERS",
+      "evidence": "Round 3 ruling 28, docs/design/politics-ideation.md:1870",
+      "clause": "An attack on the smallest member is a war with all of them.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Federation",
+      "to": "Authority",
+      "relation": "COSTS",
+      "evidence": "Round 3 ruling 37, docs/design/politics-ideation.md:2183",
+      "clause": "Letting another country lead you costs authority and buys influence.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Federation",
+      "to": "The turn",
+      "relation": "GATES",
+      "evidence": "Round 3 ruling 25, docs/design/politics-ideation.md:1718",
+      "clause": "The elected leader gets a second, deliberately short turn of its own.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Federation",
+      "to": "Reunification contests",
+      "relation": "BLOCKS",
+      "evidence": "Round 3 ruling 31, docs/design/politics-ideation.md:1976 and ruling 33 at :2075",
+      "clause": "At most one claimant may be in any federation, so the first to build locks the rest out.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Federation",
+      "to": "Release valves",
+      "relation": "FEEDS",
+      "evidence": "Round 3 ruling 33, docs/design/politics-ideation.md:2075",
+      "clause": "It is the answer to a union you are forbidden to give.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Federation",
+      "to": "The board",
+      "relation": "FEEDS",
+      "evidence": "Round 3 rulings 26 and 27, docs/design/politics-ideation.md:1796 and :1831",
+      "clause": "The gate-holders earn most and lose most, and the map decides which.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Release valves",
+      "to": "The turn",
+      "relation": "COSTS",
+      "evidence": "Round 3 rulings 12 and 19, docs/design/politics-ideation.md:1040 and :1458",
+      "clause": "Answering a movement is free; doing what it asked costs your action.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Release valves",
+      "to": "Movements",
+      "relation": "BLOCKS",
+      "evidence": "Round 3 ruling 11a, docs/design/politics-ideation.md:986; Round 1 ruling 40, secession-ideation.md:1289",
+      "clause": "Each valve removes a want — and only the want that matches it.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Release valves",
+      "to": "Authority",
+      "relation": "COSTS",
+      "evidence": "Round 3 ruling 14, docs/design/politics-ideation.md:1137",
+      "clause": "A government that suspends an election has announced it cannot win one.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Release valves",
+      "to": "People",
+      "relation": "COSTS",
+      "evidence": "Round 3 ruling 14, docs/design/politics-ideation.md:1137",
+      "clause": "Martial law buys quiet with liberties, at several times a garrison's rate.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Release valves",
+      "to": "Nations of the Shattering",
+      "relation": "TRIGGERS",
+      "evidence": "Round 3 ruling 21, docs/design/politics-ideation.md:1547",
+      "clause": "Lose the referendum and the region leaves cleanly, a country from day one.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Release valves",
+      "to": "Civil war",
+      "relation": "TRIGGERS",
+      "evidence": "Round 3 ruling 9, docs/design/politics-ideation.md:648",
+      "clause": "Become one movement and every county that prefers another walks out.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Release valves",
+      "to": "Unions",
+      "relation": "FEEDS",
+      "evidence": "Round 3 ruling 15, docs/design/politics-ideation.md:1230",
+      "clause": "The one concession that is an attempt rather than an act, and can fail.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Release valves",
+      "to": "The political board",
+      "relation": "FEEDS",
+      "evidence": "Round 3 ruling 40, docs/design/politics-ideation.md:2265",
+      "clause": "Changing course is priced by how far your party has to move.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Movement demands",
+      "to": "The turn",
+      "relation": "GATES",
+      "evidence": "Round 3 ruling 12, docs/design/politics-ideation.md:1040",
+      "clause": "Every demand must be answered before the quarter can move at all.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Movement demands",
+      "to": "Movements",
+      "relation": "FEEDS",
+      "evidence": "Round 2 ruling 30 (:2084); Round 3 ruling 22 (:1594)",
+      "clause": "Say no and it grows; string it along and it stops wanting what it wanted.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Movement demands",
+      "to": "War",
+      "relation": "TRIGGERS",
+      "evidence": "Round 1 ruling 39, docs/design/secession-ideation.md:1272 (Expand and Reconquer)",
+      "clause": "Two of the six wants are your own people demanding you take somebody's ground.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Movement demands",
+      "to": "Unions",
+      "relation": "TRIGGERS",
+      "evidence": "Round 3 rulings 15 and 18, docs/design/politics-ideation.md:1230 and :1425",
+      "clause": "The demand names a neighbour, and asking that neighbour discharges it.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Movement demands",
+      "to": "The federal remnant",
+      "relation": "FEEDS",
+      "evidence": "Round 3 ruling 23, docs/design/politics-ideation.md:1649",
+      "clause": "When a strung-along movement gives up, its country stops waiting for ever.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Movement demands",
+      "to": "Release valves",
+      "relation": "FEEDS",
+      "evidence": "Round 3 ruling 11, docs/design/politics-ideation.md:929",
+      "clause": "Five moves answer every demand the game can make of you.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Movement demands",
+      "to": "Military bases",
+      "relation": "FEEDS",
+      "evidence": "Round 2, C121, docs/design/conquest-ideation.md:2135",
+      "clause": "A movement can demand a named base, and now that demand means something.",
+      "confidence": "probable"
+    },
+    {
+      "from": "Movement demands",
+      "to": "Civil war",
+      "relation": "FEEDS",
+      "evidence": "Round 3 rulings 8 and 12, docs/design/politics-ideation.md:608 and :1040",
+      "clause": "Refusing feeds the anger that runs the clock you cannot see.",
+      "confidence": "probable"
+    },
+    {
+      "from": "Authority",
+      "to": "Grievance",
+      "relation": "FEEDS",
+      "evidence": "js/sentiment.js:74-76 — \"A weak nation\" and \"Weak authority\" are grievance terms",
+      "clause": "A government with a loose grip is itself a reason to organise against it.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Authority",
+      "to": "Unions",
+      "relation": "GATES",
+      "evidence": "Round 3 ruling 17, docs/design/politics-ideation.md:1371",
+      "clause": "The country that is winning is the one that finds unions hardest to get.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Authority",
+      "to": "Federation",
+      "relation": "COSTS",
+      "evidence": "Round 3 ruling 37, docs/design/politics-ideation.md:2183",
+      "clause": "A little authority every quarter is the rent on somebody else leading you.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Authority",
+      "to": "The federal remnant",
+      "relation": "FEEDS",
+      "evidence": "Round 3 ruling 24, docs/design/politics-ideation.md:1685",
+      "clause": "Authority reads recent losses, so the remnant opens weak without a special rule.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Authority",
+      "to": "Movements",
+      "relation": "BLOCKS",
+      "evidence": "Round 3 ruling 38, docs/design/politics-ideation.md:2219",
+      "clause": "A new country's fervour holds its regions for four turns, then costs more than it gave.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Authority",
+      "to": "Release valves",
+      "relation": "COSTS",
+      "evidence": "Round 3 ruling 14, docs/design/politics-ideation.md:1137",
+      "clause": "Every valve you pull is authority spent, and the bill compounds.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Authority",
+      "to": "Diplomacy",
+      "relation": "FEEDS",
+      "evidence": "Round 3 ruling 39, docs/design/politics-ideation.md:2248",
+      "clause": "A country that hands its foreign policy away has said something about itself.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Authority",
+      "to": "Taking ground",
+      "relation": "FEEDS",
+      "evidence": "DESIGN.md:370",
+      "clause": "Wars won firm the grip; ground lost and overreach loosen it.",
+      "confidence": "certain"
+    },
+    {
+      "from": "The political board",
+      "to": "Movements",
+      "relation": "GATES",
+      "evidence": "Round 1 ruling 43, docs/design/secession-ideation.md:1334; js/sentiment.js:4",
+      "clause": "A movement travels through a politics, and the wrong politics stops it dead.",
+      "confidence": "certain"
+    },
+    {
+      "from": "The political board",
+      "to": "Ideology",
+      "relation": "EXPLAINS",
+      "evidence": "Round 3 ruling 40, docs/design/politics-ideation.md:2265",
+      "clause": "An ideology is a place on the board and cannot move; a party can.",
+      "confidence": "certain"
+    },
+    {
+      "from": "The political board",
+      "to": "Release valves",
+      "relation": "FEEDS",
+      "evidence": "Round 3 ruling 40, docs/design/politics-ideation.md:2265",
+      "clause": "The distance a party has to travel is what changing course costs.",
+      "confidence": "certain"
+    },
+    {
+      "from": "The political board",
+      "to": "People",
+      "relation": "FEEDS",
+      "evidence": "DESIGN.md:1443-1446",
+      "clause": "People move toward people who think as they do, and the map sorts itself.",
+      "confidence": "certain"
+    },
+    {
+      "from": "The political board",
+      "to": "Grievance",
+      "relation": "GATES",
+      "evidence": "js/sentiment.js:4 — base = affinity(area's leading ideology, movement's ideology)",
+      "clause": "Anger only becomes a movement where the politics already fit.",
+      "confidence": "certain"
+    },
+    {
+      "from": "The political board",
+      "to": "Federation",
+      "relation": "GATES",
+      "evidence": "Round 3 ruling 37, docs/design/politics-ideation.md:2183",
+      "clause": "Joining people unlike you is expensive at home, however profitable abroad.",
+      "confidence": "certain"
+    },
+    {
+      "from": "The political board",
+      "to": "Resistance",
+      "relation": "FEEDS",
+      "evidence": "Round 1 ruling 34, docs/design/secession-ideation.md:1126",
+      "clause": "Willingness to resist is the distance between the governed and the governors.",
+      "confidence": "certain"
+    },
+    {
+      "from": "The political board",
+      "to": "Civil war",
+      "relation": "TRIGGERS",
+      "evidence": "js/civilwar.js:4 — \"the annexation flips the nation's PLURALITY party\"",
+      "clause": "Swallow enough of somebody else and their politics take your parliament.",
+      "confidence": "certain"
+    },
+    {
+      "from": "The turn",
+      "to": "Taking ground",
+      "relation": "GATES",
+      "evidence": "DESIGN.md:499; Round 2 finding at docs/design/conquest-ideation.md:1736",
+      "clause": "One action a quarter already means one attack a quarter.",
+      "confidence": "certain"
+    },
+    {
+      "from": "The turn",
+      "to": "Release valves",
+      "relation": "GATES",
+      "evidence": "Round 3 rulings 12 and 19, docs/design/politics-ideation.md:1040 and :1458",
+      "clause": "Doing what a movement asked is the whole of that quarter's work.",
+      "confidence": "certain"
+    },
+    {
+      "from": "The turn",
+      "to": "Unions",
+      "relation": "GATES",
+      "evidence": "Round 3 ruling 19, docs/design/politics-ideation.md:1458",
+      "clause": "Proposing a union costs the action, by precedent rather than by new rule.",
+      "confidence": "certain"
+    },
+    {
+      "from": "The turn",
+      "to": "Movement demands",
+      "relation": "EXPLAINS",
+      "evidence": "Round 3 ruling 12, docs/design/politics-ideation.md:1040-1060",
+      "clause": "The one decision that is free and guaranteed every quarter — a precedent on purpose.",
+      "confidence": "certain"
+    },
+    {
+      "from": "The turn",
+      "to": "Federation",
+      "relation": "GATES",
+      "evidence": "Round 3 ruling 25, docs/design/politics-ideation.md:1718",
+      "clause": "The federation's leader spends a second turn, and only on three things.",
+      "confidence": "certain"
+    },
+    {
+      "from": "The turn",
+      "to": "Cease-fire",
+      "relation": "FEEDS",
+      "evidence": "Round 2 ruling 36, docs/design/conquest-ideation.md:2370",
+      "clause": "Putting peace terms on the table costs nothing at all.",
+      "confidence": "certain"
+    },
+    {
+      "from": "The turn",
+      "to": "Diplomacy",
+      "relation": "GATES",
+      "evidence": "DESIGN.md:666-670",
+      "clause": "Recognising a country is a signature, not a war, so it does not end the quarter.",
+      "confidence": "certain"
+    },
+    {
+      "from": "The turn",
+      "to": "Playing",
+      "relation": "EXPLAINS",
+      "evidence": "docs/design/IDEATION-PLAN.md:73-76; DESIGN.md:499",
+      "clause": "Six whole systems are competing for one decision a quarter.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Secession",
+      "to": "Grievance",
+      "relation": "EXPLAINS",
+      "evidence": "docs/design/IDEATION-PLAN.md:22-35",
+      "clause": "Secession is the scoreboard: nine pressures from every other system, added up.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Secession",
+      "to": "Movements",
+      "relation": "FEEDS",
+      "evidence": "Round 1 rulings 39 and 40, docs/design/secession-ideation.md:1272 and :1289",
+      "clause": "Every movement is a verb, an adjective and a politics it travels through.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Secession",
+      "to": "Nations of the Shattering",
+      "relation": "TRIGGERS",
+      "evidence": "Round 1 ruling 12, docs/design/secession-ideation.md:692",
+      "clause": "This is where new countries come from, at setup and in play.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Secession",
+      "to": "Politics",
+      "relation": "FEEDS",
+      "evidence": "Round 1 ruling 43, docs/design/secession-ideation.md:1334",
+      "clause": "A movement is what people want; politics is how they get it.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Secession",
+      "to": "Military",
+      "relation": "FEEDS",
+      "evidence": "docs/design/IDEATION-PLAN.md:70-72 (the seam rule: Unite belongs to conquest)",
+      "clause": "Merging with a neighbour can shatter you, so that seam belongs to war.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Secession",
+      "to": "Backing a movement",
+      "relation": "FEEDS",
+      "evidence": "Round 1 ruling 21, docs/design/secession-ideation.md:876",
+      "clause": "The first thing here a player does to somebody else rather than suffers.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Secession",
+      "to": "Homelands",
+      "relation": "GATES",
+      "evidence": "Round 1 rulings 26 and 51, docs/design/secession-ideation.md:1001 and :1502",
+      "clause": "Everything here is bound to painted counties, never to a state line.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Secession",
+      "to": "The opening roll",
+      "relation": "FEEDS",
+      "evidence": "Round 1 rulings 12, 14 and 15, docs/design/secession-ideation.md:692, :725, :731",
+      "clause": "The dice at setup are what make two games of this different.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Military",
+      "to": "Taking ground",
+      "relation": "GATES",
+      "evidence": "js/military.js:1-36 — force is one number pointed three ways",
+      "clause": "One pool of force, pointed at home, at the border, or at the attack.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Military",
+      "to": "Economy",
+      "relation": "COSTS",
+      "evidence": "js/military.js:33-36 — \"an army you keep is an army you pay for\"",
+      "clause": "An army you keep is an army you pay for, every quarter.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Military",
+      "to": "War",
+      "relation": "FEEDS",
+      "evidence": "Round 2 ruling 12, docs/design/conquest-ideation.md:959",
+      "clause": "How much you pointed forward is most of how a fight resolves.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Military",
+      "to": "Occupation",
+      "relation": "FEEDS",
+      "evidence": "DESIGN.md:491; js/sentiment.js:132-139",
+      "clause": "Soldiers standing on a region hold it down and make the next movement.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Military",
+      "to": "Release valves",
+      "relation": "GATES",
+      "evidence": "Round 3 ruling 14, docs/design/politics-ideation.md:1137",
+      "clause": "Martial law multiplies a garrison you already have; with none, it does nothing.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Military",
+      "to": "Military bases",
+      "relation": "FEEDS",
+      "evidence": "Round 2 ruling 31, docs/design/conquest-ideation.md:2113",
+      "clause": "Three kinds of base, each a permanent bonus sitting on real ground.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Military",
+      "to": "People",
+      "relation": "COSTS",
+      "evidence": "js/sentiment.js:132 — a garrison buys quiet now and the grievance that feeds the next movement",
+      "clause": "A garrison buys quiet now and sells you the next decade.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Military",
+      "to": "Alliances",
+      "relation": "FEEDS",
+      "evidence": "Round 2 ruling 27 and C110, docs/design/conquest-ideation.md:1892 and :1917",
+      "clause": "What you lend a friend is a fourth slice of the same pie.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Politics",
+      "to": "Release valves",
+      "relation": "GATES",
+      "evidence": "docs/design/IDEATION-PLAN.md:70-72",
+      "clause": "Self-rule, release and changing course are the prices a government can pay.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Politics",
+      "to": "Grievance",
+      "relation": "FEEDS",
+      "evidence": "docs/design/IDEATION-PLAN.md:27-29",
+      "clause": "How freely people may disagree, and how firmly you hold your ground.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Politics",
+      "to": "The political board",
+      "relation": "EXPLAINS",
+      "evidence": "Round 3 rulings 1 and 2, docs/design/politics-ideation.md:344 and :347",
+      "clause": "Three axes, ten positions, authoritarians at both outer ends.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Politics",
+      "to": "Civil war",
+      "relation": "GATES",
+      "evidence": "Round 3 rulings 6, 8 and 10, docs/design/politics-ideation.md:524, :608, :675",
+      "clause": "A country thinly angry everywhere tears itself apart without a border moving.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Politics",
+      "to": "Authority",
+      "relation": "FEEDS",
+      "evidence": "Round 3 rulings 38 and 39, docs/design/politics-ideation.md:2219 and :2248",
+      "clause": "How firmly a state holds itself is a political fact before a military one.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Politics",
+      "to": "Federation",
+      "relation": "FEEDS",
+      "evidence": "Round 3 rulings 25 to 37, docs/design/politics-ideation.md:1718-2218",
+      "clause": "The one wholly new object this round asked for, and it is political.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Politics",
+      "to": "Unions",
+      "relation": "FEEDS",
+      "evidence": "Round 3 rulings 15 to 18, docs/design/politics-ideation.md:1230-1457",
+      "clause": "Merging with a neighbour is your own people making you go and ask.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Politics",
+      "to": "Stateless society",
+      "relation": "FEEDS",
+      "evidence": "Round 3 rulings 3, 4, 5 and 13, docs/design/politics-ideation.md:351, :410, :470, :1105",
+      "clause": "Ground with people on it and no government is a political object, not a gap.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Economy",
+      "to": "Grievance",
+      "relation": "FEEDS",
+      "evidence": "docs/design/IDEATION-PLAN.md:26 — \"How well its people are fed, treated and paid\"",
+      "clause": "The deepest of the nine pressures: how well people are fed and paid.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Economy",
+      "to": "Hostility",
+      "relation": "TRIGGERS",
+      "evidence": "Round 2 ruling 4, cause 3, docs/design/conquest-ideation.md:735 and the gap note at :756-761",
+      "clause": "Gouge a desperate neighbour and you have a quarrel — once desperation can bite.",
+      "confidence": "probable"
+    },
+    {
+      "from": "Economy",
+      "to": "Federation",
+      "relation": "GATES",
+      "evidence": "Round 3 ruling 25, docs/design/politics-ideation.md:1718",
+      "clause": "A federation of neighbours who ignore each other is broke.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Economy",
+      "to": "Military",
+      "relation": "GATES",
+      "evidence": "js/military.js:18-22 — equipment from wealth per head",
+      "clause": "What your people are worth is what your soldiers are equipped with.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Economy",
+      "to": "Stateless society",
+      "relation": "FEEDS",
+      "evidence": "Round 3 ruling 3, docs/design/politics-ideation.md:351",
+      "clause": "Lawless ground is the cheapest road on the continent because nobody rules it.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Economy",
+      "to": "War",
+      "relation": "CONTRADICTS",
+      "evidence": "Round 2 ruling 2 (:113) vs js/moves.js:549 and js/recognition.js:377 — no war state exists in the build",
+      "clause": "War is ruled to prohibit trade; today only recognition can stop a deal.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Economy",
+      "to": "Movements",
+      "relation": "TRIGGERS",
+      "evidence": "Round 1 ruling 42, docs/design/secession-ideation.md:1319",
+      "clause": "Run short of something and your own people start demanding you take it.",
+      "confidence": "probable"
+    },
+    {
+      "from": "Economy",
+      "to": "Playing",
+      "relation": "BLOCKS",
+      "evidence": "docs/design/conquest-ideation.md:761; CLAUDE.md definition of done",
+      "clause": "Nothing bad happens yet to a country that does not trade at all.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Diplomacy",
+      "to": "Economy",
+      "relation": "GATES",
+      "evidence": "js/moves.js:545-554 and js/recognition.js:377",
+      "clause": "A trade agreement is a signature, and both sides must admit the other exists.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Diplomacy",
+      "to": "Backing a movement",
+      "relation": "GATES",
+      "evidence": "Round 1 ruling 50, docs/design/secession-ideation.md:1486",
+      "clause": "How an offer is made, held open and withdrawn belongs here.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Diplomacy",
+      "to": "Alliances",
+      "relation": "GATES",
+      "evidence": "Round 2, C112, docs/design/conquest-ideation.md:1935",
+      "clause": "Alliances were taken thin on purpose; vassals and guarantees wait here.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Diplomacy",
+      "to": "Diplomatic states",
+      "relation": "GATES",
+      "evidence": "Round 2 ruling 2, docs/design/conquest-ideation.md:100-117",
+      "clause": "Eight named states is the whole of what two countries can be to each other.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Diplomacy",
+      "to": "Hostility",
+      "relation": "FEEDS",
+      "evidence": "Round 2 ruling 21, docs/design/conquest-ideation.md:1504 and the blocking note at :680",
+      "clause": "Nothing yet lets a hostile pair thaw faster, and thirty-three of them start that way.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Diplomacy",
+      "to": "Nations of the Shattering",
+      "relation": "FEEDS",
+      "evidence": "docs/design/diplomacy-ideation.md:33-37; IDEATION-PLAN.md:92",
+      "clause": "A brand-new country that nobody will talk to is this round's whole reason.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Diplomacy",
+      "to": "The federal remnant",
+      "relation": "FEEDS",
+      "evidence": "docs/design/diplomacy-ideation.md:28-31",
+      "clause": "If Washington recognises nobody, the trade block cuts it off from everyone.",
+      "confidence": "probable"
+    },
+    {
+      "from": "Diplomacy",
+      "to": "Unions",
+      "relation": "FEEDS",
+      "evidence": "Round 3 ruling 18, docs/design/politics-ideation.md:1425 (filed for round 5)",
+      "clause": "A union proposed by a government nobody asked for is diplomacy's question.",
+      "confidence": "probable"
+    },
+    {
+      "from": "Events",
+      "to": "The Shattering",
+      "relation": "EXPLAINS",
+      "evidence": "docs/design/events-ideation.md:13-20",
+      "clause": "The break-up was a chain of events, and the same chain could run again.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Events",
+      "to": "Economy",
+      "relation": "TRIGGERS",
+      "evidence": "docs/design/events-ideation.md:24-26",
+      "clause": "A world shock hits every country at once, and the economy has to price it.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Events",
+      "to": "People",
+      "relation": "TRIGGERS",
+      "evidence": "docs/design/events-ideation.md:28-29",
+      "clause": "A neighbour comes apart and the people who arrive bring their politics.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Events",
+      "to": "Release valves",
+      "relation": "TRIGGERS",
+      "evidence": "docs/design/events-ideation.md:21-22",
+      "clause": "Protests at the capital: concede, crush, or wait.",
+      "confidence": "probable"
+    },
+    {
+      "from": "Events",
+      "to": "Story",
+      "relation": "FEEDS",
+      "evidence": "docs/design/events-ideation.md:30-32",
+      "clause": "The canal, the bicentenary, the year the union dissolved — nowhere yet to say any of it.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Events",
+      "to": "Playing",
+      "relation": "BLOCKS",
+      "evidence": "docs/design/IDEATION-PLAN.md:96",
+      "clause": "Designed last on purpose: you cannot design a shock before the thing it shocks.",
+      "confidence": "certain"
+    },
+    {
+      "from": "The board",
+      "to": "Economy",
+      "relation": "GATES",
+      "evidence": "DESIGN.md:174 — 1,676 nodes, 9,454 directed edges",
+      "clause": "Everything that moves, moves along the county map and pays for the crossing.",
+      "confidence": "certain"
+    },
+    {
+      "from": "The board",
+      "to": "Taking ground",
+      "relation": "GATES",
+      "evidence": "Round 2, C111, docs/design/conquest-ideation.md:1929",
+      "clause": "You can only attack what you can reach, which is what makes the map matter.",
+      "confidence": "certain"
+    },
+    {
+      "from": "The board",
+      "to": "Grievance",
+      "relation": "FEEDS",
+      "evidence": "js/sentiment.js:9 — pull = tanh of the sum of neighbours' shares",
+      "clause": "Whose neighbours have already turned is one of the nine pressures.",
+      "confidence": "certain"
+    },
+    {
+      "from": "The board",
+      "to": "Homelands",
+      "relation": "GATES",
+      "evidence": "Round 1 ruling 51, docs/design/secession-ideation.md:1502; DESIGN.md:152",
+      "clause": "3,143 counties collapse to 1,676 areas, and everything is painted on them.",
+      "confidence": "certain"
+    },
+    {
+      "from": "The board",
+      "to": "Federation",
+      "relation": "GATES",
+      "evidence": "Round 3 ruling 27, docs/design/politics-ideation.md:1831",
+      "clause": "The toll goes to whoever's ground is crossed, so geography collects it.",
+      "confidence": "certain"
+    },
+    {
+      "from": "The board",
+      "to": "People",
+      "relation": "GATES",
+      "evidence": "DESIGN.md:1429-1432",
+      "clause": "People move to the areas next door, so distance is real without measuring it.",
+      "confidence": "certain"
+    },
+    {
+      "from": "The board",
+      "to": "Military bases",
+      "relation": "FEEDS",
+      "evidence": "Round 2 ruling 31, docs/design/conquest-ideation.md:2160-2172",
+      "clause": "A base is a county, and the county folds into the area it belongs to.",
+      "confidence": "certain"
+    },
+    {
+      "from": "The board",
+      "to": "Nations of the Shattering",
+      "relation": "GATES",
+      "evidence": "DESIGN.md:90-152; Round 1 rulings 1, 5, 6, 8",
+      "clause": "Sixty-one countries are drawn on the same real map, county by county.",
+      "confidence": "certain"
+    },
+    {
+      "from": "People",
+      "to": "Movements",
+      "relation": "FEEDS",
+      "evidence": "DESIGN.md:1449-1451",
+      "clause": "Membership is people, so a movement shrinks with whoever leaves.",
+      "confidence": "certain"
+    },
+    {
+      "from": "People",
+      "to": "Military",
+      "relation": "GATES",
+      "evidence": "js/military.js:18-22",
+      "clause": "Manpower comes from population, so a shrinking country fields less.",
+      "confidence": "certain"
+    },
+    {
+      "from": "People",
+      "to": "The political board",
+      "relation": "FEEDS",
+      "evidence": "DESIGN.md:1443-1446 (63.3% to 66.5% over twelve turns)",
+      "clause": "A divided country sorts itself into halves that agree with themselves.",
+      "confidence": "certain"
+    },
+    {
+      "from": "People",
+      "to": "Grievance",
+      "relation": "FEEDS",
+      "evidence": "js/sentiment.js:70-72",
+      "clause": "Quality of life and liberties are the first two things a region counts against you.",
+      "confidence": "certain"
+    },
+    {
+      "from": "People",
+      "to": "Civil war",
+      "relation": "FEEDS",
+      "evidence": "Round 3 ruling 7, docs/design/politics-ideation.md:576",
+      "clause": "The same people are the army or the militia, never both.",
+      "confidence": "certain"
+    },
+    {
+      "from": "People",
+      "to": "Resistance",
+      "relation": "FEEDS",
+      "evidence": "Round 1 ruling 35, docs/design/secession-ideation.md:1138",
+      "clause": "How armed a place is, is a share of how many people live there.",
+      "confidence": "certain"
+    },
+    {
+      "from": "People",
+      "to": "Stateless society",
+      "relation": "GATES",
+      "evidence": "Round 3 ruling 5, docs/design/politics-ideation.md:470",
+      "clause": "Over five hundred thousand it is a country; under it, lawless ground.",
+      "confidence": "certain"
+    },
+    {
+      "from": "People",
+      "to": "Economy",
+      "relation": "FEEDS",
+      "evidence": "DESIGN.md:1437-1438",
+      "clause": "Output per head falls as people arrive, which is what stops everyone piling in.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Ideology",
+      "to": "Movements",
+      "relation": "GATES",
+      "evidence": "js/sentiment.js:4 and :180; Round 1 ruling 43, secession-ideation.md:1334",
+      "clause": "A movement only grows where the local politics already fit it.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Ideology",
+      "to": "Resistance",
+      "relation": "GATES",
+      "evidence": "Round 1 ruling 34, docs/design/secession-ideation.md:1126",
+      "clause": "The same county is quiet under people it agrees with and dear under strangers.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Ideology",
+      "to": "The political board",
+      "relation": "EXPLAINS",
+      "evidence": "Round 3 ruling 40, docs/design/politics-ideation.md:2265",
+      "clause": "An ideology is a location, so it is the one thing that cannot move.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Ideology",
+      "to": "People",
+      "relation": "FEEDS",
+      "evidence": "DESIGN.md:1443",
+      "clause": "Agreement is one of the four things pulling people across the map.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Ideology",
+      "to": "Release valves",
+      "relation": "GATES",
+      "evidence": "Round 1 ruling 40, docs/design/secession-ideation.md:1289",
+      "clause": "Self-rule buys off an autonomist movement and buys nothing from a religious one.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Ideology",
+      "to": "Unions",
+      "relation": "FEEDS",
+      "evidence": "Round 3 ruling 17, docs/design/politics-ideation.md:1371",
+      "clause": "Political closeness is what warms a neighbour toward saying yes.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Ideology",
+      "to": "Federation",
+      "relation": "COSTS",
+      "evidence": "Round 3 ruling 37, docs/design/politics-ideation.md:2183",
+      "clause": "Joining people unlike you costs authority in proportion to the distance.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Ideology",
+      "to": "Playing",
+      "relation": "BLOCKS",
+      "evidence": "docs/design/IDEATION-PLAN.md:66-69",
+      "clause": "The board and the ideologies are fixed; wanting to change one is Aaron's call.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Playing",
+      "to": "The turn",
+      "relation": "EXPLAINS",
+      "evidence": "docs/design/IDEATION-PLAN.md:73-76; DESIGN.md:499",
+      "clause": "One action per country, and taking it ends your quarter.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Playing",
+      "to": "Cease-fire",
+      "relation": "GATES",
+      "evidence": "Round 2, C130, docs/design/conquest-ideation.md:2357",
+      "clause": "Sealed peace terms are a coin toss unless you can see what you are bidding against.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Playing",
+      "to": "Unions",
+      "relation": "GATES",
+      "evidence": "Round 3 ruling 17 and the deferral at docs/design/politics-ideation.md:2296-2302",
+      "clause": "Can you read a neighbour before you propose? Deferred, deliberately, to the design stage.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Playing",
+      "to": "The opening roll",
+      "relation": "GATES",
+      "evidence": "Round 1 ruling 15, docs/design/secession-ideation.md:731",
+      "clause": "You choose your country knowing exactly how big the dice made it.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Playing",
+      "to": "Economy",
+      "relation": "EXPLAINS",
+      "evidence": "CLAUDE.md, Addendum A rules — \"Economy mode is a sandbox with no win condition, and testers are told so\"",
+      "clause": "Economy mode is a sandbox with no way to win, and it says so up front.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Playing",
+      "to": "Movement demands",
+      "relation": "GATES",
+      "evidence": "Round 3 ruling 12, docs/design/politics-ideation.md:1040-1060",
+      "clause": "The one decision you always get, free, before you spend the quarter.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Playing",
+      "to": "Events",
+      "relation": "GATES",
+      "evidence": "docs/design/IDEATION-PLAN.md:96 and :131",
+      "clause": "Every system has to answer what you do about it, on a Tuesday, with one action.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Story",
+      "to": "The Shattering",
+      "relation": "EXPLAINS",
+      "evidence": "Round 1 ruling 11, docs/design/secession-ideation.md:634; secession-ideation.md §8",
+      "clause": "Texas declared in 2034 and set its own bicentenary as the deadline.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Story",
+      "to": "Nations of the Shattering",
+      "relation": "EXPLAINS",
+      "evidence": "Round 1 ruling 29, docs/design/secession-ideation.md:1071; DESIGN.md:90-133",
+      "clause": "Sixty-one countries, each with a name somebody chose and a reason for it.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Story",
+      "to": "Events",
+      "relation": "FEEDS",
+      "evidence": "docs/design/events-ideation.md:7 and :13-20",
+      "clause": "Oil stopped, shortages spread, trust collapsed — a chain that could run again.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Story",
+      "to": "Diplomacy",
+      "relation": "FEEDS",
+      "evidence": "docs/design/diplomacy-ideation.md:5 and :9-37",
+      "clause": "Every question round five opens came out of the story first.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Story",
+      "to": "The federal remnant",
+      "relation": "EXPLAINS",
+      "evidence": "Round 3 ruling 24, docs/design/politics-ideation.md:1685",
+      "clause": "Trust in Washington collapsed and local powers stepped into the gap.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Story",
+      "to": "Reunification contests",
+      "relation": "EXPLAINS",
+      "evidence": "Round 1 ruling 11, docs/design/secession-ideation.md:634",
+      "clause": "The anniversary arrives with five governments each claiming to be Texas.",
+      "confidence": "certain"
+    },
+    {
+      "from": "Story",
+      "to": "Military bases",
+      "relation": "FEEDS",
+      "evidence": "Round 2, C121, docs/design/conquest-ideation.md:2135 (NORAD, Pearl Harbor)",
+      "clause": "NORAD and Pearl Harbor were named for flavour; now they are real objects.",
+      "confidence": "probable"
+    },
+    {
+      "from": "Fascism",
+      "to": "The political board",
+      "relation": "EXPLAINS",
+      "evidence": "politics rulings 1 and 2",
+      "clause": "one of the ten positions on the three-axis board",
+      "confidence": "certain"
+    },
+    {
+      "from": "The political board",
+      "to": "Fascism",
+      "relation": "EXPLAINS",
+      "evidence": "politics rulings 1 and 2",
+      "clause": "a position on the board",
+      "confidence": "certain"
+    },
+    {
+      "from": "Fascism",
+      "to": "Movements",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "movements are placed here, and how closely a region matches feeds its grievance",
+      "confidence": "certain"
+    },
+    {
+      "from": "Fascism",
+      "to": "Authority",
+      "relation": "FEEDS",
+      "evidence": "politics rulings 1 and 2",
+      "clause": "a government's own position is one of these, and it decides what it can offer",
+      "confidence": "certain"
+    },
+    {
+      "from": "Distributism",
+      "to": "The political board",
+      "relation": "EXPLAINS",
+      "evidence": "politics rulings 1 and 2",
+      "clause": "one of the ten positions on the three-axis board",
+      "confidence": "certain"
+    },
+    {
+      "from": "The political board",
+      "to": "Distributism",
+      "relation": "EXPLAINS",
+      "evidence": "politics rulings 1 and 2",
+      "clause": "a position on the board",
+      "confidence": "certain"
+    },
+    {
+      "from": "Distributism",
+      "to": "Movements",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "movements are placed here, and how closely a region matches feeds its grievance",
+      "confidence": "certain"
+    },
+    {
+      "from": "Distributism",
+      "to": "Authority",
+      "relation": "FEEDS",
+      "evidence": "politics rulings 1 and 2",
+      "clause": "a government's own position is one of these, and it decides what it can offer",
+      "confidence": "certain"
+    },
+    {
+      "from": "Communism",
+      "to": "The political board",
+      "relation": "EXPLAINS",
+      "evidence": "politics rulings 1 and 2",
+      "clause": "one of the ten positions on the three-axis board",
+      "confidence": "certain"
+    },
+    {
+      "from": "The political board",
+      "to": "Communism",
+      "relation": "EXPLAINS",
+      "evidence": "politics rulings 1 and 2",
+      "clause": "a position on the board",
+      "confidence": "certain"
+    },
+    {
+      "from": "Communism",
+      "to": "Movements",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "movements are placed here, and how closely a region matches feeds its grievance",
+      "confidence": "certain"
+    },
+    {
+      "from": "Communism",
+      "to": "Authority",
+      "relation": "FEEDS",
+      "evidence": "politics rulings 1 and 2",
+      "clause": "a government's own position is one of these, and it decides what it can offer",
+      "confidence": "certain"
+    },
+    {
+      "from": "Democratic Socialism",
+      "to": "The political board",
+      "relation": "EXPLAINS",
+      "evidence": "politics rulings 1 and 2",
+      "clause": "one of the ten positions on the three-axis board",
+      "confidence": "certain"
+    },
+    {
+      "from": "The political board",
+      "to": "Democratic Socialism",
+      "relation": "EXPLAINS",
+      "evidence": "politics rulings 1 and 2",
+      "clause": "a position on the board",
+      "confidence": "certain"
+    },
+    {
+      "from": "Democratic Socialism",
+      "to": "Movements",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "movements are placed here, and how closely a region matches feeds its grievance",
+      "confidence": "certain"
+    },
+    {
+      "from": "Democratic Socialism",
+      "to": "Authority",
+      "relation": "FEEDS",
+      "evidence": "politics rulings 1 and 2",
+      "clause": "a government's own position is one of these, and it decides what it can offer",
+      "confidence": "certain"
+    },
+    {
+      "from": "Christian Nationalism (position)",
+      "to": "The political board",
+      "relation": "EXPLAINS",
+      "evidence": "politics rulings 1 and 2",
+      "clause": "one of the ten positions on the three-axis board",
+      "confidence": "certain"
+    },
+    {
+      "from": "The political board",
+      "to": "Christian Nationalism (position)",
+      "relation": "EXPLAINS",
+      "evidence": "politics rulings 1 and 2",
+      "clause": "a position on the board",
+      "confidence": "certain"
+    },
+    {
+      "from": "Christian Nationalism (position)",
+      "to": "Movements",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "movements are placed here, and how closely a region matches feeds its grievance",
+      "confidence": "certain"
+    },
+    {
+      "from": "Christian Nationalism (position)",
+      "to": "Authority",
+      "relation": "FEEDS",
+      "evidence": "politics rulings 1 and 2",
+      "clause": "a government's own position is one of these, and it decides what it can offer",
+      "confidence": "certain"
+    },
+    {
+      "from": "Anarcho-Capitalism",
+      "to": "The political board",
+      "relation": "EXPLAINS",
+      "evidence": "politics rulings 1 and 2",
+      "clause": "one of the ten positions on the three-axis board",
+      "confidence": "certain"
+    },
+    {
+      "from": "The political board",
+      "to": "Anarcho-Capitalism",
+      "relation": "EXPLAINS",
+      "evidence": "politics rulings 1 and 2",
+      "clause": "a position on the board",
+      "confidence": "certain"
+    },
+    {
+      "from": "Anarcho-Capitalism",
+      "to": "Movements",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "movements are placed here, and how closely a region matches feeds its grievance",
+      "confidence": "certain"
+    },
+    {
+      "from": "Anarcho-Capitalism",
+      "to": "Authority",
+      "relation": "FEEDS",
+      "evidence": "politics rulings 1 and 2",
+      "clause": "a government's own position is one of these, and it decides what it can offer",
+      "confidence": "certain"
+    },
+    {
+      "from": "Digital Technocracy",
+      "to": "The political board",
+      "relation": "EXPLAINS",
+      "evidence": "politics rulings 1 and 2",
+      "clause": "one of the ten positions on the three-axis board",
+      "confidence": "certain"
+    },
+    {
+      "from": "The political board",
+      "to": "Digital Technocracy",
+      "relation": "EXPLAINS",
+      "evidence": "politics rulings 1 and 2",
+      "clause": "a position on the board",
+      "confidence": "certain"
+    },
+    {
+      "from": "Digital Technocracy",
+      "to": "Movements",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "movements are placed here, and how closely a region matches feeds its grievance",
+      "confidence": "certain"
+    },
+    {
+      "from": "Digital Technocracy",
+      "to": "Authority",
+      "relation": "FEEDS",
+      "evidence": "politics rulings 1 and 2",
+      "clause": "a government's own position is one of these, and it decides what it can offer",
+      "confidence": "certain"
+    },
+    {
+      "from": "Liberal Anarchy",
+      "to": "The political board",
+      "relation": "EXPLAINS",
+      "evidence": "politics rulings 1 and 2",
+      "clause": "one of the ten positions on the three-axis board",
+      "confidence": "certain"
+    },
+    {
+      "from": "The political board",
+      "to": "Liberal Anarchy",
+      "relation": "EXPLAINS",
+      "evidence": "politics rulings 1 and 2",
+      "clause": "a position on the board",
+      "confidence": "certain"
+    },
+    {
+      "from": "Liberal Anarchy",
+      "to": "Movements",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "movements are placed here, and how closely a region matches feeds its grievance",
+      "confidence": "certain"
+    },
+    {
+      "from": "Liberal Anarchy",
+      "to": "Authority",
+      "relation": "FEEDS",
+      "evidence": "politics rulings 1 and 2",
+      "clause": "a government's own position is one of these, and it decides what it can offer",
+      "confidence": "certain"
+    },
+    {
+      "from": "Republicans",
+      "to": "The political board",
+      "relation": "EXPLAINS",
+      "evidence": "politics rulings 1 and 2",
+      "clause": "one of the ten positions on the three-axis board",
+      "confidence": "certain"
+    },
+    {
+      "from": "The political board",
+      "to": "Republicans",
+      "relation": "EXPLAINS",
+      "evidence": "politics rulings 1 and 2",
+      "clause": "a position on the board",
+      "confidence": "certain"
+    },
+    {
+      "from": "Republicans",
+      "to": "Movements",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "movements are placed here, and how closely a region matches feeds its grievance",
+      "confidence": "certain"
+    },
+    {
+      "from": "Republicans",
+      "to": "Authority",
+      "relation": "FEEDS",
+      "evidence": "politics rulings 1 and 2",
+      "clause": "a government's own position is one of these, and it decides what it can offer",
+      "confidence": "certain"
+    },
+    {
+      "from": "Democrats",
+      "to": "The political board",
+      "relation": "EXPLAINS",
+      "evidence": "politics rulings 1 and 2",
+      "clause": "one of the ten positions on the three-axis board",
+      "confidence": "certain"
+    },
+    {
+      "from": "The political board",
+      "to": "Democrats",
+      "relation": "EXPLAINS",
+      "evidence": "politics rulings 1 and 2",
+      "clause": "a position on the board",
+      "confidence": "certain"
+    },
+    {
+      "from": "Democrats",
+      "to": "Movements",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "movements are placed here, and how closely a region matches feeds its grievance",
+      "confidence": "certain"
+    },
+    {
+      "from": "Democrats",
+      "to": "Authority",
+      "relation": "FEEDS",
+      "evidence": "politics rulings 1 and 2",
+      "clause": "a government's own position is one of these, and it decides what it can offer",
+      "confidence": "certain"
+    },
+    {
+      "from": "A Free Texas",
+      "to": "Fascism",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "where this movement sits on the political board",
+      "confidence": "certain"
+    },
+    {
+      "from": "Fascism",
+      "to": "A Free Texas",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "a movement that holds this position",
+      "confidence": "certain"
+    },
+    {
+      "from": "A Free Texas",
+      "to": "Movements",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "what a movement is, and the register this one sits in",
+      "confidence": "certain"
+    },
+    {
+      "from": "A Free Texas",
+      "to": "Homelands",
+      "relation": "GATES",
+      "evidence": "secession rulings 16 and 17",
+      "clause": "the ground this movement is allowed to organise on",
+      "confidence": "certain"
+    },
+    {
+      "from": "Movement register",
+      "to": "A Free Texas",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "reunify - reunite Texas; one Texan state again",
+      "confidence": "certain"
+    },
+    {
+      "from": "Acadiana",
+      "to": "Distributism",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "where this movement sits on the political board",
+      "confidence": "certain"
+    },
+    {
+      "from": "Distributism",
+      "to": "Acadiana",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "a movement that holds this position",
+      "confidence": "certain"
+    },
+    {
+      "from": "Acadiana",
+      "to": "Movements",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "what a movement is, and the register this one sits in",
+      "confidence": "certain"
+    },
+    {
+      "from": "Acadiana",
+      "to": "Homelands",
+      "relation": "GATES",
+      "evidence": "secession rulings 16 and 17",
+      "clause": "the ground this movement is allowed to organise on",
+      "confidence": "certain"
+    },
+    {
+      "from": "Movement register",
+      "to": "Acadiana",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "separate - French in the schools; coastal restoration",
+      "confidence": "certain"
+    },
+    {
+      "from": "Alaskan Independence",
+      "to": "Republicans",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "where this movement sits on the political board",
+      "confidence": "probable"
+    },
+    {
+      "from": "Republicans",
+      "to": "Alaskan Independence",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "a movement that holds this position",
+      "confidence": "probable"
+    },
+    {
+      "from": "Alaskan Independence",
+      "to": "Movements",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "what a movement is, and the register this one sits in",
+      "confidence": "certain"
+    },
+    {
+      "from": "Alaskan Independence",
+      "to": "Homelands",
+      "relation": "GATES",
+      "evidence": "secession rulings 16 and 17",
+      "clause": "the ground this movement is allowed to organise on",
+      "confidence": "certain"
+    },
+    {
+      "from": "Movement register",
+      "to": "Alaskan Independence",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "separate - independence; resource royalties",
+      "confidence": "certain"
+    },
+    {
+      "from": "Blue-Collar Populist",
+      "to": "Distributism",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "where this movement sits on the political board",
+      "confidence": "certain"
+    },
+    {
+      "from": "Distributism",
+      "to": "Blue-Collar Populist",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "a movement that holds this position",
+      "confidence": "certain"
+    },
+    {
+      "from": "Blue-Collar Populist",
+      "to": "Movements",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "what a movement is, and the register this one sits in",
+      "confidence": "certain"
+    },
+    {
+      "from": "Blue-Collar Populist",
+      "to": "Homelands",
+      "relation": "GATES",
+      "evidence": "secession rulings 16 and 17",
+      "clause": "the ground this movement is allowed to organise on",
+      "confidence": "certain"
+    },
+    {
+      "from": "Movement register",
+      "to": "Blue-Collar Populist",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "unify - industrial policy; tariffs",
+      "confidence": "certain"
+    },
+    {
+      "from": "California Republic",
+      "to": "Democrats",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "where this movement sits on the political board",
+      "confidence": "certain"
+    },
+    {
+      "from": "Democrats",
+      "to": "California Republic",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "a movement that holds this position",
+      "confidence": "certain"
+    },
+    {
+      "from": "California Republic",
+      "to": "Movements",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "what a movement is, and the register this one sits in",
+      "confidence": "certain"
+    },
+    {
+      "from": "California Republic",
+      "to": "Homelands",
+      "relation": "GATES",
+      "evidence": "secession rulings 16 and 17",
+      "clause": "the ground this movement is allowed to organise on",
+      "confidence": "certain"
+    },
+    {
+      "from": "Movement register",
+      "to": "California Republic",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "reunify - reunite California; a Pacific republic",
+      "confidence": "certain"
+    },
+    {
+      "from": "Cascadian Separatists",
+      "to": "Democratic Socialism",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "where this movement sits on the political board",
+      "confidence": "certain"
+    },
+    {
+      "from": "Democratic Socialism",
+      "to": "Cascadian Separatists",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "a movement that holds this position",
+      "confidence": "certain"
+    },
+    {
+      "from": "Cascadian Separatists",
+      "to": "Movements",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "what a movement is, and the register this one sits in",
+      "confidence": "certain"
+    },
+    {
+      "from": "Cascadian Separatists",
+      "to": "Homelands",
+      "relation": "GATES",
+      "evidence": "secession rulings 16 and 17",
+      "clause": "the ground this movement is allowed to organise on",
+      "confidence": "certain"
+    },
+    {
+      "from": "Movement register",
+      "to": "Cascadian Separatists",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "separate - independence; environmental sovereignty",
+      "confidence": "certain"
+    },
+    {
+      "from": "Central States Union",
+      "to": "Republicans",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "where this movement sits on the political board",
+      "confidence": "probable"
+    },
+    {
+      "from": "Republicans",
+      "to": "Central States Union",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "a movement that holds this position",
+      "confidence": "probable"
+    },
+    {
+      "from": "Central States Union",
+      "to": "Movements",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "what a movement is, and the register this one sits in",
+      "confidence": "certain"
+    },
+    {
+      "from": "Central States Union",
+      "to": "Homelands",
+      "relation": "GATES",
+      "evidence": "secession rulings 16 and 17",
+      "clause": "the ground this movement is allowed to organise on",
+      "confidence": "certain"
+    },
+    {
+      "from": "Movement register",
+      "to": "Central States Union",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "unify - a river compact; industrial policy",
+      "confidence": "certain"
+    },
+    {
+      "from": "Christian Nationalism",
+      "to": "Christian Nationalism (position)",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "where this movement sits on the political board",
+      "confidence": "certain"
+    },
+    {
+      "from": "Christian Nationalism (position)",
+      "to": "Christian Nationalism",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "a movement that holds this position",
+      "confidence": "certain"
+    },
+    {
+      "from": "Christian Nationalism",
+      "to": "Movements",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "what a movement is, and the register this one sits in",
+      "confidence": "certain"
+    },
+    {
+      "from": "Christian Nationalism",
+      "to": "Homelands",
+      "relation": "GATES",
+      "evidence": "secession rulings 16 and 17",
+      "clause": "the ground this movement is allowed to organise on",
+      "confidence": "certain"
+    },
+    {
+      "from": "Movement register",
+      "to": "Christian Nationalism",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "unify - religious government; moral law",
+      "confidence": "certain"
+    },
+    {
+      "from": "Deseret",
+      "to": "Distributism",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "where this movement sits on the political board",
+      "confidence": "certain"
+    },
+    {
+      "from": "Distributism",
+      "to": "Deseret",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "a movement that holds this position",
+      "confidence": "certain"
+    },
+    {
+      "from": "Deseret",
+      "to": "Movements",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "what a movement is, and the register this one sits in",
+      "confidence": "certain"
+    },
+    {
+      "from": "Deseret",
+      "to": "Homelands",
+      "relation": "GATES",
+      "evidence": "secession rulings 16 and 17",
+      "clause": "the ground this movement is allowed to organise on",
+      "confidence": "certain"
+    },
+    {
+      "from": "Movement register",
+      "to": "Deseret",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "separate - independence; religious autonomy",
+      "confidence": "certain"
+    },
+    {
+      "from": "El Paso United",
+      "to": "Republicans",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "where this movement sits on the political board",
+      "confidence": "certain"
+    },
+    {
+      "from": "Republicans",
+      "to": "El Paso United",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "a movement that holds this position",
+      "confidence": "certain"
+    },
+    {
+      "from": "El Paso United",
+      "to": "Movements",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "what a movement is, and the register this one sits in",
+      "confidence": "certain"
+    },
+    {
+      "from": "El Paso United",
+      "to": "Homelands",
+      "relation": "GATES",
+      "evidence": "secession rulings 16 and 17",
+      "clause": "the ground this movement is allowed to organise on",
+      "confidence": "certain"
+    },
+    {
+      "from": "Movement register",
+      "to": "El Paso United",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "separate - regional autonomy; cross-border trade",
+      "confidence": "certain"
+    },
+    {
+      "from": "Franklin",
+      "to": "Republicans",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "where this movement sits on the political board",
+      "confidence": "probable"
+    },
+    {
+      "from": "Republicans",
+      "to": "Franklin",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "a movement that holds this position",
+      "confidence": "probable"
+    },
+    {
+      "from": "Franklin",
+      "to": "Movements",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "what a movement is, and the register this one sits in",
+      "confidence": "certain"
+    },
+    {
+      "from": "Franklin",
+      "to": "Homelands",
+      "relation": "GATES",
+      "evidence": "secession rulings 16 and 17",
+      "clause": "the ground this movement is allowed to organise on",
+      "confidence": "certain"
+    },
+    {
+      "from": "Movement register",
+      "to": "Franklin",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "separate - statehood; mountain home rule",
+      "confidence": "certain"
+    },
+    {
+      "from": "Front Range Republic",
+      "to": "Democrats",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "where this movement sits on the political board",
+      "confidence": "certain"
+    },
+    {
+      "from": "Democrats",
+      "to": "Front Range Republic",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "a movement that holds this position",
+      "confidence": "certain"
+    },
+    {
+      "from": "Front Range Republic",
+      "to": "Movements",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "what a movement is, and the register this one sits in",
+      "confidence": "certain"
+    },
+    {
+      "from": "Front Range Republic",
+      "to": "Homelands",
+      "relation": "GATES",
+      "evidence": "secession rulings 16 and 17",
+      "clause": "the ground this movement is allowed to organise on",
+      "confidence": "certain"
+    },
+    {
+      "from": "Movement register",
+      "to": "Front Range Republic",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "expand - independence; urban self-rule",
+      "confidence": "certain"
+    },
+    {
+      "from": "Great Lakes Free Trade",
+      "to": "Democrats",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "where this movement sits on the political board",
+      "confidence": "probable"
+    },
+    {
+      "from": "Democrats",
+      "to": "Great Lakes Free Trade",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "a movement that holds this position",
+      "confidence": "probable"
+    },
+    {
+      "from": "Great Lakes Free Trade",
+      "to": "Movements",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "what a movement is, and the register this one sits in",
+      "confidence": "certain"
+    },
+    {
+      "from": "Great Lakes Free Trade",
+      "to": "Homelands",
+      "relation": "GATES",
+      "evidence": "secession rulings 16 and 17",
+      "clause": "the ground this movement is allowed to organise on",
+      "confidence": "certain"
+    },
+    {
+      "from": "Movement register",
+      "to": "Great Lakes Free Trade",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "unify - a free-trade bloc; a water compact",
+      "confidence": "certain"
+    },
+    {
+      "from": "Greater Idaho",
+      "to": "Republicans",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "where this movement sits on the political board",
+      "confidence": "certain"
+    },
+    {
+      "from": "Republicans",
+      "to": "Greater Idaho",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "a movement that holds this position",
+      "confidence": "certain"
+    },
+    {
+      "from": "Greater Idaho",
+      "to": "Movements",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "what a movement is, and the register this one sits in",
+      "confidence": "certain"
+    },
+    {
+      "from": "Greater Idaho",
+      "to": "Homelands",
+      "relation": "GATES",
+      "evidence": "secession rulings 16 and 17",
+      "clause": "the ground this movement is allowed to organise on",
+      "confidence": "certain"
+    },
+    {
+      "from": "Movement register",
+      "to": "Greater Idaho",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "separate - annex eastern Oregon; rural self-rule",
+      "confidence": "certain"
+    },
+    {
+      "from": "Hawaiian Sovereignty",
+      "to": "Distributism",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "where this movement sits on the political board",
+      "confidence": "certain"
+    },
+    {
+      "from": "Distributism",
+      "to": "Hawaiian Sovereignty",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "a movement that holds this position",
+      "confidence": "certain"
+    },
+    {
+      "from": "Hawaiian Sovereignty",
+      "to": "Movements",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "what a movement is, and the register this one sits in",
+      "confidence": "certain"
+    },
+    {
+      "from": "Hawaiian Sovereignty",
+      "to": "Homelands",
+      "relation": "GATES",
+      "evidence": "secession rulings 16 and 17",
+      "clause": "the ground this movement is allowed to organise on",
+      "confidence": "certain"
+    },
+    {
+      "from": "Movement register",
+      "to": "Hawaiian Sovereignty",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "expand - sovereignty; land restoration",
+      "confidence": "certain"
+    },
+    {
+      "from": "Native American Confederation",
+      "to": "Distributism",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "where this movement sits on the political board",
+      "confidence": "certain"
+    },
+    {
+      "from": "Distributism",
+      "to": "Native American Confederation",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "a movement that holds this position",
+      "confidence": "certain"
+    },
+    {
+      "from": "Native American Confederation",
+      "to": "Movements",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "what a movement is, and the register this one sits in",
+      "confidence": "certain"
+    },
+    {
+      "from": "Native American Confederation",
+      "to": "Homelands",
+      "relation": "GATES",
+      "evidence": "secession rulings 16 and 17",
+      "clause": "the ground this movement is allowed to organise on",
+      "confidence": "certain"
+    },
+    {
+      "from": "Movement register",
+      "to": "Native American Confederation",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "separate - sovereignty; land restoration",
+      "confidence": "certain"
+    },
+    {
+      "from": "New Absaroka",
+      "to": "Republicans",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "where this movement sits on the political board",
+      "confidence": "certain"
+    },
+    {
+      "from": "Republicans",
+      "to": "New Absaroka",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "a movement that holds this position",
+      "confidence": "certain"
+    },
+    {
+      "from": "New Absaroka",
+      "to": "Movements",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "what a movement is, and the register this one sits in",
+      "confidence": "certain"
+    },
+    {
+      "from": "New Absaroka",
+      "to": "Homelands",
+      "relation": "GATES",
+      "evidence": "secession rulings 16 and 17",
+      "clause": "the ground this movement is allowed to organise on",
+      "confidence": "certain"
+    },
+    {
+      "from": "Movement register",
+      "to": "New Absaroka",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "separate - statehood; resource rights",
+      "confidence": "certain"
+    },
+    {
+      "from": "New Confederacy",
+      "to": "Christian Nationalism (position)",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "where this movement sits on the political board",
+      "confidence": "probable"
+    },
+    {
+      "from": "Christian Nationalism (position)",
+      "to": "New Confederacy",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "a movement that holds this position",
+      "confidence": "probable"
+    },
+    {
+      "from": "New Confederacy",
+      "to": "Movements",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "what a movement is, and the register this one sits in",
+      "confidence": "certain"
+    },
+    {
+      "from": "New Confederacy",
+      "to": "Homelands",
+      "relation": "GATES",
+      "evidence": "secession rulings 16 and 17",
+      "clause": "the ground this movement is allowed to organise on",
+      "confidence": "certain"
+    },
+    {
+      "from": "Movement register",
+      "to": "New Confederacy",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "reunify - independence; states' rights",
+      "confidence": "certain"
+    },
+    {
+      "from": "New England Revivalist",
+      "to": "Democrats",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "where this movement sits on the political board",
+      "confidence": "probable"
+    },
+    {
+      "from": "Democrats",
+      "to": "New England Revivalist",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "a movement that holds this position",
+      "confidence": "probable"
+    },
+    {
+      "from": "New England Revivalist",
+      "to": "Movements",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "what a movement is, and the register this one sits in",
+      "confidence": "certain"
+    },
+    {
+      "from": "New England Revivalist",
+      "to": "Homelands",
+      "relation": "GATES",
+      "evidence": "secession rulings 16 and 17",
+      "clause": "the ground this movement is allowed to organise on",
+      "confidence": "certain"
+    },
+    {
+      "from": "Movement register",
+      "to": "New England Revivalist",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "separate - independence; town-meeting sovereignty",
+      "confidence": "certain"
+    },
+    {
+      "from": "New England United",
+      "to": "Democratic Socialism",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "where this movement sits on the political board",
+      "confidence": "probable"
+    },
+    {
+      "from": "Democratic Socialism",
+      "to": "New England United",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "a movement that holds this position",
+      "confidence": "probable"
+    },
+    {
+      "from": "New England United",
+      "to": "Movements",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "what a movement is, and the register this one sits in",
+      "confidence": "certain"
+    },
+    {
+      "from": "New England United",
+      "to": "Homelands",
+      "relation": "GATES",
+      "evidence": "secession rulings 16 and 17",
+      "clause": "the ground this movement is allowed to organise on",
+      "confidence": "certain"
+    },
+    {
+      "from": "Movement register",
+      "to": "New England United",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "unify - a regional federation; social democracy",
+      "confidence": "certain"
+    },
+    {
+      "from": "Northern Christian Kingdom",
+      "to": "Christian Nationalism (position)",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "where this movement sits on the political board",
+      "confidence": "certain"
+    },
+    {
+      "from": "Christian Nationalism (position)",
+      "to": "Northern Christian Kingdom",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "a movement that holds this position",
+      "confidence": "certain"
+    },
+    {
+      "from": "Northern Christian Kingdom",
+      "to": "Movements",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "what a movement is, and the register this one sits in",
+      "confidence": "certain"
+    },
+    {
+      "from": "Northern Christian Kingdom",
+      "to": "Homelands",
+      "relation": "GATES",
+      "evidence": "secession rulings 16 and 17",
+      "clause": "the ground this movement is allowed to organise on",
+      "confidence": "certain"
+    },
+    {
+      "from": "Movement register",
+      "to": "Northern Christian Kingdom",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "separate - religious government; independence",
+      "confidence": "certain"
+    },
+    {
+      "from": "Rio Grande Union",
+      "to": "Distributism",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "where this movement sits on the political board",
+      "confidence": "certain"
+    },
+    {
+      "from": "Distributism",
+      "to": "Rio Grande Union",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "a movement that holds this position",
+      "confidence": "certain"
+    },
+    {
+      "from": "Rio Grande Union",
+      "to": "Movements",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "what a movement is, and the register this one sits in",
+      "confidence": "certain"
+    },
+    {
+      "from": "Rio Grande Union",
+      "to": "Homelands",
+      "relation": "GATES",
+      "evidence": "secession rulings 16 and 17",
+      "clause": "the ground this movement is allowed to organise on",
+      "confidence": "certain"
+    },
+    {
+      "from": "Movement register",
+      "to": "Rio Grande Union",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "separate - independence; an open border",
+      "confidence": "certain"
+    },
+    {
+      "from": "Sagebrush Rebellion",
+      "to": "Anarcho-Capitalism",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "where this movement sits on the political board",
+      "confidence": "certain"
+    },
+    {
+      "from": "Anarcho-Capitalism",
+      "to": "Sagebrush Rebellion",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "a movement that holds this position",
+      "confidence": "certain"
+    },
+    {
+      "from": "Sagebrush Rebellion",
+      "to": "Movements",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "what a movement is, and the register this one sits in",
+      "confidence": "certain"
+    },
+    {
+      "from": "Sagebrush Rebellion",
+      "to": "Homelands",
+      "relation": "GATES",
+      "evidence": "secession rulings 16 and 17",
+      "clause": "the ground this movement is allowed to organise on",
+      "confidence": "certain"
+    },
+    {
+      "from": "Movement register",
+      "to": "Sagebrush Rebellion",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "separate - return the federal land; county supremacy",
+      "confidence": "certain"
+    },
+    {
+      "from": "Sonoran Republic",
+      "to": "Republicans",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "where this movement sits on the political board",
+      "confidence": "certain"
+    },
+    {
+      "from": "Republicans",
+      "to": "Sonoran Republic",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "a movement that holds this position",
+      "confidence": "certain"
+    },
+    {
+      "from": "Sonoran Republic",
+      "to": "Movements",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "what a movement is, and the register this one sits in",
+      "confidence": "certain"
+    },
+    {
+      "from": "Sonoran Republic",
+      "to": "Homelands",
+      "relation": "GATES",
+      "evidence": "secession rulings 16 and 17",
+      "clause": "the ground this movement is allowed to organise on",
+      "confidence": "certain"
+    },
+    {
+      "from": "Movement register",
+      "to": "Sonoran Republic",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "separate - independence; water rights",
+      "confidence": "certain"
+    },
+    {
+      "from": "State of Jefferson",
+      "to": "Republicans",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "where this movement sits on the political board",
+      "confidence": "probable"
+    },
+    {
+      "from": "Republicans",
+      "to": "State of Jefferson",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "a movement that holds this position",
+      "confidence": "probable"
+    },
+    {
+      "from": "State of Jefferson",
+      "to": "Movements",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "what a movement is, and the register this one sits in",
+      "confidence": "certain"
+    },
+    {
+      "from": "State of Jefferson",
+      "to": "Homelands",
+      "relation": "GATES",
+      "evidence": "secession rulings 16 and 17",
+      "clause": "the ground this movement is allowed to organise on",
+      "confidence": "certain"
+    },
+    {
+      "from": "Movement register",
+      "to": "State of Jefferson",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "separate - statehood; rural self-rule",
+      "confidence": "certain"
+    },
+    {
+      "from": "The Farmers Union",
+      "to": "Distributism",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "where this movement sits on the political board",
+      "confidence": "certain"
+    },
+    {
+      "from": "Distributism",
+      "to": "The Farmers Union",
+      "relation": "FEEDS",
+      "evidence": "politics ruling 41's re-map",
+      "clause": "a movement that holds this position",
+      "confidence": "certain"
+    },
+    {
+      "from": "The Farmers Union",
+      "to": "Movements",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "what a movement is, and the register this one sits in",
+      "confidence": "certain"
+    },
+    {
+      "from": "The Farmers Union",
+      "to": "Homelands",
+      "relation": "GATES",
+      "evidence": "secession rulings 16 and 17",
+      "clause": "the ground this movement is allowed to organise on",
+      "confidence": "certain"
+    },
+    {
+      "from": "Movement register",
+      "to": "The Farmers Union",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "unify - farm price supports; rural credit",
+      "confidence": "certain"
+    },
+    {
+      "from": "Indigenous nations",
+      "to": "Nations of the Shattering",
+      "relation": "FEEDS",
+      "evidence": "secession rulings 25 and 53",
+      "clause": "two of the nations the break-up leaves standing",
+      "confidence": "certain"
+    },
+    {
+      "from": "Indigenous nations",
+      "to": "Homelands",
+      "relation": "BLOCKS",
+      "evidence": "secession ruling 25",
+      "clause": "the merged Area map cannot draw either reservation accurately",
+      "confidence": "certain"
+    },
+    {
+      "from": "Indigenous nations",
+      "to": "Movements",
+      "relation": "FEEDS",
+      "evidence": "secession ruling 53",
+      "clause": "the Native American Confederation is the movement behind them",
+      "confidence": "certain"
+    },
+    {
+      "from": "Nations of the Shattering",
+      "to": "Indigenous nations",
+      "relation": "FEEDS",
+      "evidence": "secession rulings 25 and 53",
+      "clause": "the Navajo and Lakota nations, drawn separately",
+      "confidence": "certain"
+    },
+    {
+      "from": "Movements",
+      "to": "Movement register",
+      "relation": "EXPLAINS",
+      "evidence": "the Movement Register",
+      "clause": "all thirty-two movements on one screen, grouped by verb",
+      "confidence": "certain"
+    }
+  ]
+}

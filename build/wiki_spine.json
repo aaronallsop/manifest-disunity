@@ -1,0 +1,495 @@
+{
+  "version": 1,
+  "_what_this_is": "Authored. The page tree of the wiki: which pages exist, what they are about, and which master topic each sits under. Judgement, not fact - every figure on a page is read from the source documents at run time. Reconciled from three independent readings of the three closed rounds, 12 September 2026.",
+  "master_topics": [
+    {
+      "topic": "secession",
+      "page": "Secession",
+      "tag": "#secession",
+      "one_line": "The scoreboard of the whole game: why a region turns against the country holding it, and what it does about it."
+    },
+    {
+      "topic": "military",
+      "page": "Military",
+      "tag": "#military",
+      "one_line": "Taking ground and holding it - war as a standing state between two nations, and the cost of soldiers standing on somebody else's home."
+    },
+    {
+      "topic": "politics",
+      "page": "Politics",
+      "tag": "#politics",
+      "one_line": "What a government can do about the people inside it who want out, and what each answer costs it."
+    },
+    {
+      "topic": "economy",
+      "page": "Economy",
+      "tag": "#economy",
+      "one_line": "Trade, transit and what a nation can pay for. Built as an alpha; its design round is open now."
+    },
+    {
+      "topic": "diplomacy",
+      "page": "Diplomacy",
+      "tag": "#diplomacy",
+      "one_line": "How two nations stand toward each other, and everything that follows from it."
+    },
+    {
+      "topic": "events",
+      "page": "Events",
+      "tag": "#events",
+      "one_line": "Things that happen that nobody chose."
+    },
+    {
+      "topic": "board",
+      "page": "The board",
+      "tag": "#board",
+      "one_line": "The ground itself - counties, Areas, homelands, and who governs what."
+    },
+    {
+      "topic": "people",
+      "page": "People",
+      "tag": "#people",
+      "one_line": "The population: who they are, where they move, and how they feel about whoever governs them."
+    },
+    {
+      "topic": "ideology",
+      "page": "Ideology",
+      "tag": "#ideology",
+      "one_line": "The ten political positions on three axes, and the language every other system speaks."
+    },
+    {
+      "topic": "playing",
+      "page": "Playing",
+      "tag": "#playing",
+      "one_line": "The turn, the single action it buys, what winning means, and what a nation is allowed to know."
+    },
+    {
+      "topic": "story",
+      "page": "Story",
+      "tag": "#story",
+      "one_line": "The break-up itself: how the United States came apart, and the board that left behind."
+    }
+  ],
+  "pages": [
+    {
+      "page": "Grievance",
+      "topic": "secession",
+      "second_topic": "people",
+      "kind": "mechanic",
+      "one_line": "The number that decides whether a region turns against the country holding it — the six pressures that feed it, what each is worth, and the ideological multiplier that decides where it can matter at all.",
+      "built": "built — the formula and its weights run, and grievance already blends an Area's own condition with its nation's. Not built: the target-versus-holder gradient, so every term still reads the holding nation only and nothing reads the nation a region would rather join.",
+      "story": "yes — the authored grudge sits on the Mormon Corridor ground that voted to go and was cut off, and on nothing else; the nine mechanical defaults that wrote a story by omission open round 1."
+    },
+    {
+      "page": "Movements",
+      "topic": "secession",
+      "second_topic": "politics",
+      "kind": "entity",
+      "one_line": "What a movement is — a verb, an adjective and a position on the political board — how it is born, how it grows, how high it can grow, who its members fight for when the shooting starts, and the register of the thirty-two on the board.",
+      "built": "partial, and the gap is wide. Measured this run: data/parties.json holds exactly 32 movements, each with an ideology colour, growthCap, growthRate, goals and counties, driven by a latent→rising→armed→declared→realized state machine. No movement carries a verb field; the old eight-value `type` field still drives behaviour (measured values include ideological, separatist, autonomist, reunification, theocratic-separatist, economic, irredentist, indigenous); the six movements round 1 struck are still in the file; the three growth-cap changes round 3 specified are not made; and js/military.js computes manpower as population × mil.manpowerShare with no movement term at all, so the militia split is not built.",
+      "story": "yes — the Movement Register walkthrough carries Aaron's own reasons movement by movement, and his markup across the re-map table places all 26 live ones by hand."
+    },
+    {
+      "page": "Backing a movement",
+      "topic": "secession",
+      "second_topic": "diplomacy",
+      "kind": "mechanic",
+      "one_line": "The two ways a nation and somebody else's movement come together — the movement petitions and several nations compete to answer it, or a nation funds it quietly from outside — and what saying yes, saying no and paying all cost.",
+      "built": "designed only — every movement record carries an unused `sponsor` field commented as 'a nation backing it', and nothing reads or writes it. Measured this run: the word 'petition' appears nowhere in js/.",
+      "story": "yes — El Paso's choice over the Rio Grande Union; Oregon and Washington competing to become the leader of Cascadia, where the price of accepting is the other future you were going to have; the 1836 Texas parallel."
+    },
+    {
+      "page": "The Shattering",
+      "topic": "story",
+      "second_topic": "board",
+      "kind": "concept",
+      "one_line": "How the United States came apart — the chain that runs from Texas declaring itself out in spring 2034 to the board the game opens on two years later, and what each step left behind.",
+      "built": "partial — the opening board and a three-sentence turn-0 newspaper are built, and the game opens on 1 March 2036. None of the thirteen-step story is in the game, and nothing anywhere carries a break-up date the player can read.",
+      "story": "yes — this is the largest single block of diegetic writing in the project, and every other page's third section points back to it. The date is fixed by ruling 11: Texas declared about two years before the game opens, with its bicentenary as the deadline it set itself, so every grudge is still fresh."
+    },
+    {
+      "page": "Nations of the Shattering",
+      "topic": "story",
+      "second_topic": "board",
+      "kind": "index",
+      "one_line": "The roster of the nations the break-up leaves standing — who each one is, how it formed, the ruling that fixes its border, and the two whose ground the map cannot yet draw accurately.",
+      "built": "designed only, and the gap is measurable: the designed board is 47 nations (29 new, 18 original states surviving as themselves) against the 61 the running game opens on. No Gulf Compact, Appalachia, Deep South, Carolinas, Allegheny Republic or Superior exists in data/ or content/; the Navajo Nation and the Lakota Nation do not exist as nations at all, and five border lines are still to be drawn.",
+      "story": "yes — steps 1–13 of the break-up name every nation and why it formed; the nine rulings fix the contested borders; the two renamings carry their reasons. The indigenous section keeps a discomfort on purpose: a tribal nation that inherits Rapid City without asking for it."
+    },
+    {
+      "page": "Reunification contests",
+      "topic": "story",
+      "second_topic": "secession",
+      "kind": "concept",
+      "one_line": "The four fights over who inherits a country that came apart — a Free Texas, the California Republic, the Confederacy and the Thirteen Colonies — who may claim each, how a reunification movement declares a winner instead of founding another new country, the thirty-three pairs that open permanently hostile because of it, and why Austin is the legitimate Texas and the other four are rebels.",
+      "built": "designed only. Measured this run: content/scenario-shattered.json dissolves Texas into five successors and California into five plus a ceded Cascadia, and cedes Deseret out of the Mormon Corridor — but it carries no claimant field, no contest and no recognition seeding, and its own note says the relations board starts quiet and the player watches it sour, which the hostile-at-birth ruling is a deliberate recorded departure from. The separate 'Reunification of the Union' victory condition is built and knows nothing about claimants.",
+      "story": "yes — the richest story material in the corpus: the claimant table, Aaron's ruling that all five Texan states start hostile, the California list with Cascadia deliberately excluded, and Austin's withheld signature, which is the most interesting single position on the board — a starving encircled nation holding four larger ones down by refusing to sign."
+    },
+    {
+      "page": "The federal remnant",
+      "topic": "story",
+      "second_topic": "politics",
+      "kind": "entity",
+      "one_line": "What is left of the United States after the Shattering — why it opens weaker than its age says it should, and the clock it cannot stop as province after province stops waiting for it.",
+      "built": "designed only — there is no United States nation in the build. Measured this run: content/scenario-shattered.json partitions Texas, California and the Mormon Corridor and nothing else, and its own blurb says the country has already come apart. No posture toward the old country and no seeded history of losses exist.",
+      "story": "yes — the people's trust in the federal government dropping and local powers stepping up to fill the gap; Greater Idaho meaning to stay and then going anyway; the martial law declared in the counties around Washington to prevent a coup."
+    },
+    {
+      "page": "The opening roll",
+      "topic": "board",
+      "second_topic": "playing",
+      "kind": "mechanic",
+      "one_line": "How the board is decided before the first turn — what is certain, what the dice actually settle, how a realised movement spreads outward from its core, and why the player sees the result before choosing a nation.",
+      "built": "partial — Deseret's setup roll runs on a dedicated scenario random stream and the faction picker's difficulty rating is built. Every other nation's extent is authored in content/scenario-shattered.json rather than rolled, and nothing spreads a nation outward in rings. One of the five rulings here is superseded and must not be presented as live.",
+      "story": "yes — Deseret half-born: the Wasatch Front always cedes, every other corridor Area rolls its own chance, and anything left disconnected from Salt Lake is remembered as left behind. Deseret opens unrecognised, with Utah's signature as the key that unlocks the continent."
+    },
+    {
+      "page": "Homelands",
+      "topic": "board",
+      "second_topic": "secession",
+      "kind": "mechanic",
+      "one_line": "The ground a movement is allowed to exist on — painted by hand in nested levels, bound to counties rather than state lines, and widened to a nation's founding grant the moment the movement realises.",
+      "built": "partial — homelands are stored per Area, but roughly fifteen of the thirty-two are generated from state lists in the bake rather than painted. The map editor authors three-tier region hierarchies in which each Area belongs to at most one path, so it cannot hold two movements claiming the same ground, and nothing widens a realised movement's homeland. The twenty-one map jobs behind this are a production work list, not article content.",
+      "story": "none found — this page is cartography. The story lives on the nation pages it draws. Leave the third section blank and say why."
+    },
+    {
+      "page": "Stateless society",
+      "topic": "board",
+      "second_topic": "secession",
+      "kind": "entity",
+      "one_line": "Ground with people on it and no government — the third tier of the board, the two ways it comes into being, the flat fees it charges to trade with or route through, why a movement grows there by attraction rather than by anger, and why it is prey rather than a country.",
+      "built": "designed only — no ungoverned ground exists. Measured this run: 'stateless' appears in js/ only as a programming term and 'ungoverned' only in a comment about save documents; every Area belongs to a nation. The toll machinery it re-points IS built: transit.foreignCorridorToll and transit.rateMin both exist as tunables, and the corridor toll is already a cost that nobody receives rather than a transfer, which is exactly the shape this needs.",
+      "story": "yes — six regions open stateless: Arkansas, Wyoming, New Mexico, Kentucky, Ohio and Michigan, the last three fracturing into third-tier governments. Wyoming charges tolls on food bound for Deseret; New Mexico is unclaimed prey. Aaron's own line: you are dealing with people and communities, no tolls, no nothing."
+    },
+    {
+      "page": "Military bases",
+      "topic": "board",
+      "second_topic": "military",
+      "kind": "entity",
+      "one_line": "The three kinds of installation that sit on the map as geography — Army, Air Force and Naval — what each gives whoever holds it, why the naval one pays a nation that never fights, and why there are no nuclear weapons.",
+      "built": "designed only, and the data does not exist either. Measured this run: no installation entity appears anywhere in data/ or content/ — the only file hits for the named bases are port names inside trade data. The bake is specified and has not been run, and it carries one open mapping question flagged for before the bake (Marine Corps to Army, Coast Guard to Naval, Space Force to Air Force).",
+      "story": "yes — the authored list of named installations, and the navy cut in two by the shut canal. This page is also the only place the no-nuclear-weapons decision is recorded, and the round says expressly it must not be reopened later as an oversight; the page must carry it on its face."
+    },
+    {
+      "page": "War",
+      "topic": "military",
+      "second_topic": "diplomacy",
+      "kind": "mechanic",
+      "one_line": "What a war is in this game — a standing state two nations live in rather than an event, who may declare one and from what footing, what it forbids while it runs, why there are no troop types, and why it can only be ended by agreement.",
+      "built": "designed only — there is no war between nations anywhere in the code. Measured this run: searching js/ for cease-fire, peace treaty, hostile or wary as a STATE returns exactly one hit, and it is a sentiment label on the relations panel. The only war-flagged code path is the civil-war county transfer.",
+      "story": "yes — the wars already fought before turn 0: Houston into western Louisiana, the federal army into West Virginia, Chicago into north-west Indiana, the Gulf taking the panhandle for Pensacola. This page also carries the frame ruling that governs every other military page — this is not a war game; war is a thing that happens TO the economy, the neighbours and your own people."
+    },
+    {
+      "page": "Taking ground",
+      "topic": "military",
+      "second_topic": "economy",
+      "kind": "mechanic",
+      "one_line": "One Area per attack, priced and paid out of the treasury before the dice are rolled, resolved as your Field army against their Border — with no per-turn cap, no cooldown and no size shield left to refuse you, and an Area that produces nothing the turn it is hit whether or not it falls.",
+      "built": "partial, AND THE RUNNING GAME CURRENTLY CONTRADICTS TWO RULINGS. Measured this run: annex.costPerArea and annex.costPopScale exist as tunables, so the act is built and priced — but annex.budgetAreas, annex.cooldownTurns and annex.strongNeighbourFactor also still exist as tunables and are still read by the move, and the rulings remove all three. The Field-versus-Border comparison exists in the military model, but what the annex move actually rolls is the civil-war resolver rather than a fight, which is the gap the round itself identifies.",
+      "story": "yes — the traced Vermont sentence, New Mexico's remainder as unclaimed prey, and the measured armed share by region that decides how hard each bite bites back."
+    },
+    {
+      "page": "Occupation",
+      "topic": "military",
+      "second_topic": "people",
+      "kind": "mechanic",
+      "one_line": "Ground you hold that is not your own soil — the three flags it can be held under, what each of them forbids, what it costs per turn to keep quiet, and the one long route by which it stops being occupied and becomes your country.",
+      "built": "partial. Occupation upkeep is built and scales superlinearly with how much you hold and with per-Area hostility, and there is a single authoritative function defining whose soil is whose. But home ground is a set stamped at birth with no route from occupied to home, so the ruling that opens that route is a deliberate one-line change to the one function everything else is told to ask. No occupied-war / occupied / occupied-movement flag exists anywhere in js/.",
+      "story": "yes — Appalachia holding all fifteen of West Virginia's Areas, Franklin's homeland reaching into six states, and Houston already owing the occupation bill on western Louisiana at turn 0. The page also carries the round's largest change to what conquest MEANS: conquest becomes a luxury of the prosperous."
+    },
+    {
+      "page": "Resistance",
+      "topic": "military",
+      "second_topic": "people",
+      "kind": "mechanic",
+      "one_line": "How hard a piece of ground is to govern whoever governs it — armed capacity multiplied by ideological willingness — and the firearm data the capacity half is supposed to be built from.",
+      "built": "designed only. Occupation upkeep today reads a hostility function that is purely the largest organised movement's share, so ground with no movement on it is currently the cheapest on the continent to hold, which is the opposite of the intent. Measured this run: data/areas.json is an Area-membership file with no armed-share field, and build/raw/ holds no firearm file — the workbook Aaron downloaded by hand never reached the repository.",
+      "story": "yes, though it is a portrait rather than a narrative — the regional medians read as a picture of the continent, from the ranchers at the top to New York City at the bottom. No in-world writing of its own; the writer should say so and borrow from Occupation."
+    },
+    {
+      "page": "Civil war",
+      "topic": "military",
+      "second_topic": "secession",
+      "kind": "mechanic",
+      "one_line": "What happens when a country is angry with itself everywhere at once — how every movement's share sums against the government holding them, the clock that starts past forty per cent, and the two different forties that measure two different things.",
+      "built": "partial — the civil war resolver is complete, with three outcomes scored as a ratio rather than an absolute. But measured this run, its own header names three triggers and all three are annexation-based: the annexation flips the nation's plurality party, the annexed counties' output exceeds the nation's, or the annexed counties' population exceeds the nation's. There is no internal path to civil war. The county threshold exists as a tunable; the national bar the ruling asks for as a second tunable does not.",
+      "story": "none found — the round works the arithmetic and never narrates it. Leave the third section blank, or borrow the Shattering's own fracturing states."
+    },
+    {
+      "page": "Diplomatic states",
+      "topic": "diplomacy",
+      "second_topic": "military",
+      "kind": "concept",
+      "one_line": "The six live states a pair of nations is always in — Peace, Wary, Peace-treaty, Hostile, Cease-fire, War — plus Subject and Allied, how a pair moves between them, and why the state is one shared fact rather than two separate feelings.",
+      "built": "designed only — nothing in js/ stores any state between two nations. What exists is a dated, decaying, directed list of memory kinds, which answers 'what have they done to us' and not 'what are we to each other'. Verified this run: the only match for 'Hostile' in js/ is a display label on that list.",
+      "story": "yes — Aaron's ruling that all five Texan states start hostile, the thirty-three opening quarrels, and Oregon and Greater Idaho as the worked pair. This is the page every other diplomacy page reads before it does anything, and the transition table is the one diagram a player needs."
+    },
+    {
+      "page": "Hostility",
+      "topic": "diplomacy",
+      "second_topic": "economy",
+      "kind": "mechanic",
+      "one_line": "The quarrel short of war — what puts two nations into it, what it costs them every turn, what it stops them signing, how it cools through Wary back to Peace, and the thirty-three pairs for which it never does.",
+      "built": "designed only, but everything it acts on is built. Verified this run: trade deals with 2/4/8/20-turn terms exist, and transit corridors carry a four-turn notice period as a tunable. There is simply no hostile state to gate them with.",
+      "story": "yes — Oregon and Greater Idaho in the ruling's own words; Austin's encirclement and slow strangulation; the four Texan neighbours each deciding whether killing Austin is worth the standing it costs. If a reader understands only one page of the military and diplomatic rounds, it should be this one: it is the state the game will mostly be played in."
+    },
+    {
+      "page": "Cease-fire",
+      "topic": "diplomacy",
+      "second_topic": "military",
+      "kind": "mechanic",
+      "one_line": "The timed pause that carries every cost of a war except the right to attack, and the compulsory sealed-envelope negotiation that has to happen on the turn before it runs out.",
+      "built": "designed only. No cease-fire exists in js/. The full-screen negotiation card it reuses is built for trade and transit and has no peace mode — and it already has the property the whole design leans on: answering a card does not use your turn.",
+      "story": "none found — these rulings are pure mechanism. No nation, date or event in the corpus is attached to a cease-fire. Leave the third section blank, or borrow the Utah–Idaho war from Peace treaty, and say which you did."
+    },
+    {
+      "page": "Peace treaty",
+      "topic": "diplomacy",
+      "second_topic": "military",
+      "kind": "entity",
+      "one_line": "The first standing obligation in the game — four levers and no more, a term after which it lapses harmlessly back into Peace, a repayment capped against the proposer's own war costs, and a breach that turns every neighbour but your allies hostile in a single turn.",
+      "built": "designed only — but the shape exists. Two other treaty kinds and an aid mechanism are already built, so a standing promise between nations is something the save format holds. There is no peace treaty and no war for one to end. Flag for Aaron: the design document still says there are no treaties and no aid, which is stale against the code.",
+      "story": "yes — the worked example: Utah invades Idaho, Idaho wins and bills Utah for the war, and Utah counters at half. This page is also why a war ends by signing rather than merely by stopping: it is what launders occupied ground into kept ground."
+    },
+    {
+      "page": "Alliances",
+      "topic": "diplomacy",
+      "second_topic": "military",
+      "kind": "mechanic",
+      "one_line": "What being Allied does and deliberately does not do — you inherit your friend's quarrels one hop and no further, you lend soldiers by a lever you set, you may join their war only if you border the enemy, and you are never compelled to fight.",
+      "built": "designed only. Measured this run: the army allocation is fixed at exactly three roles — garrison, border, field — so the lending lever has nowhere to live. There is no alliance object anywhere in js/; the coalition code builds the opposite thing, nations lining up AGAINST a target.",
+      "story": "yes — the traced example is a real board configuration: Utah allied with Nevada, Idaho with Wyoming, and Utah invades Idaho. This is also the page that explains why the continent does not collapse into two blocs and one long war, which is a design promise a reader will want to see kept."
+    },
+    {
+      "page": "Unions",
+      "topic": "diplomacy",
+      "second_topic": "politics",
+      "kind": "mechanic",
+      "one_line": "Two nations agreeing to become one state — who sends you to ask, the three answers you can get back, what decides which one you get, and why joining is the only way to grow that does not poison the ground you gained.",
+      "built": "partial — a merger of two nations exists as the built Unite action, but it is a FORCED merger decided by a roll that can fracture you on failure, and its failure mode is the civil war resolver. The consensual version ruled here — a movement-driven proposal answered yes, let's think about it, or no, with none of the occupation penalties — is not built, and no proposal machinery exists in js/.",
+      "story": "yes — seven governors signing the Farmers Union, and the open question of what it cost Illinois when Chicago walked out. Titled PLURAL on purpose, to keep it clear of 'the Union' that broke up."
+    },
+    {
+      "page": "Federation",
+      "topic": "diplomacy",
+      "second_topic": "economy",
+      "kind": "entity",
+      "one_line": "A club of three or more states that stay states — a flat internal toll split with the club, an elected leader running a second budget on a short turn of its own, collective defence, and the politics that falls out of who pays in and who draws out.",
+      "built": "designed only — measured this run, 'federation' appears in js/ only inside a comment about a nation that happens to be NAMED a federation on the leaderboard. The design document records that no treaty object exists at all, which is the smaller thing this would need first. This is the largest single new object any closed round has asked for.",
+      "story": "yes — the United States of New England, six former states under one flag, and Aaron's Gulf Compact aside on Acadiana. Carries one open finding a writer must mark as a question, not a rule: the federation's deterrent may be absolute, and only the alpha will tell."
+    },
+    {
+      "page": "Release valves",
+      "topic": "politics",
+      "second_topic": "secession",
+      "kind": "mechanic",
+      "one_line": "The five things a government can do about a movement — concede, concede less, become them, remove the want, suppress — set against the six things a movement can want, plus martial law and the referendum.",
+      "built": "partial — the four original valves are built and already named to the player: release, autonomy, changing the ruling ideology, and garrison. NOT built: 'become them'; martial law, whose name measured this run appears nowhere in js/ or the design document; the referendum, likewise nowhere; and the six-verb table, since the data carries no verb field at all — only eight type values where the ruling wants five adjectives.",
+      "story": "yes — the federal government declaring martial law in the counties around Washington to prevent a coup, and the painted Washington D.C. region the story needs already exists in the content. This is the page a player opens when a region is about to leave, and it is the round's answer to the Tuesday question."
+    },
+    {
+      "page": "Movement demands",
+      "topic": "politics",
+      "second_topic": "secession",
+      "kind": "mechanic",
+      "one_line": "The free, mandatory phase at the top of every turn where a movement inside your own country states what it wants and names the ground it wants, the three answers a government may give — grant it, refuse it, or tell them to wait and pay far more later — and the broken-promise clock that turns a strung-along movement into a separatist one.",
+      "built": "designed only, and one half is genuinely new machinery that the design does not have. Measured this run: the word 'petition' appears nowhere in js/; there is no demand, no answer and no screen; a movement's stated goals are authored flavour text and nothing in the game ever changes what a movement wants; and the grant/refuse card that exists is a transit request from another nation, not a movement demand. This is the one piece both rounds 2 and 3 flag as not existing.",
+      "story": "yes — the printable moment when the Farmers Union has stopped asking; a movement that asked you to go and make friends becoming a movement that wants to leave; the Front Range Republic naming NORAD; Hawaii short of resources and holding Pearl Harbor; the Gulf's Louisiana remnant wanting the parishes Houston holds."
+    },
+    {
+      "page": "Authority",
+      "topic": "politics",
+      "second_topic": "people",
+      "kind": "concept",
+      "one_line": "How firmly a government holds its own ground — what raises it, what drags it down, the four turns of borrowed patience a brand-new country is lent, and what a nation spends when it kneels to somebody else.",
+      "built": "partial — Authority is one of the five built stocks and the new-country honeymoon exists across five files. NOT built: the tolerance applied to grievance and its fade below baseline; and vassalage, which measured this run appears in js/ only twice, both times in comments recording that a vassal contract was deliberately never invented because the save format has nowhere to put it.",
+      "story": "yes — Oklahoma submitting to Dallas; the fervour of a new country, where the citizens are willing to overlook certain things, and what happens when they stop."
+    },
+    {
+      "page": "The political board",
+      "topic": "ideology",
+      "second_topic": "politics",
+      "kind": "concept",
+      "one_line": "The ten positions on three axes — economy, morals and government power — that every party, government and movement occupies; the three words that keep ideology, party and movement apart; how a party drifts across the board and an ideology cannot; the affinity between any two positions and what it gates; and the two conditions off the outer edges that you fall into rather than vote for.",
+      "built": "designed only for the new board, built for the old one — and the two disagree. Measured this run: content/ideologies.json holds SIX ideologies on TWO axes with a single affinity function that drives coalitions, drift, liberty, trade alignment and AI diplomacy, and data/parties.json still labels its 32 movements with five of those six colours. The three-axis ten-position board, the eight corner parties named for real parties, and the re-map of all 26 live movements are authoring that has not been done. The largest unstarted job is splitting the 2024 county seed's Republicans and Democrats across the eight corners by cultural region, because neither major party maps onto a corner.",
+      "story": "yes — A Free Texas placed on Fascism because it was taken over by a fascist bloc; Deseret's law of consecration lite; Boston's Catholic pull on New England United, which the three-axis board answers without moving the movement. Carries two things a writer must present as open questions rather than rules: three of the ten positions carry no movement at all and the empty half of the board is the authoritarian one; and what falling into Despotism or Statelessness buys and costs is deliberately unanswered, with no placeholder invented."
+    },
+    {
+      "page": "The turn",
+      "topic": "playing",
+      "second_topic": "",
+      "kind": "concept",
+      "one_line": "What a turn is made of — a free mandatory phase where you answer your own people, then one action that ends the turn — and the growing list of things now competing for that single slot.",
+      "built": "partial — one action per nation per turn is the built rule and a turn exists. The two-phase turn is not built, because the demand phase it depends on is not built; and the federation's separate short turn has nothing behind it. One turn is one quarter and the game opens on 1 March 2036.",
+      "story": "none found — this is a rule about how the game is played rather than a thing that happens in the world. Leave the third section blank and say so."
+    },
+    {
+      "page": "Indigenous nations",
+      "topic": "story",
+      "second_topic": "board",
+      "kind": "entity",
+      "one_line": "The Navajo Nation and the Lakota Nation - what ground each holds, why the merged map cannot draw either accurately, and the city one of them inherits without asking.",
+      "built": "designed only - neither nation exists on the board; the nearest thing in the data is the Native American Confederation movement.",
+      "story": "yes - secession rulings 25 and 53, including Pine Ridge and Rosebud inside the Pennington Area and Rapid City's 190,035 people."
+    },
+    {
+      "page": "Fascism",
+      "topic": "ideology",
+      "second_topic": "politics",
+      "kind": "ideology",
+      "one_line": "collective on the economy axis, conservative on morals, authoritarian on power - corner of the ten positions. One movement holds it.",
+      "built": "designed only - the running game still carries the old six ideologies on two axes; the ten were ruled by politics rulings 1 and 2 and have not been built.",
+      "story": "none found",
+      "axes": {
+        "economy": "collective",
+        "morals": "conservative",
+        "power": "authoritarian",
+        "kind": "corner"
+      },
+      "movements_here": 1
+    },
+    {
+      "page": "Distributism",
+      "topic": "ideology",
+      "second_topic": "politics",
+      "kind": "ideology",
+      "one_line": "collective on the economy axis, conservative on morals, libertarian on power - corner of the ten positions. 7 movements hold it.",
+      "built": "designed only - the running game still carries the old six ideologies on two axes; the ten were ruled by politics rulings 1 and 2 and have not been built.",
+      "story": "none found",
+      "axes": {
+        "economy": "collective",
+        "morals": "conservative",
+        "power": "libertarian",
+        "kind": "corner"
+      },
+      "movements_here": 7
+    },
+    {
+      "page": "Communism",
+      "topic": "ideology",
+      "second_topic": "politics",
+      "kind": "ideology",
+      "one_line": "collective on the economy axis, progressive on morals, authoritarian on power - corner of the ten positions. No movement on the board holds it.",
+      "built": "designed only - the running game still carries the old six ideologies on two axes; the ten were ruled by politics rulings 1 and 2 and have not been built.",
+      "story": "none found",
+      "axes": {
+        "economy": "collective",
+        "morals": "progressive",
+        "power": "authoritarian",
+        "kind": "corner"
+      },
+      "movements_here": 0
+    },
+    {
+      "page": "Democratic Socialism",
+      "topic": "ideology",
+      "second_topic": "politics",
+      "kind": "ideology",
+      "one_line": "collective on the economy axis, progressive on morals, libertarian on power - corner of the ten positions. 2 movements hold it.",
+      "built": "designed only - the running game still carries the old six ideologies on two axes; the ten were ruled by politics rulings 1 and 2 and have not been built.",
+      "story": "none found",
+      "axes": {
+        "economy": "collective",
+        "morals": "progressive",
+        "power": "libertarian",
+        "kind": "corner"
+      },
+      "movements_here": 2
+    },
+    {
+      "page": "Christian Nationalism (position)",
+      "topic": "ideology",
+      "second_topic": "politics",
+      "kind": "ideology",
+      "one_line": "neo-liberal on the economy axis, conservative on morals, authoritarian on power - corner of the ten positions. 3 movements hold it.",
+      "built": "designed only - the running game still carries the old six ideologies on two axes; the ten were ruled by politics rulings 1 and 2 and have not been built.",
+      "story": "none found",
+      "axes": {
+        "economy": "neo-liberal",
+        "morals": "conservative",
+        "power": "authoritarian",
+        "kind": "corner"
+      },
+      "movements_here": 3
+    },
+    {
+      "page": "Anarcho-Capitalism",
+      "topic": "ideology",
+      "second_topic": "politics",
+      "kind": "ideology",
+      "one_line": "neo-liberal on the economy axis, conservative on morals, libertarian on power - corner of the ten positions. One movement holds it.",
+      "built": "designed only - the running game still carries the old six ideologies on two axes; the ten were ruled by politics rulings 1 and 2 and have not been built.",
+      "story": "none found",
+      "axes": {
+        "economy": "neo-liberal",
+        "morals": "conservative",
+        "power": "libertarian",
+        "kind": "corner"
+      },
+      "movements_here": 1
+    },
+    {
+      "page": "Digital Technocracy",
+      "topic": "ideology",
+      "second_topic": "politics",
+      "kind": "ideology",
+      "one_line": "neo-liberal on the economy axis, progressive on morals, authoritarian on power - corner of the ten positions. No movement on the board holds it.",
+      "built": "designed only - the running game still carries the old six ideologies on two axes; the ten were ruled by politics rulings 1 and 2 and have not been built.",
+      "story": "none found",
+      "axes": {
+        "economy": "neo-liberal",
+        "morals": "progressive",
+        "power": "authoritarian",
+        "kind": "corner"
+      },
+      "movements_here": 0
+    },
+    {
+      "page": "Liberal Anarchy",
+      "topic": "ideology",
+      "second_topic": "politics",
+      "kind": "ideology",
+      "one_line": "neo-liberal on the economy axis, progressive on morals, libertarian on power - corner of the ten positions. No movement on the board holds it.",
+      "built": "designed only - the running game still carries the old six ideologies on two axes; the ten were ruled by politics rulings 1 and 2 and have not been built.",
+      "story": "none found",
+      "axes": {
+        "economy": "neo-liberal",
+        "morals": "progressive",
+        "power": "libertarian",
+        "kind": "corner"
+      },
+      "movements_here": 0
+    },
+    {
+      "page": "Republicans",
+      "topic": "ideology",
+      "second_topic": "politics",
+      "kind": "ideology",
+      "one_line": "middle on the economy axis, conservative on morals, middle on power - the centre of the ten positions. 8 movements hold it.",
+      "built": "designed only - the running game still carries the old six ideologies on two axes; the ten were ruled by politics rulings 1 and 2 and have not been built.",
+      "story": "none found",
+      "axes": {
+        "economy": "middle",
+        "morals": "conservative",
+        "power": "middle",
+        "kind": "the centre"
+      },
+      "movements_here": 8
+    },
+    {
+      "page": "Democrats",
+      "topic": "ideology",
+      "second_topic": "politics",
+      "kind": "ideology",
+      "one_line": "middle on the economy axis, progressive on morals, middle on power - the centre of the ten positions. 4 movements hold it.",
+      "built": "designed only - the running game still carries the old six ideologies on two axes; the ten were ruled by politics rulings 1 and 2 and have not been built.",
+      "story": "none found",
+      "axes": {
+        "economy": "middle",
+        "morals": "progressive",
+        "power": "middle",
+        "kind": "the centre"
+      },
+      "movements_here": 4
+    }
+  ]
+}

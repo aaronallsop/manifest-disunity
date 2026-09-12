@@ -1,0 +1,1534 @@
+{
+  "version": 1,
+  "_what_this_is": "Authored. Which page each ruling belongs to. The ruling's own wording is recorded so the generator can FIND it in the source document without trusting a line number - if the wording no longer matches, the build report says so rather than emitting a link to the wrong place.",
+  "rounds": {
+    "secession": {
+      "document": "docs/design/secession-ideation.md",
+      "label": "Secession",
+      "round": 1,
+      "closed": "Closed 7 September 2026"
+    },
+    "conquest": {
+      "document": "docs/design/conquest-ideation.md",
+      "label": "Military",
+      "round": 2,
+      "closed": "Closed 9 September 2026"
+    },
+    "politics": {
+      "document": "docs/design/politics-ideation.md",
+      "label": "Politics",
+      "round": 3,
+      "closed": "Closed 11 September 2026"
+    }
+  },
+  "rulings": [
+    {
+      "round": "secession",
+      "n": "1",
+      "title": "City-states are their painted metro regions on the cultural map. New Jersey, Delaware and Rhode Island cease to exist; Boston takes southern New Hampshire",
+      "page": "Nations of the Shattering",
+      "also": [
+        "The Shattering"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built. No city-state exists, and New Jersey, Delaware and Rhode Island are ordinary nations on today's 61-nation board (DESIGN.md §2.1)."
+    },
+    {
+      "round": "secession",
+      "n": "2",
+      "title": "Iowa is in the Farmers Union",
+      "page": "Nations of the Shattering",
+      "also": [],
+      "superseded_by": "",
+      "not_built": "Not built — there is no Farmers Union nation. 'The Farmers Union' exists only as a movement in data/parties.json (read this session)."
+    },
+    {
+      "round": "secession",
+      "n": "3",
+      "title": "Colorado becomes the Front Range Republic; the Navajo Nation is trimmed to the Four Corners and the ground around it opens wanting in — Deseret's mechanism generalised",
+      "page": "Nations of the Shattering",
+      "also": [
+        "Indigenous nations",
+        "The opening roll"
+      ],
+      "superseded_by": "Narrowed by ruling 25 (line 908), which fixes the Navajo trim at roughly ten reservation Areas. Ruling 25 says explicitly 'This keeps ruling 3 intact' (line 913), so it refines rather than reverses.",
+      "not_built": "Not built — neither the Front Range Republic nor the Navajo Nation exists on the board."
+    },
+    {
+      "round": "secession",
+      "n": "4",
+      "title": "The Deep South is one nation as written, counterbalanced by separatist movements inside it",
+      "page": "Nations of the Shattering",
+      "also": [
+        "Movements"
+      ],
+      "superseded_by": "The counterbalance half was answered by ruling 28 (line 1064) and then settled by ruling 51 (line 1508): the balancing movements are ordinary movements whose homelands were painted across a state line, not a new category. The one-nation half stands.",
+      "not_built": "Not built — no Deep South nation exists."
+    },
+    {
+      "round": "secession",
+      "n": "5",
+      "title": "Appalachia is the painted Southern Appalachia region, all 75 Areas — Knoxville, Chattanooga, eastern Kentucky and the western Carolinas included",
+      "page": "Nations of the Shattering",
+      "also": [],
+      "superseded_by": "",
+      "not_built": "Not built — no Appalachia nation exists. The 75 painted Areas are a cultural region, not a country."
+    },
+    {
+      "round": "secession",
+      "n": "6",
+      "title": "The Gulf nation stops at the Tennessee line — Memphis stays in the Deep South, Cairo with the Farmers Union — so no one owns the whole river",
+      "page": "Nations of the Shattering",
+      "also": [],
+      "superseded_by": "Renamed by ruling 29 (line 1071): the Gulf nation becomes the Gulf Compact. The border itself is unchanged.",
+      "not_built": "Not built — no Gulf nation exists."
+    },
+    {
+      "round": "secession",
+      "n": "7",
+      "title": "The Gullah coast goes whole to the Carolinas; the Deep South opens without a seaport",
+      "page": "Nations of the Shattering",
+      "also": [],
+      "superseded_by": "",
+      "not_built": "Not built — neither nation exists. Ruling 30's original fallback would have undone this ruling's landlocked giant, which is why that fallback was amended at lines 1079–1090."
+    },
+    {
+      "round": "secession",
+      "n": "8",
+      "title": "Central Florida is the painted region — the Georgia line to Miami",
+      "page": "Nations of the Shattering",
+      "also": [],
+      "superseded_by": "",
+      "not_built": "Not built — no Central Florida nation exists."
+    },
+    {
+      "round": "secession",
+      "n": "9",
+      "title": "The United States of New England; Rochester-and-Buffalo takes Clinton and the Franklin–Essex–Hamilton Area; alliance and free-trade deal pre-signed",
+      "page": "Nations of the Shattering",
+      "also": [
+        "The Shattering"
+      ],
+      "superseded_by": "Confirmed rather than changed by ruling 22 (line 870): 'Ruling 9 stands and nothing on the map moves.'",
+      "not_built": "Not built — no United States of New England and no Rochester-and-Buffalo. There is also no treaty object of any kind in the game (DESIGN.md §12, 'No treaties and no aid'), so a pre-signed alliance has nothing to be stored in."
+    },
+    {
+      "round": "secession",
+      "n": "10",
+      "title": "Superior is the Upper Peninsula plus the top of the Lower Peninsula — Michigan ground only",
+      "page": "Nations of the Shattering",
+      "also": [
+        "The Shattering"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built — no Superior nation exists, and the document notes the painted Superior region is the wrong ground entirely (WI 6, MI 4, MN 2, line 1044). The Lower Peninsula line is one of the five still to be drawn."
+    },
+    {
+      "round": "secession",
+      "n": "11",
+      "title": "When. Texas declared about two years before the game opens — spring 2034 — with its bicentenary as the deadline it set itself",
+      "page": "The Shattering",
+      "also": [
+        "Nations of the Shattering"
+      ],
+      "superseded_by": "",
+      "not_built": "Half built. The 1 March 2036 opening is real (js/calendar.js:6 and js/tunables.js:27–29). The spring 2034 declaration and 'every war in it has been fought' are not: nothing in the game carries a break-up date, and DESIGN.md §2.1 writes the shattering deliberately with no dated memories, so no grudge is eight turns fresh."
+    },
+    {
+      "round": "secession",
+      "n": "12",
+      "title": "every nation spawns in every game; what rolls is its size.",
+      "page": "The opening roll",
+      "also": [
+        "Movements"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built — nations do not roll at all. The board is authored in content/scenario-shattered.json and only Deseret's extent rolls (DESIGN.md §2.1). Six movements are deterministic and the other twenty-six roll a spawn chance, which is the opposite half of this ruling."
+    },
+    {
+      "round": "secession",
+      "n": "13",
+      "title": "\"doing well\" is quality of life, influence and authority.",
+      "page": "Grievance",
+      "also": [
+        "Movements"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built, and the document says so at lines 713–716: every grievance term reads the holding nation only; nothing reads the nation a region would join. Finding C (lines 439–444) also warns that this ruling makes a badly-rolled nation's movement grow slower, which is one of three mechanisms all amplifying the same dice — the first thing a tuning pass must look at."
+    },
+    {
+      "round": "secession",
+      "n": "14",
+      "title": "growing movements roll at the start on Deseret's shape, and new ones arise in play.",
+      "page": "The opening roll",
+      "also": [
+        "Movements"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built — all thirty-two movements spawn once at setup and nothing founds a movement in play (DESIGN.md §7; the document states it at line 729)."
+    },
+    {
+      "round": "secession",
+      "n": "15",
+      "title": "the dice roll before the player chooses.",
+      "page": "The opening roll",
+      "also": [],
+      "superseded_by": "",
+      "not_built": ""
+    },
+    {
+      "round": "secession",
+      "n": "16",
+      "title": "a realised movement's own ground is loyalty, not pressure.",
+      "page": "Movements",
+      "also": [
+        "Grievance"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built, and the code actively contradicts it. Read this session: js/game.js:1589 `hostility()` takes the largest movement share in an Area with no check on whose movement it is, and js/sentiment.js and js/ai.js do the same — so a nation is charged three times over for its own founding population. Logged as docs/deferred.md #14. Finding E (line 453) settles that loyalty reads the movement's share in an Area, not mere homeland membership."
+    },
+    {
+      "round": "secession",
+      "n": "17",
+      "title": "a realised movement's homeland widens to its nation's founding ground, automatically.",
+      "page": "Homelands",
+      "also": [
+        "Movements"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built — nothing widens a realised movement's homeland; homelands come from data/parties.json exactly as baked. Without it, the document measures at lines 761–766 that Appalachia would hold 31 Areas its own movement cannot organise on, the Front Range Republic 31 and El Paso 14."
+    },
+    {
+      "round": "secession",
+      "n": "18",
+      "title": "a reunification movement declares a winner, not a country.",
+      "page": "Reunification contests",
+      "also": [
+        "Movements"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built — a reunification-typed movement declares like any other and would found a sixth Texas out of whichever successor holds its core (doc lines 523–528)."
+    },
+    {
+      "round": "secession",
+      "n": "19",
+      "title": "reunification movements exist at several scales, and are contests between claimants.",
+      "page": "Reunification contests",
+      "also": [
+        "Nations of the Shattering"
+      ],
+      "superseded_by": "Two of its four rows were corrected on 9 September at lines 829–836, with the ruling itself left unchanged. Row 4's claimant list was cut to three by ruling 20 the same day (Boston removed), so the table as printed still shows four and must be read against ruling 20. Row 2's 'five Californian successors' are named by round 2's ruling 32 — Los Angeles, the Bay Area, Riverside, SoCal and Northern California — which also puts Cascadia outside the contest, and the map actually breaks California into six pieces.",
+      "not_built": "Not built — no reunification contest exists in js/."
+    },
+    {
+      "round": "secession",
+      "n": "20",
+      "title": "the capital contest is Washington D.C., Philadelphia and New York City. Boston is out.",
+      "page": "Reunification contests",
+      "also": [
+        "Nations of the Shattering"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built — no capital contest exists. The 'Reunification of the Union' victory in js/victory.js:217 counts seats of government, half the people and half the economy, and knows nothing of claimants. The historical dates in the ruling are flagged in the document as from memory and unverified."
+    },
+    {
+      "round": "secession",
+      "n": "21",
+      "title": "a nation can fund a movement, and it is a standing commitment rather than a move.",
+      "page": "Backing a movement",
+      "also": [
+        "Movements"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built — every movement record carries a `sponsor` field commented 'M6: a nation backing it' (js/movements.js:184) and no code reads or writes it. It is saved and restored and nothing else."
+    },
+    {
+      "round": "secession",
+      "n": "22",
+      "title": "Boston stays inside the United States of New England; it is simply not a claimant.",
+      "page": "Nations of the Shattering",
+      "also": [
+        "Reunification contests"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built — no United States of New England exists."
+    },
+    {
+      "round": "secession",
+      "n": "23",
+      "title": "the Four Corners is settled three ways, and the leftovers are rolled.",
+      "page": "The opening roll",
+      "also": [
+        "Indigenous nations",
+        "Nations of the Shattering"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built — none of the three claimants exists as drawn, and nothing in js/ assigns contested counties by weighted dice."
+    },
+    {
+      "round": "secession",
+      "n": "24",
+      "title": "a realised nation spreads outward at setup, in four rings of decaying odds.",
+      "page": "The opening roll",
+      "also": [],
+      "superseded_by": "SUPERSEDED by ruling 26 (line 1004): 'This replaces the ring ladder of ruling 24 as the way a nation's setup extent is decided.' The reason is given in the same paragraph — rings are geography-blind — and S77 at lines 972–993 had already measured the ladder amplifying the dice into a roughly sixfold range on Deseret, 12 to 77 Areas. Do not present the 33/11/3.7/1 ladder as live.",
+      "not_built": "Not built and now superseded — nothing in js/ spreads a nation outward in rings."
+    },
+    {
+      "round": "secession",
+      "n": "25",
+      "title": "the Navajo Nation is the reservation, not the painted region.",
+      "page": "Indigenous nations",
+      "also": [
+        "Nations of the Shattering"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built — no Navajo Nation exists on the board, and the document flags its own geography as 'from memory and unverified', wanting a check against a real reservation boundary before anything is built on it."
+    },
+    {
+      "round": "secession",
+      "n": "26",
+      "title": "homelands are painted, not derived.",
+      "page": "Homelands",
+      "also": [
+        "The opening roll"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built — the editor authors 3-tier region hierarchies in which each Area belongs to at most one path (DESIGN.md §10). This ruling needs every Area to carry a list of claims with a level on each, which the document flags as architecture's problem at lines 1009–1013."
+    },
+    {
+      "round": "secession",
+      "n": "27",
+      "title": "the four Type A nations get no movement built into them.",
+      "page": "Movements",
+      "also": [
+        "Nations of the Shattering"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built — none of the four nations exists (the Carolinas, the Deep South, Central Florida, the Allegheny Republic)."
+    },
+    {
+      "round": "secession",
+      "n": "28",
+      "title": "the Deep South is balanced by rising movements that cross state lines.",
+      "page": "Movements",
+      "also": [
+        "Homelands"
+      ],
+      "superseded_by": "Settled by ruling 51 (line 1508): 'This settles the Deep South counterbalance (ruling 28) without a new category.' Movements that cross borders are not a special kind — they are ordinary movements whose homeland was painted across a state line.",
+      "not_built": "Deferred by Aaron inside the ruling itself — 'To be designed later in this round' (line 1069) — and then answered by ruling 51 rather than designed. Nothing built."
+    },
+    {
+      "round": "secession",
+      "n": "29",
+      "title": "the two names are adopted: the Gulf Compact and the Allegheny Republic.",
+      "page": "Nations of the Shattering",
+      "also": [
+        "The Shattering"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built — neither nation exists, so neither name appears anywhere in data/ or js/ (checked this session)."
+    },
+    {
+      "round": "secession",
+      "n": "30",
+      "title": "Central Florida gets no movement, and the Floribama leftovers go to it.",
+      "page": "Nations of the Shattering",
+      "also": [
+        "Movements"
+      ],
+      "superseded_by": "Amended in the same section at lines 1079–1090, on a measurement taken the same day: of Floribama's 21 Areas only Taylor County touches Central Florida and thirteen touch the Deep South, so the fallback as written would have handed the giant Mobile and Biloxi and undone ruling 7. The Gulf Compact's core now includes the Mississippi and Alabama Gulf counties and never rolls for them; the largest-neighbour fallback survives only as a general safety net.",
+      "not_built": "Not built — no Central Florida, Gulf Compact or Deep South nation exists."
+    },
+    {
+      "round": "secession",
+      "n": "31",
+      "title": "four or five fragments painted per region, and the dice decide how many have coalesced.",
+      "page": "Stateless society",
+      "also": [
+        "The opening roll"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built — there is no tier-3 concept anywhere in js/ (searched this session: the only 'stateless' matches are unrelated comments in power.js and tunables.js). Finding B (line 432) warns that if fragments have no stocks, grievance has nothing to read and the central mechanic of the game cannot happen on roughly 176 Areas."
+    },
+    {
+      "round": "secession",
+      "n": "32",
+      "title": "stateless ground is no harder to take and dearer to hold.",
+      "page": "Stateless society",
+      "also": [
+        "Resistance"
+      ],
+      "superseded_by": "Its premise is dropped by ruling 38 (line 1248) — 'Ruling 32's blanket premise is dropped' — after S83 measured the six stateless regions at a median armed share of 44.6% against 46.9% everywhere else, very slightly lower. The 'dearer to hold' mechanism survives through rulings 33 and 34; the claim that stateless ground is uniformly dear does not.",
+      "not_built": "Not built. The document also records at lines 1113–1118 that the existing mechanism runs backwards for this: occupation upkeep scales with hostility, computed purely from organised movement membership, so ground with no movement is today the cheapest on the continent to occupy."
+    },
+    {
+      "round": "secession",
+      "n": "33",
+      "title": "\"resists being governed\" is general, painted everywhere, heaviest on the six.",
+      "page": "Resistance",
+      "also": [
+        "Stateless society"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built — there is no per-Area 'resists being governed' property. Occupation upkeep reads js/game.js:1589 `hostility()`, which is purely the largest organised movement share."
+    },
+    {
+      "round": "secession",
+      "n": "34",
+      "title": "resistance is capacity times willingness, and willingness is ideological.",
+      "page": "Resistance",
+      "also": [
+        "Ideology"
+      ],
+      "superseded_by": "",
+      "not_built": "Half built. The willingness term is the existing affinity function that civil liberties already uses (DESIGN.md §3.1), so nothing new is needed for it. The capacity term does not exist: measured this session, data/areas.json carries no armed-share field at all."
+    },
+    {
+      "round": "secession",
+      "n": "35",
+      "title": "how the armed share is estimated.",
+      "page": "Resistance",
+      "also": [],
+      "superseded_by": "",
+      "not_built": "Not built — no apportionment runs in build/ and no armed-share column exists in any file in data/. The 0.60/0.40/0.30 weights are Aaron's rounding of a Pew citation the document states has not been verified by that session (lines 1143–1146)."
+    },
+    {
+      "round": "secession",
+      "n": "36",
+      "title": "the source is RAND, pulled once and baked, never fetched at runtime.",
+      "page": "Resistance",
+      "also": [],
+      "superseded_by": "Its description of the dataset is superseded at line 1193 by a reading of the file itself: 'RAND State-Level Firearm Ownership Database', version 1.0, 1 April 2020, 1,850 rows, 50 states, 1980–2016. The ruling's substance — RAND, pulled once, baked, never fetched at runtime — is unchanged.",
+      "not_built": "Not built. Listed this session, build/raw/ holds CAGDP2.zip, co-est2024-alldata.csv, county_adjacency.txt, election2024_counties.csv and two subfolders, and no firearm file. Line 1188 says Aaron downloaded the workbook by hand for the design session; it never reached the repository, so the bake has no input."
+    },
+    {
+      "round": "secession",
+      "n": "37",
+      "title": "the District of Columbia is assigned 6%, by hand, badged as an estimate.",
+      "page": "Resistance",
+      "also": [
+        "Nations of the Shattering"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built — there is no armed-share data in data/ for the figure to sit in. The ruling itself insists the number is invented and must never be presented as a RAND figure."
+    },
+    {
+      "round": "secession",
+      "n": "38",
+      "title": "the stateless regions are not uniformly hard to hold; the data decides.",
+      "page": "Stateless society",
+      "also": [
+        "Resistance"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built — neither the stateless tier nor the armed-share data exists, so nothing yet makes Wyoming's fragments cost a conqueror more than Ohio's."
+    },
+    {
+      "round": "secession",
+      "n": "39",
+      "title": "every movement has a VERB, and there are six.",
+      "page": "Movements",
+      "also": [
+        "Reunification contests"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built — measured this session: not one of the 32 records in data/parties.json carries a `verb` field. The old `type` field still drives behaviour and every movement, on crossing the line, declares independence."
+    },
+    {
+      "round": "secession",
+      "n": "40",
+      "title": "the old types become ADJECTIVES, not behaviours.",
+      "page": "Movements",
+      "also": [],
+      "superseded_by": "",
+      "not_built": "Not built — measured this session: `type` is still a behaviour field holding autonomist, economic, ideological, indigenous, irredentist, reunification, separatist and theocratic-separatist, and no `adjective` field exists anywhere in data/parties.json."
+    },
+    {
+      "round": "secession",
+      "n": "41",
+      "title": "Aaron's own extension, parked deliberately: a Deseret that shatters can grow a Deseret Reunify movement, if whoever holds the pieces governs them badly.",
+      "page": "Reunification contests",
+      "also": [
+        "Movements"
+      ],
+      "superseded_by": "",
+      "not_built": "Parked by Aaron inside the ruling itself — 'Saved for later; the focus now is Texas, California and the eastern cities competing to restore the USA.' Nothing to build yet."
+    },
+    {
+      "round": "secession",
+      "n": "42",
+      "title": "three of the six verbs are born in play, not painted.",
+      "page": "Movements",
+      "also": [
+        "The opening roll"
+      ],
+      "superseded_by": "Refined by ruling 44 (line 1376): 'that refines ruling 42 rather than contradicting it.' Expand and Reconquer still arise from a condition, but a condition can already be true on turn 0, so those two verbs can also be authored at setup.",
+      "not_built": "Not built — no verbs exist, and nothing founds a movement during a game (DESIGN.md §7)."
+    },
+    {
+      "round": "secession",
+      "n": "43",
+      "title": "a movement is what people want; politics is how they get it.",
+      "page": "Ideology",
+      "also": [
+        "Movements"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built — a movement simply HAS an ideology (DESIGN.md §7.1), and that ideology is the multiplicative gate on where it can grow rather than the vehicle a separate want travels through. The gate-or-modifier question is parked by Aaron at lines 1586–1593."
+    },
+    {
+      "round": "secession",
+      "n": "44",
+      "title": "four verbs changed.",
+      "page": "Movements",
+      "also": [],
+      "superseded_by": "",
+      "not_built": "Not built — measured in data/parties.json this session: Front Range Republic is still `separatist`, Hawaiian Sovereignty `indigenous`, and Blue-Collar Populist and Christian Nationalism both `ideological`. None of the four changes has been made."
+    },
+    {
+      "round": "secession",
+      "n": "45",
+      "title": "six struck, and they split two ways.",
+      "page": "Movements",
+      "also": [],
+      "superseded_by": "",
+      "not_built": "Not built — measured this session: all six struck movements are still live in data/parties.json (Libertarians, Anarcho-Capitalist, Eastern Progressives, Techno-Autocrat, Delmarva Republic, Fifty-First State), and the file still holds 32 entries."
+    },
+    {
+      "round": "secession",
+      "n": "46",
+      "title": "Canadian Refuge goes to the ideas file as F16.",
+      "page": "Movements",
+      "also": [],
+      "superseded_by": "",
+      "not_built": "Withdrawn by Aaron in the same entry he added it — 'A little too much for now' — and filed to the ideas file as F16. Nothing to build, and it must not be presented as a live movement."
+    },
+    {
+      "round": "secession",
+      "n": "47",
+      "title": "a movement approaches a nation; the nation does not simply choose.",
+      "page": "Backing a movement",
+      "also": [
+        "Movements"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built — there is no petition machinery anywhere in js/. Finding A (line 426) also records that the petition threshold must sit below the secession threshold and nobody set one: if they are the same number no movement ever petitions, because it declares first."
+    },
+    {
+      "round": "secession",
+      "n": "48",
+      "title": "several nations can be petitioned, and they compete for it.",
+      "page": "Backing a movement",
+      "also": [
+        "Reunification contests"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built — no petition and no contest for one exists in js/."
+    },
+    {
+      "round": "secession",
+      "n": "49",
+      "title": "refusing costs nothing immediately and everything eventually.",
+      "page": "Backing a movement",
+      "also": [
+        "Movements"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built — no standing offer and no clock. The `betrayed` relation memory the ruling points at does exist (js/relations.js) for a related injury."
+    },
+    {
+      "round": "secession",
+      "n": "50",
+      "title": "petitions and everything like them belong to diplomacy.",
+      "page": "Backing a movement",
+      "also": [],
+      "superseded_by": "",
+      "not_built": "An ownership ruling with nothing to build here — it moves the mechanism to round 5, docs/design/diplomacy-ideation.md, along with the alliance, vassal and bloc questions."
+    },
+    {
+      "round": "secession",
+      "n": "51",
+      "title": "a movement is bound to counties, never to state lines.",
+      "page": "Homelands",
+      "also": [
+        "Movements"
+      ],
+      "superseded_by": "",
+      "not_built": "Half built. Homelands are already stored per Area, but the document measures at lines 1515–1522 that roughly fifteen of the thirty-two are generated from state lists in build/build_parties.py, eight of which span several states, so their edges follow state lines nobody chose. The map editor of ruling 26 is the named fix and it is not built either."
+    },
+    {
+      "round": "secession",
+      "n": "52",
+      "title": "the New Confederacy keeps its name for now, and it is marked for change.",
+      "page": "Movements",
+      "also": [
+        "Nations of the Shattering"
+      ],
+      "superseded_by": "",
+      "not_built": "Nothing to build — the name stands, and 'New Confederacy' is in data/parties.json today (verified). The ruling is a warning, and the wiki should carry it: 'Not renamed today; do not let this quietly become the final name.'"
+    },
+    {
+      "round": "secession",
+      "n": "53",
+      "title": "the Lakota Nation is Butte, Brown and Pennington: 3 Areas, about 271,000 people, and it holds Rapid City.",
+      "page": "Indigenous nations",
+      "also": [
+        "Movements",
+        "Nations of the Shattering"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built — no Lakota Nation exists, and there is no Lakota movement in data/parties.json either (the register's nearest entry is the Native American Confederation). S100 at lines 1544–1553 records the underlying data finding: no combination of Areas is the Lakota nation and not also several white towns."
+    },
+    {
+      "round": "conquest",
+      "n": "1",
+      "title": "This is not a war game, and the arrows point the other way.",
+      "page": "War",
+      "also": [
+        "Hostility",
+        "Taking ground"
+      ],
+      "superseded_by": "",
+      "not_built": "A frame, not a mechanic — nothing to build. Recorded as D181; quoted in full at line 31."
+    },
+    {
+      "round": "conquest",
+      "n": "2",
+      "title": "A war is a standing state, and it is one of seven.",
+      "page": "Diplomatic states",
+      "also": [
+        "War",
+        "Hostility"
+      ],
+      "superseded_by": "Amended by ruling 17 (line 1132), which adds Wary. Said in as many words at line 117: 'Ruling 2 said seven states and named five live ones. Ruling 17 makes it six live states and eight in total. Everything below written before 9 September says \"five states\"; read it as six.'",
+      "not_built": "No state between two nations exists in js/. Searching js/ for cease-fire, peace-treaty, hostile and wary returns one hit — a sentiment label at js/relations.js:171. Verified this session."
+    },
+    {
+      "round": "conquest",
+      "n": "3",
+      "title": "a cease-fire is temporary and carries a set number of turns.",
+      "page": "Cease-fire",
+      "also": [
+        "Diplomatic states"
+      ],
+      "superseded_by": "Not superseded. What happens at the expiry it defines is rewritten by rulings 33, 34, 35 and 36; the fixed term itself then becomes load-bearing for ruling 36, because a turn you did not choose must not cost you your action.",
+      "not_built": "No cease-fire in js/."
+    },
+    {
+      "round": "conquest",
+      "n": "4",
+      "title": "what puts two nations into Hostile.",
+      "page": "Hostility",
+      "also": [
+        "Alliances",
+        "Reunification contests"
+      ],
+      "superseded_by": "Cause 5 is bounded by ruling 37 (one hop, line 2398) and reshaped by ruling 38 (line 2491). C133 at line 2515 then derives that cause 5 must be an EVENT that fires once, structurally unlike causes 1–4, which are conditions that hold the clock back while they are live.",
+      "not_built": "No hostile state in js/, so none of the five causes can fire. Cause 3 additionally depends on two things the economy does not do — desperation biting, and a settable price — both recorded as blocking on round 4 at lines 755–762."
+    },
+    {
+      "round": "conquest",
+      "n": "5",
+      "title": "a state is shared, not one-sided.",
+      "page": "Diplomatic states",
+      "also": [
+        "Hostility"
+      ],
+      "superseded_by": "Not superseded. The one-sided version is filed as F18 (line 781). It is re-used as the deciding argument in ruling 37's trace at line 2469.",
+      "not_built": "No shared state object in js/. The directed decaying relations list that ruling 5 deliberately leaves alone IS built, and DESIGN.md §6.5 is explicit that making it symmetric 'would delete the rivalry'."
+    },
+    {
+      "round": "conquest",
+      "n": "6",
+      "title": "a war ends only by agreement, and refusing is allowed.",
+      "page": "War",
+      "also": [
+        "Cease-fire",
+        "Peace treaty"
+      ],
+      "superseded_by": "Not superseded. The risk it recorded — a player held in a war they cannot leave by an opponent willing to bleed — is closed by ruling 15 at line 1116 (the stubborn opponent's own electorate removes them), and ruling 33 at line 2300 makes refusal more expressive by forcing the refuser to table terms nobody would accept.",
+      "not_built": "No war and no agreement to end one in js/."
+    },
+    {
+      "round": "conquest",
+      "n": "7",
+      "title": "every state has an exit, and three of the four are clocks.",
+      "page": "Diplomatic states",
+      "also": [
+        "Hostility",
+        "Peace treaty"
+      ],
+      "superseded_by": "Amended by ruling 17 INSIDE ruling 7's own table — line 818 reads 'Hostile | time | ~~Peace~~ Wary (ruling 17)', with two new Wary rows added. The cease-fire row is then rewritten by ruling 8, whose first half ruling 33 supersedes at line 2253. Plain strikethrough is the only marker on the Hostile row, so it is easy to miss.",
+      "not_built": "No state machine in js/."
+    },
+    {
+      "round": "conquest",
+      "n": "8",
+      "title": "a cease-fire ends in a negotiation, and its default is Hostile rather than War.",
+      "page": "Cease-fire",
+      "also": [
+        "Peace treaty",
+        "Diplomatic states"
+      ],
+      "superseded_by": "PARTLY SUPERSEDED, and the wiki must not present it whole. Line 2253: 'This supersedes the first half of ruling 8' — ruling 33 replaces the card that ASKED each side to send a treaty with a compulsory submission on a fixed turn. Ruling 34 (line 2309) then removes the counter-offer that extended the cease-fire. What survives untouched is the default: nothing signed means Hostile, not War (restated at line 2321).",
+      "not_built": "No cease-fire in js/. The negotiation card it reuses is built for trade and transit only (DESIGN.md §6.7 'Negotiating', line 1191)."
+    },
+    {
+      "round": "conquest",
+      "n": "9",
+      "title": "what Hostile costs.",
+      "page": "Hostility",
+      "also": [
+        "War",
+        "Movement demands"
+      ],
+      "superseded_by": "Cost 3 — a hostile neighbour's matching movements grow faster inside you — is switched OFF ENTIRELY, not reduced, the moment a pair steps down to Wary: ruling 40, line 2564, 'Ruling 9's third cost of Hostile is switched off entirely the moment a pair steps down to Wary.' Costs 1, 2 and 4 apply in Wary at a fraction. Ruling 39 (line 2526) also replaced the four-scaled-costs shape with one acceptance multiplier.",
+      "not_built": "None of the four costs exists in js/, because the state that would charge them does not. The corridor tolls they would raise are built (js/transit.js; transit.noticeTurns = 4 at js/tunables.js:814)."
+    },
+    {
+      "round": "conquest",
+      "n": "10",
+      "title": "ground changes hands at the settlement, not turn by turn.",
+      "page": "War",
+      "also": [
+        "Taking ground",
+        "Occupation"
+      ],
+      "superseded_by": "Refined by ruling 13 at line 1027: 'This refines ruling 10 rather than contradicting it, and the refinement is the good part.' What changes at the settlement is not the BORDER but the TENURE — the map moves when you win the roll, and the treaty launders occupied-war into occupied. Ruling 10's recorded cost, that a war with no visible front is hard to read, is answered by C79 at line 1043: the front is the pale part of your own country.",
+      "not_built": "No war, no front and no settlement in js/."
+    },
+    {
+      "round": "conquest",
+      "n": "11",
+      "title": "war must be simple at the level the player touches it.",
+      "page": "War",
+      "also": [
+        "Taking ground"
+      ],
+      "superseded_by": "",
+      "not_built": "Consistent with what is built rather than missing from it. js/military.js opens 'NO UNIT COUNTERS, no stacks, no map tokens' and js/military.js:42 fixes the allocation at three roles. This ruling is a constraint on every other ruling in the round, not a thing to build."
+    },
+    {
+      "round": "conquest",
+      "n": "12",
+      "title": "how a fight resolves.",
+      "page": "Taking ground",
+      "also": [
+        "War"
+      ],
+      "superseded_by": "Not superseded. The question it left open — what losing costs — is answered by ruling 14 (line 1059) and extended by ruling 23 (line 1652).",
+      "not_built": "Partial, and the gap is the round's centre. The Field-vs-Border comparison exists (js/military.js:234–237) but the annex move rolls CivilWar.resolve (js/moves.js:1180), not a fight — so the defender is consulted only as a multiplier on the attacker's own civil-war score. §1a at line 82 states this and calls it 'the thing that is actually missing'. The structural change the ruling needs is that it must fire on EVERY attack."
+    },
+    {
+      "round": "conquest",
+      "n": "13",
+      "title": "ground you take is yours immediately, but it is held under a flag, and there are three flags.",
+      "page": "Occupation",
+      "also": [
+        "Peace treaty",
+        "Hostility"
+      ],
+      "superseded_by": "Extended by ruling 26 (line 1818), which adds the fourth rung the three flags stopped short of — occupied ground eventually becomes ordinary ground. C81 at line 1053 records that ruling 13 alone left held ground 'still carrying some negative outcomes', permanently.",
+      "not_built": "No occupied-war / occupied / occupied-movement flag exists anywhere in js/ — grepped this session, zero hits. The transit prohibition it invents would be a fourth reason in a broken-route explanation list that is already built (DESIGN.md §6.7). The 50% threshold it names is an invented placeholder and the document flags that it sits above the 0.40 secession threshold, so every occupied-movement Area is ground that was coming to you anyway (C80, line 1049)."
+    },
+    {
+      "round": "conquest",
+      "n": "14",
+      "title": "an attack has two outcomes, and failure costs what you already spent.",
+      "page": "Taking ground",
+      "also": [
+        "War"
+      ],
+      "superseded_by": "Refined by ruling 23 (line 1652), stated at line 1670: 'It refines ruling 14 and the refinement is worth stating. Under ruling 23 a failed attack is no longer nothing.' A 30% attack is not 70% wasted — it is 30% conquest and 100% denial. C78's proposed readiness penalty is superseded (§8 q11, line 2860).",
+      "not_built": "The premise IS built and verified: the price of an attack is debited before the roll, per Area and per head (annex.costPerArea = $250M at js/tunables.js:963, annex.costPopScale = $400 at :968). The two-outcome fight it prices is not."
+    },
+    {
+      "round": "conquest",
+      "n": "15",
+      "title": "what goes in a peace treaty, and what refusing one costs.",
+      "page": "Peace treaty",
+      "also": [
+        "Cease-fire",
+        "Occupation"
+      ],
+      "superseded_by": "The 1.25× basis, flagged ambiguous at line 1093 ('needs one word settling and it is a number, so it is flagged rather than guessed'), is settled by ruling 22 (line 1569) — neither the winner's costs nor the loser's, but the PROPOSER's. The four levers and the 'refusing is not free' half stand unchanged.",
+      "not_built": "No peace treaty object in js/. The two mechanisms 'bad things happening' relies on ARE built: crises trigger over the stocks, and elections read war weariness directly (js/power.js:576, js/elections.js)."
+    },
+    {
+      "round": "conquest",
+      "n": "16",
+      "title": "a movement makes DEMANDS, they are shown on a screen of their own, and every demand gets one of three answers.",
+      "page": "Movement demands",
+      "also": [
+        "War"
+      ],
+      "superseded_by": "Completed by ruling 30 (line 2084), which says what declining and never-delivering actually do — the thing ruling 16 asserted ('never implementing makes them more angry than declining would have') without saying in what currency.",
+      "not_built": "Nothing of it exists. js/movements.js has no demand, no answer and no screen; a movement's goals[] are authored flavour text (build/build_parties.py:451). This is the ruling that closes round 1's finding D and it is entirely unbuilt."
+    },
+    {
+      "round": "conquest",
+      "n": "17",
+      "title": "a grudge fades on time, there is a sixth state between Hostile and Peace, and the reunification rivalries never fade at all.",
+      "page": "Diplomatic states",
+      "also": [
+        "Hostility",
+        "Reunification contests"
+      ],
+      "superseded_by": "Not superseded — it is the superseding ruling, and it amends rulings 2 and 7 in place. What Wary COSTS is then set by ruling 39 (line 2526, one acceptance multiplier rather than four scaled costs) and ruling 40 (line 2561, the neighbour's movements do not grow inside you at all). Part (d)'s permanent floor is given its claimant lists by ruling 32.",
+      "not_built": "No clock, no Wary and no floor in js/. NAMING: Aaron wrote 'weary' and the document renames it Wary at line 1176, because war weariness already owns that word as one of the five power stocks (js/power.js:576). That rename is one word and has not been put back to him."
+    },
+    {
+      "round": "conquest",
+      "n": "18",
+      "title": "Hostile honours what is signed and permits nothing new.",
+      "page": "Hostility",
+      "also": [
+        "War",
+        "Diplomatic states"
+      ],
+      "superseded_by": "Not superseded. Completed by ruling 39 (line 2526), which fills the missing middle rung — Hostile is a door that is shut, Wary a door that sticks, Peace a door that opens. The trace at line 2718 records that ruling 18's protection is empty AFTER a war, because a war has already broken every deal, so its real work is in quarrels that never become wars.",
+      "not_built": "No hostile state to gate signing. The trade deal it protects is built with 2/4/8/20-turn terms (A1), which is what gives ruling 18 its free second meaning: a long deal is insurance against a relationship going bad (C94, line 1319)."
+    },
+    {
+      "round": "conquest",
+      "n": "19",
+      "title": "Austin is the legitimate Texas, and the other four are rebels.",
+      "page": "Reunification contests",
+      "also": [
+        "Hostility",
+        "Diplomatic states"
+      ],
+      "superseded_by": "Not superseded. Recorded at line 1418 as a DELIBERATE DEPARTURE from the scenario's stated principle that 'the relations board starts quiet and the player watches it sour' — flagged expressly so nobody later reads the departure as a bug. Whether conquering Austin ends the veto or makes the rebels pariahs for good is C100, open and handed to round 5.",
+      "not_built": "content/scenario-shattered.json seeds no recognition at all and its relations note says the board starts quiet — verified this session. Recognition itself IS built and directed (js/recognition.js, DESIGN.md §6.5), including the measured fact this ruling turns on: the parent state's signature is worth more than every other route to recognition combined."
+    },
+    {
+      "round": "conquest",
+      "n": "20",
+      "title": "a corridor behaves under hostility exactly as a trade deal does.",
+      "page": "Hostility",
+      "also": [
+        "Reunification contests"
+      ],
+      "superseded_by": "Not superseded, but MADE ON A PREMISE THE DOCUMENT THEN PROVES WRONG — line 1443: 'BUT THE RULING WAS MADE ON A PREMISE THAT IS WRONG, AND THE CONSEQUENCE FLIPS. Asked, not assumed.' Aaron believed corridors were standing tolls with no term; they have the same terms a trade deal has, so blocking renewal kills Austin's routes on a clock that nobody chooses and nobody pays a reputation cost for. The wiki must carry the correction alongside the ruling.",
+      "not_built": "No hostile state to gate a grant. The corridor object IS built with a four-turn notice period and a doubled standing penalty for revoking (js/tunables.js:814 transit.noticeTurns = 4, :819 transit.renegeWeight). Verified this session."
+    },
+    {
+      "round": "conquest",
+      "n": "21",
+      "title": "hostility is resolved by time and by diplomacy, never by a treaty.",
+      "page": "Hostility",
+      "also": [
+        "Peace treaty",
+        "Reunification contests"
+      ],
+      "superseded_by": "Not superseded. It REJECTS the proposal in the finding immediately above it (line 1476) that a peace treaty be reachable from Hostile. The consequence is recorded and accepted: two hostile nations have no instrument but war, and the diplomatic action that speeds a thaw is handed to round 5 and marked BLOCKING in §4 at line 680 — without it, the thirty-three opening pairs have no move available at all.",
+      "not_built": "No hostile state and no thaw action in js/. The ledger a thaw would write to IS built and richer than the document assumed: js/relations.js holds sixteen memory kinds, five of them good — granted, traded, recognised, treatied, aided (C99, line 1524)."
+    },
+    {
+      "round": "conquest",
+      "n": "22",
+      "title": "the repayment cap is measured against the war costs of whoever sends the treaty.",
+      "page": "Peace treaty",
+      "also": [
+        "Cease-fire",
+        "Taking ground"
+      ],
+      "superseded_by": "The rule stands; the machinery around it changed. C101 — 'a counter-offer haggles within the basis; it does not re-base it' — is struck MOOT by ruling 34 at line 1603 (strikethrough plus 'MOOT FROM RULING 34'), because there is no counter-offer any more. What 'the cost of a war' MEANS is deferred to round 4 by ruling 23 and marked blocking, so this lever cannot be priced yet.",
+      "not_built": "No treaty and no war-cost accounting in js/. The finding at line 1620 shows the rule breaking on Aaron's own example: the only war cost the game currently debits is the price of an attack, so a pure defender like Idaho has spent nothing and can claim nothing."
+    },
+    {
+      "round": "conquest",
+      "n": "23",
+      "title": "the cost of a war belongs to the economy of war; and an Area under attack produces nothing that turn, whether or not it falls.",
+      "page": "Taking ground",
+      "also": [
+        "Peace treaty",
+        "War"
+      ],
+      "superseded_by": "Not superseded. It refines ruling 14 (line 1670) and it raises C102/C104, the raid risk: with no cooldown left after ruling 24, attacking to deny rather than to win is available every turn for ever, and whether the attack price exceeds a turn of the target's output has never been measured (line 1783).",
+      "not_built": "Not built. The mask it needs sits on data that exists: output is held per Area as a six-element sector vector across 1,688 Areas (data/economy.json), so switching an Area off denies a NAMED KIND of production — food, or the thing that moves everything else — rather than generic income. That is the round's own verification at line 1690; I did not re-measure the 1,688 figure this session."
+    },
+    {
+      "round": "conquest",
+      "n": "24",
+      "title": "one Area per attack, and the per-turn cap and the cooldown both go.",
+      "page": "Taking ground",
+      "also": [
+        "War"
+      ],
+      "superseded_by": "Not superseded. The finding at line 1736 records that it makes sustained conquest FASTER, not slower — 0.6 Areas a turn today against 1.0 under the ruling — because one action a turn had already capped attacking at one strike and the cooldown was the real throttle.",
+      "not_built": "THE CODE DISAGREES, TODAY. js/tunables.js still carries annex.budgetAreas = 3 (line 958) and annex.cooldownTurns = 4 (line 983), and js/moves.js reads both (lines 1043 and 133). Verified this session. Nothing has been changed — a design round writes documents only."
+    },
+    {
+      "round": "conquest",
+      "n": "25",
+      "title": "the four-times-your-size shield is removed.",
+      "page": "Taking ground",
+      "also": [
+        "War"
+      ],
+      "superseded_by": "Not superseded. Its accepted cost is recorded at line 1814: AI nations will now sometimes throw themselves at giants and lose, and the stated fix if that reads as foolish in the alpha is to make the AI weigh the percentage harder, NOT to put the wall back.",
+      "not_built": "THE CODE DISAGREES, TODAY. js/tunables.js:973 annex.strongNeighbourFactor = 4, read by js/moves.js at lines 1013 and 1060, and its own doc reads 'A neighbour this many times your size on BOTH population and GDP cannot be attacked.' Verified this session."
+    },
+    {
+      "round": "conquest",
+      "n": "26",
+      "title": "occupied ground eventually becomes your country, and how fast depends on whether life got better.",
+      "page": "Occupation",
+      "also": [
+        "Taking ground",
+        "Reunification contests"
+      ],
+      "superseded_by": "Not superseded. It closes C26 and C81 and gives the flag ladder its fourth rung. C109's live-comparison default — conquered people compare themselves to their old country AS IT STANDS NOW, and the comparison drops out if that country is gone — was confirmed by Aaron in ruling 41.",
+      "not_built": "Not built, and it is FINDING A. js/game.js:1249 isHomeGround is a Set stamped at birth and calls itself 'THE one definition of home ground, and the only thing anything should ask'. Ruling 26 requires occupied ground to BECOME home ground, which is a one-line change to the single source of truth and must be made deliberately rather than discovered. Quality of Life, the modifier it turns on, is built, and its turn-0 spread of 0.55–0.98 is the widest of the four stocks (DESIGN.md, cited at line 1837; not re-measured this session)."
+    },
+    {
+      "round": "conquest",
+      "n": "27",
+      "title": "Allied is taken now and kept thin; Subject is deferred; and the soldiers you lend are a lever you set.",
+      "page": "Alliances",
+      "also": [
+        "Diplomatic states",
+        "Hostility"
+      ],
+      "superseded_by": "Bounded afterwards by ruling 37 (line 2398), which limits inherited hostility to exactly one hop, and by ruling 38 (line 2491), which makes what you inherit the fastest-cooling hostility in the game. Ruling 28 (line 1965) then gives Allied a second job nobody designed — insulation from your own bad faith.",
+      "not_built": "No alliance in js/, and the lever has nowhere to live: js/military.js:42 fixes the allocation at three roles — garrison, border, field — with no Ally slice. Verified this session. js/coalitions.js builds the opposite object, nations lining up against a target. Subject is deferred to round 5 and the reason is recorded at line 1929: every nation gets one action a turn, and a subject that keeps its action is not subject while one that loses it leaves a player with no game to play."
+    },
+    {
+      "round": "conquest",
+      "n": "28",
+      "title": "breaking a peace treaty turns every neighbour but your allies hostile, at once.",
+      "page": "Peace treaty",
+      "also": [
+        "Alliances",
+        "Hostility"
+      ],
+      "superseded_by": "Not superseded. The finding at line 1986 records that the punishment SATURATES exactly where betrayal is most tempting — the five Texans are already permanently Hostile, so the state cannot get worse — and recommends that the `reneged` ledger entry, which has no floor, carries the cost instead. That is recommended and traced, NOT ruled. C113 (any of the four ways to break a treaty costs the same) was confirmed by Aaron in ruling 41.",
+      "not_built": "No peace treaty to break. The `reneged` entry the proposed fix would use IS built and is deliberately the heavy one (js/relations.js KINDS). The 4.9-neighbours-on-average figure the ruling is sized against is measured from data/adjacency.json at STATE level and the document explicitly flags it as a proxy, because the board is 61 nations cut from 51 states — I did not re-measure it this session."
+    },
+    {
+      "round": "conquest",
+      "n": "29",
+      "title": "a nation may declare war straight from Peace, and the reason is the whole ladder.",
+      "page": "War",
+      "also": [
+        "Diplomatic states",
+        "Peace treaty"
+      ],
+      "superseded_by": "",
+      "not_built": "No declaration in js/. The thing it charges you IS built: standing lost to conquest scales with how much standing you had (js/tunables.js:250 — 'a superpower annexing a neighbour pays more in reputation than an unknown does'), which is what makes C115's claim true, that Hostile is worth manoeuvring into."
+    },
+    {
+      "round": "conquest",
+      "n": "30",
+      "title": "declining makes a movement grow; stringing it along makes it want something else.",
+      "page": "Movement demands",
+      "also": [
+        "Reunification contests"
+      ],
+      "superseded_by": "Not superseded. Finding G at line 2793 records that it built, by accident, the only non-violent exit from a permanent reunification floor: a government that strings its own irredentists along until they give up watches them change verb toward Separate, and a nation whose people have stopped wanting the old country back has stopped contesting the inheritance.",
+      "not_built": "THE ONE PIECE OF NEW MACHINERY THE ROUND ASKS FOR. C120 at line 2103: nothing in the built game ever changes a movement's verb. The faster-growth half is cheap — growthRate already exists as a per-movement multiplier in js/movements.js — the verb change is not. Handed to round 3."
+    },
+    {
+      "round": "conquest",
+      "n": "31",
+      "title": "three kinds of base, on the map as geography; and no nuclear weapons.",
+      "page": "Military bases",
+      "also": [
+        "Movement demands",
+        "Occupation"
+      ],
+      "superseded_by": "Not superseded. NO NUCLEAR WEAPONS is decided, not deferred, and the reason is recorded at line 2121 expressly so it is never reopened as an oversight.",
+      "not_built": "Nothing exists — not the bases and not the data. Searching data/, content/ and build/ for Pearl Harbor, NORAD, Cheyenne, Pensacola, Norfolk, Bremerton and Groton returns only city names in build/build_transport.py and content/capitals.json. Verified this session. The bake is specified at line 2155 and carries one open mapping question flagged for before the bake: Marine Corps → Army, Coast Guard → Naval, Space Force → Air Force."
+    },
+    {
+      "round": "conquest",
+      "n": "32",
+      "title": "five nations claim California, and Cascadia is not one of them.",
+      "page": "Reunification contests",
+      "also": [
+        "Diplomatic states"
+      ],
+      "superseded_by": "Not superseded, but it REPLACES a number — line 2192: 'This replaces a number that had been carried since Sunday as \"a count and not a list\".' The 33 permanent quarrels are now built from named claimants rather than asserted. It also records that the reason printed on the Control Board card was FALSE: Cascadia does not reach into Oregon or Washington, all nine of its Areas are ex-Californian, and three true reasons are given instead.",
+      "not_built": "content/scenario-shattered.json holds no claimant field and no contest — only the dissolve and cession lists. Verified this session. C124 (line 2205) adds a case the machinery cannot express at all: a contest whose strongest claimant would be CREATED IN PLAY by Oregon and Washington uniting."
+    },
+    {
+      "round": "conquest",
+      "n": "33",
+      "title": "both sides table a treaty before the cease-fire ends, and the defender chooses first.",
+      "page": "Cease-fire",
+      "also": [
+        "Peace treaty",
+        "War"
+      ],
+      "superseded_by": "Not superseded — it is the superseding ruling: line 2253, 'This supersedes the first half of ruling 8.' It is then completed by ruling 34 (the defender's own treaty is the counter, no second submission), ruling 35 (both written blind) and ruling 36 (tabling is free). C128 — the attacker stays the attacker for the life of the war, through any number of cease-fires, even if it is losing — was confirmed by Aaron in ruling 41.",
+      "not_built": "No cease-fire and no treaty in js/."
+    },
+    {
+      "round": "conquest",
+      "n": "34",
+      "title": "the defender's own tabled treaty is the counter, and there is exactly one round of offers.",
+      "page": "Cease-fire",
+      "also": [
+        "Peace treaty"
+      ],
+      "superseded_by": "Not superseded — it is the superseding ruling, and it RETIRES TWO RULES written the day before: C101 ('~~A counter-offer haggles within the basis~~ MOOT FROM RULING 34', line 1603) and C118 ('~~Each cease-fire extension is shorter than the last.~~ SUPERSEDED BY RULING 34', line 2067). Both are struck through in place; a reader skimming for the word 'superseded' would miss C101. Its accepted cost is recorded: the end of a war is now brisk, a sealed auction rather than a negotiation.",
+      "not_built": "No cease-fire in js/. NOTE FOR THE WIKI: the closing trace of scenario 3 at line 2706 still narrates the OLD shape — 'a counter-offer extends it, each extension shorter than the last (C118)' — because it was written before ruling 34. That passage must not be quoted as live."
+    },
+    {
+      "round": "conquest",
+      "n": "35",
+      "title": "the two treaties are written blind.",
+      "page": "Cease-fire",
+      "also": [
+        "Peace treaty"
+      ],
+      "superseded_by": "Not superseded. Its accepted cost is recorded at line 2352: a war can continue on a misjudgement, and it is the first place in the round where a player is punished for misreading another nation rather than for miscounting. C130 (line 2357) is open and owned by the design stage — the design document must say WHICH standing facts a player can see at the moment they write, or a sealed bid is a coin toss.",
+      "not_built": "No cease-fire in js/."
+    },
+    {
+      "round": "conquest",
+      "n": "36",
+      "title": "tabling a treaty is free, and C116 is amended.",
+      "page": "Cease-fire",
+      "also": [
+        "War",
+        "Peace treaty"
+      ],
+      "superseded_by": "Not superseded — it is the superseding ruling: it AMENDS C116, the default taken a day earlier that proposing a treaty costs your action. The amended table is printed at line 2380. Its accepted cost is recorded: ending a war is now slightly cheaper than starting one, and that is judged the right way round.",
+      "not_built": "No cease-fire in js/. The principle it protects is built and load-bearing elsewhere: DESIGN.md records that answering a full-screen card does not use your turn."
+    },
+    {
+      "round": "conquest",
+      "n": "37",
+      "title": "inherited hostility travels exactly one hop.",
+      "page": "Alliances",
+      "also": [
+        "Hostility",
+        "Diplomatic states"
+      ],
+      "superseded_by": "Not superseded. SETTLED INTERNALLY at line 2447 — Aaron's own traced example was miscounted by one pair, reading (a) was recommended, and he agreed ('Agree with your recomendation'), so Nevada and Idaho ARE Hostile and his example needs one word. That correction is recorded as part of ruling 37 rather than as a ruling of its own, which makes it easy to miss. C131, the decay version, is banked and explicitly NOT taken (line 2417).",
+      "not_built": "No alliances and no inheritance in js/."
+    },
+    {
+      "round": "conquest",
+      "n": "38",
+      "title": "an inherited quarrel slows the clock but never stops it, and it is the fastest-cooling hostility in the game.",
+      "page": "Alliances",
+      "also": [
+        "Hostility"
+      ],
+      "superseded_by": "Not superseded. C133 at line 2515 derives a consequence the ruling is impossible without, flagged as one line to correct: ruling 4's fifth cause must FIRE ONCE as an event rather than re-check itself each turn, or a thawed pair would snap back to Hostile the moment it reached Peace — the exact blink Wary was invented to prevent. That makes cause 5 structurally unlike causes 1–4 and a design document has to carry the distinction.",
+      "not_built": "No alliances and no cooling clock in js/."
+    },
+    {
+      "round": "conquest",
+      "n": "39",
+      "title": "what Wary costs is a percentage multiplier on acceptance, and the figure belongs to the design stage.",
+      "page": "Hostility",
+      "also": [
+        "Diplomatic states"
+      ],
+      "superseded_by": "Not superseded — it is the superseding ruling: line 2527 says 'Partly supersedes C90', replacing four scaled costs with one acceptance multiplier. C90's remaining load-bearing row is then closed by ruling 40. C134 (line 2551) records the consequence: Wary is a SOFT cost, invisible to a nation that wants nothing, so it cannot be the thing that pressures a passive player — and nothing else in this round is either.",
+      "not_built": "No Wary state in js/. The magnitude is deliberately NOT invented — it is recorded as 'still to be asked about' with no placeholder, per the project's rule that every quantity says where its number comes from."
+    },
+    {
+      "round": "conquest",
+      "n": "40",
+      "title": "a Wary neighbour's movements do NOT grow faster inside you. Off, not reduced.",
+      "page": "Hostility",
+      "also": [
+        "Movement demands",
+        "Diplomatic states"
+      ],
+      "superseded_by": "Not superseded — it is the superseding ruling: it switches ruling 9's third cost off entirely at Wary and closes C90 in full. Its accepted cost is recorded at line 2573: a cooled quarrel leaves nothing behind at home, which is a clean break for something that was recently a real enmity.",
+      "not_built": "No Wary state in js/. The mechanism it switches off does not exist either — movement growth today is geometric toward a per-movement growthCap with a growthRate multiplier (js/movements.js) and has no diplomatic term at all."
+    },
+    {
+      "round": "conquest",
+      "n": "41",
+      "title": "the seven outstanding defaults are confirmed as written.",
+      "page": "Occupation",
+      "also": [
+        "Taking ground",
+        "Peace treaty",
+        "Movement demands"
+      ],
+      "superseded_by": "",
+      "not_built": "A confirmation, not a mechanic — Aaron's 'all fine' to seven defaults a session had taken without asking. The wiki should carry each one on the page it belongs to: C82 the civil-war roll and the attack roll stay separate and stack (Taking ground) · C92 the permanent floor freezes the floor and not the relationship (Diplomatic states / Reunification contests) · C109 conquered people compare themselves to their old country as it stands now (Occupation) · C113 any of the four ways to break a treaty costs the same (Peace treaty) · C117 answering a movement is free and obeying costs what the act costs (Movement demands) · C119 occupied-movement applies from the day the ground is taken while the transit ban waits for the war to end (Occupation) · C128 the attacker stays the attacker for the life of the war (Cease-fire)."
+    },
+    {
+      "round": "politics",
+      "n": "1",
+      "title": "Ruling 1 — three axes, and the roster named for real parties. Recorded at P2 and in DECISIONS.md D185. Superseded in its roster by ruling 2.",
+      "page": "The political board",
+      "also": [
+        "Movements"
+      ],
+      "superseded_by": "Ruling 2, in its ROSTER only — stated three times: 'Superseded in its roster by ruling 2' (line 345), 'This supersedes ruling 1's roster of eight' (line 850), and 'Ruling 2, 9 September, superseding ruling 1's roster' (line 855). The three axes and the real-party naming principle survive intact.",
+      "not_built": "content/ideologies.json still holds six ideologies on two axes (economic, social), measured this run — not three axes and not eight corners."
+    },
+    {
+      "round": "politics",
+      "n": "2",
+      "title": "Ruling 2 — ten positions, authoritarians at both outer ends, the drift partition, and the two conditions. Recorded at P5 and P6, and in D186.",
+      "page": "The political board",
+      "also": [
+        "Release valves"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built. The falling into Despotism or Stateless is deferred by Aaron to docs/FUTURE-IDEAS.md F19 (D187) and no placeholder was invented; the board itself is authoring that has not been done."
+    },
+    {
+      "round": "politics",
+      "n": "3",
+      "title": "Ruling 3 — What a stateless society is, and what it costs to trade with one",
+      "page": "Stateless society",
+      "also": [
+        "Movements"
+      ],
+      "superseded_by": "Not superseded, but one claim inside it is corrected: it marked round 1's finding B closed, which Finding D calls 'true and insufficient' (line 1081), and ruling 13 closes the other half properly.",
+      "not_built": "The ground itself does not exist — every Area belongs to a nation. Both figures match built tunables measured this run: transit.foreignCorridorToll = 0.10 and transit.rateMin = 0.05 in js/tunables.js."
+    },
+    {
+      "round": "politics",
+      "n": "4",
+      "title": "Ruling 4 — Stranded ground goes stateless, and a movement can rise from it",
+      "page": "Stateless society",
+      "also": [
+        "Movements"
+      ],
+      "superseded_by": "SUPERSEDED IN FULL by ruling 5 — 'superseding ruling 4's threshold AND its outcome' (line 472), and struck through as '~~Ruling 4: severed sections totalling more than 2,000,000 become a stateless society.~~ SUPERSEDED.' (lines 480-481). Its surviving half — that a movement can rise out of stateless ground — is carried forward by ruling 13. DO NOT PRESENT THE 2,000,000 THRESHOLD AS LIVE.",
+      "not_built": "Nothing built, and the rule it states is dead."
+    },
+    {
+      "round": "politics",
+      "n": "5",
+      "title": "Ruling 5 — Enveloped territory: over 500,000 it is a nation, under it a stateless society",
+      "page": "Stateless society",
+      "also": [
+        "The political board"
+      ],
+      "superseded_by": "",
+      "not_built": "Nothing built. Two population bars would now exist and only one does: nation.minPop = 250000 is in js/tunables.js this run; the 500,000 envelopment bar is not."
+    },
+    {
+      "round": "politics",
+      "n": "6",
+      "title": "Ruling 6 — A coalition is a shared enemy, and it is measured as total movement share",
+      "page": "Civil war",
+      "also": [
+        "Movements",
+        "Stateless society"
+      ],
+      "superseded_by": "",
+      "not_built": "THE CODE DISAGREES, and the ruling says so: js/game.js line 1596 reads 'for (const m in c.mov) { const s = c.mov[m] / pop; if (s > worst) worst = s; }' — it takes the strongest single movement's share, not the sum. Verified in the file this run. Note also js/coalitions.js is a different thing entirely: nations ganging up on a threatening nation, not movements."
+    },
+    {
+      "round": "politics",
+      "n": "7",
+      "title": "Ruling 7 — Movement members join the militia, not the army",
+      "page": "Movements",
+      "also": [
+        "Civil war"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built: js/military.js line 84 computes manpower = d.pop * t.get('mil.manpowerShare') with no movement term of any kind, and mil.manpowerShare = 0.004 in js/tunables.js. Verified this run."
+    },
+    {
+      "round": "politics",
+      "n": "8",
+      "title": "Ruling 8 — Past 40% the countdown to civil war begins",
+      "page": "Civil war",
+      "also": [
+        "Movement demands"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built: js/civilwar.js's own header names its three triggers and all three are annexation-based — the annexation flips the plurality, the annexed GDP exceeds the nation's, the annexed population exceeds the nation's. There is no internal path to civil war. Verified this run."
+    },
+    {
+      "round": "politics",
+      "n": "9",
+      "title": "Ruling 9 — A government can give up and join the movement",
+      "page": "Release valves",
+      "also": [
+        "Movements"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built, and it is not the same as the built 'going with the breakaway' (Game.setPlayer, which moves the player's seat). No threshold was named by Aaron and none was invented."
+    },
+    {
+      "round": "politics",
+      "n": "10",
+      "title": "Ruling 10 — The two forties are two dials with two jobs, and the values go to the architect",
+      "page": "Civil war",
+      "also": [
+        "Movements"
+      ],
+      "superseded_by": "",
+      "not_built": "Half built: the per-county dial exists as secession.countyThreshold = 0.40 in js/tunables.js (verified this run). The per-nation dial the ruling asks for as a separate tunable does not exist."
+    },
+    {
+      "round": "politics",
+      "n": "11",
+      "title": "Ruling 11 — The one table: five moves, six verbs, and the built valves were the answer all along",
+      "page": "Release valves",
+      "also": [
+        "Movement demands",
+        "Unions"
+      ],
+      "superseded_by": "",
+      "not_built": "Partly built: the four valves exist (DESIGN.md §7.4, js/moves.js). The six verbs do not — data/parties.json carries no verb field on any of its 32 movements, measured this run, so the table has no rows to key on."
+    },
+    {
+      "round": "politics",
+      "n": "11a",
+      "title": "Ruling 11a — The \"remove the want\" column belongs to the ADJECTIVE, and there are five of them",
+      "page": "Release valves",
+      "also": [
+        "Movements"
+      ],
+      "superseded_by": "Not superseded. Its own tail question is struck through and answered: '~~Still open: whether answering a movement costs the turn's action…~~ ANSWERED by ruling 12' (lines 1036-1038).",
+      "not_built": "Not built: data/parties.json carries eight 'type' values (autonomist, economic, ideological, indigenous, irredentist, reunification, separatist, theocratic-separatist), measured this run — the ruling collapses these to five, and that merge has not been made in the data."
+    },
+    {
+      "round": "politics",
+      "n": "12",
+      "title": "Ruling 12 — Demands are free, mandatory, and answered before the turn can move",
+      "page": "Movement demands",
+      "also": [
+        "The turn"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built, and the ruling measures it itself: there is no petition or demand machinery in the game. Confirmed this run — 'petition' appears nowhere in js/, and the grant/refuse card in js/panels.js is the transit request from another nation."
+    },
+    {
+      "round": "politics",
+      "n": "13",
+      "title": "Ruling 13 — On ungoverned ground a movement grows by attraction, not grievance",
+      "page": "Stateless society",
+      "also": [
+        "Movements",
+        "Authority"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built, because there is no ungoverned ground to grow on. The growth model it subtracts a term from IS built (js/sentiment.js)."
+    },
+    {
+      "round": "politics",
+      "n": "14",
+      "title": "Ruling 14 — Martial law: fewer rules, not more soldiers",
+      "page": "Release valves",
+      "also": [
+        "Authority",
+        "The turn"
+      ],
+      "superseded_by": "Not superseded, but one part is deferred by Aaron: whether it costs the turn's action moves to the mechanics stage because 'we need to change the whole one action per turn' — filed to round 7.",
+      "not_built": "Not built: the word 'martial' appears nowhere in js/ or DESIGN.md, measured this run. The two things it stands between DO exist — a garrison that suppresses and costs liberties, and election.stealBelow = 0.32 in js/tunables.js."
+    },
+    {
+      "round": "politics",
+      "n": "15",
+      "title": "Ruling 15 — The Farmers Union wants a union, and a Unify movement's demand is that YOU go and ask",
+      "page": "Unions",
+      "also": [
+        "Movement demands",
+        "Movements"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built. The X% at which the demand fires was deliberately left unset by Aaron and no number was substituted; finding I then constrains it to sit below 0.30, because data/parties.json gives The Farmers Union and Great Lakes Free Trade a growthCap of 0.30 — verified this run."
+    },
+    {
+      "round": "politics",
+      "n": "16",
+      "title": "Ruling 16 — A proposal has three answers, and the middle one is the interesting one",
+      "page": "Unions",
+      "also": [
+        "Movements"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built. The occupation penalties a yes waives are all real and built (Authority, Influence, liberty.wOccupation, war weariness, the superlinear treasury surcharge), but nothing can offer or accept a union by agreement — the built 'Unite' is a forced merger decided by a peace roll (DESIGN.md §6)."
+    },
+    {
+      "round": "politics",
+      "n": "17",
+      "title": "Ruling 17 — What decides the answer: their appetite, your weight, and the relationship as a gate",
+      "page": "Unions",
+      "also": [
+        "Authority"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built as a decision, though every term it reads exists — affinity, Authority, Influence and the relationship are all live in the model. Its visibility question (can a player see a neighbour's Authority and Influence?) was deferred by Aaron on 11 September, filed with C130."
+    },
+    {
+      "round": "politics",
+      "n": "18",
+      "title": "Ruling 18 — Asking discharges the demand, and the movement comes back pointing somewhere else",
+      "page": "Movement demands",
+      "also": [
+        "Unions"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built. The quiet period before the movement asks again was deferred, not invented."
+    },
+    {
+      "round": "politics",
+      "n": "19",
+      "title": "Ruling 19 — Proposing costs the turn's action, by precedent rather than by a new decision",
+      "page": "The turn",
+      "also": [
+        "Unions",
+        "Movement demands"
+      ],
+      "superseded_by": "Flagged as conditionally dependent rather than superseded: 'When the one-action rule changes, this ruling changes with it — it is a consequence of that rule, not an independent decision' (line 1469 area). Aaron has already said the one-action rule needs changing, filed to round 7.",
+      "not_built": "A default taken, not asked — one line to reverse. Nothing built, because proposing a union does not exist."
+    },
+    {
+      "round": "politics",
+      "n": "20",
+      "title": "Ruling 20 — A split region goes ungoverned, and its edge counties choose a neighbour over the winner",
+      "page": "Stateless society",
+      "also": [
+        "Civil war",
+        "Movements"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built. Note the arithmetic it rests on, which the round measured and I did not re-measure this run: 1,181 of 1,688 Areas are a single county, so for most Areas 'the edge counties' is the whole Area. The margin at which a county moves was deferred, not invented."
+    },
+    {
+      "round": "politics",
+      "n": "21",
+      "title": "Ruling 21 — Of round 1's four new valves, only one is new: the referendum",
+      "page": "Release valves",
+      "also": [
+        "Movements"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built: 'referendum' appears nowhere in js/ or DESIGN.md, measured this run. The election machinery it re-points does exist, including election.stealBelow = 0.32 in js/tunables.js. Funding propaganda before a vote is filed to docs/FUTURE-IDEAS.md F21 and is not part of this ruling."
+    },
+    {
+      "round": "politics",
+      "n": "22",
+      "title": "Ruling 22 — The movement that changes its mind counts broken promises, and never changes back",
+      "page": "Movement demands",
+      "also": [
+        "Movements",
+        "The federal remnant"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built, and the round names it as the only piece of machinery in the whole design that does not re-point something that exists. The count of broken promises was deferred, not invented."
+    },
+    {
+      "round": "politics",
+      "n": "23",
+      "title": "Ruling 23 — A nation's stance toward the old country is read, not stored — and it gives the remnant a clock it cannot stop",
+      "page": "The federal remnant",
+      "also": [
+        "Movements",
+        "Movement demands"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built, and it has nothing to read from: there is no United States nation in the build (no such nation string in data/ or content/ this run), and no movement in data/parties.json carries a verb, so the Rejoin / Reunify test the posture reads has no field to read."
+    },
+    {
+      "round": "politics",
+      "n": "24",
+      "title": "Ruling 24 — The remnant opens weak because its losses are written into the world, not because a number says so",
+      "page": "The federal remnant",
+      "also": [
+        "Authority"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built: content/scenario-shattered.json partitions Texas, California and the Mormon Corridor and nothing else, measured this run — there is no remnant nation and no seeded record of losses. The Authority terms it would feed (recent losses, Age, Tenure) are built."
+    },
+    {
+      "round": "politics",
+      "n": "25",
+      "title": "Ruling 25 — A federation is a real form, not a name: many states, a flat internal toll, an elected leader and a turn of its own",
+      "page": "Federation",
+      "also": [
+        "Unions",
+        "The turn"
+      ],
+      "superseded_by": "Not superseded. All seven of the questions it opens are answered inside this round — by rulings 26, 27, 29, 30/31, 34, 36 and 36's default, plus 35 for the separate-peace question ruling 28 opened.",
+      "not_built": "Not built: 'federation' appears in js/ only in js/identity.js, as a comment about a nation named 'Fairfax Federation' on the leaderboard. Verified this run. Aaron's figures — 10%, the 5/5 split and the 20% worked example — are his and become tunables at the mechanics stage; the election interval was deferred."
+    },
+    {
+      "round": "politics",
+      "n": "26",
+      "title": "Ruling 26 — The federation's flat toll replaces what members had with each other, and that is the price of joining",
+      "page": "Federation",
+      "also": [
+        "Authority"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built. The corridor machinery it would override IS built and works the opposite way — negotiated, per-mode, per-direction, with a notice period."
+    },
+    {
+      "round": "politics",
+      "n": "27",
+      "title": "Ruling 27 — The 5% goes to the ground that is crossed, and direct neighbours pay half",
+      "page": "Federation",
+      "also": [
+        "Stateless society"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built. Aaron's own caveat is recorded rather than solved: multi-hop inside the federation is not ruled, and the build compounds tolls on what arrives, so 'flat' and 'compounding' are not the same arithmetic."
+    },
+    {
+      "round": "politics",
+      "n": "28",
+      "title": "Ruling 28 — An attack on one member is a war with all of them",
+      "page": "Federation",
+      "also": [
+        "Civil war"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built. Traced at the close (line 2657 onward) and found not to be a cascade — round 2's one-hop hostility is widened, not deepened — but finding J flags the opposite risk as the federation's largest balance question and an alpha watch item."
+    },
+    {
+      "round": "politics",
+      "n": "29",
+      "title": "Ruling 29 — A refused petition is not a wall: declare anyway, and you are out",
+      "page": "Federation",
+      "also": [
+        "The turn"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built. What becomes of a leaver's standing agreements goes to the mechanics stage."
+    },
+    {
+      "round": "politics",
+      "n": "30",
+      "title": "Ruling 30 — Inside a federation you are at peace with every member. Full stop",
+      "page": "Federation",
+      "also": [
+        "Unions"
+      ],
+      "superseded_by": "Not superseded. The collision it found with round 2's permanent rivalries is resolved by ruling 31, and the wary-but-not-hostile texture it removed is parked as docs/FUTURE-IDEAS.md F23.",
+      "not_built": "Not built."
+    },
+    {
+      "round": "politics",
+      "n": "31",
+      "title": "Ruling 31 — The contest claimants carry a modifier: they can never join a union. Its BREADTH is open",
+      "page": "Federation",
+      "also": [
+        "Unions",
+        "Movements"
+      ],
+      "superseded_by": "PARTLY OVERTURNED by ruling 33, which is explicit: 'overturning the suppression Aaron first asked for' (line 2078). The modifier blocking contest claimants from joining a union STANDS. Its second half — that no union- or federation-seeking movement grows inside contested boundaries — is DEAD, and presenting it as live would delete 88.6 million people from the largest Unify movement in the game (finding G).",
+      "not_built": "Not built. Aaron applied it to 'those five' while Texas was under discussion and it is recorded as covering all four contests — one line to narrow if he meant Texas alone."
+    },
+    {
+      "round": "politics",
+      "n": "32",
+      "title": "Ruling 32 — A union is ONE state; a federation is a union OF states. They are different wants",
+      "page": "Unions",
+      "also": [
+        "Federation",
+        "Release valves"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built — neither object exists as ruled. This is the distinction the whole federation design rests on, and Aaron made it himself."
+    },
+    {
+      "round": "politics",
+      "n": "33",
+      "title": "Ruling 33 — Nothing is suppressed: the federation IS the answer to a union nobody can give",
+      "page": "Federation",
+      "also": [
+        "Movements",
+        "Release valves"
+      ],
+      "superseded_by": "",
+      "not_built": "Nothing to build — this ruling declines to build the suppression ruling 31 asked for. It is the fifth thing this round refused to build."
+    },
+    {
+      "round": "politics",
+      "n": "34",
+      "title": "Ruling 34 — The members vote you in, anyone may walk out, and three is the floor",
+      "page": "Federation",
+      "also": [],
+      "superseded_by": "",
+      "not_built": "Not built. The floor of three is taken from Aaron's own words — 'Alliance is two' — rather than invented."
+    },
+    {
+      "round": "politics",
+      "n": "35",
+      "title": "Ruling 35 — The federation makes peace as one; a member that wants out leaves first",
+      "page": "Federation",
+      "also": [],
+      "superseded_by": "",
+      "not_built": "Not built. The round-2 peace machinery it preserves — both sides table terms blind and the defender chooses — is itself a design, not code."
+    },
+    {
+      "round": "politics",
+      "n": "36",
+      "title": "Ruling 36 — The outside 15% splits evenly, and that is what buys the small nations",
+      "page": "Federation",
+      "also": [],
+      "superseded_by": "",
+      "not_built": "Not built. It also carries a default taken rather than asked — if the leader is conquered or leaves, the members hold an election immediately — which answers ruling 25's sixth question and is one line to reverse."
+    },
+    {
+      "round": "politics",
+      "n": "37",
+      "title": "Ruling 37 — A federation trades authority for influence, and the model already computes both",
+      "page": "Federation",
+      "also": [
+        "Authority",
+        "Unions"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built as an act, though both stocks it moves are built (DESIGN.md §4.1, js/power.js) and Influence already counts Reach. Its irony — that joining makes your own future unions harder — was traced at the close and resolved into a funnel rather than a trap."
+    },
+    {
+      "round": "politics",
+      "n": "38",
+      "title": "Ruling 38 — The fervour of a new country is a tolerance, and it ends worse than neutral",
+      "page": "Authority",
+      "also": [
+        "Movements"
+      ],
+      "superseded_by": "",
+      "not_built": "Half built: the honeymoon exists as four turns of borrowed Authority against a GDP cut (js/game.js, js/power.js, js/world.js, js/scenario.js, js/tunables.js, verified this run). The tolerance applied to grievance and the fade below baseline are NOT built, and how far below and for how long were deferred, not invented."
+    },
+    {
+      "round": "politics",
+      "n": "39",
+      "title": "Ruling 39 — A vassal keeps its own government, and its people blame that government",
+      "page": "Authority",
+      "also": [
+        "Movements"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built: measured this run, 'vassal' appears in js/ only in js/tunables.js and js/victory.js, and in both places only to say a vassal contract was deliberately never invented because the save format has nowhere to put one. What submission IS stays round 5's."
+    },
+    {
+      "round": "politics",
+      "n": "40",
+      "title": "Ruling 40 — Three words for three things: ideology, party, movement",
+      "page": "The political board",
+      "also": [
+        "Movements",
+        "Release valves"
+      ],
+      "superseded_by": "",
+      "not_built": "Not built. Today one word does both jobs — content/ideologies.json names six 'ideologies' that are simultaneously the positions and the parties a nation governs as, verified this run. The change-course pricing this ruling hands to geometry is currently a treasury cost scaled by axis distance plus an Authority hit (DESIGN.md §7.4)."
+    },
+    {
+      "round": "politics",
+      "n": "41",
+      "title": "Ruling 41 — The three capped-out separatists get a ceiling above the line",
+      "page": "Movements",
+      "also": [
+        "Stateless society",
+        "Unions"
+      ],
+      "superseded_by": "",
+      "not_built": "EXPLICITLY SPECIFIED AND NOT MADE — the ruling says so itself: 'The change, specified exactly, and NOT made here'. Measured against data/parties.json this run, all three still read growthCap 0.35: Sagebrush Rebellion, Acadiana and El Paso United. The ruling asks for 0.45. This is live work for whoever builds next."
+    }
+  ]
+}

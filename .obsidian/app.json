@@ -1,0 +1,22 @@
+{
+  "alwaysUpdateLinks": true,
+  "newLinkFormat": "shortest",
+  "useMarkdownLinks": false,
+  "attachmentFolderPath": "docs/wiki/_attachments",
+  "showLineNumber": true,
+  "readableLineLength": true,
+  "userIgnoreFilters": [
+    "js/",
+    "css/",
+    "lib/",
+    "tests/",
+    "build/",
+    "data/",
+    "content/",
+    "dist/",
+    ".claude/",
+    "docs/CODE-REVIEW-FINDINGS.md",
+    "docs/CODE-REVIEW.md",
+    "docs/control-board/"
+  ]
+}

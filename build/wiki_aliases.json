@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "_what_this_is": "Authored. It holds NAMES, never facts. The design documents call things by prose names; the game data calls them by ids. This file is the join between the two, and it is hand-maintained because no mechanical route from a prose name to a data id exists. Every fact about a movement is read out of data/parties.json at run time, never from here.",
+  "_measured": "All 32 movement ids read from data/parties.json on 2026-09-12. The six struck movements were struck by secession ruling 45, docs/design/secession-ideation.md line 1384, read the same day.",
+
+  "movements": {
+    "Christian Nationalism": { "id": "christian-nationalism", "live": true, "aliases": ["Christian Nationalists"], "note": "Collides with the political position of the same name. Politics ruling 40 says both must survive as separate things - never merge the pages." },
+    "Cascadian Separatists": { "id": "cascadian-separatists", "live": true, "aliases": ["Cascadia", "the Cascadia movement", "Greater Cascadia movement"], "note": "Cascadia is also a nation and also a cultural region. Three different objects, one word." },
+    "New England United": { "id": "new-england-united", "live": true, "aliases": ["the United States of New England"] },
+    "Blue-Collar Populist": { "id": "blue-collar-populist", "live": true, "aliases": ["Blue-Collar Populists"] },
+    "A Free Texas": { "id": "a-free-texas", "live": true, "aliases": ["Free Texas", "a Free Texas"] },
+    "Deseret": { "id": "deseret", "live": true, "aliases": ["the Deseret movement"], "note": "Deseret is also a nation and its ground is the cultural region named Mormon Corridor." },
+    "New Confederacy": { "id": "new-confederacy", "live": true, "aliases": ["the New Confederacy"], "note": "Secession ruling 52 marks this name for change. It has not changed yet." },
+    "Great Lakes Free Trade": { "id": "great-lakes-free-trade", "live": true, "aliases": [] },
+    "New Absaroka": { "id": "new-absaroka", "live": true, "aliases": ["Absaroka"] },
+    "El Paso United": { "id": "el-paso-united", "live": true, "aliases": [] },
+    "Northern Christian Kingdom": { "id": "northern-christian-kingdom", "live": true, "aliases": [] },
+    "The Farmers Union": { "id": "the-farmers-union", "live": true, "aliases": ["Farmers Union", "the Farmers Union"] },
+    "Greater Idaho": { "id": "greater-idaho", "live": true, "aliases": [] },
+    "State of Jefferson": { "id": "state-of-jefferson", "live": true, "aliases": ["Jefferson"] },
+    "Native American Confederation": { "id": "native-american-confederation", "live": true, "aliases": [] },
+    "Alaskan Independence": { "id": "alaskan-independence", "live": true, "aliases": [] },
+    "Hawaiian Sovereignty": { "id": "hawaiian-sovereignty", "live": true, "aliases": [] },
+    "Front Range Republic": { "id": "front-range-republic", "live": true, "aliases": [], "note": "Also the name of a proposed nation in round 1's break-up story." },
+    "Sonoran Republic": { "id": "sonoran-republic", "live": true, "aliases": [] },
+    "Rio Grande Union": { "id": "rio-grande-union", "live": true, "aliases": [] },
+    "Franklin": { "id": "franklin", "live": true, "aliases": ["the State of Franklin"] },
+    "Acadiana": { "id": "acadiana", "live": true, "aliases": [] },
+    "New England Revivalist": { "id": "new-england-revivalist", "live": true, "aliases": [] },
+    "Central States Union": { "id": "central-states-union", "live": true, "aliases": [] },
+    "California Republic": { "id": "california-republic", "live": true, "aliases": [] },
+    "Sagebrush Rebellion": { "id": "sagebrush-rebellion", "live": true, "aliases": ["the Sagebrush Rebellion", "Sagebrush"] },
+
+    "Libertarians": { "id": "libertarians", "live": false, "struck_by": "secession ruling 45", "aliases": [], "note": "Struck as a movement - it is politics, not a movement. Still present in data/parties.json. Filed in docs/design/old-ideas.md." },
+    "Anarcho-Capitalist": { "id": "anarcho-capitalist", "live": false, "struck_by": "secession ruling 45", "aliases": ["the Anarcho-Capitalists"], "note": "Struck as a movement. Survives as the political POSITION Anarcho-Capitalism, which is a different thing and gets its own page." },
+    "Eastern Progressives": { "id": "eastern-progressives", "live": false, "struck_by": "secession ruling 45", "aliases": [] },
+    "Techno-Autocrat": { "id": "techno-autocrat", "live": false, "struck_by": "secession ruling 45", "aliases": ["Techno-Autocrats"] },
+    "Delmarva Republic": { "id": "delmarva-republic", "live": false, "struck_by": "secession ruling 45", "aliases": [], "note": "Struck as a movement outright." },
+    "Fifty-First State": { "id": "fifty-first-state", "live": false, "struck_by": "secession ruling 45", "aliases": [], "note": "Struck as a movement outright." }
+  },
+
+  "known_gaps": [
+    "THE VERBS ARE NOT IN THIS REPOSITORY. Every movement carries a verb (Separate, Rejoin, Unify, Reunify, Expand, Reconquer) and an adjective, and rounds 1-3 rule on them constantly. data/parties.json has no verb field on any movement - its keys are id, chance, share, ideology, type, growthCap, growthRate, goals, counties, core. The verbs live only in the published Movement Register web page. Until that register comes into the project as a file, no movement page can state its own verb.",
+    "NO NATION HAS A COMMITTED ID. The only nation-shaped file is data/state.json, which is an autosave from turn 4 of one playthrough and is gitignored. Nation pages are keyed on their display name until somebody authors a nations file.",
+    "THE nN ID SHAPE IS USED BY THREE UNRELATED THINGS whose numbers overlap - nations, the 101 cultural regions, and the 24 geographical regions. Nation n12 is Deseret; cultural n12 is SoCal. Never key anything on a bare nN.",
+    "THREE POLITICAL VOCABULARIES COEXIST. The running game knows six ideologies (red, blue, green, yellow, orange, purple - purple is carried by zero movements). Politics rulings 1 and 2 replaced them with ten positions on three axes. docs/design/political-spectrum.md holds a third scheme of twenty-seven. Movement pages give the ten-position answer and note what the game currently runs.",
+    "THREE GROWTH CAPS ARE OUT OF DATE IN THE DATA. Politics ruling 41 raises the Sagebrush Rebellion, Acadiana and El Paso United from 0.35 to 0.45. The ruling states it was specified and not applied, because a design session does not touch data/. data/parties.json still reads 0.35 for all three, verified 2026-09-12."
+  ]
+}
