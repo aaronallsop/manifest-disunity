@@ -84,3 +84,17 @@ Add one with `/rule` whenever a mistake earns it. Number them; never delete one.
    Nothing had got slower; the old figure was from somewhere else. The comment beside it was also
    comparing a different board — the intact 51 states, not the shattered 61. **Before treating an old
    figure as a baseline, reproduce it at the commit that wrote it.**
+
+
+10. **Write the handoff last, and if you carry on working, write another one.** Cost: a morning on
+    9 September, when Aaron opened a session instructing work that had already been finished
+    overnight, because the session that finished it never wrote a replacement handoff. **Then it
+    happened again, worse:** a handoff written at 14:49 on 9 September was followed by fourteen
+    rulings and twenty-four commits across two sessions, and still said round 3 had not started.
+    The document was honest when it was written; nothing noticed it had stopped being true.
+    **A handoff is only true up to the commit that wrote it.** The session-start hook now measures
+    that and warns, and `/signoff` step 7 ends with a check that must print `0` — but the rule is
+    yours to keep either way: **if you commit after writing the handoff, the handoff is now wrong.**
+    Note what the *first* fix was, because it did not work: a sentence of advice inside the handoff
+    itself, in bold, telling the next session to write its handoff. The next session that failed had
+    that sentence in front of it. **Advice inside the artefact cannot protect the artefact.**

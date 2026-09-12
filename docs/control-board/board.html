@@ -304,58 +304,114 @@ tr:last-child td{border-bottom:0}
 const BOARD = {
   project: "Manifest Disunity",
   livery: "tower",                      // tower | mars | violet | deep | slate
-  updated: "2026-09-09 12:40",          // when you last republished, local time
+  updated: "2026-09-11 18:15",          // when you last republished, local time
 
   // Three or four measured figures. value: number|string, or null = "not yet measured".
   figures: [
-    { label: "Design rounds done",      value: "2 of 7 — round 3 open" },
+    { label: "Design rounds done",      value: "2 of 7 — round 3 part-way" },
+    { label: "Rulings so far in round 3", value: 14 },
     { label: "Economy-alpha stages done",  value: "A0–A5" },
     { label: "Current version",         value: "v0.6" },
-    { label: "Tests green",             value: 956 },
+    { label: "Tests green — measured 8 Sep, no code touched since 5 Sep", value: 956 },
     { label: "Industry figures that are real, today",   value: "0%" },
     { label: "Industry figures real after the re-bake", value: "75%, not 84%" },
   ],
 
   // The single most important true thing right now. tone: "bad" | "warn" | "ok" | "neutral".
   headline: {
-    tone: "ok",
-    text: "ROUND TWO IS FULLY CLOSED AND NOTHING IS WAITING ON YOU. Conquest is designed: forty-one "
-        + "rulings, nine of them this morning. All three cards that were sitting here are answered, "
-        + "and the seven decisions I had taken in your place are confirmed as you left them. Nothing "
-        + "is broken. No code or data was touched — this was a design session and it wrote only "
-        + "documents.\n\n"
-        + "FIRST, THE THING THAT WENT WRONG, BECAUSE IT WAS OURS AND NOT YOURS. You came into this "
-        + "session working from the written summary of Monday evening, which said round two was "
-        + "half-finished with sixteen rulings outstanding. It was not — you had closed it overnight. "
-        + "The session that did that work never wrote a replacement summary, so the newest one on "
-        + "file described a world fifteen rulings out of date, and you were about to spend a morning "
-        + "redoing work you had already paid for. That is a process fault and it has been fixed at "
-        + "the source: the standing brief a new session reads now carries which round is live.\n\n"
-        + "SECOND, A CARD ON THIS BOARD GAVE YOU A FALSE REASON. The Cascadia card argued it should "
-        + "be excluded from the California quarrel because it reaches into Oregon and Washington. It "
-        + "does not — every acre of it is ex-Californian, and neither Oregon nor Washington breaks up "
-        + "at all. Your ruling was right anyway and there are three true reasons for it, but you were "
-        + "given a wrong one and you should know that.\n\n"
-        + "WHAT YOU SETTLED. The five nations that fight over California, and Cascadia is not among "
-        + "them — the board opens with thirty-three permanent quarrels, and that figure can now be "
-        + "rebuilt from your own rulings instead of taken on trust. How a war ends: both sides write "
-        + "their terms blind on the same turn, and the country that was attacked opens both envelopes "
-        + "and chooses. How far a quarrel spreads through friendships: one step, never further. "
-        + "Whether a quarrel you caught from a friend ever cools: yes, faster than any other kind, "
-        + "because it was never your fight. And what being wary of somebody actually costs.\n\n"
-        + "TWICE THIS MORNING A DECISION OF YOURS DELETED A RULE INSTEAD OF ADDING ONE. Choosing one "
-        + "round of offers retired the shrinking negotiation window written the night before, and "
-        + "then retired a second rule about how counter-offers are priced, because there are no "
-        + "counter-offers any more. Both are struck through with their reasoning kept, so you can see "
-        + "a number that was invented and found unnecessary inside a day. That is the direction you "
-        + "keep asking for and it is worth naming when it happens.\n\n"
-        + "NEXT IS ROUND THREE, POLITICS — the four things a government can do when a region wants to "
-        + "leave, and the one piece of machinery this design has asked for that does not exist yet: a "
-        + "movement that changes what it wants when you string it along.",
+    tone: "warn",
+    text: "THIS BOARD, AND EVERY OTHER RECORD OF THE PROJECT, WAS TWO DAYS BEHIND THE WORK — AND IT "
+        + "IS THE SECOND TIME. The written summary a new session reads still said politics had not "
+        + "started. It had: fourteen decisions of yours were made on Wednesday evening and Thursday. "
+        + "The plan, the standing brief and this page all told the same out-of-date story.\n\n"
+        + "NOTHING IS BROKEN AND NOTHING IS LOST. Every one of those fourteen was written down as it "
+        + "was made. No code, no data and no rules of play have been touched since 5 September — the "
+        + "last three sittings wrote only design documents. What was at risk was your morning, not "
+        + "your game: a session reading that summary would have asked you to decide things you had "
+        + "already decided.\n\n"
+        + "WHAT IS ACTUALLY TRUE. Politics is part-way through. You have settled: the single table of "
+        + "what a government can do about every kind of movement — five moves against six wants, and "
+        + "the discovery that the four things you could already do were general moves nobody had "
+        + "noticed were general; what a region with no government is, and that it is the cheapest "
+        + "ground on the continent to trade with; that stranded and surrounded ground goes ungoverned "
+        + "and can grow a movement of its own; that a movement's demands cost you nothing to answer "
+        + "and must be answered before your turn can move; that past forty per cent a countdown to "
+        + "civil war begins, and that a government may give up and join the movement instead; and "
+        + "martial law — which takes away rules rather than handing you soldiers, suspends the "
+        + "election only when it covers over half the country, and costs a decent government far more "
+        + "than a rotten one, because a rotten one can simply steal the election instead.\n\n"
+        + "WHAT I DID ABOUT IT TODAY. Straightened all four records, so the round now carries its own "
+        + "running score — what is answered, what is still open, and what is yours — and this page, "
+        + "the plan and the brief agree with it.\n\n"
+        + "THE CAUSE, AND THE FIX, BECAUSE ADVICE ALREADY FAILED ONCE. A summary is only true up to "
+        + "the moment it is written, and twice a session has carried on working afterwards and never "
+        + "replaced it. The fix after the first time was a warning written inside the summary itself "
+        + "— and the session that failed the second time had that warning in front of it. So it is "
+        + "now measured instead of remembered: before a new session reads anything at all, it is told "
+        + "how much work has landed since the summary was written and what that work was, and it must "
+        + "straighten the record before starting anything new. Tested against this project, it names "
+        + "all twenty-four pieces of work that had landed. It is installed on both your machines and "
+        + "on every project, not just this one.\n\n"
+        + "TWO THINGS ARE NOW WAITING ON YOU below. Both have been sitting unasked since Wednesday — "
+        + "they came out of your own rulings and neither ever reached this page. That is the same "
+        + "fault in a smaller shape, and it is why the queue is not empty today.",
   },
 
+
   // Only decisions that are genuinely the owner's. Ids are permanent.
-  decisions: [],   // Empty is the correct state. Answered cards are recorded in the round document and in the saved answers.
+  // Only decisions that are genuinely the owner's. Ids are permanent.
+  decisions: [
+    { id: "farmers-union",
+      title: "A movement of 22 million people has never been in front of you",
+      evidence: "The game carries 32 separatist movements. The register you marked up on 7 September "
+              + "holds 32 rows — 31 of them, plus the Canadian Refuge you added yourself. The one "
+              + "that has never been in front of you is THE FARMERS UNION, and it is the second "
+              + "largest movement in the game: 983 counties and 22.6 million people, behind only the "
+              + "New Confederacy. Every other movement has been told what it wants. This one has "
+              + "not, because it was never on the list. Its ground crosses thirteen states fairly "
+              + "evenly — between 51 and 103 counties in each of Missouri, Kansas, Iowa, Nebraska, "
+              + "Illinois, Indiana, Minnesota, Oklahoma, South Dakota, Michigan, Ohio, Wisconsin and "
+              + "North Dakota — so it has no home state to leave from. And there are two different "
+              + "stories about what it even is: your own note from round 1 says seven governors "
+              + "SIGNED it, which describes an agreement between governments, while the game builds "
+              + "it as a popular movement that grows county by county like the others.",
+      cost: "Leaving it open is the expensive choice. Five other movements share ground with it and "
+          + "none of those five pairs can be judged until this one has a want — so it is holding up "
+          + "part of the politics round. If it is a movement it needs a want like every other, and "
+          + "on its size it becomes one of the largest pressures in the farm belt. If it is really "
+          + "an agreement between governments it comes off the movement list altogether and belongs "
+          + "with diplomacy, two rounds away.",
+      recommendation: "Both, in the order that costs least. Make it a movement now and give it "
+                    + "UNIFY — the farm states pulling together rather than any one of them walking "
+                    + "out. That is what its own ground says (thirteen states, no home) and it "
+                    + "matches every ruling you have already made: all three of the economic "
+                    + "movements you have judged — the Blue-Collar Populists, the Central States "
+                    + "Union and Great Lakes Free Trade — you gave Unify, and you wrote of the "
+                    + "first that they are not trying to be a nation so much as an economic area. "
+                    + "Then file the governors' bloc separately for round 5, where blocs belong. A "
+                    + "movement and a bloc sharing a name is not a contradiction: the movement is "
+                    + "the farmers, the bloc is the governors who signed for them." },
+
+    { id: "area-split-between-movements",
+      title: "When a region's anger is split between two movements, who ends up holding it?",
+      evidence: "A region breaks away when a single movement organises 40% of it — that is the "
+              + "number in the game today. Your own example on Wednesday was 26% for Cascadia and "
+              + "26% for Greater Idaho inside the same Oregon, and you ruled that they count "
+              + "TOGETHER against the government, which is what makes a coalition dangerous without "
+              + "inventing any machinery for one. Together they are 52%, over the line. Neither is "
+              + "over it alone. Your ruling said the government loses control. It did not say who "
+              + "ends up holding the ground, and nothing in the game answers it.",
+      cost: "If the larger movement takes it, a movement organising a quarter of a region inherits "
+          + "a place three-quarters of it did not choose, and the rival movement is swallowed for "
+          + "free. If nobody takes it, the region becomes ungoverned ground — which already exists, "
+          + "because you ruled it into being last Wednesday — and both movements carry on inside it "
+          + "with no government to push against.",
+      recommendation: "Nobody takes it: it goes ungoverned. A government that has lost control "
+                    + "while no successor has won it is exactly the ungoverned ground you already "
+                    + "ruled, so this costs nothing new to build. It also makes a coalition "
+                    + "frightening in a way that is true to life — two movements can bring a "
+                    + "government down together and neither one inherits what is left." },
+  ],
 
   // Standing permissions. Ids are permanent. risk: "low" | "med" | "high".
   permissions: [
@@ -646,15 +702,34 @@ const BOARD = {
     { name: "Design round 3 — Politics", status: "current",
       brief: "The government's side of everything round 1 and round 2 described: how a country answers "
            + "its own people, and the two remaining pressures that push a region toward leaving.",
-      actual: "NEXT, and it opens with its inbox already full. Round 1 left it the four ways a "
-            + "government can answer a separatist movement — give ground, give self-rule, change what "
-            + "you stand for, or send soldiers — and round 2 has just added the answer to the other "
-            + "five kinds of movement, which round 1 could not solve.\n\n"
-            + "It also inherits the ONE thing in the whole conquest design that asks for machinery "
-            + "that does not exist. Everything else round 2 decided re-points something already built. "
-            + "But you ruled that a movement you string along eventually changes what it WANTS — and "
-            + "nothing in the game has ever changed what a movement wants. That is real work and it "
-            + "belongs here." },
+      actual: "PART-WAY THROUGH — fourteen rulings across Wednesday evening and Thursday. This card "
+            + "said NEXT until today, which was wrong for two days; the round had been running the "
+            + "whole time.\n\n"
+            + "WHAT YOU HAVE SETTLED. Politics is rebuilt on three axes rather than two, with eight "
+            + "parties at the corners named after real ones, ten positions, and two conditions a "
+            + "country can fall into. The single table of what a government can do about a movement: "
+            + "five moves against six wants — concede, concede less, become them, remove the want, "
+            + "or suppress — and the discovery that the four things you could already do were "
+            + "general moves nobody had noticed were general, so almost nothing has to be invented. "
+            + "Seven reasons a movement exists became five, and you refused one of the merges I "
+            + "proposed. What a region with no government actually is, and that it is the cheapest "
+            + "ground on the continent to trade with. That stranded and surrounded ground goes "
+            + "ungoverned, and can grow a movement of its own. That a movement's demands cost you "
+            + "nothing to answer and must be answered before your turn can move — which led you to "
+            + "say the one-action-per-turn rule itself needs changing, now filed for the last round. "
+            + "That past forty per cent a countdown to civil war begins, and that a government may "
+            + "give up and join the movement instead. And martial law: it takes rules away rather "
+            + "than handing you soldiers, it suspends the election only when it covers over half the "
+            + "country, and it costs a decent government far more than a rotten one — because a "
+            + "rotten one can simply steal the election instead.\n\n"
+            + "WHAT IS LEFT. Seven questions, including the one piece of machinery this design has "
+            + "asked for that does not exist: a movement that changes what it WANTS when you string "
+            + "it along. Then the round's closing test — what do you actually DO about this on a "
+            + "Tuesday, with one action — and tracing the round's own story through everything "
+            + "decided, which found contradictions in both earlier rounds that the rulings alone had "
+            + "missed.\n\n"
+            + "TWO THINGS ARE WAITING ON YOU, both at the top of this page, and both came out of "
+            + "your own rulings rather than from me." },
     { name: "After the economy alpha — Recognition, Canada, Mexico", status: "todo",
       brief: "Recognition score and ramp, border-state suspicion, Canada/Mexico as partners and as corridors, gray-market trade.",
       actual: "HALF DONE, AND PAUSED while the design rounds run. Canada and Mexico are real places on the trade map — reached by the "

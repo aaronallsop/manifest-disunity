@@ -134,13 +134,14 @@ off, because isolating the economy is what makes the answers trustworthy.
 
 **The live stage is IDEATION, and it runs in seven rounds set out in `docs/design/IDEATION-PLAN.md`.
 Read that plan before you open anything else in this folder — it says which round is live.** As of
-9 September 2026:
+**11 September 2026** — and if the newest handoff disagrees with this table, **check the commits since
+that handoff was written before believing either**:
 
 | Round | Where it stands |
 |---|---|
 | **1. Secessionist movements** | ✅ Closed 7 September 2026 — 53 rulings, five scenarios traced, findings A–F |
-| **2. Military conquest** | ✅ Closed 9 September 2026 — 31 rulings, 121 ideas, all six scenarios traced. **Findings B, C and D are on the Control Board waiting for Aaron** |
-| **3. Politics** | ◀ **NEXT.** Round 2 handed it two things: a movement that changes what it wants when it is strung along, and the government's answer to *Expand* and *Reconquer* beside the four release valves |
+| **2. Military conquest** | ✅ **Fully closed 9 September 2026 — 41 rulings, 134 ideas**, all six scenarios traced. Findings B, C and D **were** Aaron's and are answered. **Nothing outstanding is his** |
+| **3. Politics** | ◀ **OPEN AND PART-WAY THROUGH — 14 rulings.** Ruled so far: the one table of what a government can do about each kind of movement; what a region with no government is; the civil war clock; how a movement grows on ungoverned ground; and martial law. **Seven spine questions are still open, and two things are Aaron's: the Farmers Union's verb, and who takes an Area when the total movement share crosses the line but no single movement does.** The round's own status block, at the head of `politics-ideation.md`, is the detail |
 | **4. Economy** | 84 entries banked and **parked**. This round *finishes* the economy against what rounds 1–3 demand of it, rather than starting it |
 | **5–7. Diplomacy · Events · The things above** | Stubs with full inboxes. Not open |
 

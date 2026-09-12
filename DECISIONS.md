@@ -3740,3 +3740,51 @@ Stripped the wrapper, leaving the content byte-identical, then rebuilt the board
 template like every other project. The board's own data was verified unchanged against the live
 published version before and after: identical, apart from the one line naming this project's colour.
 
+
+
+### D197 — The record was three documents behind the work, and the fix is machinery rather than advice
+**Session housekeeping, 11 September 2026.** A `/resume` at the start of this session found that
+**every document a fresh session reads first was describing a world that no longer existed.** The
+newest handoff, written 9 September at 14:49, said round 3 had not started. In fact the same day's
+evening and the whole of 10 September produced **fourteen rulings, two decisions (D195, D196) and
+twenty-four commits.** The ideation plan still called round 3 "OPEN — next session"; the designer's
+brief still credited round 2 with 31 rulings rather than 41 and said three of its findings were
+waiting on Aaron when all three were answered; the Control Board still led on round 2 closing and was
+stamped 9 September 12:40.
+
+**This is the second time.** The 9 September handoff opens by describing the identical failure from
+8 September — *"Write your handoff. This is the specific failure this document exists to prevent."*
+It was written in bold, at the top of the document the failing session read. **It did not work,
+because advice inside an artefact cannot protect that artefact:** a session only reads the warning
+after it has already decided to trust the file carrying it.
+
+**Decided, in two parts.**
+
+**1. The record is straightened.** The round document now carries a status block at its head — 14
+rulings, which spine questions are answered and by which ruling, which are still open, and the two
+things that are Aaron's and were never carded. The five answered questions are struck through where
+they are asked. The plan and the brief now say what is true. The board is republished. This handoff
+is written.
+
+**2. Staleness is measured by machinery, fleet-wide.** Recorded in full as **D10 in the
+`000-default-prompts` repository**, which is installed on both machines: the session-start hook finds
+the commit that last touched the newest handoff, counts what landed after it and names those commits;
+`/resume` measures the same thing and is required to read those commits rather than the handoff when
+they disagree, and to straighten the record before starting new work; `/handoff` and `/signoff` state
+that the handoff is the last thing a session writes and must be rewritten if anything lands after it,
+with a check in sign-off that must print `0`. **Verified against this project before shipping: the
+hook prints the warning and names all 24 commits.**
+
+**Rejected:** writing a third, firmer instruction to remember. Two have now failed. **Also rejected:**
+a hook that refuses to let a session end without a handoff — it cannot tell which turn is the last
+one, so it would fire constantly and be disabled inside a day.
+
+**Nothing built.** No code, data or `DESIGN.md` touched; this was housekeeping and documents.
+
+**Two things found while straightening, both Aaron's and neither ever put in front of him:**
+**Finding A** — the Farmers Union covers 983 counties and 22.6 million people, has never been given a
+verb, and the story calls it a bloc of governors while the data calls it a popular movement; five
+other movement pairs cannot be judged until it has one. And **ruling 6's opened question** — when the
+*total* movement share in an Area crosses the 40% threshold but no single movement has, which
+movement takes the Area? *(Recommendation on file: none of them, it goes stateless.)* Both are now
+cards on the board.

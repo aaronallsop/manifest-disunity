@@ -1,10 +1,25 @@
 # Politics — ideation (round 3)
 
-**Status: OPEN. Opened 9 September 2026.** Round 1 (secession) closed 7 September with 53 rulings;
-round 2 (conquest) closed 9 September with 41. This round is third per `IDEATION-PLAN.md`.
+**Status: OPEN and part-way through. Opened 9 September 2026; 14 rulings as of 11 September 2026.**
+Round 1 (secession) closed 7 September with 53 rulings; round 2 (conquest) closed 9 September with 41.
+This round is third per `IDEATION-PLAN.md`.
 
 Nothing below §4 is decided. Rulings are written into §4 **as they happen**, not summarised at the
 end.
+
+### Where the round stands — corrected 11 September 2026
+
+*This block was missing while fourteen rulings were made, and a fresh session read the round as
+un-started. Update it whenever a spine question is answered.*
+
+| | |
+|---|---|
+| **Rulings made** | **14** (§4 and §5), plus findings A–E (§5, §6) |
+| **Spine questions answered** | **Q1** *(replaced by P1 and rulings 1–2)* · **Q2** *(rulings 11, 11a)* · **Q4** *(ruling 3)* · **Q6** *(ruling 14)* · **Q9** *(ruling 6)* |
+| **Part answered** | **Q11** — ruling 11 point 4 makes joining a bloc the *concede-less* move for a **Unify** movement; whether it also costs Authority at home is still open |
+| **Still open** | **Q3** · **Q5** · **Q7** · **Q8** · **Q10** · **Q11**'s domestic price · **Q12** |
+| **Waiting on Aaron, and never carded** | **Finding A** — the Farmers Union has no verb and nobody has said whether it is a movement or a bloc; **five other pairs cannot be judged until it has one**. And **ruling 6's opened question** — when the *total* movement share crosses 40% and no single movement has, which movement takes the Area? *(recommendation: none of them, it goes stateless)* |
+| **Still to do before the round closes** | the closing test — *what does the player do about this on a Tuesday, with one action?* — and **trace scenario 3** |
 
 ---
 
@@ -154,7 +169,7 @@ because the plan reserves it to Aaron explicitly. Q2 and Q3 next because they ar
 and the Tuesday problem. Q4 next because it is the largest new mechanic in the story. Then the rest,
 roughly by how much else depends on them.
 
-### Q1 — Is there a seventh political alignment, and is it Libertarian?
+### Q1 — ~~Is there a seventh political alignment, and is it Libertarian?~~ **ANSWERED — replaced entirely by P1, and ruled at rulings 1 and 2**
 
 *Inbox 8 and 9. Raised by Aaron three separate times in one sitting.*
 
@@ -177,7 +192,7 @@ resonance with tier-3 stateless ground is not a coincidence. **Techno-Autocrat s
 home on these axes, a third axis re-prices every affinity in the game, and it would buy one movement
 that Aaron has already struck.
 
-### Q2 — The one table: what can a government do about each of the six verbs?
+### Q2 — ~~The one table: what can a government do about each of the six verbs?~~ **ANSWERED — rulings 11 and 11a**
 
 *Round 1's finding D, round 2's handover 14, and the Tuesday problem located precisely.*
 
@@ -234,7 +249,7 @@ made and unkept — rather than re-checking every turn, which is also what **C13
 **finding G**, when a reunification movement's verb flips, the permanent hostility floor its contest
 created lifts with it.
 
-### Q6 — Martial law: what is it, and for how long?
+### Q6 — ~~Martial law: what is it, and for how long?~~ **ANSWERED — ruling 14**
 
 *Inbox 2.* Garrison, liberties hit, suspended elections, all three?
 
@@ -264,7 +279,7 @@ construction* and the game can already build one. What is missing is a label and
 Aaron has flagged it twice, so if he wants it as a real form this is where it lands, and it wants
 round 5 beside it.
 
-### Q9 — Coalitions between movements, and the chaos afterwards
+### Q9 — ~~Coalitions between movements, and the chaos afterwards~~ **ANSWERED — ruling 6**, which disposed of the aftermath without a rule for it
 
 *Inbox 10.* Two movements that want the same ground for different reasons ally to leave, then fall
 out.
@@ -285,7 +300,7 @@ a new country can genuinely govern badly for a while. **And yes — it should en
 A patience that has been spent is a grievance with a date on it, and that is the more interesting
 game.
 
-### Q11 — Is joining a bloc a domestic political act with a domestic price?
+### Q11 — Is joining a bloc a domestic political act with a domestic price? **PART ANSWERED — ruling 11 point 4.** The bloc is the *concede-less* move for a Unify movement; the domestic price below is still open
 
 *Inbox 7.* Seven governors signed the Farmers Union — and what did it cost Illinois when Chicago
 walked out?
@@ -1013,8 +1028,9 @@ the *change course* valve that already exists. **Nothing new is needed for eithe
 2. **The whole design is 6 verbs + 5 adjectives + 5 moves = 16 things, not 42 authored cells.** The
    table is generated rather than written, which is the same economy the ideology axes buy.
 
-**Still open:** whether answering a movement costs the turn's action. Round 2's **C117** took the
-default **free to answer, costly to obey** without asking, and it has never been confirmed.
+~~**Still open:** whether answering a movement costs the turn's action. Round 2's **C117** took the
+default **free to answer, costly to obey** without asking, and it has never been confirmed.~~
+**ANSWERED by ruling 12** — free, and mandatory before the turn can move.
 
 ### Ruling 12 — Demands are free, mandatory, and answered before the turn can move
 
