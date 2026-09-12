@@ -14,11 +14,11 @@ un-started. Update it whenever a spine question is answered.*
 
 | | |
 |---|---|
-| **Rulings made** | **15** (§4 and §5), plus findings A–F (§5, §6) |
+| **Rulings made** | **16** (§4 and §5), plus findings A–F (§5, §6) |
 | **Spine questions answered** | **Q1** *(replaced by P1 and rulings 1–2)* · **Q2** *(rulings 11, 11a)* · **Q4** *(ruling 3)* · **Q6** *(ruling 14)* · **Q9** *(ruling 6)* |
 | **Part answered** | **Q11** — ruling 11 point 4 makes joining a bloc the *concede-less* move for a **Unify** movement; whether it also costs Authority at home is still open |
 | **Still open** | **Q3** · **Q5** · **Q7** · **Q8** · **Q10** · **Q11**'s domestic price · **Q12** |
-| **Waiting on Aaron** | **Ruling 6's opened question** — when the *total* movement share crosses 40% and no single movement has, which movement takes the Area? *(recommendation: none of them, it goes stateless)*. And **the four questions ruling 15 opens**, starting with what a neighbour's *yes* actually produces. **Finding A is ANSWERED by ruling 15**: the Farmers Union is a movement and its verb is Unify |
+| **Waiting on Aaron** | **Ruling 6's opened question** — when the *total* movement share crosses 40% and no single movement has, which movement takes the Area? *(recommendation: none of them, it goes stateless)*. And **ruling 15's questions 2-4** — what decides which of the three answers a neighbour gives, whether asking once satisfies the movement, and whether proposing costs the turn's action (**question 1 answered by ruling 16**). **Finding A is ANSWERED by ruling 15**: the Farmers Union is a movement and its verb is Unify |
 | **Still to do before the round closes** | the closing test — *what does the player do about this on a Tuesday, with one action?* — and **trace scenario 3** |
 
 ---
@@ -1302,6 +1302,66 @@ wide, not heavy.
 3. **Does asking once satisfy the demand**, or does the movement keep demanding until a union exists?
 4. **Does making the proposal cost the turn's one action?** *(Ruling 12: answering is free, obeying is
    costly — and proposing is obeying.)*
+
+### Ruling 16 — A proposal has three answers, and the middle one is the interesting one
+
+**RULED 11 September 2026**, answering the first of ruling 15's four questions. Aaron, verbatim:
+
+> "I think that they either say yes, lets think about (and in this sense they are seriously
+> considering it and the movement in that country gets a bonus growth modifier) or no.
+>
+> If they say yes they become one entity and everyone becomes members of that state (so no negative
+> multipliers like when conquering territory)"
+
+**Three answers, not two.**
+
+| Answer | What it does |
+|---|---|
+| **Yes** | The two nations become **one entity**. Everyone in the joined ground is a **full member of that state** |
+| **"Let's think about it"** | They are seriously considering it, and **the movement inside THEIR country grows faster** |
+| **No** | Refused — and per ruling 15, a refusal can be the reading that you are consolidating power |
+
+**THE MIDDLE ANSWER IS THE ONE NOBODY HAD, and it is the best thing in this ruling.** A maybe is not
+a null result: **it grows the movement inside the other country.** That makes it the first mechanism
+in this design where a *diplomatic act grows a movement abroad* — everything else that crosses a
+border either moves goods, moves soldiers, or leaks ideology through affinity. **A country that keeps
+being asked starts to want it.** And it gives the asking government something to do while it waits,
+which is what stops this being one roll of a die.
+
+**WHAT A YES IS WORTH, MEASURED AGAINST CONQUEST RATHER THAN ASSERTED.** Aaron's "no negative
+multipliers like when conquering territory" names something the build already carries. Ground held as
+**occupied** today drags **five** separate things:
+
+| | |
+|---|---|
+| **Authority** | occupation is one of its eleven inputs |
+| **Influence** | the same share, read again |
+| **Civil liberties** | `liberty.wOccupation` — *"share of held ground governed as occupied territory"* |
+| **War weariness** | occupation feeds the stock that makes a campaign a campaign |
+| **The treasury** | a **superlinear surcharge** that scales with how hostile the ground is |
+
+**A union pays none of the five.** So the ruling says something much larger than it looks:
+**joining is the only way to grow that does not poison the ground you gained.** Every other route to
+size — annexing, conquering, holding — costs authority, liberties, money and patience for as long as
+you hold it. That is the game's own title arriving as a mechanic rather than as a theme.
+
+**DEFAULT TAKEN, NOT ASKED — one line to reverse.** *Their movements come with them.* What a yes
+waives is the **occupation** penalty, not the **politics**: the joined population arrives as full
+members with no surcharge and no liberties hit, and every movement organised in those counties arrives
+too. Otherwise a merger would be a way to launder a hostile population — walk in by invitation, and a
+region that wanted out of them stops wanting out of you. **Finding F is exactly this case**: a
+government that unites with its neighbour to satisfy the farmers inherits the rust belt's movement as
+well, and under ruling 6 the two sum against it.
+
+**A RISK WORTH NAMING NOW, because three later answers decide it.** If a "let's think about it" costs
+the asker nothing, then **asking repeatedly is a dominant strategy**: propose every turn, farm the
+neighbour's movement upward, and wait until their own government is the one carrying the demand. Three
+brakes exist and none of them is confirmed yet — whether proposing costs the turn's one action
+(question 4), what a refusal costs in suspicion (question 2), and the **X%** gate that has to be
+crossed before the demand fires at all. **At least one of the three must bite.**
+
+**Still open from ruling 15:** what decides which of the three answers you get; whether asking once
+satisfies the movement; and whether proposing costs the turn's action.
 
 ### Finding F — The two largest Unify movements share 504 counties, and both want the same thing
 

@@ -3841,3 +3841,39 @@ substituted; it joins the tunables at the mechanics stage beside ruling 39's War
 **Open and asked in order:** what a neighbour's *yes* actually produces; what decides positive or
 negative; whether asking once satisfies the movement; and whether proposing costs the turn's one
 action.
+
+### D199 — A proposal has three answers, a maybe grows the movement abroad, and a union carries none of conquest's penalties
+**Round 3 ruling 16, 11 September 2026.** Ruling 15 left four questions; this answers the first.
+**Aaron: a neighbour says yes, "let's think about it", or no. A "let's think about it" means they are
+seriously considering it and the movement inside THEIR country gets a bonus growth modifier. A yes
+makes the two nations one entity, with everyone a full member of that state — "no negative multipliers
+like when conquering territory".**
+
+**Observed.** The middle answer is new and it is the best part: **a diplomatic act that grows a
+movement in another country.** Nothing else in the design crosses a border that way — goods move,
+soldiers move, and ideology leaks through affinity, but nobody could deliberately grow somebody else's
+movement before. It also gives the asking government something to do while it waits, which stops the
+whole mechanic being one roll of a die.
+
+**Measured rather than asserted, because "no negative multipliers" names something the build already
+has.** Ground held as *occupied* today drags five separate things: **Authority** (one of its eleven
+inputs), **Influence** (the same share read again), **Civil liberties** (`liberty.wOccupation`, *"share
+of held ground governed as occupied territory"*), **war weariness**, and **a superlinear treasury
+surcharge that scales with how hostile the ground is**. A union pays none of the five. **So the ruling
+says more than it looks: joining is the only route to size that does not poison the ground you
+gained** — which is this game's title arriving as a mechanic rather than as a theme.
+
+**Default taken, not asked; one line to reverse.** *Their movements come with them.* A yes waives the
+**occupation** penalty, not the **politics**. Otherwise a merger would be a way to launder a hostile
+population — walk in by invitation and a region that wanted out of them stops wanting out of you.
+Finding F is exactly that case: unite to satisfy the farmers and you inherit the rust belt's movement,
+which under ruling 6 sums against you.
+
+**Risk recorded now because later answers decide it.** If a "let's think about it" costs the asker
+nothing, asking every turn is a dominant strategy: farm the neighbour's movement upward until their
+own government is the one carrying the demand. Three possible brakes exist and none is confirmed — the
+turn's one action, the suspicion a refusal creates, and the X% gate before the demand fires. **At least
+one must bite**, and whichever answer lands should be checked against this.
+
+**Still open from ruling 15:** what decides which of the three answers; whether asking once satisfies
+the movement; whether proposing costs the turn's action.
