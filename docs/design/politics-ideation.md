@@ -14,10 +14,10 @@ un-started. Update it whenever a spine question is answered.*
 
 | | |
 |---|---|
-| **Rulings made** | **25** (§4 and §5), plus findings A–F (§5, §6) |
+| **Rulings made** | **26** (§4 and §5), plus findings A–F (§5, §6) |
 | **Spine questions answered** | **Q1** *(replaced by P1 and rulings 1–2)* · **Q2** *(rulings 11, 11a)* · **Q3** *(ruling 21)* · **Q4** *(ruling 3)* · **Q5** *(ruling 22)* · **Q6** *(ruling 14)* · **Q9** *(ruling 6)* · **Q7** *(ruling 24)* · **Q8** *(ruling 25)* · **Q12** *(ruling 23)* |
 | **Part answered** | **Q11** — ruling 11 point 4 makes joining a bloc the *concede-less* move for a **Unify** movement; whether it also costs Authority at home is still open |
-| **Still open** | **Q10** · **Q11**'s domestic price · **and ruling 25's seven follow-on questions about the federation** |
+| **Still open** | **Q10** · **Q11**'s domestic price · **ruling 25's federation questions 2-7** *(1 answered by ruling 26)* |
 | **Waiting on Aaron** | **Nothing.** Both board cards are answered — the Farmers Union by ruling 15, and ruling 6's opened question by ruling 20. **Ruling 15's four questions are all answered** — 1 by ruling 16, 2 by ruling 17, 3 by ruling 18, and 4 by ruling 19 as a flagged default. The proposal-spam exploit named in ruling 16 is closed by ruling 18: proposals run on the movement's clock, not the player's. **Finding A is ANSWERED by ruling 15**: the Farmers Union is a movement and its verb is Unify |
 | **Still to do before the round closes** | the closing test — *what does the player do about this on a Tuesday, with one action?* — and **trace scenario 3** |
 
@@ -1787,6 +1787,41 @@ the federation borrows that number is not decided.
 5. **How does a nation join, and how does it leave?** Who decides?
 6. **What happens to the federation if the leading nation is conquered, or leaves?**
 7. **Does the external 15% split evenly among members, or by size?**
+
+### Ruling 26 — The federation's flat toll replaces what members had with each other, and that is the price of joining
+
+**RULED 11 September 2026** — *"Correct"* — answering the first of ruling 25's seven.
+
+**The flat 10% REPLACES members' own arrangements with one another.** Inside a federation there are no
+negotiated corridors between members: they trade at a rate nobody can refuse or revoke.
+
+**WHAT THAT COSTS, and it is the sharpest thing in the game.** A2 built the right of passage as a
+weapon: a neighbour can close a corridor with a year's notice and **burn a five-year contract to
+nothing while its clock keeps running**. That threat is the only reason holding a corridor is worth
+anything. **Joining a federation gives it up** — you can no longer squeeze the people you are in it
+with. The sacrifice is real, it explains itself in one sentence, and it makes the federation's income
+predictable: **five per cent of everything that moves inside it.**
+
+**THE PROBLEM IT PRODUCES FOR FREE, and it is the best thing in the idea.** The nations worth most to a
+federation are the ones holding the gates — and those are exactly the nations that lose most by
+joining, because **their leverage is the thing membership dissolves.** From the trade data:
+
+| Gate-holder | What it holds |
+|---|---|
+| **Michigan** | four Great Lakes chokepoints |
+| **New York** | the Niagara and the St. Lawrence |
+| **Illinois** | the Chicago canal and Cairo |
+| **Louisiana** | New Orleans and the Mouth of the Mississippi |
+
+**So a federation must pay them, elect them, or do without them — and the map decides which.** Nobody
+wrote that rule; it falls out of the toll being flat.
+
+**Ruled with it: agreements signed before joining run out their term first**, and the flat rate takes
+over as each expires. Tearing up signed contracts is exactly what round 2 priced as treaty-breaking,
+and a federation must not quietly do to its members what it would punish them for doing to each other.
+
+**Note for Q11, still open:** this is the *foreign* price of membership. **The domestic price — what it
+costs at home to join — is still unanswered**, and it is the last thing in the spine.
 
 ### Finding F — The two largest Unify movements share 504 counties, and both want the same thing
 
