@@ -788,3 +788,27 @@ a number and then discovering it was wrong.
 **What it needs before it can be designed.** Whether spending is visible to the other side (it should
 be, or it is just a quieter rig); whether it moves the vote or only the turnout; and whether the
 movement can spend too, which turns a referendum into a contest rather than a purchase.
+
+## F22 — A federation can string a member along, the way a government strings a movement along
+
+**Aaron's, 11 September 2026** — *"Lets save that for future ideas"* — filed the moment it was noticed,
+during round 3's federation rulings.
+
+**The observation.** Ruling 25 gives the federation a turn in which it may *petition to allow a
+declaration of war*, so a member asks and the federation answers. **That is the same shape as ruling 22:
+a body that keeps answering "wait" is stringing somebody along**, and ruling 22 says what that produces —
+the asker stops asking and wants out. At nation level the destination would not be *Separate*; it would
+be **leaving the federation**.
+
+**Why it is attractive.** It would mean a federation can be destroyed from the inside by its own
+caution, without a single rule about federations breaking up: a leader who refuses every war to protect
+the trade income slowly loses the members who wanted those wars. **One mechanism, already ruled for
+movements, doing a second job.**
+
+**Why it is not being built now.** Nothing about a federation exists yet, the object was ruled the same
+evening, and layering a second-order behaviour onto an unbuilt one is how a design gets ahead of itself.
+It also needs the answer to a question still open: what actually happens when a petition is refused.
+
+**What it needs before it can be designed:** whether membership is a stock that can decay at all, or a
+binary; and whether the member or its people carry the disappointment — a government that wanted a war
+is not the same thing as a population that did.

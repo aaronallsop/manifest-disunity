@@ -14,10 +14,10 @@ un-started. Update it whenever a spine question is answered.*
 
 | | |
 |---|---|
-| **Rulings made** | **27** (§4 and §5), plus findings A–F (§5, §6) |
+| **Rulings made** | **28** (§4 and §5), plus findings A–F (§5, §6) |
 | **Spine questions answered** | **Q1** *(replaced by P1 and rulings 1–2)* · **Q2** *(rulings 11, 11a)* · **Q3** *(ruling 21)* · **Q4** *(ruling 3)* · **Q5** *(ruling 22)* · **Q6** *(ruling 14)* · **Q9** *(ruling 6)* · **Q7** *(ruling 24)* · **Q8** *(ruling 25)* · **Q12** *(ruling 23)* |
 | **Part answered** | **Q11** — ruling 11 point 4 makes joining a bloc the *concede-less* move for a **Unify** movement; whether it also costs Authority at home is still open |
-| **Still open** | **Q10** · **Q11**'s domestic price · **ruling 25's federation questions 3-7** *(1 by ruling 26, 2 by ruling 27)* |
+| **Still open** | **Q10** · **Q11**'s domestic price · **ruling 25's federation questions 3-7** *(1 by ruling 26, 2 by ruling 27; 3 half-answered by ruling 28 — the DEFENSIVE side is ruled, what happens when a member's petition to attack is refused is not)*, plus **can one member make a separate peace?** |
 | **Waiting on Aaron** | **Nothing.** Both board cards are answered — the Farmers Union by ruling 15, and ruling 6's opened question by ruling 20. **Ruling 15's four questions are all answered** — 1 by ruling 16, 2 by ruling 17, 3 by ruling 18, and 4 by ruling 19 as a flagged default. The proposal-spam exploit named in ruling 16 is closed by ruling 18: proposals run on the movement's clock, not the player's. **Finding A is ANSWERED by ruling 15**: the Farmers Union is a movement and its verb is Unify |
 | **Still to do before the round closes** | the closing test — *what does the player do about this on a Tuesday, with one action?* — and **trace scenario 3** |
 
@@ -1861,6 +1861,41 @@ build does not discover it:
    federation's rate and a negotiated corridor apply to the same journey.
 
 **These go to the mechanics stage as named work, not as a surprise.**
+
+### Ruling 28 — An attack on one member is a war with all of them
+
+**RULED 11 September 2026.** Aaron: *"For now, if a war is declared on the federation all members are
+at war with that nation."*
+
+**The reading, stated because it has to be:** a federation holds **no ground of its own**, so war can
+only be declared on a *member*. **Attacking any member puts the attacker at war with every member.**
+That is the only reading the machinery can carry. *One line to correct if he meant something narrower.*
+
+**WHAT IT BUYS, and it completes the object.** Ruling 26 made membership costly — you surrender the
+right to squeeze your neighbours — and until now the only thing bought with it was a predictable toll.
+**This is the other half: a federation is collective defence.** It is why a small state joins at all.
+
+**AND IT CREATES THE FEDERATION'S REAL POLITICS, which nobody designed.** Put ruling 27 beside this
+one:
+
+| | Flows to |
+|---|---|
+| **The money** | the **gate-holders** — whoever's ground the trade crosses |
+| **The protection** | the **weak** — whoever is most likely to be attacked |
+
+**So the big trading states pay in and the small states draw out.** That is a standing grievance in
+both directions, inside an institution whose leader is *elected by those same members*. The politics
+of the thing is not written anywhere; it falls out of two rulings made twenty minutes apart.
+
+**FLAGGED FOR THE TRACE, because it may be too big.** Round 2's **ruling 37** spreads hostility **one
+hop through alliances**: your ally's enemies become yours. A federation of ten states, each with its
+own allies, would turn **one attack on the smallest member into a continental war** in a single turn.
+That is either the best event in the game or a runaway, and **it cannot be judged without tracing it**.
+It goes on the list for the close of the round.
+
+**Opened and not answered:** can **one member make a separate peace**? Round 2's peace machinery is
+written per pair — both sides table terms and the defender chooses — which does not obviously survive
+a war with ten defenders. **Added to the federation questions.**
 
 ### Finding F — The two largest Unify movements share 504 counties, and both want the same thing
 
