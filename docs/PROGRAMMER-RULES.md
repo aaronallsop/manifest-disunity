@@ -98,3 +98,17 @@ Add one with `/rule` whenever a mistake earns it. Number them; never delete one.
     Note what the *first* fix was, because it did not work: a sentence of advice inside the handoff
     itself, in bold, telling the next session to write its handoff. The next session that failed had
     that sentence in front of it. **Advice inside the artefact cannot protect the artefact.**
+
+11. **A count written at the top of a long document is wrong by the end of the day. Measure it, or
+    do not print it.** Rule 10 is about one artefact going stale. This is the same disease everywhere
+    else, and the hook that now catches a stale handoff does not catch this. Three cases in four days,
+    all of them a summary line sitting above a body that had moved on:
+    the conquest round's header said **31 rulings** on a document holding **41**; the politics round's
+    header said **14** two lines above its own table saying **37**; and a Control Board card gave Aaron
+    a *reason* that was false (Cascadia reaching into Oregon) while the ruling it supported was right.
+    **Every one was written accurately and then overtaken**, in one case within the same session.
+    The fix is mechanical, not diligent: **derive the number at the moment you write it**
+    (`grep -c` the headings, or count the rulings), and where a document states its own size in two
+    places, say in the document which one wins. Both headers now carry that line.
+    **The tell:** if you are about to type a number that describes the file you are typing into, you
+    are about to create this bug.

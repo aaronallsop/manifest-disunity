@@ -19,12 +19,12 @@ un-started. Update it whenever a spine question is answered.*
 
 | | |
 |---|---|
-| **Rulings made** | **40** (§4 and §5), plus findings A–G (§5, §6) |
+| **Rulings made** | **40** (§4 and §5), plus findings A–H (§5, §6) and the re-map of all 26 movements |
 | **Spine questions answered** | **Q1** *(replaced by P1 and rulings 1–2)* · **Q2** *(rulings 11, 11a)* · **Q3** *(ruling 21)* · **Q4** *(ruling 3)* · **Q5** *(ruling 22)* · **Q6** *(ruling 14)* · **Q9** *(ruling 6)* · **Q10** *(ruling 38)* · **Q7** *(ruling 24)* · **Q8** *(ruling 25)* · **Q11** *(ruling 37)* · **Q12** *(ruling 23)* |
 | **Part answered** | *(none)* |
 | **Still open** | **No spine question is open. All twelve are answered** (Q10 by ruling 38). **The federation is finished** — all seven of ruling 25's questions answered (rulings 26-36), plus separate peace (35) and ruling 31's open half (33) |
 | **Waiting on Aaron** | **Nothing.** Both board cards are answered — the Farmers Union by ruling 15, and ruling 6's opened question by ruling 20. **Ruling 15's four questions are all answered** — 1 by ruling 16, 2 by ruling 17, 3 by ruling 18, and 4 by ruling 19 as a flagged default. The proposal-spam exploit named in ruling 16 is closed by ruling 18: proposals run on the movement's clock, not the player's. **Finding A is ANSWERED by ruling 15**: the Farmers Union is a movement and its verb is Unify |
-| **Still to do before the round closes** | **re-map the 26 live movements onto the ten positions** (inbox 9) · the closing test — *what does the player do about this on a Tuesday, with one action?* · **trace scenario 3**, checking the federation cascade and ruling 37's irony · C133's one-line correction · an owner for each finding |
+| **Still to do before the round closes** | ~~re-map the movements~~ **DONE, 9 placements marked for Aaron** · the closing test — *what does the player do about this on a Tuesday, with one action?* · **trace scenario 3**, checking the federation cascade and ruling 37's irony · C133's one-line correction · an owner for each finding |
 
 ---
 
@@ -2292,6 +2292,83 @@ neighbour before proposing a union). **They want one answer and they get it at t
 here.** The recommendation on file, for whoever picks it up: *you see reasons, not numbers* — the trade
 panel's existing pattern, which names whose ground is in the way and what it costs without exposing the
 arithmetic.
+
+### The re-map — 26 live movements placed on the ten positions
+
+**Authored 11 September 2026**, answering **inbox item 9**. The register's leanings were marked against
+the **old six ideologies** — Republican, Democrat, Democratic Socialist, Conservative Nationalist,
+Distributist, Socialist, on two axes. **Rulings 1 and 2 replaced that board**, so every movement needs
+re-placing on the ten positions. **This is authoring, not a decision: the table is for Aaron to
+correct.** Nine are marked **?** because the third axis — *authoritarian ↔ libertarian*, which the old
+scheme did not have — is a genuine judgement rather than a translation.
+
+**The straight translations, where the old name and the new position are the same thing:** old
+*Republican* → **Republicans**, old *Democrat* → **Democrats**, old *Democratic Socialist* →
+**Democratic Socialism**, old *Distributist* → **Distributism**. Old *Conservative Nationalist* has no
+single heir: on three axes it splits between **Christian Nationalism** (authoritarian) and
+**Anarcho-Capitalism** (libertarian).
+
+| Movement | Was | Placed at | |
+|---|---|---|---|
+| A Free Texas | Republican | **Republicans** | **?** *"reunify Texas at any cost" reads authoritarian — Fascism is the alternative* |
+| Acadiana | Distributist | **Distributism** | |
+| Alaskan Independence | Republican | **Republicans** | **?** *independence plus resource royalties is libertarian; Anarcho-Capitalism is the alternative* |
+| Blue-Collar Populist | Distributist | **Distributism** | industrial policy and tariffs — collective and conservative |
+| California Republic | Democrat | **Democrats** | |
+| Cascadian Separatists | Dem. Socialist | **Democratic Socialism** | |
+| Central States Union | Republican | **Republicans** | **?** *Aaron: "republican but support unions… including libertarian later would help solve some of this." The third axis is what he was missing* |
+| Christian Nationalism | Cons. Nationalist | **Christian Nationalism** | the movement and the position now share a name, which **ruling 40** makes legal |
+| Deseret | Distributist | **Distributism** | Aaron's own: *"law of consecration lite… closest analogue is Distributist"* |
+| El Paso United | Republican | **Republicans** | his markup |
+| Franklin | Cons. Nationalist | **Republicans** | **?** *mountain home rule is libertarian-conservative; Anarcho-Capitalism is the alternative* |
+| Front Range Republic | Democrat | **Democrats** | |
+| Great Lakes Free Trade | Democrat | **Democrats** | **?** *a free-trade bloc is market-progressive, and that corner is Digital Technocracy — which fits a trade compact badly* |
+| Greater Idaho | Republican | **Republicans** | |
+| Hawaiian Sovereignty | Distributist | **Distributism** | sovereignty and land restoration |
+| Native American Confederation | Distributist | **Distributism** | same pair of demands |
+| New Absaroka | Republican | **Republicans** | |
+| New Confederacy | Cons. Nationalist | **Christian Nationalism** | **?** *states' rights and independence; **Fascism** is the live alternative, and Aaron has already said this movement's name bothers him* |
+| New England Revivalist | Democrat | **Democrats** | **?** *"town-meeting sovereignty" is the most libertarian phrase in the roster — **Liberal Anarchy** is a real candidate* |
+| **New England United** | Democrat | **Democratic Socialism** | **?** **THE ONE HE ASKED ABOUT.** Its stated goal is *social democracy*, which names the position. His Boston question — *"Boston is known for its large catholic population (which is where distributism comes from) so maybe in boston they lean Dis/Dem/Social Dem?"* — is now answerable **without changing the movement**: the three-axis board carries Distributism as its own position, so Boston's Catholic pull belongs in the **minority mix of those counties**, not in the movement's placement |
+| Northern Christian Kingdom | Cons. Nationalist | **Christian Nationalism** | religious government |
+| Rio Grande Union | Distributist | **Distributism** | his markup |
+| **Sagebrush Rebellion** | Republican | **Anarcho-Capitalism** | **THE ONE THE NEW BOARD WAS BUILT FOR.** Aaron on this movement: *"we might need to add another political alignment with Libertarianism."* Market, conservative, libertarian — *"return the federal land, county supremacy"* lands exactly on that corner |
+| Sonoran Republic | Republican | **Republicans** | water rights |
+| State of Jefferson | Republican | **Republicans** | **?** *the classic rural-libertarian movement; Anarcho-Capitalism is the alternative, and it pairs with Sagebrush* |
+| The Farmers Union | Distributist | **Distributism** | price supports and rural credit — already orange in the data |
+
+*The **Canadian Refuge** is not placed: Aaron's own note moves it to future ideas. The six struck
+movements are excluded.*
+
+### Finding H — the movement roster occupies half the board, and the empty half is the authoritarian one
+
+**Counted from the table above.**
+
+| Position | Movements |
+|---|---|
+| **Republicans** | 9 |
+| **Distributism** | 7 |
+| **Democrats** | 4 |
+| **Christian Nationalism** | 3 |
+| **Democratic Socialism** | 2 |
+| **Anarcho-Capitalism** | 1 |
+| **Fascism · Communism · Digital Technocracy · Liberal Anarchy** | **0 each** |
+
+**Four of the ten positions carry no movement at all, and three of those four are the authoritarian
+corners.** Not one authored movement is collective-and-authoritarian (Communism), market-and-
+authoritarian-and-progressive (Digital Technocracy), or collective-conservative-authoritarian
+(Fascism).
+
+**This is probably correct rather than a gap, and it is worth saying why.** A separatist movement is
+people organising *against* a government; the authoritarian corners are what governments become, not
+what a regional movement asks for. **Ruling 40 makes the distinction sayable:** those corners are
+occupied by **parties** and by **governments**, not by **movements**. P5's drift and its two trapdoors
+are how a nation reaches them.
+
+**But it should be checked at the close**, because it means **the eight corners are load-bearing for
+elections and drift while the movement layer only ever touches four of them.** If nothing in play can
+put a movement in the authoritarian half, the three-axis board is doing less work on the movement side
+than it looks.
 
 ### Finding F — The two largest Unify movements share 504 counties, and both want the same thing
 
