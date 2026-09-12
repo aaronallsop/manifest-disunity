@@ -763,3 +763,28 @@ happens" case for a second condition to guard. **What remains open here is small
 chosen-breakaway bar (`nation.minPop`, 250,000) and the enveloped bar (500,000) should be one tunable
 or two, and whether time-since-severed or distance-from-capital should modify either. Kept open rather
 than closed, because neither has been played.
+
+## F21 — Fund propaganda before a referendum
+
+**Aaron's, 11 September 2026**, filed the moment the referendum was ruled in (round 3 ruling 21):
+*"a future idea would be to fund propoganda"*.
+
+**What it is.** Spend money to swing a referendum rather than rigging the count. Round 1's **S26**
+("buy them" — spend on a region the way a harvest crisis lets you spend on grain) pointed at a vote
+instead of at a region.
+
+**Why it is worth keeping, and where it would sit.** The game already has one way to survive a vote
+you should lose: **stealing it**, available only when Civil Liberties are below **0.32** and costing
+**0.12** more. **Propaganda would be the legal end of the same scale** — a government with liberties
+too high to cheat could still spend its way to a result, and pay for it in money rather than in
+liberties. That is the same shape ruling 14 found between martial law and a stolen election: **a
+decent government's options are expensive and public; a rotten one's are cheap and quiet.** A third
+point on that scale is worth more than a new system.
+
+**Why it is not built now.** What money can buy is round 4's to say — the same reason **S26** was
+deferred rather than ruled. Building the price before the economy round has run would mean inventing
+a number and then discovering it was wrong.
+
+**What it needs before it can be designed.** Whether spending is visible to the other side (it should
+be, or it is just a quieter rig); whether it moves the vote or only the turnout; and whether the
+movement can spend too, which turns a referendum into a contest rather than a purchase.

@@ -14,10 +14,10 @@ un-started. Update it whenever a spine question is answered.*
 
 | | |
 |---|---|
-| **Rulings made** | **20** (§4 and §5), plus findings A–F (§5, §6) |
-| **Spine questions answered** | **Q1** *(replaced by P1 and rulings 1–2)* · **Q2** *(rulings 11, 11a)* · **Q4** *(ruling 3)* · **Q6** *(ruling 14)* · **Q9** *(ruling 6)* |
+| **Rulings made** | **21** (§4 and §5), plus findings A–F (§5, §6) |
+| **Spine questions answered** | **Q1** *(replaced by P1 and rulings 1–2)* · **Q2** *(rulings 11, 11a)* · **Q3** *(ruling 21)* · **Q4** *(ruling 3)* · **Q6** *(ruling 14)* · **Q9** *(ruling 6)* |
 | **Part answered** | **Q11** — ruling 11 point 4 makes joining a bloc the *concede-less* move for a **Unify** movement; whether it also costs Authority at home is still open |
-| **Still open** | **Q3** · **Q5** · **Q7** · **Q8** · **Q10** · **Q11**'s domestic price · **Q12** |
+| **Still open** | **Q5** · **Q7** · **Q8** · **Q10** · **Q11**'s domestic price · **Q12** |
 | **Waiting on Aaron** | **Nothing.** Both board cards are answered — the Farmers Union by ruling 15, and ruling 6's opened question by ruling 20. **Ruling 15's four questions are all answered** — 1 by ruling 16, 2 by ruling 17, 3 by ruling 18, and 4 by ruling 19 as a flagged default. The proposal-spam exploit named in ruling 16 is closed by ruling 18: proposals run on the movement's clock, not the player's. **Finding A is ANSWERED by ruling 15**: the Farmers Union is a movement and its verb is Unify |
 | **Still to do before the round closes** | the closing test — *what does the player do about this on a Tuesday, with one action?* — and **trace scenario 3** |
 
@@ -209,7 +209,7 @@ observed this — "a policy for *economic*, recognition for *cultural*, a share 
 them, instead of thirty hand-authored pairs. The table itself is the deliverable and I will draft it
 for Aaron to mark up rather than ask him to invent it.
 
-### Q3 — Do the four proposed new valves join the table?
+### Q3 — ~~Do the four proposed new valves join the table?~~ **ANSWERED — ruling 21.** Only the referendum joins
 
 *Round 1, S24–S27, unruled.* **Negotiate** with the movement (give it two of the five things it
 wants); **hold a referendum** (lose and it leaves cleanly, win and it is set back — with the honesty
@@ -1538,6 +1538,53 @@ nobody had to write a rule saying "only big ones count".
 **Deferred, not invented:** the margin by which "they hate us" must beat "we dislike them" before a
 county moves, and whatever else Aaron's *"or other things"* turns out to hold. Joins ruling 15's **X%**
 and ruling 18's quiet period in the tunables.
+
+### Ruling 21 — Of round 1's four new valves, only one is new: the referendum
+
+**RULED 11 September 2026**, answering **Q3**. Aaron: *"Yes to all three - especially since for #2 a
+future idea would be to fund propoganda"*, then, asked which three: **"all four"**.
+
+| Round 1 proposed | Ruled |
+|---|---|
+| **S24 — negotiate with the movement** | **Already built. Do not add it again** |
+| **S25 — hold a referendum** | **ADDED.** The only genuinely new valve |
+| **S26 — buy them** | **Deferred to round 4** |
+| **S27 — partition it yourself** | **Dropped — you can already do it** |
+
+**S24 was overtaken while nobody was looking.** Round 1 called negotiation *"the missing player
+verb"*. Round 2 then built the screen where a nation's own separatists make demands it can **grant,
+refuse or tell to wait**, and **ruling 12** made answering them free and mandatory. That is S15 from
+the government's side, which is exactly what S24 asked for. The only difference left is **who opens
+the conversation**, and a movement that wants something does not need to be asked first. **And the
+round is no longer short of a player verb**: ruling 15 gave it one, from a direction nobody proposed.
+
+**S25 is the one worth building, and it is nearly free.** Let the ground vote. **Lose and it leaves
+cleanly** — released, a country from day one, no war. **Win and the movement is set back for years.**
+It re-points the election machinery that already exists, *including the honesty of the result*: a vote
+can only be rigged when Civil Liberties are already below **`election.stealBelow` = 0.32**, and
+rigging costs **0.12** more. **So the trustworthiness of the referendum depends on what kind of
+government you have been** — the same shape ruling 14 found between martial law and a stolen election,
+arrived at independently.
+
+**It carries its own second-order cost, which S28 demanded of every answer.** Win narrowly and you
+have *proved* that half the region wants out, in public, with a number. Nothing else in the design
+makes a movement's support common knowledge.
+
+**S27 is dropped for two reasons, and the second is measured.** Releasing ground already works over a
+**chosen set of Areas** — the same way autonomy and (per ruling 14) martial law do — so releasing the
+Areas that want out while keeping the ones that do not **is** partition, under a name that already
+exists. And a line cannot be drawn *below* an Area: the Area is the atomic unit of the map, and
+**1,181 of the 1,688 Areas are a single county**. There is nothing to cut.
+
+**NAME WHAT JUST HAPPENED, because it is the direction Aaron keeps asking for.** Round 1 proposed four
+new government powers on 6 September. Five days later **three of the four are answered by things that
+were built or ruled in the meantime** — one exists, one is somebody else's round, one was always
+possible — and the design grew by exactly **one** verb. *(The handoff rule: his most common complaint
+is that things get too complicated, so say it out loud when the opposite happens.)*
+
+**Filed, not built:** Aaron's own extension — **funding propaganda** before a referendum — is
+`docs/FUTURE-IDEAS.md` **F21**. It is S26 pointed at a vote instead of at a region, and it sits
+opposite rigging on the same scale: money buys the result legally, liberties buy it illegally.
 
 ### Finding F — The two largest Unify movements share 504 counties, and both want the same thing
 

@@ -3993,3 +3993,36 @@ mechanics stage instead).
 
 **Deferred, not invented:** the margin by which "they hate us" must beat "we dislike them", and whatever
 Aaron's *"or other things"* turns out to hold. Joins ruling 15's X% and ruling 18's quiet period.
+
+### D203 — Of the four new release valves round 1 proposed, only the referendum is new
+**Round 3 ruling 21, 11 September 2026**, answering Q3. Aaron approved all four verdicts.
+
+**Decided.** **S24, negotiate with the movement — already built; not added again.** Round 1 called it
+"the missing player verb", but round 2 then built the screen where a nation's own separatists make
+demands it can grant, refuse or tell to wait, and ruling 12 made answering them free and mandatory.
+That is S15 from the government's side, which is what S24 asked for; the only difference left is who
+opens the conversation. **S25, hold a referendum — ADDED**, and it is the only genuinely new valve.
+**S26, buy them — deferred to round 4**, because what money can buy is the economy's to say. **S27,
+partition it yourself — dropped**, on two grounds: releasing ground already works over a chosen set of
+Areas, so releasing the ones that want out while keeping the rest *is* partition under a name that
+already exists; and a line cannot be drawn below an Area, since the Area is the atomic unit and
+**1,181 of the map's 1,688 Areas are a single county**.
+
+**Why the referendum earns its place.** Lose and the ground leaves cleanly — released, a country from
+day one, no war. Win and the movement is set back for years. It re-points machinery that exists,
+including the honesty of the result: a vote can only be rigged when Civil Liberties are already below
+`election.stealBelow` (**0.32**), and rigging costs **0.12** more — so how trustworthy your referendum
+is depends on what kind of government you have been. That is the same shape ruling 14 found between
+martial law and a stolen election, reached independently. **And it carries the second-order cost S28
+demanded of every answer:** win narrowly and you have proved in public, with a number, that half the
+region wants out. Nothing else in the design makes a movement's support common knowledge.
+
+**Worth naming, because the complaint usually runs the other way.** Round 1 proposed four new
+government powers on 6 September. Five days later **three of the four are answered by things built or
+ruled in the meantime** — one exists, one is another round's, one was always possible — and the design
+grew by exactly one verb.
+
+**Filed as F21:** Aaron's extension, **funding propaganda** before a referendum. It is S26 pointed at a
+vote rather than at a region, and it sits opposite rigging on the same scale — money buys a result
+legally, liberties buy it illegally. Not designed now, for the same reason S26 is deferred: the price
+is round 4's to set.
