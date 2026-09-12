@@ -304,15 +304,15 @@ tr:last-child td{border-bottom:0}
 const BOARD = {
   project: "Manifest Disunity",
   livery: "tower",                      // tower | mars | violet | deep | slate
-  updated: "2026-09-11 19:10",          // when you last republished, local time
+  updated: "2026-09-11 20:45",          // when you last republished, local time
 
   // Three or four measured figures. value: number|string, or null = "not yet measured".
   figures: [
-    { label: "Design rounds done",      value: "2 of 7 — round 3 part-way" },
-    { label: "Rulings so far in round 3", value: 20 },
+    { label: "Design rounds done",      value: "2 of 7 — round 3 finished, awaiting your word" },
+    { label: "Rulings in round 3",      value: 41 },
     { label: "Economy-alpha stages done",  value: "A0–A5" },
     { label: "Current version",         value: "v0.6" },
-    { label: "Tests green — measured 8 Sep, no code touched since 5 Sep", value: 956 },
+    { label: "Tests green — all of them, run tonight in 197 seconds", value: 956 },
     { label: "Industry figures that are real, today",   value: "0%" },
     { label: "Industry figures real after the re-bake", value: "75%, not 84%" },
   ],
@@ -320,42 +320,74 @@ const BOARD = {
   // The single most important true thing right now. tone: "bad" | "warn" | "ok" | "neutral".
   headline: {
     tone: "ok",
-    text: "NOTHING IS WAITING ON YOU, AND POLITICS IS AT TWENTY RULINGS. Both cards that were on "
-        + "this page are answered, and between them they designed how one country joins another.\n\n"
-        + "THE SHAPE OF IT. A movement that wants a union does not demand that you merge — it "
-        + "demands that you GO AND ASK, because a union needs somebody else's consent. Three "
-        + "answers: yes, no, or \"let's think about it\" — and that middle one grows the movement "
-        + "inside THEIR country, which is the only way in this game to deliberately grow somebody "
-        + "else's movement. A yes makes one nation, everyone a full member, and none of the five "
-        + "penalties conquered ground carries — so joining is the only way to get bigger that does "
-        + "not poison what you gained. The answer turns on their own people's appetite, how close "
-        + "your politics are, your weight against theirs (your correction: size AND authority AND "
-        + "influence), and whether you are on speaking terms at all.\n\n"
-        + "AND YOU CLOSED A HOLE I HAD FOUND. Asking every turn would have been the obvious cheat — "
-        + "farm their movement upward until their own government is the one under pressure. Your "
-        + "ruling that asking discharges the demand, and the movement comes back later pointing "
-        + "somewhere else, closes it without forbidding anything: you ask when your own people "
-        + "demand it, not when you feel like it.\n\n"
-        + "THE OTHER CARD, AND YOU MADE IT BETTER. A region whose anger is split between two "
-        + "movements goes ungoverned and neither of them inherits it — and you added that the "
-        + "counties at its edge may attach themselves to a neighbour they merely dislike rather "
-        + "than stay with a movement that hates them. Measured afterwards: seven regions in ten on "
-        + "this map are a single county, so small holes get absorbed by their neighbours and only a "
-        + "big collapse leaves lasting ungoverned ground.\n\n"
-        + "EARLIER TODAY, AND IT IS THE DAY'S BAD NEWS. This board and every other record of the "
-        + "project was two days behind the work, for the second time: the written summary a new "
-        + "session reads still said politics had not started, when fourteen of your decisions had "
-        + "already been made. It is now fixed in machinery rather than in a note asking sessions to "
-        + "remember — before a new session reads anything it is told what has landed since the "
-        + "summary was written, and it must straighten the record before starting new work. Tested "
-        + "against today: it would have caught this on Thursday morning.",
+    text: "POLITICS IS FINISHED — 41 RULINGS — AND IT NEEDS ONE WORD FROM YOU TO CLOSE. Every one of "
+        + "the twelve questions the round opened with is answered, all 26 movements are placed on the "
+        + "new political board, and your third story has been traced through everything decided. By "
+        + "your own rule a round ends when you say it ends, so the card below is the last thing it "
+        + "wants.\n\n"
+        + "ONE THING WENT WRONG AND I CAUGHT IT MYSELF, AN HOUR LATE. I gave you a figure tonight — "
+        + "\"155 million people, a third of everyone inside a movement\" — and it was wrong. It added "
+        + "up nine movements' home ground without noticing that movements overlap, so shared counties "
+        + "got counted twice. The real number is 118 million people across 1,526 counties, which is 38 "
+        + "per cent, not 32. The population was overstated and the share understated by the same "
+        + "mistake, and the tell was there to be read: my own total came to more people than the "
+        + "United States has. Found by reviewing my own work before signing off, corrected everywhere, "
+        + "and written into the rules so the next session checks a population against the country "
+        + "before publishing it.\n\n"
+        + "WHAT YOU BUILT TONIGHT. The whole of how one country joins another: a movement that wants a "
+        + "union cannot be satisfied by you alone, so it sends you to your neighbours, and their "
+        + "answer — yes, no, or \"let's think about it\" — is the game. And a federation, which you "
+        + "ruled into existence as a real thing rather than a name: many states that stay states, a "
+        + "flat toll split between the host and the club, an elected leader with two budgets, an "
+        + "attack on one member answered by all of them, and an even share of every outside deal, "
+        + "because that is what pays a small nation for being there.\n\n"
+        + "THE THREE THINGS THE DESIGN PRODUCED THAT NOBODY DESIGNED. The federation's money flows to "
+        + "whoever holds the rivers and its protection flows to whoever is weakest, inside an "
+        + "institution those same members elect — so it will argue. A federation makes unions harder "
+        + "abroad and easier at home, which quietly pulls its own members toward becoming one country. "
+        + "And a federation can be destroyed without losing an acre, by making a war tiresome enough "
+        + "that members walk out until it falls below three.\n\n"
+        + "WHAT THE TRACE FOUND, AND WHY IT IS WORTH THE TIME EVERY ROUND. Your third story failed its "
+        + "first trace — a government facing the Sagebrush Rebellion is never actually cornered, "
+        + "because for that kind of movement the cheap answer and the real cure are the same act. That "
+        + "failure is what showed the story is about a different kind of movement entirely. It also "
+        + "turned up that nine movements have a ceiling below the line they would have to cross: three "
+        + "of them could never have taken ground at all, which you fixed, and it puts a hard limit on "
+        + "a number nobody has set yet.\n\n"
+        + "THE ONE RISK I CANNOT SETTLE ON PAPER: if an attack on one federation member means war with "
+        + "all of them, nobody may ever attack one — and joining becomes the obvious opening move for "
+        + "every small nation on the board. Every counterweight exists and not one has been played. It "
+        + "is the first thing a test should watch.\n\n"
+        + "Nothing is broken. All 956 checks pass, run tonight in 197 seconds. No code, data or game "
+        + "rules were touched — this was a design session and it wrote only documents.",
   },
 
 
   // Only decisions that are genuinely the owner's. Ids are permanent.
   // Only decisions that are genuinely the owner's. Ids are permanent.
-  decisions: [],   // Empty is the correct state. Both cards were answered in session on
-                   // 11 September; the answers are in the saved records and in the round document.
+  // Only decisions that are genuinely the owner's. Ids are permanent.
+  decisions: [
+    { id: "close-round-3",
+      title: "Politics is finished. Do you call it closed?",
+      evidence: "41 rulings. All twelve questions the round opened with are answered, and so are the "
+              + "seven that the federation opened on top of them. All 26 movements are placed on the "
+              + "new political board — you confirmed Sagebrush as anarcho-capitalist and moved A Free "
+              + "Texas to fascist. The round's own test is answered: where round one left a "
+              + "government ONE thing to do about a movement, this round leaves it nine, and seven of "
+              + "those are things the game already did, pointed somewhere new. Your third story has "
+              + "been traced through every ruling, and everything the round hands to the economy, "
+              + "diplomacy and the final round is written down. Ten findings each have an owner.",
+      cost: "Closing it means the politics document stops being the place decisions are made and "
+          + "becomes a record — the next change to politics would be a correction with a reason, not "
+          + "a fresh ruling. Leaving it open costs nothing except that round four cannot start, and "
+          + "round four is the economy, which every other round has been sending work to.",
+      recommendation: "Close it. By your own rule a round ends when a session can read it end to end "
+                    + "and the only new entries are recombinations of what is already there — and it "
+                    + "reached that tonight. The two things still unsettled are not the round's to "
+                    + "settle: whether the federation's shield is too strong needs play, not paper, "
+                    + "and what a player can SEE of another country you have already moved to the "
+                    + "next phase." },
+  ],
 
   // Standing permissions. Ids are permanent. risk: "low" | "med" | "high".
   permissions: [
@@ -684,7 +716,24 @@ const BOARD = {
             + "the movement comes back pointing elsewhere, which closes the obvious cheat without "
             + "forbidding it. And an Area whose anger is split between two movements goes "
             + "ungoverned, with its edge counties free to attach to a neighbour they merely dislike "
-            + "rather than stay with a movement that hates them." },
+            + "rather than stay with a movement that hates them.\n\n"
+            + "FINISHED THE SAME EVENING, at forty-one rulings. You ruled the federation into "
+            + "existence as a real thing rather than a name — many states that stay states, a flat "
+            + "toll split between the host and the club, an elected leader running two budgets, an "
+            + "attack on one member answered by all of them, and an even share of every outside deal. "
+            + "You settled what a movement that changes its mind actually counts (broken promises, "
+            + "not turns), what a country's stance toward the old United States is (not a fact it "
+            + "carries — simply what the movements inside it still want), why the old federal "
+            + "government opens weak (its losses are written into the world, not a number somebody "
+            + "picked), and what the fervour of a new country buys and costs when it runs out.\n\n"
+            + "All 26 movements are placed on the new political board. The round's own test is "
+            + "answered: where round one left a government ONE thing it could do about a movement, "
+            + "this round leaves nine, and seven of those are things the game already did, pointed "
+            + "somewhere new. Your third story has been traced — it failed the first trace, which is "
+            + "what showed which kind of movement it was really about. Everything the round hands to "
+            + "the economy, to diplomacy and to the final round is written down, and its ten findings "
+            + "each have an owner.\n\n"
+            + "IT NEEDS ONE WORD FROM YOU TO CLOSE, which is the card at the top of this page." },
     { name: "After the economy alpha — Recognition, Canada, Mexico", status: "todo",
       brief: "Recognition score and ramp, border-state suspicion, Canada/Mexico as partners and as corridors, gray-market trade.",
       actual: "HALF DONE, AND PAUSED while the design rounds run. Canada and Mexico are real places on the trade map — reached by the "
