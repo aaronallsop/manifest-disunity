@@ -14,10 +14,10 @@ un-started. Update it whenever a spine question is answered.*
 
 | | |
 |---|---|
-| **Rulings made** | **24** (§4 and §5), plus findings A–F (§5, §6) |
-| **Spine questions answered** | **Q1** *(replaced by P1 and rulings 1–2)* · **Q2** *(rulings 11, 11a)* · **Q3** *(ruling 21)* · **Q4** *(ruling 3)* · **Q5** *(ruling 22)* · **Q6** *(ruling 14)* · **Q9** *(ruling 6)* · **Q7** *(ruling 24)* · **Q12** *(ruling 23)* |
+| **Rulings made** | **25** (§4 and §5), plus findings A–F (§5, §6) |
+| **Spine questions answered** | **Q1** *(replaced by P1 and rulings 1–2)* · **Q2** *(rulings 11, 11a)* · **Q3** *(ruling 21)* · **Q4** *(ruling 3)* · **Q5** *(ruling 22)* · **Q6** *(ruling 14)* · **Q9** *(ruling 6)* · **Q7** *(ruling 24)* · **Q8** *(ruling 25)* · **Q12** *(ruling 23)* |
 | **Part answered** | **Q11** — ruling 11 point 4 makes joining a bloc the *concede-less* move for a **Unify** movement; whether it also costs Authority at home is still open |
-| **Still open** | **Q8** · **Q10** · **Q11**'s domestic price |
+| **Still open** | **Q10** · **Q11**'s domestic price · **and ruling 25's seven follow-on questions about the federation** |
 | **Waiting on Aaron** | **Nothing.** Both board cards are answered — the Farmers Union by ruling 15, and ruling 6's opened question by ruling 20. **Ruling 15's four questions are all answered** — 1 by ruling 16, 2 by ruling 17, 3 by ruling 18, and 4 by ruling 19 as a flagged default. The proposal-spam exploit named in ruling 16 is closed by ruling 18: proposals run on the movement's clock, not the player's. **Finding A is ANSWERED by ruling 15**: the Farmers Union is a movement and its verb is Unify |
 | **Still to do before the round closes** | the closing test — *what does the player do about this on a Tuesday, with one action?* — and **trace scenario 3** |
 
@@ -268,7 +268,7 @@ climbing back — is one seeded number and it tells the story. "Local powers fil
 movements and tier-3 ground already are; giving it a second mechanism would grow two answers to one
 question, which is the thing this plan exists to avoid.
 
-### Q8 — Is a federation a form of government, or a name?
+### Q8 — ~~Is a federation a form of government, or a name?~~ **ANSWERED — ruling 25: a real form, and the recommendation was overruled**
 
 *Inbox 3, and Aaron raised it again on Acadiana: "the gulf compact could be a unified states? We can
 talk about that later in governments and diplomacy."*
@@ -1709,6 +1709,84 @@ cannot hold it, and ground with nobody governing it at all. A separate mechanism
 to one question, and both would need tuning. **This round has now declined to build something four
 times** (S24, S27, the second vacuum mechanism, and the coalition object ruling 6 disposed of), which
 is worth counting.
+
+### Ruling 25 — A federation is a real form, not a name: many states, a flat internal toll, an elected leader and a turn of its own
+
+**RULED 11 September 2026**, answering **Q8** — and **overruling the recommendation put to him**, which
+was that a federation should be a label on a union that keeps self-rule. Aaron, verbatim:
+
+> "A federation should be a relation between multiple states. Alliance is two states. A federation is
+> like the EU - so free trade agreement with every nation with a flat 10% toll that is automatically
+> applied. 5% goes to the nation, and 5% goes to the federation, and that is the sole source of the
+> federation's income. Every so often there will be elections among the federation states on who to
+> elect as the leader (similiar to HRE in EU4) and that nation will have two budgets theirs and the
+> federations. They will have a seperate turn for what the federation will do but those would be
+> limited, it would be help out struggling nation financially, petition to allow for a declration of
+> war, and accept or reject trade deals from other countries (which they would get with all the
+> federation. So lets say that a country signs a trade deal with them for 20% - 5% goes to the
+> federation and the remaining 15% goes to all the remaining countries. Same for the tolls."
+
+**THE OBJECT, as ruled.**
+
+| | |
+|---|---|
+| **What it is** | A relation between **multiple** states. An **alliance is two**; a federation is many. The model is the EU |
+| **Inside it** | A **free trade agreement with every member**, carrying a **flat 10% toll applied automatically** — not negotiated, not per-mode, not refusable |
+| **Where the 10% goes** | **5% to the nation, 5% to the federation** |
+| **The federation's income** | **That 5% and nothing else** |
+| **Who leads it** | A member state, **elected by the members every so often** — the Holy Roman Emperor in EU4 |
+| **What leading means** | That nation runs **two budgets: its own and the federation's** |
+| **The federation's turn** | Separate, and **deliberately short**: help a struggling member financially · petition to allow a declaration of war · accept or reject trade deals offered from outside |
+| **Deals from outside** | Signed **with the whole federation**. At 20%: **5% to the federation, the remaining 15% to all the other members.** Tolls the same way |
+
+**WHAT THE RULING BUYS, and why overruling me was right.** The recommendation said a federation was a
+union that kept self-rule — a label on two existing buttons. **That was a category error.** A union is
+**one state**; Aaron's federation is **many states that stay states**, which the game genuinely cannot
+express today. Nothing in the build is a relation among *several* nations with a treasury of its own:
+alliances are pairs and blocs have no substance. **This is a new object, and it is the first one this
+round has asked for besides ruling 22's clock.**
+
+**THREE CONSEQUENCES WORTH NAMING, none of them designed on purpose.**
+
+1. **A federation's power scales with how much its members trade with each other.** Its only income is
+   a slice of internal trade, so **a federation of neighbours who ignore each other is broke** and one
+   whose members are economically entangled is rich. The institution grows out of the behaviour rather
+   than being granted by a rule.
+2. **Being elected leader is worth real money**, because the leader spends the federation's budget as
+   well as its own — and the three permitted actions include *helping a struggling member*, which is
+   also how a leader buys the next election. **That is a politics the players will find on their own.**
+3. **The external deal splits the take three ways and the leader is not one of them.** 5% federation,
+   15% to *"all the remaining countries"*, and the negotiating is done by the federation's turn. So the
+   leader does the work and the members take the money, which is the EU exactly.
+
+**WHERE IT COLLIDES WITH WHAT EXISTS — flagged, not solved.** The build's corridors are **negotiated,
+per-mode, per-direction standing agreements with a notice period**, and tolls **compound on what
+arrives**. A flat, automatic, unrefusable 10% between members is a different animal, and **whether it
+replaces members' own agreements with each other is the first open question below.** Also worth noting
+so nobody confuses them later: **10% is already the placeholder toll for routing through Canada and
+Mexico.** Same number, unrelated meaning.
+
+**SCOPE, stated plainly.** This is a **diplomacy object ruled in the politics round**. Round 3 owns
+what it does at home — Q11's domestic price of joining one. **Its mechanics belong to round 5, and the
+toll split lands on round 4's ground**, because what a percentage of trade is worth is the economy's to
+say. Recorded here in full so nothing is lost, and handed on rather than built.
+
+**Aaron's numbers are recorded as given: 10%, 5/5, and the 20% worked example.** They are his, not
+invented by me, and they become tunables at the mechanics stage like every other figure. **"Every so
+often" for the election is deferred** — the game's national elections run every 16 turns, and whether
+the federation borrows that number is not decided.
+
+**SEVEN QUESTIONS THIS OPENS, in the order they are being asked.**
+
+1. **Does the federation's flat 10% replace members' own negotiated corridors with each other**, or sit
+   on top of them?
+2. **Which nation takes the 5%** — the one whose ground is crossed, or the one selling?
+3. **What happens when the federation refuses a member's petition for war?** Can it declare anyway, and
+   at what price?
+4. **Can two members be hostile to each other at all**, or does membership forbid it?
+5. **How does a nation join, and how does it leave?** Who decides?
+6. **What happens to the federation if the leading nation is conquered, or leaves?**
+7. **Does the external 15% split evenly among members, or by size?**
 
 ### Finding F — The two largest Unify movements share 504 counties, and both want the same thing
 

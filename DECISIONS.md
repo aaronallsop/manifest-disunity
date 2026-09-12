@@ -4112,3 +4112,47 @@ starts decides how much of the country is still reachable.
 movements and ungoverned ground already are. A separate mechanism would be two answers to one question
 and both would need tuning. **This round has now declined to build something four times** — S24, S27,
 the second vacuum mechanism, and the coalition object ruling 6 disposed of.
+
+### D207 — A federation is a real form: many states, a flat internal toll, an elected leader and a turn of its own
+**Round 3 ruling 25, 11 September 2026**, answering Q8 — **and overruling the recommendation**, which
+was that a federation should be a name for a union that keeps self-rule.
+
+**Aaron ruled it as an object.** A federation is a relation between **multiple** states — an alliance is
+two — modelled on the EU. Inside it, a free trade agreement with every member carrying a **flat 10% toll
+applied automatically**, of which **5% goes to the nation and 5% to the federation**, and that 5% is the
+federation's **sole** income. Members **elect a leader** every so often, HRE-style, and that nation then
+runs **two budgets, its own and the federation's**. The federation takes a **separate, deliberately short
+turn**: help a struggling member financially, petition to allow a declaration of war, and accept or
+reject trade deals offered from outside. **An outside deal is signed with the whole federation** — at 20%,
+5% to the federation and the remaining 15% to all the other members. Tolls the same way.
+
+**Why overruling was right, and the recommendation was a category error.** A union is ONE state; this is
+**many states that stay states**, which the build cannot express at all: alliances are pairs and blocs
+have no substance. It is a genuinely new object — the second this round has asked for, after ruling 22's
+clock.
+
+**Three consequences nobody designed.** (1) **A federation's power scales with how much its members trade
+with each other**, because its only income is a slice of internal trade — a federation of neighbours who
+ignore each other is broke. (2) **Being elected leader is worth real money**, since the leader spends the
+federation's budget as well as its own, and one of the three permitted actions — helping a struggling
+member — is also how a leader buys the next election. (3) **The leader does the work and the members take
+the money**: the external split is 5% federation and 15% to the others, and the negotiating is the
+federation's turn. Which is the EU exactly.
+
+**Flagged, not solved: it collides with the built trade engine.** Corridors today are negotiated,
+per-mode, per-direction standing agreements with a notice period, and tolls compound on what arrives. A
+flat, automatic, unrefusable 10% between members is a different animal. Also noted so nobody conflates
+them: **10% is already the placeholder toll for routing through Canada and Mexico** — same number,
+unrelated meaning.
+
+**Scope.** A diplomacy object ruled in the politics round. Round 3 owns its domestic price (Q11); **its
+mechanics are round 5's and the toll split is round 4's**, because what a percentage of trade is worth is
+the economy's to say. Recorded here in full and handed on rather than built. **Aaron's figures — 10%, the
+5/5 split, the 20% example — are recorded as given**, not invented by me, and become tunables at the
+mechanics stage. "Every so often" for the election is deferred; national elections run every 16 turns and
+whether the federation borrows that is undecided.
+
+**Seven questions opened and being asked in order:** whether the flat 10% replaces members' own corridors
+or sits on top; which nation takes the 5%; what happens when a petition for war is refused; whether two
+members can be hostile at all; how a nation joins and leaves; what becomes of the federation if its
+leader is conquered or leaves; and whether the external 15% splits evenly or by size.
