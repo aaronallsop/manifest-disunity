@@ -19,10 +19,10 @@ un-started. Update it whenever a spine question is answered.*
 
 | | |
 |---|---|
-| **Rulings made** | **37** (§4 and §5), plus findings A–G (§5, §6) |
-| **Spine questions answered** | **Q1** *(replaced by P1 and rulings 1–2)* · **Q2** *(rulings 11, 11a)* · **Q3** *(ruling 21)* · **Q4** *(ruling 3)* · **Q5** *(ruling 22)* · **Q6** *(ruling 14)* · **Q9** *(ruling 6)* · **Q7** *(ruling 24)* · **Q8** *(ruling 25)* · **Q11** *(ruling 37)* · **Q12** *(ruling 23)* |
+| **Rulings made** | **38** (§4 and §5), plus findings A–G (§5, §6) |
+| **Spine questions answered** | **Q1** *(replaced by P1 and rulings 1–2)* · **Q2** *(rulings 11, 11a)* · **Q3** *(ruling 21)* · **Q4** *(ruling 3)* · **Q5** *(ruling 22)* · **Q6** *(ruling 14)* · **Q9** *(ruling 6)* · **Q10** *(ruling 38)* · **Q7** *(ruling 24)* · **Q8** *(ruling 25)* · **Q11** *(ruling 37)* · **Q12** *(ruling 23)* |
 | **Part answered** | *(none)* |
-| **Still open** | **Q10 only.** **The federation is finished** — all seven of ruling 25's questions answered (rulings 26-36), plus separate peace (35) and ruling 31's open half (33) |
+| **Still open** | **No spine question is open. All twelve are answered** (Q10 by ruling 38). **The federation is finished** — all seven of ruling 25's questions answered (rulings 26-36), plus separate peace (35) and ruling 31's open half (33) |
 | **Waiting on Aaron** | **Nothing.** Both board cards are answered — the Farmers Union by ruling 15, and ruling 6's opened question by ruling 20. **Ruling 15's four questions are all answered** — 1 by ruling 16, 2 by ruling 17, 3 by ruling 18, and 4 by ruling 19 as a flagged default. The proposal-spam exploit named in ruling 16 is closed by ruling 18: proposals run on the movement's clock, not the player's. **Finding A is ANSWERED by ruling 15**: the Farmers Union is a movement and its verb is Unify |
 | **Still to do before the round closes** | the closing test — *what does the player do about this on a Tuesday, with one action?* — and **trace scenario 3** |
 
@@ -2215,6 +2215,35 @@ size, Authority and Influence together** — the thing that makes a neighbour su
 **So joining a federation raises your influence and therefore makes your future unions harder to get
 agreed.** The bloc that makes you powerful makes you harder to grow. That is either a fine irony or a
 trap, and it goes on the list for the trace.
+
+### Ruling 38 — The fervour of a new country is a tolerance, and it ends worse than neutral
+
+**RULED 11 September 2026** — *"Yes."* — answering **Q10**, the last of the twelve spine questions.
+
+**Widen what exists rather than adding a second thing.** The honeymoon today is **four turns of borrowed
+Authority against a proportional GDP cut**. It becomes **a tolerance applied to grievance as well**, so
+a brand-new country can genuinely **govern badly for a while** without its regions turning on it.
+
+**Why it matters more here than anywhere else:** almost every nation on this board is four turns old.
+**Today a new nation is fragile in precisely the moment it should be unbreakable** — which is backwards
+for a game whose opening move is sixty-one countries being born at once.
+
+**And it ends worse than neutral.** A patience that has been spent is **a grievance with a date on it**.
+The fervour does not fade to zero; it fades *below* the baseline for a while, and a government that
+coasted on it finds the bill arrives all at once.
+
+**That is the fourth time this design has produced the same shape** — the garrison buys quiet and sells
+the next decade; the appeasement valve buys a region and pays at the next election; *"tell them to
+wait"* borrows patience at interest; and now the honeymoon. **Buy now, pay later, over and over.** It is
+what makes this a game about consequences rather than optimisation, and it was never planned as a
+motif.
+
+**The choice it hands a new country in its first year:** spend the fervour on something hard —
+suppress, conquer, restructure — and face the reckoning, or govern carefully and have less to show for
+the only free years it will ever get.
+
+**Deferred, not invented:** how far below baseline, and for how long. Joins ruling 15's X%, ruling 18's
+quiet period, ruling 20's margin and ruling 22's count.
 
 ### Finding F — The two largest Unify movements share 504 counties, and both want the same thing
 
