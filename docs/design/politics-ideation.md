@@ -14,10 +14,10 @@ un-started. Update it whenever a spine question is answered.*
 
 | | |
 |---|---|
-| **Rulings made** | **21** (§4 and §5), plus findings A–F (§5, §6) |
-| **Spine questions answered** | **Q1** *(replaced by P1 and rulings 1–2)* · **Q2** *(rulings 11, 11a)* · **Q3** *(ruling 21)* · **Q4** *(ruling 3)* · **Q6** *(ruling 14)* · **Q9** *(ruling 6)* |
+| **Rulings made** | **22** (§4 and §5), plus findings A–F (§5, §6) |
+| **Spine questions answered** | **Q1** *(replaced by P1 and rulings 1–2)* · **Q2** *(rulings 11, 11a)* · **Q3** *(ruling 21)* · **Q4** *(ruling 3)* · **Q5** *(ruling 22)* · **Q6** *(ruling 14)* · **Q9** *(ruling 6)* |
 | **Part answered** | **Q11** — ruling 11 point 4 makes joining a bloc the *concede-less* move for a **Unify** movement; whether it also costs Authority at home is still open |
-| **Still open** | **Q5** · **Q7** · **Q8** · **Q10** · **Q11**'s domestic price · **Q12** |
+| **Still open** | **Q7** · **Q8** · **Q10** · **Q11**'s domestic price · **Q12** *(nearly free now — it is ruling 22's machinery pointed at nations)* |
 | **Waiting on Aaron** | **Nothing.** Both board cards are answered — the Farmers Union by ruling 15, and ruling 6's opened question by ruling 20. **Ruling 15's four questions are all answered** — 1 by ruling 16, 2 by ruling 17, 3 by ruling 18, and 4 by ruling 19 as a flagged default. The proposal-spam exploit named in ruling 16 is closed by ruling 18: proposals run on the movement's clock, not the player's. **Finding A is ANSWERED by ruling 15**: the Farmers Union is a movement and its verb is Unify |
 | **Still to do before the round closes** | the closing test — *what does the player do about this on a Tuesday, with one action?* — and **trace scenario 3** |
 
@@ -239,7 +239,7 @@ governments", plural. It can be annexed cheaply, which round 1 already priced. I
 state** if a movement realises on it. **A state cannot fall into one** in this version — that is a
 collapse mechanic and it belongs to a later pass.
 
-### Q5 — The mutable movement verb: what are the legal changes, and what triggers them?
+### Q5 — ~~The mutable movement verb: what are the legal changes, and what triggers them?~~ **ANSWERED — ruling 22**
 
 *Inbox 13, ruling 30, C120. The one piece of machinery that does not exist.*
 
@@ -1585,6 +1585,61 @@ is that things get too complicated, so say it out loud when the opposite happens
 **Filed, not built:** Aaron's own extension — **funding propaganda** before a referendum — is
 `docs/FUTURE-IDEAS.md` **F21**. It is S26 pointed at a vote instead of at a region, and it sits
 opposite rigging on the same scale: money buys the result legally, liberties buy it illegally.
+
+### Ruling 22 — The movement that changes its mind counts broken promises, and never changes back
+
+**RULED 11 September 2026**, answering **Q5** — the one piece of machinery in the whole design that
+does not exist. Aaron: **"Correct - counts broken promises"**, confirming the recommendation put to
+him. *(He quoted the first part; the other three were in the same recommendation and are ruled with
+it. Each is one line to reverse.)*
+
+**Round 2 had already done half of this and the spine did not say so.** Ruling 30 settled the
+*behaviour*: **wait and never deliver, and the movement's verb changes toward *Separate***. Its
+reasoning is worth keeping in front of whoever builds this — *"if that were only a larger growth
+number, a player would use 'wait' as a cheap delay and absorb the difference. Making it convert the
+movement's aim is the only version in which stringing somebody along costs more than saying no."*
+**What round 3 owed was the mechanism, not the principle.**
+
+| | |
+|---|---|
+| **What the clock counts** | **Broken promises, not turns.** Each time a demand is answered with *wait* and the thing has still not arrived when it asks again, the count goes up by one |
+| **How far it moves** | **One step, always to *Separate*.** No ladder of intermediate wants |
+| **Which way** | **Never back.** A movement that has been disappointed does not start believing you again |
+| **How it fires** | **Once, as an event the player is told about** — not a recalculation every turn |
+
+**Why a count and not a timer.** A turn timer punishes a government that told a movement to wait once
+and then delivered late — which is the opposite of the lesson ruling 30 exists to teach. A count of
+promises made and not kept punishes exactly the behaviour being named. **It is also immune to a player
+who simply never opens the screen**, because ruling 12 made answering demands mandatory before the
+turn can move.
+
+**Why one step and never a ladder.** Six verbs would need a rule for every pair, which is the
+bookkeeping ruling 11's table economy exists to avoid. Disappointment has one destination: **you stop
+asking and start wanting out.**
+
+**Why it must fire once.** **C133** requires it: alliance-inherited hostility fires as an event rather
+than re-checking each turn, or round 2's ruling 38 is impossible — and a verb that flips on a re-check
+has the same problem. It also buys the game a moment worth printing: *the Farmers Union has stopped
+asking.*
+
+**FINDING G BECOMES REAL HERE, and it is the only exit from a permanent feud in the design.** Two
+nations contesting the same inheritance never forgive each other (round 2). **But if the *Reunify*
+movement driving one of them gives up, the permanent hostility floor its contest created lifts with
+it.** So a country can talk its way out of a forever-war by **disappointing its own hardliners until
+they stop asking** — at the price of turning them into separatists. Nobody designed that; it fell out
+of ruling 30 and it arrives here.
+
+**Default taken, one line to reverse: the ADJECTIVE does not change, only the verb.** What would buy
+the movement off stays what it was — the farmers still want farm policy, they just want it in their own
+country now. Ruling 11a put the adjective in charge of the *remove the want* column, and nothing about
+being disappointed changes what the grievance is about.
+
+**Deferred, not invented:** how many broken promises. Joins ruling 15's **X%**, ruling 18's quiet
+period and ruling 20's margin.
+
+**And the grimmest sentence in the game now has a second form.** Round 2 produced *"a movement that
+asked you to march becomes a movement that wants to leave."* With ruling 15, there is now another: **a
+movement that asked you to go and make friends becomes a movement that wants to leave.**
 
 ### Finding F — The two largest Unify movements share 504 counties, and both want the same thing
 

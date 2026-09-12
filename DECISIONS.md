@@ -4026,3 +4026,37 @@ grew by exactly one verb.
 vote rather than at a region, and it sits opposite rigging on the same scale — money buys a result
 legally, liberties buy it illegally. Not designed now, for the same reason S26 is deferred: the price
 is round 4's to set.
+
+### D204 — The mutable movement verb: it counts broken promises, moves one step to Separate, and never comes back
+**Round 3 ruling 22, 11 September 2026**, answering **Q5** — the only piece of machinery the whole
+design asks for that does not exist. Aaron: **"Correct - counts broken promises."**
+
+**Half of it was already ruled and the spine had not noticed.** Round 2's ruling 30 settled the
+behaviour — *wait and never deliver, and the movement's verb changes toward Separate* — with the reason
+that if stringing somebody along were merely a larger growth number, a player would use "wait" as a
+cheap delay and absorb the difference. **What round 3 owed was the mechanism, not the principle.**
+
+**Decided.** **The clock counts broken promises, not turns**: each time a demand is answered with
+*wait* and the thing has still not arrived when the movement asks again, the count rises by one. **It
+moves one step, always to *Separate*, and never back.** **It fires once, as an event the player is
+told about**, not as a recalculation each turn.
+
+**Why each.** A turn timer would punish a government that waited once and delivered late — the opposite
+of the lesson. A count punishes exactly the behaviour being named, and ruling 12's mandatory answering
+makes it immune to a player who simply never opens the screen. A ladder of intermediate wants would
+need a rule for every pair of six verbs, which is the bookkeeping ruling 11's table exists to avoid;
+disappointment has one destination. And **C133 requires the once-only firing** — a verb that flips on a
+re-check has the same defect that would make round 2's ruling 38 impossible.
+
+**Finding G becomes real here, and it is the only exit from a permanent feud in the design.** Two
+nations contesting the same inheritance never forgive each other — **but if the Reunify movement
+driving one of them gives up, the permanent hostility floor lifts with it.** A country can talk its way
+out of a forever-war by disappointing its own hardliners until they stop asking, at the price of
+turning them into separatists.
+
+**Default taken, one line to reverse:** the **adjective** does not change, only the verb. What would buy
+the movement off stays what it was; ruling 11a put the adjective in charge of the *remove the want*
+column and being disappointed does not change what the grievance is about.
+
+**Deferred, not invented:** how many broken promises. Joins ruling 15's X%, ruling 18's quiet period and
+ruling 20's margin.
