@@ -19,12 +19,12 @@ un-started. Update it whenever a spine question is answered.*
 
 | | |
 |---|---|
-| **Rulings made** | **40** (§4 and §5), plus findings A–H (§5, §6) and the re-map of all 26 movements |
+| **Rulings made** | **40** (§4 and §5), plus findings A–I (§5, §6, §7) and the re-map of all 26 movements |
 | **Spine questions answered** | **Q1** *(replaced by P1 and rulings 1–2)* · **Q2** *(rulings 11, 11a)* · **Q3** *(ruling 21)* · **Q4** *(ruling 3)* · **Q5** *(ruling 22)* · **Q6** *(ruling 14)* · **Q9** *(ruling 6)* · **Q10** *(ruling 38)* · **Q7** *(ruling 24)* · **Q8** *(ruling 25)* · **Q11** *(ruling 37)* · **Q12** *(ruling 23)* |
 | **Part answered** | *(none)* |
 | **Still open** | **No spine question is open. All twelve are answered** (Q10 by ruling 38). **The federation is finished** — all seven of ruling 25's questions answered (rulings 26-36), plus separate peace (35) and ruling 31's open half (33) |
 | **Waiting on Aaron** | **Nothing.** Both board cards are answered — the Farmers Union by ruling 15, and ruling 6's opened question by ruling 20. **Ruling 15's four questions are all answered** — 1 by ruling 16, 2 by ruling 17, 3 by ruling 18, and 4 by ruling 19 as a flagged default. The proposal-spam exploit named in ruling 16 is closed by ruling 18: proposals run on the movement's clock, not the player's. **Finding A is ANSWERED by ruling 15**: the Farmers Union is a movement and its verb is Unify |
-| **Still to do before the round closes** | ~~re-map the movements~~ **DONE, 9 placements marked for Aaron** · the closing test — *what does the player do about this on a Tuesday, with one action?* · **trace scenario 3**, checking the federation cascade and ruling 37's irony · C133's one-line correction · an owner for each finding |
+| **Still to do before the round closes** | ~~re-map~~ **done** · ~~closing test~~ **done, §7** · ~~trace scenario 3~~ **done, §7 — it narrates, and only for ideological movements** · **outstanding: the federation cascade and ruling 37's irony still untraced · C133's one-line correction · an owner for each of findings A–I** |
 
 ---
 
@@ -2477,3 +2477,126 @@ two movements get, Cascadia sitting at the collective-progressive end and Jeffer
 neo-liberal-conservative one. **Round 1's finding F had already noticed this pair and read it as pure
 rivalry.** Under a coalition rule they are allies first and enemies afterwards, which is the whole
 idea.
+
+---
+
+## 7. The close — the Tuesday test and scenario 3, traced
+
+### The closing test: what does the player DO about this, on a Tuesday, with one action?
+
+**Answered 11 September 2026**, as every round must before it closes.
+
+**Before the action, and free:** every demand on the table is answered — grant, refuse, or tell them to
+wait (ruling 12, mandatory). **"Wait" is the one that costs later** (ruling 22).
+
+**Then one act, from nine.** Round 1 left this round with *one* answer to a movement — the garrison.
+It leaves with nine, and **seven of them are re-pointings of machinery that already exists**:
+
+| The act | Where it came from |
+|---|---|
+| **Release the ground** | built |
+| **Grant autonomy** | built |
+| **Change course** | built — and now priced by distance across the board (ruling 40) |
+| **Garrison** | built |
+| **Become them** | ruling 9 |
+| **Declare martial law** | ruling 14 — the only act that touches an election |
+| **Hold a referendum** | ruling 21 — the only new *valve*, and it re-points the election machinery |
+| **Propose a union to a neighbour** | ruling 15 — the movement sends you; the neighbour answers |
+| **Federation business** | rulings 25–37: apply, vote on an admission, stand for the leadership; and if you lead it, spend its turn |
+
+**So the test passes: the player has a Tuesday, and it is a choice between priced answers rather than a
+single button.** Round 1's finding D — *five of the six movement verbs have no government response at
+all* — is closed by ruling 11's table and ruling 15's proposal.
+
+**The honest weakness, and it is Aaron's own.** Nine acts against **one action per turn** means the
+limiting factor is now the turn, not the options: a government with three movements answers all three
+for free and can act on one. **He has already said the one-action rule itself needs changing** (ruling
+14, filed to round 7 with ruling 12's exception beside it). **This round did not create that problem, but
+it is the round that makes it visible.**
+
+### Scenario 3 traced — a government that chooses between its own identity and its territory
+
+**The scenario:** *a movement is over the line in three Areas; the government can hand the ground away,
+grant self-rule, change what it stands for and lose the majority that elected it, or send soldiers and
+make the next movement. Four prices for the same relief.*
+
+**Traced against real ground rather than a hypothetical: NEVADA, facing the Sagebrush Rebellion.**
+
+| | |
+|---|---|
+| Nevada | **17 counties, 3,267,467 people**, 48% Democrat / 50% Republican by population |
+| Sagebrush's reach there | **all 17 counties — the entire state** |
+| Where the people are | **Clark (Las Vegas) 2,398,871 and Washoe (Reno) 507,280 — 89% of the state**, both leaning Democrat |
+| The other 15 counties | **361,316 people between them — 11%** — and strongly Republican (Lyon 71%) |
+| Sagebrush's politics | **Anarcho-Capitalism** (ruling: the re-map) — different from a city-elected Democrat government **on all three axes** |
+
+**THE TRACE FAILS TO PRODUCE THE DILEMMA, AND THE REASON IS INSTRUCTIVE.** Sagebrush is an
+**autonomist** movement, and ruling 11a established that for autonomists **the cheap substitute and the
+cure are the same act** — self-rule, or giving the land back. So Nevada's government is never cornered:
+it grants autonomy over eleven per cent of its people and the crisis is over. **It never has to choose
+between its identity and its territory at all.**
+
+**So scenario 3 is not a scenario about *any* movement. It is specifically about an IDEOLOGICAL one** —
+because ruling 11a put *change course* in the adjective's column, and ideological is the only adjective
+whose cure is **the government becoming something else**. Six of the twenty-six movements are
+ideological.
+
+**Re-traced where the dilemma actually lives: a government facing the CASCADIAN SEPARATISTS** —
+ideological, growth cap **0.55**, sitting at Democratic Socialism.
+
+1. **Hand the ground away.** Release costs a share of national output permanently, and it teaches the
+   next region that leaving works (S28). **Available, and expensive.**
+2. **Grant self-rule.** For an ideological movement this is the *concede-less* move and **not the cure** —
+   it buys quiet without touching the want. The movement keeps growing.
+3. **Change course.** The cure — and it means moving the governing party across the board toward
+   Democratic Socialism, **priced by the distance moved** (ruling 40) and **needing a popular share for
+   the mandate** (built). A government elected by the other half loses that half. **This is the scenario's
+   own sentence, and it now has a price attached to it.**
+4. **Send soldiers.** Buys quiet now, feeds the grievance that regrows the movement — and under ruling
+   14, doing it nationally suspends elections only past half the country, at a cost that compounds.
+
+**Verdict: scenario 3 narrates, and it narrates only for ideological movements.** That is not a defect;
+it is the round discovering which of its own machinery the scenario was testing. **Two things it
+confirms:** the adjective really does own the cure (ruling 11a is load-bearing, not a tidy-up), and
+*concede less* is genuinely weaker than *concede* rather than a discount on it.
+
+### Finding I — nine movements are capped below the line they would have to cross, and three of them can never make a country
+
+**Found by tracing Nevada, and it is the largest thing the trace turned up.** An Area secedes when a
+movement organises **0.40** of it. Nine of the twenty-six live movements have a **growth cap below
+0.40**, so they can never reach it alone:
+
+| Movement | Cap | People |
+|---|---|---|
+| Blue-Collar Populist | 0.35 | 70,123,744 |
+| Great Lakes Free Trade | 0.30 | 23,731,284 |
+| The Farmers Union | 0.30 | 22,638,807 |
+| New England United | 0.35 | 15,386,085 |
+| Central States Union | 0.35 | 9,998,817 |
+| Sagebrush Rebellion | 0.35 | 5,586,384 |
+| Front Range Republic | 0.35 | 4,986,980 |
+| Acadiana | 0.35 | 1,527,231 |
+| El Paso United | 0.35 | 944,471 |
+
+**155 million people — 32% of everyone inside any movement.**
+
+**But the finding splits in two, and only one half is a problem.**
+
+**Harmless, and probably deliberate: five of the nine are *Unify* movements** — Blue-Collar Populist,
+Great Lakes, the Farmers Union, New England United, Central States Union — **and a Unify movement never
+crosses a leave line.** It does not secede; it demands that the government go and ask (ruling 15).
+**BUT IT GIVES THE MECHANICS STAGE A HARD CONSTRAINT ON A NUMBER NOBODY HAS SET: ruling 15's X% must sit
+below 0.30, or the Farmers Union and Great Lakes Free Trade can never make a demand at all**, and the
+whole union mechanic is dead on arrival for the two movements most likely to use it. *(Front Range is
+the same case: it wants to Expand, which takes other people's ground rather than leaving with its own.)*
+
+**The real finding: three SEPARATE movements can never take an Area on their own** — **the Sagebrush
+Rebellion, Acadiana and El Paso United.** They can only succeed in coalition, and under **ruling 20** a
+coalition that crosses the line with neither member over it alone produces **ungoverned ground, not a
+new nation.**
+
+**So those three can break a country and cannot make one.** Nobody decided that; it is a growth cap and a
+threshold, authored months apart, meeting. **It may be exactly right** — Sagebrush wanting the federal
+land back is not obviously a nation-builder — **but it is currently true by accident, and Aaron has not
+seen it.** It belongs to whoever tunes, and it is the reason a cap and a threshold should never be
+authored in different files without one of them naming the other.
