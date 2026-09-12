@@ -14,10 +14,10 @@ un-started. Update it whenever a spine question is answered.*
 
 | | |
 |---|---|
-| **Rulings made** | **22** (§4 and §5), plus findings A–F (§5, §6) |
-| **Spine questions answered** | **Q1** *(replaced by P1 and rulings 1–2)* · **Q2** *(rulings 11, 11a)* · **Q3** *(ruling 21)* · **Q4** *(ruling 3)* · **Q5** *(ruling 22)* · **Q6** *(ruling 14)* · **Q9** *(ruling 6)* |
+| **Rulings made** | **23** (§4 and §5), plus findings A–F (§5, §6) |
+| **Spine questions answered** | **Q1** *(replaced by P1 and rulings 1–2)* · **Q2** *(rulings 11, 11a)* · **Q3** *(ruling 21)* · **Q4** *(ruling 3)* · **Q5** *(ruling 22)* · **Q6** *(ruling 14)* · **Q9** *(ruling 6)* · **Q12** *(ruling 23)* |
 | **Part answered** | **Q11** — ruling 11 point 4 makes joining a bloc the *concede-less* move for a **Unify** movement; whether it also costs Authority at home is still open |
-| **Still open** | **Q7** · **Q8** · **Q10** · **Q11**'s domestic price · **Q12** *(nearly free now — it is ruling 22's machinery pointed at nations)* |
+| **Still open** | **Q7** · **Q8** · **Q10** · **Q11**'s domestic price |
 | **Waiting on Aaron** | **Nothing.** Both board cards are answered — the Farmers Union by ruling 15, and ruling 6's opened question by ruling 20. **Ruling 15's four questions are all answered** — 1 by ruling 16, 2 by ruling 17, 3 by ruling 18, and 4 by ruling 19 as a flagged default. The proposal-spam exploit named in ruling 16 is closed by ruling 18: proposals run on the movement's clock, not the player's. **Finding A is ANSWERED by ruling 15**: the Farmers Union is a movement and its verb is Unify |
 | **Still to do before the round closes** | the closing test — *what does the player do about this on a Tuesday, with one action?* — and **trace scenario 3** |
 
@@ -309,7 +309,7 @@ walked out?
 ideology is furthest from the bloc's — which needs no new machinery, because `affinity` already
 answers it. **The bloc itself is round 5's**; only its domestic bill is this round's.
 
-### Q12 — Is a nation's stance toward the old country a political fact it carries?
+### Q12 — ~~Is a nation's stance toward the old country a political fact it carries?~~ **ANSWERED — ruling 23**
 
 *Inbox 4.* Greater Idaho "originally planned on staying in the union but then decided to leave
 altogether."
@@ -1640,6 +1640,42 @@ period and ruling 20's margin.
 **And the grimmest sentence in the game now has a second form.** Round 2 produced *"a movement that
 asked you to march becomes a movement that wants to leave."* With ruling 15, there is now another: **a
 movement that asked you to go and make friends becomes a movement that wants to leave.**
+
+### Ruling 23 — A nation's stance toward the old country is read, not stored — and it gives the remnant a clock it cannot stop
+
+**RULED 11 September 2026** — *"Correct"* — answering **Q12**, and it cost nothing because ruling 22
+had just been made.
+
+**A nation's posture toward the old United States is not a new fact to maintain. It is what the
+movements inside it want.**
+
+| Reading | When |
+|---|---|
+| **Waiting** | A **Rejoin** or **Reunify** movement is organised on its ground |
+| **Gone** | None is |
+
+**It changes exactly when ruling 22 fires** — the movement is strung along, its verb flips to
+*Separate*, and the country stops waiting. **One way, permanently**, because that flip never reverses.
+Nothing is stored and nothing new is built; the posture is a *view* of data that already exists, which
+is the same economy ruling 11a bought when it made the table generated rather than authored.
+
+**WHAT IT IS FOR, so that it is not decoration.** Ruling 11 found that **Rejoin is the only verb
+curable by governing better** — round 1's ruling 42 triggers it on authority, quality of life, war
+weariness and occupation, all things a government controls about itself. **So the posture decides
+whether that door is open at all:**
+
+- **A nation still waiting can be won back** by a remnant that governs well.
+- **A nation that has given up can never be won back**, however good the old country becomes.
+
+**AND THAT HANDS THE FEDERAL REMNANT THE BEST PROBLEM IN THE GAME: A CLOCK IT DOES NOT CONTROL.**
+Every province that gives up waiting is one it can never recover, and it cannot stop them giving up —
+it can only **be worth coming back to, fast enough**. Nothing else in the design puts a government
+under a deadline it cannot touch. **It also makes Q7 a live question rather than a flavour one**: if
+the remnant opens with its authority below where it should be, it opens *already losing that race*.
+
+**The inbox story now tells itself.** Greater Idaho *"originally planned on staying in the union but
+then decided to leave altogether"* — they meant to stay; the movement asking for it was strung along;
+its want flipped; and the country is gone for good. **No rule was written for Greater Idaho.**
 
 ### Finding F — The two largest Unify movements share 504 counties, and both want the same thing
 

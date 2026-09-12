@@ -4060,3 +4060,29 @@ column and being disappointed does not change what the grievance is about.
 
 **Deferred, not invented:** how many broken promises. Joins ruling 15's X%, ruling 18's quiet period and
 ruling 20's margin.
+
+### D205 — A nation's stance toward the old country is read from its movements, not stored
+**Round 3 ruling 23, 11 September 2026**, answering Q12 — *"Correct"*. It cost nothing, because ruling
+22 had just been made.
+
+**Decided.** A nation's posture toward the old United States is **what the movements inside it want**:
+**waiting** if a Rejoin or Reunify movement is organised on its ground, **gone** if none is. It changes
+exactly when ruling 22 fires — strung along, the verb flips to *Separate*, and the country stops
+waiting — **one way and permanently**. Nothing is stored and nothing new is built; the posture is a view
+of data that already exists, the same economy ruling 11a bought by making the table generated rather
+than authored.
+
+**What it is for.** Ruling 11 found that **Rejoin is the only verb curable by governing better** (round
+1's ruling 42 triggers it on authority, quality of life, war weariness and occupation). **So the posture
+decides whether that door is open:** a nation still waiting can be won back by a remnant that governs
+well; a nation that has given up can never be won back, however good the old country becomes.
+
+**The consequence worth keeping: the federal remnant gets a clock it does not control.** Every province
+that gives up waiting is one it can never recover, and it cannot stop them giving up — it can only be
+worth coming back to, fast enough. Nothing else in the design puts a government under a deadline it
+cannot touch, and it turns Q7 from a flavour question into a live one: a remnant that opens with its
+authority below where it should be opens already losing that race.
+
+**And the inbox story tells itself.** Greater Idaho "originally planned on staying in the union but then
+decided to leave altogether" — meant to stay, strung along, want flipped, gone for good. No rule was
+written for Greater Idaho.
