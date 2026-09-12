@@ -3877,3 +3877,43 @@ one must bite**, and whichever answer lands should be checked against this.
 
 **Still open from ruling 15:** what decides which of the three answers; whether asking once satisfies
 the movement; whether proposing costs the turn's action.
+
+### D200 — What decides a neighbour's answer: their appetite, your weight, and the relationship as a gate
+**Round 3 ruling 17, 11 September 2026.** Ruling 15's second question. The shape put to Aaron was one
+dial, two modifiers and a gate, all from machinery that already exists; **he approved it and corrected
+one term: "size should also include authority and influence".**
+
+**Decided.** The **dial** is the share of the *neighbour's own* population organised in the same
+movement — low refuses, middling gives ruling 16's "let's think about it", high agrees. **Political
+closeness warms it**, using the same `affinity` already driving coalitions, drift, trade alignment,
+defection and AI diplomacy. **Your weight against theirs cools it — size, Authority and Influence
+together** — and that is also where *"they feel like the nation is trying to consolidate power"* comes
+from. **The relationship gates it**: round 2 ruled a *wary* nation less willing to agree to what you
+propose, and a *hostile* one cannot say yes at all.
+
+**Why the correction is right.** Physical size alone would make a sprawling, badly governed country
+frightening and a small, firmly held, widely trading one harmless, which is backwards. A nation is
+frightening for what it can bring to bear. It also makes the brake self-correcting: **the nation that
+is winning is the one that finds unions hardest**, since winning is what raises all three terms — which
+delivers ruling 15's "it should be hard to actually do" without a rule that says no.
+
+**Observed while checking it, and it is a real trap.** Influence in the build is share of world output,
+trading reach, and how close the rest of the world is to you politically — **and it is reduced by ground
+taken recently, scaled by how big you already were** (*"a superpower annexing a neighbour pays more in
+reputation than an unknown does"*). Used raw on the cooling side, that means **a nation fresh from a
+conquest looks less frightening for as long as the penalty lasts.** The dip is temporary, and it points
+the wrong way while it holds.
+
+**Default taken, one line to reverse:** ground taken recently counts as frightening in its own right,
+beside the three terms; the game already tracks it in the same history window Influence uses.
+**The alternative is recorded rather than dismissed:** Influence is standing in the world's eyes and a
+conqueror has spent it, so a conqueror is not less threatening but **less persuasive** — under that
+reading Influence belongs on the warm side. Aaron's wording puts all three on the cooling side, so that
+is what is ruled.
+
+**Filed, not answered:** whether a player can SEE a neighbour's Authority and Influence before
+proposing. Joined to **C130**, round 2's open question about what a nation can see of its enemy when
+writing a blind peace treaty; both want one answer.
+
+**Still open:** whether asking once satisfies the movement, and whether proposing costs the turn's one
+action. The proposal-spam exploit recorded in D199 is still unbraked.

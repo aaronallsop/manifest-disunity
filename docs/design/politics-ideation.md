@@ -14,11 +14,11 @@ un-started. Update it whenever a spine question is answered.*
 
 | | |
 |---|---|
-| **Rulings made** | **16** (§4 and §5), plus findings A–F (§5, §6) |
+| **Rulings made** | **17** (§4 and §5), plus findings A–F (§5, §6) |
 | **Spine questions answered** | **Q1** *(replaced by P1 and rulings 1–2)* · **Q2** *(rulings 11, 11a)* · **Q4** *(ruling 3)* · **Q6** *(ruling 14)* · **Q9** *(ruling 6)* |
 | **Part answered** | **Q11** — ruling 11 point 4 makes joining a bloc the *concede-less* move for a **Unify** movement; whether it also costs Authority at home is still open |
 | **Still open** | **Q3** · **Q5** · **Q7** · **Q8** · **Q10** · **Q11**'s domestic price · **Q12** |
-| **Waiting on Aaron** | **Ruling 6's opened question** — when the *total* movement share crosses 40% and no single movement has, which movement takes the Area? *(recommendation: none of them, it goes stateless)*. And **ruling 15's questions 2-4** — what decides which of the three answers a neighbour gives, whether asking once satisfies the movement, and whether proposing costs the turn's action (**question 1 answered by ruling 16**). **Finding A is ANSWERED by ruling 15**: the Farmers Union is a movement and its verb is Unify |
+| **Waiting on Aaron** | **Ruling 6's opened question** — when the *total* movement share crosses 40% and no single movement has, which movement takes the Area? *(recommendation: none of them, it goes stateless)*. And **ruling 15's questions 3-4** — whether asking once satisfies the movement, and whether proposing costs the turn's action (**1 answered by ruling 16, 2 by ruling 17**). The proposal-spam exploit named in ruling 16 is still unbraked. **Finding A is ANSWERED by ruling 15**: the Farmers Union is a movement and its verb is Unify |
 | **Still to do before the round closes** | the closing test — *what does the player do about this on a Tuesday, with one action?* — and **trace scenario 3** |
 
 ---
@@ -1362,6 +1362,60 @@ crossed before the demand fires at all. **At least one of the three must bite.**
 
 **Still open from ruling 15:** what decides which of the three answers you get; whether asking once
 satisfies the movement; and whether proposing costs the turn's action.
+
+### Ruling 17 — What decides the answer: their appetite, your weight, and the relationship as a gate
+
+**RULED 11 September 2026**, answering ruling 15's question 2. Aaron approved the shape put to him and
+corrected one term:
+
+> "Yes to all of those but the other thing I would say is that size should also include authority and
+> influence"
+
+**The shape, as ruled. One dial, two modifiers, one gate — and every one of them already exists.**
+
+| | |
+|---|---|
+| **The dial** | **Their own people's appetite** — the share of THEIR population organised in the same movement. Low → *no*. Middling → *let's think about it*. High → *yes* |
+| **Warms it** | **Political closeness** — the same `affinity` already driving coalitions, drift, trade alignment, defection and AI diplomacy |
+| **Cools it** | **Your WEIGHT against theirs — size, Authority and Influence together**, not physical size alone. This is also where "they feel you are consolidating power" comes from |
+| **The gate** | **The relationship.** Round 2 ruled that a *wary* nation is less willing to agree to what you propose; a *hostile* one cannot say yes at all. Checked before anything above is computed |
+
+**WHY AARON'S CORRECTION IS THE RIGHT ONE.** Physical size alone would make a sprawling, badly
+governed country frightening and a small, firmly held, widely trading one harmless — which is
+backwards. **A nation is frightening because of what it can bring to bear, not how much map it
+covers.** It also makes the brake self-correcting: *the nation that is winning is the one that finds
+unions hardest*, because winning is exactly what raises all three terms. That is the "hard to actually
+do" of ruling 15, arriving without a rule that says no.
+
+**WHAT INFLUENCE ALREADY CONTAINS, read from the build rather than assumed.** Share of world output;
+**reach**, meaning the nations you hold live trade relations with; and **alignment**, how close the
+rest of the world is to you politically, weighted by their size. It is **reduced by ground taken
+recently, scaled by how big you already were** — *"a superpower annexing a neighbour pays more in
+reputation than an unknown does"*. So Aaron's term arrives carrying the whole diplomatic picture, not
+just a number.
+
+**THE TRAP THAT FELL OUT OF CHECKING IT, and the default taken.** Because Influence **falls** when you
+conquer, a nation fresh from taking ground would score *lower* on the frightening side for as long as
+that penalty lasts — **so the serial conqueror would look more approachable exactly when it is most
+dangerous.** The dip is temporary (it is a rate over the history window, and size raises Influence
+again afterwards) but it points the wrong way while it lasts.
+
+**Default: ground taken recently counts as frightening in its own right**, beside the three terms. The
+game already tracks exactly that, in the same history window Influence uses, so it costs nothing to
+read. **One line to reverse.** The alternative reading is defensible and is recorded rather than
+dismissed: Influence is *standing in the world's eyes*, and a conqueror has spent its standing — so it
+is not less threatening, it is **less persuasive**. Under that reading Influence belongs on the warm
+side and only size and Authority cool it. Aaron's wording puts all three on the cooling side, so that
+is what is ruled.
+
+**A VISIBILITY QUESTION, filed rather than answered.** Can a player *see* a neighbour's Authority and
+Influence before proposing? If not, the answer arrives as a surprise and the player cannot plan
+against it. **Filed with C130** — the same question round 2 left open about what a nation can see of
+its enemy when writing a blind peace treaty. It wants one answer covering both.
+
+**Still open from ruling 15:** whether asking once satisfies the movement, and whether proposing costs
+the turn's action. **The exploit named in ruling 16 is still unbraked** — nothing ruled so far stops a
+government proposing every turn to farm the neighbour's movement upward.
 
 ### Finding F — The two largest Unify movements share 504 counties, and both want the same thing
 
