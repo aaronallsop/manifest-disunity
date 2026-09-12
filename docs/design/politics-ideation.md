@@ -14,11 +14,11 @@ un-started. Update it whenever a spine question is answered.*
 
 | | |
 |---|---|
-| **Rulings made** | **19** (§4 and §5), plus findings A–F (§5, §6) |
+| **Rulings made** | **20** (§4 and §5), plus findings A–F (§5, §6) |
 | **Spine questions answered** | **Q1** *(replaced by P1 and rulings 1–2)* · **Q2** *(rulings 11, 11a)* · **Q4** *(ruling 3)* · **Q6** *(ruling 14)* · **Q9** *(ruling 6)* |
 | **Part answered** | **Q11** — ruling 11 point 4 makes joining a bloc the *concede-less* move for a **Unify** movement; whether it also costs Authority at home is still open |
 | **Still open** | **Q3** · **Q5** · **Q7** · **Q8** · **Q10** · **Q11**'s domestic price · **Q12** |
-| **Waiting on Aaron** | **Ruling 6's opened question** — when the *total* movement share crosses 40% and no single movement has, which movement takes the Area? *(recommendation: none of them, it goes stateless)*. **Ruling 15's four questions are all answered** — 1 by ruling 16, 2 by ruling 17, 3 by ruling 18, and 4 by ruling 19 as a flagged default. The proposal-spam exploit named in ruling 16 is closed by ruling 18: proposals run on the movement's clock, not the player's. **Finding A is ANSWERED by ruling 15**: the Farmers Union is a movement and its verb is Unify |
+| **Waiting on Aaron** | **Nothing.** Both board cards are answered — the Farmers Union by ruling 15, and ruling 6's opened question by ruling 20. **Ruling 15's four questions are all answered** — 1 by ruling 16, 2 by ruling 17, 3 by ruling 18, and 4 by ruling 19 as a flagged default. The proposal-spam exploit named in ruling 16 is closed by ruling 18: proposals run on the movement's clock, not the player's. **Finding A is ANSWERED by ruling 15**: the Farmers Union is a movement and its verb is Unify |
 | **Still to do before the round closes** | the closing test — *what does the player do about this on a Tuesday, with one action?* — and **trace scenario 3** |
 
 ---
@@ -1463,6 +1463,81 @@ autonomy or releasing ground does. Nothing about a union is special enough to ne
 that to the mechanics stage because we need to change the whole one action per turn."* That is filed in
 round 7 with ruling 12's free-and-mandatory exception beside it. **When the one-action rule changes,
 this ruling changes with it** — it is a consequence of that rule, not an independent decision.
+
+### Ruling 20 — A split region goes ungoverned, and its edge counties choose a neighbour over the winner
+
+**RULED 11 September 2026**, closing ruling 6's opened question and the board card
+`area-split-between-movements`. Aaron agreed the recommendation and added the second half:
+
+> "yes and I think that the edge counties should possibly join up with them and there would be a
+> formula we come up with where if it has similiar politics or other things it has a greater chance of
+> joining up with a state that they aren't aligned with from a movement standpoint - because sometimes
+> it is better to be governed by people you don't like rather than worry about being governed by people
+> who hate you"
+
+**Part one — who takes the ground: NOBODY.** When the *total* organised share crosses
+`secession.countyThreshold` (**0.40**) and no single movement has, the Area goes **ungoverned**. A
+government that has lost control while no successor has won it is the definition of ungoverned ground,
+and ruling 5 already built that object, so it costs nothing new. Ruling 13 then takes over: on
+ungoverned ground movements grow by **attraction** rather than grievance, so both carry on competing
+for the same people with no government left to push against, and whichever becomes the better offer can
+stand it up as a state. **Two movements can bring a government down together and neither inherits what
+is left.**
+
+*Rejected:* **the largest movement takes it** — a movement organising a quarter of a region would win a
+place three-quarters of it did not choose, and swallow its rival for free. And **nothing happens, the
+ground merely costs more to hold** — which is what the build does today by accident, and it makes the
+coalition rule toothless: two movements could reach 90% between them and the map would never change.
+
+**Part two — the edge counties choose, and the choice is not about the movement.** A county on the
+boundary of newly ungoverned ground may attach itself to an adjacent **state** instead. **The dial is
+politics, not movement alignment**, and Aaron's reason is the whole mechanic:
+
+> *"sometimes it is better to be governed by people you don't like rather than worry about being
+> governed by people who hate you"*
+
+**So the county weighs two futures, and both are already computable.** `affinity` — the same function
+driving coalitions, drift, trade alignment, defection and AI diplomacy — is asked **twice**:
+
+| | |
+|---|---|
+| **How much you would dislike the neighbour** | `affinity(this county's people, that state's government)` |
+| **How much the local winner hates you** | `affinity(this county's people, the strongest movement on the ungoverned ground)` |
+
+**It joins the neighbour when the second is worse than the first.** No new data and no new machinery —
+one existing function asked about two different futures. It also explains why a county would join a
+state it disagrees with, which is the behaviour Aaron is asking for and which no *movement*-based rule
+could ever produce.
+
+**THE MEASUREMENT THAT SHAPES THIS, and it changes how big the rule is.** The unit that goes ungoverned
+is an **Area**, and an Area is small:
+
+| | |
+|---|---|
+| Counties on the map | **3,143** |
+| Areas | **1,688** |
+| Areas that are a **single county** | **1,181 — 70%** |
+| Largest Area allowed | **8 counties** (`max_members`), built to a 50,000-person floor |
+
+**So for seven Areas in ten, "the edge counties" is the whole Area.** A lone Area that falls out of a
+nation is all edge, and under this ruling it will usually attach to somebody rather than sit there.
+**That is the rule saving itself from its own worst outcome:** without it the map would slowly fill
+with single-county holes. With it, **small pockets get absorbed and only a large collapse leaves
+lasting ungoverned ground** — which is exactly the shape of the six regions the story opens with, and
+nobody had to write a rule saying "only big ones count".
+
+**Two defaults taken, each one line to reverse.**
+
+1. **The receiving state does not get a refusal.** The county joins, bringing its grievance and any
+   movement organised in it. Free ground that argues with you is a price, not a gift, and it is the
+   same price ruling 16 put on a union.
+2. **The choice is made when the ground falls**, not continuously. Counties leaking to neighbours every
+   turn afterwards is a bigger mechanic — it would give ungoverned ground a slow decay — and it is
+   noted for the mechanics stage rather than ruled here.
+
+**Deferred, not invented:** the margin by which "they hate us" must beat "we dislike them" before a
+county moves, and whatever else Aaron's *"or other things"* turns out to hold. Joins ruling 15's **X%**
+and ruling 18's quiet period in the tunables.
 
 ### Finding F — The two largest Unify movements share 504 counties, and both want the same thing
 

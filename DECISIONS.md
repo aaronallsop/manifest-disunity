@@ -3951,3 +3951,45 @@ tunables.
 
 **Filed for round 5:** whether a government may propose a union with no movement demanding it — a
 nation-to-nation act rather than an answer to its own people.
+
+### D202 — A split region goes ungoverned, and its edge counties pick a neighbour over the local winner
+**Round 3 ruling 20, 11 September 2026.** Closes ruling 6's opened question and the second board card.
+
+**Part one, as recommended and agreed.** When the total organised share of an Area crosses the 0.40
+leave line and no single movement has crossed it alone, **nobody takes the ground — it goes
+ungoverned.** Ruling 5 already built that object and ruling 13 already says how movements behave on it
+(attraction, not grievance), so both movements carry on competing there with no government to push
+against. **Two movements can bring a government down together and neither inherits what is left.**
+*Rejected:* the largest movement taking it, which would hand a quarter of a region's organisers a place
+three-quarters of it did not choose; and the ground merely costing more to hold, which is what the
+build does today by accident and which makes the coalition rule toothless.
+
+**Part two, added by Aaron and the more interesting half.** *"Edge counties should possibly join up
+with them… if it has similiar politics or other things it has a greater chance of joining up with a
+state that they aren't aligned with from a movement standpoint — because sometimes it is better to be
+governed by people you don't like rather than worry about being governed by people who hate you."*
+
+**So a county on the boundary weighs two futures, and the dial is politics rather than movement
+alignment.** Both are computable with machinery that exists: `affinity` asked **twice** — once between
+the county's people and the adjacent state's government (*how much you would dislike them*), once
+between the county's people and the strongest movement on the ungoverned ground (*how much the local
+winner hates you*) — and the county leaves when the second is worse than the first. One existing
+function, two futures, no new data. **No movement-based rule could produce the behaviour Aaron wants;
+this one produces it as its normal case.**
+
+**Measured, and it changes the size of the rule.** The unit that goes ungoverned is an **Area**, and the
+map has **1,688 Areas over 3,143 counties — 1,181 of them (70%) a single county**, with a hard ceiling
+of 8. **So for seven Areas in ten, "the edge counties" is the entire Area.** A lone Area that falls out
+of a nation is all edge and will usually attach to somebody. That is the rule saving itself from its own
+worst outcome: **small pockets get absorbed, and only a large collapse leaves lasting ungoverned
+ground** — the shape of the six regions the story opens with, arrived at without a rule that says "only
+big ones count".
+
+**Two defaults taken, each one line to reverse:** the receiving state gets no refusal (the county
+arrives with its grievance and any movement organised in it, which is the same price ruling 16 put on a
+union); and the choice happens when the ground falls rather than continuously (counties leaking to
+neighbours every turn afterwards would give ungoverned ground a slow decay, and is noted for the
+mechanics stage instead).
+
+**Deferred, not invented:** the margin by which "they hate us" must beat "we dislike them", and whatever
+Aaron's *"or other things"* turns out to hold. Joins ruling 15's X% and ruling 18's quiet period.
