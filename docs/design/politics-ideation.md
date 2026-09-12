@@ -14,10 +14,10 @@ un-started. Update it whenever a spine question is answered.*
 
 | | |
 |---|---|
-| **Rulings made** | **30** (§4 and §5), plus findings A–F (§5, §6) |
+| **Rulings made** | **31** (§4 and §5), plus findings A–G (§5, §6) |
 | **Spine questions answered** | **Q1** *(replaced by P1 and rulings 1–2)* · **Q2** *(rulings 11, 11a)* · **Q3** *(ruling 21)* · **Q4** *(ruling 3)* · **Q5** *(ruling 22)* · **Q6** *(ruling 14)* · **Q9** *(ruling 6)* · **Q7** *(ruling 24)* · **Q8** *(ruling 25)* · **Q12** *(ruling 23)* |
 | **Part answered** | **Q11** — ruling 11 point 4 makes joining a bloc the *concede-less* move for a **Unify** movement; whether it also costs Authority at home is still open |
-| **Still open** | **Q10** · **Q11**'s domestic price · **ruling 25's federation questions 5-7** *(1 by ruling 26, 2 by ruling 27, 3 by rulings 28 and 29, 4 by ruling 30)*, plus **can one member make a separate peace?** and **ruling 30's collision: can two permanent rivals be in the same federation?** |
+| **Still open** | **Q10** · **Q11**'s domestic price · **ruling 25's federation questions 5-7** *(1 by ruling 26, 2 by ruling 27, 3 by rulings 28 and 29, 4 by ruling 30)*, plus **can one member make a separate peace?** and **ruling 31's open half: does the modifier block ALL unions or only ones containing a rival? — finding G measures what the broad version costs** |
 | **Waiting on Aaron** | **Nothing.** Both board cards are answered — the Farmers Union by ruling 15, and ruling 6's opened question by ruling 20. **Ruling 15's four questions are all answered** — 1 by ruling 16, 2 by ruling 17, 3 by ruling 18, and 4 by ruling 19 as a flagged default. The proposal-spam exploit named in ruling 16 is closed by ruling 18: proposals run on the movement's clock, not the player's. **Finding A is ANSWERED by ruling 15**: the Farmers Union is a movement and its verb is Unify |
 | **Still to do before the round closes** | the closing test — *what does the player do about this on a Tuesday, with one action?* — and **trace scenario 3** |
 
@@ -1967,6 +1967,68 @@ readings, and it is Aaron's:
    beside ruling 22's finding-G exit.
 
 **Asked, not assumed.**
+
+### Ruling 31 — The contest claimants carry a modifier: they can never join a union. Its BREADTH is open
+
+**RULED 11 September 2026**, resolving ruling 30's collision. Aaron:
+
+> "Lets say that those five have a modifier that they cannot join a union ever - this also means that we
+> need to make sure that no movements seaking for unions and federations don't grow in their natural
+> boundries. If they conquer areas that is ok."
+
+**Settled.** The nations contesting the same inheritance **carry a modifier that blocks them from ever
+joining a union or a federation.** The permanent rivalry survives; the membership is what is refused.
+Round 2's 33 permanent quarrels are untouched, and **there can be no federation across Texas until the
+contest is settled** — somebody has to win before anybody can build an institution there.
+
+**Two readings recorded, because the sentence carries both and both are wanted.** *"If they conquer
+areas that is ok"* means (a) **the modifier blocks voluntary union, never conquest** — these nations
+still grow by force, which is the story: Texas is put back together by an army, not by a treaty; and
+(b) **ground they conquer is outside the protected boundary**, so a union-seeking movement may grow
+there. Under (b) conquest brings you people who want something you can never give them, and ruling 22
+then turns them into separatists — **every route to size in this design carries its own poison**, and
+this is the fourth.
+
+**Aaron applied it to "those five" while Texas was under discussion. It is recorded as applying to all
+four contests** — the five Texases, the five Californias, the five Confederate claimants and the three
+eastern capitals — because the collision it fixes applies to all 33 pairs. *One line to narrow if he
+meant Texas alone.*
+
+**THE SECOND HALF IS OPEN, AND FINDING G IS WHY.** *"No movements seeking unions and federations grow
+in their natural boundaries"* has a price nobody could see without measuring it, and it falls on exactly
+one movement. **Asked before it is written.**
+
+### Finding G — Suppressing union movements on contested ground deletes exactly one movement, and it is the biggest
+
+**Measured while writing ruling 31**, against the authored homelands and the census populations.
+
+| Unify movement | Counties | Inside contested ground | Share | People it would lose |
+|---|---|---|---|---|
+| **Christian Nationalism** | 255 | **227** | **89%** | **88,561,580** |
+| Blue-Collar Populist | 693 | 0 | 0% | — |
+| The Farmers Union | 983 | 0 | 0% | — |
+| Great Lakes Free Trade | 103 | 0 | 0% | — |
+| Central States Union | 215 | 0 | 0% | — |
+| New England United | 68 | 0 | 0% | — |
+
+*(Contested ground = the eleven Confederate states plus California. Texas is inside the eleven.)*
+
+**So the rule as stated has one victim and five bystanders.** It would remove **89% of the ground and 91%
+of the people** of **the largest Unify movement in the game** — Christian Nationalism, 96.9m people, whose
+authored homeland is *"Southern counties over 100,000 people"*. Every other union-seeking movement is
+untouched, because none of them reaches the South at all.
+
+**AND THE MACHINERY MAY ALREADY SOLVE THE PROBLEM THE SUPPRESSION EXISTS TO PREVENT.** The worry is an
+*impossible demand*: a movement asking a nation to do something the modifier forbids. But **ruling 17
+gates the answer on the relationship, and a permanent rival is permanently hostile — so the demand can
+never point at a rival in the first place.** Ruling 18 sends the demand to whichever neighbour scores
+highest, and a hostile one scores nothing.
+
+**What is left is narrower than the rule.** The demand could still point at an innocent neighbour that
+would say yes — and the modifier would stop the nation accepting. **That is the only genuinely impossible
+case, and it disappears entirely if the modifier is read as "cannot join a union CONTAINING A RIVAL"
+rather than "cannot join a union ever".** Under that reading no movement needs suppressing anywhere, the
+33 rivalries are still safe, and the South keeps its largest movement.
 
 ### Finding F — The two largest Unify movements share 504 counties, and both want the same thing
 
