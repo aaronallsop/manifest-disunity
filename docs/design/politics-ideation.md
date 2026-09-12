@@ -14,10 +14,10 @@ un-started. Update it whenever a spine question is answered.*
 
 | | |
 |---|---|
-| **Rulings made** | **28** (§4 and §5), plus findings A–F (§5, §6) |
+| **Rulings made** | **29** (§4 and §5), plus findings A–F (§5, §6) |
 | **Spine questions answered** | **Q1** *(replaced by P1 and rulings 1–2)* · **Q2** *(rulings 11, 11a)* · **Q3** *(ruling 21)* · **Q4** *(ruling 3)* · **Q5** *(ruling 22)* · **Q6** *(ruling 14)* · **Q9** *(ruling 6)* · **Q7** *(ruling 24)* · **Q8** *(ruling 25)* · **Q12** *(ruling 23)* |
 | **Part answered** | **Q11** — ruling 11 point 4 makes joining a bloc the *concede-less* move for a **Unify** movement; whether it also costs Authority at home is still open |
-| **Still open** | **Q10** · **Q11**'s domestic price · **ruling 25's federation questions 3-7** *(1 by ruling 26, 2 by ruling 27; 3 half-answered by ruling 28 — the DEFENSIVE side is ruled, what happens when a member's petition to attack is refused is not)*, plus **can one member make a separate peace?** |
+| **Still open** | **Q10** · **Q11**'s domestic price · **ruling 25's federation questions 4-7** *(1 by ruling 26, 2 by ruling 27, 3 by rulings 28 and 29)*, plus **can one member make a separate peace?** |
 | **Waiting on Aaron** | **Nothing.** Both board cards are answered — the Farmers Union by ruling 15, and ruling 6's opened question by ruling 20. **Ruling 15's four questions are all answered** — 1 by ruling 16, 2 by ruling 17, 3 by ruling 18, and 4 by ruling 19 as a flagged default. The proposal-spam exploit named in ruling 16 is closed by ruling 18: proposals run on the movement's clock, not the player's. **Finding A is ANSWERED by ruling 15**: the Farmers Union is a movement and its verb is Unify |
 | **Still to do before the round closes** | the closing test — *what does the player do about this on a Tuesday, with one action?* — and **trace scenario 3** |
 
@@ -1896,6 +1896,41 @@ It goes on the list for the close of the round.
 **Opened and not answered:** can **one member make a separate peace**? Round 2's peace machinery is
 written per pair — both sides table terms and the defender chooses — which does not obviously survive
 a war with ten defenders. **Added to the federation questions.**
+
+### Ruling 29 — A refused petition is not a wall: declare anyway, and you are out
+
+**RULED 11 September 2026** — *"Just the echo"*, confirming that only F22 was parked and the
+recommendation stands. The third of ruling 25's seven is now answered on both sides.
+
+**There is no hard block.** A member whose petition is refused **may declare war anyway — and it leaves
+the federation the moment it does.**
+
+**Why not a wall.** Round 2 removed **all three** rules that used to refuse an attack outright and
+replaced them with prices and an electorate that gets tired. A federation that simply forbade a war
+would put one of those rules straight back, and *a player stopped by a rule learns nothing*.
+
+**The price is built entirely from rulings already made tonight**, which is why it did not need
+inventing:
+
+| On the day you declare | |
+|---|---|
+| **Ruling 26** | the flat rates end — every member may squeeze you again |
+| **Ruling 27** | the gate-holders' 5% becomes whatever they can extract |
+| **Ruling 25** | your share of every deal the federation signed ends |
+| **Ruling 28** | **and you lose collective defence in the same turn you start a war** |
+
+**That last line is the whole ruling.** You begin a war on the day you stop being protected, and the
+people who were obliged to fight for you yesterday are now free to price your cargo.
+
+**AND IT GIVES THE FEDERATION A MOTIVE THAT IS NOT MORAL.** Its only income is a slice of what members
+trade with each other, and war breaks routes. **The leader refuses wars because a war shrinks the budget
+the leader spends** — a reason an AI can compute and a player can predict, which is worth more than a
+diplomacy score nobody can see.
+
+**To the mechanics stage:** what becomes of a leaver's standing agreements. Ruling 26 said agreements
+signed *before* joining run out their term; the reverse case — what a departing member keeps — is not
+ruled and is smaller than it looks, because inside the federation there were no negotiated agreements
+to keep.
 
 ### Finding F — The two largest Unify movements share 504 counties, and both want the same thing
 
