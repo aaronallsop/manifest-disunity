@@ -19,12 +19,12 @@ un-started. Update it whenever a spine question is answered.*
 
 | | |
 |---|---|
-| **Rulings made** | **41** (§4 and §5), plus findings A–I (§5, §6, §7) and the re-map of all 26 movements |
+| **Rulings made** | **41** (§4 and §5), plus findings A–J (§5, §6, §7) and the re-map of all 26 movements |
 | **Spine questions answered** | **Q1** *(replaced by P1 and rulings 1–2)* · **Q2** *(rulings 11, 11a)* · **Q3** *(ruling 21)* · **Q4** *(ruling 3)* · **Q5** *(ruling 22)* · **Q6** *(ruling 14)* · **Q9** *(ruling 6)* · **Q10** *(ruling 38)* · **Q7** *(ruling 24)* · **Q8** *(ruling 25)* · **Q11** *(ruling 37)* · **Q12** *(ruling 23)* |
 | **Part answered** | *(none)* |
 | **Still open** | **No spine question is open. All twelve are answered** (Q10 by ruling 38). **The federation is finished** — all seven of ruling 25's questions answered (rulings 26-36), plus separate peace (35) and ruling 31's open half (33) |
 | **Waiting on Aaron** | **Nothing.** Both board cards are answered — the Farmers Union by ruling 15, and ruling 6's opened question by ruling 20. **Ruling 15's four questions are all answered** — 1 by ruling 16, 2 by ruling 17, 3 by ruling 18, and 4 by ruling 19 as a flagged default. The proposal-spam exploit named in ruling 16 is closed by ruling 18: proposals run on the movement's clock, not the player's. **Finding A is ANSWERED by ruling 15**: the Farmers Union is a movement and its verb is Unify |
-| **Still to do before the round closes** | ~~re-map~~ **done** · ~~closing test~~ **done, §7** · ~~trace scenario 3~~ **done, §7 — it narrates, and only for ideological movements** · **outstanding: the federation cascade and ruling 37's irony still untraced · C133's one-line correction · an owner for each of findings A–I** |
+| **Still to do before the round closes** | **NOTHING.** Re-map done · closing test done (§7) · scenario 3 traced (§7) · the federation cascade and ruling 37's irony traced (§7) · C133 checked and needed no correction · every finding has an owner (§8) · what the round hands on is written down (§9). **The round is ready to close on Aaron's word.** |
 
 ---
 
@@ -2640,3 +2640,72 @@ threshold, authored months apart, meeting. **It may be exactly right** — Sageb
 land back is not obviously a nation-builder — **but it is currently true by accident, and Aaron has not
 seen it.** It belongs to whoever tunes, and it is the reason a cap and a threshold should never be
 authored in different files without one of them naming the other.
+
+### The two items the close reserved for tracing
+
+**1. Does an attack on the smallest federation member cascade into a continental war?**
+
+**Traced. It is not a cascade, and the real risk is the opposite one.** Round 2's **ruling 37** spreads
+hostility **exactly one hop** and never further. Ruling 28 does not add a second hop; it **widens the
+first one** — an attacker acquires every member at once, and then each member's own allies inherit, one
+step, and stop. **The depth is unchanged. The breadth is a step change.**
+
+On a board of sixty-one nations, a federation of ten whose members each hold an ally or two could put
+**a third of the continent** into hostility with one attack, in one turn. **That is the deterrent
+working, not the machinery failing** — and it is exactly what collective defence is for.
+
+**FINDING J — the real risk is that nobody ever attacks a member again.** If the deterrent is absolute,
+**membership becomes an unconditional shield and joining a federation becomes the dominant opening for
+every small nation on the board.** The counterweights all exist and none of them has been played:
+surrendering the right to squeeze your neighbours (ruling 26), the Authority cost of joining and of
+being led (ruling 37), the share every new member dilutes (ruling 36), and the existing members' vote
+against that dilution (ruling 34). **Whether they add up is a tuning question and nobody can answer it
+on paper. It is the single largest balance risk the federation carries and the first thing an alpha
+should watch.**
+
+**2. Ruling 37's irony — does joining a federation make your own unions harder?**
+
+**Traced, and it resolves itself into something better than an irony.** Joining raises Influence, and
+ruling 17 makes **weight** — size, Authority and Influence — the thing that cools a neighbour's answer.
+So a member's proposals do land harder on **outsiders**.
+
+**But ruling 30 makes every member permanently at peace with every other, and ruling 17's gate is the
+relationship.** So the same act that makes you frightening abroad makes you **maximally acceptable to
+the people you are already federated with**.
+
+**A federation is therefore a funnel, not a trap: it makes union harder outside and easier inside.**
+Which is the real trajectory of every union of states there has ever been, and neither ruling was
+written with the other in mind.
+
+**C133, checked as owed.** Round 2's derivation — alliance-inherited hostility must **fire once as an
+event** rather than re-check each turn — is already correctly labelled in `conquest-ideation.md` as a
+derivation flagged for Aaron rather than a ruling. **No correction was needed, and it is now
+corroborated rather than merely asserted:** ruling 22 reached the identical requirement independently,
+for the movement verb, and cites it.
+
+---
+
+## 8. The findings, and who owns each
+
+| | State | Owner |
+|---|---|---|
+| **A** — the Farmers Union had never been reviewed | **CLOSED** by ruling 15 | — |
+| **B** — coalitions are common; two hubs nobody placed | **Open, and its arithmetic is now stale** — it was measured before the Farmers Union had a verb, so the pair counts are low | Recount at the **mechanics stage**, when ruling 6's sum is built |
+| **C** — Jefferson × Cascadia is the better example | **CLOSED**, informational | — |
+| **D** — rulings 3 and 4 contradicted each other | **CLOSED** by ruling 13 | — |
+| **E** — conquering too much bites through posture, not size | **Open** | **Mechanics stage**, with ruling 14's martial law |
+| **F** — the farmers and the rust belt share 504 counties | **Open** | **Mechanics stage** for ruling 6's sum; and an **alpha watch item** — it is the largest coalition on the board |
+| **G** — suppressing union movements would have cost 88.6m people | **CLOSED** by ruling 33 | — |
+| **H** — the movement roster occupies half the board | **Open** | **Design stage.** Three positions carry no movement and the movement layer touches only six of the ten. Probably correct — those corners are what governments become — but it means the third axis does less work on the movement side than it looks |
+| **I** — nine movements are capped below the line they must cross | **Half closed** by ruling 41 | **Mechanics stage** owns the other half, and it is a hard constraint: **ruling 15's X% must sit below 0.30** |
+| **J** — the federation deterrent may be absolute | **Open** | **The alpha.** Nobody can answer it on paper |
+
+## 9. What round 3 leaves the rounds after it
+
+| To | What |
+|---|---|
+| **Round 4 — economy** | The federation's toll split (rulings 25–27), because what a percentage of trade is worth is the economy's to say. **S26, "buy them"**, deferred from ruling 21. **F21**, funding propaganda |
+| **Round 5 — diplomacy** | The **federation's mechanics** in full, ruled here and built there. The **Farmers Union as a bloc of governors** (ruling 15). **Vassalage** — what submission *is* (ruling 39). Whether a government may propose a union with **no movement demanding it** (ruling 18) |
+| **Round 7 — the things above** | **The one-action-per-turn rule**, which Aaron has said needs changing (ruling 14), with ruling 12's free-and-mandatory exception beside it |
+| **The design stage** | What a player can **see** of another nation — C130 and ruling 17, deferred by Aaron on 11 September and wanting **one answer between them** |
+| **The mechanics stage** | Every deferred number: ruling 15's **X%**, ruling 18's quiet period, ruling 20's margin, ruling 22's count of broken promises, ruling 38's overshoot, the federation's election interval — **and ruling 41's three cap changes, specified and not made** |
