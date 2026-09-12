@@ -14,10 +14,10 @@ un-started. Update it whenever a spine question is answered.*
 
 | | |
 |---|---|
-| **Rulings made** | **36** (§4 and §5), plus findings A–G (§5, §6) |
-| **Spine questions answered** | **Q1** *(replaced by P1 and rulings 1–2)* · **Q2** *(rulings 11, 11a)* · **Q3** *(ruling 21)* · **Q4** *(ruling 3)* · **Q5** *(ruling 22)* · **Q6** *(ruling 14)* · **Q9** *(ruling 6)* · **Q7** *(ruling 24)* · **Q8** *(ruling 25)* · **Q12** *(ruling 23)* |
-| **Part answered** | **Q11** — ruling 11 point 4 makes joining a bloc the *concede-less* move for a **Unify** movement; whether it also costs Authority at home is still open |
-| **Still open** | **Q10** · **Q11**'s domestic price. **The federation is finished** — all seven of ruling 25's questions answered (rulings 26-36), plus separate peace (35) and ruling 31's open half (33) |
+| **Rulings made** | **37** (§4 and §5), plus findings A–G (§5, §6) |
+| **Spine questions answered** | **Q1** *(replaced by P1 and rulings 1–2)* · **Q2** *(rulings 11, 11a)* · **Q3** *(ruling 21)* · **Q4** *(ruling 3)* · **Q5** *(ruling 22)* · **Q6** *(ruling 14)* · **Q9** *(ruling 6)* · **Q7** *(ruling 24)* · **Q8** *(ruling 25)* · **Q11** *(ruling 37)* · **Q12** *(ruling 23)* |
+| **Part answered** | *(none)* |
+| **Still open** | **Q10 only.** **The federation is finished** — all seven of ruling 25's questions answered (rulings 26-36), plus separate peace (35) and ruling 31's open half (33) |
 | **Waiting on Aaron** | **Nothing.** Both board cards are answered — the Farmers Union by ruling 15, and ruling 6's opened question by ruling 20. **Ruling 15's four questions are all answered** — 1 by ruling 16, 2 by ruling 17, 3 by ruling 18, and 4 by ruling 19 as a flagged default. The proposal-spam exploit named in ruling 16 is closed by ruling 18: proposals run on the movement's clock, not the player's. **Finding A is ANSWERED by ruling 15**: the Farmers Union is a movement and its verb is Unify |
 | **Still to do before the round closes** | the closing test — *what does the player do about this on a Tuesday, with one action?* — and **trace scenario 3** |
 
@@ -2174,6 +2174,42 @@ it needs no new rule. *(This answers ruling 25's sixth question.)*
 
 **All seven of ruling 25's questions are now answered**, plus the separate-peace question ruling 28
 opened. The federation is designed.
+
+### Ruling 37 — A federation trades authority for influence, and the model already computes both
+
+**RULED 11 September 2026**, answering **Q11** — the last of round 1's inbox items and the final piece
+of the federation. Aaron:
+
+> "Agreed to all of that - it costs a little authority but increases influence. So yes you may not be as
+> authoritative letting another country lead you but you are apart of a bigger block of countries"
+
+| | |
+|---|---|
+| **On joining** | **Authority falls**, in proportion to how far your own people sit from the members you are joining |
+| **While somebody else leads** | **a little Authority each turn**; leading it **gains** a little |
+| **Throughout** | **Influence rises**, because you are part of a bigger bloc |
+
+**The first is the existing sum pointed somewhere new.** Influence already measures *"how close the rest
+of the world is to you politically, weighted by their size"*. **Aim that at the members instead of at
+the world and Q11 is answered** — a federation of people unlike you is expensive to join at home,
+however profitable it is abroad. **That is the Chicago argument from round 1's inbox**: a government
+offered a deal that is plainly good for the treasury and cannot survive signing it.
+
+**THE THIRD LINE IS ALREADY BUILT, AND NOBODY PLANNED IT.** Influence counts **Reach** — *"nations you
+have live trade relations with"*. **Membership is flat-rate trade with every member** (ruling 26), so
+**joining an eight-member federation hands you seven live trade relations in one act.** Aaron's *"you
+are apart of a bigger block of countries"* is not a new term to add; **it is what the model does today**,
+the moment membership is expressed as trade.
+
+**SO THE BARGAIN HAS A NAME: a federation trades AUTHORITY for INFLUENCE.** Less the master of your own
+house, more of a power in the world — and both halves are already measured, by two stocks that have
+existed since M3.
+
+**A SECOND-ORDER EFFECT WORTH FLAGGING, because it points the other way.** Ruling 17 made **weight —
+size, Authority and Influence together** — the thing that makes a neighbour suspicious of your proposal.
+**So joining a federation raises your influence and therefore makes your future unions harder to get
+agreed.** The bloc that makes you powerful makes you harder to grow. That is either a fine irony or a
+trap, and it goes on the list for the trace.
 
 ### Finding F — The two largest Unify movements share 504 counties, and both want the same thing
 
