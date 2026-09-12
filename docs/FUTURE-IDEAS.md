@@ -834,3 +834,29 @@ whole federation is one evening old. It should wait until a federation has actua
 **What it needs first:** whether wariness between members affects the leadership election — a member that
 is wary of the leader is the obvious seed of a faction — and whether it changes the flat toll at all, or
 is purely political.
+
+## F24 — A wiki for the design
+
+**Aaron's, 11 September 2026**, said mid-way through round 3: *"this is great but it is getting hard to
+keep track of all of this so I think a future idea would be create a wiki for all of this."*
+
+**The problem, stated honestly.** By the end of round 3 the design is **147 rulings across three
+rounds** plus findings, an idea bank and an inbox per round, in documents organised by *when a thing was
+decided* rather than by *what it is about*. That is the right shape for making decisions and the wrong
+shape for looking one up. Aaron asked "where is Sagebrush" and the answer lived in four places: the
+data, the Movement Register, a ruling, and a re-map table written the same evening.
+
+**What it should be, and what it must not be.** A page per *thing* — each movement, each nation, each
+mechanic, each ideology — assembled from what the rulings and the data already say, with the ruling
+number beside every claim. **It must be generated, not maintained by hand**: a hand-written wiki
+becomes the fourth place a fact lives and the first one to go stale, which is precisely the fault this
+project spent an afternoon fixing on 11 September. Most of it can be built from `data/` and the ruling
+documents; the rest is links.
+
+**Why it is not being built now.** The design is still moving — six rulings in this round changed
+another ruling — and a generated wiki over a moving target is churn. **The natural moment is when a
+round's document stops changing**, which is what closing a round means.
+
+**What it needs first:** a stable id per movement and per nation (the data has ids; the documents use
+prose names); and a decision about whether it is for Aaron alone or for playtesters, because those are
+different pages.
