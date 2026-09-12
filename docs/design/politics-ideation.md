@@ -1,8 +1,13 @@
 # Politics — ideation (round 3)
 
-**Status: OPEN and part-way through. Opened 9 September 2026; 14 rulings as of 11 September 2026.**
-Round 1 (secession) closed 7 September with 53 rulings; round 2 (conquest) closed 9 September with 41.
-This round is third per `IDEATION-PLAN.md`.
+**Status: OPEN, and one spine question from the end. Opened 9 September 2026; 37 rulings as of
+11 September 2026 — measured from §4 and §5, not counted by hand.** Round 1 (secession) closed
+7 September with 53 rulings; round 2 (conquest) closed 9 September with 41. This round is third per
+`IDEATION-PLAN.md`.
+
+*This line said **14** while the table below said 37, for the same reason the conquest round's header
+said 31 while holding 41: a count written once and never re-measured. **If the two disagree, the table
+is right and this line is wrong** — and the rulings themselves outrank both.*
 
 Nothing below §4 is decided. Rulings are written into §4 **as they happen**, not summarised at the
 end.
@@ -300,7 +305,7 @@ a new country can genuinely govern badly for a while. **And yes — it should en
 A patience that has been spent is a grievance with a date on it, and that is the more interesting
 game.
 
-### Q11 — Is joining a bloc a domestic political act with a domestic price? **PART ANSWERED — ruling 11 point 4.** The bloc is the *concede-less* move for a Unify movement; the domestic price below is still open
+### Q11 — ~~Is joining a bloc a domestic political act with a domestic price?~~ **ANSWERED — ruling 37.** A federation costs a little Authority and buys Influence; the model already computes both
 
 *Inbox 7.* Seven governors signed the Farmers Union — and what did it cost Illinois when Chicago
 walked out?
