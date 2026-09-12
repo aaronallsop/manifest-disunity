@@ -14,10 +14,10 @@ un-started. Update it whenever a spine question is answered.*
 
 | | |
 |---|---|
-| **Rulings made** | **35** (§4 and §5), plus findings A–G (§5, §6) |
+| **Rulings made** | **36** (§4 and §5), plus findings A–G (§5, §6) |
 | **Spine questions answered** | **Q1** *(replaced by P1 and rulings 1–2)* · **Q2** *(rulings 11, 11a)* · **Q3** *(ruling 21)* · **Q4** *(ruling 3)* · **Q5** *(ruling 22)* · **Q6** *(ruling 14)* · **Q9** *(ruling 6)* · **Q7** *(ruling 24)* · **Q8** *(ruling 25)* · **Q12** *(ruling 23)* |
 | **Part answered** | **Q11** — ruling 11 point 4 makes joining a bloc the *concede-less* move for a **Unify** movement; whether it also costs Authority at home is still open |
-| **Still open** | **Q10** · **Q11**'s domestic price · **ruling 25's federation questions 6-7** *(1 by ruling 26, 2 by ruling 27, 3 by rulings 28 and 29, 4 by ruling 30, 5 by ruling 34)* *(separate peace answered by ruling 35)* *(ruling 31's open half is closed by ruling 33: nothing is suppressed)* |
+| **Still open** | **Q10** · **Q11**'s domestic price. **The federation is finished** — all seven of ruling 25's questions answered (rulings 26-36), plus separate peace (35) and ruling 31's open half (33) |
 | **Waiting on Aaron** | **Nothing.** Both board cards are answered — the Farmers Union by ruling 15, and ruling 6's opened question by ruling 20. **Ruling 15's four questions are all answered** — 1 by ruling 16, 2 by ruling 17, 3 by ruling 18, and 4 by ruling 19 as a flagged default. The proposal-spam exploit named in ruling 16 is closed by ruling 18: proposals run on the movement's clock, not the player's. **Finding A is ANSWERED by ruling 15**: the Farmers Union is a movement and its verb is Unify |
 | **Still to do before the round closes** | the closing test — *what does the player do about this on a Tuesday, with one action?* — and **trace scenario 3** |
 
@@ -2144,6 +2144,36 @@ design looks like.
 somebody walks out. **Every departure shrinks the guarantee for everyone still in**, and by ruling 34 a
 federation that falls to two members stops being one. **So a federation can be destroyed without taking
 a single Area** — by being made tiresome. Nobody designed that either.
+
+### Ruling 36 — The outside 15% splits evenly, and that is what buys the small nations
+
+**RULED 11 September 2026.** Aaron: *"Yes lets do that. It encourages smaller nations to join."* The
+last of ruling 25's seven.
+
+**One share each, regardless of size.** It is also closest to his original wording — *"the remaining 15%
+goes to all the remaining countries"*, with no mention of weighting.
+
+**WHY IT IS THE RIGHT HALF OF A PAIR.** Ruling 27 sends the **internal** toll to whoever's ground the
+goods cross, so **the gate-holders are already rich**. If the **external** money also went by size, the
+large members would take both and a small member would get nothing but protection. **The even split is
+the only thing in the design that pays a small nation for being there**, and Aaron named that as the
+reason.
+
+**AND IT CLOSES A LOOP OPENED IN RULING 34.** Admission is a vote of the members. Under an even split
+**every new member makes everyone else's share smaller** — so the existing members have a standing
+reason to keep the club shut, while **the leader wants more traders, because trade is the budget.**
+That is the enlargement argument, with a number on both sides of it, and neither side had to be
+written.
+
+**Cost accepted and named:** a large member subsidises small ones and will resent it. **That resentment
+now has a cause** — it is the thing parked as **F23**, and this ruling is where it comes from.
+
+**Default taken, one line to reverse:** if the leading nation is **conquered or leaves**, the members
+hold an election **immediately** rather than the federation running leaderless. Nothing hangs on it and
+it needs no new rule. *(This answers ruling 25's sixth question.)*
+
+**All seven of ruling 25's questions are now answered**, plus the separate-peace question ruling 28
+opened. The federation is designed.
 
 ### Finding F — The two largest Unify movements share 504 counties, and both want the same thing
 
