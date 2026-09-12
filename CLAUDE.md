@@ -98,13 +98,26 @@ that playtesters open — an output, not a place work happens. Do not delete it.
 
 ## Definition of done for the current phase
 
-**The alpha track, A0 through A4, ending in an alpha test.**
+**IDEATION — the seven design rounds in `docs/design/IDEATION-PLAN.md`. Read that plan before opening
+anything in `docs/design/`; it says which round is live.** Rounds 1 (secession), 2 (conquest) and 3
+(politics) are closed. **Round 4 is the economy.**
 
-Done means an alpha tester who did not write the game can: negotiate a trade deal with real terms and
-see it expire and prompt renegotiation; grant or revoke transit through their territory by mode and
+A round is done when a session can read its document end to end and the only new entries are
+recombinations of ones already there; when **every one of its scenarios has been traced** — tracing has
+found contradictions in all three closed rounds that the rulings alone did not; when it has answered
+**what the player actually does about this, on a Tuesday, with one action**; and when Aaron says so.
+
+**A design round writes documents only.** No code, no data, no `DESIGN.md`. Changes a round decides are
+*specified* for the build, not made — round 3's ruling 41 is the worked example.
+
+### The phase this supersedes, kept because it is still the state of the build
+
+**The alpha track, A0 through A4, is built and tagged `v0.6`**, and the alpha test has not been run.
+Done there means an alpha tester who did not write the game can: negotiate a trade deal with real terms
+and see it expire and prompt renegotiation; grant or revoke transit through their territory by mode and
 feel the consequence land; look at the trade network map and understand why a route broke and what to
 do about it; and see AI nations trading with each other unprompted. Economy mode is the sandbox this
 happens in, and it says so.
 
 The known hollow spot, deliberately accepted: nothing bad happens to a nation that does not trade.
-That is the first thing the alpha should watch for.
+That is the first thing the alpha should watch for. **Round 4 is where it gets answered.**

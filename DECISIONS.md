@@ -4156,3 +4156,99 @@ whether the federation borrows that is undecided.
 or sits on top; which nation takes the 5%; what happens when a petition for war is refused; whether two
 members can be hostile at all; how a nation joins and leaves; what becomes of the federation if its
 leader is conquered or leaves; and whether the external 15% splits evenly or by size.
+
+### D208 — The federation, designed in eleven rulings
+**Round 3 rulings 26–36, 11 September 2026.** Ruling 25 (D207) made the federation a real object and
+opened seven questions; they were answered in one sitting, and the answers are recorded in
+`politics-ideation.md`. Summarised here because `DECISIONS.md` is the index a future session reads.
+
+**Decided.** The flat 10% **replaces** members' own arrangements with each other, so joining costs a
+nation the sharpest weapon in the game — the right to shut a neighbour's route and burn its contract
+(**26**). The nation's 5% goes to **whoever's ground is crossed**, and two members who are direct
+neighbours pay only the federation's 5%, because there is no host (**27**). **An attack on one member
+is a war with all of them** (**28**). A refused petition is **not a wall**: declare anyway and you are
+out, losing the flat rates, the external share and collective defence on the turn your war starts
+(**29**). **Inside a federation you are at peace with every member** — no hostility and no wariness
+(**30**). The contest claimants carry a modifier that **blocks them from ever joining a union**, so
+round 2's 33 permanent rivalries survive (**31**). **A union is one state; a federation is a union of
+states** — Aaron's correction, and it made ruling 11's table work harder, because *concede* for a Unify
+movement is now blocked between rivals while *concede less* is not (**32**). So **nothing is
+suppressed**: Christian Nationalism grows where it was authored and the federation is the answer its
+government can still give (**33**). **The members vote you in, anyone may walk out immediately, and
+three is the floor** (**34**). **The federation makes peace as one, through its leader**, and a member
+that wants out leaves first (**35**). **The outside 15% splits evenly**, which is what pays a small
+nation for being there (**36**).
+
+**Three things nobody designed, all of them falling out of rulings made minutes apart.** The money
+flows to the **gate-holders** and the protection flows to the **weak**, inside an institution whose
+leader those same members elect. An even external split means **every new member dilutes everyone's
+share**, so members have a reason to keep the club shut while the leader wants more traders — the
+enlargement argument, with numbers on both sides. And a federation **can be destroyed without taking a
+single Area**, by making a war tiresome enough that members leave until it falls below three.
+
+**Measured rather than asserted:** three of the game's fifteen chokepoints sit on Farmers Union ground;
+Michigan, New York, Illinois and Louisiana hold the gates a federation would most want and lose most by
+joining; and barring union-seeking movements from contested ground would have cost Christian
+Nationalism 89% of its counties, which is why ruling 33 exists.
+
+**Rejected along the way:** a hard block on a member's war (round 2 removed every hard brake and
+replaced it with a price); wariness between members (parked as **F23**); and the recommendation that a
+federation was merely a name for a union that keeps self-rule, which Aaron overruled as a category
+error — a union is one state and this is many states that stay states.
+
+**Parked as future ideas:** **F22**, a federation stringing its own members along the way a government
+strings a movement along; **F23**, members who quietly resent each other.
+
+### D209 — Round 3 closes: 41 rulings, the movements re-placed, and three findings the trace produced
+**Round 3 rulings 37–41 and the close, 11 September 2026.**
+
+**Ruling 37 answers Q11, the last of round 1's inbox.** Joining a federation costs **Authority** in
+proportion to how far your own people sit from the members — the existing alignment sum pointed at the
+members instead of the world — and being led by somebody else costs a little each turn while leading
+gains a little. **Aaron added the half that matters: it raises Influence.** And that half was already
+built: Influence counts *reach*, meaning nations you hold live trade relations with, and membership is
+flat-rate trade with every member. **So a federation trades authority for influence**, and both stocks
+have existed since M3.
+
+**Ruling 38 answers Q10**, the last spine question: the fervour of a new country becomes a **tolerance
+applied to grievance** as well as borrowed Authority, and **it ends worse than neutral** — a patience
+that has been spent is a grievance with a date on it. It matters because almost every nation on this
+board is four turns old, and today a new nation is fragile in the moment it should be unbreakable.
+
+**Rulings 39 and 40:** a **vassal keeps its own government** and its people blame that government
+rather than the overlord; and **three words for three things** — ideology is a position on the board and
+cannot move because it *is* a location, a party is an organisation inside one nation that occupies a
+position, a movement is unchanged. The payoff is that *change course* is priced by how far the party
+moves rather than by a tunable.
+
+**Ruling 41** raises the growth cap of the **Sagebrush Rebellion, Acadiana and El Paso United** from
+0.35 to **0.45**, so they can take ground of their own. **Specified and not made** — a design session
+does not touch `data/`. 0.45 rather than 0.40 for a checked reason: the leave test is `>=` and the cap
+is a hard clamp rather than an asymptote, so 0.40 would technically qualify but only at a movement's
+absolute maximum, which is *can* in arithmetic and *cannot* in play.
+
+**All 26 live movements were re-placed** on the ten positions rulings 1–2 built, because the register's
+leanings were marked against the old six-ideology board. Seventeen were straight translations; nine
+needed the third axis. **Aaron confirmed the Sagebrush Rebellion at Anarcho-Capitalism** — the corner he
+asked for months ago — and **moved A Free Texas to Fascism**, because the story is that it was taken
+over by a fascist bloc. That is the most consequential placement on the board: the Texas contest now has
+a villain, and ruling 31 leaves no peaceful road to one Texas at all.
+
+**The close.** The Tuesday test passes — round 1 left this round with **one** answer to a movement and
+it leaves with **nine**, seven of them re-pointings of built machinery. **Scenario 3 failed its first
+trace and that is what made it useful:** traced against Nevada facing the Sagebrush Rebellion, the
+government is never cornered, because an autonomist movement's cheap answer and its cure are the same
+act. Re-traced against an ideological movement it narrates — so the scenario was testing ruling 11a all
+along.
+
+**Three findings the trace produced.** **H** — three of the ten positions carry no movement, and the
+movement layer touches only six of them. **I** — nine movements are capped below the 0.40 line, half of
+them harmlessly (they never secede) but with a hard consequence: **ruling 15's unset X% must sit below
+0.30**, or the two largest union movements can never make a demand at all. **J** — the federation's
+deterrent may be absolute, which would make joining the dominant opening for every small nation; every
+counterweight exists and none has been played, so **it is the first thing an alpha should watch**.
+
+**Corrected at sign-off, before Aaron acted on it:** finding I first reported 155 million people and
+32%. That summed nine overlapping homelands, counting a county once per movement covering it — the
+denominator came to 485 million, more people than the country has. Counted over distinct counties it is
+**117,847,633 people across 1,526 counties, and 38%**.

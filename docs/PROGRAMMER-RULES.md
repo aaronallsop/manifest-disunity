@@ -112,3 +112,14 @@ Add one with `/rule` whenever a mistake earns it. Number them; never delete one.
     places, say in the document which one wins. Both headers now carry that line.
     **The tell:** if you are about to type a number that describes the file you are typing into, you
     are about to create this bug.
+
+11. **When you sum a quantity across sets that overlap, check the total against a bound you know.**
+    Cost: a wrong figure went in front of Aaron and survived until the sign-off review an hour later.
+    Finding I reported "155 million people, 32% of everyone inside a movement" by summing nine
+    movements' homeland populations — but homelands overlap, so every shared county was counted once
+    per movement covering it. The true figure is **117.8 million across 1,526 distinct counties, and
+    38%**: the population was overstated and the share understated by the same mistake. **The tell was
+    there to be read — the denominator came to 485 million, and the United States has about 330
+    million.** Any sum over movements, homelands, Areas or deals is a sum over overlapping sets in this
+    project. Deduplicate to the county, then total; and before publishing any population figure, hold
+    it against the population of the country.
