@@ -14,7 +14,7 @@ un-started. Update it whenever a spine question is answered.*
 
 | | |
 |---|---|
-| **Rulings made** | **31** (§4 and §5), plus findings A–G (§5, §6) |
+| **Rulings made** | **32** (§4 and §5), plus findings A–G (§5, §6) |
 | **Spine questions answered** | **Q1** *(replaced by P1 and rulings 1–2)* · **Q2** *(rulings 11, 11a)* · **Q3** *(ruling 21)* · **Q4** *(ruling 3)* · **Q5** *(ruling 22)* · **Q6** *(ruling 14)* · **Q9** *(ruling 6)* · **Q7** *(ruling 24)* · **Q8** *(ruling 25)* · **Q12** *(ruling 23)* |
 | **Part answered** | **Q11** — ruling 11 point 4 makes joining a bloc the *concede-less* move for a **Unify** movement; whether it also costs Authority at home is still open |
 | **Still open** | **Q10** · **Q11**'s domestic price · **ruling 25's federation questions 5-7** *(1 by ruling 26, 2 by ruling 27, 3 by rulings 28 and 29, 4 by ruling 30)*, plus **can one member make a separate peace?** and **ruling 31's open half: does the modifier block ALL unions or only ones containing a rival? — finding G measures what the broad version costs** |
@@ -2029,6 +2029,43 @@ would say yes — and the modifier would stop the nation accepting. **That is th
 case, and it disappears entirely if the modifier is read as "cannot join a union CONTAINING A RIVAL"
 rather than "cannot join a union ever".** Under that reading no movement needs suppressing anywhere, the
 33 rivalries are still safe, and the South keeps its largest movement.
+
+### Ruling 32 — A union is ONE state; a federation is a union OF states. They are different wants
+
+**RULED 11 September 2026.** Aaron, correcting the framing finding G had used:
+
+> "The difference is this: Christian Nationalism is unifying as a singular sate where a federation is a
+> union of states."
+
+**The distinction, and it was being blurred.** Finding G wrote *"union-seeking movements"* as though one
+category. It is two:
+
+| | |
+|---|---|
+| **Union** | **One state.** Ruling 16: the nations become a single entity and everyone is a full member of it |
+| **Federation** | **A union OF states.** Ruling 25: many states that stay states, with a flat toll, an elected leader and a treasury |
+
+**Christian Nationalism wants the first.** Its want is a singular southern state, not a club of southern
+states — so the movement is asking the Confederate claimants for the one thing ruling 31's modifier
+forbids them.
+
+**WHICH MAKES RULING 11's TABLE WORK HARDER THAN IT KNEW.** That table already had both, one rung apart,
+and nobody had noticed they were now two different objects:
+
+- ***Concede*** for a Unify movement = **merge with the neighbour** — one state. **Blocked between
+  rivals by ruling 31.**
+- ***Concede less*** for a Unify movement = **join a bloc**, *"the form without the substance"* — which
+  **ruling 25 has since turned into a real object: the federation.**
+
+**So the cheap answer survives where the expensive one dies.** A claimant that can never become one
+state with its rivals **can still federate with the neighbours it is not contesting** — and that is the
+move the table hands it when the full concession is unavailable. Five moves exist precisely so that
+losing one does not leave the player with nothing.
+
+**A consequence that falls straight out, and it is checkable:** the five Confederate claimants are
+rivals of *each other*, so **a southern federation can contain at most one of them**, plus any number of
+non-claimants. **The South cannot be one country while the contest is live — but it can be a federation
+built around whichever claimant joins first.** Nobody wrote that; it is ruling 30 and ruling 31 meeting.
 
 ### Finding F — The two largest Unify movements share 504 counties, and both want the same thing
 
