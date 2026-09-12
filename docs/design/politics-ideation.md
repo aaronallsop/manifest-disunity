@@ -14,10 +14,10 @@ un-started. Update it whenever a spine question is answered.*
 
 | | |
 |---|---|
-| **Rulings made** | **26** (§4 and §5), plus findings A–F (§5, §6) |
+| **Rulings made** | **27** (§4 and §5), plus findings A–F (§5, §6) |
 | **Spine questions answered** | **Q1** *(replaced by P1 and rulings 1–2)* · **Q2** *(rulings 11, 11a)* · **Q3** *(ruling 21)* · **Q4** *(ruling 3)* · **Q5** *(ruling 22)* · **Q6** *(ruling 14)* · **Q9** *(ruling 6)* · **Q7** *(ruling 24)* · **Q8** *(ruling 25)* · **Q12** *(ruling 23)* |
 | **Part answered** | **Q11** — ruling 11 point 4 makes joining a bloc the *concede-less* move for a **Unify** movement; whether it also costs Authority at home is still open |
-| **Still open** | **Q10** · **Q11**'s domestic price · **ruling 25's federation questions 2-7** *(1 answered by ruling 26)* |
+| **Still open** | **Q10** · **Q11**'s domestic price · **ruling 25's federation questions 3-7** *(1 by ruling 26, 2 by ruling 27)* |
 | **Waiting on Aaron** | **Nothing.** Both board cards are answered — the Farmers Union by ruling 15, and ruling 6's opened question by ruling 20. **Ruling 15's four questions are all answered** — 1 by ruling 16, 2 by ruling 17, 3 by ruling 18, and 4 by ruling 19 as a flagged default. The proposal-spam exploit named in ruling 16 is closed by ruling 18: proposals run on the movement's clock, not the player's. **Finding A is ANSWERED by ruling 15**: the Farmers Union is a movement and its verb is Unify |
 | **Still to do before the round closes** | the closing test — *what does the player do about this on a Tuesday, with one action?* — and **trace scenario 3** |
 
@@ -1822,6 +1822,45 @@ and a federation must not quietly do to its members what it would punish them fo
 
 **Note for Q11, still open:** this is the *foreign* price of membership. **The domestic price — what it
 costs at home to join — is still unanswered**, and it is the last thing in the spine.
+
+### Ruling 27 — The 5% goes to the ground that is crossed, and direct neighbours pay half
+
+**RULED 11 September 2026** — *"Yes, I think in the architecture stage this is going to get a little
+more complicated but yes"* — answering the second of ruling 25's seven.
+
+| | |
+|---|---|
+| **Who takes the nation's 5%** | **The nation whose ground the goods actually cross.** That is what a toll already is here: charged by the country you pass through, on what ARRIVES rather than what set out |
+| **Two members who are direct neighbours** | **Only the federation's 5% is levied.** There is no host, so there is no host's half — **direct trade inside a federation costs 5%, routed trade costs 10%** |
+
+**Why not the seller.** A toll taken by the seller is a **sales tax**, and the map stops mattering. This
+game's whole trade design is geography with prices on it; the one thing it cannot afford is a levy that
+does not care where anything is.
+
+**What it does to ruling 26's problem, and it is an improvement.** Michigan still earns from every
+member's cargo crossing its lakes — at a fixed 5% rather than whatever it could have extracted. **So
+joining does not zero a gate-holder's advantage; it caps it.** They keep the income and lose the
+threat, which is a far better offer than "give up everything" — and it means **the federation's
+internal money flows toward whoever holds the water**, which is both a reason they might join and a
+reason the others might resent them.
+
+**And a federation is cheapest between people who are already next to each other**, which is what a
+customs union feels like, and which gives distant members a real stake in who else joins.
+
+**AARON'S CAVEAT, RECORDED BECAUSE IT IS THE USEFUL PART: *"in the architecture stage this is going to
+get a little more complicated."* He is right, and here is what will bite**, written down now so the
+build does not discover it:
+
+1. **Multi-hop inside the federation.** Goods crossing **two** member states — does each host take 5%,
+   or is there one host share divided between them? *Leaning: one share, divided — otherwise "flat 10%"
+   stops being flat and the federation starts punishing distance, which is the opposite of a customs
+   union. NOT ruled.*
+2. **Tolls compound on what arrives.** Two hosts at 5% each leave **90.25%**, not 90%. **"Flat" and
+   "compounding" are not the same arithmetic**, and the build does the second one today.
+3. **Routes that leave the federation and come back**, crossing a non-member in between, where the
+   federation's rate and a negotiated corridor apply to the same journey.
+
+**These go to the mechanics stage as named work, not as a surprise.**
 
 ### Finding F — The two largest Unify movements share 504 counties, and both want the same thing
 
