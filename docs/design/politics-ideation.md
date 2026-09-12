@@ -19,7 +19,7 @@ un-started. Update it whenever a spine question is answered.*
 
 | | |
 |---|---|
-| **Rulings made** | **40** (§4 and §5), plus findings A–I (§5, §6, §7) and the re-map of all 26 movements |
+| **Rulings made** | **41** (§4 and §5), plus findings A–I (§5, §6, §7) and the re-map of all 26 movements |
 | **Spine questions answered** | **Q1** *(replaced by P1 and rulings 1–2)* · **Q2** *(rulings 11, 11a)* · **Q3** *(ruling 21)* · **Q4** *(ruling 3)* · **Q5** *(ruling 22)* · **Q6** *(ruling 14)* · **Q9** *(ruling 6)* · **Q10** *(ruling 38)* · **Q7** *(ruling 24)* · **Q8** *(ruling 25)* · **Q11** *(ruling 37)* · **Q12** *(ruling 23)* |
 | **Part answered** | *(none)* |
 | **Still open** | **No spine question is open. All twelve are answered** (Q10 by ruling 38). **The federation is finished** — all seven of ruling 25's questions answered (rulings 26-36), plus separate peace (35) and ruling 31's open half (33) |
@@ -2382,6 +2382,46 @@ are how a nation reaches them.
 elections and drift while the movement layer only ever touches four of them.** If nothing in play can
 put a movement in the authoritarian half, the three-axis board is doing less work on the movement side
 than it looks.
+
+### Ruling 41 — The three capped-out separatists get a ceiling above the line
+
+**RULED 11 September 2026**, answering finding I. Aaron: *"Lets change it so that they can take a
+region/country of their own for now."*
+
+**The change, specified exactly, and NOT made here** — this is a design session and it does not touch
+`data/`. **Work for whoever builds next:**
+
+| Movement | Cap today | Cap ruled |
+|---|---|---|
+| **Sagebrush Rebellion** | 0.35 | **0.45** |
+| **Acadiana** | 0.35 | **0.45** |
+| **El Paso United** | 0.35 | **0.45** |
+
+**Why 0.45 and not 0.40, and both numbers are derived rather than invented.** The leave test is
+`share >= secession.countyThreshold` and the cap is a **hard clamp** (`value = Math.min(value, cap)` in
+`sentiment.js`), not an asymptote — **so a cap of exactly 0.40 would technically qualify**: the share
+would sit on the line and the test would pass.
+
+**It would also mean crossing only at a movement's absolute maximum, in perfect conditions, and never
+otherwise. That is "can" in arithmetic and "cannot" in play**, which is the same trap finding I just
+exposed. **0.45 is the modal cap among movements already above the line** — seven carry it: Christian
+Nationalism, the New Confederacy, the Native American Confederation, Alaskan Independence, Hawaiian
+Sovereignty, the New England Revivalists and the California Republic. **It gives real headroom while
+keeping these three modest**, below Deseret's 0.60, Cascadia's 0.55 and the 0.50 group.
+
+**Two movements in finding I are deliberately left alone.**
+
+- **Front Range Republic (0.35)** wants to **Expand** — it takes other people's ground rather than
+  leaving with its own, so the leave line never applies to it.
+- **The five Unify movements** are untouched for the same reason: they do not secede. **But finding I's
+  constraint stands and is the more important half — ruling 15's unset X% must sit BELOW 0.30**, or the
+  Farmers Union and Great Lakes Free Trade can never make a demand at all.
+
+**What it changes in the story:** Sagebrush can now make a nation out of the federal-land counties;
+Acadiana can leave with the French parishes; El Paso can stand alone rather than only ever choosing
+between Texas and the Rio Grande. **Ruling 20 still applies where two movements cross the line together
+and neither is over it alone** — that ground still goes ungoverned. This ruling only removes the case
+where a movement could *never* qualify.
 
 ### Finding F — The two largest Unify movements share 504 counties, and both want the same thing
 
