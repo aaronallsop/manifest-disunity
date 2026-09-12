@@ -14,10 +14,10 @@ un-started. Update it whenever a spine question is answered.*
 
 | | |
 |---|---|
-| **Rulings made** | **34** (§4 and §5), plus findings A–G (§5, §6) |
+| **Rulings made** | **35** (§4 and §5), plus findings A–G (§5, §6) |
 | **Spine questions answered** | **Q1** *(replaced by P1 and rulings 1–2)* · **Q2** *(rulings 11, 11a)* · **Q3** *(ruling 21)* · **Q4** *(ruling 3)* · **Q5** *(ruling 22)* · **Q6** *(ruling 14)* · **Q9** *(ruling 6)* · **Q7** *(ruling 24)* · **Q8** *(ruling 25)* · **Q12** *(ruling 23)* |
 | **Part answered** | **Q11** — ruling 11 point 4 makes joining a bloc the *concede-less* move for a **Unify** movement; whether it also costs Authority at home is still open |
-| **Still open** | **Q10** · **Q11**'s domestic price · **ruling 25's federation questions 6-7** *(1 by ruling 26, 2 by ruling 27, 3 by rulings 28 and 29, 4 by ruling 30, 5 by ruling 34)*, plus **can one member make a separate peace?** *(ruling 31's open half is closed by ruling 33: nothing is suppressed)* |
+| **Still open** | **Q10** · **Q11**'s domestic price · **ruling 25's federation questions 6-7** *(1 by ruling 26, 2 by ruling 27, 3 by rulings 28 and 29, 4 by ruling 30, 5 by ruling 34)* *(separate peace answered by ruling 35)* *(ruling 31's open half is closed by ruling 33: nothing is suppressed)* |
 | **Waiting on Aaron** | **Nothing.** Both board cards are answered — the Farmers Union by ruling 15, and ruling 6's opened question by ruling 20. **Ruling 15's four questions are all answered** — 1 by ruling 16, 2 by ruling 17, 3 by ruling 18, and 4 by ruling 19 as a flagged default. The proposal-spam exploit named in ruling 16 is closed by ruling 18: proposals run on the movement's clock, not the player's. **Finding A is ANSWERED by ruling 15**: the Farmers Union is a movement and its verb is Unify |
 | **Still to do before the round closes** | the closing test — *what does the player do about this on a Tuesday, with one action?* — and **trace scenario 3** |
 
@@ -2119,6 +2119,31 @@ cannot wait a year.
 **Three is taken from Aaron's own words, not invented:** *"A federation should be a relation between
 multiple states. Alliance is two."* **A federation that falls to two members stops being one** — a quiet
 and fair way for these things to die, and it needs no rule about collapse.
+
+### Ruling 35 — The federation makes peace as one; a member that wants out leaves first
+
+**RULED 11 September 2026** — *"Correct"* — answering the question ruling 28 opened.
+
+**Round 2 wrote peace as a deal between two countries**: both sides table terms blind on the same turn
+and the one that was attacked opens both and chooses. **That does not survive a war with ten defenders**
+— so the federation is **one party to the war**, and the **leader** negotiates for all of it. Round 2's
+machinery is preserved rather than rewritten: there are still two sides at the table.
+
+**The leader already negotiates for everyone** on outside trade deals (ruling 25), so peace is the same
+shape rather than a new power. **And it is what makes collective defence mean anything**: if members
+could peel off one at a time, an attacker would pick off the frightened ones and ruling 28's guarantee
+would be worth nothing.
+
+**The escape hatch is required, not optional.** Without it a leader could hold its members in a war
+forever — which is exactly the failure parked as **F22**. So: **leave the federation and you may sue for
+peace yourself**, at the price ruling 29 and ruling 34 already set. No new machinery; the cost is one
+that has now been charged three times tonight for three different acts, which is what a consistent
+design looks like.
+
+**AND IT HANDS AN ATTACKER A STRATEGY THAT IS NOT MILITARY.** Make the war expensive enough that
+somebody walks out. **Every departure shrinks the guarantee for everyone still in**, and by ruling 34 a
+federation that falls to two members stops being one. **So a federation can be destroyed without taking
+a single Area** — by being made tiresome. Nobody designed that either.
 
 ### Finding F — The two largest Unify movements share 504 counties, and both want the same thing
 
