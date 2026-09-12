@@ -14,10 +14,10 @@ un-started. Update it whenever a spine question is answered.*
 
 | | |
 |---|---|
-| **Rulings made** | **33** (§4 and §5), plus findings A–G (§5, §6) |
+| **Rulings made** | **34** (§4 and §5), plus findings A–G (§5, §6) |
 | **Spine questions answered** | **Q1** *(replaced by P1 and rulings 1–2)* · **Q2** *(rulings 11, 11a)* · **Q3** *(ruling 21)* · **Q4** *(ruling 3)* · **Q5** *(ruling 22)* · **Q6** *(ruling 14)* · **Q9** *(ruling 6)* · **Q7** *(ruling 24)* · **Q8** *(ruling 25)* · **Q12** *(ruling 23)* |
 | **Part answered** | **Q11** — ruling 11 point 4 makes joining a bloc the *concede-less* move for a **Unify** movement; whether it also costs Authority at home is still open |
-| **Still open** | **Q10** · **Q11**'s domestic price · **ruling 25's federation questions 5-7** *(1 by ruling 26, 2 by ruling 27, 3 by rulings 28 and 29, 4 by ruling 30)*, plus **can one member make a separate peace?** *(ruling 31's open half is closed by ruling 33: nothing is suppressed)* |
+| **Still open** | **Q10** · **Q11**'s domestic price · **ruling 25's federation questions 6-7** *(1 by ruling 26, 2 by ruling 27, 3 by rulings 28 and 29, 4 by ruling 30, 5 by ruling 34)*, plus **can one member make a separate peace?** *(ruling 31's open half is closed by ruling 33: nothing is suppressed)* |
 | **Waiting on Aaron** | **Nothing.** Both board cards are answered — the Farmers Union by ruling 15, and ruling 6's opened question by ruling 20. **Ruling 15's four questions are all answered** — 1 by ruling 16, 2 by ruling 17, 3 by ruling 18, and 4 by ruling 19 as a flagged default. The proposal-spam exploit named in ruling 16 is closed by ruling 18: proposals run on the movement's clock, not the player's. **Finding A is ANSWERED by ruling 15**: the Farmers Union is a movement and its verb is Unify |
 | **Still to do before the round closes** | the closing test — *what does the player do about this on a Tuesday, with one action?* — and **trace scenario 3** |
 
@@ -2090,6 +2090,35 @@ not designed together.**
 **The count of what this round has declined to build stands at five** — S24, S27, the second vacuum
 mechanism, ruling 6's coalition object, and now this suppression, which was asked for and then made
 unnecessary by the design rather than argued away.
+
+### Ruling 34 — The members vote you in, anyone may walk out, and three is the floor
+
+**RULED 11 September 2026** — *"Agreed."* — answering the fifth of ruling 25's seven.
+
+| | |
+|---|---|
+| **Admission** | **The members vote.** A candidate applies; the existing members decide |
+| **Leaving** | **Free and immediate.** No notice period |
+| **The floor** | **Three.** Below that it is not a federation |
+
+**Why admission is not the leader's to give.** The leader's turn is deliberately three actions long —
+fund a struggling member, permit a war, handle outside trade deals — and admission is not among them.
+It should stay that way, because of **ruling 28**: letting somebody in **obliges every existing member
+to go to war for them.** That is too large to be one nation's gift, even an elected one.
+
+**And it gives the federation its politics a second time.** The leader wants members who **trade**,
+because trade is the budget. The small members want members who are **safe**, because they are the ones
+who will be fighting. **A rich nation with an angry neighbour is exactly the argument a federation would
+have** — and both sides of it are computable from things the game already tracks.
+
+**Why leaving is immediate.** There is nothing to unwind: ruling 26 removed negotiated agreements
+between members, so walking out only stops the flat rate and the protection. **It also has to be
+immediate to stay consistent with ruling 29**, where declaring war on a member *is* leaving — that
+cannot wait a year.
+
+**Three is taken from Aaron's own words, not invented:** *"A federation should be a relation between
+multiple states. Alliance is two."* **A federation that falls to two members stops being one** — a quiet
+and fair way for these things to die, and it needs no rule about collapse.
 
 ### Finding F — The two largest Unify movements share 504 counties, and both want the same thing
 
