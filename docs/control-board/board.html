@@ -304,12 +304,12 @@ tr:last-child td{border-bottom:0}
 const BOARD = {
   project: "Manifest Disunity",
   livery: "tower",                      // tower | mars | violet | deep | slate
-  updated: "2026-09-11 18:15",          // when you last republished, local time
+  updated: "2026-09-11 19:10",          // when you last republished, local time
 
   // Three or four measured figures. value: number|string, or null = "not yet measured".
   figures: [
     { label: "Design rounds done",      value: "2 of 7 — round 3 part-way" },
-    { label: "Rulings so far in round 3", value: 14 },
+    { label: "Rulings so far in round 3", value: 20 },
     { label: "Economy-alpha stages done",  value: "A0–A5" },
     { label: "Current version",         value: "v0.6" },
     { label: "Tests green — measured 8 Sep, no code touched since 5 Sep", value: 956 },
@@ -319,99 +319,43 @@ const BOARD = {
 
   // The single most important true thing right now. tone: "bad" | "warn" | "ok" | "neutral".
   headline: {
-    tone: "warn",
-    text: "THIS BOARD, AND EVERY OTHER RECORD OF THE PROJECT, WAS TWO DAYS BEHIND THE WORK — AND IT "
-        + "IS THE SECOND TIME. The written summary a new session reads still said politics had not "
-        + "started. It had: fourteen decisions of yours were made on Wednesday evening and Thursday. "
-        + "The plan, the standing brief and this page all told the same out-of-date story.\n\n"
-        + "NOTHING IS BROKEN AND NOTHING IS LOST. Every one of those fourteen was written down as it "
-        + "was made. No code, no data and no rules of play have been touched since 5 September — the "
-        + "last three sittings wrote only design documents. What was at risk was your morning, not "
-        + "your game: a session reading that summary would have asked you to decide things you had "
-        + "already decided.\n\n"
-        + "WHAT IS ACTUALLY TRUE. Politics is part-way through. You have settled: the single table of "
-        + "what a government can do about every kind of movement — five moves against six wants, and "
-        + "the discovery that the four things you could already do were general moves nobody had "
-        + "noticed were general; what a region with no government is, and that it is the cheapest "
-        + "ground on the continent to trade with; that stranded and surrounded ground goes ungoverned "
-        + "and can grow a movement of its own; that a movement's demands cost you nothing to answer "
-        + "and must be answered before your turn can move; that past forty per cent a countdown to "
-        + "civil war begins, and that a government may give up and join the movement instead; and "
-        + "martial law — which takes away rules rather than handing you soldiers, suspends the "
-        + "election only when it covers over half the country, and costs a decent government far more "
-        + "than a rotten one, because a rotten one can simply steal the election instead.\n\n"
-        + "WHAT I DID ABOUT IT TODAY. Straightened all four records, so the round now carries its own "
-        + "running score — what is answered, what is still open, and what is yours — and this page, "
-        + "the plan and the brief agree with it.\n\n"
-        + "THE CAUSE, AND THE FIX, BECAUSE ADVICE ALREADY FAILED ONCE. A summary is only true up to "
-        + "the moment it is written, and twice a session has carried on working afterwards and never "
-        + "replaced it. The fix after the first time was a warning written inside the summary itself "
-        + "— and the session that failed the second time had that warning in front of it. So it is "
-        + "now measured instead of remembered: before a new session reads anything at all, it is told "
-        + "how much work has landed since the summary was written and what that work was, and it must "
-        + "straighten the record before starting anything new. Tested against this project, it names "
-        + "all twenty-four pieces of work that had landed. It is installed on both your machines and "
-        + "on every project, not just this one.\n\n"
-        + "TWO THINGS ARE NOW WAITING ON YOU below. Both have been sitting unasked since Wednesday — "
-        + "they came out of your own rulings and neither ever reached this page. That is the same "
-        + "fault in a smaller shape, and it is why the queue is not empty today.",
+    tone: "ok",
+    text: "NOTHING IS WAITING ON YOU, AND POLITICS IS AT TWENTY RULINGS. Both cards that were on "
+        + "this page are answered, and between them they designed how one country joins another.\n\n"
+        + "THE SHAPE OF IT. A movement that wants a union does not demand that you merge — it "
+        + "demands that you GO AND ASK, because a union needs somebody else's consent. Three "
+        + "answers: yes, no, or \"let's think about it\" — and that middle one grows the movement "
+        + "inside THEIR country, which is the only way in this game to deliberately grow somebody "
+        + "else's movement. A yes makes one nation, everyone a full member, and none of the five "
+        + "penalties conquered ground carries — so joining is the only way to get bigger that does "
+        + "not poison what you gained. The answer turns on their own people's appetite, how close "
+        + "your politics are, your weight against theirs (your correction: size AND authority AND "
+        + "influence), and whether you are on speaking terms at all.\n\n"
+        + "AND YOU CLOSED A HOLE I HAD FOUND. Asking every turn would have been the obvious cheat — "
+        + "farm their movement upward until their own government is the one under pressure. Your "
+        + "ruling that asking discharges the demand, and the movement comes back later pointing "
+        + "somewhere else, closes it without forbidding anything: you ask when your own people "
+        + "demand it, not when you feel like it.\n\n"
+        + "THE OTHER CARD, AND YOU MADE IT BETTER. A region whose anger is split between two "
+        + "movements goes ungoverned and neither of them inherits it — and you added that the "
+        + "counties at its edge may attach themselves to a neighbour they merely dislike rather "
+        + "than stay with a movement that hates them. Measured afterwards: seven regions in ten on "
+        + "this map are a single county, so small holes get absorbed by their neighbours and only a "
+        + "big collapse leaves lasting ungoverned ground.\n\n"
+        + "EARLIER TODAY, AND IT IS THE DAY'S BAD NEWS. This board and every other record of the "
+        + "project was two days behind the work, for the second time: the written summary a new "
+        + "session reads still said politics had not started, when fourteen of your decisions had "
+        + "already been made. It is now fixed in machinery rather than in a note asking sessions to "
+        + "remember — before a new session reads anything it is told what has landed since the "
+        + "summary was written, and it must straighten the record before starting new work. Tested "
+        + "against today: it would have caught this on Thursday morning.",
   },
 
 
   // Only decisions that are genuinely the owner's. Ids are permanent.
   // Only decisions that are genuinely the owner's. Ids are permanent.
-  decisions: [
-    { id: "farmers-union",
-      title: "A movement of 22 million people has never been in front of you",
-      evidence: "The game carries 32 separatist movements. The register you marked up on 7 September "
-              + "holds 32 rows — 31 of them, plus the Canadian Refuge you added yourself. The one "
-              + "that has never been in front of you is THE FARMERS UNION, and it is the second "
-              + "largest movement in the game: 983 counties and 22.6 million people, behind only the "
-              + "New Confederacy. Every other movement has been told what it wants. This one has "
-              + "not, because it was never on the list. Its ground crosses thirteen states fairly "
-              + "evenly — between 51 and 103 counties in each of Missouri, Kansas, Iowa, Nebraska, "
-              + "Illinois, Indiana, Minnesota, Oklahoma, South Dakota, Michigan, Ohio, Wisconsin and "
-              + "North Dakota — so it has no home state to leave from. And there are two different "
-              + "stories about what it even is: your own note from round 1 says seven governors "
-              + "SIGNED it, which describes an agreement between governments, while the game builds "
-              + "it as a popular movement that grows county by county like the others.",
-      cost: "Leaving it open is the expensive choice. Five other movements share ground with it and "
-          + "none of those five pairs can be judged until this one has a want — so it is holding up "
-          + "part of the politics round. If it is a movement it needs a want like every other, and "
-          + "on its size it becomes one of the largest pressures in the farm belt. If it is really "
-          + "an agreement between governments it comes off the movement list altogether and belongs "
-          + "with diplomacy, two rounds away.",
-      recommendation: "Both, in the order that costs least. Make it a movement now and give it "
-                    + "UNIFY — the farm states pulling together rather than any one of them walking "
-                    + "out. That is what its own ground says (thirteen states, no home) and it "
-                    + "matches every ruling you have already made: all three of the economic "
-                    + "movements you have judged — the Blue-Collar Populists, the Central States "
-                    + "Union and Great Lakes Free Trade — you gave Unify, and you wrote of the "
-                    + "first that they are not trying to be a nation so much as an economic area. "
-                    + "Then file the governors' bloc separately for round 5, where blocs belong. A "
-                    + "movement and a bloc sharing a name is not a contradiction: the movement is "
-                    + "the farmers, the bloc is the governors who signed for them." },
-
-    { id: "area-split-between-movements",
-      title: "When a region's anger is split between two movements, who ends up holding it?",
-      evidence: "A region breaks away when a single movement organises 40% of it — that is the "
-              + "number in the game today. Your own example on Wednesday was 26% for Cascadia and "
-              + "26% for Greater Idaho inside the same Oregon, and you ruled that they count "
-              + "TOGETHER against the government, which is what makes a coalition dangerous without "
-              + "inventing any machinery for one. Together they are 52%, over the line. Neither is "
-              + "over it alone. Your ruling said the government loses control. It did not say who "
-              + "ends up holding the ground, and nothing in the game answers it.",
-      cost: "If the larger movement takes it, a movement organising a quarter of a region inherits "
-          + "a place three-quarters of it did not choose, and the rival movement is swallowed for "
-          + "free. If nobody takes it, the region becomes ungoverned ground — which already exists, "
-          + "because you ruled it into being last Wednesday — and both movements carry on inside it "
-          + "with no government to push against.",
-      recommendation: "Nobody takes it: it goes ungoverned. A government that has lost control "
-                    + "while no successor has won it is exactly the ungoverned ground you already "
-                    + "ruled, so this costs nothing new to build. It also makes a coalition "
-                    + "frightening in a way that is true to life — two movements can bring a "
-                    + "government down together and neither one inherits what is left." },
-  ],
+  decisions: [],   // Empty is the correct state. Both cards were answered in session on
+                   // 11 September; the answers are in the saved records and in the round document.
 
   // Standing permissions. Ids are permanent. risk: "low" | "med" | "high".
   permissions: [
@@ -728,8 +672,19 @@ const BOARD = {
             + "Tuesday, with one action — and tracing the round's own story through everything "
             + "decided, which found contradictions in both earlier rounds that the rulings alone had "
             + "missed.\n\n"
-            + "TWO THINGS ARE WAITING ON YOU, both at the top of this page, and both came out of "
-            + "your own rulings rather than from me." },
+            + "SETTLED ON THE EVENING OF 11 SEPTEMBER, in six more rulings: the farmers are a "
+            + "movement and they want a union, and because a union needs another country's consent "
+            + "the demand is that the government GO AND ASK. Three answers — yes, no, or \"let's "
+            + "think about it\", which grows the movement inside THEIR country and is the only way "
+            + "in this game to deliberately grow somebody else's movement. A yes makes one nation "
+            + "with everyone a full member and none of conquest's five penalties, which makes "
+            + "joining the only way to get bigger that does not poison what you gained. The answer "
+            + "turns on their people's appetite, your politics, your weight — size, authority and "
+            + "influence — and whether you are on speaking terms. Asking discharges the demand and "
+            + "the movement comes back pointing elsewhere, which closes the obvious cheat without "
+            + "forbidding it. And an Area whose anger is split between two movements goes "
+            + "ungoverned, with its edge counties free to attach to a neighbour they merely dislike "
+            + "rather than stay with a movement that hates them." },
     { name: "After the economy alpha — Recognition, Canada, Mexico", status: "todo",
       brief: "Recognition score and ramp, border-state suspicion, Canada/Mexico as partners and as corridors, gray-market trade.",
       actual: "HALF DONE, AND PAUSED while the design rounds run. Canada and Mexico are real places on the trade map — reached by the "
