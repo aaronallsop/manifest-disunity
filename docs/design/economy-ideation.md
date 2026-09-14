@@ -124,7 +124,7 @@ the spec and the spine had been written before the whole spec was read. See **fi
 | # | From | What it asks for |
 |---|---|---|
 | **I4** | **Conquest** | What a **blockade** actually stops, and what a **destroyed rail hub** does to a corridor — ✅ **ruling 6** |
-| **I5** | **Conquest**, finding E | Its fifth story stalls on **I2**. Filed so this round knows its answer unblocks somebody else's scenario |
+| **I5** | **Conquest**, finding E | Its fifth story stalls on **I2** — ✅ **closed.** I2 is answered by ruling 1, so desperation bites and the story runs. Nothing further is owed |
 | **I6** | **Politics**, rulings 25–27 | **What a federation's toll split is worth** — 5% between direct neighbours, 10% routed, the host's share going to the ground actually crossed — ✅ **ruling 5** states the principle; the sizing goes to the mechanics stage |
 | **I7** | **Politics**, ruling 21 (S26) | **Buying a movement off.** Deferred here because what money can buy is this round's to say — ❌ **refused by ruling 8**, because ruling 2 removed the regional mood it would act on. Comes back if F25 is ever built |
 | **I8** | **Politics**, F21 | **Funding propaganda** before a referendum — ✅ **accepted by ruling 8.** The legal end of the same scale as rigging: money buys the result openly, liberties buy it quietly |
@@ -158,8 +158,8 @@ above it changes what there is to do.
 | **Q7** | **What can money buy?** | **I7 and I8** — buying a movement off, and funding a referendum | ✅ **Ruling 8**, 14 Sep |
 | **Q8** | **What is a share of trade worth?** | **I6.** The federation is newer than the spec, so the spec is silent by age rather than by choice | ✅ **Ruling 5** (default) — principle here, sizing to the mechanics stage |
 | **Q9** | **What does a blockade stop?** | **I4.** Spec §5.6 names embargo and corridor closure as instruments without saying what they do to the goods | ✅ **Ruling 6** (default) |
-| **Q10** | **Where does water data come from, if water is to be geography rather than invention?** | E51 measured that the rivers in the game are shipping lanes with no flow and no volume, and that the Colorado — the actual water fight — is absent entirely | ◀ **Open — Aaron's**, because it is a spend |
-| **Q11** | **What does the player actually do about all of this, on a Tuesday, with one action?** | The Tuesday test. Last, because every answer above changes it | ◀ **Open** |
+| **Q10** | **Where does water data come from, if water is to be geography rather than invention?** | E51 measured that the rivers in the game are shipping lanes with no flow and no volume, and that the Colorado — the actual water fight — is absent entirely | ✅ **Ruling 9**, 14 Sep — out of the alpha, filed as **F26** |
+| **Q11** | **What does the player actually do about all of this, on a Tuesday, with one action?** | The Tuesday test. Last, because every answer above changes it | ✅ **Answered in §5** — ten verbs, one action; the answer is triage, and the round owes §0a's debt to round 7 |
 
 ---
 
@@ -487,6 +487,37 @@ mechanics stage, beside the other deferred figures.
 
 ---
 
+### Ruling 9 — water is out of the first alpha, and the reason is written down rather than left as a shrug
+
+**RULED 14 September 2026**, answering **Q10** and closing finding F's water half. Aaron: *"leave water
+out for now — agreed"*.
+
+**This is a deferral of the best unbuilt idea in the project, and it is recorded as that.** E47 is
+Aaron's own — *"water may be the best resource in the game"* — and the reason holds: it is the only
+thing that arrives **by geography rather than by trade**. It crosses borders whether anyone agrees or
+not, an upstream nation can simply turn it off, and **there is no market in rain**, so it is the one
+pressure a player cannot buy, build or conquer their way out of. Nothing else in the design does that.
+
+**Three obstacles, and the third is why it is not a small job.**
+
+1. **The rivers in the game are the wrong rivers.** Measured, E51: the four corridors were baked from
+   the commercially-navigable-waterways layer, so they are **shipping lanes** — no flow, no volume,
+   nobody upstream drawing any out. **The Colorado, which is the actual water fight, is absent
+   entirely**, because it is not navigable.
+2. **Water has no home in the model.** The six sectors have none, and energy at least hides inside
+   extraction. **Ruling 1 froze that list**, so adding water is not an addition — it reopens the first
+   ruling of the round.
+3. **The data is not in the project and getting it is a real spend.**
+
+**Filed as `docs/FUTURE-IDEAS.md` F26** with those three obstacles, so whoever picks it up starts from
+a list rather than from a good instinct and a blank page.
+
+**The argument that was put to Aaron and did not win, recorded because it may win later:** an alpha may
+need one genuinely unfixable pressure to be interesting, and water is the only candidate. If the alpha
+comes back saying every problem has a purchase order attached, **this is the first thing to reach for.**
+
+---
+
 ## 4a. How the six sectors feed each other
 
 **Written 14 September 2026 at Aaron's request** — *"it would be good to work out how each resource
@@ -567,6 +598,89 @@ necessities — food, water, energy (E8). The six sectors have a home for food, 
 extraction**, and **water appears nowhere at all.** Ruling 1 froze the sector list, so this is not a
 defect to fix here; it is the boundary of what the current model can express. *Water is **Q10** and
 still open.*
+
+---
+
+## 5. The close — the Tuesday test, and scenario 4 traced
+
+### The Tuesday test, and the answer is the opposite of the one expected
+
+**The question every round must answer before it closes:** *what does the player actually do about
+this, on a Tuesday, with one action?* The ideation plan warned that a pressure-first running order
+would make this worse before better, and round 1's own complaint was that *"almost every idea we have
+is something that happens **to** a nation, and very few are things a player **does**."*
+
+**For the economy that is simply false, and it is worth saying plainly.** Counting what a nation can do
+about a shortage after this round:
+
+| | Verb | State |
+|---|---|---|
+| 1 | **Sign a trade deal** — a term, a fixed price, a route, an expiry | **Built.** All sixty nations use it |
+| 2 | **Grant or refuse transit** across your ground, by mode | **Built** |
+| 3 | **Close a corridor** and strangle a contract you never signed | **Built** — but only the player ever does it |
+| 4 | **Renegotiate at expiry**, or let it lapse | **Built** |
+| 5 | **Haggle the price** — squeeze a buyer who has no alternative | Specified, §4.1. **Not built** |
+| 6 | **Embargo** — suspend, and pay for it in reputation and at home | Specified, §5.6 |
+| 7 | **Lend money**, and take the leverage that comes with a debtor | Specified, §5.6 |
+| 8 | **Blockade** — corridor closure and embargo together | **Ruling 6** |
+| 9 | **Raid** — switch off an Area's production for a turn without taking it | **Ruling 6**, from conquest 23(b) |
+| 10 | **Spend on a referendum** you are about to lose | **Ruling 8** |
+
+**Ten verbs. One action a turn. Shared with five other systems.**
+
+**So the answer to the Tuesday test is: you choose which of your problems to leave unsolved** — and the
+choice is real, because the ten are not variations on one act. They are five different *kinds* of
+answer to the same hunger: **buy it, squeeze someone, cut someone off, take it by force, or go around
+the whole problem into politics.**
+
+**Two honest qualifications, because the count flatters.**
+
+- **Four of the ten are built. Six are specified or new.** This is the Tuesday of the *designed*
+  economy, not of the running one. A tester next month gets four.
+- **§0a's debt, and this round owes more of it than any other.** The economy alone wants ten of a
+  budget of one. **It will crowd out the other five systems unless something limits it** — and that is
+  round 7's to settle, which already carries politics ruling 14, where Aaron has said the one-action
+  rule needs changing. *Recorded as the round's contribution to that debt rather than left implicit.*
+
+### Scenario 4, traced — a hungry nation with an army
+
+**The plan's own words:** *"Its people are short of food, its neighbour has fields, and buying is
+possible but expensive. The interesting version of this is the one where invading is **cheaper**…
+That scenario needs three rounds finished before it can be told, which is why it is the test of whether
+this sequence worked."*
+
+**It can now be told, and every step below is an existing rule.** *(Illustrative nation, real
+mechanics. The percentages are computed from the spec's own formulas, not invented.)*
+
+**Turn 1 — the cause, and it is not a bad harvest.** A supplier cuts you off, or a corridor closes, and
+your **extraction** ratio falls. By **ruling 7** your farmland throttles with it: the fields are still
+there, the fertiliser is not. Food supply ÷ need slides to **0.86**.
+
+**Turn 2 — the band changes and the game says so.** 0.86 is **Deficit** (0.50–0.89). Quality of life
+**−10**. Area grievance **+2 a turn**, everywhere you hold — uniformly, per **ruling 2**. And §5.7
+starts accruing **claim pressure +2 a turn** toward every neighbour sitting in Surplus.
+
+**Turn 4 — your move, and here is what each door actually costs.**
+
+| Door | What it costs, from the formulas |
+|---|---|
+| **Buy the food** | The seller can see your ratio. Scarcity multiplier = 1 + 1.2 × (1 − 0.86) = **×1.17**. If they are your only possible supplier, alternatives multiplier = **×1.33**. You pay about **×1.56 of base** — *before* tolls, which compound on what arrives |
+| **Buy the fertiliser instead** | Fix the cause, not the symptom. Slower to bite, cheaper per unit, and your own farms go back to earning |
+| **Open a second supplier** | Two sellers instead of one drops the alternatives multiplier to ×1.17, taking you from ×1.56 to **×1.36**. **A 12% discount bought with diplomacy rather than money** — which is exactly why the spec calls that term the most important in the model |
+| **Raid their fields** | Ruling 23(b): the Area produces nothing that turn **whether or not you take it**. You do not get fed; *they* get hungry. It goes on your war ledger (**ruling 3**) and raises what they may demand at the settlement |
+| **Take the fields** | You get the ground and the harvest. You also get the occupation surcharge, which is superlinear; war weariness; and ground that resents the garrison standing on it. Round 1's answer arrives about eighteen months later, in the region next door that you have held for a century |
+
+**And the trap, which is what makes it a scenario rather than a menu.** Keep choosing *buy* and the
+logistics loop closes on you: every leg you add raises the volume you are hauling, Deficit costs you
+**10% of everything in transit and 15% more in tolls**, so **the cheap answer gets dearer every quarter
+you keep using it.** That is the pressure that makes taking the fields start to look reasonable — which
+is precisely the scenario the plan asked for, arrived at by arithmetic rather than by authorial thumb.
+
+**✅ Scenario 4 narrates. The sequence worked.**
+
+**And conquest's finding E is closed with it.** That finding recorded a stalled story *"because
+desperation does not bite."* It bites now — **ruling 1** brought the bands and §5.7's claim pressure
+with it — so **I5 needs nothing further from this round.**
 
 ---
 
@@ -1008,12 +1122,12 @@ rounds on 14 September 2026.
 | **The three things at the top of every round** (§0a) | ✅ Written 14 September |
 | **What this round owns** (§1) | ✅ Written 14 September, verified against `DESIGN.md` |
 | **The inbox** (§2) | ✅ **Nine items carried across 14 September**, seven days late. Three blocked a rule another round had already written; **ruling 1 closed two of them** (finding C). **I1 is the last one open** |
-| **The spine** (§3) | ✅ Eleven questions, **now ten** — Q4 was struck as already answered. **Eight ruled**; **two open: Q10 and Q11** |
+| **The spine** (§3) | ✅ Eleven questions, **now ten** — Q4 was struck as already answered. **All ten answered** |
 | **Findings** (§3a, §4a) | Six. **A** closed by ruling 2, deliberately and not in round 1's favour. **B** closed by ruling 1. **C** is mine and earned rule 14. **D, E and F** came out of §4a's interaction map: extraction is a single point of failure, the logistics spiral has no brake, and water and energy have no home in the model |
 | **The idea bank** (A–L) | 93 entries, E1–E93. Complete enough to argue from, not yet closed |
-| **Rulings** | **Eight.** 1 keeps the written model; 2 keeps one national pot; **3–6 are defaults taken without asking** and want confirmation; 7 gates farmland on extraction; 8 lets money buy a referendum but not a region |
-| **The scenarios, traced** | ❌ **None.** Scenario 4 — a hungry nation with an army — is this round's exam |
-| **The Tuesday test** | ❌ Unanswered, and recorded as hole 5 below |
+| **Rulings** | **Nine.** 1 keeps the written model; 2 keeps one national pot; **3–6 are defaults taken without asking** and want confirmation; 7 gates farmland on extraction; 8 lets money buy a referendum but not a region; 9 leaves water out of the alpha and files it as **F26** |
+| **The scenarios, traced** | ✅ **Scenario 4 traced in §5**, and it narrates. It is the only one this round owns. Conquest's finding E closes with it |
+| **The Tuesday test** | ✅ Answered in §5, and the answer inverts the expectation: the economy has **ten** verbs against a budget of one |
 | **What this round hands onward** | ❌ Not written |
 
 Ideation is finished when a session can read this end to end and the only new entries are

@@ -935,3 +935,39 @@ refused for the first alpha, and the reason is good.
 **When to pick it up.** If the alpha shows that a uniform national mood is too blunt to read — that
 players cannot tell *where* a country is hurting, only *that* it is. Round 4 ruling 2 names this as the
 first thing to revisit if so.
+
+## F26 — Water: the one pressure nobody can buy their way out of
+
+**Aaron's, 6 September 2026** — *"water may be the best resource in the game"* — **deferred by him on
+14 September** during round 4: *"leave water out for now, agreed"*. Round 4 ruling 9 is the entry to
+reverse.
+
+**What it is, and why it is not just another resource.** Water is the only thing in the design that
+arrives **by geography rather than by trade**. It flows downhill across borders whether anyone agrees
+or not; an upstream nation can simply turn it off; and **there is no market in rain**, so no amount of
+money reaches it. Every other pressure in the game has a purchase order attached somewhere. This one
+does not.
+
+And it is an industrial input as much as a human one — refineries, power-station cooling,
+semiconductors, and above all agriculture — which is what would join the resource model to the map.
+
+**The three obstacles, in the order they have to be cleared.**
+
+1. **The rivers in the game are the wrong rivers.** Measured and recorded as E51. The four corridors
+   were baked from the commercially-navigable-waterways layer, which makes them **shipping lanes**:
+   they carry cargo, they have no flow rate, no volume, and nobody upstream drawing any out. **The
+   Colorado — the actual water fight in the American West — is not in the game at all**, because it is
+   not navigable. So the existing river data cannot be reused; it answers a different question.
+2. **Water has no home in the model.** The six sectors are agriculture, resource extraction,
+   manufacturing, trade and transportation, finance, and information technology. Energy at least hides
+   inside extraction. **Water is nowhere**, and round 4 ruling 1 froze that list — so this is not an
+   addition, it reopens the first ruling of the round. E80 argues that having no industry line is
+   exactly why water works: no value and absolute need, so it cannot be bought out of trouble, only
+   shared or fought over.
+3. **The data does not exist in the project.** It means finding a federal dataset on flow and water
+   rights, working out how it maps onto counties, and baking it. Real work by somebody, not an
+   afternoon — and **this is the part that makes it a spend rather than a design choice**.
+
+**When to pick it up.** If the alpha comes back saying every problem has a purchase order attached —
+that a player can always buy, build or conquer their way out of any pressure — **water is the first
+thing to reach for**, and nothing else in the design does the same job.
