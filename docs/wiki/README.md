@@ -2,17 +2,24 @@
 
 **For whoever closes round 4.** This folder is generated. Do not hand-maintain it.
 
+> **Two folders exist, and this is the empty one.** `docs/wiki/` is the generated scaffolding:
+> every page has its headings, its figures and its Sources table, and no prose. The hired writer's
+> finished articles arrived on 14 September and are in **`docs/wiki_new/`**, under review and **not
+> yet merged** — that is Aaron's call. `python build/build_wiki.py` writes into `docs/wiki/` only;
+> use `--out docs/wiki_new` to repair the writer's copy without touching a word of their prose.
+
 ## Re-running it
 
 ```
 python build/build_wiki.py
 ```
 
-No arguments, no dependencies, run from the repository root. Two flags:
+No arguments, no dependencies, run from the repository root. Three flags:
 
 | | |
 |---|---|
 | `--check` | report only, write nothing. Run this first. |
+| `--out DIR` | write into that folder instead of `docs/wiki`. Its prose is preserved exactly; only the machine-owned blocks are rewritten. This is how a writer's finished copy gets repaired. |
 | `--package` | also write `dist/manifest-disunity-wiki.zip`, a standalone vault of documents only — no code, no data — for a writer working outside this folder. |
 
 Then **read `docs/wiki/_build-report.md`**. Its first six sections are the ones that mean something

@@ -312,9 +312,13 @@ function renderTallies(){
   const es = activeEdges();
   const pairs = new Set(es.filter(e => e.fs !== e.ts).map(e => e.fs + ">" + e.ts));
   const unver = es.filter(e => e.q !== "certain").length;
+  // Both views drop links whose two ends sit inside one system, so the headline has
+  // to name those separately rather than fold them into a total nothing draws.
+  const inner = es.filter(e => e.fs === e.ts).length;
   document.getElementById("tallies").innerHTML = [
     ["systems", SYS.length],
-    ["links shown", es.length],
+    ["links between systems", es.length - inner],
+    ["links inside one system", inner],
     ["system pairs", pairs.size],
     ["rulings indexed", DATA.counts.rulings],
     ["unverified", unver],
@@ -468,7 +472,8 @@ function renderPanel(){
       <div class="tier" style="color:var(--oxide)">Nothing selected</div>
       <p class="blurb">Pick a system on the ring, or a cell in the grid, to see every link it has and the
         ruling behind each one.</p>
-      <div class="meta"><span><b>${es.length}</b> links shown</span>
+      <div class="meta"><span><b>${es.filter(e => e.fs !== e.ts).length}</b> drawn</span>
+        <span><b>${es.filter(e => e.fs === e.ts).length}</b> inside one system</span>
         <span><b>${DATA.counts.pages}</b> pages</span></div>
       ${REL.filter(([k]) => byRel[k]).map(([k,v,gloss]) => `
         <div class="grp">

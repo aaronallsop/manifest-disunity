@@ -51,10 +51,13 @@ BLOCK_RE = re.compile(
     re.DOTALL,
 )
 FRONTMATTER_RE = re.compile(r"\A---\n.*?\n---\n", re.DOTALL)
+# Start markers on their own, for the ambiguity check in write_page.
+MARKER_RE = re.compile(r"<!-- (GENERATED|SEEDED):([a-z-]+) START[^>]*-->")
 
 # Word-boundary wrapper, built once. These patterns decide whether a rule is live
 # or retired, so they are kept in one obvious place rather than inline.
 WORD = r"\b%s\b"
+NL = "\n"
 
 
 # --------------------------------------------------------------- reading in
@@ -170,6 +173,11 @@ def body_at(lines, line_no, limit=60):
     if not line_no:
         return ""
     start = line_no - 1
+    # Round 1's first eleven rulings are rows of one table. A row is not a heading
+    # and not a bold declaration, so the forward scan below runs straight through
+    # the rest of the table and attributes every other row's text to this ruling.
+    if lines[start].lstrip().startswith("|"):
+        return lines[start].lower()
     out = []
     for line in lines[start:start + limit]:
         if out and (re.match(r"^\*\*Ruling \d", line) or re.match(r"^#{1,4}\s", line)):
@@ -227,15 +235,31 @@ def write_page(path, body, report, label, dry):
         return
 
     with open(path, encoding="utf-8") as f:
-        old = f.read()
+        original = old = f.read()
+
+    # REFUSE TO WRITE A PAGE WHOSE MARKERS ARE AMBIGUOUS. BLOCK_RE pairs any START
+    # with the NEXT matching END, so a second START line - a writer quoting a marker
+    # at the start of a line while taking notes - makes the pair span everything
+    # between, and the rewrite silently eats their prose. Name the page instead.
+    counts = {}
+    for m in MARKER_RE.finditer(old):
+        counts[(m.group(1), m.group(2))] = counts.get((m.group(1), m.group(2)), 0) + 1
+    if any(n != 1 for n in counts.values()):
+        report["ambiguous_markers"].append(label)
+        return
 
     # Frontmatter is derived - tags, built status, which rounds decided it - so it
-    # has to regenerate like any other generated block. It cannot be wrapped in an
-    # HTML comment, so it is replaced by position instead.
+    # has to regenerate. It cannot be wrapped in an HTML comment, so it is replaced
+    # by position. STATUS is the exception: the generator only ever writes "needs
+    # writing", and it is the one field a writer owns, so it is carried forward.
     fm_new = FRONTMATTER_RE.match(body)
     fm_old = FRONTMATTER_RE.match(old)
     if fm_new and fm_old:
-        old = fm_new.group(0) + old[fm_old.end():]
+        head = fm_new.group(0)
+        theirs = re.search(r"^status: .*$", fm_old.group(0), re.M)
+        if theirs:
+            head = re.sub(r"^status: .*$", theirs.group(0), head, count=1, flags=re.M)
+        old = head + old[fm_old.end():]
 
     fresh = {}
     for m in BLOCK_RE.finditer(body):
@@ -254,7 +278,10 @@ def write_page(path, body, report, label, dry):
         merged = merged.rstrip() + "\n\n" + "\n\n".join(fresh.values()) + "\n"
         report["reattached"].append(label)
 
-    if merged == old:
+    # Compare against what was on DISK, not against the frontmatter-patched copy -
+    # otherwise a run whose only change is in the frontmatter compares the new text
+    # with itself, reports "unchanged", and never writes.
+    if merged == original:
         report["unchanged"].append(label)
         return
     if not dry:
@@ -303,6 +330,7 @@ def build(spine, rulings, edges, movements, parties, dry):
     report = {"created": [], "updated": [], "unchanged": [], "reattached": [],
               "orphan_rulings": [], "moved_titles": [], "missing_rulings": [],
               "unknown_pages": [], "superseded_cited": [], "touched_later": [],
+              "ambiguous_markers": [],
               "isolated": []}
 
     commit = git_say(["rev-parse", "--short", "HEAD"], "unknown")
@@ -371,10 +399,12 @@ def build(spine, rulings, edges, movements, parties, dry):
 
     for item in resolved:
         kind, text = later_ruling(item.get("superseded_by"))
-        if kind == "SUPERSEDED":
+        if kind in ("SUPERSEDED", "PARTLY SUPERSEDED"):
             report["superseded_cited"].append(
-                "%s, cited on [[%s]] - %s"
-                % (ruling_label(rounds, item["round"], item["n"]), item["page"], text[:160]))
+                "%s%s, cited on [[%s]] - %s"
+                % (ruling_label(rounds, item["round"], item["n"]),
+                   " (PARTLY)" if kind == "PARTLY SUPERSEDED" else "",
+                   item["page"], text[:160]))
         elif kind:
             report["touched_later"].append(
                 "%s (%s), cited on [[%s]]"
@@ -483,7 +513,7 @@ def topic_body(p, items, rounds, edges, stamp):
         "",
         "# %s" % name_of(p),
         "",
-    ] + glance + [
+    ] + [block("GENERATED", "glance", NL.join(glance))] + [
         "",
         "*%s*" % p["one_line"],
         "",
@@ -534,6 +564,8 @@ def topic_body(p, items, rounds, edges, stamp):
             note = ""
             if kind == "SUPERSEDED":
                 note = "**SUPERSEDED - do not state this as a rule**"
+            elif kind == "PARTLY SUPERSEDED":
+                note = "**PARTLY superseded - read the note before using it**"
             elif kind:
                 note = kind
             if r.get("not_built"):
@@ -596,6 +628,14 @@ def later_ruling(text):
         return "still live", text
     if re.search(WORD % "(superseded|supersedes|replaced by|replaces|"
                         "premise is dropped|no longer stands|struck by)", head):
+        # PARTIAL replacement is the commonest kind here and it is not retirement.
+        # "Superseded in its roster", "supersedes the first half" - the rest of the
+        # ruling is still the rule, and stamping the whole thing dead retires live
+        # design. Only "in full" earns the flat verdict.
+        partial = re.search(r"(partly|in its roster|its description of|"
+                            r"the first half|in part\b|only its)", head)
+        if partial and "in full" not in head:
+            return "PARTLY SUPERSEDED", text
         return "SUPERSEDED", text
     if re.search(WORD % "(confirmed|stands and nothing|stands unchanged|left unchanged)", head):
         return "confirmed later", text
@@ -920,6 +960,7 @@ def write_report(report, stamp, dry):
         ("moved_titles", "Rulings whose recorded wording no longer matches the document"),
         ("orphan_rulings", "Rulings in a round document that no page claims"),
         ("unknown_pages", "Rulings assigned to a page that does not exist in the spine"),
+        ("ambiguous_markers", "Pages NOT WRITTEN because their generated-block markers are ambiguous"),
         ("superseded_cited", "SUPERSEDED rulings that pages still cite - these are not rules"),
         ("touched_later", "Rulings a later ruling amended or confirmed - still live, read both"),
         ("isolated", "Pages nothing links to and which link to nothing"),

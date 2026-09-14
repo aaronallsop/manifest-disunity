@@ -78,6 +78,11 @@ to prevent.
 - **Any code.** `js/`, `tests/`, `css/`, `build/`, `index.html`, `dev.html`, `server.py`. You are not
   writing or changing code, and you are not fixing what looks like a bug — you write it down and the
   programming session deals with it.
+  **One exception, ruled 14 September 2026:** the design **wiki's** generator and its authored inputs
+  live in `build/` — `build_wiki.py`, `build_systems_map.py`, `systems_map_template.html` and
+  `wiki_*.json` — because they belong beside the other bakers and nowhere else fits. They read the
+  game's data and never write it, and they touch no game code. **Nothing else in `build/` may be
+  edited by a design session.**
 - **Any data.** `data/`, `content/`. These are baked from federal sources by scripts.
 - **`DESIGN.md`.** That document describes what is *built*. Only the programming session updates it,
   in the same commit as the behaviour it describes.

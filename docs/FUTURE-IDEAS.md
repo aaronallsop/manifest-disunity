@@ -844,6 +844,12 @@ keep track of all of this so I think a future idea would be create a wiki for al
 `build/build_wiki.py` from the three closed rounds, the game data and the Movement Register. Open the
 repository root as an Obsidian vault and start at **Start here**.
 
+**What is built is the SCAFFOLDING and the generator, not the articles.** `docs/wiki/` has every
+page's headings, figures and sources and no prose. A hired writer's finished articles arrived on
+**14 September** and sit in **`docs/wiki_new/`**, reviewed but **not merged** — whether to merge them
+is Aaron's decision and is open. A systems map at `docs/wiki/systems-map.html` shows how the eleven
+systems act on each other, which Obsidian's graph view cannot do.
+
 **The audience question this entry asked is answered: Aaron and the programmers who will build it,
 not playtesters.** A playtester version would have to hide how the AI decides things, and Aaron did
 not ask for one. Do not build toward it.

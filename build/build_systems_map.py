@@ -76,9 +76,12 @@ def main():
     blurb = {m["topic"]: m["one_line"] for m in spine["master_topics"]}
     name_of = {m["topic"]: m["page"] for m in spine["master_topics"]}
 
+    # Count from every page the map actually knows about, not from the sub-page list
+    # alone - that omitted the eleven master pages, the 26 movements and the register,
+    # and printed 0 pages against Economy, Events and People, which all exist.
     page_count = {}
-    for p in spine["pages"]:
-        page_count[p["topic"]] = page_count.get(p["topic"], 0) + 1
+    for _page, _topic in system_of.items():
+        page_count[_topic] = page_count.get(_topic, 0) + 1
 
     ruling_count = {}
     for r in rulings:
@@ -124,7 +127,7 @@ def main():
         "edges": out_edges,
         "counts": {
             "edges": len(out_edges),
-            "pages": len(spine["pages"]) + len([m for m in movements if m["live"]]),
+            "pages": len(system_of),
             "rulings": len(rulings),
         },
     }
@@ -132,6 +135,9 @@ def main():
     with open(TEMPLATE, encoding="utf-8") as f:
         html = f.read()
     payload = json.dumps(data, ensure_ascii=False, separators=(",", ":"))
+    # A "</script>" inside any clause would end the block early. Escape the only
+    # sequence that can do it; a JSON parser reads "<\/" as "</".
+    payload = payload.replace("</", r"<\/")
     if "/*DATA*/" not in html:
         raise SystemExit("template has no /*DATA*/ placeholder")
     html = html.replace("/*DATA*/", payload)

@@ -123,3 +123,26 @@ Add one with `/rule` whenever a mistake earns it. Number them; never delete one.
     million.** Any sum over movements, homelands, Areas or deals is a sum over overlapping sets in this
     project. Deduplicate to the county, then total; and before publishing any population figure, hold
     it against the population of the country.
+
+12. **A check that decides "is this still true?" must be tested against its own negations before it
+    ships.** The wiki generator decided whether a design ruling had been retired by searching the note
+    about it for the word *"superseded"*. Most of those notes **open with the words "Not superseded."**
+    So the check read every denial as a confirmation and stamped **39 live rules** with *"do not state
+    this as a rule"* — the precise failure the writer's guide names as the worst thing the wiki could
+    publish. It shipped, and a **paid human reader** found it, politely, on six separate pages, while
+    drafting against it. The corrected version marks 6.
+    **What generalises:** a substring test on prose is a coin flip on any sentence that argues. Before
+    shipping any classifier over written language, run it over **every** row of the real data, print
+    each verdict beside its text, and read them. It took four minutes here and would have caught it.
+    **The tell:** the words you are searching for also appear in sentences that mean the opposite.
+    A second lesson from the same review, worth keeping beside it: **partial is not total.** Three
+    rulings were "superseded in its roster" or "superseded in its first half", and the rest of each
+    one is still the rule. A binary verdict on a spectrum retires live design.
+
+13. **Do not build a Python string in a shell heredoc when the string contains backslash escapes.**
+    Three times in one session, `\b`, `\n` and `\A` written inside a `<<'PY'` heredoc reached the file
+    as a literal backspace, a real newline and a broken escape — once producing a regex that silently
+    matched nothing, twice a `SyntaxError`. The quoting survives one level and the string literal eats
+    the next. **Use the file editor for any patch containing an escape**, or build the pattern from a
+    named constant defined once at module scope. The failure is silent in the one case that matters:
+    a regex full of literal control characters still compiles and still runs.

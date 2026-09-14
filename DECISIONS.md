@@ -4300,3 +4300,46 @@ confirmed**, and defaults to the weaker label when the wording is not explicit.
 is a turn-4 autosave that is not backed up, so nation pages are keyed on display names. Economy and
 Events have no pages, their rounds being open and unrun. Fourteen topic pages will ship with an empty
 story section because round 1's break-up narrative is the only sustained fiction in the project.
+
+### D211 — Three corrections to D210, and the wiki's own review found forty-five defects, 14 September 2026
+
+**Supersedes the supersession paragraph of D210 and two of its figures. D210 stands as written** —
+a wrong call is superseded by a new entry, never edited away.
+
+**D210 recorded as a success the exact number that was later proved to be the bug.** It said the
+generator "separates 39 true supersessions from 18 rulings a later ruling merely amended or
+confirmed". Measured this session against the same data: **6 genuine supersessions, 3 partial ones
+and 51 rulings a later ruling amended, confirmed or left standing**, of 57 carrying such a note. The
+39 came from a check that read the phrase *"not superseded"* as a confirmation of supersession —
+most of those notes open with exactly those words. The hired writer caught it and said so on six
+separate pages before anybody here did.
+
+**D210 said six verbs differ between the Movement Register's seed and Aaron's saved markup. Four
+do:** Blue-Collar Populist and Christian Nationalism gained **Unify** where the seed had no verb;
+Front Range Republic and Hawaiian Sovereignty moved from **Separate** to **Expand**. Naming them
+makes the claim checkable, which is where it should have been left the first time.
+
+**What the sign-off review found, and it is the substantive entry here.** Sixty-one agents reviewed
+this session's own work; **57 findings were raised, 12 refuted and 45 confirmed** — 23 serious. Nine
+were fixed before sign-off and the rest are numbered in `docs/deferred.md`. The four that mattered:
+
+- **A writer quoting a generated-block marker at the start of a line would have had their prose
+  silently eaten** on the next run, because the block pattern pairs any opening marker with the next
+  closing one. The generator now refuses to write a page whose markers are ambiguous and names it in
+  the report instead.
+- **Three partly-superseded rulings were being stamped "do not state this as a rule".** Partial
+  replacement is the commonest kind in this corpus — *"superseded in its roster"*, *"supersedes the
+  first half"* — and the rest of those rulings is still the rule. There is now a separate verdict.
+- **Round 1's first eleven rulings are rows of one table**, and reading a ruling's body forward from
+  a table row swallowed every row beneath it, which put **27 false citations on five movement pages**.
+- **The derived "At a glance" block sat outside the regenerating part of a page**, so it froze at
+  whatever was true the day the page was created. Ten pages were already carrying a stale line. It
+  is inside a generated block now, and a writer's own `status:` field is carried forward rather than
+  reset, which the first version did to 65 pages in a measured run.
+
+**The lesson, and it is recorded as rule 12.** The generator's first version shipped with a check
+that inverted the single most dangerous fact in the wiki, and it took a paid human reader to find
+it. Reviewing your own work before sign-off is what this project already learned on 11 September;
+what this session adds is that **a review is only as good as the things it is pointed at** — the
+four dimensions that found these defects were named deliberately, and the one that found the worst
+of them was the instruction to attack the generator's own promises about itself.

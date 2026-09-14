@@ -40,3 +40,84 @@ recorded in the round document as C123's neighbour — Marine Corps → Army, Co
 Force → Air Force, joint bases by dominant function.
 
 **Blocks:** nothing yet. The rulings that depend on it are design, not build.
+
+---
+
+# The design wiki — 17 to 29
+
+**All raised by the sign-off review of 14 September 2026**, which put 57 findings against this
+session's own work and confirmed 45 of them. Nine were fixed before sign-off (D211 names them);
+these are the rest. **None of them makes the wiki say something false to a reader** — that class was
+fixed. These are staleness, duplication, and drawing defects.
+
+## 17 — The writer's copy still carries 94 false "SUPERSEDED" stamps
+
+`docs/wiki_new/` was generated before the supersession check was fixed, so its Sources tables retire
+94 rulings that are live. The corrected generator reduces that to 11. **Repairing it is one command**
+— `python build/build_wiki.py --out docs/wiki_new` — and it rewrites only the machine-owned blocks.
+**Not done this session on purpose:** the "At a glance" block moved inside a generated block on the
+same day, and on a page that predates that change the generator appends it at the foot rather than
+putting it back where it belongs. Merge the writer's work first, or accept one ugly block per page.
+
+## 18 — Three figures on a movement page are a second home for a fact
+
+`build/wiki_movements.json` carries `cap_today`, `old_ideology` and `goal`, all of which are read
+live from `data/parties.json` a few lines away in the same function. The charter says a fact has one
+home. Read all three from the parties record instead and delete the columns.
+
+## 19 — Area counts on movement pages are hand-typed
+
+`homeland_areas` and `core_areas` came from the Movement Register by hand. They are exactly derivable
+from `data/parties.json` plus `data/areas.json`. Derive them.
+
+## 20 — Forty-eight "not built" notes claim a measurement they no longer make
+
+Each says the code was checked "this run". They were authored on 12 September and frozen into
+`build/wiki_rulings.json`. Stamp the file with the date they were taken and print that date instead.
+
+## 21 — Reciprocal links overlap on the systems map ring
+
+36 of 139 chords are drawn on top of their opposite number, so one direction of every reciprocal pair
+is invisible. Bow the two directions apart by offsetting the control point perpendicular to the chord.
+
+## 22 — Node sizing on the ring is saturated
+
+Eight of eleven systems draw at the same radius, so size carries no information. Scale against the
+largest degree rather than a fixed ceiling.
+
+## 23 — Seven node captions overlap their own circle; two are unreadable
+
+The caption sits at a fixed radius that the larger circles now reach. Place it clear of the circle's
+own radius, allowing for the second caption line drawn back toward the centre.
+
+## 24 — Ticking "include movements and positions" collapses the chords to hairlines
+
+Widths divide by the single largest chord, and the detail view creates one much larger than the rest.
+Use a scale that does not depend on the maximum alone.
+
+## 25 — The provenance stamp on a page can never update
+
+It sits outside a generated block on fifteen pages, so it freezes at the commit that created the page.
+Either regenerate it like the frontmatter, or drop it from pages entirely and keep it only in the
+build report, which is rewritten whole every run.
+
+## 26 — The secession line is a literal in the generator
+
+`build_wiki.py` prints "an Area leaves at 0.40" as a hard-coded number while naming the tunable it
+comes from. Read it out of `js/tunables.js` so a change to the game cannot silently make the wiki lie.
+
+## 27 — Ten ideology pages say no closed round decided them
+
+They say "Decided in: no closed round yet" while their own content rests on politics rulings 1 and 2.
+Assign those two rulings to the ten position pages in `build/wiki_rulings.json`.
+
+## 28 — Two seeded link clauses are wrong
+
+The Federation→Economy clause states a toll its own cited ruling halves, and one citation points at
+`politics-ideation.md:2296` when the span it means is 2284–2294. Both are in `build/wiki_edges.json`
+and both are one-line text edits.
+
+## 29 — The ring and the grid cannot be driven from the keyboard
+
+The systems map is mouse-only. The SVG needs a focusable role, the nodes need tab stops and Enter/Space
+handling, and the grid cells the same.
