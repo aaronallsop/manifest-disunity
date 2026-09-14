@@ -277,6 +277,13 @@ has watched it behave. If it is wrong, that is discovered at the number-setting 
 assumed about hunger back on the table. This round is now mostly filing, tracing and the six gaps
 above, rather than an invention.
 
+**⚠ WHAT THIS RULING DOES NOT ADOPT, and it must be read before anyone acts on it.** "The spec stands"
+means **§3 and owner rulings 1.2 to 1.5.** It does **NOT** adopt **spec ruling 1.6**, which would soften
+the recognition trade block to a smuggler's haircut. **`CLAUDE.md` and D166 rule the block stays** —
+*"Do not implement v2 ruling 1.6 or its restatement in the addendum; both misread DESIGN.md"* — and
+nothing in this round reopens that. **The block stands.** *Written here because "keep the spec" is
+exactly the sentence a future session would over-read.*
+
 ### Ruling 2 — One national pot. Shortage is a national fact, and round 1's local demand is deferred for the alpha
 
 **RULED 14 September 2026**, answering **Q2** and resolving finding A. Aaron: *"Keep one national pot
@@ -1097,7 +1104,50 @@ fervour itself; this is the part that lands here.)*
 
 ---
 
-## Questions we have no idea for yet
+## 6. The findings, and who owns each
+
+| | Finding | State | Owner |
+|---|---|---|---|
+| **A** | Shortage cannot land on a place, and round 1 said the formula could when it cannot | **CLOSED by ruling 2**, in the spec's favour and deliberately | — *(comes back with **F25**)* |
+| **B** | The cure for the hollow spot was written a week before the hollow spot was named | **CLOSED by ruling 1** | — |
+| **C** | The spine was written from a third of the spec and overstated what was open | **CLOSED.** Mine. Earned **rule 14** | — |
+| **D** | **Resource extraction now does three jobs — fuel, ore and fertiliser — so the model has one upstream chokepoint and no variety of failure** | **OPEN** | **The alpha.** It is either the best thing in the model or the most brittle, and paper cannot tell which |
+| **E** | **The logistics spiral has no brake: importing to fix a shortage raises the volume hauled, which loses a fifth of what is in transit, so you import more** | **OPEN, and it is the most serious thing this round found** | **The design stage.** Three candidate brakes exist and **none is chosen here** — capacity that rises with volume, a cap on transit losses, or the world market's shipping cap binding first |
+| **F** | Water and energy are necessities with no home in the six sectors | **Half closed.** Water deferred by **ruling 9** to **F26**; the energy half stands — it hides inside extraction, which is the boundary of what this model can express, not a defect to fix here | — |
+
+---
+
+## 7. What round 4 leaves the rounds after it
+
+| To | What |
+|---|---|
+| **Round 5 — diplomacy** | **Lending as leverage** (spec §5.6) — a debtor takes opinion and leverage penalties, and nobody has said what a creditor may then demand. **What a pariah can actually reach**: the recognition block stands (D166), so an unrecognised nation's only route to the world market is the question. **And the second-supplier move** — scenario 4 shows that opening one more seller is worth about **12%**, which makes a trade partner a diplomatic objective rather than a commercial one |
+| **Round 6 — events** | **The bands are the hook a shock hangs on.** A bad winter is a supply shock to agriculture and needs nothing new to land. Round 6 should know that **ruling 7 doubled the blast radius**: a shock to extraction now hits fuel, factories and food at once |
+| **Round 7 — the things above** | **§0a's debt, and this round owes the most of it.** The economy alone wants **ten verbs against a budget of one**, shared with five other systems. It will crowd the others out unless something limits it. **Politics ruling 14 is already there**, where Aaron has said the one-action rule needs changing |
+| **The design stage** | **Finding E's brake** — pick one of the three. **F21's two remaining questions**: whether referendum spending moves the vote or only the turnout, and whether the movement may spend too, which turns a purchase into a contest. **And whether lasting infrastructure damage exists at all** — ruling 6 stated its own limit, that ruling 23(b) lasts one turn, so today a wrecked rail hub is a raid and not a demolition |
+| **The mechanics stage** | Every deferred number. **C102's raid check** — whether an attack costs more than one turn of the target's output, which ruling 3 now gives a ledger to measure against. **The referendum swing per unit of spend** (ruling 8). **The federation toll's sizing** (ruling 5), to be read **beside ruling 15's X%**, which politics sent to the same place with a hard constraint of its own. **And the strength of the extraction→agriculture gate** (ruling 7) |
+| **The data stage** | **Where phosphate, potash and natural gas actually sit on this map.** Ruling 7 depends on them being concentrated and **they are not verified** — E45 lists candidates and calls them unverified, and this round did not change that. **It must be checked against real data and not from memory** |
+
+---
+
+## Questions we had no idea for — all five now answered
+
+*Kept as written so the record shows what the round walked in not knowing.*
+
+| | The hole, as recorded | Answered by |
+|---|---|---|
+| 1 | **What makes a nation want to trade rather than merely benefit from it?** The known hollow spot | **Rulings 1 and 7** together — derived demand makes shortage possible at all, and the extraction gate means almost nobody is self-sufficient |
+| 2 | **What does an outside market want?** | **Ruling 4** — anything, slowly, up to a cap. Canada and Mexico are the road, not the customer |
+| 3 | **Where does water data come from?** | **Ruling 9** — nowhere yet, and deliberately. **F26** |
+| 4 | **What stops a self-sufficient nation from simply opting out?** | **Ruling 7** |
+| 5 | **What is the player's verb?** | **§5** — there are ten, and the problem is the opposite of the one expected |
+
+---
+
+## The five holes as they were originally written
+
+*Left exactly as they stood, so the record shows what the round walked in not knowing. Every one is
+answered above.*
 
 These are not ideas. They are holes, recorded so that ideation can aim at them.
 
@@ -1114,8 +1164,8 @@ These are not ideas. They are holes, recorded so that ideation can aim at them.
 
 ## The state of this document
 
-**Not yet complete, and here is exactly what it is missing**, measured against the three closed
-rounds on 14 September 2026.
+**Complete and ready to close — Aaron's call.** Measured against the three closed rounds on
+14 September 2026.
 
 | | State |
 |---|---|
@@ -1124,15 +1174,25 @@ rounds on 14 September 2026.
 | **The inbox** (§2) | ✅ **Nine items carried across 14 September**, seven days late. Three blocked a rule another round had already written; **ruling 1 closed two of them** (finding C). **I1 is the last one open** |
 | **The spine** (§3) | ✅ Eleven questions, **now ten** — Q4 was struck as already answered. **All ten answered** |
 | **Findings** (§3a, §4a) | Six. **A** closed by ruling 2, deliberately and not in round 1's favour. **B** closed by ruling 1. **C** is mine and earned rule 14. **D, E and F** came out of §4a's interaction map: extraction is a single point of failure, the logistics spiral has no brake, and water and energy have no home in the model |
-| **The idea bank** (A–L) | 93 entries, E1–E93. Complete enough to argue from, not yet closed |
+| **The idea bank** (A–L) | 93 entries, E1–E93. **No new entry was needed today** — every ruling was a recombination of what was already banked, which is the round's own test for being finished |
 | **Rulings** | **Nine.** 1 keeps the written model; 2 keeps one national pot; **3–6 are defaults taken without asking** and want confirmation; 7 gates farmland on extraction; 8 lets money buy a referendum but not a region; 9 leaves water out of the alpha and files it as **F26** |
 | **The scenarios, traced** | ✅ **Scenario 4 traced in §5**, and it narrates. It is the only one this round owns. Conquest's finding E closes with it |
 | **The Tuesday test** | ✅ Answered in §5, and the answer inverts the expectation: the economy has **ten** verbs against a budget of one |
-| **What this round hands onward** | ❌ Not written |
+| **What this round hands onward** | ✅ **§7**, to rounds 5, 6 and 7 and to the design, mechanics and data stages |
 
 Ideation is finished when a session can read this end to end and the only new entries are
 recombinations of ones already here, when every scenario has been traced, when it has answered what
 the player actually does about this on a Tuesday with one action — and when Aaron says so.
+
+**Three of those four are met.** No new idea was banked today; every one of the nine rulings recombined
+entries that were already here or read something already written in the spec. **Scenario 4 is traced
+and narrates** — the only scenario this round owns. **The Tuesday test is answered**, and the answer
+inverts the expectation. **The fourth is Aaron's.**
+
+**What he should know before he says so.** Two findings are open and neither is his to settle on paper:
+**D**, that extraction is now a single point of failure, which only the alpha can judge; and **E**, the
+logistics spiral, which the design stage must put a brake on. **And rulings 3 to 6 were taken without
+asking** — they want his confirmation the way conquest ruling 41 confirmed its seven.
 
 *Sources: `docs/design/resources.md`, `docs/design/resources-v2.md`, `docs/FUTURE-IDEAS.md` F2–F13,
 `docs/deferred.md` #8 and #12, `docs/spec/economy-system-spec.md` §3. Measured figures from
