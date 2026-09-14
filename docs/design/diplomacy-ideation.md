@@ -158,6 +158,40 @@ its source, so nothing has to be looked for twice.
 
 ---
 
+### 2e. Where the in-tray stands at the end of 14 September
+
+**Twenty-six items came in. Twenty-two are answered.** *The State columns above are as the items
+arrived; this is the scoreboard.*
+
+| Closed by a ruling | |
+|---|---|
+| **1** alliances — how made, how ended | ruling 20 |
+| **2, (e), (m)** vassals, Subject, what submission is | **ruling 5** — and C112 is closed |
+| **3, (l), (u)** blocs, the Farmers Union, what a bloc does to an economy | ruling 4 |
+| **5, (o)** the three tiers; stateless standing abroad | **ruling 16** — and economy E88 with it |
+| **6** agreements signed before the game starts | **ruling 11** — and it moved the roadmap |
+| **7, 10** ultimatums; the petition mechanism | rulings 19 and 6 |
+| **8** intervention | **ruling 21** — already built |
+| **9, (f)** funding somebody else's movement | **ruling 7** |
+| **(a)** the thaw — **was blocking** | **ruling 9** |
+| **(b)** C100, conquering the veto-holder | **ruling 18** |
+| **(c)** what a nation gets for recognising | ruling 12 |
+| **(d)** guarantees and protectorates; mediation | ruling 15 — mediation deferred to stage 3 |
+| **(g)** C132, does an inherited quarrel decay | **ruling 13** — open since 9 September |
+| **(j)** conquest ruling 19 unbuilt | ruling 8 — scheduled, after the alpha |
+| **(n)** proposing a union unasked | ruling 17 |
+| **(r)** what a creditor may demand | ruling 14 |
+| **Finding A** the petition threshold — **was blocking** | **ruling 6** |
+
+| Still open, and none of it is this round's | |
+|---|---|
+| **(k)** the federation's flat toll against the built corridor system | **the design stage.** T41, and ruling 4 made it larger |
+| **(q)** what a player can see of another nation | **the design stage**, with C130 and politics ruling 17 |
+| **(s)** what a pariah can actually reach | **answered by the §7 trace**, not by a ruling: today, nothing |
+| **(t)** the second-supplier move is worth ~12% | **inherited as a measured fact**, nothing to decide |
+
+---
+
 ## 3. What is actually built today — verified 14 September 2026
 
 **Read before proposing anything.** Every line here was checked against the code this session, not
@@ -1242,6 +1276,91 @@ game's only peaceful merger permanently in the hands of the movement layer.*
 **One thing it does NOT unlock, because politics already closed it.** Ruling 31: **the contest
 claimants can never join a union.** *So the twenty-three pairs rulings 1–3 froze cannot use this
 either, and the two rulings agree without needing to be reconciled.*
+
+### Ruling 18 — Whoever takes the ground inherits the claim. The veto changes hands rather than dying
+
+**RULED 14 September 2026.** *"Whoever takes the ground inherits the claim."* — closing **C100**,
+which conquest filed here on 9 September as the question that decides *"whether the Texas board
+resolves by diplomacy or by force."*
+
+**The parent relationship is a property of the territory, not of a government.** Conquer the state
+that calls you a rebel and **you do not escape the claim — you become the thing that makes it.** The
+new holder inherits the refusal, and inherits the power to end it.
+
+**⚠ And it turns the Texas board into a race, which neither of the other answers would have done.**
+Under ruling 18, **whoever eats Austin gains the veto over the other three.** Dallas conquering Austin
+does not free Houston, San Antonio and El Paso — *it makes Dallas the nation that says they are
+rebels, and the nation that can sell them their existence one at a time.* **Austin's asset stops
+being a thing worth protecting and becomes a thing worth fighting over**, and the race to reach it
+first is the whole Texas game.
+
+**It is also the only one of the three answers that does not reward murder.** *The claim dying with
+the parent would make conquest a clean solution to a diplomatic problem; freezing it forever would
+make Austin untouchable. Inheriting it means the problem survives the war, changes owner, and stays
+in play.*
+
+**Two defaults taken, because the ruling needs a rule for "takes the ground".**
+
+1. **The claim follows the capital.** Whoever holds the conquered state's capital inherits it. *The
+   game already authors capitals, so this is checkable and needs nothing new; splitting a claim
+   proportionally across three conquerors would need arithmetic nobody has asked for.*
+2. **Uniting counts as taking.** A nation absorbed whole by Unite passes its claim to the absorber
+   exactly as a conquered one does. *Otherwise the peaceful route launders the claim away and ruling
+   18 has a hole in it the size of round 3.*
+
+**And it changes where `betrayed` points.** Ruling 12: recognising somebody angers their parent.
+**Under ruling 18 the parent can change mid-game**, so the injury lands on whoever holds the claim at
+the time — *which is correct, and it is one line of bookkeeping rather than a new idea.*
+
+### Rulings 19–21 — three more defaults, emptying the in-tray
+
+*Same batch treatment as rulings 12–15, and put up for confirmation with them.*
+
+#### Ruling 19 — There is ONE offer object, and five things wear it
+
+*Answering spine question 7, and in-tray items **7** and **10**.*
+
+**A petition, an ultimatum, a proposal of union, a demand of submission and an offer of alliance are
+one mechanism with five faces.** Each is *a thing offered, held open for a term, refusable,
+withdrawable, and possibly bid for by a rival.* **The build already has that shape** — negotiation,
+with a term, a fixed price and an expiry.
+
+**Five objects would mean five sets of rules about how long an offer stands, who may withdraw it and
+what a refusal remembers — and they would drift apart.** *Round 3's ruling 11 made exactly this
+argument about the government's answers to a movement and found the built valves were the answer all
+along.*
+
+**What distinguishes the five is the payload and the consequence of refusal, not the machinery.** *An
+ultimatum is the one where the offerer has declared what happens if the answer is no — and T25's
+point stands: an ultimatum you walk away from should cost you standing with everyone watching.*
+
+#### Ruling 20 — An alliance is negotiated like a deal, and it has no term
+
+*Answering in-tray item **1**'s remaining half — how an alliance is made and how it ends.*
+
+**Made** through the same negotiation every other agreement uses (ruling 19). **Ended** by somebody
+breaking it, not by it running out.
+
+**Both halves matter.** T27 argued for a term and T28 against, and **the argument against wins on
+what is already built**: a pact that merely expires is weather, and the build already punishes
+breaking a promise harder than never making one — *pacts held minus breaches, with the breach
+weighted heavier so a serial betrayer cannot out-sign their reputation.* **An alliance with no term
+is the only version that can use that machinery.**
+
+**And conquest ruling 28 is already waiting for it:** breaking a peace treaty turns every neighbour
+but your allies hostile at once. *An alliance you can quietly let lapse would make that ruling
+unreachable.*
+
+#### Ruling 21 — Intervention needs no new object. It is the coalition, and it is already built
+
+*Answering in-tray item **8** — Louisiana's neighbours came to its defence uninvited.*
+
+**Two built things cover it between them.** Coalitions **form on threat and dissolve when it passes**,
+with no agreement signed by anybody; and conquest ruling 27 permits an ally who **borders the enemy**
+to join a war without being compelled to. **Uninvited defence is what a coalition already is.**
+
+**So the story's most dramatic moment needs nothing built** — *which is worth saying, because the
+in-tray has carried it since 6 September as though it were a gap.*
 
 ---
 
