@@ -81,3 +81,24 @@ to where that ruling actually is.
 
 If you find yourself typing a figure into a page, stop: it belongs in a GENERATED block, read from
 the source on every run.
+
+---
+
+## The systems map
+
+`docs/wiki/systems-map.html` — one page showing how the eleven systems act on each other, published at
+the address recorded in `docs/wiki/SYSTEMS-MAP-URL.md`.
+
+```
+python build/build_systems_map.py
+```
+
+It reads the same `build/wiki_edges.json` the wiki uses, so it is current whenever the wiki is. Re-run it
+after the generator, and republish the HTML to the same artifact address.
+
+**Why it exists.** Every link in the wiki carries a relation — gates, feeds, blocks, costs, triggers,
+explains, contradicts — a clause in plain words, and the ruling it rests on. Obsidian's graph view draws
+all seven as the same grey line, and has no way to see the eleven master topics at all, because it reads
+links and nothing else. Measured on the first build: only 6% of links expressed containment, and the front
+page alone linked to 79 of 86 pages, which put every page two hops from every other page. That is what a
+hairball is. This keeps the relations apart and groups the pages by system.

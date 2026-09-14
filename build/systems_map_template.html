@@ -1,0 +1,577 @@
+<title>Manifest Disunity Systems Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,500;0,600;1,400&display=swap">
+
+<style>
+  :root{
+    --paper:#e9e7e0; --panel:#f3f1eb; --raise:#fbfaf6; --sink:#dedbd2;
+    --ink:#1b1e24; --ink-2:#4b515c; --ink-3:#767d89;
+    --rule:#cfccc2; --rule-2:#dedbd2;
+    --oxide:#9c3320;
+
+    --r-gates:#8a6212;
+    --r-feeds:#3f7a54;
+    --r-blocks:#8d2f22;
+    --r-costs:#b06a2c;
+    --r-triggers:#6b4a8f;
+    --r-explains:#7d838e;
+    --r-contradicts:#c0392b;
+    --r-replaces:#3a5f96;
+
+    --tier-frame:#6b4a8f;
+    --tier-system:#9c3320;
+    --tier-substrate:#3f6b7a;
+
+    --shadow:0 1px 0 rgba(27,30,36,.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#14161a; --panel:#1b1e24; --raise:#222630; --sink:#0f1114;
+      --ink:#e7e5dd; --ink-2:#a8adb7; --ink-3:#79808c;
+      --rule:#333944; --rule-2:#2a2f38;
+      --oxide:#e0714f;
+
+      --r-gates:#c8a53f;
+      --r-feeds:#6aa87e;
+      --r-blocks:#d4685a;
+      --r-costs:#d18f52;
+      --r-triggers:#9d7ec4;
+      --r-explains:#8f96a2;
+      --r-contradicts:#e07a6d;
+      --r-replaces:#7195c9;
+
+      --tier-frame:#9d7ec4;
+      --tier-system:#e0714f;
+      --tier-substrate:#6ea3b8;
+
+      --shadow:0 1px 0 rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#14161a; --panel:#1b1e24; --raise:#222630; --sink:#0f1114;
+    --ink:#e7e5dd; --ink-2:#a8adb7; --ink-3:#79808c;
+    --rule:#333944; --rule-2:#2a2f38;
+    --oxide:#e0714f;
+
+    --r-gates:#c8a53f;
+    --r-feeds:#6aa87e;
+    --r-blocks:#d4685a;
+    --r-costs:#d18f52;
+    --r-triggers:#9d7ec4;
+    --r-explains:#8f96a2;
+    --r-contradicts:#e07a6d;
+    --r-replaces:#7195c9;
+
+    --tier-frame:#9d7ec4;
+    --tier-system:#e0714f;
+    --tier-substrate:#6ea3b8;
+
+    --shadow:0 1px 0 rgba(0,0,0,.35);
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font:400 15px/1.55 "IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1360px; margin:0 auto; padding-block:26px 72px; padding-left:20px; padding-right:20px}
+
+  header.masthead{border-bottom:2px solid var(--ink); padding-bottom:14px}
+  .eyebrow{
+    font:500 11px/1 "IBM Plex Mono",monospace; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--oxide); margin-bottom:10px;
+  }
+  h1{
+    font:600 34px/1.08 "IBM Plex Serif",Georgia,serif; margin:0 0 10px;
+    letter-spacing:-.012em; text-wrap:balance;
+  }
+  .standfirst{margin:0; max-width:66ch; color:var(--ink-2); font-size:15.5px}
+  .standfirst em{font-family:"IBM Plex Serif",Georgia,serif}
+
+  .tallies{display:flex; flex-wrap:wrap; gap:2px; margin-top:16px;
+           font:500 12px/1 "IBM Plex Mono",monospace}
+  .tally{display:inline-flex; gap:7px; align-items:baseline;
+         padding:7px 10px; border:1px solid var(--rule-2); background:var(--panel)}
+  .tally b{font-weight:600; font-variant-numeric:tabular-nums; color:var(--ink)}
+  .tally span{color:var(--ink-3); text-transform:uppercase; letter-spacing:.08em; font-size:10px}
+
+  .toolbar{
+    display:flex; flex-wrap:wrap; gap:18px; align-items:flex-start;
+    padding:16px 0; border-bottom:1px solid var(--rule); margin-bottom:20px;
+  }
+  .tool{display:flex; flex-direction:column; gap:7px}
+  .tool > label, .tool > .lbl{
+    font:500 9.5px/1 "IBM Plex Mono",monospace; letter-spacing:.11em;
+    text-transform:uppercase; color:var(--ink-3);
+  }
+  .chips{display:flex; flex-wrap:wrap; gap:5px}
+  .chip{
+    font:500 11px/1 "IBM Plex Mono",monospace; letter-spacing:.05em; text-transform:uppercase;
+    padding:6px 9px; border:1px solid currentColor; background:transparent; cursor:pointer;
+    color:var(--ink-3); border-radius:2px; display:inline-flex; align-items:center; gap:6px;
+  }
+  .chip .dot{width:8px; height:8px; border-radius:50%; background:currentColor; flex:none}
+  .chip[aria-pressed="true"]{background:color-mix(in srgb, currentColor 14%, transparent); font-weight:600}
+  .chip[aria-pressed="false"]{opacity:.42}
+  .chip:focus-visible, button:focus-visible, .seg button:focus-visible{outline:2px solid var(--oxide); outline-offset:2px}
+
+  .seg{display:inline-flex; border:1px solid var(--rule); border-radius:2px; overflow:hidden}
+  .seg button{
+    font:500 11.5px/1 "IBM Plex Mono",monospace; letter-spacing:.07em; text-transform:uppercase;
+    padding:8px 13px; background:transparent; color:var(--ink-2); border:0; cursor:pointer;
+  }
+  .seg button + button{border-left:1px solid var(--rule)}
+  .seg button[aria-pressed="true"]{background:var(--ink); color:var(--paper)}
+
+  .switch{display:inline-flex; align-items:center; gap:8px; cursor:pointer;
+          font-size:13px; color:var(--ink-2)}
+  .switch input{width:16px; height:16px; accent-color:var(--oxide); cursor:pointer}
+
+  .stage{display:grid; grid-template-columns:minmax(0,1fr) 384px; gap:26px; align-items:start}
+  @media (max-width:1040px){ .stage{grid-template-columns:1fr} }
+
+  .board{background:var(--panel); border:1px solid var(--rule-2); position:relative; min-width:0}
+  .board svg{display:block; width:100%; height:auto}
+  .hint{
+    position:absolute; left:14px; bottom:12px; max-width:30ch;
+    font:400 11.5px/1.45 "IBM Plex Mono",monospace; color:var(--ink-3);
+  }
+
+  .grid-wrap{overflow-x:auto; padding:18px}
+  table.grid{border-collapse:collapse; font:500 11px "IBM Plex Mono",monospace; margin:0 auto}
+  table.grid th{
+    font-weight:500; color:var(--ink-3); font-size:10px; letter-spacing:.06em;
+    text-transform:uppercase; padding:5px 6px; white-space:nowrap;
+  }
+  table.grid th.row{text-align:right; padding-right:10px; color:var(--ink-2)}
+  table.grid th.col{height:110px; vertical-align:bottom; padding-bottom:8px}
+  table.grid th.col span{display:inline-block; transform:rotate(-90deg); transform-origin:left bottom;
+                         width:14px; white-space:nowrap; translate:8px 0}
+  table.grid td{
+    width:34px; height:30px; text-align:center; border:1px solid var(--rule-2);
+    font-variant-numeric:tabular-nums; cursor:pointer; color:var(--ink);
+  }
+  table.grid td.zero{color:var(--rule); cursor:default; background:transparent}
+  table.grid td.self{background:repeating-linear-gradient(45deg,transparent,transparent 3px,var(--rule-2) 3px,var(--rule-2) 4px); cursor:default}
+  table.grid td.on{outline:2px solid var(--oxide); outline-offset:-2px}
+
+  aside.panel{
+    border:1px solid var(--rule-2); background:var(--panel); padding:18px 18px 22px;
+    position:sticky; top:18px; max-height:calc(100vh - 40px); overflow-y:auto;
+  }
+  @media (max-width:1040px){ aside.panel{position:static; max-height:none} }
+  .panel h2{
+    font:600 21px/1.15 "IBM Plex Serif",Georgia,serif; margin:0 0 4px; letter-spacing:-.008em;
+  }
+  .panel .tier{
+    font:500 10px/1 "IBM Plex Mono",monospace; letter-spacing:.12em; text-transform:uppercase;
+    margin-bottom:9px;
+  }
+  .panel .blurb{color:var(--ink-2); font-size:13.5px; margin:0 0 14px}
+  .panel .meta{
+    display:flex; gap:14px; flex-wrap:wrap; padding:10px 0; border-block:1px solid var(--rule-2);
+    font:500 11px "IBM Plex Mono",monospace; color:var(--ink-3); margin-bottom:16px;
+  }
+  .panel .meta b{color:var(--ink); font-variant-numeric:tabular-nums}
+
+  .grp{margin-bottom:18px}
+  .grp h3{
+    font:600 10.5px/1 "IBM Plex Mono",monospace; letter-spacing:.12em; text-transform:uppercase;
+    margin:0 0 9px; display:flex; align-items:center; gap:7px;
+  }
+  .grp h3 .dot{width:9px; height:9px; border-radius:50%; flex:none}
+  .grp h3 .n{margin-left:auto; color:var(--ink-3); font-weight:500}
+  .lnk{padding:8px 0; border-top:1px solid var(--rule-2)}
+  .lnk:first-of-type{border-top:0}
+  .lnk .head{font-size:13px; font-weight:600; color:var(--ink); display:flex; gap:6px; align-items:baseline}
+  .lnk .arrow{color:var(--ink-3); font-family:"IBM Plex Mono",monospace; font-size:11px}
+  .lnk .clause{font-size:12.5px; color:var(--ink-2); margin-top:2px; line-height:1.45}
+  .lnk .cite{font:400 10.5px/1.4 "IBM Plex Mono",monospace; color:var(--ink-3); margin-top:3px}
+  .lnk .cite .warn{color:var(--oxide)}
+
+  .empty{color:var(--ink-3); font-size:13px; font-style:italic; font-family:"IBM Plex Serif",Georgia,serif}
+
+  footer.foot{
+    margin-top:34px; padding-top:15px; border-top:1px solid var(--rule);
+    font-size:12.5px; color:var(--ink-3); max-width:78ch;
+  }
+  footer.foot code{font:400 11.5px "IBM Plex Mono",monospace; color:var(--ink-2)}
+  footer.foot b{color:var(--ink-2)}
+
+  .node-label{font:600 12px "IBM Plex Sans",sans-serif; fill:var(--ink); pointer-events:none}
+  .node-sub{font:500 9.5px "IBM Plex Mono",monospace; fill:var(--ink-3); pointer-events:none}
+  .tier-label{font:500 10px "IBM Plex Mono",monospace; letter-spacing:.14em; text-transform:uppercase}
+  .hit{cursor:pointer}
+  @media (prefers-reduced-motion:reduce){*{transition:none !important; animation:none !important}}
+  .chord{transition:opacity .18s ease, stroke-width .18s ease}
+  .nodeg{transition:opacity .18s ease}
+</style>
+
+<div class="wrap">
+  <header class="masthead">
+    <div class="eyebrow">Manifest Disunity · Design reference</div>
+    <h1>How the systems act on each other</h1>
+    <p class="standfirst">Every link the design wiki holds, drawn by <em>what it actually does</em> — a gate is
+      not a cost and a block is not a mention. The eleven systems sit in the project's own order: the two
+      frames above everything, the six systems, the three substrates beneath. <strong>Click a system</strong>
+      to read every link it has, in plain words, with the ruling behind each one.</p>
+    <div class="tallies" id="tallies"></div>
+  </header>
+
+  <div class="toolbar">
+    <div class="tool">
+      <span class="lbl">What a link does</span>
+      <div class="chips" id="relChips"></div>
+    </div>
+    <div class="tool">
+      <span class="lbl">View</span>
+      <div class="seg" id="viewSeg">
+        <button type="button" id="viewMap" aria-pressed="true">The ring</button>
+        <button type="button" id="viewGrid" aria-pressed="false">The grid</button>
+      </div>
+    </div>
+    <div class="tool">
+      <span class="lbl">Detail</span>
+      <label class="switch" for="showInstances">
+        <input type="checkbox" id="showInstances">
+        <span>Include the 26 movements and 10 positions</span>
+      </label>
+    </div>
+  </div>
+
+  <div class="stage">
+    <section class="board" id="board">
+      <div id="mapView"></div>
+      <div id="gridView" class="grid-wrap" hidden></div>
+      <p class="hint" id="hint">Hover a system to lift its links. Click to hold it.</p>
+    </section>
+
+    <aside class="panel" id="panel"></aside>
+  </div>
+
+  <footer class="foot">
+    <p><b>Where this comes from.</b> The same link data the wiki uses, in
+      <code>build/wiki_edges.json</code>. Each link carries a relation, a clause and the ruling it rests on.
+      Obsidian's graph view draws all seven relations as the same grey line, which is why it comes out a
+      hairball; this keeps them apart.</p>
+    <p><b>Read it with the right amount of trust.</b> The clauses are drafts — they were derived from the
+      rulings, not written by hand, and the ones marked <span style="color:var(--oxide)">unverified</span>
+      have not been checked against the source by a person. A link says two pages are related; the ruling
+      it cites is the thing that is actually true.</p>
+    <p id="stamp"></p>
+  </footer>
+</div>
+
+<script>
+const DATA = /*DATA*/;
+
+const REL = [
+  ["GATES","--r-gates","lets it happen at all"],
+  ["FEEDS","--r-feeds","supplies it with something"],
+  ["BLOCKS","--r-blocks","stops it"],
+  ["COSTS","--r-costs","makes it expensive"],
+  ["TRIGGERS","--r-triggers","sets it off"],
+  ["EXPLAINS","--r-explains","gives it its meaning"],
+  ["CONTRADICTS","--r-contradicts","disagrees with it"],
+  ["REPLACES","--r-replaces","supersedes it"],
+];
+const RELMAP = Object.fromEntries(REL.map(([k,v,g]) => [k,{v,g}]));
+const relVar = r => (RELMAP[r] || {v:"--r-explains"}).v;
+const relColor = r => `var(${relVar(r)})`;
+
+const TIERCOLOR = {frame:"--tier-frame", system:"--tier-system", substrate:"--tier-substrate"};
+
+const SYS = DATA.systems;
+const SYSIDX = Object.fromEntries(SYS.map((s,i) => [s.id,i]));
+const INSTANCE = new Set(["movement","ideology"]);
+
+const state = {
+  rels: new Set(REL.map(r => r[0])),
+  instances: false,
+  view: "map",
+  selected: null,
+  hovered: null,
+};
+
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c =>
+  ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+function activeEdges(){
+  return DATA.edges.filter(e => {
+    if (!state.rels.has(e.r)) return false;
+    if (!state.instances && (INSTANCE.has(e.fk) || INSTANCE.has(e.tk))) return false;
+    return true;
+  });
+}
+
+/* ---------------------------------------------------------------- tallies */
+
+function renderTallies(){
+  const es = activeEdges();
+  const pairs = new Set(es.filter(e => e.fs !== e.ts).map(e => e.fs + ">" + e.ts));
+  const unver = es.filter(e => e.q !== "certain").length;
+  document.getElementById("tallies").innerHTML = [
+    ["systems", SYS.length],
+    ["links shown", es.length],
+    ["system pairs", pairs.size],
+    ["rulings indexed", DATA.counts.rulings],
+    ["unverified", unver],
+  ].map(([l,n]) => `<span class="tally"><b>${n}</b><span>${l}</span></span>`).join("");
+  document.getElementById("stamp").textContent =
+    `Generated by build/build_systems_map.py from commit ${DATA.stamp}.`;
+}
+
+/* ------------------------------------------------------------------- ring */
+
+const W = 760, H = 660, CX = W/2, CY = H/2 + 6, R = 232;
+
+function nodeAngles(){
+  // Leave a gap between tiers so the three groups read as groups.
+  const gap = 0.17, n = SYS.length;
+  const tiers = [...new Set(SYS.map(s => s.tier))];
+  const span = (Math.PI*2 - gap*tiers.length) / n;
+  const pos = {}; let a = -Math.PI/2 - (Math.PI*2 - gap*tiers.length)/2 - gap/2, last = null;
+  SYS.forEach(s => {
+    if (s.tier !== last){ a += gap; last = s.tier; }
+    pos[s.id] = a + span/2;
+    a += span;
+  });
+  return pos;
+}
+
+function renderMap(){
+  const ang = nodeAngles();
+  const es = activeEdges().filter(e => e.fs !== e.ts);
+
+  // Aggregate to one chord per (system pair, relation).
+  const agg = new Map();
+  es.forEach(e => {
+    const k = e.fs + ">" + e.ts + "|" + e.r;
+    if (!agg.has(k)) agg.set(k, {fs:e.fs, ts:e.ts, r:e.r, n:0});
+    agg.get(k).n++;
+  });
+  const chords = [...agg.values()].sort((a,b) => a.n - b.n);
+  const maxN = Math.max(1, ...chords.map(c => c.n));
+
+  const at = (id, rad) => [CX + Math.cos(ang[id])*rad, CY + Math.sin(ang[id])*rad];
+
+  const lifted = state.selected || state.hovered;
+  const isLit = c => !lifted || c.fs === lifted || c.ts === lifted;
+
+  const chordPaths = chords.map(c => {
+    const [x1,y1] = at(c.fs, R-16), [x2,y2] = at(c.ts, R-16);
+    // Pull the control point toward the centre so long chords bow inward.
+    const mx = (x1+x2)/2, my = (y1+y2)/2;
+    const k = 0.55;
+    const cx = CX + (mx-CX)*k, cy = CY + (my-CY)*k;
+    const w = 1 + (c.n/maxN)*6;
+    const lit = isLit(c);
+    return `<path class="chord" d="M${x1.toFixed(1)},${y1.toFixed(1)} Q${cx.toFixed(1)},${cy.toFixed(1)} ${x2.toFixed(1)},${y2.toFixed(1)}"
+      fill="none" stroke="${relColor(c.r)}" stroke-width="${lit ? w.toFixed(2) : Math.min(w,2).toFixed(2)}"
+      stroke-linecap="round" opacity="${lit ? (lifted ? .82 : .46) : .05}"></path>`;
+  }).join("");
+
+  const degree = {};
+  es.forEach(e => { degree[e.fs] = (degree[e.fs]||0)+1; degree[e.ts] = (degree[e.ts]||0)+1; });
+
+  const nodes = SYS.map(s => {
+    const [x,y] = at(s.id, R);
+    const a = ang[s.id];
+    const right = Math.cos(a) > -0.01;
+    const [lx,ly] = at(s.id, R + 22);
+    const lit = !lifted || s.id === lifted ||
+      es.some(e => (e.fs===lifted && e.ts===s.id) || (e.ts===lifted && e.fs===s.id));
+    const on = state.selected === s.id;
+    const deg = degree[s.id] || 0;
+    const rad = 7 + Math.min(11, Math.sqrt(deg) * 2.2);
+    return `<g class="nodeg hit" data-sys="${s.id}" opacity="${lit ? 1 : .28}">
+      <circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${rad.toFixed(1)}"
+              fill="var(${TIERCOLOR[s.tier]})" stroke="var(--paper)" stroke-width="${on ? 3 : 1.5}"></circle>
+      ${on ? `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(rad+5).toFixed(1)}"
+              fill="none" stroke="var(--ink)" stroke-width="1.25"></circle>` : ""}
+      <text class="node-label" x="${lx.toFixed(1)}" y="${ly.toFixed(1)}"
+            text-anchor="${right ? "start" : "end"}">${esc(s.name)}</text>
+      <text class="node-sub" x="${lx.toFixed(1)}" y="${(ly+13).toFixed(1)}"
+            text-anchor="${right ? "start" : "end"}">${deg} links${s.round ? " · round " + s.round : ""}</text>
+    </g>`;
+  }).join("");
+
+  const tierMarks = [...new Set(SYS.map(s => s.tier))].map(t => {
+    const ids = SYS.filter(s => s.tier === t);
+    const mid = (ang[ids[0].id] + ang[ids[ids.length-1].id]) / 2;
+    const [x,y] = [CX + Math.cos(mid)*(R+96), CY + Math.sin(mid)*(R+96)];
+    return `<text class="tier-label" x="${x.toFixed(1)}" y="${y.toFixed(1)}"
+      fill="var(${TIERCOLOR[t]})" text-anchor="middle">${esc(ids[0].tierLabel)}</text>`;
+  }).join("");
+
+  document.getElementById("mapView").innerHTML =
+    `<svg viewBox="0 0 ${W} ${H}" role="img"
+          aria-label="Ring of the eleven game systems with their links drawn between them">
+      <g>${chordPaths}</g>
+      <g>${tierMarks}</g>
+      <g>${nodes}</g>
+    </svg>`;
+
+  document.getElementById("mapView").querySelectorAll("[data-sys]").forEach(g => {
+    const id = g.dataset.sys;
+    g.addEventListener("mouseenter", () => { state.hovered = id; renderMap(); });
+    g.addEventListener("mouseleave", () => { state.hovered = null; renderMap(); });
+    g.addEventListener("click", () => select(state.selected === id ? null : id));
+  });
+}
+
+/* ------------------------------------------------------------------- grid */
+
+function renderGrid(){
+  const es = activeEdges().filter(e => e.fs !== e.ts);
+  const cell = {};
+  es.forEach(e => { const k = e.fs+">"+e.ts; cell[k] = (cell[k]||0)+1; });
+  const max = Math.max(1, ...Object.values(cell));
+
+  let html = `<table class="grid"><thead><tr><th></th>`;
+  SYS.forEach(s => html += `<th class="col"><span>${esc(s.name)}</span></th>`);
+  html += `</tr></thead><tbody>`;
+  SYS.forEach(from => {
+    html += `<tr><th class="row">${esc(from.name)}</th>`;
+    SYS.forEach(to => {
+      if (from.id === to.id){ html += `<td class="self"></td>`; return; }
+      const n = cell[from.id+">"+to.id] || 0;
+      if (!n){ html += `<td class="zero">·</td>`; return; }
+      const a = 0.10 + (n/max)*0.66;
+      const on = state.selected && (from.id===state.selected || to.id===state.selected);
+      html += `<td class="${on ? "on" : ""}" data-from="${from.id}" data-to="${to.id}"
+        style="background:color-mix(in srgb, var(--oxide) ${(a*100).toFixed(0)}%, transparent)"
+        title="${esc(from.name)} → ${esc(to.name)}: ${n}">${n}</td>`;
+    });
+    html += `</tr>`;
+  });
+  html += `</tbody></table>`;
+  const g = document.getElementById("gridView");
+  g.innerHTML = html;
+  g.querySelectorAll("td[data-from]").forEach(td =>
+    td.addEventListener("click", () => select(td.dataset.from)));
+}
+
+/* ------------------------------------------------------------------ panel */
+
+function renderPanel(){
+  const p = document.getElementById("panel");
+  const es = activeEdges();
+
+  if (!state.selected){
+    const byRel = {};
+    es.forEach(e => { byRel[e.r] = (byRel[e.r]||0)+1; });
+    p.innerHTML = `
+      <h2>The whole board</h2>
+      <div class="tier" style="color:var(--oxide)">Nothing selected</div>
+      <p class="blurb">Pick a system on the ring, or a cell in the grid, to see every link it has and the
+        ruling behind each one.</p>
+      <div class="meta"><span><b>${es.length}</b> links shown</span>
+        <span><b>${DATA.counts.pages}</b> pages</span></div>
+      ${REL.filter(([k]) => byRel[k]).map(([k,v,gloss]) => `
+        <div class="grp">
+          <h3 style="color:var(${v})"><span class="dot" style="background:var(${v})"></span>${k}
+            <span class="n">${byRel[k]}</span></h3>
+          <p class="clause" style="font-size:12.5px;color:var(--ink-2);margin:0">One system ${gloss}.</p>
+        </div>`).join("")}`;
+    return;
+  }
+
+  const s = SYS[SYSIDX[state.selected]];
+  const out = es.filter(e => e.fs === s.id && e.ts !== s.id);
+  const inc = es.filter(e => e.ts === s.id && e.fs !== s.id);
+  const inner = es.filter(e => e.fs === s.id && e.ts === s.id);
+
+  const group = (title, list, dir) => {
+    if (!list.length) return "";
+    const byRel = {};
+    list.forEach(e => (byRel[e.r] = byRel[e.r] || []).push(e));
+    return `<div class="grp"><h3><span class="dot" style="background:var(--ink-3)"></span>${title}
+      <span class="n">${list.length}</span></h3>` +
+      REL.filter(([k]) => byRel[k]).map(([k,v]) => byRel[k].map(e => {
+        const other = dir === "out" ? e.t : e.f;
+        const otherSys = dir === "out" ? e.ts : e.fs;
+        const sysName = SYS[SYSIDX[otherSys]] ? SYS[SYSIDX[otherSys]].name : otherSys;
+        return `<div class="lnk">
+          <div class="head">
+            <span style="color:var(${v});font:600 10px/1.4 'IBM Plex Mono',monospace;letter-spacing:.08em">${k}</span>
+            <span class="arrow">${dir === "out" ? "→" : "←"}</span>
+            <span>${esc(other)}</span>
+          </div>
+          <div class="clause">${esc(e.c) || "<em>no clause recorded</em>"}</div>
+          <div class="cite">${esc(sysName)} · ${esc(e.e) || "no source recorded"}${
+            e.q !== "certain" ? ` · <span class="warn">unverified</span>` : ""}</div>
+        </div>`;
+      }).join("")).join("") + `</div>`;
+  };
+
+  p.innerHTML = `
+    <h2>${esc(s.name)}</h2>
+    <div class="tier" style="color:var(${TIERCOLOR[s.tier]})">${esc(s.tierLabel)}${
+      s.round ? " · round " + s.round : ""}</div>
+    <p class="blurb">${esc(s.blurb)}</p>
+    <div class="meta">
+      <span><b>${s.pages}</b> pages</span>
+      <span><b>${s.rulings}</b> rulings</span>
+      <span><b>${out.length}</b> out</span>
+      <span><b>${inc.length}</b> in</span>
+    </div>
+    ${group("What it acts on", out, "out")}
+    ${group("What acts on it", inc, "in")}
+    ${group("Inside itself", inner, "out")}
+    ${!out.length && !inc.length && !inner.length
+      ? `<p class="empty">Nothing links to this and it links to nothing — with the filters you have set.
+         If that holds with every relation switched on, it is a finding rather than an oversight.</p>` : ""}`;
+}
+
+/* ----------------------------------------------------------------- wiring */
+
+function select(id){
+  state.selected = id;
+  draw();
+}
+
+function draw(){
+  renderTallies();
+  if (state.view === "map") renderMap(); else renderGrid();
+  renderPanel();
+}
+
+function renderChips(){
+  const host = document.getElementById("relChips");
+  const present = new Set(DATA.edges.map(e => e.r));
+  host.innerHTML = REL.filter(([k]) => present.has(k)).map(([k,v,gloss]) =>
+    `<button type="button" class="chip" data-rel="${k}" aria-pressed="true"
+       style="color:var(${v})" title="${esc(gloss)}"><span class="dot"></span>${k}</button>`).join("");
+  host.querySelectorAll("[data-rel]").forEach(b => b.addEventListener("click", () => {
+    const r = b.dataset.rel;
+    if (state.rels.has(r)) state.rels.delete(r); else state.rels.add(r);
+    b.setAttribute("aria-pressed", state.rels.has(r) ? "true" : "false");
+    draw();
+  }));
+}
+
+document.getElementById("showInstances").addEventListener("change", e => {
+  state.instances = e.target.checked;
+  draw();
+});
+
+function setView(v){
+  state.view = v;
+  document.getElementById("viewMap").setAttribute("aria-pressed", v === "map");
+  document.getElementById("viewGrid").setAttribute("aria-pressed", v === "grid");
+  document.getElementById("mapView").hidden = v !== "map";
+  document.getElementById("gridView").hidden = v !== "grid";
+  document.getElementById("hint").textContent = v === "map"
+    ? "Hover a system to lift its links. Click to hold it."
+    : "A row acts on a column. Darker means more links. Click a cell to open that system.";
+  draw();
+}
+document.getElementById("viewMap").addEventListener("click", () => setView("map"));
+document.getElementById("viewGrid").addEventListener("click", () => setView("grid"));
+
+renderChips();
+setView("map");
+</script>
