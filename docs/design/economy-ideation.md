@@ -24,6 +24,187 @@ this one.
 
 ---
 
+## 0a. The three things written at the top of every round
+
+**One action per nation per turn, and it ends the turn.** Six components compete for one slot. Any
+idea below that assumes a decision every turn has taken that turn away from the other five, and this
+round has to say so out loud.
+
+**The board and the six ideologies are fixed.** Geography is baked from federal data. If this round
+finds itself wanting to change either, that is a finding worth stopping for.
+
+**Every quantity says where its number comes from** — measured from a named file, invented as a
+placeholder, or still to be asked about.
+
+---
+
+## 1. What this round owns
+
+The economy owns **one of the nine pressures** that feed a region's anger — how well its people are
+fed, treated and paid — and round 1 called it the deepest of them. Round 1 measured the term at
+**17% of grievance** and asked that quality of life be able to *fall*, visibly and for a reason a
+player can read, and recover when the cause is fixed.
+
+It also inherits the story the whole plan is aimed at: **scenario 4, a hungry nation with an army**,
+where buying food is possible but invading for it is cheaper. That story needs rounds 1, 2 and 4
+finished before it can be told, which makes it this round's exam rather than one of its exercises.
+
+### What this round is NOT, and it changes the shape of the work
+
+**It is not "invent how shortage works". That is already written.** `docs/spec/economy-system-spec.md`
+§3 specifies a complete resource model — supply-to-demand bands, derived demand, and a table of
+effects per sector per band — and its owner rulings 1.2 to 1.5 already replaced the broken parts of
+the built economy **on paper**.
+
+**None of it is built.** The alpha track deliberately built trade and transit *on top of* the
+known-wrong economy and left demand, supply and price alone: *"A1 and A2 build on the existing economy
+and do not touch it. No changes to demand, supply or price… The model is known to be structurally
+wrong and is being kept on purpose."*
+
+So the hollow spot everybody keeps naming — **nothing bad happens to a nation that does not trade** —
+**has a written cure that was never built.** This round's job is to test that cure against what three
+closed rounds now demand of it, and to settle where the two disagree. It is not to write a second one.
+
+### What is already built, verified against `DESIGN.md` on 14 September 2026
+
+| | |
+|---|---|
+| **Six sectors** | Agriculture, Resource Extraction, Manufacturing, Trade & Transportation, Finance, Information Technology. Each Area has a baked production profile, rescaled to its live GDP |
+| **One price index** | `100 × (demand share ÷ supply share)^1.3`, clamped, recalibrated every turn so it reports *what is scarce* rather than what turn it is |
+| **Treasury** | GDP × tax rate, less maintenance, administration and occupation |
+| **Occupation as the anti-snowball brake** | Superlinear on Areas held outside the home state. A greedy conqueror's treasury crosses into deficit around **110 occupied Areas** |
+| **Trade as a standing contract** | A term, a fixed price and an expiry. All sixty nations use it, not only the player |
+| **Transit across other people's ground** | Compounding tolls, a notice period, and a route-finder |
+| **The rivers** | Four corridors and **fifteen chokepoints**, all real places. A gate bridges the stretch above it and the stretch below it and no other pair |
+| **Two seas and a shut canal** | Panama closed to former American states |
+| **Canada and Mexico** | Geography, not nations. Great Lakes ports reach the world market only through the Canada corridor |
+
+### What is not built, and this round has to know all five
+
+1. **Nothing physically moves.** Settlement is a treasury credit, so a buyer gains *money* rather than
+   goods. `DESIGN.md` §12 calls this "the honest remaining gap". **Spec ruling 1.3 already replaced it
+   on paper** — *"trade becomes a transfer of quantities… goods move too, and the buyer's supply figure
+   rises"* — and it was never built.
+2. **A trade deal cannot be haggled on price.** The lever exists in the model and reaches no screen, so
+   *a buyer with no alternative pays exactly what a buyer with three alternatives pays*. `DESIGN.md`
+   calls this "the single largest gap between what the economy spec asks for and what is built".
+   **Conquest is blocked on it** (I3).
+3. **Nothing in the transit layer has a length.** Measured 5 September 2026: the closest two ports on
+   one sea are **16 miles** apart and the farthest **2,578**, priced identically; a Canada corridor
+   spans **411 to 2,442 miles** at one flat rate.
+4. **No AI nation ever closes a corridor.** They sign them, price them and let them expire. The
+   decision to cut somebody off is the player's alone, and the machinery is symmetrical.
+5. **Quality of life is one national number.** This is finding A below, and it is the round's first
+   real contradiction.
+
+---
+
+## 2. The inbox — what rounds 1, 2 and 3 handed this one
+
+**Filed 14 September 2026, seven days after the round went live.** Rounds 2 and 3 closed on 9 and
+11 September and neither handover was carried across at the time. This section is that repair.
+**Nothing here is new** — every row is a demand already written down in a closed round, and three of
+them block a rule that has already been ruled.
+
+### Blocking — a written rule cannot work until this round answers
+
+| # | From | What it asks for |
+|---|---|---|
+| **I1** | **Conquest**, ruling 23 | **What a war costs to run.** Deferred here explicitly, and ruling 22's repayment lever cannot be priced without it |
+| **I2** | **Conquest**, ruling 4's third cause | **Desperation must bite.** A nation that cannot get a resource must actually suffer for it, or the third cause of war can never fire. *This is the hollow spot arriving as a blocking requirement rather than as an observation* |
+| **I3** | **Conquest**, ruling 4 | **A price must be settable by the seller**, or nobody can charge the absurd price that same cause names |
+
+### Owed, but blocking nothing
+
+| # | From | What it asks for |
+|---|---|---|
+| **I4** | **Conquest** | What a **blockade** actually stops, and what a **destroyed rail hub** does to a corridor |
+| **I5** | **Conquest**, finding E | Its fifth story stalls on **I2**. Filed so this round knows its answer unblocks somebody else's scenario |
+| **I6** | **Politics**, rulings 25–27 | **What a federation's toll split is worth** — 5% between direct neighbours, 10% routed, the host's share going to the ground actually crossed. *What a percentage of trade is worth is the economy's to say* |
+| **I7** | **Politics**, ruling 21 (S26) | **Buying a movement off.** Deferred here because what money can buy is this round's to say |
+| **I8** | **Politics**, F21 | **Funding propaganda** before a referendum — S26 pointed at a vote instead of at a region. The legal end of the same scale as rigging: money buys the result openly, liberties buy it quietly |
+| **I9** | **Secession**, §4 | **Quality of life must be able to fall** — from hunger, from a broken supply, from a blockade — visibly, for a readable reason, **and locally** — and recover when the cause is fixed |
+
+### One item corrected on arrival
+
+**Ruling 15's X% is not this round's.** Politics §9 assigns it to the **mechanics stage**, carrying the
+hard constraint that it must sit **below 0.30** or two Unify movements can never make a demand at all
+(politics finding I). It is noted here only because this round may set what a *share of trade* is
+worth (I6), and the two numbers will be read side by side by whoever sets them.
+
+---
+
+## 3. The spine — the questions, in the order they are asked
+
+Asked one at a time, each with a recommendation. Answered ones move into a rulings section.
+
+**The order puts the blocking questions first**, so that the three rules already written in another
+round stop being blocked as early as possible, and puts the Tuesday test last because every answer
+above it changes what there is to do.
+
+| # | Question | Why here |
+|---|---|---|
+| **Q1** | **Does the spec's resource model still stand, now that three rounds have made demands of it?** | Everything else is a detail of the answer. It is also the cheapest possible outcome: if it stands, most of this round is filing rather than inventing |
+| **Q2** | **Does shortage land on a place, or on a country?** | **Finding A.** Round 1 demanded local; the spec rules resources pool nationally. They cannot both be right, and the scenario this round is examined on needs the answer |
+| **Q3** | **What does a war cost to run?** | **I1, blocking** |
+| **Q4** | **Can a seller set a price, and what does a buyer with no alternative pay?** | **I3, blocking.** The lever exists and reaches no screen |
+| **Q5** | **What does the outside world want?** | Canada, Mexico and the world market have no demand at all, so every route out currently ends in a buyer with infinite appetite |
+| **Q6** | **What stops a self-sufficient nation from simply opting out?** | Measured: five states are above the national average on both food and energy. If trade is optional for them, the whole system is optional for them |
+| **Q7** | **What can money buy?** | **I7 and I8** together — buying a movement off, and funding a referendum |
+| **Q8** | **What is a share of trade worth?** | **I6.** The federation's toll split, and the number the mechanics stage will read beside ruling 15's X% |
+| **Q9** | **What does a blockade stop?** | **I4** |
+| **Q10** | **Where does water data come from, if water is to be geography rather than invention?** | E51 measured that the rivers in the game are shipping lanes with no flow and no volume, and that the Colorado — the actual water fight — is absent entirely |
+| **Q11** | **What does the player actually do about all of this, on a Tuesday, with one action?** | The Tuesday test. Last, because every answer above changes it |
+
+---
+
+## 3a. Findings
+
+### Finding A — shortage cannot land on a place, and two documents disagree about whether it can
+
+**Round 1 handed this round the requirement that quality of life must fall *locally***, adding: *"the
+formula already reads the Area's own condition."* **It does — but not through the term this round
+owns.**
+
+Verified against `DESIGN.md` §7.2 and §12 on 14 September 2026. A region's grievance reads quality of
+life, civil liberties, how powerful the holding nation is, that nation's authority, war weariness, and
+the Area's own authored grievance. **Of those six, only the authored grievance is a property of the
+place.** The rest are national stocks, and `DESIGN.md` §12 says so in terms: *"the power stocks are
+still per NATION, so sentiment's grievance terms are uniform across everything a nation owns."*
+
+**The spec makes the same collision internally, which is the part worth stopping for.** §3.3 gives a
+food crisis two effects — **Quality of Life −30** *and* **Area grievance +5/turn** — but §3.5 rules
+that **resources pool nationally, with no intra-national supply chain.** If every Area is equally
+short, every Area takes the same +5, and the per-Area channel is national in everything but name.
+
+**Why it matters more than it sounds.** The story this round is examined on needs hunger to be *worse
+somewhere*. A nation uniformly 8% short of food has a management problem. A nation whose two eastern
+Areas are starving while the capital eats has a **secession** problem — and that is the game.
+
+**What it would cost, in the document's own words.** `DESIGN.md` §12 names the fix and prices it as
+cheap: *"Quality of life and liberty satisfaction per Area would give the diffusion term a real
+gradient to run along, and would give migration a much sharper one; the economy bake is already per
+Area, so it is a change of scope rather than of model."*
+
+**Owner: Aaron**, as **Q2**. It is a scope decision rather than a technical one.
+
+### Finding B — the cure for the hollow spot was written a week before the hollow spot was named
+
+The known hollow spot — *nothing bad happens to a nation that does not trade* — is recorded in three
+places as an open problem. **The spec answers it**: derived demand (§3.4) replaces demand-as-a-share-
+of-own-output, which is the single thing that makes a shortage arithmetically impossible today; bands
+(§3.1) turn a ratio into a state; and the per-sector tables (§3.3) attach real consequences to each
+band, food crisis included.
+
+**It was not built because the alpha track was told not to touch it**, and that was a deliberate,
+recorded choice rather than an oversight.
+
+**What this changes about the round:** the first question is not *what should happen to a hungry
+nation* but **whether the answer already written is still the right one** after three rounds of new
+demands. That is **Q1**, and it is cheap to ask and expensive to skip.
+
+---
+
 ## A. What a resource fundamentally is
 
 **E1 — A resource is a thing you need a certain amount of, not a thing you own.** *(Aaron, 6 Sep)*
@@ -425,15 +606,15 @@ the built five-year maximum.
 **E91 — The money.** The dollar, the federal debt and federal transfers — still unaddressed by the
 story. A state that lived on federal money opens richer than it should.
 
+**E92 — Federal land.** Still unaddressed. Most of the West's ground was federal, and the Sagebrush
+Rebellion's authored goal is to get it back.
+
 **E93 — A new country's people will go hungry for it, for a while.** *(Aaron, 7 September —
 secession S65.)* If realisation brings a fervour in which citizens "overlook certain things", one of
 those things is shortage. So the same food coverage should hurt a two-year-old country less than a
 settled one — and hurt it much more when the fervour runs out. The economy decides how far that
 tolerance stretches and whether it applies to hunger at all, or only to money. *(Politics owns the
 fervour itself; this is the part that lands here.)*
-
-**E92 — Federal land.** Still unaddressed. Most of the West's ground was federal, and the Sagebrush
-Rebellion's authored goal is to get it back.
 
 ---
 
@@ -454,9 +635,25 @@ These are not ideas. They are holes, recorded so that ideation can aim at them.
 
 ## The state of this document
 
-**Not yet complete.** It holds what has been said so far. Ideation is finished when a session can
-read it end to end and the only new entries are recombinations of ones already here — and when Aaron
-says so.
+**Not yet complete, and here is exactly what it is missing**, measured against the three closed
+rounds on 14 September 2026.
+
+| | State |
+|---|---|
+| **The three things at the top of every round** (§0a) | ✅ Written 14 September |
+| **What this round owns** (§1) | ✅ Written 14 September, verified against `DESIGN.md` |
+| **The inbox** (§2) | ✅ **Nine items carried across 14 September**, seven days late. Three of them block a rule another round has already written |
+| **The spine** (§3) | ✅ Eleven questions in order. **None answered** |
+| **Findings** (§3a) | Two. **A is Aaron's** and is question 2 of the spine |
+| **The idea bank** (A–L) | 93 entries, E1–E93. Complete enough to argue from, not yet closed |
+| **Rulings** | ❌ **None.** The round has not put a question to Aaron yet |
+| **The scenarios, traced** | ❌ **None.** Scenario 4 — a hungry nation with an army — is this round's exam |
+| **The Tuesday test** | ❌ Unanswered, and recorded as hole 5 below |
+| **What this round hands onward** | ❌ Not written |
+
+Ideation is finished when a session can read this end to end and the only new entries are
+recombinations of ones already here, when every scenario has been traced, when it has answered what
+the player actually does about this on a Tuesday with one action — and when Aaron says so.
 
 *Sources: `docs/design/resources.md`, `docs/design/resources-v2.md`, `docs/FUTURE-IDEAS.md` F2–F13,
 `docs/deferred.md` #8 and #12, `docs/spec/economy-system-spec.md` §3. Measured figures from
