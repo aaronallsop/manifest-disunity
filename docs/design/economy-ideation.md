@@ -1294,19 +1294,21 @@ These are not ideas. They are holes, recorded so that ideation can aim at them.
 
 ## The state of this document
 
-**Complete and ready to close — Aaron's call.** Measured against the three closed rounds on
-14 September 2026.
+**✅ CLOSED by Aaron on the Control Board, 14 September 2026 at 21:06**, together with his
+confirmation of rulings 3–6 — the four defaults taken without asking. **This document is now a record
+rather than a place decisions are made**: a change to the economy from here is a correction with a
+reason, not a fresh ruling.
 
 | | State |
 |---|---|
 | **The three things at the top of every round** (§0a) | ✅ Written 14 September |
 | **What this round owns** (§1) | ✅ Written 14 September, verified against `DESIGN.md` |
-| **The inbox** (§2) | ✅ **Nine items carried across 14 September**, seven days late. Three blocked a rule another round had already written; **ruling 1 closed two of them** (finding C). **I1 is the last one open** |
+| **The inbox** (§2) | ✅ **Nine items carried across 14 September**, seven days late. Three blocked a rule another round had already written; **all three are now closed** — two by ruling 1 (finding C) and I1 by ruling 3 |
 | **The spine** (§3) | ✅ Eleven questions, **now ten** — Q4 was struck as already answered. **All ten answered** |
 | **Findings** (§3a, §4a, §6) | **Seven.** **A** closed by ruling 2, deliberately and not in round 1's favour. **B** closed by ruling 1. **C** is mine and earned rule 14. **D, E, F** came out of the interaction map. **G is the worst of them and the adversarial review found it**: ruling 7's gate has no demand behind it, so it fails on the one nation it was written for |
 | **The idea bank** (A–L, M) | **96 entries, E1–E96.** Six of the nine rulings were recombinations of what was already banked; **three were not**, and §M banks them. Found by the adversarial review, not by the drafting |
 | **Aaron's own wiring** (§4b) | **35 arrows drawn 14 September** on the Sector Wiring page, read back and recorded. They demand three things the model lacks — capital investment, labour as an input, and technology as a multiplier — all of which are **beta work by his own word** |
-| **Rulings** | **Nine.** 1 keeps the written model; 2 keeps one national pot; **3–6 are defaults taken without asking** and want confirmation; 7 gates farmland on extraction; 8 lets money buy a referendum but not a region; 9 leaves water out of the alpha and files it as **F26** |
+| **Rulings** | **Nine, all confirmed.** 1 keeps the written model; 2 keeps one national pot; **3–6 were defaults taken without asking and Aaron confirmed all four**; 7 gates farmland on extraction; 8 lets money buy a referendum but not a region; 9 leaves water out of the alpha and files it as **F26** |
 | **The scenarios, traced** | ✅ **Scenario 4 traced in §5**, and it narrates. It is the only one this round owns. Conquest's finding E closes with it |
 | **The Tuesday test** | ✅ Answered in §5, and the answer inverts the expectation: the economy has **ten** verbs against a budget of one |
 | **What this round hands onward** | ✅ **§7**, to rounds 5, 6 and 7 and to the design, mechanics and data stages |
@@ -1315,17 +1317,25 @@ Ideation is finished when a session can read this end to end and the only new en
 recombinations of ones already here, when every scenario has been traced, when it has answered what
 the player actually does about this on a Tuesday with one action — and when Aaron says so.
 
-**Three of those four are met, with one honest qualification.** Six of the nine rulings recombined
+**All four are met.** Aaron closed it on the board at 21:06.
+
+**Three were met by the work, with one honest qualification.** Six of the nine rulings recombined
 entries already banked or read something already written in the spec. **Three — rulings 3, 5 and 6 —
 introduced framings the bank did not hold**, and they have been banked as **E94–E96** rather than left
 as rulings with no idea behind them, because this document's stated job is completeness. **Scenario 4 is traced
 and narrates** — the only scenario this round owns. **The Tuesday test is answered**, and the answer
 inverts the expectation. **The fourth is Aaron's.**
 
-**What he should know before he says so.** Two findings are open and neither is his to settle on paper:
-**D**, that extraction is now a single point of failure, which only the alpha can judge; and **E**, the
-logistics spiral, which the design stage must put a brake on. **And rulings 3 to 6 were taken without
-asking** — they want his confirmation the way conquest ruling 41 confirmed its seven.
+**What was put to him before he closed it, and still stands.** Two findings are open and neither is
+his to settle on paper: **D**, that extraction is now a single point of failure, which only the alpha
+can judge; and **E**, the logistics spiral, which the design stage must put a brake on. **Rulings 3 to
+6 were taken without asking and he confirmed all four**, the way conquest ruling 41 confirmed its
+seven.
+
+**One thing recommended for the alpha was never ruled on and is not closed by this.** Four of Aaron's
+own arrows say a shortage should throttle **production** and not merely tax the journey — the same
+gate as ruling 7, pointed at hauling. It is the cheapest change on the table and it is still open.
+See `wiring-triage.md` §B.
 
 *Sources: `docs/design/resources.md`, `docs/design/resources-v2.md`, `docs/FUTURE-IDEAS.md` F2–F13,
 `docs/deferred.md` #8 and #12, `docs/spec/economy-system-spec.md` §3. Measured figures from

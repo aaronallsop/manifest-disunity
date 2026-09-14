@@ -139,7 +139,7 @@ off, because isolating the economy is what makes the answers trustworthy.
 
 **The live stage is IDEATION, and it runs in seven rounds set out in `docs/design/IDEATION-PLAN.md`.
 Read that plan before you open anything else in this folder — it says which round is live.** As of
-**12 September 2026** — and if the newest handoff disagrees with this table, **check the commits since
+**14 September 2026** — and if the newest handoff disagrees with this table, **check the commits since
 that handoff was written before believing either**:
 
 | Round | Where it stands |
@@ -147,8 +147,9 @@ that handoff was written before believing either**:
 | **1. Secessionist movements** | ✅ Closed 7 September 2026 — 53 rulings, five scenarios traced, findings A–F |
 | **2. Military conquest** | ✅ **Fully closed 9 September 2026 — 41 rulings, 127 ideas** (numbered C1–C131; four numbers unused, two reused — counted 12 September), all six scenarios traced. Findings B, C and D **were** Aaron's and are answered. **Nothing outstanding is his** |
 | **3. Politics** | ✅ **Closed 11 September 2026 — 41 rulings** plus the half-ruling 11a, **10 findings**, scenario 3 traced, all 26 live movements re-placed on the ten positions. Closed by Aaron on the Control Board, 12 September 02:41. **Nothing outstanding is his.** §9 of `politics-ideation.md` is what it hands to rounds 4, 5 and 7 |
-| **4. Economy** | ◀ **LIVE.** **93 entries banked** (E1–E93, counted 12 September). This round *finishes* the economy against what rounds 1–3 demand of it, rather than starting it |
-| **5–7. Diplomacy · Events · The things above** | Stubs with full inboxes. Not open |
+| **4. Economy** | ✅ **CLOSED 14 September 2026, 21:06 — nine rulings, seven findings, 96 entries** (E1–E96), scenario 4 traced. **The hollow spot is closed at both ends.** Findings D and E stay open by design — D to the alpha, E to the design stage. §7 is the handover |
+| **5. Diplomacy** | ◀ **LIVE from 14 September.** Its document is still the 6 September stub, but **it is not starting from nothing**: round 3's thirteen federation rulings already settled alliances, blocs, joining and leaving. **One inherited item is blocking** — the diplomatic act that speeds a thaw |
+| **6–7. Events · The things above** | Stubs with full inboxes. Not open |
 
 **The economy is the live round.** `economy-ideation.md` is the idea bank and nothing in
 it has been judged; two older notes feed it and are no longer authoritative — `resources.md` (the

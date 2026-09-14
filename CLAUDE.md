@@ -99,8 +99,19 @@ that playtesters open — an output, not a place work happens. Do not delete it.
 ## Definition of done for the current phase
 
 **IDEATION — the seven design rounds in `docs/design/IDEATION-PLAN.md`. Read that plan before opening
-anything in `docs/design/`; it says which round is live.** Rounds 1 (secession), 2 (conquest) and 3
-(politics) are closed. **Round 4 is the economy.**
+anything in `docs/design/`; it says which round is live.** Rounds 1 (secession), 2 (conquest), 3
+(politics) and 4 (economy) are closed. **Round 5 is diplomacy.**
+
+**Round 4 closed 14 September 2026** — nine rulings, seven findings, 96 entries, scenario 4 traced.
+**The hollow spot is closed at both ends**: nothing bad happening to a nation that does not trade, and
+a self-sufficient nation being able to opt out. Two findings stay open on purpose — extraction as a
+single point of failure, which only the alpha can judge, and the logistics spiral, which the design
+stage must put a brake on before anyone builds it.
+
+**Round 5 opens shorter than the others.** Round 3's thirteen federation rulings on 11 September
+already settled what an alliance is, what a bloc costs, and how you join and leave one. **One
+inherited item is blocking:** the diplomatic act that speeds a thaw, without which the 33 pairs that
+open Hostile have no move available at all.
 
 A round is done when a session can read its document end to end and the only new entries are
 recombinations of ones already there; when **every one of its scenarios has been traced** — tracing has

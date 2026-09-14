@@ -4397,3 +4397,50 @@ to `docs/FUTURE-IDEAS.md` **F25**, which names round 4 ruling 2 as the entry to 
 **What is not lost:** conquest's demand that desperation bite **is satisfied**. A national food crisis
 costs real quality of life and drives grievance everywhere the nation holds, so the third cause of war
 can fire. Blunter than round 1 wanted, not absent.
+
+### D213 — Round 4 closes: nine rulings, the hollow spot shut at both ends, and Aaron's own wiring banked, 14 September 2026
+
+**Closed by Aaron on the Control Board at 21:06**, with the same click confirming **rulings 3–6**, the
+four defaults taken without asking on conquest ruling 41's precedent. Nine rulings, seven findings,
+96 idea entries, scenario 4 traced and narrating.
+
+**The hollow spot — *nothing bad happens to a nation that does not trade* — is closed at both ends**,
+and neither end needed inventing. **Ruling 1** kept a cure that had been written on 4 September and
+never built, which closed two of the three items blocking another round within the hour of being
+made. **Ruling 7** shut the other end by gating farmland on extraction, so the five states measured
+above the national average on both food and energy can no longer opt out of the economy entirely.
+
+**What the round cost elsewhere, recorded because it is a trade and not a win.** Ruling 2 kept one
+national pot, so shortage is felt identically everywhere a nation holds — which means **round 1 asked
+for four things and gets three.** "Locally" is deferred to F25, and with it goes S26, buying a region
+off, because ruling 2 removed the regional mood it would have acted on.
+
+**Two findings stay open on purpose and neither is Aaron's to settle on paper.** **D** — resource
+extraction now does three jobs, fuel, ore and fertiliser, so the model has one upstream chokepoint and
+no variety of failure; only the alpha can judge whether that is the best thing in it or the most
+brittle. **E** — the logistics spiral, where importing to fix a shortage raises what you haul, which
+fails routes and loses a fifth of what is in transit, so the cure feeds the disease. Three candidate
+brakes exist and **none is chosen**; it goes to the design stage named rather than discovered.
+
+**The adversarial review found four faults in the round on the day it was written, and the worst
+mattered.** **Ruling 7 did not work as written**: the model derives a nation's need for raw materials
+from its factories and its people and **not from a single acre of farmland**, so a farm-heavy,
+factory-light nation shows a healthy ratio, the gate never closes, and the exact nation the ruling
+exists to catch is the one it never touches. Fixed by naming the missing term as a blocking condition
+on whoever builds it, because `docs/spec/` may not be edited without permission. Recorded as finding G.
+
+**Aaron then built the picture himself.** He asked for an interactive page, filled it with **35
+arrows** the same evening, and those were triaged against what the game can actually do: **7 already
+work, 4 need one small change, 23 went to F27–F34**, and one aside was rescued as **F35** — that a
+*defensive* war should not cost a government what an offensive one does, which inverts an existing
+term rather than adding one. **The largest thing he drew was capital investment**: five arrows saying
+money should build capacity, which nothing in the game does, and which is E26 banked on 6 September
+and never ruled.
+
+**One recommendation for the alpha was never ruled on and this closure does not cover it:** that a
+shortage should throttle **production** rather than merely tax the journey — the same gate as ruling 7,
+pointed at hauling. Cheapest change on the table, still open, recorded in `docs/design/wiring-triage.md`.
+
+**The alternative rejected at the top of the round** was writing a fresh resource model, which would
+have cost a round and put everything rounds 1–3 assumed about hunger back on the table. **Round 5,
+diplomacy, is now live.**
