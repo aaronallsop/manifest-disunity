@@ -115,7 +115,7 @@ the spec and the spine had been written before the whole spec was read. See **fi
 
 | # | From | What it asks for | State |
 |---|---|---|---|
-| **I1** | **Conquest**, ruling 23 | **What a war costs to run.** Deferred here explicitly, and ruling 22's repayment lever cannot be priced without it | ❌ **Still open. The only blocking item left**, and nothing in the spec touches it |
+| **I1** | **Conquest**, ruling 23 | **What a war costs to run.** Deferred here explicitly, and ruling 22's repayment lever cannot be priced without it | ✅ **CLOSED by ruling 3** — a four-line ledger of things the game already counts, per war. **No blocking item remains** |
 | **I2** | **Conquest**, ruling 4's third cause | **Desperation must bite.** A nation that cannot get a resource must actually suffer for it, or the third cause of war can never fire | ✅ **CLOSED by ruling 1.** Spec §5.7 — a state in food deficit or crisis accrues claim pressure toward each adjacent state in surplus, **+2 a turn** deficit and **+5** crisis, and **at 50 a casus belli unlocks**. Suppressed to zero while a food deal covers **≥50%** of the shortfall at **≤1.3× base price**. That is not merely suffering — it is suffering pointed at a neighbour's fields, which is ruling 4's third cause exactly |
 | **I3** | **Conquest**, ruling 4 | **A price must be settable by the seller**, or nobody can charge the absurd price that same cause names | ✅ **CLOSED by ruling 1.** Spec §4.1 — deal price layers five multipliers on the base index, two of which are this: **ScarcityMult** rises as the buyer's own ratio falls, to ×2.5; **AlternativesMult** rises as the buyer's supplier count falls, to ×1.5. The spec calls the second *"the most important term… what makes cutting a rival's other supplier a strategic act rather than a flavour event. Do not simplify it away."* |
 
@@ -123,9 +123,9 @@ the spec and the spine had been written before the whole spec was read. See **fi
 
 | # | From | What it asks for |
 |---|---|---|
-| **I4** | **Conquest** | What a **blockade** actually stops, and what a **destroyed rail hub** does to a corridor |
+| **I4** | **Conquest** | What a **blockade** actually stops, and what a **destroyed rail hub** does to a corridor — ✅ **ruling 6** |
 | **I5** | **Conquest**, finding E | Its fifth story stalls on **I2**. Filed so this round knows its answer unblocks somebody else's scenario |
-| **I6** | **Politics**, rulings 25–27 | **What a federation's toll split is worth** — 5% between direct neighbours, 10% routed, the host's share going to the ground actually crossed. *What a percentage of trade is worth is the economy's to say* |
+| **I6** | **Politics**, rulings 25–27 | **What a federation's toll split is worth** — 5% between direct neighbours, 10% routed, the host's share going to the ground actually crossed — ✅ **ruling 5** states the principle; the sizing goes to the mechanics stage |
 | **I7** | **Politics**, ruling 21 (S26) | **Buying a movement off.** Deferred here because what money can buy is this round's to say |
 | **I8** | **Politics**, F21 | **Funding propaganda** before a referendum — S26 pointed at a vote instead of at a region. The legal end of the same scale as rigging: money buys the result openly, liberties buy it quietly |
 | **I9** | **Secession**, §4 | **Quality of life must be able to fall** — from hunger, from a broken supply, from a blockade — visibly, for a readable reason, **and locally** — and recover when the cause is fixed |
@@ -152,12 +152,12 @@ above it changes what there is to do.
 | **Q1** | **Does the spec's resource model still stand, now that three rounds have made demands of it?** | Everything else is a detail of the answer. It is also the cheapest possible outcome: if it stands, most of this round is filing rather than inventing | ✅ **Ruling 1**, 14 Sep |
 | **Q2** | **Does shortage land on a place, or on a country?** | **Finding A.** Round 1 demanded local; the spec rules resources pool nationally. They cannot both be right | ✅ **Ruling 2**, 14 Sep |
 | ~~**Q4**~~ | ~~Can a seller set a price?~~ | **Struck.** Already answered by spec §4.1 and therefore by ruling 1. See finding C | ✅ **Withdrawn** |
-| **Q3** | **What does a war cost to run?** | **I1 — the last blocking item**, and nothing in the spec touches it | ◀ **Open** |
-| **Q5** | **What does the outside world want?** | Spec §4.3 makes it a price-taker with slow prices and a shipping cap, which says what it *pays* but not what it *wants* | ◀ Open — a default is proposed |
+| **Q3** | **What does a war cost to run?** | **I1 — the last blocking item**, and nothing in the spec touches it | ✅ **Ruling 3** (default) |
+| **Q5** | **What does the outside world want?** | Spec §4.3 makes it a price-taker with slow prices and a shipping cap, which says what it *pays* but not what it *wants* | ✅ **Ruling 4** (default) |
 | **Q6** | **What stops a self-sufficient nation from simply opting out?** | Measured: five states are above the national average on both food and energy. **The spec names this as a balance risk and its whole mitigation is "a Phase 1 stop condition"** — a measurement, not a design. So it is genuinely unanswered | ◀ **Open — Aaron's** |
 | **Q7** | **What can money buy?** | **I7 and I8** — buying a movement off, and funding a referendum. The spec has lending and embargo; it has nothing about buying people | ◀ **Open — Aaron's** |
-| **Q8** | **What is a share of trade worth?** | **I6.** The federation is newer than the spec, so the spec is silent by age rather than by choice | ◀ Open |
-| **Q9** | **What does a blockade stop?** | **I4.** Spec §5.6 names embargo and corridor closure as instruments without saying what they do to the goods | ◀ Open — a default is proposed |
+| **Q8** | **What is a share of trade worth?** | **I6.** The federation is newer than the spec, so the spec is silent by age rather than by choice | ✅ **Ruling 5** (default) — principle here, sizing to the mechanics stage |
+| **Q9** | **What does a blockade stop?** | **I4.** Spec §5.6 names embargo and corridor closure as instruments without saying what they do to the goods | ✅ **Ruling 6** (default) |
 | **Q10** | **Where does water data come from, if water is to be geography rather than invention?** | E51 measured that the rivers in the game are shipping lanes with no flow and no volume, and that the Colorado — the actual water fight — is absent entirely | ◀ **Open — Aaron's**, because it is a spend |
 | **Q11** | **What does the player actually do about all of this, on a Tuesday, with one action?** | The Tuesday test. Last, because every answer above changes it | ◀ **Open** |
 
@@ -314,6 +314,105 @@ prices it as cheap, so it stays cheap whenever it is picked up.
 
 **One line to reverse.** If the alpha shows that a uniform national mood is too blunt to read, this
 ruling is the thing to revisit first, and F25 is the work.
+
+### Rulings 3–6 — four defaults taken without asking, 14 September 2026
+
+**Taken rather than asked, on the precedent of conquest ruling 41**, which confirmed seven defaults in
+one go. Each is a technical shape built entirely out of quantities the game already computes; none
+invents a gameplay concept; all four follow Aaron's steer at ruling 2 that the first real alpha should
+stay a simple game. **Each is one line to reverse and says so.**
+
+---
+
+#### Ruling 3 — the cost of a war is a ledger of four things the game already counts, opened at the declaration and closed at the settlement
+
+**Answers I1, the last blocking item.** Conquest ruling 23(a) deferred *what a war costs* here
+explicitly, and ruling 22's repayment cap is measured against it, so nothing could be priced until it
+landed. Ruling 22 also states the constraint: *"the cost of the war must mean more than what you spent
+attacking."*
+
+**It does, and all four lines already exist:**
+
+| Line | Where it already comes from |
+|---|---|
+| **What you spent attacking** | The attack price, already charged **per Area and per head** |
+| **The extra upkeep of a war posture over your peacetime one** | Force is already on the books every turn, charged on force rather than on where it points |
+| **The output you lost from your own Areas that were attacked** | **Ruling 23(b)** — an Area under attack produces nothing that turn whether or not it falls, and the loss is already **per sector**, not merely "income" |
+| **The occupation surcharge on ground you took and now hold** | Already superlinear, and already the anti-snowball brake |
+
+**Both sides keep one**, because ruling 33 makes both sides table a treaty and ruling 22 prices the cap
+off the proposer's costs. **It is per war** — opened when the war is declared, closed when it is
+settled — because a cap measured against a lifetime of wars is not a cap.
+
+**Nothing new is invented, and that is the recommendation's whole argument.** The alternative was a
+fresh war-economy subsystem, which is the opposite of the steer at ruling 2.
+
+**The one number that is not here:** whether the price of an attack exceeds one turn of the target's
+output. Conquest C102 flagged it as the raid exploit and assigned it to the mechanics stage. **It stays
+there** — this ruling gives it a ledger to be measured against, which it did not have before.
+
+---
+
+#### Ruling 4 — the outside world is one market reached through geography, and Canada and Mexico are not customers
+
+**Answers Q5 and closes deferred #12**, which recorded that Canada, Mexico and the world market have no
+demand at all.
+
+**The world market is adopted exactly as spec §4.3 writes it:** reachable only through a port you own,
+port transit rights, or a Canada/Mexico corridor; **a price-taker with slow-moving prices, not an
+infinite sink**; a shipping capacity cap per state per turn; and the existing external-trade rate as
+the baseline haircut.
+
+**And the part that is new, which resolves the conflict rather than the gap: Canada and Mexico are the
+road to the customer, not the customer.** `CLAUDE.md` rules them geography and not nations — not
+actors, no opinion, no negotiation — so giving them an appetite of their own would make them actors by
+the back door. **The demand lives in the world market; Canada and Mexico are how you reach it.** That
+is already how the map is built: Great Lakes ports reach the world only through the Canada corridor and
+ocean ports reach it directly.
+
+**So "what does the outside world want?" has a deliberately boring answer: anything, slowly, up to a
+cap.** It is a floor under a cornered seller and a ceiling on an export strategy, and it is not a
+character.
+
+---
+
+#### Ruling 5 — a toll between two actors is a transfer; a toll through geography is a cost
+
+**Answers I6's principle.** Politics rulings 25–27 already set the federation's *rates* — 5% between
+direct neighbours, 10% routed, the host's share going to the ground actually crossed. What the economy
+owed was **what a share of trade is worth**, and the honest answer has two halves.
+
+**The principle, which is this round's to state:** when both ends of a toll are nations, the money
+**moves** — it leaves the payer and arrives in the holder's treasury, which is what makes a chokepoint
+worth holding and worth resenting. When the ground crossed belongs to nobody who can hold a treasury —
+Canada, Mexico — the toll is **burned**, a cost to the payer that arrives nowhere. `CLAUDE.md` already
+rules the Canada corridor's 10% *"a cost, not a transfer"*; this generalises it and gives the reason.
+
+**The sizing is not this round's and is not taken here.** Whether 5% of trade is real money is a
+measurement against a built economy, and it belongs to the mechanics stage — **beside ruling 15's X%**,
+which the politics round sent to the same place with a hard constraint of its own.
+
+---
+
+#### Ruling 6 — a blockade is not a new instrument, and neither is a destroyed rail hub
+
+**Answers I4**, and it is the cheapest answer in the round.
+
+**A blockade is corridor closure plus embargo, and both are built or specified.** Corridor closure
+already exists with a notice period, and a deal whose route has closed **pays nothing while its term
+runs down** — the strangle the rivers section already describes. Embargo is spec §5.6: unilateral
+suspension, a reputation cost, and a cost to your own economy. **Nothing needs adding.** What was
+missing was somebody saying that the two together *are* the blockade.
+
+**A destroyed rail hub is ruling 23(b) pointed at a Trade & Transportation Area.** Attacking an Area
+switches off its production for the turn, the loss is already per sector, and Trade & Transportation
+**is** the sector that moves everything else. So attacking the hub denies the logistics — which is what
+destroying a rail hub should mean — with no new mechanic, no new object, and no new number.
+
+**The honest limit, stated so nobody mistakes this for more than it is.** Ruling 23(b) lasts **one
+turn**. A rail hub that is rebuilt by the following quarter is a raid, not a demolition. If the alpha
+wants lasting infrastructure damage, that is a new mechanic and this ruling does not provide it —
+**it goes to the design stage as a question, not into this round as an assumption.**
 
 ---
 
@@ -755,10 +854,10 @@ rounds on 14 September 2026.
 | **The three things at the top of every round** (§0a) | ✅ Written 14 September |
 | **What this round owns** (§1) | ✅ Written 14 September, verified against `DESIGN.md` |
 | **The inbox** (§2) | ✅ **Nine items carried across 14 September**, seven days late. Three blocked a rule another round had already written; **ruling 1 closed two of them** (finding C). **I1 is the last one open** |
-| **The spine** (§3) | ✅ Eleven questions, **now ten** — Q4 was struck as already answered. **Two ruled** (Q1, Q2); eight open, of which **three are Aaron's** |
+| **The spine** (§3) | ✅ Eleven questions, **now ten** — Q4 was struck as already answered. **Six ruled** (Q1–Q3, Q5, Q8, Q9); **four open: Q6, Q7, Q10 and Q11**, and the first three are Aaron's |
 | **Findings** (§3a) | Three. **A closed** by ruling 2, deliberately and not in round 1's favour. **B closed** by ruling 1. **C is mine** — the spine was written from a third of the spec and overstated what was open; it earned rule 14 |
 | **The idea bank** (A–L) | 93 entries, E1–E93. Complete enough to argue from, not yet closed |
-| **Rulings** | **Two.** Ruling 1 keeps the written resource model; ruling 2 keeps one national pot and defers round 1's local demand to **F25** |
+| **Rulings** | **Six.** 1 keeps the written model; 2 keeps one national pot; **3–6 are defaults taken without asking** and want Aaron's confirmation — the war-cost ledger, the world market, tolls as transfer-or-cost, and the blockade |
 | **The scenarios, traced** | ❌ **None.** Scenario 4 — a hungry nation with an army — is this round's exam |
 | **The Tuesday test** | ❌ Unanswered, and recorded as hole 5 below |
 | **What this round hands onward** | ❌ Not written |
