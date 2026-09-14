@@ -875,6 +875,47 @@ veto. *Two tiers of influence where the game already had one, and the lower tier
 whether a vassal's tithe is a share of income or a fixed figure. **Both are numbers and both go to
 the mechanics stage.**
 
+### Ruling 6 — The petition line is a fixed gap below the secession line. Secession's finding A is closed
+
+**RULED 14 September 2026.** *"A fixed gap, set once."* — closing **secession's finding A**, which
+politics ruling 12 declared blocking on 11 September, and answering spine question 2 and in-tray
+item 10.
+
+**One number, below the declaration threshold, the same for every movement in every nation.** A
+movement that crosses the lower line **asks**; a movement that crosses the upper line **may leave**.
+The gap between them is a single dial, and it is the same dial everywhere.
+
+**Why this matters more than it sounds.** Today the two lines are the same, which means **no movement
+in this game has ever asked for anything — every one of them declares.** Round 1 named the
+consequence: *"Cascadia would take Portland and Seattle rather than ask for them."* **Ruling 6 creates
+the middle act.** A movement spends a stretch of the game petitioning — of its own government, and of
+the neighbours who could take it in — before independence is even available to it.
+
+**And it gives the player warning they can act on.** The whole of round 3's table — concede, grant
+self-rule, change course, join a bloc, send soldiers — **needs something to be answering.** Under one
+threshold there is nothing to answer until it is too late to answer it.
+
+**The number itself is the mechanics stage's**, per the standing rule that every model constant is a
+named tunable. **What this round fixes is that it is ONE number and it is a gap, not a second
+independent threshold.** *Rejected, and both were put to him: a gap that moves with the government's
+record, and one that moves with the region's condition. Aaron took the constant, which is the version
+that can be tuned after the alpha rather than argued about before it.*
+
+**⚠ The game now has THREE thresholds on the same 0–1 share scale, and nobody has laid them beside
+each other.** Written down here so the mechanics stage sets them as a set rather than one at a time:
+
+| Line | What crossing it means | Constraint on record |
+|---|---|---|
+| **Ruling 15's X%** *(politics)* | A **Unify** movement demands its government go and ask the neighbours | **Must sit below 0.30**, or the Farmers Union and Great Lakes Free Trade can never demand at all — politics finding I |
+| **The petition line** *(this ruling)* | A movement **asks** to join somebody | **Below 0.40**, by definition. Otherwise unset |
+| **`secession.countyThreshold` = 0.40** | An Area will **leave** | Built and live. Ruling 41 raised three movement ceilings to **0.45** so they could reach it |
+
+**⚠ And it creates a new object nobody has named: the movement that can ask forever and never
+leave.** Any movement whose ceiling falls **between the petition line and 0.40** is permanently in the
+asking state — it can never declare, and it never stops petitioning. **That is either the best thing
+in this ruling or a bug**, depending on how many movements land there, and **it is a data question
+that must be measured rather than guessed.** *Finding H.*
+
 ---
 
 ## 6. Findings
@@ -885,6 +926,7 @@ the mechanics stage.**
 | **B** | **Patronage already exists and no round knew it.** Aid buys a client whose politics drift toward the donor's, one patron at a time, outbid-able, decaying. Vassalage inherits working machinery. §3e | **OPEN, and it changes question 5** | This round |
 | **C** | **There is no stance state machine.** Hostile is a band on a decaying score, and the thirty-three hostile pairs were asserted from claimant lists, never measured. §3b | **OPEN, and it prices item (a)** | This round, then the **data stage** to measure the thirty-three |
 | **D** | **F2 asks for a reputation number the build already has.** F2 specifies *"a new per-nation standing that decays toward neutral"*; treaty standing is pacts held minus breaches with the breach weighted heavier. **Two of them would be two different ideas about what breaking a promise costs** — which is what F2's own last paragraph warns against. T75, T76a | **OPEN** | This round |
+| **H** | **Ruling 6 creates the movement that can ask forever and never leave** — any movement whose ceiling falls between the petition line and 0.40. **Either the best thing in the ruling or a bug, depending how many land there**, and it cannot be judged without counting them | **OPEN** | **The data stage**, once the gap has a number. Then the **alpha** |
 | **G** | **The south may run away with the continent.** Rulings 1–3 leave the Confederate five as the only large group of nations on the board that can freely combine, while the west and the north-east are locked. **Nobody can judge on paper whether that makes the south dominant** | **OPEN** | **The alpha.** A watch item, not a fix |
 | **F** | **Ruling 2 makes the Confederacy winnable by agreement, and nobody has priced that.** Its homeland is 537 Areas and round 1 ruled it cannot be done without Texas, five nations away. **Five southern claimants who may now federate freely could assemble most of it without a shot** | **OPEN** | **Whoever builds the reunification contests.** Not this round |
 | **E** | **Hostility blocks every instrument except the one that resolves it.** Conquest rulings 18, 20 and 21: no deal, no corridor, no treaty with a hostile nation — and the contests put a **floor** under thirty-three pairs so the thaw cannot reach them either. **The act invented to fix hostility is barred from the pairs that need it most.** T7, T29 | **HALF CLOSED by rulings 1 and 2** — the bar is now deliberate where it falls and lifted where the game needs it. What remains open is the other half: **every alliance on the board still has to pass through the thaw first**, because you cannot ally with someone you are hostile to | This round |
