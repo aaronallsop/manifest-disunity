@@ -781,6 +781,100 @@ south is now the only large region on the board where nations can freely combine
 is the shape of the map this round has just drawn**, and the alpha should be watched to see whether
 the south runs away with the continent because of it.
 
+### Ruling 4 — There are two multilateral objects. A bloc is light; a federation is heavy
+
+**RULED 14 September 2026.** *"Two objects — a bloc is light."* — answering spine question 4, and
+in-tray items 3, k, l and u.
+
+**A BLOC is a standing multilateral deal and nothing more.** Free movement of goods between members,
+a common front toward everyone else, and no government of any kind: **no elected leader, no budget,
+no turn of its own, no mutual defence.** That is what seven farm governors signing a piece of paper
+actually is, and the story is explicit that the Farmers Union is *"not a state."*
+
+**A FEDERATION is what round 3 ruled** — leader, budget, turn, flat toll, and an attack on one being
+a war with all. **It is the heavy commitment, and the two are different objects with different
+prices.**
+
+| | Bloc | Federation |
+|---|---|---|
+| Leader | none | **elected**, ruling 25 |
+| Budget and a turn of its own | none | **yes**, ruling 25 |
+| Mutual defence | **none** | **an attack on one is a war with all**, ruling 28 |
+| Internal trade | **free movement of goods** | **flat 10% toll replacing members' own arrangements**, rulings 25–26 |
+| Peace | members may still quarrel | **at peace with every member, full stop**, ruling 30 |
+| What it is in the story | the Farmers Union; Washington–Oregon | the United States of New England |
+
+**Why this is right and the cheap answer was wrong.** Collapsing them would have meant seven farm
+governors signing a trade pact and automatically acquiring an elected president and a joint army.
+**The story has three light agreements and one heavy one**, and one object could only have described
+one of them.
+
+**Four defaults taken without asking, because each has a precedent already ruled.** *Say so if any is
+wrong; none is a product judgement.*
+
+1. **Three is the floor for a bloc too.** Ruling 34 set it for federations. Two nations agreeing
+   something is a bilateral deal and the game already has those.
+2. **Members vote you in; anyone may walk out.** Ruling 34's joining and leaving, reused wholesale.
+3. **A bloc cannot expel.** Matching ruling 34, which gives federations no expulsion either. *T39
+   argued for it; the default is the precedent, and it is the reversible choice.*
+4. **A bloc does not make its members peaceful with each other.** That is ruling 30 and it is a
+   federation's property. **Two members of the same bloc may be Hostile** — which is exactly Chicago
+   leaving the Farmers Union with north-west Indiana in its pocket.
+
+**⚠ And ruling 4 answers something round 3 asked and could not close.** Politics found that *"join a
+bloc"* is the **concede-less answer to a Unify movement** — integration without a merger. That only
+works if a bloc is cheap. **Under a one-object rule the concession would have been a federation**,
+which is very nearly the merger the movement wanted, and the valve would have closed. *The light bloc
+is what keeps round 3's ruling honest.*
+
+**Still open, and it is the collision round 3 flagged:** the federation's flat, automatic,
+unrefusable 10% against the build's negotiated, per-mode, per-direction, compounding corridors with a
+notice period. **Ruling 4 makes it worse, not better** — there are now two internal-trade regimes to
+reconcile with the built one instead of one. *T41, and it is the design stage's.*
+
+### Ruling 5 — A vassal keeps its turn and loses its foreign policy. Conquest's Subject is closed
+
+**RULED 14 September 2026.** *"Foreign policy only."* — answering spine question 5, in-tray items 2,
+(e) and (m), and **closing C112**, which conquest deferred here on 9 September.
+
+**The vassal keeps its action and runs itself at home.** What it loses is the foreign column: **it
+cannot sign a deal, grant a corridor, join a bloc, ally, or declare a war without its overlord's
+consent.** The overlord holds a **veto over anything the vassal signs**. Beyond that: **a tithe of
+income**, and **free passage for the overlord's goods.**
+
+**Why this is the answer and the literal one was not.** C112 stated the problem exactly: *"A subject
+that keeps its action is not subject; one that loses it leaves a player with no game to play."*
+Ruling 5 refuses the second horn. **A vassal that keeps its turn still has a game** — it governs, it
+builds, it manages its own movements, it can try to get strong enough to walk away — **and what it
+has lost is the thing it would most want back**, which is the definition of a humiliation worth
+playing through.
+
+**So vassalage is playable from both sides, and that is what closes C112.** Conquest could not
+resolve Subject because both answers were unacceptable; the third one — *lose a column, not the
+turn* — was not on the table. **Annex takes ground, Unite absorbs a nation, and Vassal takes the
+foreign policy.** The awkward middle now has a shape.
+
+**And it sits exactly on top of what is already built.** §3e: paying aid already makes a nation a
+client whose politics drift toward the donor's, one patron at a time, outbid-able and decaying.
+**Ruling 5 is the formal layer over that informal one** — money buys drift, and vassalage buys the
+veto. *Two tiers of influence where the game already had one, and the lower tier needs no work.*
+
+**Three defaults taken, each with a precedent or the story behind it.** *Say so if any is wrong.*
+
+1. **Vassalage can be demanded, and refusing is a cause for war.** The story rules this already:
+   Houston demanded it of Louisiana, was refused, and invaded. **So it is T25's ultimatum pointed at
+   sovereignty**, and it is how the story's largest war started.
+2. **It can also be offered upward** — a small nation that cannot survive alone asks a large one to
+   take it. T51. *The more interesting half, because the player is the one deciding what they are
+   prepared to stop being.*
+3. **A vassal may repudiate, and repudiating is a hostile act.** Not a free exit like leaving a bloc,
+   or vassalage would mean nothing. The precedent is ruling 29 — *declare anyway, and you are out* —
+   with the consequence landing on the vassal rather than the federation.
+
+**Still open and not this round's:** what the overlord's veto costs the overlord to exercise, and
+whether a vassal's tithe is a share of income or a fixed figure. **Both are numbers and both go to
+the mechanics stage.**
+
 ---
 
 ## 6. Findings
