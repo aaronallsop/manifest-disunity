@@ -971,3 +971,155 @@ semiconductors, and above all agriculture — which is what would join the resou
 **When to pick it up.** If the alpha comes back saying every problem has a purchase order attached —
 that a player can always buy, build or conquer their way out of any pressure — **water is the first
 thing to reach for**, and nothing else in the design does the same job.
+
+## F27 — Tired armies fight worse
+
+**Aaron's, 14 September 2026**, drawn on the Sector Wiring page: *"low morale makes the army weaker."*
+Deferred by him the same evening, with F28–F34, as beta work.
+
+**What is missing.** A nation's force is derived from **population, wealth per head, and whether the
+state governs well and its people agree with it.** War weariness is not one of the terms.
+
+**Why it is worth keeping.** It closes a loop that is open at one end. Weariness rises with fighting
+and decays only with peace, and today it costs you **politics and nothing else** — the electorate
+reads it, the army does not. A nation that has fought for a decade should be worse at fighting, and
+at the moment it is exactly as good as it was on the first turn.
+
+**What it would take.** One term on the force derivation. Among the smallest changes on this list.
+
+## F28 — Food makes people
+
+**Aaron's, 14 September 2026**: *"It is crudely true that if man's caloric intake is sufficient, he
+will somehow stagger to maturity, and he will reproduce."*
+
+**What is missing.** Population grows at a base rate and **does not read food at all.** A starving
+nation grows exactly as fast as a fed one.
+
+**Why it is worth keeping.** It is the one idea here that makes **famine compound**. Today a food
+crisis costs quality of life and grievance and then stops; with this it also costs you the people who
+would have grown the next harvest. Nothing else in the design has that shape.
+
+**What it would take.** One term on the growth rate. Small — but it wants care in tuning, because a
+compounding penalty is the kind of thing that empties a map if it is set too hard.
+
+## F29 — Quality of life should feed authority between elections
+
+**Aaron's, 14 September 2026**: *"people with a bad life don't trust the government as much"*, and its
+other half, *"better life, the more they are willing to let the government get away with things."*
+
+**What is missing.** The **electorate already reads quality of life** — it is one of the four things a
+government is answerable for when the vote comes. But **authority does not read it in between**, so a
+government can preside over a collapse for three years and lose no grip at all until election day.
+
+**What it would take.** One term on authority, signed in both directions, which is Aaron's own
+framing: a good life buys latitude and a bad one spends it.
+
+## F30 — The reputation nobody measures
+
+**Aaron's, 14 September 2026** — four arrows that land on the same missing idea.
+
+> *"People in general don't like resource extraction happening in their back yard." · "People like
+> better tech." · "Better tech means people like you to get your tech." · "Poorly treated people makes
+> you look bad to neighbours."*
+
+**What is missing.** Influence rises with **economic weight, trade reach and alignment abroad**, and
+falls with conquest, occupation, coalitions and not being recognised. **Not civil liberties. Not
+technology.** And nothing models a local cost to digging things up.
+
+**Why it is worth keeping.** Three of the four are about being **admired rather than feared**, which
+is the half of influence the model does not have. The fourth — what extraction costs the people living
+on top of it — is the only idea in the whole set that makes a resource a **liability** as well as an
+asset.
+
+**What it would take.** Four small separate terms rather than one system, which makes this the easiest
+group to take **in pieces**. The back-yard one is the odd one out and the most interesting.
+
+## F31 — Better finance, better terms on a deal
+
+**Aaron's, 14 September 2026**: *"Better finance means better trade."*
+
+**What is missing.** A finance surplus already lets you **lend to other states**; there is no link
+from finance to getting a **better price** on a deal.
+
+**What it would take.** Small, and it overlaps what the price model already defines — a deal price is
+already the base index times five multipliers, so this is a sixth, or a term inside one.
+
+## F32 — Technology multiplies every sector
+
+**Aaron's, 14 September 2026** — five arrows: *"better tech means better extraction · better factories
+· better logistics management · better farming · better finance."*
+
+**What is missing.** The information sector does exactly **two** things today: it makes other nations'
+figures wrong when you inspect them, and it leaks tax.
+
+**Half of it already exists, which makes this cheaper than it looks.** **IT already compounds GDP
+fastest of the six sectors** — so "technology makes everything grow" is in the model already, as a
+*growth rate*. What Aaron is describing is the other form: a multiplier on **output**, now, rather than
+on growth over decades.
+
+**What it would take.** A coefficient from the information band onto every other sector's output.
+Conceptually simple; it touches all six, and it needs care so a tech-heavy nation does not run away
+with the map.
+
+## F33 — People as an input to production
+
+**Aaron's, 14 September 2026** — three arrows: *"people to work the mines" · "factories need workers" ·
+"tech needs skilled workers."*
+
+**What is missing.** Population exists, grows, migrates, and already feeds **GDP growth** — but **no
+production anywhere reads it.** An emptied region produces exactly what a crowded one does.
+
+**Why it is worth keeping.** It is what would make **migration matter economically**. Today people
+moving changes the political map and nothing else; with this, a region losing its people loses its
+output, which is the mechanism behind every real industrial decline.
+
+**What it would take.** Moderate. The population figure is already per region so the join exists; the
+new part is a labour requirement per sector. **"Skilled" labour is a second and larger thing** —
+banked as **E36** and **E37**, where educated labour takes a generation to make and a year to lose,
+and leaves first when a country goes badly.
+
+## F34 — Money builds capacity
+
+**Aaron's, 14 September 2026** — five arrows, and the largest single thing he drew.
+
+> *"New mines require new capital investments." · "New factories require huge capital investments." ·
+> "Tech needs huge capital investments." · "An army without finance is no longer an industrial
+> complex."*
+
+**What is missing.** **Nothing in the game turns money into capacity.** A sector's size comes from
+geography and from GDP, and you cannot build a mine at any price. Finance today is a sector that
+*earns*; in Aaron's map it is the thing everything else queues behind.
+
+**Why it is worth keeping, and it is the strongest case here.** It is the only idea that gives a rich
+nation something to **do** with money besides buy food — and buying capacity is the only purchase in
+the design that **changes the map permanently.** Banked as **E26** on 6 September in those words: *"the
+Bay Area buying food is one thing; the Bay Area buying a fertilizer plant is the other, and only the
+second changes the map."*
+
+**What it would take.** A genuinely new system: a spend, a build time, and a capacity figure that
+changes. It also reaches backwards — every existing save assumes capacity is fixed by geography.
+
+**What it costs beyond the build.** It reverses a property round 4 §4a called a feature: that
+**finance is the one sector a blockade cannot touch.** Under F34 a blockaded nation still banks, but it
+stops being able to build its way out — which is arguably better drama and is definitely a different
+game.
+
+## F35 — A defensive war is not the same war
+
+**Aaron's, 14 September 2026**, written as an aside inside another arrow and rescued because the arrow
+it rode on was pointing the wrong way: *"people with a bad life don't trust the government as much when
+they are at war — **unless it is a defensive war, then it is the opposite**."*
+
+**What is missing, and it is a real gap.** The game has **one** war weariness. Fighting raises it,
+peace lowers it, and nothing asks **who started it.** So being invaded costs a government exactly what
+invading costs it, and a nation defending its own ground pays the same political price as one
+adventuring abroad.
+
+**Why it is worth keeping.** It is the only idea in the set that makes the *reason* for a war
+mechanically different from the war itself — and it **inverts** a term rather than adding one, which is
+usually where the interesting behaviour is. It also gives a government a reason to want to be seen as
+the defender, which is a diplomacy idea hiding inside a military term.
+
+**What it would take.** The machinery to know who declared **already exists** — conquest ruling 33
+makes the defender the nation that did not declare, and the peace-treaty round already depends on
+telling them apart. So this is a sign flip on an existing term rather than a new record.
