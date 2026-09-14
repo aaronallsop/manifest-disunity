@@ -304,20 +304,64 @@ tr:last-child td{border-bottom:0}
 const BOARD = {
   project: "Manifest Disunity",
   livery: "tower",                      // tower | mars | violet | deep | slate
-  updated: "2026-09-14 17:40",          // when you last republished, local time
+  updated: "2026-09-14 22:10",          // when you last republished, local time
 
   // Three or four measured figures. value: number|string, or null = "not yet measured".
   figures: [
-    { label: "Design rounds done",      value: "3 of 7 — the economy is finished and waiting on you" },
-    { label: "Decisions made on the economy today", value: "9 — two yours, four mine to confirm, three yours" },
+    { label: "Design rounds done",      value: "4 of 7 — diplomacy is next" },
+    { label: "Decisions you made today", value: "12 — nine on the economy, plus the writer" },
     { label: "Rulings written down and indexed", value: 145 },
-    { label: "Ideas banked on the economy", value: "96, up from 93" },
-    { label: "Tests green — not re-run today; no code was touched", value: 956 },
+    { label: "Ideas parked for later",  value: 35 },
+    { label: "Tests green — all of them, run tonight in 215 seconds", value: 956 },
     { label: "Current version",         value: "v0.6" },
   ],
 
   // The single most important true thing right now. tone: "bad" | "warn" | "ok" | "neutral".
   headline: {
+    tone: "ok",
+    text: "THE ECONOMY IS CLOSED. You shut it at five past nine tonight and confirmed the four "
+        + "decisions I had taken in your place with the same click. Four rounds of seven are done "
+        + "and diplomacy is next.\n\n"
+        + "THE HOLE IS CLOSED AT BOTH ENDS, AND NEITHER END NEEDED INVENTING. For a fortnight every "
+        + "round has stalled on the same thing — nothing bad happens to a country that does not "
+        + "trade. It turned out a cure had been written for it on 4 September and never built, "
+        + "because the summer's trade work was deliberately told to leave the economy's foundations "
+        + "alone. You kept it, and that one decision unblocked two rules another round had already "
+        + "written, within the hour. The other end was countries rich enough to ignore everyone: "
+        + "you ruled that farmland needs fertiliser, which is not spread evenly, so almost nobody "
+        + "is genuinely self-sufficient any more.\n\n"
+        + "WHAT IT COST, BECAUSE IT IS A TRADE AND NOT A CLEAN WIN. You chose one national pot — a "
+        + "shortage is felt the same everywhere — for the sake of a simple first alpha. That means "
+        + "the first round asked the economy for four things and gets three: hunger can now fall on "
+        + "a country, visibly, and recover, but not on a PLACE. So a player cannot point at a "
+        + "region and say THERE. Buying a restless region off went with it, because there is no "
+        + "longer a regional mood to buy. Both are written down as the first things to revisit if "
+        + "the alpha feels too blunt.\n\n"
+        + "I FOUND A FAULT IN ONE OF TODAY'S OWN DECISIONS BEFORE TELLING YOU IT WAS DONE. We "
+        + "agreed farmland should need fertiliser. But the model works out a country's need for raw "
+        + "materials from its factories and its people and NOT from a single acre of farmland — so "
+        + "a country with lots of farms and few factories looks perfectly supplied, the gate never "
+        + "closes, and the exact country the rule exists to catch is the one it never touches. "
+        + "Caught the same day, fixed by naming the missing piece as a condition on whoever builds "
+        + "it.\n\n"
+        + "THEN YOU DREW THE THING YOURSELF, AND IT WAS THE MOST USEFUL HOUR OF THE DAY. You asked "
+        + "for a page to map the resources, rejected my first version as too fiddly, and filled the "
+        + "second with 35 arrows. Seven already work. Four need one small change. Twenty-three "
+        + "needed something the game does not have and are now parked as future ideas. The biggest "
+        + "thing you drew was CAPITAL — five arrows saying money should build mines and factories "
+        + "and tech, which nothing in this game can do. That is the single largest gap between your "
+        + "picture and the built one, and it is the only idea in the set that would give a rich "
+        + "country something to do with money besides buy food.\n\n"
+        + "ONE THING IS STILL YOURS AND IT IS BELOW. Four of your own arrows say a shortage should "
+        + "stop things being MADE, not just lose them on the road. You parked the other eight groups "
+        + "and never answered this one. It is one line, it is the cheapest change on the table, and "
+        + "it is the only card on this board.\n\n"
+        + "All 956 checks pass, run tonight in 215 seconds rather than quoted from this morning. "
+        + "Everything is committed and backed up. No game code, game data or game rules were "
+        + "touched — this was a design round, and design rounds write documents only.",
+  },
+
+  _oldHeadline2: {
     tone: "ok",
     text: "THE ECONOMY ROUND IS FINISHED AND IT IS WAITING ON YOU. Nine decisions today. You made "
         + "five of them, I took four in your place and they are listed below for you to confirm or "
@@ -411,6 +455,29 @@ const BOARD = {
   // Only decisions that are genuinely the owner's. Ids are permanent.
   // Only decisions that are genuinely the owner's. Ids are permanent.
   decisions: [
+    { id: "shortage-stops-production",
+      title: "Should a shortage stop things being MADE, or only lose them on the road?",
+      evidence: "Four of the arrows you drew tonight say the same thing: ore needs trucks, goods need "
+              + "trucks, food needs trucks, and trucks need gas. Today a hauling shortage loses a "
+              + "fifth of what is in transit and raises tolls — it never stops a single thing being "
+              + "produced. So a country can lose its entire ability to move goods and its factories "
+              + "carry on making them anyway, piling up where nobody can reach them.\n\n"
+              + "This is exactly the same shape as the fertiliser rule you already made this morning: "
+              + "a thing you cannot get stops you running at full tilt. It would just be pointed at "
+              + "two more pairs. You parked the other eight groups of your arrows as future ideas and "
+              + "this one was never answered either way — it was not in that pile, it was the one I "
+              + "had recommended doing for the alpha.",
+      cost: "Almost nothing. It is the same machinery as a rule that already exists, pointed somewhere "
+          + "new — no new system, no new screen, and the only genuinely new thing is a number, which "
+          + "belongs to the number-setting stage anyway. Saying no costs nothing either, and leaves "
+          + "the oddity that the one sector everything depends on cannot actually stop anything.",
+      recommendation: "Do it. It is the cheapest item on any list I have put in front of you today, "
+                    + "and it closes the last thing in the sector map that reads as obviously wrong. "
+                    + "If you would rather not add anything at all before the alpha runs, that is a "
+                    + "defensible no and I will file it with the other eight." },
+  ],
+
+  _answered: [
     { id: "close-round-4",
       title: "The economy round is finished. Do you call it closed?",
       evidence: "Nine decisions, ninety-six ideas on file, and the one story this whole seven-round "
@@ -489,9 +556,6 @@ const BOARD = {
                     + "voice, the 54-page questions file, and their one genuinely good instinct: "
                     + "leaving a story blank rather than making one up. I would not bet on getting "
                     + "that back." },
-  ],
-
-  _answered: [
     { id: "close-round-3",
       title: "Politics is finished. Do you call it closed?",
       evidence: "41 rulings. All twelve questions the round opened with are answered, and so are the "
@@ -860,12 +924,41 @@ const BOARD = {
             + "each have an owner.\n\n"
             + "CLOSED BY YOU on 12 September at 02:41, on this board. Forty-one rulings plus one "
             + "half-ruling, ten findings, every one with an owner." },
-    { name: "Design round 4 — The economy", status: "current",
+    { name: "Design round 5 — Diplomacy", status: "current",
+      brief: "Recognition, alliances, vassals, blocs, ultimatums, and what a brand-new country that "
+           + "nobody will talk to can actually do about it.",
+      actual: "NEXT, and it opens shorter than any round yet — because you already did a large part "
+            + "of it on Friday without either of us calling it that. Thirteen of round three's "
+            + "rulings were about the federation: what it is, that an attack on one member is a war "
+            + "with all of them, that members vote you in and anyone may walk out, that it makes "
+            + "peace as one, and how its income is split. That is mutual defence, joining, leaving "
+            + "and revenue sharing — diplomacy in everything but its name.\n\n"
+            + "So what is genuinely left is the one-to-one end: what a country GETS for recognising "
+            + "somebody, whether conquering the country that refuses to recognise you ends the veto "
+            + "or makes it permanent, paying to grow a movement inside a neighbour, ultimatums, "
+            + "coming to a neighbour's defence uninvited, and how a movement asks a country to take "
+            + "it in.\n\n"
+            + "ONE ITEM IS BLOCKING and it comes from the conquest round: you ruled that some "
+            + "diplomatic act exists which speeds up a thaw, and parked it for this round. Until it "
+            + "exists a grudge can only be waited out — and the board opens with THIRTY-THREE pairs "
+            + "of countries permanently hostile, not one of which has a single move available. That "
+            + "is the first thing round five has to answer.\n\n"
+            + "The economy also sent it something worth knowing: opening one extra supplier is worth "
+            + "about twelve per cent on the price, which quietly turns who will trade with you from "
+            + "a commercial question into a diplomatic objective." },
+    { name: "Design round 4 — The economy", status: "done",
       brief: "Finish the economy against everything rounds 1, 2 and 3 have demanded of it, rather than "
            + "starting it from nothing. It has been collecting work from every other round all week.",
-      actual: "FINISHED 14 September and waiting on your word to close — it is the card at the top. "
-            + "Nine decisions, five yours and four mine to confirm. Ninety-six ideas on file, up from "
-            + "ninety-three.\n\n"
+      actual: "CLOSED by you on 14 September at 21:06, with the same click confirming the four "
+            + "decisions I had taken in your place. Nine rulings, seven findings, ninety-six ideas on "
+            + "file.\n\n"
+            + "AND THEN YOU DREW IT YOURSELF. You asked for a page to map the resources, told me the "
+            + "first version was too fiddly to work with, and filled the second with 35 arrows in an "
+            + "evening. Seven of them already work. Four need one small change and are the card at "
+            + "the top of this board. Twenty-three needed something the game does not have and are "
+            + "parked as future ideas. The biggest thing you drew was CAPITAL — five arrows saying "
+            + "money should build mines, factories and technology, none of which this game can do at "
+            + "any price.\n\n"
             + "THE HOLE IS CLOSED. Nothing bad happening to a country that does not trade had two "
             + "halves and both are answered. The first already had a cure written on 4 September that "
             + "nobody had built, and you kept it. The second was that a country which feeds itself "
