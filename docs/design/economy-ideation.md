@@ -88,14 +88,16 @@ closed rounds now demand of it, and to settle where the two disagree. It is not 
 2. **A trade deal cannot be haggled on price.** The lever exists in the model and reaches no screen, so
    *a buyer with no alternative pays exactly what a buyer with three alternatives pays*. `DESIGN.md`
    calls this "the single largest gap between what the economy spec asks for and what is built".
-   **Conquest is blocked on it** (I3).
+   **The spec already closes it on paper** — §4.1's scarcity and alternatives multipliers — so this is
+   a build gap and not a design one, and conquest's I3 is answered. See finding C.
 3. **Nothing in the transit layer has a length.** Measured 5 September 2026: the closest two ports on
    one sea are **16 miles** apart and the farthest **2,578**, priced identically; a Canada corridor
    spans **411 to 2,442 miles** at one flat rate.
 4. **No AI nation ever closes a corridor.** They sign them, price them and let them expire. The
    decision to cut somebody off is the player's alone, and the machinery is symmetrical.
-5. **Quality of life is one national number.** This is finding A below, and it is the round's first
-   real contradiction.
+5. **Quality of life is one national number.** This was finding A, and **ruling 2 keeps it that way**
+   deliberately: one national pot, shortage felt identically everywhere, round 1's "locally" deferred
+   to F25 for the sake of a simple first alpha.
 
 ---
 
