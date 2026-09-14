@@ -987,6 +987,9 @@ change does.*
 | **B** | **Patronage already exists and no round knew it.** Aid buys a client whose politics drift toward the donor's, one patron at a time, outbid-able, decaying. Vassalage inherits working machinery. §3e | **OPEN, and it changes question 5** | This round |
 | **C** | **There is no stance state machine.** Hostile is a band on a decaying score, and the thirty-three hostile pairs were asserted from claimant lists, never measured. §3b | **OPEN, and it prices item (a)** | This round, then the **data stage** to measure the thirty-three |
 | **D** | **F2 asks for a reputation number the build already has.** F2 specifies *"a new per-nation standing that decays toward neutral"*; treaty standing is pacts held minus breaches with the breach weighted heavier. **Two of them would be two different ideas about what breaking a promise costs** — which is what F2's own last paragraph warns against. T75, T76a | **OPEN** | This round |
+| **I** | ⚠ **The pariah's one unilateral instrument is empty.** Every opening nation is already recognised by everybody, so Deseret has nobody to recognise — and ruling 8 defers the only fix past the alpha. **For the whole alpha, the one nation that opens as a pariah has no diplomatic move of its own at all.** §7 | **OPEN, and it is the worst thing found today** | **This round**, via in-tray item (a) — the overture is the fix |
+| **J** | ⚠ **Ruling 4 does not say whether an unrecognised nation may join a bloc.** If it may, a bloc drives straight through D166; if it may not, the multilateral door is shut to the nations that most need one. §7 | **OPEN** | **This round.** A hole in a ruling made this session |
+| **K** | **Ruling 5 is the pariah's escape hatch and nobody intended it.** Vassalage sits on aid, which recognition does not gate — so submitting to your own parent buys your existence. **Excellent drama; possibly too cheap.** §7 | **OPEN** | **This round**, then the mechanics stage |
 | **H** | **Ruling 6 creates the movement that can ask forever and never leave** — any movement whose ceiling falls between the petition line and 0.40. **Either the best thing in the ruling or a bug, depending how many land there**, and it cannot be judged without counting them | **OPEN** | **The data stage**, once the gap has a number. Then the **alpha** |
 | **G** | **The south may run away with the continent.** Rulings 1–3 leave the Confederate five as the only large group of nations on the board that can freely combine, while the west and the north-east are locked. **Nobody can judge on paper whether that makes the south dominant** | **OPEN** | **The alpha.** A watch item, not a fix |
 | **F** | **Ruling 2 makes the Confederacy winnable by agreement, and nobody has priced that.** Its homeland is 537 Areas and round 1 ruled it cannot be done without Texas, five nations away. **Five southern claimants who may now federate freely could assemble most of it without a shot** | **OPEN** | **Whoever builds the reunification contests.** Not this round |
@@ -994,7 +997,106 @@ change does.*
 
 ---
 
-## 7. The close
+## 7. Scenario 5, traced — "a brand-new nation that nobody will talk to"
 
-*Written when the round closes: the Tuesday test, scenario 5 traced — "a brand-new nation that
-nobody will talk to" — and what this round leaves rounds 6 and 7.*
+**The round is NOT closed.** Aaron closes a round. This is the trace, done because tracing has found
+contradictions in all three closed rounds that the rulings alone did not — and it found three more
+here.
+
+**The scenario, as the ideation plan set it in September:** *"Born out of round 1's machinery,
+holding real ground, unable to trade because nobody recognises it. What it can do about that is
+diplomacy's whole reason to exist."*
+
+**Traced against the one nation on the board that actually opens this way: Deseret.** Not a
+hypothetical — it is founded by the shattered scenario with a parent, Utah, and an empty recognition
+row, and it is the only such nation on the opening board (§3c).
+
+### Turn 1. What can Deseret actually do?
+
+**Every instrument in the game requires MUTUAL recognition, verified this session.** The trade deal,
+the treaty and the transit corridor all test it and all refuse. **Two things do not: recognising
+somebody, and receiving aid.**
+
+So the pariah's list is short:
+
+| Move | Available to Deseret? |
+|---|---|
+| Sign a trade deal | **No** — needs mutual recognition |
+| Sign a treaty | **No** — same test |
+| Ask for or grant a corridor | **No** — same test |
+| Take a seat in a coalition | **No** — below the floor |
+| Sell on the world market | **Yes, at a smuggler's rate** — a haircut, not a lock |
+| **Recognise somebody** | ⚠ **See below. This is the problem** |
+| **Receive aid** | **Yes — but somebody else has to spend their turn on it** |
+
+### ⚠ Finding I — the pariah's one unilateral instrument is empty
+
+**Recognition is the only unilateral act in the game (T9), and Deseret cannot perform it.** Every
+nation the game opened with is recognised by everybody unconditionally (§3c), so there is nobody left
+for Deseret to recognise. **The gift it has to give has no recipient.**
+
+**The only nations it could ever recognise are the four Texan rebels — and ruling 8 has just deferred
+building them until after the alpha.** So for the whole of the alpha test, **the one nation on the
+board that opens as a pariah has no diplomatic move of its own available at all.** It cannot trade,
+treaty, transit, or take a seat; it cannot give the one thing that costs nothing; and the only route
+open to it — aid — **requires another nation to choose to spend its turn on it.**
+
+**Deseret cannot act on its own problem. The game's answer to scenario 5 today is: wait, and hope.**
+*That is the scenario failing to narrate, and it is the third round in a row where tracing found what
+the rulings did not.*
+
+### What closes it, and it is already on the table
+
+**The overture — in-tray item (a) — is the fix, and the trace has just doubled its importance.**
+Recognition's chance is computed from five terms, and **the first of them is Standing: `Relations.score`
+between the pair.** So an action that improves standing **directly raises the chance of being
+recognised**, turn by turn, by exactly the nation whose signature matters most.
+
+**So item (a) is not "the thaw". It is the one action by which a nation improves its own position
+with another, and it does two different jobs:**
+
+1. **It speeds a grudge's cooling** — what Aaron ruled on 9 September.
+2. **It is the only self-help a pariah has** — which nobody knew when it was ruled.
+
+**And T5 now looks like the right shape rather than a nice idea.** *Only the weaker party may make
+the first overture* would mean the move exists precisely for the nation that needs it: Deseret going
+to Utah, quarter after quarter, asking to be let go of. **That is scenario 5 narrating.**
+
+### ⚠ Finding J — ruling 4 does not say whether a pariah may join a bloc
+
+**A bloc is free movement of goods between members (ruling 4), and bloc membership is not one of the
+things the recognition test gates** — because blocs do not exist yet. **So the question is open and
+it matters both ways.**
+
+- **If an unrecognised nation may join a bloc**, then a bloc is a way to trade with people who do not
+  recognise you, and **it drives straight through D166** — the recognition trade block Aaron ruled
+  and which this round is forbidden to re-open.
+- **If it may not**, then the multilateral door is shut to exactly the nations that most need one,
+  and T16's *collective recognition* — join a bloc and receive every member's signature at once — is
+  dead.
+
+**This round should say which.** *It is a hole in a ruling made this session, found by tracing it an
+hour later.*
+
+### ⚠ Finding K — ruling 5 is the pariah's escape hatch, and nobody intended it
+
+**Vassalage is not gated by recognition**, because it sits on aid, which is not gated either. **So
+Deseret's fastest route out of pariah status is to submit to Utah** — give up its foreign policy to
+the very state that claims it, in exchange for being acknowledged to exist.
+
+**That is a genuinely excellent piece of drama and it fell out of two rulings that were not thinking
+about each other.** *Whether it is too cheap is a real question: submitting should probably not
+deliver recognition automatically, or every breakaway ends the same way.*
+
+### What the player does about this, on a Tuesday, with one action
+
+**Answered, and ruling 7 is the answer for the round as a whole** — sponsor a movement inside a
+neighbour, wait years, then invite it, and take ground with no army. **For scenario 5 specifically
+the answer is narrower and it is the overture**: spend the turn on Utah, watch the chance of
+recognition climb, and buy your existence one quarter at a time.
+
+---
+
+## 8. The close
+
+*Written when Aaron closes the round: what it leaves rounds 6 and 7, and the findings with owners.*
