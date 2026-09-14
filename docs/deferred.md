@@ -135,3 +135,25 @@ and neither option is obviously right. **The cheapest fix is probably to leave t
 loosely chronological. One edit, no broken references.
 
 Found 14 September 2026 while adding rule 14.
+
+## 31 — The wiki's economy page now states something false
+
+`docs/wiki/Economy.md` says, in a generated block, *"Nothing here yet. This system has not had its
+design round."* **Round 4 closed on 14 September at 21:06**, so that is untrue as of that moment.
+
+The generator reads only the rounds named in `build/wiki_rulings.json`, and economy is not one of
+them. Fixing it is **adding the round to that file, mapping its nine rulings to pages, and re-running
+the generator** — about an hour, and it is the first thing the next session should do. Recorded here
+rather than left implicit **because a wiki stating something false is the exact class of defect that
+cost this project its worst day.**
+
+## 32 — `resource-map.html` renders as mojibake when opened from the local server
+
+The Sector Wiring page carries no `<meta charset>` of its own, because an artifact file must not
+declare its own `<head>` — the platform supplies one when it publishes. **So the published page is
+correct and this affects only the local file** served by `server.py`, where em-dashes and ellipses
+come out as `â€"`.
+
+Not fixed because the fix is not available inside the file. If local viewing ever matters, the answer
+is a charset header from `server.py`, not an edit to the page. Found 14 September while taking the
+look at the rendered page that should have happened before the first publish.

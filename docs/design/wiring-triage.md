@@ -4,7 +4,7 @@
 would work with the game, and for everything that won't work give me a list and I'll decide what gets
 moved to future ideas and what we should make work for the alpha."*
 
-**The source is the Sector Wiring page** — 35 arrows he drew on the evening of 14 September. The
+**The source is the Sector Wiring page** — the 35 arrows he drew on the evening of 14 September. The
 reading of them is `economy-ideation.md` §4b; this document is the triage.
 
 **Every claim below was checked against `DESIGN.md` or `docs/spec/economy-system-spec.md` on
@@ -183,3 +183,32 @@ points the wrong way and duplicates that.** *Recommend deleting it; it costs not
 
 **Nothing in C reopens a ruling.** Every one is an addition to the model Aaron kept this morning, and
 six of the nine already exist as ideas in the bank rather than as new inventions.
+
+---
+
+## What Aaron decided, 14 September 2026
+
+**All eight groups in C went to future ideas** — *"lets save those 8 ideas for later to future
+ideas"* — and are now **F27 to F34**, ordered cheapest first so the numbering carries the order.
+
+**A ninth was filed without being asked**, because throwing it away would have lost something real:
+**F35**, his aside that a *defensive* war should not cost a government what an offensive one does.
+It rode in on the one arrow that was pointing the wrong way.
+
+**The errors were fixed** — thirteen changes, pinned to the versions read so nothing of his could be
+clobbered. One deleted, one reversed, eight relabelled, four typos including one that said the
+opposite of what the arrow meant.
+
+**The vocabulary was the real error and it was mine.** `earns` is retired — he used it five times to
+mean *improves* and money never came into it — replaced by the opposed pair **raises** and **lowers**,
+with `breaks` reworded to *when this is short, that fails* so it stops doing two jobs.
+
+**One arrow was deliberately left alone:** *farming breaks separatists.* When food runs short
+separatists **rise** rather than fail, and no kind fits that cleanly even with five. Forcing it would
+have been deciding what he meant.
+
+### ⚠ Section B was never ruled on, and the round's closure does not cover it
+
+**B is not in C and did not go to future ideas.** It was recommended **for the alpha** and Aaron
+answered the C groups without answering it. **It remains open**, it is the cheapest change on this
+page, and it is carried in **D213** so it cannot be lost.

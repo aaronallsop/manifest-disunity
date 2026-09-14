@@ -1139,7 +1139,9 @@ fervour itself; this is the part that lands here.)*
 
 **Captured from the Sector Wiring page**, which he asked for and filled in the same evening. The page
 is at the address recorded in `docs/control-board/BOARD-URL.md`; its `links` collection is the record
-and this section is the reading of it. **41 arrows in total — six seeded from rulings, 35 his.**
+and this section is the reading of it. **He drew 35.** One was deleted the same evening as an error
+(it described finance acting on extraction and pointed the other way, and he had drawn it correctly
+elsewhere), so **the board now holds 40 — six seeded from rulings and 34 of his.**
 
 ### First, a fault in the tool, and it is mine
 
@@ -1307,7 +1309,7 @@ reason, not a fresh ruling.
 | **The spine** (§3) | ✅ Eleven questions, **now ten** — Q4 was struck as already answered. **All ten answered** |
 | **Findings** (§3a, §4a, §6) | **Seven.** **A** closed by ruling 2, deliberately and not in round 1's favour. **B** closed by ruling 1. **C** is mine and earned rule 14. **D, E, F** came out of the interaction map. **G is the worst of them and the adversarial review found it**: ruling 7's gate has no demand behind it, so it fails on the one nation it was written for |
 | **The idea bank** (A–L, M) | **96 entries, E1–E96.** Six of the nine rulings were recombinations of what was already banked; **three were not**, and §M banks them. Found by the adversarial review, not by the drafting |
-| **Aaron's own wiring** (§4b) | **35 arrows drawn 14 September** on the Sector Wiring page, read back and recorded. They demand three things the model lacks — capital investment, labour as an input, and technology as a multiplier — all of which are **beta work by his own word** |
+| **Aaron's own wiring** (§4b) | **35 arrows drawn 14 September**, one deleted as an error, **34 standing.** Read back, recorded, and triaged in `wiring-triage.md`: 7 already work, 4 need one small change, 23 went to **F27–F34** and one aside was rescued as **F35** |
 | **Rulings** | **Nine, all confirmed.** 1 keeps the written model; 2 keeps one national pot; **3–6 were defaults taken without asking and Aaron confirmed all four**; 7 gates farmland on extraction; 8 lets money buy a referendum but not a region; 9 leaves water out of the alpha and files it as **F26** |
 | **The scenarios, traced** | ✅ **Scenario 4 traced in §5**, and it narrates. It is the only one this round owns. Conquest's finding E closes with it |
 | **The Tuesday test** | ✅ Answered in §5, and the answer inverts the expectation: the economy has **ten** verbs against a budget of one |

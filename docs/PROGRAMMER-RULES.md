@@ -162,3 +162,26 @@ Add one with `/rule` whenever a mistake earns it. Number them; never delete one.
     section heading of the spec with your own eyes. A table of contents is not a reading, and grep is
     not a reading either — the terms the spec uses are not the terms the question uses. Section 4.1
     answers "can a seller set a price?" without containing the word *seller*.
+
+15. **Write a commit message to a file. Never pass prose to `-m`, and never build one in a heredoc.**
+    Twice in one session a commit failed on quoting: once because an apostrophe inside a `<<'EOF'`
+    heredoc ended the quoting early, and once because double quotes inside `git commit -m "…"`
+    split the message into pathspecs — git then reported `pathspec 'this' did not match any file(s)`
+    for a dozen fragments, which reads like a file problem and is not one. Rule 13 covers heredocs
+    containing backslash escapes; this is the same disease one layer out.
+    **What generalises:** a commit message is prose, and prose contains apostrophes and quotation
+    marks. Write it with the file editor and use `git commit -F <file>`. It costs one extra step and
+    it cannot fail.
+    **The tell:** git complaining about pathspecs when you did not name any paths.
+
+16. **A test runner that reports one test for a file of fifty assertions has not run them.**
+    This project's tests run in a browser and the README says they were written so `node --test`
+    would run them unchanged. Node is now on the machine, so it was tried: it reported
+    **`pass 1`, 64ms, green** for a suite file — because `node --test` imported the module, saw no
+    throw, and counted the *file* as one passing test. The harness registers its own cases and
+    never ran. **A green that fast is not a fast green.**
+    **What generalises:** before trusting a runner you have not used on this project before, check
+    that its **count** matches what the suite actually contains. An exit code of zero proves nothing
+    ran wrong; it does not prove anything ran.
+    **The tell:** the count is suspiciously round, suspiciously small, or exactly one — and the
+    duration is far below the known figure. The real run here was **956 tests in 215 seconds**.
