@@ -304,20 +304,72 @@ tr:last-child td{border-bottom:0}
 const BOARD = {
   project: "Manifest Disunity",
   livery: "tower",                      // tower | mars | violet | deep | slate
-  updated: "2026-09-14 09:20",          // when you last republished, local time
+  updated: "2026-09-14 17:40",          // when you last republished, local time
 
   // Three or four measured figures. value: number|string, or null = "not yet measured".
   figures: [
-    { label: "Design rounds done",      value: "3 of 7 — the economy is live" },
-    { label: "Rulings written down and indexed", value: 136 },
-    { label: "Wiki pages built from them",       value: 81 },
-    { label: "Wiki articles written, awaiting your decision", value: 76 },
-    { label: "Tests green — all of them, measured this morning in 202 seconds", value: 956 },
+    { label: "Design rounds done",      value: "3 of 7 — the economy is finished and waiting on you" },
+    { label: "Decisions made on the economy today", value: "9 — two yours, four mine to confirm, three yours" },
+    { label: "Rulings written down and indexed", value: 145 },
+    { label: "Ideas banked on the economy", value: "96, up from 93" },
+    { label: "Tests green — not re-run today; no code was touched", value: 956 },
     { label: "Current version",         value: "v0.6" },
   ],
 
   // The single most important true thing right now. tone: "bad" | "warn" | "ok" | "neutral".
   headline: {
+    tone: "ok",
+    text: "THE ECONOMY ROUND IS FINISHED AND IT IS WAITING ON YOU. Nine decisions today. You made "
+        + "five of them, I took four in your place and they are listed below for you to confirm or "
+        + "overturn. The round can close as soon as you say so.\n\n"
+        + "THE THING THAT WENT WRONG FIRST, BECAUSE IT SHAPED EVERYTHING AFTER. The economy round "
+        + "went live on the 12th and its in-tray had never been emptied. The conquest round closed on "
+        + "the 9th and the politics round on the 11th, and each of them formally handed work to the "
+        + "economy — nine items, three of which were blocking a rule that had already been written. "
+        + "None of it had been carried across. That is now done, and it is the first thing this "
+        + "session did.\n\n"
+        + "THE BIG DISCOVERY, AND IT MADE THE WHOLE ROUND CHEAPER. The hole this design has been "
+        + "circling for a fortnight — nothing bad happens to a country that does not trade — already "
+        + "had a cure written for it. It is in your economy brief, it was written on 4 September, and "
+        + "it was never built, because the summer's trade work was deliberately told not to touch the "
+        + "economy's foundations. So the first question was not what should happen to a hungry "
+        + "country, but whether the answer already written still holds. You said keep it. That "
+        + "decision alone closed two of the three blocking items within the hour.\n\n"
+        + "WHAT THE ROUND FOUND THAT NOBODY WAS LOOKING FOR. Reading your economy as a network rather "
+        + "than as six separate tables — which nobody had done — the story this entire seven-round "
+        + "plan was built to be able to tell ASSEMBLES ITSELF out of rules that already exist. A "
+        + "mining shortage throttles the farms, hunger follows, and hunger gives a player two doors: "
+        + "build a case for war against the neighbour with full fields, or buy. Nobody designed that "
+        + "chain. It was already there.\n\n"
+        + "AND THE TRAP UNDERNEATH IT, WHICH IS THE MOST SERIOUS THING FOUND TODAY. The cost of "
+        + "hauling is driven by everything you move, INCLUDING every leg of every trade deal. So a "
+        + "country that buys to fix a shortage raises what it is hauling, which tips hauling into "
+        + "deficit, which starts failing routes and loses a fifth of everything in transit — so less "
+        + "of what it bought arrives, so it buys more. The cure feeds the disease and nothing stops "
+        + "it. A country can destroy itself trying to fix a shortage. Written down as something the "
+        + "next stage must put a brake on rather than discover in a play test. It is a prediction from "
+        + "the formulas, not something observed — none of this part of the model has ever run.\n\n"
+        + "I REVIEWED MY OWN DAY AS AN ADVERSARY BEFORE TELLING YOU IT WAS DONE, AND IT FOUND FOUR "
+        + "REAL FAULTS. The worst is that one of today's decisions DID NOT WORK AS WRITTEN. You and I "
+        + "agreed that farmland should need fertiliser, so that a country rich in fields still has to "
+        + "trade. But the model counts a country's need for raw materials from its factories and its "
+        + "people — and not from a single acre of farmland. So a country with lots of farms and few "
+        + "factories looks perfectly supplied, the gate never closes, and the exact country the rule "
+        + "was written to catch is the one country it never touches. Caught the same day, fixed by "
+        + "naming the missing piece as a condition on whoever builds it. It needs one more term and "
+        + "the rule works.\n\n"
+        + "The other three: I had written the hauling trap as established fact when it is a "
+        + "prediction; I published a count of nations I had not checked; and I claimed every decision "
+        + "was a recombination of an idea already on file when three of them were new, so those three "
+        + "are now on file.\n\n"
+        + "NOT DONE, AND STILL YOURS: your writer's 76 articles are still written, reviewed and not "
+        + "merged. That card has not moved.\n\n"
+        + "Everything is committed and backed up. No game code, game data or game rules were touched "
+        + "— this was a design round and design rounds write documents only. The 956 checks were NOT "
+        + "re-run today, because nothing that could affect them was changed.",
+  },
+
+  _oldHeadline: {
     tone: "warn",
     text: "THE WORST MISTAKE THIS WEEK WAS MINE, AND THE WRITER YOU HIRED IS THE ONE WHO FOUND IT. "
         + "The wiki tells you, beside every rule, whether that rule is still live or has been "
@@ -359,6 +411,56 @@ const BOARD = {
   // Only decisions that are genuinely the owner's. Ids are permanent.
   // Only decisions that are genuinely the owner's. Ids are permanent.
   decisions: [
+    { id: "close-round-4",
+      title: "The economy round is finished. Do you call it closed?",
+      evidence: "Nine decisions, ninety-six ideas on file, and the one story this whole seven-round "
+              + "plan was built to be able to tell now runs end to end: a mining shortage throttles "
+              + "the farms, hunger follows, and hunger gives you five real options with different "
+              + "prices — buy the food, buy the fertiliser instead, open a second supplier and get a "
+              + "twelve per cent discount out of diplomacy rather than money, raid their fields so "
+              + "they go hungry instead of you getting fed, or take the fields and live with what "
+              + "that does to you eighteen months later. Your own test for a finished round is met "
+              + "three ways out of four: nothing new came up that was not a recombination of "
+              + "something already on file, the story traces, and the round answers what you actually "
+              + "DO about all this on a Tuesday. The answer to that last one is the opposite of what "
+              + "everyone expected — the economy has TEN things you can do and you only get one "
+              + "action a turn, so the real decision is which of your problems to leave unsolved.",
+      cost: "Closing it means the economy document stops being where decisions get made and becomes a "
+          + "record. Two things stay open on purpose and neither is answerable on paper: whether "
+          + "having everything hang off one resource is the best thing in the model or the most "
+          + "brittle, which only a play test can tell; and the hauling trap, which the next stage has "
+          + "to put a brake on. Leaving the round open costs nothing except that round five, "
+          + "diplomacy, cannot start.",
+      recommendation: "Close it — but confirm the four decisions I took in your place first, because "
+                    + "they are part of what you would be closing. They are all below in one card." },
+    { id: "confirm-round-4-defaults",
+      title: "Four decisions I made in your place today — confirm or overturn",
+      evidence: "All four are technical shape rather than product judgement, all four are built "
+              + "entirely out of things the game already counts, none invents a new idea, and each is "
+              + "one line to reverse. I took them rather than asking because you had already told me "
+              + "twice today to keep the first alpha simple.\n\n"
+              + "ONE — what a war costs to run is a bill with four lines that already exist: what you "
+              + "spent attacking, the extra cost of a war footing over a peacetime one, the "
+              + "production you lost from your own regions that were attacked, and the cost of "
+              + "holding ground you took. Both sides keep one, per war. This was the last thing "
+              + "blocking another round.\n\n"
+              + "TWO — the outside world buys anything, slowly, up to a cap. Deliberately boring. "
+              + "Canada and Mexico are the ROAD to the customer, not the customer, because giving "
+              + "them an appetite would quietly turn them into countries and your own rules say they "
+              + "are scenery.\n\n"
+              + "THREE — a toll between two countries is money changing hands; a toll through scenery "
+              + "is money burned. That is already how your Canada route works. This says why, and "
+              + "applies it everywhere.\n\n"
+              + "FOUR — a blockade is not a new thing to build. It is closing a route plus refusing "
+              + "to trade, and you have both already. A wrecked rail hub is just attacking the region "
+              + "that does the hauling. One stated limit: that lasts one turn, so today it is a raid "
+              + "and not a demolition — lasting damage would be a new mechanic and I have not assumed "
+              + "one.",
+      cost: "Confirming costs nothing. Overturning any of them costs a conversation and a rewrite of "
+          + "that one decision — none of the four holds up any of the others.",
+      recommendation: "Confirm all four. The conquest round did exactly this with seven defaults and "
+                    + "it worked. If you only read one of them closely, read the fourth — it is the "
+                    + "one that saved the most work by refusing to build something." },
     { id: "writer-wiki-merge",
       title: "The writer's 76 articles — keep them, or start again?",
       evidence: "They wrote about 5,400 words across the twelve pages I checked closely, and I traced "
@@ -761,12 +863,26 @@ const BOARD = {
     { name: "Design round 4 — The economy", status: "current",
       brief: "Finish the economy against everything rounds 1, 2 and 3 have demanded of it, rather than "
            + "starting it from nothing. It has been collecting work from every other round all week.",
-      actual: "OPEN, not yet started. It opens with 93 ideas already banked and two things waiting for "
-            + "it. A hard constraint: the share of a population at which a movement demands a union has "
-            + "to sit below thirty per cent, or two of your six union movements can never make a demand "
-            + "at all. And the hole this whole design has been circling — NOTHING BAD HAPPENS TO A "
-            + "NATION THAT DOES NOT TRADE. Every other round has stalled on it at least once, and it is "
-            + "named in the project's own definition of done as the thing round four has to answer." },
+      actual: "FINISHED 14 September and waiting on your word to close — it is the card at the top. "
+            + "Nine decisions, five yours and four mine to confirm. Ninety-six ideas on file, up from "
+            + "ninety-three.\n\n"
+            + "THE HOLE IS CLOSED. Nothing bad happening to a country that does not trade had two "
+            + "halves and both are answered. The first already had a cure written on 4 September that "
+            + "nobody had built, and you kept it. The second was that a country which feeds itself "
+            + "could ignore everyone — answered by making farmland need fertiliser, which is not "
+            + "spread evenly, so almost nobody is genuinely self-sufficient.\n\n"
+            + "WHAT YOU DECIDED. Keep the economy plan we already had. Keep one national pot, so a "
+            + "shortage is felt the same everywhere — you chose simple for the first alpha, and the "
+            + "cost is that a player cannot point at a region and say THERE. Farmland needs imported "
+            + "materials. Money buys a vote but not a region — and buying a region off turned out to "
+            + "be blocked by your own national-pot decision, which I told you rather than quietly "
+            + "building a weak version. And water stays out of the alpha, which is the deferral of "
+            + "probably the best unbuilt idea in the project, written up properly so whoever picks it "
+            + "up starts from a list of three obstacles rather than a blank page.\n\n"
+            + "WHAT STAYS OPEN ON PURPOSE. Everything hangs off one resource now — fuel, industry and "
+            + "food all come through the same gate — and paper cannot tell you whether that is the "
+            + "best thing in the model or the most brittle. That one is for the play test. And the "
+            + "hauling trap, which the next stage has to put a brake on before anyone builds it." },
     { name: "The design wiki", status: "done",
       brief: "\"This is great but it is getting hard to keep track of all of this so I think a future "
            + "idea would be create a wiki for all of this.\" Then, on seeing it: make it read like the "
