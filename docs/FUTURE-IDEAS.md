@@ -764,7 +764,11 @@ chosen-breakaway bar (`nation.minPop`, 250,000) and the enveloped bar (500,000) 
 or two, and whether time-since-severed or distance-from-capital should modify either. Kept open rather
 than closed, because neither has been played.
 
-## F21 — Fund propaganda before a referendum
+## F21 — Fund propaganda before a referendum — ✅ **ADOPTED, 14 September 2026**
+
+**Ruled in by round 4 ruling 8** — Aaron: *"money buys the vote, not the region"*. It stops being a
+future idea and becomes part of the economy round's answer to what money can buy. Two of its three open
+questions below are answered there; the third and fourth go to the design stage.
 
 **Aaron's, 11 September 2026**, filed the moment the referendum was ruled in (round 3 ruling 21):
 *"a future idea would be to fund propoganda"*.
@@ -788,6 +792,11 @@ a number and then discovering it was wrong.
 **What it needs before it can be designed.** Whether spending is visible to the other side (it should
 be, or it is just a quieter rig); whether it moves the vote or only the turnout; and whether the
 movement can spend too, which turns a referendum into a contest rather than a purchase.
+
+**Answered by ruling 8:** spending **is** visible, and that follows from the ruling rather than being a
+separate choice — the whole distinction between propaganda and rigging is that one is open and one is
+hidden. **Still open, and sent to the design stage:** whether it moves the vote or the turnout, and
+whether the movement can spend too.
 
 ## F22 — A federation can string a member along, the way a government strings a movement along
 

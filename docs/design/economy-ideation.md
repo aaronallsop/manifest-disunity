@@ -126,8 +126,8 @@ the spec and the spine had been written before the whole spec was read. See **fi
 | **I4** | **Conquest** | What a **blockade** actually stops, and what a **destroyed rail hub** does to a corridor — ✅ **ruling 6** |
 | **I5** | **Conquest**, finding E | Its fifth story stalls on **I2**. Filed so this round knows its answer unblocks somebody else's scenario |
 | **I6** | **Politics**, rulings 25–27 | **What a federation's toll split is worth** — 5% between direct neighbours, 10% routed, the host's share going to the ground actually crossed — ✅ **ruling 5** states the principle; the sizing goes to the mechanics stage |
-| **I7** | **Politics**, ruling 21 (S26) | **Buying a movement off.** Deferred here because what money can buy is this round's to say |
-| **I8** | **Politics**, F21 | **Funding propaganda** before a referendum — S26 pointed at a vote instead of at a region. The legal end of the same scale as rigging: money buys the result openly, liberties buy it quietly |
+| **I7** | **Politics**, ruling 21 (S26) | **Buying a movement off.** Deferred here because what money can buy is this round's to say — ❌ **refused by ruling 8**, because ruling 2 removed the regional mood it would act on. Comes back if F25 is ever built |
+| **I8** | **Politics**, F21 | **Funding propaganda** before a referendum — ✅ **accepted by ruling 8.** The legal end of the same scale as rigging: money buys the result openly, liberties buy it quietly |
 | **I9** | **Secession**, §4 | **Quality of life must be able to fall** — from hunger, from a broken supply, from a blockade — visibly, for a readable reason, **and locally** — and recover when the cause is fixed |
 
 ### One item corrected on arrival
@@ -155,7 +155,7 @@ above it changes what there is to do.
 | **Q3** | **What does a war cost to run?** | **I1 — the last blocking item**, and nothing in the spec touches it | ✅ **Ruling 3** (default) |
 | **Q5** | **What does the outside world want?** | Spec §4.3 makes it a price-taker with slow prices and a shipping cap, which says what it *pays* but not what it *wants* | ✅ **Ruling 4** (default) |
 | **Q6** | **What stops a self-sufficient nation from simply opting out?** | Measured: five states are above the national average on both food and energy. **The spec names this as a balance risk and its whole mitigation is "a Phase 1 stop condition"** — a measurement, not a design | ✅ **Ruling 7**, 14 Sep |
-| **Q7** | **What can money buy?** | **I7 and I8** — buying a movement off, and funding a referendum. The spec has lending and embargo; it has nothing about buying people | ◀ **Open — Aaron's** |
+| **Q7** | **What can money buy?** | **I7 and I8** — buying a movement off, and funding a referendum | ✅ **Ruling 8**, 14 Sep |
 | **Q8** | **What is a share of trade worth?** | **I6.** The federation is newer than the spec, so the spec is silent by age rather than by choice | ✅ **Ruling 5** (default) — principle here, sizing to the mechanics stage |
 | **Q9** | **What does a blockade stop?** | **I4.** Spec §5.6 names embargo and corridor closure as instruments without saying what they do to the goods | ✅ **Ruling 6** (default) |
 | **Q10** | **Where does water data come from, if water is to be geography rather than invention?** | E51 measured that the rivers in the game are shipping lanes with no flow and no volume, and that the Colorado — the actual water fight — is absent entirely | ◀ **Open — Aaron's**, because it is a spend |
@@ -445,6 +445,45 @@ memory.
 **The consequence that is new, and §4a traces it:** an extraction shortage now causes **famines**, and
 therefore **wars**, because food shortage drives claim pressure. Extraction was already the gate on
 industry; it is now the gate on eating.
+
+---
+
+### Ruling 8 — money buys the vote, not the region
+
+**RULED 14 September 2026**, answering **Q7** and closing **I7** and **I8**. Aaron, verbatim: *"money
+buys the vote, not the region"*.
+
+**What is accepted.** A government may **spend money to swing a referendum** — F21, funding propaganda,
+which is round 1's S26 pointed at a vote instead of at a region. It lands on machinery round 3 already
+built and becomes the third point on a scale that already has two: **a vote can be rigged** only when
+civil liberties have already fallen below `election.stealBelow` = **0.32**, and rigging costs **0.12**
+more. **Propaganda is the same act with a different bill** — open, legal, and paid in cash.
+
+**The shape round 3 found twice, arrived at a third time:** a decent government's options are expensive
+and public; a rotten one's are cheap and quiet.
+
+**What is refused, and the reason is this morning's other ruling.** **S26 — buying a restless region
+off — is dropped.** It would have worked by lifting that region's quality of life, and **ruling 2
+removed the thing it acts on**: quality of life is one national number, so there is no regional mood to
+purchase. Spending to lift the national figure is not buying a region off; it is being richer
+everywhere.
+
+**This is a consequence of ruling 2 and not an independent judgement**, and it is recorded that way so
+that whoever revisits ruling 2 knows S26 comes back with it. **F25 is the route**; if regional quality
+of life is ever built, S26 is live again and should be re-asked rather than assumed dead.
+
+**One default taken inside this ruling.** F21 asks whether the spending is **visible to the other
+side**. It is — and that follows from the ruling rather than being a new choice, because the whole
+distinction between propaganda and rigging is that one is open and one is hidden. *Hidden spending
+would just be a quieter rig, which is the thing the scale already has.*
+
+**Two of F21's questions are NOT answered here and go to the design stage**, because both change what
+the player does rather than what money is worth: whether the spending **moves the vote or only the
+turnout**, and whether **the movement can spend too** — which would turn a referendum from a purchase
+into a contest.
+
+**The number is not set.** How much swing a given spend buys is a measurement and belongs to the
+mechanics stage, beside the other deferred figures.
 
 ---
 
@@ -969,10 +1008,10 @@ rounds on 14 September 2026.
 | **The three things at the top of every round** (§0a) | ✅ Written 14 September |
 | **What this round owns** (§1) | ✅ Written 14 September, verified against `DESIGN.md` |
 | **The inbox** (§2) | ✅ **Nine items carried across 14 September**, seven days late. Three blocked a rule another round had already written; **ruling 1 closed two of them** (finding C). **I1 is the last one open** |
-| **The spine** (§3) | ✅ Eleven questions, **now ten** — Q4 was struck as already answered. **Seven ruled**; **three open: Q7, Q10 and Q11** |
+| **The spine** (§3) | ✅ Eleven questions, **now ten** — Q4 was struck as already answered. **Eight ruled**; **two open: Q10 and Q11** |
 | **Findings** (§3a, §4a) | Six. **A** closed by ruling 2, deliberately and not in round 1's favour. **B** closed by ruling 1. **C** is mine and earned rule 14. **D, E and F** came out of §4a's interaction map: extraction is a single point of failure, the logistics spiral has no brake, and water and energy have no home in the model |
 | **The idea bank** (A–L) | 93 entries, E1–E93. Complete enough to argue from, not yet closed |
-| **Rulings** | **Seven.** 1 keeps the written model; 2 keeps one national pot; **3–6 are defaults taken without asking** and want confirmation; 7 gates farmland on extraction, which closes the second half of the hollow spot |
+| **Rulings** | **Eight.** 1 keeps the written model; 2 keeps one national pot; **3–6 are defaults taken without asking** and want confirmation; 7 gates farmland on extraction; 8 lets money buy a referendum but not a region |
 | **The scenarios, traced** | ❌ **None.** Scenario 4 — a hungry nation with an army — is this round's exam |
 | **The Tuesday test** | ❌ Unanswered, and recorded as hole 5 below |
 | **What this round hands onward** | ❌ Not written |
