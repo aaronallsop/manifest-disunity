@@ -9,8 +9,8 @@ status: generated
 
 > [!abstract] What this is
 > A browser strategy game about the United States coming apart and being put back
-> together. It opens on **1 March 2036** with sixty-one nations where fifty states
-> used to be. One turn is one quarter of a year.
+> together. It opens on **1 March 2036** with sixty-one nations where fifty-one
+> states used to be. One turn is one quarter of a year.
 > 
 > This wiki indexes what has been **decided** about it, organised by subject rather
 > than by the date it was decided. It does not hold the design - every page links

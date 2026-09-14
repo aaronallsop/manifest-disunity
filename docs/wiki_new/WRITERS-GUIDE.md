@@ -12,7 +12,7 @@ Read this page once, then start with any page marked **needs writing**.
 
 Manifest Disunity is a browser strategy game about the United States coming apart and being put
 back together. It opens on **1 March 2036**, on a real county map, with sixty-one independent
-nations where fifty states used to be. Those nations trade, annex, unite, secede, hold elections
+nations where fifty-one states used to be. Those nations trade, annex, unite, secede, hold elections
 and gang up on whoever frightens them. One turn is one quarter of a year. Separatist movements
 grow inside nations and take ground when they get big enough. That is the whole premise, and
 almost every page in this wiki is a piece of it.

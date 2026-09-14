@@ -3,7 +3,7 @@ title: Hostility
 topic: diplomacy
 tags:
   - diplomacy/hostility
-  - #economy
+  - economy
   - round/2
 kind: mechanic
 built: designed only, but everything it acts on is built. Verified this run: trade deals with 2/4/8/20-turn terms exist, and transit corridors carry a four-turn notice period as a tunable. There is simply no hostile state to gate them with.
@@ -60,23 +60,23 @@ Every ruling that decides something on this page. The wording is each ruling's o
 | [[Rulings - Military#Military ruling 1]] | This is not a war game, and the arrows point the other way. | ruled, not built |
 | [[Rulings - Military#Military ruling 2]] | A war is a standing state, and it is one of seven. | amended later · ruled, not built |
 | [[Rulings - Military#Military ruling 4]] | what puts two nations into Hostile. | amended later · ruled, not built |
-| [[Rulings - Military#Military ruling 5]] | a state is shared, not one-sided. | **SUPERSEDED - do not state this as a rule** · ruled, not built |
-| [[Rulings - Military#Military ruling 7]] | every state has an exit, and three of the four are clocks. | **SUPERSEDED - do not state this as a rule** · ruled, not built |
+| [[Rulings - Military#Military ruling 5]] | a state is shared, not one-sided. | still live · ruled, not built |
+| [[Rulings - Military#Military ruling 7]] | every state has an exit, and three of the four are clocks. | amended later · ruled, not built |
 | [[Rulings - Military#Military ruling 9]] | what Hostile costs. | amended later · ruled, not built |
 | [[Rulings - Military#Military ruling 13]] | ground you take is yours immediately, but it is held under a flag, and there are three flags. | amended later · ruled, not built |
-| [[Rulings - Military#Military ruling 17]] | a grudge fades on time, there is a sixth state between Hostile and Peace, and the reunification rivalries never fade at all. | **SUPERSEDED - do not state this as a rule** · ruled, not built |
-| [[Rulings - Military#Military ruling 18]] | Hostile honours what is signed and permits nothing new. | **SUPERSEDED - do not state this as a rule** · ruled, not built |
-| [[Rulings - Military#Military ruling 19]] | Austin is the legitimate Texas, and the other four are rebels. | **SUPERSEDED - do not state this as a rule** · ruled, not built |
-| [[Rulings - Military#Military ruling 20]] | a corridor behaves under hostility exactly as a trade deal does. | **SUPERSEDED - do not state this as a rule** · ruled, not built |
-| [[Rulings - Military#Military ruling 21]] | hostility is resolved by time and by diplomacy, never by a treaty. | **SUPERSEDED - do not state this as a rule** · ruled, not built |
+| [[Rulings - Military#Military ruling 17]] | a grudge fades on time, there is a sixth state between Hostile and Peace, and the reunification rivalries never fade at all. | still live · ruled, not built |
+| [[Rulings - Military#Military ruling 18]] | Hostile honours what is signed and permits nothing new. | still live · ruled, not built |
+| [[Rulings - Military#Military ruling 19]] | Austin is the legitimate Texas, and the other four are rebels. | still live · ruled, not built |
+| [[Rulings - Military#Military ruling 20]] | a corridor behaves under hostility exactly as a trade deal does. | still live · ruled, not built |
+| [[Rulings - Military#Military ruling 21]] | hostility is resolved by time and by diplomacy, never by a treaty. | still live · ruled, not built |
 | [[Rulings - Military#Military ruling 27]] | Allied is taken now and kept thin; Subject is deferred; and the soldiers you lend are a lever you set. | amended later · ruled, not built |
-| [[Rulings - Military#Military ruling 28]] | breaking a peace treaty turns every neighbour but your allies hostile, at once. | **SUPERSEDED - do not state this as a rule** · ruled, not built |
-| [[Rulings - Military#Military ruling 37]] | inherited hostility travels exactly one hop. | **SUPERSEDED - do not state this as a rule** · ruled, not built |
-| [[Rulings - Military#Military ruling 38]] | an inherited quarrel slows the clock but never stops it, and it is the fastest-cooling hostility in the game. | **SUPERSEDED - do not state this as a rule** · ruled, not built |
-| [[Rulings - Military#Military ruling 39]] | what Wary costs is a percentage multiplier on acceptance, and the figure belongs to the design stage. | **SUPERSEDED - do not state this as a rule** · ruled, not built |
-| [[Rulings - Military#Military ruling 40]] | a Wary neighbour's movements do NOT grow faster inside you. Off, not reduced. | **SUPERSEDED - do not state this as a rule** · ruled, not built |
+| [[Rulings - Military#Military ruling 28]] | breaking a peace treaty turns every neighbour but your allies hostile, at once. | still live · ruled, not built |
+| [[Rulings - Military#Military ruling 37]] | inherited hostility travels exactly one hop. | still live · ruled, not built |
+| [[Rulings - Military#Military ruling 38]] | an inherited quarrel slows the clock but never stops it, and it is the fastest-cooling hostility in the game. | still live · ruled, not built |
+| [[Rulings - Military#Military ruling 39]] | what Wary costs is a percentage multiplier on acceptance, and the figure belongs to the design stage. | still live · ruled, not built |
+| [[Rulings - Military#Military ruling 40]] | a Wary neighbour's movements do NOT grow faster inside you. Off, not reduced. | still live · ruled, not built |
 
 *18 rulings feed this page.*
 
-*Generated by `build/build_wiki.py` from commit `7d167a6` (2026-09-11).*
+*Generated by `build/build_wiki.py` from commit `e4bb811` (2026-09-14).*
 <!-- GENERATED:sources END -->

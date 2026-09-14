@@ -26,7 +26,7 @@ Ruling 2 — ten positions, authoritarians at both outer ends, the drift partiti
 ### Politics ruling 3
 Ruling 3 — What a stateless society is, and what it costs to trade with one
 
-**Where:** [[politics-ideation#Ruling 3 — What a stateless society is, and what it costs to trade with one]] · line 351 · **Pages:** [[Stateless society]] · [[Movements]] · **SUPERSEDED.** Not superseded, but one claim inside it is corrected: it marked round 1's finding B closed, which Finding D calls 'true and insufficient' (line 1081), and ruling 13 closes the other half properly. · **Not built:** The ground itself does not exist — every Area belongs to a nation. Both figures match built tunables measured this run: transit.foreignCorridorToll = 0.10 and transit.rateMin = 0.05 in js/tunables.js.
+**Where:** [[politics-ideation#Ruling 3 — What a stateless society is, and what it costs to trade with one]] · line 351 · **Pages:** [[Stateless society]] · [[Movements]] · **Still live.** Not superseded, but one claim inside it is corrected: it marked round 1's finding B closed, which Finding D calls 'true and insufficient' (line 1081), and ruling 13 closes the other half properly. · **Not built:** The ground itself does not exist — every Area belongs to a nation. Both figures match built tunables measured this run: transit.foreignCorridorToll = 0.10 and transit.rateMin = 0.05 in js/tunables.js.
 
 ### Politics ruling 4
 Ruling 4 — Stranded ground goes stateless, and a movement can rise from it
@@ -71,7 +71,7 @@ Ruling 11 — The one table: five moves, six verbs, and the built valves were th
 ### Politics ruling 11a
 Ruling 11a — The "remove the want" column belongs to the ADJECTIVE, and there are five of them
 
-**Where:** [[politics-ideation#Ruling 11a — The "remove the want" column belongs to the ADJECTIVE, and there are five of them]] · line 986 · **Pages:** [[Release valves]] · [[Movements]] · **SUPERSEDED.** Not superseded. Its own tail question is struck through and answered: '~~Still open: whether answering a movement costs the turn's action…~~ ANSWERED by ruling 12' (lines 1036-1038). · **Not built:** Not built: data/parties.json carries eight 'type' values (autonomist, economic, ideological, indigenous, irredentist, reunification, separatist, theocratic-separatist), measured this run — the ruling collapses these to five, and that merge has not been made in the data.
+**Where:** [[politics-ideation#Ruling 11a — The "remove the want" column belongs to the ADJECTIVE, and there are five of them]] · line 986 · **Pages:** [[Release valves]] · [[Movements]] · **Still live.** Not superseded. Its own tail question is struck through and answered: '~~Still open: whether answering a movement costs the turn's action…~~ ANSWERED by ruling 12' (lines 1036-1038). · **Not built:** Not built: data/parties.json carries eight 'type' values (autonomist, economic, ideological, indigenous, irredentist, reunification, separatist, theocratic-separatist), measured this run — the ruling collapses these to five, and that merge has not been made in the data.
 
 ### Politics ruling 12
 Ruling 12 — Demands are free, mandatory, and answered before the turn can move
@@ -86,7 +86,7 @@ Ruling 13 — On ungoverned ground a movement grows by attraction, not grievance
 ### Politics ruling 14
 Ruling 14 — Martial law: fewer rules, not more soldiers
 
-**Where:** [[politics-ideation#Ruling 14 — Martial law: fewer rules, not more soldiers]] · line 1137 · **Pages:** [[Release valves]] · [[Authority]] · [[The turn]] · **SUPERSEDED.** Not superseded, but one part is deferred by Aaron: whether it costs the turn's action moves to the mechanics stage because 'we need to change the whole one action per turn' — filed to round 7. · **Not built:** Not built: the word 'martial' appears nowhere in js/ or DESIGN.md, measured this run. The two things it stands between DO exist — a garrison that suppresses and costs liberties, and election.stealBelow = 0.32 in js/tunables.js.
+**Where:** [[politics-ideation#Ruling 14 — Martial law: fewer rules, not more soldiers]] · line 1137 · **Pages:** [[Release valves]] · [[Authority]] · [[The turn]] · **Still live.** Not superseded, but one part is deferred by Aaron: whether it costs the turn's action moves to the mechanics stage because 'we need to change the whole one action per turn' — filed to round 7. · **Not built:** Not built: the word 'martial' appears nowhere in js/ or DESIGN.md, measured this run. The two things it stands between DO exist — a garrison that suppresses and costs liberties, and election.stealBelow = 0.32 in js/tunables.js.
 
 ### Politics ruling 15
 Ruling 15 — The Farmers Union wants a union, and a Unify movement's demand is that YOU go and ask
@@ -111,7 +111,7 @@ Ruling 18 — Asking discharges the demand, and the movement comes back pointing
 ### Politics ruling 19
 Ruling 19 — Proposing costs the turn's action, by precedent rather than by a new decision
 
-**Where:** [[politics-ideation#Ruling 19 — Proposing costs the turn's action, by precedent rather than by a new decision]] · line 1458 · **Pages:** [[The turn]] · [[Unions]] · [[Movement demands]] · **SUPERSEDED.** Flagged as conditionally dependent rather than superseded: 'When the one-action rule changes, this ruling changes with it — it is a consequence of that rule, not an independent decision' (line 1469 area). Aaron has already said the one-action rule needs changing, filed to round 7. · **Not built:** A default taken, not asked — one line to reverse. Nothing built, because proposing a union does not exist.
+**Where:** [[politics-ideation#Ruling 19 — Proposing costs the turn's action, by precedent rather than by a new decision]] · line 1458 · **Pages:** [[The turn]] · [[Unions]] · [[Movement demands]] · **Still live.** Flagged as conditionally dependent rather than superseded: 'When the one-action rule changes, this ruling changes with it — it is a consequence of that rule, not an independent decision' (line 1469 area). Aaron has already said the one-action rule needs changing, filed to round 7. · **Not built:** A default taken, not asked — one line to reverse. Nothing built, because proposing a union does not exist.
 
 ### Politics ruling 20
 Ruling 20 — A split region goes ungoverned, and its edge counties choose a neighbour over the winner
@@ -141,7 +141,7 @@ Ruling 24 — The remnant opens weak because its losses are written into the wor
 ### Politics ruling 25
 Ruling 25 — A federation is a real form, not a name: many states, a flat internal toll, an elected leader and a turn of its own
 
-**Where:** [[politics-ideation#Ruling 25 — A federation is a real form, not a name: many states, a flat internal toll, an elected leader and a turn of its own]] · line 1718 · **Pages:** [[Federation]] · [[Unions]] · [[The turn]] · **SUPERSEDED.** Not superseded. All seven of the questions it opens are answered inside this round — by rulings 26, 27, 29, 30/31, 34, 36 and 36's default, plus 35 for the separate-peace question ruling 28 opened. · **Not built:** Not built: 'federation' appears in js/ only in js/identity.js, as a comment about a nation named 'Fairfax Federation' on the leaderboard. Verified this run. Aaron's figures — 10%, the 5/5 split and the 20% worked example — are his and become tunables at the mechanics stage; the election interval was deferred.
+**Where:** [[politics-ideation#Ruling 25 — A federation is a real form, not a name: many states, a flat internal toll, an elected leader and a turn of its own]] · line 1718 · **Pages:** [[Federation]] · [[Unions]] · [[The turn]] · **Still live.** Not superseded. All seven of the questions it opens are answered inside this round — by rulings 26, 27, 29, 30/31, 34, 36 and 36's default, plus 35 for the separate-peace question ruling 28 opened. · **Not built:** Not built: 'federation' appears in js/ only in js/identity.js, as a comment about a nation named 'Fairfax Federation' on the leaderboard. Verified this run. Aaron's figures — 10%, the 5/5 split and the 20% worked example — are his and become tunables at the mechanics stage; the election interval was deferred.
 
 ### Politics ruling 26
 Ruling 26 — The federation's flat toll replaces what members had with each other, and that is the price of joining
@@ -166,7 +166,7 @@ Ruling 29 — A refused petition is not a wall: declare anyway, and you are out
 ### Politics ruling 30
 Ruling 30 — Inside a federation you are at peace with every member. Full stop
 
-**Where:** [[politics-ideation#Ruling 30 — Inside a federation you are at peace with every member. Full stop]] · line 1940 · **Pages:** [[Federation]] · [[Unions]] · **SUPERSEDED.** Not superseded. The collision it found with round 2's permanent rivalries is resolved by ruling 31, and the wary-but-not-hostile texture it removed is parked as docs/FUTURE-IDEAS.md F23. · **Not built:** Not built.
+**Where:** [[politics-ideation#Ruling 30 — Inside a federation you are at peace with every member. Full stop]] · line 1940 · **Pages:** [[Federation]] · [[Unions]] · **Still live.** Not superseded. The collision it found with round 2's permanent rivalries is resolved by ruling 31, and the wary-but-not-hostile texture it removed is parked as docs/FUTURE-IDEAS.md F23. · **Not built:** Not built.
 
 ### Politics ruling 31
 Ruling 31 — The contest claimants carry a modifier: they can never join a union. Its BREADTH is open

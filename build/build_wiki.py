@@ -50,6 +50,11 @@ BLOCK_RE = re.compile(
     r"<!-- (GENERATED|SEEDED):([a-z-]+) START[^>]*-->\n(.*?)\n<!-- \1:\2 END -->",
     re.DOTALL,
 )
+FRONTMATTER_RE = re.compile(r"\A---\n.*?\n---\n", re.DOTALL)
+
+# Word-boundary wrapper, built once. These patterns decide whether a rule is live
+# or retired, so they are kept in one obvious place rather than inline.
+WORD = r"\b%s\b"
 
 
 # --------------------------------------------------------------- reading in
@@ -224,6 +229,14 @@ def write_page(path, body, report, label, dry):
     with open(path, encoding="utf-8") as f:
         old = f.read()
 
+    # Frontmatter is derived - tags, built status, which rounds decided it - so it
+    # has to regenerate like any other generated block. It cannot be wrapped in an
+    # HTML comment, so it is replaced by position instead.
+    fm_new = FRONTMATTER_RE.match(body)
+    fm_old = FRONTMATTER_RE.match(old)
+    if fm_new and fm_old:
+        old = fm_new.group(0) + old[fm_old.end():]
+
     fresh = {}
     for m in BLOCK_RE.finditer(body):
         if m.group(1) == "GENERATED":
@@ -256,7 +269,9 @@ def frontmatter(fields):
         if isinstance(value, list):
             out.append("%s:" % key)
             for v in value:
-                out.append("  - %s" % v)
+                # A leading "#" starts a YAML comment, which silently swallowed
+                # every second tag. Obsidian reads frontmatter tags without it.
+                out.append("  - %s" % str(v).lstrip("#"))
         else:
             out.append("%s: %s" % (key, value))
     out.append("---")
@@ -441,7 +456,9 @@ def topic_body(p, items, rounds, edges, stamp):
             tags.append(t)
 
     built = BUILT_WORDS.get(p.get("built", "unknown"), p.get("built", "not established"))
-    rounds_named = sorted({rounds[r["round"]]["label"] for r in items})
+    rounds_named = sorted({"round %s (%s)" % (rounds[r["round"]]["round"],
+                                              rounds[r["round"]]["label"].lower())
+                           for r in items})
     story = p.get("story", "none found")
 
     glance = ["> [!abstract] At a glance",
@@ -562,20 +579,25 @@ OLD_IDEOLOGY = {"red": "Republican", "blue": "Democrat", "green": "Democratic So
 def later_ruling(text):
     """Classify what a LATER ruling did to this one. The distinction is load-bearing.
 
-    The round documents record every kind of follow-on in the same breath - replaced,
-    refined, renamed, confirmed-and-unchanged. Presenting all of them as "superseded"
-    would retire rules that are still live, which is the single most damaging thing
-    this wiki could publish. When the wording does not clearly say replaced, the
-    honest label is the weaker one.
+    These notes open with their verdict and then explain it at length, and the
+    explanation routinely contains the word "superseded" while DENYING it - "Not
+    superseded", "rather than superseded". Reading the whole note retires rules that
+    are live, which is the worst thing this wiki can publish, and it shipped once
+    before a writer caught it. So: judge the verdict sentence, not the essay.
     """
     if not text:
         return "", ""
     low = text.lower()
-    if any(w in low for w in ("superseded", "supersedes", "replaces", "replaced by",
-                              "premise is dropped", "no longer stands", "struck by")):
+    head = re.split(r"(?<=[.!?])\s", low.strip())[0][:160]
+
+    denied = (re.search(WORD % "not (superseded|replaced|overridden|contradicted|changed)", low)
+              or re.search(r"rather than\s+(superseded|replaced|a supersession)", low))
+    if denied:
+        return "still live", text
+    if re.search(WORD % "(superseded|supersedes|replaced by|replaces|"
+                        "premise is dropped|no longer stands|struck by)", head):
         return "SUPERSEDED", text
-    if any(w in low for w in ("confirmed rather than changed", "stands and nothing",
-                              "stands unchanged", "left unchanged", "confirmed")):
+    if re.search(WORD % "(confirmed|stands and nothing|stands unchanged|left unchanged)", head):
         return "confirmed later", text
     return "amended later", text
 
@@ -764,8 +786,8 @@ def write_home(spine, by_page, movements, stamp, report, dry):
         "",
         "> [!abstract] What this is",
         "> A browser strategy game about the United States coming apart and being put back",
-        "> together. It opens on **1 March 2036** with sixty-one nations where fifty states",
-        "> used to be. One turn is one quarter of a year.",
+        "> together. It opens on **1 March 2036** with sixty-one nations where fifty-one",
+        "> states used to be. One turn is one quarter of a year.",
         "> ",
         "> This wiki indexes what has been **decided** about it, organised by subject rather",
         "> than by the date it was decided. It does not hold the design - every page links",
@@ -959,9 +981,15 @@ def main():
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--check", action="store_true",
                     help="report only; write nothing")
+    ap.add_argument("--out", metavar="DIR",
+                    help="write into this folder instead of docs/wiki (its prose is preserved "
+                         "exactly as it is; only GENERATED blocks are rewritten)")
     ap.add_argument("--package", action="store_true",
                     help="also write dist/manifest-disunity-wiki.zip, a standalone vault")
     args = ap.parse_args()
+    if args.out:
+        global WIKI
+        WIKI = os.path.abspath(args.out)
 
     spine = read_json(SPINE)
     rulings = read_json(RULINGS)
