@@ -1017,6 +1017,46 @@ stage"**, which is not a stage name in the brief at all. *Same destination, two 
 session reading the rounds will look for a stage that does not exist.* **Not fixed here — renaming
 four closed rounds is not a diplomacy job — but it should be fixed once, deliberately.*
 
+### Ruling 10 — Admitting somebody to a bloc IS recognising them. The club decides who counts as a country
+
+**RULED 14 September 2026.** *"Yes, and joining brings recognition."* — closing **finding J**, the
+hole left in ruling 4 four hours earlier, and making **T16** real.
+
+**An unrecognised nation may join a bloc, and the vote that admits it is the act of recognition.**
+Every member's signature arrives at once. **So the recognition trade block is respected rather than
+dodged** — nobody ends up trading with a country they deny exists; they stop denying it and then
+trade.
+
+**This is the elegant answer and it was not the obvious one.** The cynical version — join, trade, and
+keep denying — would have driven straight through D166, which this round is forbidden to re-open.
+Aaron took the version where **the block holds and the bloc resolves it.**
+
+**Three things fall out of it, and two of them are new.**
+
+1. **A bloc is the fastest road out of being nobody.** One vote replaces a queue of individual
+   signatures that a pariah cannot solicit and cannot pay for. *It is the first collective act in
+   the game.*
+2. **⚠ It makes blocs politically powerful in a way ruling 4 did not anticipate.** A bloc that can
+   confer existence is not merely a trade arrangement — **the club decides who counts as a country.**
+   *That is a far heavier thing than "free movement of goods inside, a common front outside", and it
+   is the right kind of heavy: it gives a light object one enormous power rather than a government.*
+3. **It pairs with ruling 5 as the pariah's second road.** Submit to somebody and be acknowledged, or
+   be voted in and be acknowledged. **One costs your foreign policy; the other costs whatever the
+   members ask.** *Two roads out, with different prices, which is a choice rather than a queue.*
+
+**One default taken, and ruling 10 forces it.** **Admission must be unanimous.** Ruling 4 inherited
+*"the members vote you in"* from ruling 34 without saying by what margin, and T40 asked. **Now that
+admitting is recognising, a majority vote would mean a nation being outvoted into recognising a
+country it refuses to recognise** — and recognition is ruled unilateral, a thing each nation decides
+for itself. **So any member may refuse, and one refusal is enough.** *Say so if that is wrong; it is
+the only reading consistent with what recognition already is.*
+
+**⚠ And it does NOT rescue the alpha, which is worth saying plainly.** Finding I stands: **there are
+no blocs on the opening board at all**, because the scenario authors nations, grudges and sentiment
+and not a single agreement (in-tray item 6, T69). **Ruling 10 gives Deseret a road that does not yet
+exist.** *That makes item 6 — whether the board opens with agreements on it — more important than it
+looked this morning, and it is now the last large open question in the round.*
+
 ---
 
 ## 6. Findings
@@ -1028,7 +1068,7 @@ four closed rounds is not a diplomacy job — but it should be fixed once, delib
 | **C** | **There is no stance state machine.** Hostile is a band on a decaying score, and the thirty-three hostile pairs were asserted from claimant lists, never measured. §3b | **OPEN, and it prices item (a)** | This round, then the **data stage** to measure the thirty-three |
 | **D** | **F2 asks for a reputation number the build already has.** F2 specifies *"a new per-nation standing that decays toward neutral"*; treaty standing is pacts held minus breaches with the breach weighted heavier. **Two of them would be two different ideas about what breaking a promise costs** — which is what F2's own last paragraph warns against. T75, T76a | **OPEN** | This round |
 | **I** | ⚠ **The pariah's one unilateral instrument is empty.** Every opening nation is already recognised by everybody, so Deseret has nobody to recognise — and ruling 8 defers the only fix past the alpha. **For the whole alpha, the one nation that opens as a pariah has no diplomatic move of its own at all.** §7 | **HALF CLOSED by ruling 9** — the overture exists, is named, and raises the chance of being recognised. **What it costs is stage 3's.** Until it is built, the pariah still has no move | **Stage 3 for the price; the alpha to watch whether Deseret can act at all without it** |
-| **J** | ⚠ **Ruling 4 does not say whether an unrecognised nation may join a bloc.** If it may, a bloc drives straight through D166; if it may not, the multilateral door is shut to the nations that most need one. §7 | **OPEN** | **This round.** A hole in a ruling made this session |
+| **J** | ⚠ **Ruling 4 does not say whether an unrecognised nation may join a bloc.** §7 | **CLOSED by ruling 10** — it may, and the vote that admits it *is* the recognition, so D166 holds | — |
 | **K** | **Ruling 5 is the pariah's escape hatch and nobody intended it.** Vassalage sits on aid, which recognition does not gate — so submitting to your own parent buys your existence. **Excellent drama; possibly too cheap.** §7 | **OPEN** | **This round**, then the mechanics stage |
 | **H** | **Ruling 6 creates the movement that can ask forever and never leave** — any movement whose ceiling falls between the petition line and 0.40. **Either the best thing in the ruling or a bug, depending how many land there**, and it cannot be judged without counting them | **OPEN** | **The data stage**, once the gap has a number. Then the **alpha** |
 | **G** | **The south may run away with the continent.** Rulings 1–3 leave the Confederate five as the only large group of nations on the board that can freely combine, while the west and the north-east are locked. **Nobody can judge on paper whether that makes the south dominant** | **OPEN** | **The alpha.** A watch item, not a fix |
