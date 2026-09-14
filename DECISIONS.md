@@ -4444,3 +4444,71 @@ pointed at hauling. Cheapest change on the table, still open, recorded in `docs/
 **The alternative rejected at the top of the round** was writing a fresh resource model, which would
 have cost a round and put everything rounds 1–3 assumed about hunger back on the table. **Round 5,
 diplomacy, is now live.**
+
+---
+
+### D214 — Round 5 opens: eleven rulings, and three new diplomatic objects move in front of the alpha, 14 September 2026
+
+**Round 5, diplomacy, opened and ran in one session.** Its in-tray was collected as the first act —
+twenty-six items from four closed rounds, none of it carried across in nine days — and the round
+produced **86 ideas (T1–T85 plus T76a), eleven rulings and twelve findings**, with scenario 5 traced.
+**The round is not closed;** Aaron closes rounds.
+
+**The two blocking items are both closed.** In-tray item (a), the diplomatic act that speeds a thaw,
+had blocked since 9 September; secession's finding A, the petition threshold, had been declared
+blocking by politics ruling 12 on 11 September and had no owner. **Ruling 9 closes the first
+structurally and ruling 6 closes the second.**
+
+**The eleven rulings, in one line each.**
+
+| | |
+|---|---|
+| **1** | The contest floor is **per contest, not a rule**: Texas and California never thaw |
+| **2** | **The Confederacy thaws all the way** — its claimants may ally, federate or unite, so it is the one contest winnable by agreement |
+| **3** | **The capital contest is permanent.** 23 of the 33 opening quarrels have no diplomatic exit; 10 do |
+| **4** | **Two multilateral objects, not one.** A bloc is light — free movement of goods, no leader, no budget, no turn, no mutual defence. A federation is round 3's heavy object |
+| **5** | **A vassal keeps its turn and loses its foreign policy.** This **closes C112**, which conquest deferred on 9 September because both answers it could see were unacceptable |
+| **6** | **The petition line is a fixed gap below the secession line.** Closes secession's finding A |
+| **7** | **Sponsor a movement, then invite it.** Taking ground with no army is allowed, and it is the answer to the Tuesday test |
+| **8** | **Austin's rebel board waits for the alpha.** Conquest ruling 19 stays specified and unbuilt |
+| **9** | **The overture exists and is named; its price waits for stage 3**, because the turn itself is being redefined |
+| **10** | **Admitting somebody to a bloc IS recognising them.** The recognition trade block holds and the bloc resolves it |
+| **11** | **The board opens with its agreements on it, before the alpha** — and this is the decision below |
+
+**The scheduling change, which is the reason this entry exists.** Ruling 11 authors the story's four
+pre-signed agreements onto the opening board. **Checked immediately after the ruling: four of the
+five things need objects the game does not have.** There is no *Allied* relationship in the build at
+all — only a non-aggression pact and a trade compact — no bloc, and no vassalage; **the last two were
+ruled into existence the same morning.**
+
+**Put back to Aaron the same hour with that cost in front of him, and he confirmed it.** *"Stands —
+build them first."*
+
+**So the roadmap moves.** The project's definition of done records the alpha track as built and
+tagged `v0.6` with the alpha test not yet run. **There is now a stage of work in front of that
+test — the alliance, the bloc and vassalage — and it was on nobody's plan this morning.**
+
+**The argument he took**, and it is about what the alpha is for: the alpha asks whether trade deals,
+transit and the route map read to somebody who did not build the game, and **a board carrying four
+signed agreements demonstrates those things before a tester has to make one.** *Ruling 8 went the
+other way on Austin for the opposite reason — that change makes a corner of the board harder and
+stranger while people test something else, and a bad result there could not be attributed.*
+
+**What the trace found, and it is the worst thing in the round.** Scenario 5 — *a brand-new nation
+that nobody will talk to* — **does not narrate.** Trade, treaty and transit all require **mutual**
+recognition and all refuse a pariah; recognition is the only unilateral act in the game and **every
+opening nation is already recognised by everybody, so Deseret has nobody to recognise.** For the
+whole of the alpha, the one nation that opens as a pariah **has no diplomatic move of its own at
+all.** Ruling 9's overture is the fix and it is not built; ruling 10's bloc is the other and **there
+are no blocs on the opening board**, which is part of why ruling 11 matters.
+
+**Verified this session rather than remembered**, and three of these were not known to any round:
+**patronage already exists** — aid buys a client whose politics drift toward the donor's, one patron
+at a time, outbid-able and decaying, so vassalage inherits working machinery; **there is no stance
+state machine**, so conquest's seven relationship states are a design and the 33 hostile pairs were
+asserted from claimant lists and never measured; and **conquest ruling 19 is specified and unbuilt**,
+so Austin's veto does not exist in the game today.
+
+**Recorded and not fixed:** rounds 1–4 all send numbers to *"the mechanics stage"*, which is not a
+stage name in the designer brief. Aaron's own word is **architecture**, which is stage 3. *Same
+destination, two names; renaming four closed rounds is not a diplomacy job.*

@@ -1093,8 +1093,17 @@ things are **objects that do not exist in the game**:
 
 **So "author the agreements" is not a content job like Austin's. It is the bloc, the alliance and
 vassalage built first, and the content afterwards.** *That is a stage of work, not a session, and it
-would sit in front of the alpha rather than beside it.* **The decision is Aaron's and it is his to
-re-make with this in front of him.**
+would sit in front of the alpha rather than beside it.*
+
+**Put back to Aaron the same hour with the cost in front of him, and the ruling STANDS.** *"Stands —
+build them first."* **So the alliance, the bloc and vassalage get built, the opening agreements go on
+the board, and the alpha runs after that.**
+
+**⚠ This moves the roadmap, and it must not be discovered later.** The project's definition of done
+records the alpha track as built and tagged `v0.6` with the alpha test not yet run. **There is now a
+stage of work in front of that test** — three new diplomatic objects, all of them ruled in this
+round. *It is the largest scheduling change made today, it was on nobody's plan this morning, and it
+goes to `DECISIONS.md` and the Control Board rather than living only here.*
 
 **And T71 becomes live the moment anybody starts:** **a twenty-year free-trade deal is eighty turns,
 and the game's deal durations are 2, 4, 8 and 20.** *Either the pre-signed deal is a different object
