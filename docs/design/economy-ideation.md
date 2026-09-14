@@ -154,7 +154,7 @@ above it changes what there is to do.
 | ~~**Q4**~~ | ~~Can a seller set a price?~~ | **Struck.** Already answered by spec §4.1 and therefore by ruling 1. See finding C | ✅ **Withdrawn** |
 | **Q3** | **What does a war cost to run?** | **I1 — the last blocking item**, and nothing in the spec touches it | ✅ **Ruling 3** (default) |
 | **Q5** | **What does the outside world want?** | Spec §4.3 makes it a price-taker with slow prices and a shipping cap, which says what it *pays* but not what it *wants* | ✅ **Ruling 4** (default) |
-| **Q6** | **What stops a self-sufficient nation from simply opting out?** | Measured: five states are above the national average on both food and energy. **The spec names this as a balance risk and its whole mitigation is "a Phase 1 stop condition"** — a measurement, not a design. So it is genuinely unanswered | ◀ **Open — Aaron's** |
+| **Q6** | **What stops a self-sufficient nation from simply opting out?** | Measured: five states are above the national average on both food and energy. **The spec names this as a balance risk and its whole mitigation is "a Phase 1 stop condition"** — a measurement, not a design | ✅ **Ruling 7**, 14 Sep |
 | **Q7** | **What can money buy?** | **I7 and I8** — buying a movement off, and funding a referendum. The spec has lending and embargo; it has nothing about buying people | ◀ **Open — Aaron's** |
 | **Q8** | **What is a share of trade worth?** | **I6.** The federation is newer than the spec, so the spec is silent by age rather than by choice | ✅ **Ruling 5** (default) — principle here, sizing to the mechanics stage |
 | **Q9** | **What does a blockade stop?** | **I4.** Spec §5.6 names embargo and corridor closure as instruments without saying what they do to the goods | ✅ **Ruling 6** (default) |
@@ -413,6 +413,121 @@ destroying a rail hub should mean — with no new mechanic, no new object, and n
 turn**. A rail hub that is rebuilt by the following quarter is a raid, not a demolition. If the alpha
 wants lasting infrastructure damage, that is a new mechanic and this ruling does not provide it —
 **it goes to the design stage as a question, not into this round as an assumption.**
+
+---
+
+### Ruling 7 — farmland needs what comes out of the ground, so almost nobody is self-sufficient
+
+**RULED 14 September 2026**, answering **Q6**. Aaron: *"That is correct — it needs imported resources
+and so that would reduce farming input."*
+
+**What is settled.** The spec already throttles a sector that cannot get its inputs: §3.2 gates
+utilisation on input availability, and §3.3 caps **Manufacturing** utilisation at the extraction ratio
+in deficit and at **40%** in crisis. **That same gate now applies to Agriculture.** A nation with
+fields it cannot fertilise runs them below capacity, and fertiliser is phosphate, potash and nitrogen
+from natural gas — all of which come out of the ground and none of which is spread evenly.
+
+**What it buys, and it is the whole reason for asking.** The hollow spot had two halves. Ruling 1
+closed the first — a nation that goes short now suffers, and a hungry one builds claim pressure toward
+a neighbour with full fields. **This closes the second.** An earlier session measured **five states
+above the national average on both food and energy**, and for those the economy was optional. Now
+being rich in fields means having something worth selling *and* a reason to keep one road open.
+
+**It adds nothing to the model.** No new resource, no new number, no supply chain — an existing rule
+pointed at a second sector. That is the same test rulings 3–6 were held to.
+
+**Unverified, and flagged as such.** *Where* phosphate, potash and gas actually sit on this map has
+**not been checked against data** — E45 lists candidates and calls them unverified, and they stay
+unverified here. Nothing in this ruling depends on the locations; the gate works off whatever the
+extraction bake says. **Checking them is a build job at the data stage** and must not be done from
+memory.
+
+**The consequence that is new, and §4a traces it:** an extraction shortage now causes **famines**, and
+therefore **wars**, because food shortage drives claim pressure. Extraction was already the gate on
+industry; it is now the gate on eating.
+
+---
+
+## 4a. How the six sectors feed each other
+
+**Written 14 September 2026 at Aaron's request** — *"it would be good to work out how each resource
+interacts with each other."* Assembled from spec §3.2, §3.3 and §3.4 plus ruling 7. **Nothing here is
+invented**; it is the existing model read as a network rather than as six separate tables, which is the
+first time anyone has done that. The findings at the end are what fell out of doing it.
+
+### What each sector needs, and who needs it
+
+| Sector | Its need comes from | It is throttled by |
+|---|---|---|
+| **Agriculture** (food) | **People.** Straightforwardly population, nudged by quality of life | **Extraction** — *new, ruling 7* |
+| **Resource Extraction** (and **energy lives here**) | **Factories, mostly** — manufacturing capacity at 0.6, plus a small slice of population | Nothing. **It is the top of the chain** |
+| **Manufacturing** | **People and upkeep** — population at 0.3, plus whatever infrastructure costs to maintain | **Extraction.** Capped at the extraction ratio in deficit, at **40%** in crisis |
+| **Trade & Transportation** (logistics) | **Everything that moves** — all internal volume *plus every leg of every trade deal* | Its own capacity |
+| **Finance** | **Debts and government** — debt service plus government spending | **Nothing physical.** It is the one sector a blockade cannot touch |
+| **Information Technology** | **People and factories** — both, at 0.05 | Manufacturing, in practice |
+
+### What breaks when each one runs short
+
+| Short of… | What actually happens |
+|---|---|
+| **Food** | Quality of life falls hard (−30 in crisis), anger rises every turn, **army readiness drops 20** — and claim pressure builds toward every neighbour with a surplus, unlocking grounds for war at 50 |
+| **Extraction** | **Factories capped at 40%.** Admin costs up a quarter. Quality of life down. **And now the farms throttle too** |
+| **Manufacturing** | **Military equipment halved.** Infrastructure repair stops. Quality of life down |
+| **Logistics** | **Routes start failing outright** — 10% a turn each — and **a fifth of everything in transit is simply lost.** Tolls cost more |
+| **Finance** | Cannot service debt, **credit frozen**, real risk of default each turn |
+| **IT** | **You negotiate blind** — other nations' figures come to you wrong by up to 40% — and a quarter of your tax revenue leaks away |
+
+### The five loops, and two of them are dangerous
+
+**1. The logistics death spiral, and it is the nastiest thing in the model.** Logistics demand counts
+**every leg of every trade deal**. So: you go short of something → you import it → that raises the
+volume you are moving → which pushes logistics toward deficit → which makes routes fail and loses a
+fifth of what is in transit → **so less of the thing you were importing actually arrives** → so you
+import more. **The cure feeds the disease.** A nation can be destroyed by its own attempt to fix a
+shortage, and nothing currently stops it.
+
+**2. The extraction squeeze does not self-correct.** Extraction demand is driven by manufacturing
+**capacity**, and capacity is frozen by geography — only *utilisation* falls when a shortage bites.
+**So idle factories go on demanding ore they cannot use.** The shortage does not ease as output
+collapses; it persists at full strength until you import or your economy shrinks. Whether that is
+right is a judgement — your factories do still want the ore — but it means **there is no automatic
+relief valve anywhere in the chain**.
+
+**3. Extraction now reaches all the way to war.** Short of extraction → farms throttle → food short →
+claim pressure against a neighbour with fields → grounds for war at 50. **A mining shortage becomes an
+invasion**, in four steps, all of them already written. *This is scenario 4 — the hungry nation with an
+army — assembling itself out of the existing rules, which is the strongest evidence yet that ruling 1
+was right.*
+
+**4. IT is a slow tax on everything.** Short of IT and you lose a quarter of your tax take *and*
+negotiate against figures that are wrong by 40%. Poor information makes for bad deals, bad deals make
+for less money, less money makes it harder to fix the IT. **Quiet, compounding, and never a crisis** —
+the right shape for it.
+
+**5. Finance floats free, and that is deliberate.** Its demand is debt and government spending, neither
+of which crosses a border. **A blockaded nation's banks keep working** while its farms and factories
+stop — which is exactly what E6 argued and is worth keeping.
+
+### Findings
+
+**Finding D — Resource Extraction is now doing three jobs, and it is the single point of failure.**
+There is no energy sector, so **energy lives inside extraction** alongside ore and — after ruling 7 —
+fertiliser. One shortage therefore hits **fuel, industry and food at once.** That is true to life: the
+1970s oil shock raised food prices precisely because fertiliser is made from gas. But it means the
+whole model has **one upstream chokepoint** and no diversity of failure. *Owner: the alpha. It is
+either the best thing in the model or the most brittle, and paper cannot tell which.*
+
+**Finding E — the logistics spiral needs a brake, and the round should say so before the design stage.**
+Loop 1 is a genuine runaway with nothing damping it. Three candidate brakes exist already and none is
+chosen here: logistics capacity could rise with the volume being moved rather than staying fixed;
+transit losses could be capped; or the world market's shipping cap could bind first. *Owner: the design
+stage. Recorded now so it is designed rather than discovered in a play test.*
+
+**Finding F — water and energy are necessities with no home in the model.** The idea bank names three
+necessities — food, water, energy (E8). The six sectors have a home for food, **energy hides inside
+extraction**, and **water appears nowhere at all.** Ruling 1 froze the sector list, so this is not a
+defect to fix here; it is the boundary of what the current model can express. *Water is **Q10** and
+still open.*
 
 ---
 
@@ -854,10 +969,10 @@ rounds on 14 September 2026.
 | **The three things at the top of every round** (§0a) | ✅ Written 14 September |
 | **What this round owns** (§1) | ✅ Written 14 September, verified against `DESIGN.md` |
 | **The inbox** (§2) | ✅ **Nine items carried across 14 September**, seven days late. Three blocked a rule another round had already written; **ruling 1 closed two of them** (finding C). **I1 is the last one open** |
-| **The spine** (§3) | ✅ Eleven questions, **now ten** — Q4 was struck as already answered. **Six ruled** (Q1–Q3, Q5, Q8, Q9); **four open: Q6, Q7, Q10 and Q11**, and the first three are Aaron's |
-| **Findings** (§3a) | Three. **A closed** by ruling 2, deliberately and not in round 1's favour. **B closed** by ruling 1. **C is mine** — the spine was written from a third of the spec and overstated what was open; it earned rule 14 |
+| **The spine** (§3) | ✅ Eleven questions, **now ten** — Q4 was struck as already answered. **Seven ruled**; **three open: Q7, Q10 and Q11** |
+| **Findings** (§3a, §4a) | Six. **A** closed by ruling 2, deliberately and not in round 1's favour. **B** closed by ruling 1. **C** is mine and earned rule 14. **D, E and F** came out of §4a's interaction map: extraction is a single point of failure, the logistics spiral has no brake, and water and energy have no home in the model |
 | **The idea bank** (A–L) | 93 entries, E1–E93. Complete enough to argue from, not yet closed |
-| **Rulings** | **Six.** 1 keeps the written model; 2 keeps one national pot; **3–6 are defaults taken without asking** and want Aaron's confirmation — the war-cost ledger, the world market, tolls as transfer-or-cost, and the blockade |
+| **Rulings** | **Seven.** 1 keeps the written model; 2 keeps one national pot; **3–6 are defaults taken without asking** and want confirmation; 7 gates farmland on extraction, which closes the second half of the hollow spot |
 | **The scenarios, traced** | ❌ **None.** Scenario 4 — a hungry nation with an army — is this round's exam |
 | **The Tuesday test** | ❌ Unanswered, and recorded as hole 5 below |
 | **What this round hands onward** | ❌ Not written |
