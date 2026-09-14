@@ -916,13 +916,74 @@ asking state — it can never declare, and it never stops petitioning. **That is
 in this ruling or a bug**, depending on how many movements land there, and **it is a data question
 that must be measured rather than guessed.** *Finding H.*
 
+### Ruling 7 — Sponsor a movement, then invite it. Taking ground without an army is allowed, and it is the point
+
+**RULED 14 September 2026.** *"Allow it — it is the point."* — answering T61, and joining secession
+ruling 21 (sponsorship) to secession ruling 50 (petitions), which had been ruled separately and never
+put together.
+
+**The complete play, and it is the first one in this game that is entirely diplomatic.** Spend a
+share of your treasury every quarter growing a separatist movement inside your neighbour. Wait. When
+it crosses the petition line — **ruling 6's line, which is why that ruling had to come first** —
+invite it to join you. **The ground changes hands with no army, no declaration, and no shot fired.**
+
+**⚠ This is the answer to the oldest complaint on the project, and it should be said plainly.** The
+ideation plan named its own biggest risk in September: *"almost every idea we have is something that
+happens to a nation, and very few are things a player does… every round should be made to answer the
+same question before it closes: what does the player actually do about this, on a Tuesday, with one
+action?"* **Ruling 7 is that answer for this round.** It is a campaign a player runs deliberately over
+years, one action at a time, against a specific neighbour, for a specific piece of ground.
+
+**Four brakes on it, and every one is already ruled. Nothing new is needed to keep it honest.**
+
+1. **Everybody can see you doing it.** Secession ruling 21: sponsorship is visible to all. *You are
+   not buying ground quietly; you are announcing a campaign.*
+2. **It draws a coalition.** Coalitions form on threat, and the round agreed that **paying somebody's
+   rebels is worse than recognising them** — so a sponsor accumulates exactly the memory that makes
+   the continent gang up. *T59, T60.*
+3. **The petition can go to somebody else.** Ruling 50: several nations may be petitioned and they
+   **compete**, decided by nerve. **You can fund a movement for three years and watch a rival take
+   it.** *That is the gamble, and round 1 had already built it — S67 says a Houston that spent four
+   years building A Free Texas and watched Dallas win it "has funded the thing that ate it."*
+4. **⚠ And the brake nobody had noticed: accepting costs the accepter what it was.** Ruling 50 again
+   — *El Paso gives up its claim to reunify Texas; Oregon stops being Oregon.* **So the sponsor pays
+   twice: in money for years, and then in identity at the moment of collection.** *It is the only
+   price in this game paid in what you are rather than what you have, and it lands on exactly the
+   nation trying to use this play.*
+
+**So the play is expensive, slow, public, stealable, and costs you your own ambition to complete.**
+*That is a balanced weapon that nobody had to balance, because four rounds of rulings had already
+built the counterweights without knowing what they were counterweighting.*
+
+**Still open and not this round's:** what sponsorship costs per turn, and whether it is the turn's one
+action every turn or a standing payment that runs by itself. **The second is a real design question**
+— a standing payment makes this cheap in actions and expensive in money, and a per-turn action makes
+it the opposite. *Round 7 owns the action budget; the number is the mechanics stage's.*
+
+### Ruling 8 — Austin's rebel board waits for the alpha. It goes on the Control Board as a card
+
+**RULED 14 September 2026.** *"After the alpha test."* — answering finding A and in-tray item (j).
+
+**Conquest ruling 19 stays specified and unbuilt until the alpha test has run.** The change — the four
+Texan successors opening unrecognised, with Austin holding the signature each of them needs — **is a
+change to the opening setup, not to the game's rules**, and it moves one corner of the board.
+
+**The reason, and it is the right one.** The alpha test asks whether trade deals, transit grants and
+the route map read to somebody who did not build the game. **Changing the Texas opening at the same
+time would move a corner of the board while people are testing something else** — and if the corner
+played badly, nobody could say whether the problem was Texas or the economy.
+
+**Nothing is lost by waiting.** The ruling is written down in two documents, it has a card on the
+Control Board, and it does not get harder with time. *A content change never rots the way a code
+change does.*
+
 ---
 
 ## 6. Findings
 
 | | | State | Owner |
 |---|---|---|---|
-| **A** | **Conquest ruling 19 is specified and not built.** The Texas corner the conquest round called *"the most interesting on the map"* does not exist in the game. §3c | **OPEN** | A scenario **content** change. Not this round's to make |
+| **A** | **Conquest ruling 19 is specified and not built.** The Texas corner the conquest round called *"the most interesting on the map"* does not exist in the game. §3c | **SCHEDULED by ruling 8** — after the alpha test, as a card on the Control Board | A scenario **content** change. Not this round's to make |
 | **B** | **Patronage already exists and no round knew it.** Aid buys a client whose politics drift toward the donor's, one patron at a time, outbid-able, decaying. Vassalage inherits working machinery. §3e | **OPEN, and it changes question 5** | This round |
 | **C** | **There is no stance state machine.** Hostile is a band on a decaying score, and the thirty-three hostile pairs were asserted from claimant lists, never measured. §3b | **OPEN, and it prices item (a)** | This round, then the **data stage** to measure the thirty-three |
 | **D** | **F2 asks for a reputation number the build already has.** F2 specifies *"a new per-nation standing that decays toward neutral"*; treaty standing is pacts held minus breaches with the breach weighted heavier. **Two of them would be two different ideas about what breaking a promise costs** — which is what F2's own last paragraph warns against. T75, T76a | **OPEN** | This round |
