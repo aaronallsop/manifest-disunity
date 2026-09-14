@@ -25,42 +25,45 @@ body{
     linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0/46px 100%,
     var(--void);
 }
-.wrap{max-width:1040px; margin:0 auto; display:flex; flex-direction:column; gap:18px}
+.wrap{max-width:1100px; margin:0 auto; display:flex; flex-direction:column; gap:18px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 :focus-visible{outline:2px solid var(--b); outline-offset:2px}
 .bevel{clip-path:polygon(0 9px,9px 0,100% 0,100% calc(100% - 9px),calc(100% - 9px) 100%,0 100%)}
 
-/* ---- masthead ---- */
 .head{position:relative; border:1px solid var(--rule); overflow:hidden;
   background:linear-gradient(180deg,var(--b-soft),transparent 62%),var(--deck); padding:20px 22px 16px}
 .head::before{content:""; position:absolute; top:0; left:0; right:0; height:2px;
   background:linear-gradient(90deg,var(--needs) 0 25%,var(--feeds) 25% 50%,var(--breaks) 50% 75%,var(--earns) 75% 100%)}
 h1{margin:0; font-family:var(--disp); font-size:32px; font-weight:700; line-height:1;
   letter-spacing:.06em; text-transform:uppercase}
-.sub{margin:8px 0 0; color:var(--ink-2); max-width:64ch}
+.sub{margin:8px 0 0; color:var(--ink-2); max-width:66ch}
 
-/* ---- the builder ---- */
+/* ---- builder ---- */
 .builder{border:1px solid var(--rule); background:var(--deck); padding:16px}
 .cols{display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px}
-@media (max-width:780px){.cols{grid-template-columns:1fr}}
-.col{display:flex; flex-direction:column; gap:6px; min-width:0}
+@media (max-width:820px){.cols{grid-template-columns:1fr}}
+.col{display:flex; flex-direction:column; gap:5px; min-width:0}
 .col > h2{margin:0 0 2px; font-family:var(--mono); font-size:10px; font-weight:500;
   letter-spacing:.15em; text-transform:uppercase; color:var(--ink-3)}
+.grp{margin:9px 0 3px; font-family:var(--mono); font-size:9.5px; letter-spacing:.13em;
+  text-transform:uppercase; color:var(--ink-3); opacity:.8;
+  border-top:1px solid var(--rule); padding-top:8px}
+.grp:first-of-type{margin-top:2px; border-top:0; padding-top:0}
 .opt{display:flex; align-items:center; gap:9px; width:100%; text-align:left;
-  font-family:var(--disp); font-size:15px; font-weight:600; letter-spacing:.03em;
-  padding:10px 12px; border:1px solid var(--rule-2); border-left-width:3px;
+  font-family:var(--disp); font-weight:600; letter-spacing:.03em;
+  border:1px solid var(--rule-2); border-left-width:3px;
   background:var(--deck-2); color:var(--ink-2); cursor:pointer;
   transition:color .12s, border-color .12s, background .12s}
+.opt.big{font-size:15px; padding:10px 12px}
+.opt.small{font-size:13.5px; padding:7px 11px}
 .opt:hover:not(:disabled){color:var(--ink); border-color:var(--ink-3)}
 .opt[aria-pressed="true"]{color:var(--ink); background:var(--sunk); border-color:var(--b);
   border-left-color:var(--b)}
-.opt:disabled{opacity:.3; cursor:not-allowed}
+.opt:disabled{opacity:.28; cursor:not-allowed}
 .opt .n{flex:1; min-width:0}
-.opt .c{font-family:var(--mono); font-size:10px; letter-spacing:.06em; color:var(--ink-3);
-  font-weight:400}
+.opt .c{font-family:var(--mono); font-size:10px; letter-spacing:.06em; color:var(--ink-3); font-weight:400}
 .col.kinds .opt[aria-pressed="true"]{border-color:currentColor; border-left-color:currentColor}
 
-/* ---- the sentence ---- */
 .say{margin-top:16px; border-top:1px solid var(--rule); padding-top:14px;
   display:flex; flex-direction:column; gap:11px}
 .line{font-family:var(--disp); font-size:22px; font-weight:600; letter-spacing:.03em;
@@ -68,44 +71,48 @@ h1{margin:0; font-family:var(--disp); font-size:32px; font-weight:700; line-heig
 .line .sl{color:var(--ink-3)}
 .line em{font-style:normal}
 .field{display:flex; flex-direction:column; gap:5px}
-label{font-family:var(--mono); font-size:10.5px; letter-spacing:.11em; text-transform:uppercase;
-  color:var(--ink-3)}
+label{font-family:var(--mono); font-size:10.5px; letter-spacing:.11em; text-transform:uppercase; color:var(--ink-3)}
 input[type=text]{font-family:var(--body); font-size:15px; padding:10px 12px;
   border:1px solid var(--rule-2); background:var(--sunk); color:var(--ink); width:100%}
 input[type=text]:disabled{opacity:.45}
 .row{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
 button.act{font-family:var(--mono); font-size:10.5px; letter-spacing:.11em; text-transform:uppercase;
-  padding:10px 16px; border:1px solid var(--rule-2); background:var(--sunk); color:var(--ink-2);
-  cursor:pointer}
+  padding:10px 16px; border:1px solid var(--rule-2); background:var(--sunk); color:var(--ink-2); cursor:pointer}
 button.act:hover:not(:disabled){color:var(--ink); border-color:var(--ink-3)}
 button.act.go{border-color:var(--b); color:var(--b); background:var(--b-soft)}
 button.act.del{border-color:var(--r); color:var(--r)}
 button.act:disabled{opacity:.35; cursor:not-allowed}
 .spacer{flex:1}
-.hint{font-family:var(--mono); font-size:11px; letter-spacing:.09em; text-transform:uppercase;
-  color:var(--ink-3)}
+.hint{font-family:var(--mono); font-size:11px; letter-spacing:.09em; text-transform:uppercase; color:var(--ink-3)}
 .hint.live{color:var(--b)} .hint.ok{color:var(--g)} .hint.warn{color:var(--r)}
 
 /* ---- diagram ---- */
 .stage{border:1px solid var(--rule); background:var(--deck); overflow-x:auto}
-svg.map{display:block; width:100%; min-width:760px; height:auto}
-.node rect{fill:var(--deck-2); stroke:var(--rule-2); stroke-width:1; cursor:pointer;
-  transition:stroke .12s, fill .12s}
+svg.map{display:block; width:100%; min-width:900px; height:auto}
+.node rect{cursor:pointer; transition:stroke .12s, fill .12s}
+.node.sector rect{fill:var(--deck-2); stroke:var(--rule-2); stroke-width:1}
+.node.category rect{fill:var(--deck); stroke:var(--rule); stroke-width:1; stroke-dasharray:3 3}
 .node:hover rect{stroke:var(--ink-3)}
-.node.sel rect{stroke:var(--b); stroke-width:2; fill:var(--sunk)}
-.node.to rect{stroke:var(--g); stroke-width:2}
-.node .nm{font-family:var(--disp); font-size:15px; font-weight:600; letter-spacing:.03em;
-  fill:var(--ink); text-anchor:middle; pointer-events:none}
-.node .sm{font-family:var(--mono); font-size:10px; letter-spacing:.08em; fill:var(--ink-3);
+.node.wired.category rect{stroke-dasharray:none; stroke:var(--rule-2); fill:var(--deck-2)}
+.node.sel rect{stroke:var(--b); stroke-width:2; fill:var(--sunk); stroke-dasharray:none}
+.node.to rect{stroke:var(--g); stroke-width:2; stroke-dasharray:none}
+.node .nm{font-family:var(--disp); font-weight:600; letter-spacing:.03em; fill:var(--ink);
+  text-anchor:middle; pointer-events:none}
+.node.sector .nm{font-size:15px}
+.node.category .nm{font-size:12.5px; fill:var(--ink-2)}
+.node.category.wired .nm{fill:var(--ink)}
+.node .sm{font-family:var(--mono); font-size:9.5px; letter-spacing:.07em; fill:var(--ink-3);
   text-anchor:middle; pointer-events:none; text-transform:uppercase}
+.ringlbl{font-family:var(--mono); font-size:10px; letter-spacing:.15em; fill:var(--ink-3);
+  text-anchor:middle; text-transform:uppercase; opacity:.7}
 .link{fill:none; stroke-width:2; cursor:pointer}
-.link.dim{opacity:.16}
+.link.dim{opacity:.14}
 .hit{fill:none; stroke:transparent; stroke-width:20; cursor:pointer}
 
 /* ---- list ---- */
 h2.sec{font-family:var(--mono); font-size:10.5px; font-weight:500; letter-spacing:.16em;
   text-transform:uppercase; color:var(--ink-3); margin:12px 0 0; padding-bottom:7px;
-  border-bottom:1px solid var(--rule); display:flex; gap:12px; align-items:baseline}
+  border-bottom:1px solid var(--rule)}
 .list{display:flex; flex-direction:column; gap:1px; background:var(--rule); border:1px solid var(--rule)}
 .item{background:var(--deck-2); padding:10px 13px; display:flex; gap:12px; align-items:baseline;
   flex-wrap:wrap; cursor:pointer; border-left:3px solid transparent}
@@ -115,24 +122,26 @@ h2.sec{font-family:var(--mono); font-size:10.5px; font-weight:500; letter-spacin
 .item .kd{font-family:var(--mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase;
   padding:2px 7px; border:1px solid currentColor}
 .item .nt{color:var(--ink-2); flex:1; min-width:180px; font-size:14.5px}
-.item .who{font-family:var(--mono); font-size:9.5px; letter-spacing:.1em; text-transform:uppercase;
-  color:var(--ink-3)}
+.item .who{font-family:var(--mono); font-size:9.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3)}
 .empty{background:var(--deck-2); padding:14px; color:var(--ink-3)}
-.foot{color:var(--ink-3); font-size:14px; max-width:72ch}
+.foot{color:var(--ink-3); font-size:14px; max-width:74ch}
 </style>
 
 <div class="wrap">
   <div class="head bevel">
     <h1>Sector Wiring</h1>
-    <p class="sub">Build a sentence: pick a resource on the left, pick what it does, pick what it
-      does it to. Everything you add is saved, and the ring below redraws as you go.</p>
+    <p class="sub">Build a sentence: pick something on the left, pick what it does, pick what it does
+      it to. The six resources are the economy; the twelve around the outside are the rest of the
+      game, and they are deliberately rough — names to hang arrows on until we know better.
+      <b>Quality of life is the catch-all</b>: poverty, unemployment and unrest are not measured
+      separately for the alpha, they all land there.</p>
   </div>
 
   <div class="builder bevel">
     <div class="cols">
-      <div class="col" id="c-from"><h2>This resource…</h2></div>
-      <div class="col kinds" id="c-kind"><h2>…does this…</h2></div>
-      <div class="col" id="c-to"><h2>…to this one</h2></div>
+      <div class="col" id="c-from"></div>
+      <div class="col kinds" id="c-kind"></div>
+      <div class="col" id="c-to"></div>
     </div>
 
     <div class="say">
@@ -140,7 +149,7 @@ h2.sec{font-family:var(--mono); font-size:10.5px; font-weight:500; letter-spacin
       <div class="field">
         <label for="note">What does it do? In your words.</label>
         <input type="text" id="note" autocomplete="off"
-               placeholder="e.g. without fertiliser the farms run below what the land could give">
+               placeholder="e.g. a hungry country's people stop believing the government can feed them">
       </div>
       <div class="row">
         <button class="act go" id="save" type="button">Add arrow</button>
@@ -153,7 +162,8 @@ h2.sec{font-family:var(--mono); font-size:10.5px; font-weight:500; letter-spacin
   </div>
 
   <div class="stage">
-    <svg class="map" viewBox="0 0 900 600" role="img" aria-label="The six sectors on a ring, with arrows between them">
+    <svg class="map" viewBox="0 0 1220 830" role="img"
+         aria-label="The six economic sectors on an inner ring, the twelve parts of the wider game on an outer ring, with arrows between them">
       <defs>
         <marker id="ah-needs" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
           <path d="M1 1L9 5L1 9z" fill="var(--needs)"/></marker>
@@ -164,17 +174,19 @@ h2.sec{font-family:var(--mono); font-size:10.5px; font-weight:500; letter-spacin
         <marker id="ah-earns" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
           <path d="M1 1L9 5L1 9z" fill="var(--earns)"/></marker>
       </defs>
+      <text class="ringlbl" x="610" y="425">the economy</text>
       <g id="links"></g>
       <g id="nodes"></g>
     </svg>
   </div>
 
-  <h2 class="sec"><span id="list-title">Every arrow on the board</span></h2>
+  <h2 class="sec"><span id="list-title"></span></h2>
   <div class="list" id="list"></div>
 
   <p class="foot">Arrows marked <b>decided</b> come from rulings already made. Arrows marked
-    <b>yours</b> are ones you added here. Click any row — or any arrow on the ring — to load it back
-    into the builder and change it.</p>
+    <b>yours</b> are ones you added. Click any row — or any arrow on the ring — to load it back into
+    the builder. <b>Hauling</b> is the sector that moves things; <b>trade deals</b> is the agreement
+    you sign. They are deliberately separate.</p>
 </div>
 
 <script>
@@ -186,77 +198,104 @@ const SECTORS = [
   { id:"logistics",     name:"Hauling",       sub:"moving everything" },
   { id:"agriculture",   name:"Farming",       sub:"food" },
 ];
+/* The twelve are deliberately broad. The first five are the stocks the game already
+   measures every turn; the rest are systems and things underneath. */
+const CATEGORIES = [
+  /* Aaron, 14 Sep: poverty, unemployment and civil unrest are NOT measured
+     separately for the alpha — they are all folded into this one. */
+  { id:"qol",        name:"Quality of life",  grp:"stocks"  },
+  { id:"authority",  name:"Authority",        grp:"stocks"  },
+  { id:"influence",  name:"Influence",        grp:"stocks"  },
+  { id:"liberties",  name:"Civil liberties",  grp:"stocks"  },
+  { id:"weariness",  name:"War weariness",    grp:"stocks"  },
+  { id:"army",       name:"The army",         grp:"systems" },
+  { id:"deals",      name:"Trade deals",      grp:"systems" },
+  { id:"diplomacy",  name:"Diplomacy",        grp:"systems" },
+  { id:"movements",  name:"Separatists",      grp:"systems" },
+  { id:"treasury",   name:"The treasury",     grp:"systems" },
+  { id:"people",     name:"Population",       grp:"systems" },
+  { id:"events",     name:"Events",           grp:"systems" },
+];
 const KINDS = [
   { id:"needs",  label:"needs",  v:"--needs",  gloss:"cannot run without it" },
   { id:"feeds",  label:"feeds",  v:"--feeds",  gloss:"creates the appetite for it" },
   { id:"breaks", label:"breaks", v:"--breaks", gloss:"when short, it suffers" },
   { id:"earns",  label:"earns",  v:"--earns",  gloss:"makes money from it" },
 ];
-const CX = 450, CY = 300, RX = 290, RY = 180, HW = 82, HH = 33;
-const POS = {};
+
+const CX = 610, CY = 410;
+const NODES = {};
 SECTORS.forEach((s, i) => {
   const a = (-90 + i * 60) * Math.PI / 180;
-  POS[s.id] = { x: CX + RX * Math.cos(a), y: CY + RY * Math.sin(a) };
+  NODES[s.id] = { ...s, tier:"sector", hw:82, hh:33,
+                  x: CX + 250 * Math.cos(a), y: CY + 155 * Math.sin(a) };
 });
-const byId = Object.fromEntries(SECTORS.map(s => [s.id, s]));
+CATEGORIES.forEach((c, i) => {
+  const a = (-90 + i * 30) * Math.PI / 180;
+  NODES[c.id] = { ...c, tier:"category", hw:76, hh:21,
+                  x: CX + 500 * Math.cos(a), y: CY + 330 * Math.sin(a) };
+});
+const ALL = [...SECTORS, ...CATEGORIES].map(n => NODES[n.id]);
 const kindOf = id => KINDS.find(k => k.id === id) || KINDS[0];
+const nameOf = id => NODES[id] ? NODES[id].name : id;
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
 
-let links = [];
-let db = null;
-let pick = { from: null, kind: null, to: null };
+let links = [], db = null;
+let pick = { from:null, kind:null, to:null };
 let editingId = null;
 
 /* ---- geometry ---- */
-function edge(c, dx, dy) {
+function edge(n, dx, dy) {
   const ax = Math.abs(dx), ay = Math.abs(dy);
-  const t = Math.min(ax > 1e-6 ? (HW + 7) / ax : Infinity, ay > 1e-6 ? (HH + 7) / ay : Infinity);
-  return { x: c.x + dx * t, y: c.y + dy * t };
+  const t = Math.min(ax > 1e-6 ? (n.hw + 7) / ax : Infinity, ay > 1e-6 ? (n.hh + 7) / ay : Infinity);
+  return { x: n.x + dx * t, y: n.y + dy * t };
 }
 function curve(from, to) {
-  const a = POS[from], b = POS[to];
+  const a = NODES[from], b = NODES[to];
   if (!a || !b) return null;
   const vx = b.x - a.x, vy = b.y - a.y, len = Math.hypot(vx, vy) || 1;
-  const ctrl = { x: (a.x + b.x) / 2 + (vy / len) * 34, y: (a.y + b.y) / 2 + (-vx / len) * 34 };
+  const bow = a.tier === b.tier ? 34 : 18;
+  const ctrl = { x:(a.x + b.x) / 2 + (vy / len) * bow, y:(a.y + b.y) / 2 + (-vx / len) * bow };
   const s = edge(a, ctrl.x - a.x, ctrl.y - a.y);
   const e = edge(b, ctrl.x - b.x, ctrl.y - b.y);
   return `M${s.x.toFixed(1)} ${s.y.toFixed(1)} Q${ctrl.x.toFixed(1)} ${ctrl.y.toFixed(1)} ${e.x.toFixed(1)} ${e.y.toFixed(1)}`;
 }
 
-/* ---- the three columns ---- */
-function outCount(id) { return links.filter(l => l.from === id).length; }
+/* ---- columns ---- */
+function touches(id) { return links.filter(l => l.from === id || l.to === id).length; }
+function optHtml(n, side) {
+  const on = pick[side] === n.id;
+  const dis = side === "to" && pick.from === n.id;
+  const cnt = touches(n.id);
+  const size = n.tier === "sector" ? "big" : "small";
+  return `<button class="opt ${size}" type="button" data-${side}="${n.id}" aria-pressed="${on}" ${dis ? "disabled" : ""}>
+    <span class="n">${esc(n.name)}</span><span class="c">${cnt ? cnt : "—"}</span></button>`;
+}
+function sideHtml(side, heading) {
+  return `<h2>${heading}</h2>`
+    + `<div class="grp">The six resources</div>` + SECTORS.map(s => optHtml(NODES[s.id], side)).join("")
+    + `<div class="grp">What the game measures</div>`
+    + CATEGORIES.filter(c => c.grp === "stocks").map(c => optHtml(NODES[c.id], side)).join("")
+    + `<div class="grp">The rest of the game</div>`
+    + CATEGORIES.filter(c => c.grp === "systems").map(c => optHtml(NODES[c.id], side)).join("");
+}
 function drawCols() {
-  $("c-from").innerHTML = `<h2>This resource…</h2>` + SECTORS.map(s => {
-    const n = outCount(s.id);
-    return `<button class="opt" type="button" data-from="${s.id}" aria-pressed="${pick.from === s.id}">
-      <span class="n">${esc(s.name)}</span><span class="c">${n ? n + (n === 1 ? " arrow" : " arrows") : "—"}</span>
-    </button>`;
-  }).join("");
-
+  $("c-from").innerHTML = sideHtml("from", "This thing…");
   $("c-kind").innerHTML = `<h2>…does this…</h2>` + KINDS.map(k =>
-    `<button class="opt" type="button" data-kind="${k.id}" style="color:var(${k.v})"
+    `<button class="opt big" type="button" data-kind="${k.id}" style="color:var(${k.v})"
        aria-pressed="${pick.kind === k.id}">
-      <span class="n">${esc(k.label)}</span><span class="c">${esc(k.gloss)}</span>
-    </button>`).join("");
-
-  $("c-to").innerHTML = `<h2>…to this one</h2>` + SECTORS.map(s =>
-    `<button class="opt" type="button" data-to="${s.id}" aria-pressed="${pick.to === s.id}"
-       ${pick.from === s.id ? "disabled" : ""}>
-      <span class="n">${esc(s.name)}</span>
-    </button>`).join("");
+      <span class="n">${esc(k.label)}</span><span class="c">${esc(k.gloss)}</span></button>`).join("");
+  $("c-to").innerHTML = sideHtml("to", "…to this one");
 }
 
-/* ---- the sentence ---- */
+/* ---- sentence ---- */
 function drawLine() {
-  const f = pick.from ? byId[pick.from].name : null;
   const k = pick.kind ? kindOf(pick.kind) : null;
-  const t = pick.to ? byId[pick.to].name : null;
   $("line").innerHTML =
-    `<em>${f ? esc(f) : '<span class="sl">a resource</span>'}</em> ` +
+    `<em>${pick.from ? esc(nameOf(pick.from)) : '<span class="sl">something</span>'}</em> ` +
     `${k ? `<em style="color:var(${k.v})">${esc(k.label)}</em>` : '<span class="sl">does something</span>'} ` +
-    `<em>${t ? esc(t) : '<span class="sl">to another</span>'}</em>`;
-
+    `<em>${pick.to ? esc(nameOf(pick.to)) : '<span class="sl">to another thing</span>'}</em>`;
   const ready = pick.from && pick.kind && pick.to;
   $("save").disabled = !ready;
   $("save").textContent = editingId ? "Save changes" : "Add arrow";
@@ -266,13 +305,17 @@ function drawLine() {
 
 /* ---- diagram ---- */
 function drawNodes() {
-  $("nodes").innerHTML = SECTORS.map(s => {
-    const p = POS[s.id];
-    const cls = "node" + (pick.from === s.id ? " sel" : "") + (pick.to === s.id ? " to" : "");
-    return `<g class="${cls}" data-node="${s.id}" tabindex="0" role="button" aria-label="${esc(s.name)}">
-      <rect x="${(p.x - HW).toFixed(1)}" y="${(p.y - HH).toFixed(1)}" width="${HW * 2}" height="${HH * 2}" rx="4"/>
-      <text class="nm" x="${p.x.toFixed(1)}" y="${(p.y - 2).toFixed(1)}">${esc(s.name)}</text>
-      <text class="sm" x="${p.x.toFixed(1)}" y="${(p.y + 15).toFixed(1)}">${esc(s.sub)}</text>
+  $("nodes").innerHTML = ALL.map(n => {
+    const cls = "node " + n.tier
+      + (pick.from === n.id ? " sel" : "") + (pick.to === n.id ? " to" : "")
+      + (touches(n.id) ? " wired" : "");
+    const sub = n.sub
+      ? `<text class="sm" x="${n.x.toFixed(1)}" y="${(n.y + 15).toFixed(1)}">${esc(n.sub)}</text>` : "";
+    const ty = n.sub ? n.y - 2 : n.y + 4;
+    return `<g class="${cls}" data-node="${n.id}" tabindex="0" role="button" aria-label="${esc(n.name)}">
+      <rect x="${(n.x - n.hw).toFixed(1)}" y="${(n.y - n.hh).toFixed(1)}"
+            width="${n.hw * 2}" height="${n.hh * 2}" rx="4"/>
+      <text class="nm" x="${n.x.toFixed(1)}" y="${ty.toFixed(1)}">${esc(n.name)}</text>${sub}
     </g>`;
   }).join("");
 }
@@ -282,10 +325,8 @@ function drawLinks() {
     if (!d) return "";
     const k = kindOf(l.kind);
     const dim = pick.from && l.from !== pick.from && l.to !== pick.from ? " dim" : "";
-    return `<g data-link="${esc(l.id)}">
-      <path class="hit" d="${d}"/>
-      <path class="link${dim}" d="${d}" stroke="var(${k.v})" marker-end="url(#ah-${k.id})"/>
-    </g>`;
+    return `<g data-link="${esc(l.id)}"><path class="hit" d="${d}"/>
+      <path class="link${dim}" d="${d}" stroke="var(${k.v})" marker-end="url(#ah-${k.id})"/></g>`;
   }).join("");
 }
 
@@ -293,98 +334,74 @@ function drawLinks() {
 function drawList() {
   const showing = pick.from ? links.filter(l => l.from === pick.from || l.to === pick.from) : links;
   $("list-title").textContent = pick.from
-    ? `Everything touching ${byId[pick.from].name} — ${showing.length} of ${links.length}`
-    : `Every arrow on the board — ${links.length}`;
+    ? `Everything touching ${nameOf(pick.from)} — ${showing.length} of ${links.length}`
+    : `Every arrow — ${links.length}`;
   if (!showing.length) {
     $("list").innerHTML = `<div class="empty">${pick.from
-      ? esc(byId[pick.from].name) + " has no arrows yet. Finish the sentence above to give it one."
-      : "No arrows yet."}</div>`;
+      ? esc(nameOf(pick.from)) + " has nothing wired to it yet. Finish the sentence above to give it something."
+      : "Nothing yet."}</div>`;
     return;
   }
-  const order = { needs: 0, feeds: 1, breaks: 2, earns: 3 };
+  const order = { needs:0, feeds:1, breaks:2, earns:3 };
   $("list").innerHTML = [...showing]
     .sort((a, b) => (order[a.kind] - order[b.kind]) || a.from.localeCompare(b.from))
     .map(l => {
       const k = kindOf(l.kind);
       return `<div class="item${editingId === l.id ? " on" : ""}" data-row="${esc(l.id)}" tabindex="0" role="button">
-        <span class="pair">${esc(byId[l.from]?.name || l.from)} &rarr; ${esc(byId[l.to]?.name || l.to)}</span>
+        <span class="pair">${esc(nameOf(l.from))} &rarr; ${esc(nameOf(l.to))}</span>
         <span class="kd" style="color:var(${k.v})">${esc(k.label)}</span>
         <span class="nt">${esc(l.note || "—")}</span>
-        <span class="who">${l.source === "ruled" ? "decided" : "yours"}</span>
-      </div>`;
+        <span class="who">${l.source === "ruled" ? "decided" : "yours"}</span></div>`;
     }).join("");
 }
 function draw() { drawCols(); drawLine(); drawNodes(); drawLinks(); drawList(); }
-
 function setStatus(t, cls) { const s = $("status"); s.textContent = t || ""; s.className = "hint" + (cls ? " " + cls : ""); }
 
 /* ---- actions ---- */
 function loadIntoBuilder(l) {
   editingId = l.id;
-  pick = { from: l.from, kind: l.kind, to: l.to };
+  pick = { from:l.from, kind:l.kind, to:l.to };
   $("note").value = l.note || "";
   setStatus("Editing an existing arrow.", "live");
-  draw();
-  $("note").focus();
+  draw(); $("note").focus();
 }
 function clearBuilder() {
-  editingId = null;
-  pick = { from: null, kind: null, to: null };
-  $("note").value = "";
-  setStatus("");
-  draw();
+  editingId = null; pick = { from:null, kind:null, to:null };
+  $("note").value = ""; setStatus(""); draw();
 }
 function localId() { return "l" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
 
 async function save() {
   if (!(pick.from && pick.kind && pick.to)) return;
   const existing = editingId ? links.find(l => l.id === editingId) : null;
-  const body = {
-    from: pick.from, to: pick.to, kind: pick.kind,
-    note: $("note").value.trim(),
-    source: existing ? (existing.source || "aaron") : "aaron",
-    at: new Date().toISOString(),
-  };
+  const body = { from:pick.from, to:pick.to, kind:pick.kind, note:$("note").value.trim(),
+                 source: existing ? (existing.source || "aaron") : "aaron",
+                 at:new Date().toISOString() };
   const id = editingId || localId();
   if (!db) {
     links = links.filter(l => l.id !== id).concat([{ id, ...body }]);
-    clearBuilder();
-    setStatus("Saved on this screen only — it will not come back.", "warn");
-    return;
+    clearBuilder(); setStatus("Saved on this screen only — it will not come back.", "warn"); return;
   }
-  try {
-    await db.doc("links/" + id).set(body);
-    clearBuilder();
-    setStatus("Saved.", "ok");
-  } catch (e) {
-    setStatus("Not saved (" + (e && e.code ? e.code : "error") + "). Try again.", "warn");
-  }
+  try { await db.doc("links/" + id).set(body); clearBuilder(); setStatus("Saved.", "ok"); }
+  catch (e) { setStatus("Not saved (" + (e && e.code ? e.code : "error") + "). Try again.", "warn"); }
 }
 async function remove() {
   if (!editingId) return;
   const id = editingId;
   if (!db) { links = links.filter(l => l.id !== id); clearBuilder(); return; }
-  try {
-    await db.doc("links/" + id).delete();
-    clearBuilder();
-    setStatus("Deleted.", "ok");
-  } catch (e) {
-    setStatus("Not deleted (" + (e && e.code ? e.code : "error") + ").", "warn");
-  }
+  try { await db.doc("links/" + id).delete(); clearBuilder(); setStatus("Deleted.", "ok"); }
+  catch (e) { setStatus("Not deleted (" + (e && e.code ? e.code : "error") + ").", "warn"); }
 }
 
 /* ---- events ---- */
+function setFrom(id) { pick.from = pick.from === id ? null : id; if (pick.to === pick.from) pick.to = null; draw(); }
 document.addEventListener("click", ev => {
-  const f = ev.target.closest("[data-from]");
-  if (f) { pick.from = pick.from === f.dataset.from ? null : f.dataset.from;
-           if (pick.to === pick.from) pick.to = null; draw(); return; }
+  const f = ev.target.closest("[data-from]"); if (f) { setFrom(f.dataset.from); return; }
   const k = ev.target.closest("[data-kind]");
   if (k) { pick.kind = pick.kind === k.dataset.kind ? null : k.dataset.kind; draw(); return; }
   const t = ev.target.closest("[data-to]");
   if (t) { pick.to = pick.to === t.dataset.to ? null : t.dataset.to; draw(); return; }
-  const n = ev.target.closest("[data-node]");
-  if (n) { pick.from = pick.from === n.dataset.node ? null : n.dataset.node;
-           if (pick.to === pick.from) pick.to = null; draw(); return; }
+  const n = ev.target.closest("[data-node]"); if (n) { setFrom(n.dataset.node); return; }
   const lk = ev.target.closest("[data-link]");
   if (lk) { const l = links.find(x => x.id === lk.dataset.link); if (l) loadIntoBuilder(l); return; }
   const row = ev.target.closest("[data-row]");
@@ -403,12 +420,11 @@ $("note").addEventListener("keydown", ev => { if (ev.key === "Enter") save(); })
 
 /* ---- boot ---- */
 draw();
-
 (async () => {
   try { db = await claude.use("db"); } catch (e) { db = null; }
   if (!db) { setStatus("Saving is off in this view — nothing you add will be kept.", "warn"); return; }
   db.collection("links").onSnapshot(
-    snap => { links = snap.docs.map(d => ({ id: d.id, ...d.data() })); draw(); },
+    snap => { links = snap.docs.map(d => ({ id:d.id, ...d.data() })); draw(); },
     e => setStatus("Could not load the arrows (" + e.code + ").", "warn")
   );
 })();
