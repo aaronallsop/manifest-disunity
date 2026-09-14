@@ -977,6 +977,46 @@ played badly, nobody could say whether the problem was Texas or the economy.
 Control Board, and it does not get harder with time. *A content change never rots the way a code
 change does.*
 
+### Ruling 9 — The overture exists and is named. What it costs waits for architecture, because the turn itself is changing
+
+**RULED 14 September 2026.** *"Let's save this decision for the architecture stage because a turn and
+what that consists of will change. Let's file it as a diplomatic action."* — answering in-tray item
+**(a)**, blocking since 9 September, and finding I.
+
+**The act exists, it is a diplomatic action, and it does two jobs.** This closes the structural half
+of item (a). **What it costs — a whole turn, money, whether it can be refused, whether only the
+weaker party may use it — is stage 3's**, and it is deferred for a reason that is better than
+caution.
+
+**The reason: the turn is not a settled object.** Politics ruling 14 already recorded that **Aaron has
+said the one-action-per-turn rule needs changing**, and round 3 filed it to round 7 with ruling 12's
+free-and-mandatory exception beside it. **Round 4 then overspent the same budget by a factor of
+ten.** *Pricing a new action in turns, while the turn is being redefined, would produce a number that
+is wrong by the time anybody builds it.*
+
+**So the four options put to him are recorded and none is chosen:** the whole turn with a chance of
+refusal; the whole turn, always landing; a standing payment rather than an action; and *only the
+weaker party may go first.* **The trace in §7 argues for the fourth on its merits** — it would put
+the move precisely where it is needed and stop a giant buying its way out of a reputation — **and
+that argument goes forward to stage 3 rather than being taken here.**
+
+**What IS settled by this ruling, and it is enough to unblock everything downstream:**
+
+1. **The overture is a real action a nation takes**, not a passive modifier and not weather.
+2. **It writes to the relations ledger**, which already has five good entries and needs no new one
+   (C99).
+3. **It speeds a thaw** — Aaron, 9 September.
+4. **It raises the chance of being recognised**, because recognition's first term is standing (§7).
+   *Nobody knew this when the action was ruled.*
+5. **It is barred where rulings 1–3 bar it** — the twenty-three contest pairs.
+
+**⚠ A naming mismatch, recorded because it is about to bite.** Aaron says *"the architecture
+stage"*, which is **stage 3** in the designer brief: *"takes the design and works out the numbers it
+needs, and how the pieces interact."* **Rounds 1 through 4 all call that same place "the mechanics
+stage"**, which is not a stage name in the brief at all. *Same destination, two names, and a future
+session reading the rounds will look for a stage that does not exist.* **Not fixed here — renaming
+four closed rounds is not a diplomacy job — but it should be fixed once, deliberately.*
+
 ---
 
 ## 6. Findings
@@ -987,7 +1027,7 @@ change does.*
 | **B** | **Patronage already exists and no round knew it.** Aid buys a client whose politics drift toward the donor's, one patron at a time, outbid-able, decaying. Vassalage inherits working machinery. §3e | **OPEN, and it changes question 5** | This round |
 | **C** | **There is no stance state machine.** Hostile is a band on a decaying score, and the thirty-three hostile pairs were asserted from claimant lists, never measured. §3b | **OPEN, and it prices item (a)** | This round, then the **data stage** to measure the thirty-three |
 | **D** | **F2 asks for a reputation number the build already has.** F2 specifies *"a new per-nation standing that decays toward neutral"*; treaty standing is pacts held minus breaches with the breach weighted heavier. **Two of them would be two different ideas about what breaking a promise costs** — which is what F2's own last paragraph warns against. T75, T76a | **OPEN** | This round |
-| **I** | ⚠ **The pariah's one unilateral instrument is empty.** Every opening nation is already recognised by everybody, so Deseret has nobody to recognise — and ruling 8 defers the only fix past the alpha. **For the whole alpha, the one nation that opens as a pariah has no diplomatic move of its own at all.** §7 | **OPEN, and it is the worst thing found today** | **This round**, via in-tray item (a) — the overture is the fix |
+| **I** | ⚠ **The pariah's one unilateral instrument is empty.** Every opening nation is already recognised by everybody, so Deseret has nobody to recognise — and ruling 8 defers the only fix past the alpha. **For the whole alpha, the one nation that opens as a pariah has no diplomatic move of its own at all.** §7 | **HALF CLOSED by ruling 9** — the overture exists, is named, and raises the chance of being recognised. **What it costs is stage 3's.** Until it is built, the pariah still has no move | **Stage 3 for the price; the alpha to watch whether Deseret can act at all without it** |
 | **J** | ⚠ **Ruling 4 does not say whether an unrecognised nation may join a bloc.** If it may, a bloc drives straight through D166; if it may not, the multilateral door is shut to the nations that most need one. §7 | **OPEN** | **This round.** A hole in a ruling made this session |
 | **K** | **Ruling 5 is the pariah's escape hatch and nobody intended it.** Vassalage sits on aid, which recognition does not gate — so submitting to your own parent buys your existence. **Excellent drama; possibly too cheap.** §7 | **OPEN** | **This round**, then the mechanics stage |
 | **H** | **Ruling 6 creates the movement that can ask forever and never leave** — any movement whose ceiling falls between the petition line and 0.40. **Either the best thing in the ruling or a bug, depending how many land there**, and it cannot be judged without counting them | **OPEN** | **The data stage**, once the gap has a number. Then the **alpha** |
