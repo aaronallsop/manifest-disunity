@@ -188,6 +188,11 @@ Area, so it is a change of scope rather than of model."*
 
 **Owner: Aaron**, as **Q2**. It is a scope decision rather than a technical one.
 
+**✅ CLOSED 14 September 2026 by ruling 2, in the spec's favour and deliberately.** One national pot
+stands; shortage is felt identically everywhere; round 1's "locally" is deferred to **F25** for the
+sake of a simple first alpha. The contradiction is resolved rather than fixed — **round 1 does not get
+what it asked for**, and that is a recorded trade rather than an oversight.
+
 ### Finding B — the cure for the hollow spot was written a week before the hollow spot was named
 
 The known hollow spot — *nothing bad happens to a nation that does not trade* — is recorded in three
@@ -202,6 +207,81 @@ recorded choice rather than an oversight.
 **What this changes about the round:** the first question is not *what should happen to a hungry
 nation* but **whether the answer already written is still the right one** after three rounds of new
 demands. That is **Q1**, and it is cheap to ask and expensive to skip.
+
+---
+
+## 4. Rulings
+
+### Ruling 1 — The written resource model stands, and this round extends it rather than replacing it
+
+**RULED 14 September 2026**, answering **Q1**. Aaron: *"Yes lets keep it"*.
+
+**What is now settled.** `docs/spec/economy-system-spec.md` §3 is the economy's spine and stays:
+
+| | |
+|---|---|
+| **Need is derived, not a share of own output** | §3.4. This is the single change that makes a shortage arithmetically *possible*, and it is the root cure for the hollow spot |
+| **Supply ÷ need gives a ratio, and the ratio gives a named state** | §3.1 — crisis under 0.50, deficit to 0.89, met to 1.10, surplus to 1.50, glut above |
+| **Each state has written consequences per sector** | §3.3. A food crisis costs 30 quality of life, adds 5 Area grievance a turn, and drops army readiness 20 |
+| **Output is capacity × utilisation, and the industry mix stays frozen** | §3.2 and ruling 1.4(a) |
+| **The existing price index becomes the base price and deal terms layer on top** | Ruling 1.5 |
+
+**What this ruling does NOT settle, said plainly so nobody reads it as more than it is.** The model
+was written on 4 September, before any ideation round closed. Three rounds have closed since and made
+**nine demands** of it (§2). The written model covers two of them, is **silent on five**, and
+**contradicts one**:
+
+- **Silent on:** what a war costs to run (I1), what a blockade stops (I4), what a share of trade is
+  worth (I6), what money can buy (I7, I8) — and, from this round's own bank, how a brand-new country
+  tolerates hunger (E93) and what becomes of federal land (E92).
+- **Contradicts:** §3.5 pools resources nationally with no internal distribution, and round 1 demanded
+  that shortage be felt **locally** (I9). That is finding A and it is **Q2**.
+
+**The honest caveat, recorded because it was put to Aaron before he answered.** This is a plan whose
+central mechanism **has never run**. It is well-reasoned and aimed at the right problem, and nobody
+has watched it behave. If it is wrong, that is discovered at the number-setting stage rather than here.
+
+**What it saves.** The alternative was a fresh model, which would have put everything rounds 1 to 3
+assumed about hunger back on the table. This round is now mostly filing, tracing and the six gaps
+above, rather than an invention.
+
+### Ruling 2 — One national pot. Shortage is a national fact, and round 1's local demand is deferred for the alpha
+
+**RULED 14 September 2026**, answering **Q2** and resolving finding A. Aaron: *"Keep one national pot
+— for the first real alpha we want this to still be a simple game"*.
+
+**What is settled.** Spec §3.5 stands **unchanged**: resources pool nationally, there is no
+intra-national supply chain, and **a shortage is felt identically everywhere the nation holds.** The
+recommendation put to Aaron had a second half — that what a region *grows* should decide how much it
+feels the shortfall — and **that half is refused**, on the stated ground that the first real alpha
+should stay a simple game.
+
+**Read §3.3's "Area grievance +5/turn" as uniform, and write it down here so nobody later reads it as
+a gradient.** Under one national pot every Area is equally short, so every Area takes the same +5. It
+is a per-Area *line item* and a national *quantity*. That is not a defect; it is this ruling.
+
+**What round 1 gets, and what it does not.** I9 asked that quality of life be able to fall from
+hunger, from a broken supply and from a blockade — visibly, for a readable reason, **locally**, and
+recoverably. **Three of those four are delivered** by ruling 1: derived demand makes a shortage
+arithmetically possible for the first time, the bands give it a name, the food crisis costs 30 quality
+of life, and it recovers when supply returns. **"Locally" is deferred.**
+
+**What still works, and it matters that this is not a blocker.** Conquest's **I2 — desperation must
+bite — is satisfied.** A national food crisis costs real quality of life and drives grievance in every
+region the nation holds, so ruling 4's third cause of war **can fire**. The bite is blunter than round
+1 wanted, not absent. **Scenario 4 can still be traced**; it is told in national terms.
+
+**What is actually lost, said plainly.** Texture. A hungry nation's anger is uniform, so a player
+cannot point at a region and say *there* — the anger arrives as a national mood rather than a place on
+the map. And the Tuesday verb this would have produced for free — **taking the farmers' food to feed
+the cities** — cannot exist, because there is no distinction between farm and city to trade off.
+
+**Deferred, not dropped:** per-region quality of life, and the requisition verb that depends on it, go
+to `docs/FUTURE-IDEAS.md` **F25**. The game's own design document already recommends the change and
+prices it as cheap, so it stays cheap whenever it is picked up.
+
+**One line to reverse.** If the alpha shows that a uniform national mood is too blunt to read, this
+ruling is the thing to revisit first, and F25 is the work.
 
 ---
 
@@ -643,10 +723,10 @@ rounds on 14 September 2026.
 | **The three things at the top of every round** (§0a) | ✅ Written 14 September |
 | **What this round owns** (§1) | ✅ Written 14 September, verified against `DESIGN.md` |
 | **The inbox** (§2) | ✅ **Nine items carried across 14 September**, seven days late. Three of them block a rule another round has already written |
-| **The spine** (§3) | ✅ Eleven questions in order. **None answered** |
-| **Findings** (§3a) | Two. **A is Aaron's** and is question 2 of the spine |
+| **The spine** (§3) | ✅ Eleven questions in order. **Two answered** — Q1 and Q2, both on 14 September |
+| **Findings** (§3a) | Two, **both closed.** A by ruling 2, deliberately and not in round 1's favour; B reframed the round and is closed by ruling 1 |
 | **The idea bank** (A–L) | 93 entries, E1–E93. Complete enough to argue from, not yet closed |
-| **Rulings** | ❌ **None.** The round has not put a question to Aaron yet |
+| **Rulings** | **Two.** Ruling 1 keeps the written resource model; ruling 2 keeps one national pot and defers round 1's local demand to **F25** |
 | **The scenarios, traced** | ❌ **None.** Scenario 4 — a hungry nation with an army — is this round's exam |
 | **The Tuesday test** | ❌ Unanswered, and recorded as hole 5 below |
 | **What this round hands onward** | ❌ Not written |

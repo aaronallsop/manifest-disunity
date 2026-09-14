@@ -886,3 +886,43 @@ away, though twelve authored crises already exist in the content folder. People 
 **Fourteen of the topic pages will ship with an empty story section**, because the only sustained
 fiction in the project is round 1's thirteen-step break-up narrative. See `docs/wiki/README.md` for how
 to re-run the generator when round 4 closes.
+
+## F25 — Quality of life per region, and the requisition verb it unlocks
+
+**Deferred by Aaron, 14 September 2026**, during round 4 — *"Keep one national pot, for the first real
+alpha we want this to still be a simple game"* — answering the economy round's Q2 and closing its
+finding A. Round 4 ruling 2 is the entry to reverse.
+
+**What it is.** Today a country's quality of life is **one number for the whole country**, so a food
+shortage is felt identically in every region it holds. This would make it a number **per region**, so
+the same national shortfall lands as a scratch on farmland and a crisis in the cities.
+
+**It is not an internal supply chain**, and that distinction is the whole reason it is cheap. The food
+still sits in one national pot and nothing is modelled travelling from farm to city. The only change is
+that **what a region produces softens how hard the national shortfall hits it.** Farmers eat.
+
+**Why it is worth keeping on the list.**
+
+1. **Round 1 asked for it explicitly** and did not get it. Its handover to round 4 demanded that
+   quality of life fall *"locally"*, and named it as one of four things the economy owes the scoreboard.
+   Three of the four are delivered; this is the fourth.
+2. **It is the difference between a management problem and the game.** A nation uniformly 20% short of
+   food has a number to fix. A nation whose eastern regions starve while the capital eats has a
+   secession problem — and the anger machinery is already built to run on exactly that gradient.
+3. **`DESIGN.md` already recommends it and prices it as cheap.** *"Quality of life and liberty
+   satisfaction per Area would give the diffusion term a real gradient to run along, and would give
+   migration a much sharper one; the economy bake is already per Area, so it is a change of scope
+   rather than of model."* The per-region economy data exists and is thrown away at this step today.
+4. **It unlocks a player verb for free, and the project is short of those.** If farmers eat by default,
+   then **taking the farmers' food to feed the cities** becomes a thing a government can choose to do,
+   at a political price — angering the one interest group that was calm. That is something you *do*, on
+   a Tuesday, with one action, which is the question every ideation round is made to answer and the one
+   the economy round has the least material for.
+
+**What it would cost.** Quality of life is read by every other system, not only the economy, so this is
+a change to a shared foundation rather than a local one. That — not the arithmetic — is why it was
+refused for the first alpha, and the reason is good.
+
+**When to pick it up.** If the alpha shows that a uniform national mood is too blunt to read — that
+players cannot tell *where* a country is hurting, only *that* it is. Round 4 ruling 2 names this as the
+first thing to revisit if so.

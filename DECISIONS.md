@@ -4343,3 +4343,57 @@ it. Reviewing your own work before sign-off is what this project already learned
 what this session adds is that **a review is only as good as the things it is pointed at** — the
 four dimensions that found these defects were named deliberately, and the one that found the worst
 of them was the instruction to attack the generator's own promises about itself.
+
+### D212 — Round 4 opens: the written economy model stands, and shortage stays national, 14 September 2026
+
+**Two rulings on the same day, and the second is a deliberate refusal of what round 1 asked for.**
+
+**What was observed first, and it reframed the round.** The economy round went live on 12 September and
+**its inbox had never been collected.** Rounds 2 and 3 closed on the 9th and the 11th and each formally
+handed work to the economy; none of it had been carried across. Nine items, now filed as I1–I9 in
+`docs/design/economy-ideation.md` §2. **Three of them block a rule another round has already written** —
+what a war costs to run, that desperation must bite, and that a seller must be able to set a price.
+
+**The second observation changed the first question of the round.** The hollow spot everybody keeps
+naming — *nothing bad happens to a nation that does not trade* — **has a written cure that was never
+built.** `docs/spec/economy-system-spec.md` §3 specifies derived demand, supply-to-demand bands and a
+table of consequences per sector per band; a food crisis there costs 30 quality of life, 5 Area
+grievance a turn and 20 army readiness. It was not built because the alpha track was explicitly told
+not to touch demand, supply or price. So round 4's first question was not *what should happen to a
+hungry nation* but **whether the answer already written still stands** after three rounds of new
+demands.
+
+**RULING 1 — it stands.** Aaron: *"Yes lets keep it"*. The model covers two of the nine inherited
+demands, is silent on five, and contradicted one. **The alternative rejected** was a fresh model, which
+would have cost a round and put everything rounds 1–3 assumed about hunger back on the table. Recorded
+with the caveat that was put to Aaron before he answered: **this is a plan whose central mechanism has
+never run.** If it is wrong, that is found at the number-setting stage.
+
+**RULING 2 — one national pot, and round 1 does not get what it asked for.** Aaron: *"Keep one national
+pot — for the first real alpha we want this to still be a simple game"*.
+
+The contradiction was real and is worth recording because **round 1 stated it wrongly and nobody
+caught it for a week.** Round 1's handover demanded that quality of life fall *"locally"* and asserted
+*"the formula already reads the Area's own condition."* It does — but not through the term the economy
+owns. Verified against `DESIGN.md` §7.2 and §12: six things feed a region's anger and **only the
+authored grudge is a property of the place.** The other five, quality of life among them, are national
+stocks. **The spec collides with itself the same way**: §3.3 gives a food crisis an Area-grievance drip
+while §3.5 pools resources nationally, so every Area is equally short and takes the same drip — a
+per-Area line item and a national quantity.
+
+**The recommendation put to Aaron had two halves and he took one.** Keep the national pot (accepted),
+and let what a region *grows* soften how hard the shortfall hits it (**refused**, for alpha simplicity).
+**The alternative rejected** was per-region quality of life, which `DESIGN.md` itself recommends and
+prices as *"a change of scope rather than of model"* — the reason for refusing it is not the arithmetic
+but that quality of life is read by every system in the game, so it is a shared foundation and not a
+local change. That reasoning is sound and is the reason this entry records the refusal as a trade
+rather than a mistake.
+
+**What it costs, stated so the alpha knows what to watch.** A hungry nation's anger is uniform, so a
+player cannot point at a region and say *there*. And a Tuesday verb that would have come free —
+**taking the farmers' food to feed the cities** — cannot exist without a farm/city distinction. Both go
+to `docs/FUTURE-IDEAS.md` **F25**, which names round 4 ruling 2 as the entry to reverse.
+
+**What is not lost:** conquest's demand that desperation bite **is satisfied**. A national food crisis
+costs real quality of life and drives grievance everywhere the nation holds, so the third cause of war
+can fire. Blunter than round 1 wanted, not absent.
