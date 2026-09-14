@@ -108,11 +108,14 @@ them block a rule that has already been ruled.
 
 ### Blocking — a written rule cannot work until this round answers
 
-| # | From | What it asks for |
-|---|---|---|
-| **I1** | **Conquest**, ruling 23 | **What a war costs to run.** Deferred here explicitly, and ruling 22's repayment lever cannot be priced without it |
-| **I2** | **Conquest**, ruling 4's third cause | **Desperation must bite.** A nation that cannot get a resource must actually suffer for it, or the third cause of war can never fire. *This is the hollow spot arriving as a blocking requirement rather than as an observation* |
-| **I3** | **Conquest**, ruling 4 | **A price must be settable by the seller**, or nobody can charge the absurd price that same cause names |
+**Two of these three were unblocked by ruling 1 within the hour**, because the answers were already in
+the spec and the spine had been written before the whole spec was read. See **finding C**.
+
+| # | From | What it asks for | State |
+|---|---|---|---|
+| **I1** | **Conquest**, ruling 23 | **What a war costs to run.** Deferred here explicitly, and ruling 22's repayment lever cannot be priced without it | ❌ **Still open. The only blocking item left**, and nothing in the spec touches it |
+| **I2** | **Conquest**, ruling 4's third cause | **Desperation must bite.** A nation that cannot get a resource must actually suffer for it, or the third cause of war can never fire | ✅ **CLOSED by ruling 1.** Spec §5.7 — a state in food deficit or crisis accrues claim pressure toward each adjacent state in surplus, **+2 a turn** deficit and **+5** crisis, and **at 50 a casus belli unlocks**. Suppressed to zero while a food deal covers **≥50%** of the shortfall at **≤1.3× base price**. That is not merely suffering — it is suffering pointed at a neighbour's fields, which is ruling 4's third cause exactly |
+| **I3** | **Conquest**, ruling 4 | **A price must be settable by the seller**, or nobody can charge the absurd price that same cause names | ✅ **CLOSED by ruling 1.** Spec §4.1 — deal price layers five multipliers on the base index, two of which are this: **ScarcityMult** rises as the buyer's own ratio falls, to ×2.5; **AlternativesMult** rises as the buyer's supplier count falls, to ×1.5. The spec calls the second *"the most important term… what makes cutting a rival's other supplier a strategic act rather than a flavour event. Do not simplify it away."* |
 
 ### Owed, but blocking nothing
 
@@ -142,19 +145,19 @@ Asked one at a time, each with a recommendation. Answered ones move into a rulin
 round stop being blocked as early as possible, and puts the Tuesday test last because every answer
 above it changes what there is to do.
 
-| # | Question | Why here |
-|---|---|---|
-| **Q1** | **Does the spec's resource model still stand, now that three rounds have made demands of it?** | Everything else is a detail of the answer. It is also the cheapest possible outcome: if it stands, most of this round is filing rather than inventing |
-| **Q2** | **Does shortage land on a place, or on a country?** | **Finding A.** Round 1 demanded local; the spec rules resources pool nationally. They cannot both be right, and the scenario this round is examined on needs the answer |
-| **Q3** | **What does a war cost to run?** | **I1, blocking** |
-| **Q4** | **Can a seller set a price, and what does a buyer with no alternative pay?** | **I3, blocking.** The lever exists and reaches no screen |
-| **Q5** | **What does the outside world want?** | Canada, Mexico and the world market have no demand at all, so every route out currently ends in a buyer with infinite appetite |
-| **Q6** | **What stops a self-sufficient nation from simply opting out?** | Measured: five states are above the national average on both food and energy. If trade is optional for them, the whole system is optional for them |
-| **Q7** | **What can money buy?** | **I7 and I8** together — buying a movement off, and funding a referendum |
-| **Q8** | **What is a share of trade worth?** | **I6.** The federation's toll split, and the number the mechanics stage will read beside ruling 15's X% |
-| **Q9** | **What does a blockade stop?** | **I4** |
-| **Q10** | **Where does water data come from, if water is to be geography rather than invention?** | E51 measured that the rivers in the game are shipping lanes with no flow and no volume, and that the Colorado — the actual water fight — is absent entirely |
-| **Q11** | **What does the player actually do about all of this, on a Tuesday, with one action?** | The Tuesday test. Last, because every answer above changes it |
+| # | Question | Why here | State |
+|---|---|---|---|
+| **Q1** | **Does the spec's resource model still stand, now that three rounds have made demands of it?** | Everything else is a detail of the answer. It is also the cheapest possible outcome: if it stands, most of this round is filing rather than inventing | ✅ **Ruling 1**, 14 Sep |
+| **Q2** | **Does shortage land on a place, or on a country?** | **Finding A.** Round 1 demanded local; the spec rules resources pool nationally. They cannot both be right | ✅ **Ruling 2**, 14 Sep |
+| ~~**Q4**~~ | ~~Can a seller set a price?~~ | **Struck.** Already answered by spec §4.1 and therefore by ruling 1. See finding C | ✅ **Withdrawn** |
+| **Q3** | **What does a war cost to run?** | **I1 — the last blocking item**, and nothing in the spec touches it | ◀ **Open** |
+| **Q5** | **What does the outside world want?** | Spec §4.3 makes it a price-taker with slow prices and a shipping cap, which says what it *pays* but not what it *wants* | ◀ Open — a default is proposed |
+| **Q6** | **What stops a self-sufficient nation from simply opting out?** | Measured: five states are above the national average on both food and energy. **The spec names this as a balance risk and its whole mitigation is "a Phase 1 stop condition"** — a measurement, not a design. So it is genuinely unanswered | ◀ **Open — Aaron's** |
+| **Q7** | **What can money buy?** | **I7 and I8** — buying a movement off, and funding a referendum. The spec has lending and embargo; it has nothing about buying people | ◀ **Open — Aaron's** |
+| **Q8** | **What is a share of trade worth?** | **I6.** The federation is newer than the spec, so the spec is silent by age rather than by choice | ◀ Open |
+| **Q9** | **What does a blockade stop?** | **I4.** Spec §5.6 names embargo and corridor closure as instruments without saying what they do to the goods | ◀ Open — a default is proposed |
+| **Q10** | **Where does water data come from, if water is to be geography rather than invention?** | E51 measured that the rivers in the game are shipping lanes with no flow and no volume, and that the Colorado — the actual water fight — is absent entirely | ◀ **Open — Aaron's**, because it is a spend |
+| **Q11** | **What does the player actually do about all of this, on a Tuesday, with one action?** | The Tuesday test. Last, because every answer above changes it | ◀ **Open** |
 
 ---
 
@@ -207,6 +210,33 @@ recorded choice rather than an oversight.
 **What this changes about the round:** the first question is not *what should happen to a hungry
 nation* but **whether the answer already written is still the right one** after three rounds of new
 demands. That is **Q1**, and it is cheap to ask and expensive to skip.
+
+### Finding C — the spine was written from a third of the spec, and overstated what was open
+
+**Mine, 14 September 2026, recorded because it is the same mistake this project keeps paying for.**
+
+§1, §2 and the spine were written after reading the spec's §1 (the owner rulings) and §3 (the resource
+model). **§4 to §9 were read an hour later, and they closed two of the three blocking items outright.**
+
+| | What the spine claimed was open | What the spec already said |
+|---|---|---|
+| **I3 / Q4** | A seller cannot set a price; conquest is blocked | **§4.1.** Deal price is the base index times five multipliers. **ScarcityMult** climbs to ×2.5 as the buyer's own ratio falls; **AlternativesMult** climbs to ×1.5 as the buyer's supplier count falls. The spec calls the second the most important term in the model and says in terms: *"Do not simplify it away"* |
+| **I2** | Desperation does not bite; the third cause of war cannot fire | **§5.7.** A state in food deficit accrues **+2 claim pressure a turn** toward each adjacent state in surplus, **+5** in crisis, and **at 50 a casus belli unlocks** — suppressed to zero while a deal covers **≥50%** of the shortfall at **≤1.3× base**. That is desperation pointed at a specific neighbour's fields |
+
+**So ruling 1 did more than keep a model — it closed two blocking items in another round**, and
+neither Aaron nor this document knew that when he answered.
+
+**Why this is worth a finding rather than a quiet correction.** Two of the eleven questions put to
+Aaron were not questions. The project's own brief warns about exactly this — *"this project has
+measured numbers and recorded rulings, and quietly contradicting one is the specific failure this
+arrangement exists to prevent"* — and the mirror-image failure is **asking him to decide something
+already decided**, which costs his time and, worse, risks a second answer that contradicts the first.
+
+**The rule it earns:** read the whole of a governing document before writing the list of what it
+leaves open. A table of contents is not a reading. *(Proposed for `docs/PROGRAMMER-RULES.md`.)*
+
+**What it saves.** The round is materially cheaper than §2 implied. **One blocking item remains** —
+what a war costs to run — and the spec is silent on it by omission rather than by choice.
 
 ---
 
@@ -722,9 +752,9 @@ rounds on 14 September 2026.
 |---|---|
 | **The three things at the top of every round** (§0a) | ✅ Written 14 September |
 | **What this round owns** (§1) | ✅ Written 14 September, verified against `DESIGN.md` |
-| **The inbox** (§2) | ✅ **Nine items carried across 14 September**, seven days late. Three of them block a rule another round has already written |
-| **The spine** (§3) | ✅ Eleven questions in order. **Two answered** — Q1 and Q2, both on 14 September |
-| **Findings** (§3a) | Two, **both closed.** A by ruling 2, deliberately and not in round 1's favour; B reframed the round and is closed by ruling 1 |
+| **The inbox** (§2) | ✅ **Nine items carried across 14 September**, seven days late. Three blocked a rule another round had already written; **ruling 1 closed two of them** (finding C). **I1 is the last one open** |
+| **The spine** (§3) | ✅ Eleven questions, **now ten** — Q4 was struck as already answered. **Two ruled** (Q1, Q2); eight open, of which **three are Aaron's** |
+| **Findings** (§3a) | Three. **A closed** by ruling 2, deliberately and not in round 1's favour. **B closed** by ruling 1. **C is mine** — the spine was written from a third of the spec and overstated what was open; it earned rule 14 |
 | **The idea bank** (A–L) | 93 entries, E1–E93. Complete enough to argue from, not yet closed |
 | **Rulings** | **Two.** Ruling 1 keeps the written resource model; ruling 2 keeps one national pot and defers round 1's local demand to **F25** |
 | **The scenarios, traced** | ❌ **None.** Scenario 4 — a hungry nation with an army — is this round's exam |

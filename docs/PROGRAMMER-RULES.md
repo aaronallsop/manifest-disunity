@@ -146,3 +146,19 @@ Add one with `/rule` whenever a mistake earns it. Number them; never delete one.
     the next. **Use the file editor for any patch containing an escape**, or build the pattern from a
     named constant defined once at module scope. The failure is silent in the one case that matters:
     a regex full of literal control characters still compiles and still runs.
+
+14. **Read the whole of a governing document before writing the list of what it leaves open.**
+    Round 4's spine — the eleven questions to put to Aaron — was written after reading the economy
+    spec's owner rulings and its resource model, sections 1 and 3. Sections 4 to 9 were read an hour
+    later and **closed two of the three items the spine had called blocking**: section 4.1 already
+    gives a seller two multipliers for squeezing a desperate buyer, and section 5.7 already turns a
+    food deficit into claim pressure against a neighbour with fields, unlocking a casus belli at 50.
+    Both had been written down eight days earlier.
+    **What generalises:** this project's stated fear is quietly contradicting something already
+    ruled. The mirror image is **asking the owner to decide something already decided** — it spends
+    his time, and a second answer that differs from the first leaves two rulings in the record with
+    nothing to say which one governs. Two of eleven questions put to him were not questions.
+    **The tell:** you are about to write "the spec is silent on X" and you have not read every
+    section heading of the spec with your own eyes. A table of contents is not a reading, and grep is
+    not a reading either — the terms the spec uses are not the terms the question uses. Section 4.1
+    answers "can a seller set a price?" without containing the word *seller*.

@@ -121,3 +121,17 @@ and both are one-line text edits.
 
 The systems map is mouse-only. The SVG needs a focusable role, the nodes need tab stops and Enter/Space
 handling, and the grid cells the same.
+
+## 30 — Two programmer rules are both numbered 11
+
+`docs/PROGRAMMER-RULES.md` has a rule 11 about stale counts and a second rule 11 about summing across
+overlapping sets. **Both references to "rule 11" in the 11 September handoff mean the second one**, so
+renumbering that one would break them, and renumbering the first to `11a` would leave the file reading
+`11a` before `11`.
+
+Not fixed here because the choice is a convention call on a file this session did not otherwise touch,
+and neither option is obviously right. **The cheapest fix is probably to leave the referenced rule as
+11 and move the stale-count rule to the end of the list under a fresh number**, since the list is only
+loosely chronological. One edit, no broken references.
+
+Found 14 September 2026 while adding rule 14.
