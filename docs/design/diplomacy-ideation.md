@@ -1057,6 +1057,53 @@ and not a single agreement (in-tray item 6, T69). **Ruling 10 gives Deseret a ro
 exist.** *That makes item 6 — whether the board opens with agreements on it — more important than it
 looked this morning, and it is now the last large open question in the round.*
 
+### Ruling 11 — The board opens with its agreements on it, and it happens before the alpha
+
+**RULED 14 September 2026.** *"Author them all, before the alpha."* — answering in-tray item **6**,
+T69 and T74.
+
+**The opening board gains the four agreements the story already contains:** the United States of New
+England and Rochester-and-Buffalo's **alliance** and their **twenty-year free-trade deal**; the
+**Farmers Union**; **Washington–Oregon**; and **Oklahoma's submission to Dallas.**
+
+**The argument Aaron took, and it is about what the alpha is for.** The alpha asks whether trade
+deals, transit grants and the route map read to somebody who did not build the game. **A board that
+already has four signed agreements on it demonstrates those things before a tester has to make
+one** — you can look at a live deal, see its term, see it expire, and see what breaking it costs,
+rather than being handed an empty world and a menu.
+
+**This is NOT in tension with ruling 8, and the distinction is worth stating.** Austin's change makes
+one corner of the board *harder and stranger* while people are testing something else, and a bad
+result there could not be attributed. **These agreements make the board more legible, and they
+demonstrate exactly the mechanisms under test.** *Opposite effects on the same question, hence
+opposite answers.*
+
+### ⚠ FINDING L — this costs far more than a session, and Aaron was told after he chose
+
+**Checked immediately after the ruling, and the honest answer changes its size.** Four of the five
+things are **objects that do not exist in the game**:
+
+| The agreement | What it needs | Built? |
+|---|---|---|
+| New England ↔ Rochester **free-trade deal** | the trade deal | **Yes** — but see T71 below |
+| New England ↔ Rochester **alliance** | the **Allied** relationship of conquest ruling 27 | **No.** The build has only a non-aggression pact and a trade compact |
+| **Washington–Oregon** alliance | same | **No** |
+| **The Farmers Union** | the **bloc** — ruled today, ruling 4 | **No** |
+| **Oklahoma → Dallas** | **vassalage** — ruled today, ruling 5 | **No** |
+
+**So "author the agreements" is not a content job like Austin's. It is the bloc, the alliance and
+vassalage built first, and the content afterwards.** *That is a stage of work, not a session, and it
+would sit in front of the alpha rather than beside it.* **The decision is Aaron's and it is his to
+re-make with this in front of him.**
+
+**And T71 becomes live the moment anybody starts:** **a twenty-year free-trade deal is eighty turns,
+and the game's deal durations are 2, 4, 8 and 20.** *Either the pre-signed deal is a different object
+from a trade deal, or the duration table gains a fifth entry, or the story's "twenty-year" becomes
+the longest term the game has — five years.* **Default taken, and it is the reversible one: use the
+existing longest term rather than adding a fifth duration**, because the four durations are a tuned
+table read in several places and adding to it changes more than this one deal. *Say so if the twenty
+years matter to the story.*
+
 ---
 
 ## 6. Findings
