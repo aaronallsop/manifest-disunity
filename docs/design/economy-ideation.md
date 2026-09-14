@@ -73,7 +73,7 @@ closed rounds now demand of it, and to settle where the two disagree. It is not 
 | **One price index** | `100 × (demand share ÷ supply share)^1.3`, clamped, recalibrated every turn so it reports *what is scarce* rather than what turn it is |
 | **Treasury** | GDP × tax rate, less maintenance, administration and occupation |
 | **Occupation as the anti-snowball brake** | Superlinear on Areas held outside the home state. A greedy conqueror's treasury crosses into deficit around **110 occupied Areas** |
-| **Trade as a standing contract** | A term, a fixed price and an expiry. All sixty nations use it, not only the player |
+| **Trade as a standing contract** | A term, a fixed price and an expiry. **Every nation on the board uses it, not only the player** — the board is 61 nations cut from 51 states, and "the other sixty" is the phrase the built documents use |
 | **Transit across other people's ground** | Compounding tolls, a notice period, and a route-finder |
 | **The rivers** | Four corridors and **fifteen chokepoints**, all real places. A gate bridges the stretch above it and the stretch below it and no other pair |
 | **Two seas and a shut canal** | Panama closed to former American states |
@@ -453,6 +453,34 @@ memory.
 therefore **wars**, because food shortage drives claim pressure. Extraction was already the gate on
 industry; it is now the gate on eating.
 
+#### ⚠ THIS RULING DOES NOT WORK AS WRITTEN, and the adversarial review found it the same day
+
+**The gate exists and the demand does not.** Spec §3.4 defines what a nation needs of extraction as:
+
+```
+extractionDemand = manufacturingCapacity × 0.6 + population × 0.1
+```
+
+**There is no agriculture term.** So under ruling 7 farmland *consumes* extraction but never *asks* for
+it, and a nation's extraction ratio — the supply ÷ demand figure that decides which band it sits in —
+**does not count a single acre of farmland.**
+
+**Which breaks it in exactly the case it was written for.** Take one of the five states measured above
+the national average on both food and energy: lots of farmland, few factories. Low manufacturing
+capacity means low extraction demand, which means a *healthy* extraction ratio, which means **the gate
+never closes and the farms are never throttled.** The nation ruling 7 exists to stop opting out is
+precisely the nation ruling 7 fails to touch.
+
+**What it needs, and it is one term.** `extractionDemand` must include agriculture's draw —
+`+ agricultureCapacity × k` or equivalent — so that a farming nation's need for fertiliser shows up in
+the ratio that gates its farms. **The coefficient is a number and belongs to the mechanics stage; the
+term itself is structural and belongs to whoever builds this.**
+
+**Why it is recorded here rather than fixed here.** `docs/spec/` may not be edited without Aaron's
+permission, and this round does not have it. **So ruling 7 stands as the design intent and this block
+is the condition it depends on** — carried into §7 as a named requirement rather than left for a build
+session to discover when the numbers come out wrong.
+
 ---
 
 ### Ruling 8 — money buys the vote, not the region
@@ -556,7 +584,9 @@ first time anyone has done that. The findings at the end are what fell out of do
 
 ### The five loops, and two of them are dangerous
 
-**1. The logistics death spiral, and it is the nastiest thing in the model.** Logistics demand counts
+**1. The logistics death spiral, and it is the nastiest thing in the model.** *(Predicted from the
+formulas, not observed — none of spec §3 has ever run. That is the point of writing it down now.)*
+Logistics demand counts
 **every leg of every trade deal**. So: you go short of something → you import it → that raises the
 volume you are moving → which pushes logistics toward deficit → which makes routes fail and loses a
 fifth of what is in transit → **so less of the thing you were importing actually arrives** → so you
@@ -595,7 +625,8 @@ whole model has **one upstream chokepoint** and no diversity of failure. *Owner:
 either the best thing in the model or the most brittle, and paper cannot tell which.*
 
 **Finding E — the logistics spiral needs a brake, and the round should say so before the design stage.**
-Loop 1 is a genuine runaway with nothing damping it. Three candidate brakes exist already and none is
+Loop 1 is a runaway on paper with nothing damping it. **Predicted, not measured** — spec §3 has never
+run, so the severity is unknown and only the sign of the effect is certain. Three candidate brakes exist already and none is
 chosen here: logistics capacity could rise with the volume being moved rather than staying fixed;
 transit losses could be capped; or the world market's shipping cap could bind first. *Owner: the design
 stage. Recorded now so it is designed rather than discovered in a play test.*
@@ -1104,6 +1135,37 @@ fervour itself; this is the part that lands here.)*
 
 ---
 
+## M. Banked on the way out — the three ideas the rulings introduced
+
+**Added 14 September 2026 by the adversarial review, not by the drafting.** The round closed claiming
+every ruling was a recombination of something already banked. Six were. **Three were not**, and an idea
+bank whose job is completeness cannot hold a ruling whose idea it never recorded.
+
+**E94 — The cost of a war is a running ledger, not a price.** *(Ruling 3, 14 September.)* What a war
+costs is not one figure charged at the start but four things accumulating while it runs: what you spent
+attacking, the extra upkeep of a war footing over a peacetime one, the production denied to you in your
+own Areas, and the surcharge on ground you took and now hold. **Both sides keep one, and it is per war
+rather than per lifetime**, which is what makes an indemnity capped at "the cost of the war" mean
+anything. *The interesting property is that it makes hurting somebody without beating them expensive
+for you and valuable to them.*
+
+**E95 — A toll between two actors is a transfer; a toll through geography is burned.** *(Ruling 5,
+14 September.)* When both ends of a levy are nations, the money leaves one treasury and arrives in
+another, which is what makes a chokepoint worth holding **and worth resenting**. When the ground
+crossed belongs to nobody who can hold a treasury, the same levy is a pure cost that arrives nowhere.
+*Two identical-looking percentages with completely different politics — one creates a rival, the other
+creates only friction.*
+
+**E96 — A blockade is not an instrument; it is two existing ones pointed at the same victim.** *(Ruling
+6, 14 September.)* Closing a corridor and refusing to trade already exist separately. Used together
+against one nation they *are* a blockade, and naming the combination is worth more than building a
+third thing. **The same move applies to a "destroyed rail hub"**: attacking the Area that does the
+hauling denies the hauling, because production is already tracked per sector. *The general principle,
+which is worth more than either example: before adding a verb, check whether two existing verbs used
+together already spell it.*
+
+---
+
 ## 6. The findings, and who owns each
 
 | | Finding | State | Owner |
@@ -1112,6 +1174,7 @@ fervour itself; this is the part that lands here.)*
 | **B** | The cure for the hollow spot was written a week before the hollow spot was named | **CLOSED by ruling 1** | — |
 | **C** | The spine was written from a third of the spec and overstated what was open | **CLOSED.** Mine. Earned **rule 14** | — |
 | **D** | **Resource extraction now does three jobs — fuel, ore and fertiliser — so the model has one upstream chokepoint and no variety of failure** | **OPEN** | **The alpha.** It is either the best thing in the model or the most brittle, and paper cannot tell which |
+| **G** | **Ruling 7's gate has no demand behind it — `extractionDemand` counts factories and people and not one acre of farmland, so the ruling fails on exactly the nation it was written for** | **OPEN, and it is the worst thing found today** | **Whoever builds ruling 7.** One term in §3.4. Named in §7 as a blocking condition |
 | **E** | **The logistics spiral has no brake: importing to fix a shortage raises the volume hauled, which loses a fifth of what is in transit, so you import more** | **OPEN, and it is the most serious thing this round found** | **The design stage.** Three candidate brakes exist and **none is chosen here** — capacity that rises with volume, a cap on transit losses, or the world market's shipping cap binding first |
 | **F** | Water and energy are necessities with no home in the six sectors | **Half closed.** Water deferred by **ruling 9** to **F26**; the energy half stands — it hides inside extraction, which is the boundary of what this model can express, not a defect to fix here | — |
 
@@ -1127,6 +1190,7 @@ fervour itself; this is the part that lands here.)*
 | **The design stage** | **Finding E's brake** — pick one of the three. **F21's two remaining questions**: whether referendum spending moves the vote or only the turnout, and whether the movement may spend too, which turns a purchase into a contest. **And whether lasting infrastructure damage exists at all** — ruling 6 stated its own limit, that ruling 23(b) lasts one turn, so today a wrecked rail hub is a raid and not a demolition |
 | **The mechanics stage** | Every deferred number. **C102's raid check** — whether an attack costs more than one turn of the target's output, which ruling 3 now gives a ledger to measure against. **The referendum swing per unit of spend** (ruling 8). **The federation toll's sizing** (ruling 5), to be read **beside ruling 15's X%**, which politics sent to the same place with a hard constraint of its own. **And the strength of the extraction→agriculture gate** (ruling 7) |
 | **The data stage** | **Where phosphate, potash and natural gas actually sit on this map.** Ruling 7 depends on them being concentrated and **they are not verified** — E45 lists candidates and calls them unverified, and this round did not change that. **It must be checked against real data and not from memory** |
+| **⚠ Whoever builds ruling 7 — a blocking condition, not a preference** | **`extractionDemand` must gain an agriculture term.** As spec §3.4 stands it is `manufacturingCapacity × 0.6 + population × 0.1`, with **nothing for farmland** — so under ruling 7 agriculture consumes extraction without ever demanding it, the extraction ratio ignores every acre, and **the farm-heavy, factory-light nation the ruling was written to catch is the one nation it never touches.** One term, `+ agricultureCapacity × k`; the coefficient is the mechanics stage's, the term is structural. **Ruling 7 does not work without it.** Found by the adversarial review on the day it was written |
 
 ---
 
@@ -1173,8 +1237,8 @@ These are not ideas. They are holes, recorded so that ideation can aim at them.
 | **What this round owns** (§1) | ✅ Written 14 September, verified against `DESIGN.md` |
 | **The inbox** (§2) | ✅ **Nine items carried across 14 September**, seven days late. Three blocked a rule another round had already written; **ruling 1 closed two of them** (finding C). **I1 is the last one open** |
 | **The spine** (§3) | ✅ Eleven questions, **now ten** — Q4 was struck as already answered. **All ten answered** |
-| **Findings** (§3a, §4a) | Six. **A** closed by ruling 2, deliberately and not in round 1's favour. **B** closed by ruling 1. **C** is mine and earned rule 14. **D, E and F** came out of §4a's interaction map: extraction is a single point of failure, the logistics spiral has no brake, and water and energy have no home in the model |
-| **The idea bank** (A–L) | 93 entries, E1–E93. **No new entry was needed today** — every ruling was a recombination of what was already banked, which is the round's own test for being finished |
+| **Findings** (§3a, §4a, §6) | **Seven.** **A** closed by ruling 2, deliberately and not in round 1's favour. **B** closed by ruling 1. **C** is mine and earned rule 14. **D, E, F** came out of the interaction map. **G is the worst of them and the adversarial review found it**: ruling 7's gate has no demand behind it, so it fails on the one nation it was written for |
+| **The idea bank** (A–L, M) | **96 entries, E1–E96.** Six of the nine rulings were recombinations of what was already banked; **three were not**, and §M banks them. Found by the adversarial review, not by the drafting |
 | **Rulings** | **Nine.** 1 keeps the written model; 2 keeps one national pot; **3–6 are defaults taken without asking** and want confirmation; 7 gates farmland on extraction; 8 lets money buy a referendum but not a region; 9 leaves water out of the alpha and files it as **F26** |
 | **The scenarios, traced** | ✅ **Scenario 4 traced in §5**, and it narrates. It is the only one this round owns. Conquest's finding E closes with it |
 | **The Tuesday test** | ✅ Answered in §5, and the answer inverts the expectation: the economy has **ten** verbs against a budget of one |
@@ -1184,8 +1248,10 @@ Ideation is finished when a session can read this end to end and the only new en
 recombinations of ones already here, when every scenario has been traced, when it has answered what
 the player actually does about this on a Tuesday with one action — and when Aaron says so.
 
-**Three of those four are met.** No new idea was banked today; every one of the nine rulings recombined
-entries that were already here or read something already written in the spec. **Scenario 4 is traced
+**Three of those four are met, with one honest qualification.** Six of the nine rulings recombined
+entries already banked or read something already written in the spec. **Three — rulings 3, 5 and 6 —
+introduced framings the bank did not hold**, and they have been banked as **E94–E96** rather than left
+as rulings with no idea behind them, because this document's stated job is completeness. **Scenario 4 is traced
 and narrates** — the only scenario this round owns. **The Tuesday test is answered**, and the answer
 inverts the expectation. **The fourth is Aaron's.**
 
