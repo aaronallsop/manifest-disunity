@@ -1135,6 +1135,72 @@ fervour itself; this is the part that lands here.)*
 
 ---
 
+## 4b. What Aaron wired, 14 September 2026 — 35 arrows, and three of them are a demand
+
+**Captured from the Sector Wiring page**, which he asked for and filled in the same evening. The page
+is at the address recorded in `docs/control-board/BOARD-URL.md`; its `links` collection is the record
+and this section is the reading of it. **41 arrows in total — six seeded from rulings, 35 his.**
+
+### First, a fault in the tool, and it is mine
+
+**The four kinds I gave him do not say what he needed to say**, and he bent them rather than stopping:
+
+- **`earns` was a bad fourth kind.** I defined it as *makes money from it*. He used it five times to
+  mean **improves** — *"better tech means better farming"*, *"better life, the more they let the
+  government get away with"*. Money never came into it.
+- **`breaks` is doing two opposite jobs.** Mostly it means *without this, that fails* — which is my
+  gloss and is correct. But *"people don't like resource extraction in their back yard"* means **more
+  of this, less of that**, and *"high earner for government"* is a **benefit** filed under breaks.
+
+**So the vocabulary wanted was not the one I built.** What the arrows actually need is a clean
+opposed pair — **raises** and **lowers** — beside *needs* and *feeds demand*. **Recorded rather than
+fixed**, because re-labelling 35 of his arrows on my reading would put words in his mouth. *Whoever
+picks this up should ask him, not guess.*
+
+### Second, he answered a question I had put to him, by using it
+
+He asked earlier that poverty, unemployment and unrest fold into quality of life for the alpha, and
+listed **civil liberties** with them — which collided with three round 3 rulings. **He then drew
+`liberties → influence`** — *"poorly treated people makes you look bad to neighbours"* — using civil
+liberties as a live, separate thing. **Read as the narrow reading**: the economy does not produce its
+own liberties effects; the stock itself stands. *Still worth one sentence of confirmation from him.*
+
+### Third, and this is the substance: the arrows demand three things the model does not have
+
+**1. Capital investment — five arrows, and it is the largest single thing he drew.** *"New mines
+require new capital investments."* *"New factories require huge capital investments."* *"Tech needs
+huge capital investments."* *"An army without finance is no longer an industrial complex."*
+
+**Finance in his map is not a sector that floats free — it is the thing that BUILDS capacity.**
+Nothing in the model does this. §4a found that finance is the one sector a blockade cannot touch and
+called that a feature; **Aaron's reading is the opposite — finance is the thing everything else waits
+on.** This is **E26** in the bank, *"money builds capacity"*, recorded 6 September and never ruled.
+
+**2. People are an input — three arrows.** *"People to work the mines."* *"Factories need workers."*
+*"Tech needs skilled workers."* Population exists in the game and grows and migrates; **nothing
+anywhere makes production depend on it.** E36 and E37 are in the bank — labour is not fungible, and
+educated labour leaves — and neither has been ruled.
+
+**3. Technology improves everything — eight arrows, more than any other source.** He wired
+`it → extraction, manufacturing, hauling, farming, finance, quality of life, influence, army`. In the
+built model **information technology does exactly two things**: it makes other nations' figures wrong
+when you inspect them, and it leaks tax. **He is describing a different system** — a multiplier on
+everything — and it is the single biggest gap between his picture and the spec's.
+
+### What this does not change
+
+**Nothing here reopens a ruling.** All three demands are *additions* to a model Aaron kept this
+morning, and all three are already ideas in the bank rather than new inventions. **They are beta
+work by his own word** — *"for the alpha build this is enough… I want to build it out more for the
+beta"* — and they are written down here so the beta starts from his picture rather than from a
+blank page.
+
+**The one number worth noticing:** of twelve categories, **events has nothing pointing at it at all**,
+and the treasury and separatists have one each. That is not a defect — it is a map of what has not
+been thought about yet, which is what the page was for.
+
+---
+
 ## M. Banked on the way out — the three ideas the rulings introduced
 
 **Added 14 September 2026 by the adversarial review, not by the drafting.** The round closed claiming
@@ -1239,6 +1305,7 @@ These are not ideas. They are holes, recorded so that ideation can aim at them.
 | **The spine** (§3) | ✅ Eleven questions, **now ten** — Q4 was struck as already answered. **All ten answered** |
 | **Findings** (§3a, §4a, §6) | **Seven.** **A** closed by ruling 2, deliberately and not in round 1's favour. **B** closed by ruling 1. **C** is mine and earned rule 14. **D, E, F** came out of the interaction map. **G is the worst of them and the adversarial review found it**: ruling 7's gate has no demand behind it, so it fails on the one nation it was written for |
 | **The idea bank** (A–L, M) | **96 entries, E1–E96.** Six of the nine rulings were recombinations of what was already banked; **three were not**, and §M banks them. Found by the adversarial review, not by the drafting |
+| **Aaron's own wiring** (§4b) | **35 arrows drawn 14 September** on the Sector Wiring page, read back and recorded. They demand three things the model lacks — capital investment, labour as an input, and technology as a multiplier — all of which are **beta work by his own word** |
 | **Rulings** | **Nine.** 1 keeps the written model; 2 keeps one national pot; **3–6 are defaults taken without asking** and want confirmation; 7 gates farmland on extraction; 8 lets money buy a referendum but not a region; 9 leaves water out of the alpha and files it as **F26** |
 | **The scenarios, traced** | ✅ **Scenario 4 traced in §5**, and it narrates. It is the only one this round owns. Conquest's finding E closes with it |
 | **The Tuesday test** | ✅ Answered in §5, and the answer inverts the expectation: the economy has **ten** verbs against a budget of one |
