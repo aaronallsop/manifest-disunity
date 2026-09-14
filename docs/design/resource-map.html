@@ -1,0 +1,399 @@
+<title>Sector Wiring</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Chakra+Petch:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+
+<style>
+:root{
+  color-scheme:dark;
+  --void:#08090C; --deck:#0E1117; --deck-2:#141924; --sunk:#1A2030;
+  --grid:#151B27; --rule:#222A3B; --rule-2:#2E3850;
+  --ink:#E4E9F2; --ink-2:#97A3BA; --ink-3:#7C88A0;
+  --b:#3DA9FC; --b-soft:rgba(61,169,252,.12);
+  --r:#FF2E63; --g:#00E08C;
+  --needs:#3DA9FC; --feeds:#A77BFF; --breaks:#FF7847; --earns:#4DD9C0;
+  --disp:"Chakra Petch",system-ui,sans-serif;
+  --body:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; padding-block:24px; padding-left:20px; padding-right:20px;
+  font-family:var(--body); font-size:16px; line-height:1.55; color:var(--ink);
+  background:
+    linear-gradient(var(--grid) 1px, transparent 1px) 0 0/100% 46px,
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0/46px 100%,
+    var(--void);
+}
+.wrap{max-width:1020px; margin:0 auto; display:flex; flex-direction:column; gap:18px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+:focus-visible{outline:2px solid var(--b); outline-offset:2px}
+
+.head{position:relative; border:1px solid var(--rule); overflow:hidden;
+  background:linear-gradient(180deg,var(--b-soft),transparent 62%),var(--deck);
+  padding:20px 22px 16px;
+  clip-path:polygon(0 9px,9px 0,100% 0,100% calc(100% - 9px),calc(100% - 9px) 100%,0 100%)}
+.head::before{content:""; position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg,var(--needs) 0 25%,var(--feeds) 25% 50%,var(--breaks) 50% 75%,var(--earns) 75% 100%)}
+h1{margin:0; font-family:var(--disp); font-size:32px; font-weight:700; line-height:1;
+  letter-spacing:.06em; text-transform:uppercase}
+.sub{margin:8px 0 0; color:var(--ink-2); max-width:62ch}
+
+.bar{display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center;
+  border:1px solid var(--rule); background:var(--deck-2); padding:11px 14px}
+.hint{font-family:var(--mono); font-size:11px; letter-spacing:.09em; text-transform:uppercase;
+  color:var(--ink-3)}
+.hint.live{color:var(--b)}
+.hint.warn{color:var(--r)}
+.spacer{flex:1}
+
+.key{display:flex; gap:14px; flex-wrap:wrap}
+.key b{display:inline-flex; align-items:center; gap:6px; font-weight:400;
+  font-family:var(--mono); font-size:10.5px; letter-spacing:.09em; text-transform:uppercase;
+  color:var(--ink-2)}
+.key i{width:16px; height:3px; display:block}
+
+.stage{border:1px solid var(--rule); background:var(--deck); overflow-x:auto}
+svg.map{display:block; width:100%; min-width:760px; height:auto}
+
+.node rect{fill:var(--deck-2); stroke:var(--rule-2); stroke-width:1; cursor:pointer;
+  transition:stroke .12s, fill .12s}
+.node:hover rect{stroke:var(--ink-3)}
+.node.sel rect{stroke:var(--b); stroke-width:2; fill:var(--sunk)}
+.node.tgt rect{stroke:var(--g); stroke-width:2}
+.node .nm{font-family:var(--disp); font-size:15px; font-weight:600; letter-spacing:.03em;
+  fill:var(--ink); text-anchor:middle; pointer-events:none}
+.node .sm{font-family:var(--mono); font-size:10px; letter-spacing:.08em; fill:var(--ink-3);
+  text-anchor:middle; pointer-events:none; text-transform:uppercase}
+.link{fill:none; stroke-width:2; cursor:pointer}
+.link.dim{opacity:.22}
+.hit{fill:none; stroke:transparent; stroke-width:20; cursor:pointer}
+.ghost{fill:none; stroke:var(--b); stroke-width:2; stroke-dasharray:5 5; opacity:.7; pointer-events:none}
+
+.panel{border:1px solid var(--rule); background:var(--deck-2); padding:14px 16px;
+  display:flex; flex-direction:column; gap:12px}
+.panel[hidden]{display:none!important}
+.panel h2{margin:0; font-family:var(--disp); font-size:17px; font-weight:600;
+  letter-spacing:.04em; text-transform:uppercase}
+.kinds{display:flex; gap:8px; flex-wrap:wrap}
+.kinds button{font-family:var(--mono); font-size:10.5px; letter-spacing:.09em; text-transform:uppercase;
+  padding:8px 12px; border:1px solid var(--rule-2); background:var(--sunk); color:var(--ink-2);
+  cursor:pointer; border-left-width:3px}
+.kinds button[aria-pressed="true"]{color:var(--ink); border-color:currentColor}
+.kinds button:hover{color:var(--ink)}
+.field{display:flex; flex-direction:column; gap:5px}
+label{font-family:var(--mono); font-size:10.5px; letter-spacing:.11em; text-transform:uppercase;
+  color:var(--ink-3)}
+input[type=text]{font-family:var(--body); font-size:15px; padding:9px 11px;
+  border:1px solid var(--rule-2); background:var(--sunk); color:var(--ink); width:100%}
+.row{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
+button.act{font-family:var(--mono); font-size:10.5px; letter-spacing:.11em; text-transform:uppercase;
+  padding:9px 15px; border:1px solid var(--rule-2); background:var(--sunk); color:var(--ink-2);
+  cursor:pointer}
+button.act:hover{color:var(--ink); border-color:var(--ink-3)}
+button.act.go{border-color:var(--b); color:var(--b); background:var(--b-soft)}
+button.act.del{border-color:var(--r); color:var(--r)}
+
+h2.sec{font-family:var(--mono); font-size:10.5px; font-weight:500; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--ink-3); margin:12px 0 0;
+  padding-bottom:7px; border-bottom:1px solid var(--rule)}
+.list{display:flex; flex-direction:column; gap:1px; background:var(--rule);
+  border:1px solid var(--rule)}
+.item{background:var(--deck-2); padding:10px 13px; display:flex; gap:12px; align-items:baseline;
+  flex-wrap:wrap; cursor:pointer}
+.item:hover{background:var(--sunk)}
+.item .pair{font-family:var(--disp); font-size:14px; font-weight:600; letter-spacing:.03em}
+.item .kd{font-family:var(--mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase;
+  padding:2px 7px; border:1px solid currentColor}
+.item .nt{color:var(--ink-2); flex:1; min-width:180px; font-size:14.5px}
+.item .who{font-family:var(--mono); font-size:9.5px; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--ink-3)}
+.empty{background:var(--deck-2); padding:14px; color:var(--ink-3)}
+.foot{color:var(--ink-3); font-size:14px; max-width:70ch}
+</style>
+
+<div class="wrap">
+  <div class="head">
+    <h1>Sector Wiring</h1>
+    <p class="sub">The six things a nation produces, and what each one does to the others. Click a
+      sector, then click a second one, to draw an arrow between them. Everything you draw is saved.</p>
+  </div>
+
+  <div class="bar">
+    <span class="hint" id="status">Click a sector to start an arrow.</span>
+    <span class="spacer"></span>
+    <div class="key">
+      <b><i style="background:var(--needs)"></i>needs</b>
+      <b><i style="background:var(--feeds)"></i>feeds</b>
+      <b><i style="background:var(--breaks)"></i>breaks</b>
+      <b><i style="background:var(--earns)"></i>earns</b>
+    </div>
+  </div>
+
+  <div class="stage">
+    <svg class="map" viewBox="0 0 900 600" role="img" aria-label="The six economic sectors arranged in a ring, with arrows between them">
+      <defs>
+        <marker id="ah-needs" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
+          <path d="M1 1L9 5L1 9z" fill="var(--needs)"/></marker>
+        <marker id="ah-feeds" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
+          <path d="M1 1L9 5L1 9z" fill="var(--feeds)"/></marker>
+        <marker id="ah-breaks" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
+          <path d="M1 1L9 5L1 9z" fill="var(--breaks)"/></marker>
+        <marker id="ah-earns" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
+          <path d="M1 1L9 5L1 9z" fill="var(--earns)"/></marker>
+      </defs>
+      <g id="links"></g>
+      <g id="ghost"></g>
+      <g id="nodes"></g>
+    </svg>
+  </div>
+
+  <div class="panel" id="editor" hidden>
+    <h2 id="ed-title">New arrow</h2>
+    <div class="kinds" id="ed-kinds"></div>
+    <div class="field">
+      <label for="ed-note">What does it do?</label>
+      <input type="text" id="ed-note" placeholder="e.g. fertiliser — without it the farms run below capacity" autocomplete="off">
+    </div>
+    <div class="row">
+      <button class="act go" id="ed-save" type="button">Save arrow</button>
+      <button class="act" id="ed-cancel" type="button">Cancel</button>
+      <span class="spacer"></span>
+      <button class="act del" id="ed-del" type="button" hidden>Delete</button>
+    </div>
+  </div>
+
+  <h2 class="sec">Every arrow on the board</h2>
+  <div class="list" id="list"></div>
+
+  <p class="foot">Arrows marked <b>decided</b> come from rulings already made — the economy brief, or
+    round four. Arrows marked <b>yours</b> are ones you drew here. Click any row to edit it.</p>
+</div>
+
+<script>
+const SECTORS = [
+  { id:"extraction",    name:"Extraction",     sub:"ore · fuel · fertiliser" },
+  { id:"manufacturing", name:"Manufacturing",  sub:"goods · equipment" },
+  { id:"it",            name:"Information",    sub:"knowledge · intel" },
+  { id:"finance",       name:"Finance",        sub:"money · credit" },
+  { id:"logistics",     name:"Hauling",        sub:"moving everything" },
+  { id:"agriculture",   name:"Farming",        sub:"food" },
+];
+const KINDS = [
+  { id:"needs",  label:"needs",  v:"--needs"  },
+  { id:"feeds",  label:"feeds",  v:"--feeds"  },
+  { id:"breaks", label:"breaks", v:"--breaks" },
+  { id:"earns",  label:"earns",  v:"--earns"  },
+];
+const CX = 450, CY = 300, RX = 290, RY = 180, HW = 82, HH = 33;
+const POS = {};
+SECTORS.forEach((s, i) => {
+  const a = (-90 + i * 60) * Math.PI / 180;
+  POS[s.id] = { x: CX + RX * Math.cos(a), y: CY + RY * Math.sin(a) };
+});
+const byId = Object.fromEntries(SECTORS.map(s => [s.id, s]));
+const kindOf = id => KINDS.find(k => k.id === id) || KINDS[0];
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
+
+let links = [];          // {id, from, to, kind, note, source}
+let db = null;
+let sel = null;          // id of the sector chosen as the source
+let editing = null;      // {id?, from, to, kind, note, source}
+
+/* ---- geometry ------------------------------------------------------- */
+function edge(c, dx, dy) {
+  const ax = Math.abs(dx), ay = Math.abs(dy);
+  const tx = ax > 1e-6 ? (HW + 7) / ax : Infinity;
+  const ty = ay > 1e-6 ? (HH + 7) / ay : Infinity;
+  const t = Math.min(tx, ty);
+  return { x: c.x + dx * t, y: c.y + dy * t };
+}
+function curve(from, to) {
+  const a = POS[from], b = POS[to];
+  if (!a || !b) return null;
+  const vx = b.x - a.x, vy = b.y - a.y;
+  const len = Math.hypot(vx, vy) || 1;
+  // bow to the right of travel, so A->B and B->A never overlap
+  const ox = (vy / len) * 34, oy = (-vx / len) * 34;
+  const ctrl = { x: (a.x + b.x) / 2 + ox, y: (a.y + b.y) / 2 + oy };
+  const s = edge(a, ctrl.x - a.x, ctrl.y - a.y);
+  const e = edge(b, ctrl.x - b.x, ctrl.y - b.y);
+  return `M${s.x.toFixed(1)} ${s.y.toFixed(1)} Q${ctrl.x.toFixed(1)} ${ctrl.y.toFixed(1)} ${e.x.toFixed(1)} ${e.y.toFixed(1)}`;
+}
+
+/* ---- drawing -------------------------------------------------------- */
+function drawNodes() {
+  $("nodes").innerHTML = SECTORS.map(s => {
+    const p = POS[s.id];
+    const cls = "node" + (sel === s.id ? " sel" : "") + (sel && sel !== s.id ? " tgt" : "");
+    return `<g class="${cls}" data-sector="${s.id}" tabindex="0" role="button"
+      aria-label="${esc(s.name)}">
+      <rect x="${(p.x - HW).toFixed(1)}" y="${(p.y - HH).toFixed(1)}" width="${HW * 2}" height="${HH * 2}" rx="4"/>
+      <text class="nm" x="${p.x.toFixed(1)}" y="${(p.y - 2).toFixed(1)}">${esc(s.name)}</text>
+      <text class="sm" x="${p.x.toFixed(1)}" y="${(p.y + 15).toFixed(1)}">${esc(s.sub)}</text>
+    </g>`;
+  }).join("");
+}
+function drawLinks() {
+  $("links").innerHTML = links.map(l => {
+    const d = curve(l.from, l.to);
+    if (!d) return "";
+    const k = kindOf(l.kind);
+    const dim = editing && editing.id && editing.id !== l.id ? " dim" : "";
+    return `<g data-link="${esc(l.id)}">
+      <path class="hit" d="${d}"/>
+      <path class="link${dim}" d="${d}" stroke="var(${k.v})" marker-end="url(#ah-${k.id})"/>
+    </g>`;
+  }).join("");
+}
+function drawList() {
+  const el = $("list");
+  if (!links.length) {
+    el.innerHTML = `<div class="empty">No arrows yet. Click a sector on the ring, then click a second one.</div>`;
+    return;
+  }
+  const order = { needs: 0, feeds: 1, breaks: 2, earns: 3 };
+  el.innerHTML = [...links]
+    .sort((a, b) => (order[a.kind] - order[b.kind]) || a.from.localeCompare(b.from))
+    .map(l => {
+      const k = kindOf(l.kind);
+      return `<div class="item" data-row="${esc(l.id)}" tabindex="0" role="button">
+        <span class="pair">${esc(byId[l.from]?.name || l.from)} &rarr; ${esc(byId[l.to]?.name || l.to)}</span>
+        <span class="kd" style="color:var(${k.v})">${esc(k.label)}</span>
+        <span class="nt">${esc(l.note || "—")}</span>
+        <span class="who">${l.source === "ruled" ? "decided" : "yours"}</span>
+      </div>`;
+    }).join("");
+}
+function draw() { drawNodes(); drawLinks(); drawList(); }
+
+/* ---- editor --------------------------------------------------------- */
+function drawKinds() {
+  $("ed-kinds").innerHTML = KINDS.map(k =>
+    `<button type="button" data-kind="${k.id}" style="color:var(${k.v})"
+      aria-pressed="${editing && editing.kind === k.id}">${k.label}</button>`).join("");
+}
+function openEditor(link, from, to) {
+  editing = link
+    ? { ...link }
+    : { from, to, kind: "needs", note: "", source: "aaron" };
+  $("ed-title").textContent = link
+    ? `${byId[editing.from]?.name} → ${byId[editing.to]?.name}`
+    : `New arrow: ${byId[from]?.name} → ${byId[to]?.name}`;
+  $("ed-note").value = editing.note || "";
+  $("ed-del").hidden = !link;
+  $("editor").hidden = false;
+  drawKinds();
+  drawLinks();
+  $("ed-note").focus();
+}
+function closeEditor() {
+  editing = null; sel = null;
+  $("editor").hidden = true;
+  setStatus("Click a sector to start an arrow.");
+  draw();
+}
+function setStatus(t, cls) {
+  const s = $("status");
+  s.textContent = t;
+  s.className = "hint" + (cls ? " " + cls : "");
+}
+
+/* ---- persistence ---------------------------------------------------- */
+function localId() { return "l" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+
+async function saveLink() {
+  if (!editing) return;
+  const body = {
+    from: editing.from, to: editing.to, kind: editing.kind,
+    note: $("ed-note").value.trim(), source: editing.source || "aaron",
+    at: new Date().toISOString(),
+  };
+  const id = editing.id || localId();
+  if (!db) {
+    links = links.filter(l => l.id !== id).concat([{ id, ...body }]);
+    closeEditor();
+    setStatus("Saved on this screen only — it will not come back.", "warn");
+    return;
+  }
+  try {
+    await db.doc("links/" + id).set(body);
+    closeEditor();
+    setStatus("Saved.", "live");
+  } catch (e) {
+    setStatus("Not saved (" + (e && e.code ? e.code : "error") + "). Try again.", "warn");
+  }
+}
+async function deleteLink() {
+  if (!editing || !editing.id) return;
+  const id = editing.id;
+  if (!db) { links = links.filter(l => l.id !== id); closeEditor(); return; }
+  try {
+    await db.doc("links/" + id).delete();
+    closeEditor();
+    setStatus("Deleted.", "live");
+  } catch (e) {
+    setStatus("Not deleted (" + (e && e.code ? e.code : "error") + ").", "warn");
+  }
+}
+
+/* ---- events --------------------------------------------------------- */
+function pickSector(id) {
+  if (editing && !editing.id) return;
+  if (!sel) {
+    sel = id;
+    setStatus(`From ${byId[id].name} — now click where it goes.`, "live");
+    draw();
+    return;
+  }
+  if (sel === id) { sel = null; setStatus("Click a sector to start an arrow."); draw(); return; }
+  const from = sel, to = id;
+  sel = null;
+  draw();
+  openEditor(null, from, to);
+}
+
+document.addEventListener("click", ev => {
+  const node = ev.target.closest("[data-sector]");
+  if (node) { pickSector(node.dataset.sector); return; }
+  const lk = ev.target.closest("[data-link]");
+  if (lk) { const l = links.find(x => x.id === lk.dataset.link); if (l) openEditor(l); return; }
+  const row = ev.target.closest("[data-row]");
+  if (row) { const l = links.find(x => x.id === row.dataset.row); if (l) openEditor(l); return; }
+  const kb = ev.target.closest("[data-kind]");
+  if (kb && editing) { editing.kind = kb.dataset.kind; drawKinds(); return; }
+});
+document.addEventListener("keydown", ev => {
+  if (ev.key === "Escape") { closeEditor(); return; }
+  if (ev.key === "Enter" || ev.key === " ") {
+    const t = ev.target.closest("[data-sector],[data-row]");
+    if (t) { ev.preventDefault(); t.click(); }
+  }
+});
+$("ed-save").addEventListener("click", saveLink);
+$("ed-cancel").addEventListener("click", closeEditor);
+$("ed-del").addEventListener("click", deleteLink);
+$("ed-note").addEventListener("keydown", ev => { if (ev.key === "Enter") saveLink(); });
+
+/* ---- boot ----------------------------------------------------------- */
+draw();
+setStatus("Click a sector to start an arrow.");
+
+(async () => {
+  try { db = await claude.use("db"); } catch (e) { db = null; }
+  if (!db) {
+    setStatus("Saving is off in this view — arrows you draw will not be kept.", "warn");
+    return;
+  }
+  db.collection("links").onSnapshot(
+    snap => {
+      links = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      draw();
+      if (editing) drawLinks();
+    },
+    e => setStatus("Could not load the arrows (" + e.code + ").", "warn")
+  );
+})();
+</script>
