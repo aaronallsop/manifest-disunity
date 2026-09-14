@@ -26,11 +26,10 @@ round**, because by the plan's own rule a round ends when he says it ends.
 
 **Working tree clean, nothing unpushed.** Board published as version 27.
 
-**TESTS WERE NOT RE-RUN BY THAT SESSION, and it says so honestly on the board.** The last measured
-run is **956 green, 0 failing, 201.76s across 51 files, measured 14 September at about 09:00** in the
-browser. No game code, `data/`, `content/` or `DESIGN.md` has been touched since 5 September, so the
-figure is very likely still true — **but it is quoted, not measured, and should be re-run before
-anybody relies on it.**
+**TESTS RE-RUN AND GREEN: 956 passed, 0 failing, 223.14 seconds across 51 files, measured at 12:10
+on 14 September** in the browser at `/tests/run.html`. That session had not re-run them and said so
+honestly on the board; this closes that gap. No game code, `data/`, `content/` or `DESIGN.md` has
+been touched since 5 September.
 
 ---
 
@@ -43,9 +42,16 @@ This is the third time on this project and the reason the session-start hook exi
 **A wrong figure is on the dashboard right now, and it is small.** The board's own "updated" stamp
 reads **2026-09-14 17:40**. The commit that published it landed at **12:02**, and the real time when
 this was written was **12:04**. The board is forward-dated by five and a half hours. Nothing else on
-it depends on that number, but it is the class of thing this project has a rule about. **Fix it on
-the next republish** — and re-read the live page first, because it was republished outside this
-session's knowledge.
+it depends on that number, but it is the class of thing this project has a rule about.
+
+**THE BOARD WAS DELIBERATELY NOT REPUBLISHED at this sign-off, and that is a departure from the
+ritual.** Its substance was written by the session that actually did round 4 — the headline, the
+three cards, the phase entries — and it is accurate. The only things this session would have changed
+are that timestamp and the test figure, now measured above. Overwriting another session's account of
+its own work to correct a clock was judged the worse trade. **Two things to do on the next
+republish:** fix the stamp, and carry the measured test result onto it. **Re-read the live page
+first** — it was republished outside this session's knowledge, and a `_oldHeadline` block is sitting
+in the source as leftover clutter that should be deleted while you are in there.
 
 **Two findings from round 4 are open and neither is Aaron's to settle on paper:**
 
@@ -127,8 +133,11 @@ five nested sections. It is written up and it waits.
 ## 7. Known but unverified
 
 - **The game has not been opened since 5 September.** Only the test page has been run.
-- **The test figure above is quoted, not measured this session.**
-- **The board's updated stamp is forward-dated by five and a half hours.**
+- **The board's updated stamp is forward-dated by five and a half hours, and the board was not
+  republished at this sign-off.** See §2.
+- **The artifact watches were stopped at Aaron's request** at the end of this session — neither the
+  Control Board nor the systems map is being watched for changes any more. A future session that
+  wants to be told when he edits the board will have to start watching it again.
 - **There is still no committed list of nations** — the only nation-shaped file is an autosave from
   turn 4 of one playthrough, and it is gitignored.
 - **Where phosphate, potash and natural gas actually sit on the map is unverified.** Ruling 7 depends
