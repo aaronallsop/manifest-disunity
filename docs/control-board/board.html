@@ -304,69 +304,92 @@ tr:last-child td{border-bottom:0}
 const BOARD = {
   project: "Manifest Disunity",
   livery: "tower",                      // tower | mars | violet | deep | slate
-  updated: "2026-09-11 20:45",          // when you last republished, local time
+  updated: "2026-09-14 09:20",          // when you last republished, local time
 
   // Three or four measured figures. value: number|string, or null = "not yet measured".
   figures: [
-    { label: "Design rounds done",      value: "2 of 7 — round 3 finished, awaiting your word" },
-    { label: "Rulings in round 3",      value: 41 },
-    { label: "Economy-alpha stages done",  value: "A0–A5" },
+    { label: "Design rounds done",      value: "3 of 7 — the economy is live" },
+    { label: "Rulings written down and indexed", value: 136 },
+    { label: "Wiki pages built from them",       value: 81 },
+    { label: "Wiki articles written, awaiting your decision", value: 76 },
+    { label: "Tests green — all of them, measured this morning in 202 seconds", value: 956 },
     { label: "Current version",         value: "v0.6" },
-    { label: "Tests green — all of them, run tonight in 197 seconds", value: 956 },
-    { label: "Industry figures that are real, today",   value: "0%" },
-    { label: "Industry figures real after the re-bake", value: "75%, not 84%" },
   ],
 
   // The single most important true thing right now. tone: "bad" | "warn" | "ok" | "neutral".
   headline: {
-    tone: "ok",
-    text: "POLITICS IS FINISHED — 41 RULINGS — AND IT NEEDS ONE WORD FROM YOU TO CLOSE. Every one of "
-        + "the twelve questions the round opened with is answered, all 26 movements are placed on the "
-        + "new political board, and your third story has been traced through everything decided. By "
-        + "your own rule a round ends when you say it ends, so the card below is the last thing it "
-        + "wants.\n\n"
-        + "ONE THING WENT WRONG AND I CAUGHT IT MYSELF, AN HOUR LATE. I gave you a figure tonight — "
-        + "\"155 million people, a third of everyone inside a movement\" — and it was wrong. It added "
-        + "up nine movements' home ground without noticing that movements overlap, so shared counties "
-        + "got counted twice. The real number is 118 million people across 1,526 counties, which is 38 "
-        + "per cent, not 32. The population was overstated and the share understated by the same "
-        + "mistake, and the tell was there to be read: my own total came to more people than the "
-        + "United States has. Found by reviewing my own work before signing off, corrected everywhere, "
-        + "and written into the rules so the next session checks a population against the country "
-        + "before publishing it.\n\n"
-        + "WHAT YOU BUILT TONIGHT. The whole of how one country joins another: a movement that wants a "
-        + "union cannot be satisfied by you alone, so it sends you to your neighbours, and their "
-        + "answer — yes, no, or \"let's think about it\" — is the game. And a federation, which you "
-        + "ruled into existence as a real thing rather than a name: many states that stay states, a "
-        + "flat toll split between the host and the club, an elected leader with two budgets, an "
-        + "attack on one member answered by all of them, and an even share of every outside deal, "
-        + "because that is what pays a small nation for being there.\n\n"
-        + "THE THREE THINGS THE DESIGN PRODUCED THAT NOBODY DESIGNED. The federation's money flows to "
-        + "whoever holds the rivers and its protection flows to whoever is weakest, inside an "
-        + "institution those same members elect — so it will argue. A federation makes unions harder "
-        + "abroad and easier at home, which quietly pulls its own members toward becoming one country. "
-        + "And a federation can be destroyed without losing an acre, by making a war tiresome enough "
-        + "that members walk out until it falls below three.\n\n"
-        + "WHAT THE TRACE FOUND, AND WHY IT IS WORTH THE TIME EVERY ROUND. Your third story failed its "
-        + "first trace — a government facing the Sagebrush Rebellion is never actually cornered, "
-        + "because for that kind of movement the cheap answer and the real cure are the same act. That "
-        + "failure is what showed the story is about a different kind of movement entirely. It also "
-        + "turned up that nine movements have a ceiling below the line they would have to cross: three "
-        + "of them could never have taken ground at all, which you fixed, and it puts a hard limit on "
-        + "a number nobody has set yet.\n\n"
-        + "THE ONE RISK I CANNOT SETTLE ON PAPER: if an attack on one federation member means war with "
-        + "all of them, nobody may ever attack one — and joining becomes the obvious opening move for "
-        + "every small nation on the board. Every counterweight exists and not one has been played. It "
-        + "is the first thing a test should watch.\n\n"
-        + "Nothing is broken. All 956 checks pass, run tonight in 197 seconds. No code, data or game "
-        + "rules were touched — this was a design session and it wrote only documents.",
+    tone: "warn",
+    text: "THE WORST MISTAKE THIS WEEK WAS MINE, AND THE WRITER YOU HIRED IS THE ONE WHO FOUND IT. "
+        + "The wiki tells you, beside every rule, whether that rule is still live or has been "
+        + "replaced by a later one. My check for that looked for the word \"superseded\" in the note "
+        + "about each rule. Most of those notes BEGIN with the words \"Not superseded.\" So it read "
+        + "every denial as a confirmation and marked 39 live rules DEAD, with the words \"do not "
+        + "state this as a rule\" printed beside them. Your writer was reading that while they wrote, "
+        + "said so politely on six separate pages, and nobody here caught it first. It is fixed — "
+        + "the true number is six — and it is written into the rules so the next session tests a "
+        + "check like that against its own opposite before shipping it.\n\n"
+        + "SO I PUT THIS SESSION'S WORK THROUGH A HARD REVIEW BEFORE SIGNING OFF. Sixty-one "
+        + "reviewers across four angles: 57 problems raised, 12 thrown out as wrong, 45 real. Nine "
+        + "are fixed and twenty are written down as known defects. Three of the nine mattered nearly "
+        + "as much as the first. A writer who quoted one of my markers at the start of a line would "
+        + "have had their prose silently eaten on the next rebuild — nothing has been lost, and the "
+        + "rebuild now refuses to touch a page it cannot read cleanly. Eleven of round one's rulings "
+        + "live as rows of a single table, and reading one of them swallowed all the others, which "
+        + "put 27 wrong citations on five movement pages. And the summary box at the top of every "
+        + "page was frozen at whatever was true the day that page was made. None of the twenty still "
+        + "open makes the wiki say anything false — that is the class I fixed.\n\n"
+        + "WHAT YOU HAVE NOW. A wiki of 81 pages covering everything decided in the three closed "
+        + "rounds, generated rather than typed, so it can be rebuilt after every future round "
+        + "without anybody maintaining it by hand. Every movement carries its verb and its place on "
+        + "the ten-position board for the first time — those lived only on a web page outside the "
+        + "project until this week. And a systems map that draws how the eleven parts of the game "
+        + "act on each other, which is the picture the note-taking app could not give you: it drew "
+        + "all seven kinds of connection as the same grey line and could not see your categories at "
+        + "all.\n\n"
+        + "THE WRITER IS GOOD, AND THAT IS WORTH SAYING. Their questions file runs to 54 pages of "
+        + "contradictions found in your own documents — including that the running game measures the "
+        + "strongest single movement where the design says the sum of them, and that your two "
+        + "40 per cent thresholds are separate numbers that happen to match today. Their articles "
+        + "are a different question, and it is the card below.\n\n"
+        + "Everything is committed and backed up. All 956 checks pass, measured this morning in 202 "
+        + "seconds. No game code, game data or game rules were touched.",
   },
-
 
   // Only decisions that are genuinely the owner's. Ids are permanent.
   // Only decisions that are genuinely the owner's. Ids are permanent.
   // Only decisions that are genuinely the owner's. Ids are permanent.
   decisions: [
+    { id: "writer-wiki-merge",
+      title: "The writer's 76 articles — keep them, or start again?",
+      evidence: "They wrote about 5,400 words across the twelve pages I checked closely, and I traced "
+              + "104 of their citations back to the rulings they name. The writing is good: plain, "
+              + "unhurried, written for somebody who cannot read code. The accuracy is the problem — "
+              + "roughly half of those citations say something the ruling does not quite say. Four "
+              + "examples: they say the three-county attack limit, the waiting period and the "
+              + "protection for big countries are all gone, which the rulings do say and the RUNNING "
+              + "GAME does not; they say ground changes hands the moment you take it, where the "
+              + "ruling says at the settlement; they call martial law a step short of suppression, "
+              + "where the ruling says it IS suppression; and they describe a member petitioning to "
+              + "LEAVE a federation, which exists nowhere in your design. But a large share of that "
+              + "is my fault, not theirs: they were writing against source lists that marked 39 live "
+              + "rules dead. They also left every story section blank rather than inventing one, "
+              + "which was the right call and the instruction most likely to be ignored.",
+      cost: "Correcting it: about a day of my time on the machinery, then two to three days checking "
+          + "every claim on every page against the rulings, then half a day rewriting the four pages "
+          + "built on a misreading rather than a slip. Five to seven days, and you keep the words. "
+          + "Starting again: a fresh draft still needs the same checking pass — a machine writing "
+          + "48,000 words about 136 rulings will misattribute them too, differently rather than less "
+          + "— so six to eight days, and you throw the writing away. The two roads cost about the "
+          + "same.",
+      recommendation: "Keep it. Not because the money is spent, but because the expensive part of "
+                    + "this job is the checking and you pay that either way — so one road keeps the "
+                    + "asset and the other does not. What you would lose by starting again is the "
+                    + "voice, the 54-page questions file, and their one genuinely good instinct: "
+                    + "leaving a story blank rather than making one up. I would not bet on getting "
+                    + "that back." },
+  ],
+
+  _answered: [
     { id: "close-round-3",
       title: "Politics is finished. Do you call it closed?",
       evidence: "41 rulings. All twelve questions the round opened with are answered, and so are the "
@@ -675,7 +698,7 @@ const BOARD = {
             + "movement along changes what it wants, a country CAN eventually talk its way out of a "
             + "permanent rivalry, by disappointing its own hardliners until they stop asking. That is "
             + "the only exit from a permanent feud in the whole design and nobody designed it." },
-    { name: "Design round 3 — Politics", status: "current",
+    { name: "Design round 3 — Politics", status: "done",
       brief: "The government's side of everything round 1 and round 2 described: how a country answers "
            + "its own people, and the two remaining pressures that push a region toward leaving.",
       actual: "PART-WAY THROUGH — fourteen rulings across Wednesday evening and Thursday. This card "
@@ -733,7 +756,31 @@ const BOARD = {
             + "what showed which kind of movement it was really about. Everything the round hands to "
             + "the economy, to diplomacy and to the final round is written down, and its ten findings "
             + "each have an owner.\n\n"
-            + "IT NEEDS ONE WORD FROM YOU TO CLOSE, which is the card at the top of this page." },
+            + "CLOSED BY YOU on 12 September at 02:41, on this board. Forty-one rulings plus one "
+            + "half-ruling, ten findings, every one with an owner." },
+    { name: "Design round 4 — The economy", status: "current",
+      brief: "Finish the economy against everything rounds 1, 2 and 3 have demanded of it, rather than "
+           + "starting it from nothing. It has been collecting work from every other round all week.",
+      actual: "OPEN, not yet started. It opens with 93 ideas already banked and two things waiting for "
+            + "it. A hard constraint: the share of a population at which a movement demands a union has "
+            + "to sit below thirty per cent, or two of your six union movements can never make a demand "
+            + "at all. And the hole this whole design has been circling — NOTHING BAD HAPPENS TO A "
+            + "NATION THAT DOES NOT TRADE. Every other round has stalled on it at least once, and it is "
+            + "named in the project's own definition of done as the thing round four has to answer." },
+    { name: "The design wiki", status: "done",
+      brief: "\"This is great but it is getting hard to keep track of all of this so I think a future "
+           + "idea would be create a wiki for all of this.\" Then, on seeing it: make it read like the "
+           + "Europa Universalis wiki, and let me see how the systems connect.",
+      actual: "BUILT 12-14 September. Eighty-one pages over eleven subjects, every claim citing the "
+            + "ruling that made it true, and GENERATED rather than typed — so it can be rebuilt after "
+            + "every future round instead of rotting. Twenty-six movement pages and ten political "
+            + "positions, each carrying its verb and its placement for the first time; those lived only "
+            + "on a web page outside the project until this week.\n\n"
+            + "The systems map is the second half, and it exists because the note-taking app could not "
+            + "do what you asked: it draws every connection as the same grey line and cannot see your "
+            + "categories at all. This one keeps the seven kinds apart and groups the pages by system.\n\n"
+            + "NOT DONE, and it is the card at the top: your writer's 76 articles are written and "
+            + "reviewed and NOT merged. The scaffolding has no prose in it until you decide." },
     { name: "After the economy alpha — Recognition, Canada, Mexico", status: "todo",
       brief: "Recognition score and ramp, border-state suspicion, Canada/Mexico as partners and as corridors, gray-market trade.",
       actual: "HALF DONE, AND PAUSED while the design rounds run. Canada and Mexico are real places on the trade map — reached by the "
@@ -806,6 +853,18 @@ const BOARD = {
 
   // Decisions made on the owner's behalf and how they turned out. Corrections go BESIDE originals.
   log: [
+    { when: "2026-09-14", decision: "Marked 39 of your live rules as dead, and shipped it to the person you were paying to read them.",
+      outcome: "The single worst thing I have done on this project. The wiki prints, beside every rule, whether a later ruling replaced it. My check searched the note about each rule for the word \"superseded\" — and most of those notes open with the words \"Not superseded.\" It read the denial as a confirmation. Your writer spotted it, said so on six separate pages of their questions file, and carried on drafting against it anyway. The true number is six. What makes it worse is that my own instructions to that writer name this exact failure as the worst thing the wiki could do. Fixed, tested against eight known cases, and written up as rule 12: a check that decides whether something is still true has to be run over every row of the real data and read, before it ships." },
+    { when: "2026-09-14", decision: "Reviewed my own week's work hard enough to find 45 real defects in it, before telling you it was finished.",
+      outcome: "Sixty-one reviewers over four angles — the generator, the data, the map, and the documents — each told to attack rather than approve, and each finding then given to a second reviewer told to refute it. 57 raised, 12 thrown out as wrong, 45 confirmed. Nine fixed tonight, twenty written down. Three would have reached you as false statements in the wiki. One would have destroyed your writer's work the next time I rebuilt: quoting one of my own markers at the start of a line made the rebuild swallow everything down to the next one. Nothing has been lost, and the rebuild now refuses to touch a page whose markers it cannot read cleanly." },
+    { when: "2026-09-14", decision: "Told you the graph view could not be made to do what you wanted, rather than trying to tune it.",
+      outcome: "You opened the node graph and got a hairball. I measured why instead of guessing: only 6 per cent of the links say one thing is part of another, your eleven categories are invisible to that view because it reads links and nothing else, and the front page alone links to 79 of 86 pages — which puts every page two steps from every other page through one hub. No setting fixes that. The richest thing in the data was being thrown away at the moment of drawing: every link already knows whether it gates, feeds, blocks, costs, triggers or explains, and all seven were painted the same grey. So I built the picture separately, and it keeps them apart." },
+    { when: "2026-09-14", decision: "Brought your Movement Register into the project as a file, without asking first.",
+      outcome: "Every movement's verb — what it actually wants — existed only on a published web page outside the repository, and it is the thing your three closed rounds rule on more than anything else. No movement page could state its own verb. I read your live markup rather than the page's defaults, which matters: four verbs differ between them. Blue-Collar Populist and Christian Nationalism gained Unify where the default had none, and Front Range Republic and Hawaiian Sovereignty moved to Expand — the second because of Pearl Harbor, in your own note." },
+    { when: "2026-09-14", decision: "Corrected three counts in your own planning documents that had gone stale.",
+      outcome: "The seven-round plan and the standing brief both still said politics was half-finished at 14 rulings when it had closed at 41, and you had approved the closure on this board. While in there I counted the idea banks rather than copying the figures forward: the economy holds 93 entries, not 84, and conquest holds 127, not 134 — its numbering runs to C131 with four numbers never used and two used twice. Three different numbers had been circulating for the same document." },
+    { when: "2026-09-14", decision: "Wrote a build/ exception into the designer brief instead of quietly breaking its rule.",
+      outcome: "The brief forbids a design session from touching the build folder, and I put five files there — the wiki's generator and its inputs. They belong beside the other bakers and nowhere else fits, they read the game's data and never write it, and they touch no game code. Rather than leave that as a silent violation for the next session to trip over, the exception is now written into the brief with its date and its limit: nothing else in that folder." },
     { when: "2026-09-09", decision: "Told you round two was already finished, instead of starting the work you asked for.",
       outcome: "You opened the session asking me to work through the conquest questions and then trace the six test stories. All of it was already done — you had closed the round overnight and the written summary on file was from the evening before, fifteen rulings out of date, because the session that closed it never wrote a replacement. I checked your rulings word by word before saying so, because the alternative was accusing you of forgetting something you had not. The brief a new session reads now says which round is live, so this cannot happen the same way again." },
     { when: "2026-09-09", decision: "Told you a card on this board had given you a false reason.",
