@@ -1190,6 +1190,59 @@ action moves three nations.** *That is either the answer to the action budget or
 it outright, and it cannot be judged while the turn is being redefined.* **Same destination as ruling
 9: stage 3, beside whatever the turn becomes.**
 
+### Ruling 16 — Stateless ground is terrain with a price. Nobody signs for it
+
+**RULED 14 September 2026.** *"Terrain with a price."* — closing in-tray items **5** and **o**,
+politics' inbox item 1, and economy **E88**.
+
+**Ground with no government is a road with a fee on it.** Goods cross it and pay a toll that is **a
+cost to the shipper and income to nobody.** It cannot be recognised, cannot ally, cannot join a bloc,
+cannot be negotiated with, and has no signatory of any kind.
+
+**It reuses a mechanism that is already shipped.** Canada and Mexico work exactly this way — a flat
+placeholder toll that is a cost, not a transfer (D168). **So the largest new mechanic in the story
+costs almost nothing**, which is the opposite of what politics expected when it filed the question.
+
+**⚠ This simplifies Aaron's own story, and that should be said rather than slid past.** He described
+tier-3 zones as *"small enough to run on their own and make their own deals"*, and the story has
+Wyoming *"charging tolls to anyone shipping food to Deseret and new Idaho."* **Under ruling 16 nobody
+is charging anything — the toll exists, and there is no *they* collecting it.** *Rejected, and both
+were put to him: a counterparty without a country that keeps its toll income, and the same thing able
+to accumulate its way back into being a state.*
+
+**And the three tiers turn out to be two tiers and a terrain type.** Recognised and secessionist are
+two standings **a nation** can hold. **Stateless is not a third standing; it is ground with no nation
+on it.** *That is a cleaner filing than the one the story implied and it removes a whole class of
+question — what a stateless society wants, who leads it, whether it can be betrayed — that nobody now
+has to answer.*
+
+**⚠ The map can still heal, and the route was already built.** The worry against this ruling is that
+ground which falls out of the game can never climb back. **It can: politics ruling 4 says a movement
+can rise out of a stateless society, and ruling 13 says it grows there by attraction rather than
+grievance.** *So the exit from tier 3 is a movement, not money — which is the same machinery that
+made these regions in the first place, pointed the other way.* **T67's accumulate-your-way-back idea
+is rejected and not needed.**
+
+### Ruling 17 — A government may propose a union with nobody asking it to. Default taken
+
+*Answering in-tray item **(n)**, filed by politics ruling 18 as *"diplomacy's question, not this
+round's."*
+
+**Yes, and it needs no new machinery.** Round 3 built the whole proposal: **ruling 16** gives it
+three answers with *not yet* as the interesting middle, **ruling 17** decides the answer from their
+appetite, your weight and the relationship as a gate, and **ruling 19** says proposing costs the
+turn's action. **All of that works identically whether a movement asked for it or the government
+thought of it.**
+
+**Why the default is yes.** The alternative — a government may only propose a union when its own
+people demand one — **means a player can never initiate the largest cooperative act in the game.**
+*Every other verb in this round can be started by the player; making this one reactive would put the
+game's only peaceful merger permanently in the hands of the movement layer.*
+
+**One thing it does NOT unlock, because politics already closed it.** Ruling 31: **the contest
+claimants can never join a union.** *So the twenty-three pairs rulings 1–3 froze cannot use this
+either, and the two rulings agree without needing to be reconciled.*
+
 ---
 
 ## 6. Findings
