@@ -1113,6 +1113,83 @@ existing longest term rather than adding a fifth duration**, because the four du
 table read in several places and adding to it changes more than this one deal. *Say so if the twenty
 years matter to the story.*
 
+### Rulings 12–15 — four defaults taken without asking
+
+**Taken 14 September 2026, following the pattern rounds 2, 3 and 4 all used: where a question has a
+precedent already ruled or machinery already built, take it, say so plainly, and put the batch up for
+confirmation rather than spending Aaron's attention one at a time.** *Round 4's rulings 3–6 were four
+such defaults and he confirmed all four.* **Each of these is reversible and none is a product
+judgement.**
+
+#### Ruling 12 — What you get for recognising somebody is their gratitude, and gratitude is already a number
+
+*Answering in-tray item **(c)**, which conquest called the hinge of the thaw.*
+
+**Three things, all of them built, none of them new.**
+
+1. **A directed memory in your favour.** Granting recognition writes `recognised` **from them toward
+   you** — they remember it, you do not. *Verified this session: the entry's direction is the
+   recipient's feeling about the granter.*
+2. **Which is the first term in their chance of recognising you back.** Recognition's chance reads
+   **Standing** before anything else. **So recognising a pariah is how a pariah buys its own
+   recognition** — you give the thing you want, to the only people who can give it to you.
+3. **And it angers their parent.** `betrayed` fires against the state they broke from. **Recognition
+   is simultaneously a gift and an attack, and the same action does both** — T14, and it is the
+   richest thing in the built system that no round had used.
+
+**So item (c) needs nothing built.** *What was missing was not machinery; it was anybody noticing
+what the machinery already did.*
+
+#### Ruling 13 — An inherited quarrel decays like any other, because it IS one
+
+*Answering **C132**, raised on the Control Board on 9 September and never answered.*
+
+**A grudge you inherited through an ally is a memory entry like every other memory entry, and it
+fades at the same rate.** No special case.
+
+**Why the default and not the alternative.** T31 argued the truer version — frozen while the alliance
+stands, evaporating the moment it ends, so that leaving an alliance cleans your slate. *That is
+better writing and it needs machinery that does not exist: something has to know the entry is
+conditional on a relationship, and there is no relationship object to hang it on.* **And the failure
+mode of not decaying is severe** — a long game accumulates permanent hostility through
+friends-of-friends until the board freezes. **The decaying version reuses what is built and cannot
+seize up.** *T31 goes forward to stage 3 as the better version to revisit once alliances exist.*
+
+#### Ruling 14 — A creditor may demand what costs the debtor nothing material
+
+*Answering in-tray item **(r)**, which the economy sent here with the observation that nobody had
+said what leverage buys.*
+
+**Three demands, and the rule behind them is that a creditor extracts acts, not assets.**
+
+| May demand | Why |
+|---|---|
+| **Recognition** | Costs the debtor nothing material and is worth everything to a creditor who lacks it. T56 |
+| **Transit** | The route rather than the money — which is what Houston wanted from Louisiana and what all trade funnelling through Arizona is about. T57 |
+| **A vote** | Inside a bloc or federation, a debtor votes with its creditor. **Under ruling 10 this is large**, because a bloc's vote confers existence. T55 |
+
+**May NOT demand ground, or submission.** *Submission is vassalage and it has its own instrument —
+ruling 5's demand, backed by a threat. A debt is not an ultimatum and collapsing the two would make
+every loan a conquest.*
+
+**And forgiving a debt writes `aided`** — the cheapest friendship in the game, and the move a rich
+nation makes when it wants a client and does not want a war. T58.
+
+#### Ruling 15 — A guarantee is a one-sided alliance. Mediation is deferred to stage 3
+
+*Answering in-tray item **(d)** in two halves.*
+
+**A guarantee is conquest ruling 27's Allied with one side's obligations removed: I will defend you,
+you promise me nothing.** *That is also the shape of a protectorate, and of F16's
+Canadian-protection idea — which makes it one object serving three, rather than three objects.* **It
+needs the alliance to exist first**, which ruling 11 has just put on the roadmap.
+
+**Mediation is deferred, and the reason is the action budget.** T6 — a nation on good terms with two
+enemies spends its turn improving *their* relation — is **the only idea in this round where one
+action moves three nations.** *That is either the answer to the action budget or a reason to reject
+it outright, and it cannot be judged while the turn is being redefined.* **Same destination as ruling
+9: stage 3, beside whatever the turn becomes.**
+
 ---
 
 ## 6. Findings
