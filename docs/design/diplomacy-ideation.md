@@ -676,6 +676,113 @@ thing the economy handed this round.*
 
 ---
 
+## 5a. Rulings
+
+### Ruling 1 — The contest floor is per contest, not a rule: Texas and California never thaw, the Confederacy does
+
+**RULED 14 September 2026.** *"Texas and Califonia stays hostile the whole game. Confederacy thaws."*
+
+**The question put** was whether a thaw can ever cross the permanent floor the reunification contests
+put under their claimants. The answer is not one rule for all four contests. **It is a property of
+each contest.**
+
+| Contest | Claimants | Pairs | Ruled |
+|---|---|---|---|
+| **A Free Texas** | Austin, Dallas, Houston, San Antonio, El Paso | 10 | **Permanent. No thaw, the whole game** |
+| **California Republic** | Los Angeles, the Bay Area, Riverside, SoCal, Northern California | 10 | **Permanent. No thaw, the whole game** |
+| **The Confederacy** | the Deep South, the Carolinas, the Gulf nation, Appalachia, Central Florida | 10 | **Thaws** |
+| **The Thirteen Colonies** | three of Washington D.C., the United States of New England, Philadelphia, New York City — cut to three by round 1's ruling 20 | 3 | **Permanent** — ruling 3 |
+
+**Why this is better than either global answer, and the reason is in the story rather than in the
+mechanics.** Texas and California **just fell apart**. Each of those ten pairs is a set of people who
+were one country two years ago and are now five, each insisting the other four are illegitimate. That
+is not a grudge; it is an unfinished argument, and it does not cool while both sides are still making
+it.
+
+**The Confederacy was never one country in living memory.** Its claimants are five distinct regional
+nations — the Deep South, the Carolinas, the Gulf, Appalachia, Central Florida — with their own
+histories, who would have to *agree* to become something. **And the prize is unreachable anyway:**
+round 1 ruled the Confederacy *"cannot be done without Texas, which is five nations away."* A contest
+nobody can win is a contest whose claimants have far less reason to hate each other than the ones
+tearing at a prize that is right there.
+
+**What this costs and what it buys.** Twenty pairs — a fifth of the board's worst quarrels — keep no
+diplomatic exit at all and can be settled only by force, which is the price. What it buys is that
+**the two corners of the map built around a succession war stay wars**, and the south stays a place
+where alliances can form. *Finding E is therefore half closed: the thaw is barred where it was meant
+to be barred, and free where the game needs it.*
+
+*Ruling 3 completes the table.*
+
+### Ruling 2 — The Confederate thaw goes all the way, and the south becomes the one place the map can consolidate peacefully
+
+**RULED 14 September 2026.** *"All the way."* — answering how far ruling 1's thaw reaches.
+
+**A Confederate claimant is an ordinary neighbour.** Two of them may warm up, sign, ally, federate or
+unite while both still claim the prize. **The contest puts no ceiling on the relationship at all** —
+it is a shared ambition, not a barrier.
+
+**And one absorbing another is simply how the contest gets won.** Round 1's S66 already says whoever
+holds most of the core takes the prize; ruling 2 makes *merging* a legitimate route to that, alongside
+conquering. **So the Confederacy can be restored by agreement**, which is the only one of the four
+contests that can.
+
+**What this does to the board, and it is the point of the ruling.** The two western contests are
+succession wars with no exit but force. **The south is the opposite: five nations who all want the
+same thing and are allowed to talk about it.** Three genuinely different games on one map —
+*the west fights, the south negotiates, and the north-east is still to be ruled.*
+
+**Rejected, and both were put to him:** a truce ceiling, which would have let the five trade without
+ever joining; and allying forfeiting the claim, which would have narrowed the contest each time two
+got close. *Aaron took the version with no penalty attached, so the Confederacy is the cheap,
+friendly corner of a hostile map.*
+
+**⚠ It also makes the New Confederacy the largest peaceful prize in the game and nobody has priced
+that.** Round 1 measured its homeland at **537 Areas** — the eleven Confederate states — and ruled it
+*"cannot be done without Texas, which is five nations away."* Under ruling 2 the five southern
+claimants can federate their way to most of it without a shot. **Whether the Texas requirement still
+bites hard enough to stop that is a real question and it is not this round's** — it belongs with
+whoever builds the contest. *Recorded as finding F.*
+
+### Ruling 3 — The capital contest is permanent. Twenty-three pairs never thaw; ten do
+
+**RULED 14 September 2026.** *"Permanent, like Texas and California."* — completing ruling 1's table.
+
+**Washington D.C., the United States of New England, Philadelphia and New York City are locked
+Hostile all game**, on three pairs, and no thaw reaches them. The prize is the capital, and the
+capital is the one thing that genuinely cannot be shared.
+
+**The arithmetic, restated so nobody rebuilds it from the wrong number:**
+
+| | Pairs | Thaw |
+|---|---|---|
+| A Free Texas | 10 | **Never** |
+| California Republic | 10 | **Never** |
+| The Thirteen Colonies | 3 | **Never** |
+| The Confederacy | 10 | **Freely, ruling 2** |
+| **Total** | **33** | **10 of 33 have a diplomatic exit; 23 do not** |
+
+**⚠ The reason this is NOT arbitrary, and it is worth writing down because it looks arbitrary.**
+Ruling 2's argument was that the Confederacy thaws because *it was never one country in living
+memory* — five distinct regional nations who would have to agree to become something. **That argument
+does not extend to the north-east**, and Aaron has drawn the line where it actually falls: D.C., New
+England, Philadelphia and New York are not five strangers with a shared ambition. **They are four
+pieces of a country that collapsed two years ago, three of which are the government's own
+successors** — which is precisely the Texas situation with skyscrapers on it.
+
+**So the rule underneath all three rulings is: a contest thaws when the thing being restored is
+history, and stays frozen when it is last year.** *The Confederacy is a memory. Texas, California and
+the Union are a bereavement.*
+
+**What it does to the board.** **The richest, densest ground in the game becomes as ungovernable by
+diplomacy as Texas.** Three of the largest city-states on the map can never sign anything with one
+another, which means the eastern seaboard is a pressure cooker rather than a negotiation — *and the
+south is now the only large region on the board where nations can freely combine.* **That asymmetry
+is the shape of the map this round has just drawn**, and the alpha should be watched to see whether
+the south runs away with the continent because of it.
+
+---
+
 ## 6. Findings
 
 | | | State | Owner |
@@ -684,7 +791,9 @@ thing the economy handed this round.*
 | **B** | **Patronage already exists and no round knew it.** Aid buys a client whose politics drift toward the donor's, one patron at a time, outbid-able, decaying. Vassalage inherits working machinery. §3e | **OPEN, and it changes question 5** | This round |
 | **C** | **There is no stance state machine.** Hostile is a band on a decaying score, and the thirty-three hostile pairs were asserted from claimant lists, never measured. §3b | **OPEN, and it prices item (a)** | This round, then the **data stage** to measure the thirty-three |
 | **D** | **F2 asks for a reputation number the build already has.** F2 specifies *"a new per-nation standing that decays toward neutral"*; treaty standing is pacts held minus breaches with the breach weighted heavier. **Two of them would be two different ideas about what breaking a promise costs** — which is what F2's own last paragraph warns against. T75, T76a | **OPEN** | This round |
-| **E** | **Hostility blocks every instrument except the one that resolves it.** Conquest rulings 18, 20 and 21: no deal, no corridor, no treaty with a hostile nation — and the contests put a **floor** under thirty-three pairs so the thaw cannot reach them either. **The act invented to fix hostility is barred from the pairs that need it most.** T7, T29 | **OPEN, and it may be the round's real problem** | This round |
+| **G** | **The south may run away with the continent.** Rulings 1–3 leave the Confederate five as the only large group of nations on the board that can freely combine, while the west and the north-east are locked. **Nobody can judge on paper whether that makes the south dominant** | **OPEN** | **The alpha.** A watch item, not a fix |
+| **F** | **Ruling 2 makes the Confederacy winnable by agreement, and nobody has priced that.** Its homeland is 537 Areas and round 1 ruled it cannot be done without Texas, five nations away. **Five southern claimants who may now federate freely could assemble most of it without a shot** | **OPEN** | **Whoever builds the reunification contests.** Not this round |
+| **E** | **Hostility blocks every instrument except the one that resolves it.** Conquest rulings 18, 20 and 21: no deal, no corridor, no treaty with a hostile nation — and the contests put a **floor** under thirty-three pairs so the thaw cannot reach them either. **The act invented to fix hostility is barred from the pairs that need it most.** T7, T29 | **HALF CLOSED by rulings 1 and 2** — the bar is now deliberate where it falls and lifted where the game needs it. What remains open is the other half: **every alliance on the board still has to pass through the thaw first**, because you cannot ally with someone you are hostile to | This round |
 
 ---
 
