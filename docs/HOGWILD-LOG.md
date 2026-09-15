@@ -68,6 +68,71 @@ that are missing. Then the work that closes gaps, then the largest piece of new 
 
 ---
 
+---
+
+# RUN 2 — the design stage, 15 September 2026
+
+**Started 14:00 local.** Token counter at activation: **14,995,073 remaining.**
+**Aaron ticked Hog Wild on the board at 19:59 UTC** and said *"Iniate wild hog mode"* in session.
+
+**⚠ This run did NOT start from a fresh session.** He activated inside the conversation that cleared
+the desk, so the protocol's step-3 restart was skipped. **That is his call and it costs nothing here**
+— the desk was cleared first, which is the step that actually matters, and the handoff
+`2026-09-15_1215` holds everything a fresh session would have read.
+
+**Unlike run 1, this run writes DOCUMENTS, not code.** No game code, no data, no tests are touched.
+That changes what "a stage" means: **a stage is one design document**, and its tag is
+`stage/<name>-design`.
+
+## The plan — fifteen documents, in this order
+
+**The order is by what unblocks the most, not by size.** Dependencies in this folder are "reads from"
+rather than "must follow", and they are circular in places (power aggregates the systems that cite
+it), so a strict topological order does not exist. Where it is circular the later document cites the
+master, which already carries the shared concepts.
+
+| # | Document | Why here |
+|---|---|---|
+| 1 | `identity-design.md` | **Substrate.** D231 unblocked it this morning and four documents wait on it |
+| 2 | `population-design.md` | Needs identity. The six counts, drift, migration, growth |
+| 3 | `movements-design.md` | Round 1's 53 rulings — the largest single bank |
+| 4 | `governing-design.md` | Round 3's 41 rulings. Needs movements |
+| 5 | `economy-design.md` | ⚠ **Carries the logistics brake decision.** See the log entry when it lands |
+| 6 | `trade-design.md` | The most finished thing in the project. Needs economy and board |
+| 7 | `force-design.md` | One number, four slices. Small on purpose |
+| 8 | `war-design.md` | Round 2's 41 rulings. Needs force |
+| 9 | `diplomacy-design.md` | Round 5's 22 rulings. Holds the eight-state pair spine |
+| 10 | `blocs-design.md` | ⚠ **Carries the three internal-trade regimes.** Needs diplomacy and trade |
+| 11 | `events-design.md` | Round 6's 7 rulings. Deliberately thin |
+| 12 | `nation-design.md` | The frame. One machine for nation-making — the seam D217 created |
+| 13 | `opening-board-design.md` | Needs nation. Built vs designed down the middle of every page |
+| 14 | `power-design.md` | **The aggregator, so it goes near the end** and can cite the systems it reads |
+| 15 | `ai-design.md` | Needs the turn and every system's preview |
+
+## ⛔ PARKED BY NAME for this run
+
+| Parked | Why | Un-parked when |
+|---|---|---|
+| **`presentation-design.md`** | Depends on `docs/design/TONE.md`, which **does not exist**. Aaron is being interviewed for it in a separate Claude chat using `prompts/tone-interview.md`. **Writing it without that means inventing the game's position on its own subject matter** — the clearest stop-and-wait case in `HOGWILD.md`: *a matter of taste about how the game should feel, with no measurement that could settle it* | `TONE.md` lands in `docs/design/` |
+
+## Two things this run must NOT invent, decided before it started
+
+1. **`MAX_DISTANCE` on the three-axis political board.** It is the denominator of the one function
+   that drives coalitions, drift, splinters, defection, civil-war severity, trade alignment, liberty
+   satisfaction and AI diplomacy — **so every tuned threshold in the game is measured against it.**
+   It is the architect's. *`GDD.md` gap 11.*
+2. **The game's tone.** See parked, above.
+
+## The standing shape of every document
+
+Five parts, per `CLAUDE.md`: **Depends on** → the system (what it does, what it is measured in, what
+the player sees, what happens at each level) → **Open questions** → **Gaps** → **traced scenarios.**
+
+**And a number without a provenance does not go in.** Measured (from a named file, with its date),
+authored (a tunable), or unset. **No figure is published that was not measured this session or is
+not carried forward with its original date attached.**
+
+
 ## Entries
 
 ### Run 1, entry 1 — I started with the board's Hog Wild switch turned OFF — *5 Sep, 17:52*
