@@ -160,8 +160,11 @@ its source, so nothing has to be looked for twice.
 
 ### 2e. Where the in-tray stands at the end of 14 September
 
-**Twenty-six items came in. Twenty-two are answered.** *The State columns above are as the items
-arrived; this is the scoreboard.*
+**Thirty-three rows came in — counted from the tables above, not estimated.** Four of them are
+inherited facts rather than questions (item **11**, and **h**, **i**, **p**), leaving **twenty-nine
+questions: twenty-four answered, four not this round's, and one that was dropped and is recovered
+below.** *The "twenty-six items, twenty-two answered" printed here earlier was wrong; the review
+recounted it.*
 
 | Closed by a ruling | |
 |---|---|
@@ -189,6 +192,10 @@ arrived; this is the scoreboard.*
 | **(q)** what a player can see of another nation | **the design stage**, with C130 and politics ruling 17 |
 | **(s)** what a pariah can actually reach | **answered by the §7 trace**, not by a ruling: today, nothing |
 | **(t)** the second-supplier move is worth ~12% | **inherited as a measured fact**, nothing to decide |
+
+| ⚠ Dropped, and recovered by the review | |
+|---|---|
+| **4** — **recognition as policy.** *"Does the federal remnant open recognising nobody, and does the built trade block then cut it off from everyone at once?"* | **Half answered as fact, not as design.** §3c settles what happens today: nobody opens refusing anyone, and only Deseret is unrecognised. **Whether the remnant SHOULD open recognising nobody is unruled** — and it is the same class of change as conquest ruling 19, which **ruling 8 deferred past the alpha.** *Deferred with it, on the same reasoning: it is opening content that moves a corner of the board, and the alpha is testing something else. Flagged to Aaron rather than filed silently.* |
 
 ---
 
@@ -262,6 +269,51 @@ ledger records. **`compact`** — a standing trade understanding where both side
 cooldown, and it is **broken by refusing to recognise.** Treaty standing is *pacts held minus
 breaches*, and **a breach is deliberately worth more than a pact**, so a serial betrayer cannot
 out-sign their reputation.
+
+### 3h. ⚠ THE OPENING ROSTER — read this before any ruling below is read as a fact about the game
+
+**Added by the adversarial review at the end of the session.** *The session verified the code
+carefully and did not verify the roster, and several rulings were then phrased as statements about
+the game when they were statements about the design.*
+
+**⚠ None of the rulings is wrong because of this, and the distinction matters.** The story's board is
+**the design intent** — round 1 wrote it and Aaron ruled it. **Designing for it is this round's job.**
+**Working out whether it can be built, in what order, and what the game can carry, is the
+architect's** (stage 3). *What follows is therefore a note about the present state of the board, for
+the architect, and not a correction to any design below.*
+
+**`DESIGN.md` §2.1 is the source of truth, and the board opens as the fifty states plus D.C., with
+Texas and California shattered and Deseret carved out.** Twelve new nations, not twenty-nine:
+
+| On the board today | |
+|---|---|
+| **Texas's five** | Dallas, Houston, El Paso, Austin, San Antonio |
+| **California's six** | Los Angeles, the Bay Area, Riverside, SoCal, Northern California, Cascadia |
+| **One cession** | Deseret |
+| **Everything else** | the 49 remaining states and D.C., intact and unchanged |
+
+**⚠ The story's board is a DESIGN and is not built.** `secession-ideation.md` §8 describes 29 new
+nations with *"five lines still to be drawn"*. **None of the following exists in the game:** the
+United States of New England · Rochester-and-Buffalo · the Deep South · the Carolinas as one · the
+Gulf nation · Appalachia · Central Florida · Miami · Superior · the Front Range Republic · the Navajo
+and Lakota nations · any city-state (Philadelphia, New York City, Detroit, Chicago) · **any stateless
+ground at all.**
+
+**Three things the architect will want to know, and each corrects a phrasing used earlier today.**
+
+1. **Only two of the four reunification contests have claimants on the board today** — Texas and
+   California. **The Confederacy's five and the capital's three are designed and not built.**
+   *Rulings 1–3 are design for the board round 1 wrote, which is correct; they were phrased as though
+   describing today's game, which was not.*
+2. **"Thirty-three permanent quarrels" is a figure about the story's board.** On the game's board the
+   most it could be is **twenty** — ten Texan pairs and ten Californian — **and today it is zero**,
+   because the floor rests on conquest ruling 19, which ruling 8 has just deferred past the alpha.
+   *Conquest called the 33 "built rather than asserted"; it was built from the story's roster.*
+3. **Three of ruling 11's four agreements have their nations on today's board and one does not.**
+   Washington and Oregon are there; the Farmers Union's eight states are there as states; Oklahoma
+   and Dallas are there. **New England and Rochester-and-Buffalo are not**, so on today's board their
+   alliance and their twenty-year trade deal have nobody to sign them. *Ruling 11 stands as design;
+   §8b's note that this was the cheap half of it was wrong and is corrected.*
 
 ### 3g. Coalitions, and what they are not
 
@@ -724,8 +776,8 @@ each contest.**
 |---|---|---|---|
 | **A Free Texas** | Austin, Dallas, Houston, San Antonio, El Paso | 10 | **Permanent. No thaw, the whole game** |
 | **California Republic** | Los Angeles, the Bay Area, Riverside, SoCal, Northern California | 10 | **Permanent. No thaw, the whole game** |
-| **The Confederacy** | the Deep South, the Carolinas, the Gulf nation, Appalachia, Central Florida | 10 | **Thaws** |
-| **The Thirteen Colonies** | three of Washington D.C., the United States of New England, Philadelphia, New York City — cut to three by round 1's ruling 20 | 3 | **Permanent** — ruling 3 |
+| **The Confederacy** | the Deep South, the Carolinas, the Gulf nation, Appalachia, Central Florida — **none of which is on the board** (§3h) | 10 | **Thaws** |
+| **The Thirteen Colonies** | **Washington D.C., Philadelphia and New York City** — secession ruling 20; **Boston is out and the United States of New England is explicitly NOT a claimant** (ruling 22), it is *"a large northern neighbour that can tip it and cannot win it."* **Two of the three are not on the board** (§3h) | 3 | **Permanent** — ruling 3 |
 
 **Why this is better than either global answer, and the reason is in the story rather than in the
 mechanics.** Texas and California **just fell apart**. Each of those ten pairs is a set of people who
@@ -755,6 +807,23 @@ to be barred, and free where the game needs it.*
 **A Confederate claimant is an ordinary neighbour.** Two of them may warm up, sign, ally, federate or
 unite while both still claim the prize. **The contest puts no ceiling on the relationship at all** —
 it is a shared ambition, not a barrier.
+
+**⚠ COLLISION, found by the review the same evening, and it is Aaron's to settle.** **Politics ruling
+31 says the contest claimants *"carry a modifier that blocks them from ever joining a union or a
+federation"*, and it is recorded there as applying to all four contests — including the five
+Confederate claimants.** Ruling 2 lets them federate and unite. **The two cannot both stand.**
+
+**Ruling 31 left its own breadth open**, in its own words: *"Aaron applied it to 'those five' while
+Texas was under discussion. It is recorded as applying to all four contests… **One line to narrow if
+he meant Texas alone.**"* And politics **finding G** already proposed the narrowing — read the
+modifier as *"cannot join a union CONTAINING A RIVAL"* rather than *"cannot join a union ever"* —
+noting that under that reading the 33 rivalries are still safe and the South keeps its largest
+movement. **Ruling 2 is that narrowing, arrived at from the other direction.**
+
+**But it must be ruled, not assumed.** *Either ruling 31 narrows to the reading finding G already
+proposed, or ruling 2 loses its headline and the Confederacy thaws only as far as alliance.* **Put to
+Aaron; until he answers, ruling 2's alliance half stands and its federate-and-unite half is
+provisional.**
 
 **And one absorbing another is simply how the contest gets won.** Round 1's S66 already says whoever
 holds most of the core takes the prize; ruling 2 makes *merging* a legitimate route to that, alongside
@@ -836,7 +905,7 @@ prices.**
 | Mutual defence | **none** | **an attack on one is a war with all**, ruling 28 |
 | Internal trade | **free movement of goods** | **flat 10% toll replacing members' own arrangements**, rulings 25–26 |
 | Peace | members may still quarrel | **at peace with every member, full stop**, ruling 30 |
-| What it is in the story | the Farmers Union; Washington–Oregon | the United States of New England |
+| What it is in the story | the Farmers Union; Washington–Oregon | ⚠ **nothing yet.** The United States of New England is **one nation**, which politics ruling 32 calls a **union**, not a federation — and it is not on the board (§3h). **No federation exists in the story's board or the game's** |
 
 **Why this is right and the cheap answer was wrong.** Collapsing them would have meant seven farm
 governors signing a trade pact and automatically acquiring an elected president and a joint army.
@@ -1119,11 +1188,11 @@ things are **objects that do not exist in the game**:
 
 | The agreement | What it needs | Built? |
 |---|---|---|
-| New England ↔ Rochester **free-trade deal** | the trade deal | **Yes** — but see T71 below |
-| New England ↔ Rochester **alliance** | the **Allied** relationship of conquest ruling 27 | **No.** The build has only a non-aggression pact and a trade compact |
-| **Washington–Oregon** alliance | same | **No** |
-| **The Farmers Union** | the **bloc** — ruled today, ruling 4 | **No** |
-| **Oklahoma → Dallas** | **vassalage** — ruled today, ruling 5 | **No** |
+| New England ↔ Rochester **free-trade deal** | the trade deal | ⚠ **IMPOSSIBLE — neither nation exists on the board** (§3h) |
+| New England ↔ Rochester **alliance** | the **Allied** relationship of conquest ruling 27 | ⚠ **IMPOSSIBLE for the same reason**, and the Allied object is not built either |
+| **Washington–Oregon** alliance | the **Allied** relationship | **Not built.** The build has only a non-aggression pact and a trade compact. *Both nations exist* |
+| **The Farmers Union** | the **bloc** — ruled today, ruling 4 | **Not built.** *Its eight states exist as states* |
+| **Oklahoma → Dallas** | **vassalage** — ruled today, ruling 5 | **Not built.** *Both nations exist* |
 
 **So "author the agreements" is not a content job like Austin's. It is the bloc, the alliance and
 vassalage built first, and the content afterwards.** *That is a stage of work, not a session, and it
@@ -1139,7 +1208,14 @@ stage of work in front of that test** — three new diplomatic objects, all of t
 round. *It is the largest scheduling change made today, it was on nobody's plan this morning, and it
 goes to `DECISIONS.md` and the Control Board rather than living only here.*
 
-**And T71 becomes live the moment anybody starts:** **a twenty-year free-trade deal is eighty turns,
+**⚠ CORRECTED by the review the same evening: it is three agreements, not four, and none of them is
+cheap.** New England and Rochester-and-Buffalo **are not on the board** (§3h), so their alliance and
+their twenty-year trade deal cannot be authored at all — **and that deal was the one thing in ruling
+11 that needed nothing new.** What survives is Washington–Oregon, the Farmers Union and Oklahoma →
+Dallas, **every one of which needs an object built first.** *So ruling 11 has no cheap half left, and
+Aaron confirmed it believing it had one. Put back to him a second time.*
+
+**And T71 is moot for now, though it is recorded because it returns with the story's board:** **a twenty-year free-trade deal is eighty turns,
 and the game's deal durations are 2, 4, 8 and 20.** *Either the pre-signed deal is a different object
 from a trade deal, or the duration table gains a fifth entry, or the story's "twenty-year" becomes
 the longest term the game has — five years.* **Default taken, and it is the reversible one: use the
@@ -1274,8 +1350,10 @@ people demand one — **means a player can never initiate the largest cooperativ
 game's only peaceful merger permanently in the hands of the movement layer.*
 
 **One thing it does NOT unlock, because politics already closed it.** Ruling 31: **the contest
-claimants can never join a union.** *So the twenty-three pairs rulings 1–3 froze cannot use this
-either, and the two rulings agree without needing to be reconciled.*
+claimants can never join a union or a federation** — **all four contests, all 33 pairs**, not the 23
+that rulings 1–3 froze. *An earlier version of this paragraph said twenty-three and said the two
+rulings agreed; the review corrected both. Ruling 31 also reaches the ten Confederate pairs, which is
+the collision now flagged on ruling 2 and waiting for Aaron.*
 
 ### Ruling 18 — Whoever takes the ground inherits the claim. The veto changes hands rather than dying
 
@@ -1372,6 +1450,9 @@ in-tray has carried it since 6 September as though it were a gap.*
 | **B** | **Patronage already exists and no round knew it.** Aid buys a client whose politics drift toward the donor's, one patron at a time, outbid-able, decaying. Vassalage inherits working machinery. §3e | **OPEN, and it changes question 5** | This round |
 | **C** | **There is no stance state machine.** Hostile is a band on a decaying score, and the thirty-three hostile pairs were asserted from claimant lists, never measured. §3b | **OPEN, and it prices item (a)** | This round, then the **data stage** to measure the thirty-three |
 | **D** | **F2 asks for a reputation number the build already has.** F2 specifies *"a new per-nation standing that decays toward neutral"*; treaty standing is pacts held minus breaches with the breach weighted heavier. **Two of them would be two different ideas about what breaking a promise costs** — which is what F2's own last paragraph warns against. T75, T76a | **OPEN** | This round |
+| **M** | **The document described the story's board as though it were the built one.** Twelve new nations exist today, not twenty-nine; the Confederate and capital claimants, the city-states and all stateless ground are designed and not built (§3h). **The DESIGN is not affected — the story's board is the design intent and round 1 wrote it.** What was wrong was the *description*: several rulings were phrased as statements about the game rather than about the design, and one table in §8b called a thing cheap that cannot be authored yet | **CORRECTED IN PLACE.** *Every ruling stands* | **Recorded for the architect (stage 3), whose job it is to say what can work and when.** Root cause here: the code was verified and the roster was not |
+| **N** | ⚠ **Ruling 2 collides with politics ruling 31**, which bars *all* contest claimants — Confederates included — from ever joining a union or a federation. **Ruling 2 lets them federate and unite.** Ruling 31 left its breadth explicitly open and politics finding G already proposed the narrowing | **OPEN — Aaron's, and it is the only ruling today left provisional** | **Aaron.** Until then ruling 2's alliance half stands and its federate-and-unite half does not |
+| **O** | **The capital contest was named wrong all session.** It is **D.C., Philadelphia and New York City** (secession ruling 20); **the United States of New England is explicitly not a claimant** (ruling 22). Aaron was asked with the wrong list | **CORRECTED.** *His answer — permanent — does not depend on which three, so ruling 3 stands* | — |
 | **I** | ⚠ **The pariah's one unilateral instrument is empty.** Every opening nation is already recognised by everybody, so Deseret has nobody to recognise — and ruling 8 defers the only fix past the alpha. **For the whole alpha, the one nation that opens as a pariah has no diplomatic move of its own at all.** §7 | **HALF CLOSED by ruling 9** — the overture exists, is named, and raises the chance of being recognised. **What it costs is stage 3's.** Until it is built, the pariah still has no move | **Stage 3 for the price; the alpha to watch whether Deseret can act at all without it** |
 | **J** | ⚠ **Ruling 4 does not say whether an unrecognised nation may join a bloc.** §7 | **CLOSED by ruling 10** — it may, and the vote that admits it *is* the recognition, so D166 holds | — |
 | **K** | **Ruling 5 is the pariah's escape hatch and nobody intended it.** Vassalage sits on aid, which recognition does not gate — so submitting to your own parent buys your existence. **Excellent drama; possibly too cheap.** §7 | **OPEN** | **This round**, then the mechanics stage |
@@ -1491,10 +1572,16 @@ recognition climb, and buy your existence one quarter at a time.
 **14 September 2026:** *"I am operating on the assumption that when we go to the next stage to create
 the build order for the alpha we are going to cut things and move them to the post alpha stage."*
 
-**So this handover is written as a ranked cut list rather than a flat pile.** §8b says what the alpha
-would actually gain from each thing this round produced, cheapest and most valuable first, **and it
-names the fallback for the one ruling that got expensive.** *A stage that is going to cut needs to
-know what it is cutting into, not just what exists.*
+**So §8b is written as the evidence a cutting stage needs, not as a set of cuts — and not as a
+costing either.** For each thing this round produced it says **what it depends on, and whether the
+alpha's stated purpose is served by it.**
+
+**⚠ Two lines this document is not allowed to cross, recorded because it crossed both today and was
+corrected.** *"You are the designer helping me come up with ideas. It is the architect that will get
+how it works and if it can work or not."* — Aaron, same session. **So: the cutting belongs to the
+build-order stage and to Aaron, and whether a thing can work belongs to the architect.** Where §8b
+says *"needs a new object"* or *"nobody to sign it"*, that is an observation handed forward, **not a
+verdict on feasibility and not a recommendation about what survives.**
 
 ### 8b. What the alpha needs from this round, and what can wait
 
@@ -1507,21 +1594,30 @@ watch AI nations trade with each other unprompted.
 this round — and that is a good result, not a disappointing one. It means twenty-one rulings can be
 banked and built in the order that suits the game rather than the order that suits a deadline.*
 
-| | What | Cost | Does the alpha gain? |
+| | What | What it depends on | Does the alpha's stated purpose need it? |
 |---|---|---|---|
-| **1** | **The New England ↔ Rochester trade deal, authored on the opening board** | **Nearly nothing** — the deal object exists; only the twenty-year term needs the T71 call | **Yes, directly.** A tester sees a live deal with a term on it before being asked to make one. **This is the fallback if ruling 11 is cut** |
+| **1** | ~~**The New England ↔ Rochester trade deal**~~ ⚠ **STRUCK by the review: neither nation is on the board** (§3h). **The cheapest row in this table was impossible, and it was the recommended fallback.** *Its replacement is below* | — | — |
+| **1a** | **An authored trade deal between two nations that DO exist** — any adjacent pair on the opening board, chosen for legibility rather than story | **Nearly nothing** — the deal object exists and needs no new machinery | **Yes, directly, and it is the only row that is both cheap and possible.** A tester sees a live deal with a term on it before being asked to make one. **The only row that is both cheap and possible.** *Needs Aaron to say which pair, because the story's pair is not on the board* |
 | **2** | **The overture** (ruling 9) | One action, one existing memory kind. **Its price is stage 3's** | **Yes, but narrowly.** Without it **Deseret has no move at all** (§7), and Deseret is on the opening board. *The one nation in the alpha that cannot play* |
 | **3** | **The bloc** (rulings 4, 10) | A new standing multilateral object | **Only through ruling 11.** Nothing the alpha tests needs a bloc |
 | **4** | **The alliance** (ruling 20) and **vassalage** (ruling 5) | Two new objects | **Only through ruling 11** |
-| **5** | **The opening agreements in full** (ruling 11) | **Items 3 and 4 first, then content** | Yes, and **this is the expensive one.** Ruling 11 stands with Aaron's confirmation; **row 1 is what it cuts to** |
+| **5** | **The opening agreements** (ruling 11) — **three, not four** (§3h) | **Items 3 and 4 first, then content.** ⚠ **It has no cheap half: the one agreement needing nothing new cannot be authored** | Yes, and **this is the expensive one.** Ruling 11 stands with Aaron's confirmation — *given before the review found that its cheap half was impossible* |
 | **6** | **The petition line** (ruling 6) | A tunable, plus round 3's demand phase | **No.** It changes the middle of a long game, and the alpha is not long |
 | **7** | **Sponsorship and the offer object** (rulings 7, 19) | Real work | **No** |
 | **8** | **Stateless ground** (ruling 16) | Small — it reuses the Canada corridor | **No**, but it is the cheapest large thing in the round and it should not be forgotten for being cheap |
 | **9** | **Claim inheritance** (ruling 18), **creditor demands** (14), **guarantees** (15), **inherited-quarrel decay** (13), **union unasked** (17) | Each depends on something above it | **No.** All post-alpha |
 | **—** | **Recognition's own rules** (ruling 12) | **Zero** | **Already built.** Ruling 12 found that the machinery already did what was wanted |
 
-**The single sentence for the build-order stage:** *build row 1, decide row 2, and let rulings 11 and
-everything under it be the first thing you cut if the alpha is slipping.*
+**The two facts the cutting stage will want first, stated rather than acted on.** **Row 1a is the only
+row that is both cheap and possible** — everything else needs a new object built. **And row 2, the
+overture, is the only row whose absence stops a nation on the opening board from playing at all.**
+*Those are the shape of the evidence; what gets cut is not this document's call.*
+
+**⚠ And one thing the build-order stage must not be allowed to assume.** Rulings 1, 2, 3 and 16 —
+the contest floors and stateless ground — **design for nations and terrain the game does not have**
+(§3h). *They are correct as design and they are not deliverable as alpha content.* **Nothing in this
+round that touches the Confederacy, the capital contest, or stateless ground can be built until the
+story's board is.**
 
 ### 8c. What round 5 leaves the rounds after it
 
