@@ -321,11 +321,11 @@ tr:last-child td{border-bottom:0}
 const BOARD = {
   project: "Manifest Disunity",
   livery: "tower",                      // tower | mars | violet | deep | slate
-  updated: "2026-09-15 10:50",          // when you last republished, local time
+  updated: "2026-09-15 11:20",          // when you last republished, local time
 
   // Three or four measured figures. value: number|string, or null = "not yet measured".
   figures: [
-    { label: "Stage 2, the design documents — the current phase", value: "3 of 20" },
+    { label: "Stage 2, the design documents — the current phase", value: "4 of 20" },
     { label: "Questions in the master document still yours to answer", value: 5 },
     { label: "Decisions written up this session", value: 3 },
     { label: "Stage 1 of 5 — every design round, closed by you", value: "7 of 7" },
@@ -344,8 +344,9 @@ const BOARD = {
       "Three axes and ten positions: the game's politics is what changes. The biggest gap in the project, open since 9 September.",
       "One piece of that is already done and unused for four days — all 26 movements were placed on the new board when your politics round closed.",
       { warn: true, t: "And one job may have vanished. Your two centrists ARE Republicans and Democrats, so the election data may land straight on them. Flagged, not assumed." },
-      "Structure approved: nineteen parts plus the master. Three written.",
+      "Structure approved: nineteen parts plus the master. Four written — the board and geography one landed today.",
       "Six sections of the master are drafts for you, starting with what this game IS and who it is for. All six were missing entirely.",
+      { warn: true, t: "And I owed you a correction: I told you on the 5th there were 986 ports. There are 136, and 59 of those cannot export anywhere. It is beside the original in the log below." },
     ],
   },
 
@@ -854,7 +855,20 @@ const BOARD = {
             + "one now becomes an obese one later. That makes nineteen a FLOOR rather than a "
             + "ceiling — when a part outgrows itself it gets split, never merged. The first one that "
             + "will need it is already named, along with the thing that should trigger it.\n\n"
-            + "WHAT IS LEFT: seventeen documents. Two measurements instead of none and still no "
+            + "AND THE BOARD ITSELF IS WRITTEN — 15 September, the fourth of twenty. Geography as "
+            + "a network with prices on it: the map's atoms, what it costs an army to cross ground, "
+            + "how far a country can reach before distance simply refuses it, the four rivers and "
+            + "their fifteen gates, the two oceans with the canal shut between them, and the whole "
+            + "business of moving goods across somebody else's land. Almost all of it is already "
+            + "built, so the job was carrying a working system across exactly rather than inventing "
+            + "one.\n\n"
+            + "FOUR THINGS IT FOUND BY COUNTING RATHER THAN COPYING. The ports figure I gave you on "
+            + "the 5th was wrong and is corrected in the log below. A set of 213 river-bank pairs is "
+            + "baked into your data every time and read by nothing at all. The border with Canada "
+            + "and Mexico is written down in two separate files that happen to agree. And a wrecked "
+            + "rail hub still lasts one turn, which makes it a raid rather than a demolition — "
+            + "nobody chose that, and it is now a question with your name on it.\n\n"
+            + "WHAT IS LEFT: sixteen documents. Two measurements instead of none and still no "
             + "total from me — the turn had almost no material behind it and the big systems carry "
             + "forty rulings each. What I can say is that the seven idea documents run to 11,725 "
             + "lines, and a design stage converts an idea stage, so the answer is the same order of "
@@ -1021,6 +1035,8 @@ const BOARD = {
 
   // Decisions made on the owner's behalf and how they turned out. Corrections go BESIDE originals.
   log: [
+    { when: "2026-09-15", decision: "CORRECTION, beside the entry of 5 September below: I told you there were 986 ports. There are 136.",
+      outcome: "Found while writing the geography document, by counting rather than by repeating the figure. On 5 September I wrongly said the county data had no ports, then corrected myself to 986 — and that correction was also wrong. 986 is how many COUNTIES carry any trade geography at all; the ones with a port are 136, and the real Principal Ports dataset holds 150 port facilities. Nothing was built on the wrong number, because the game counts the ports themselves rather than reading my figure. Left beside the original rather than over it, because a log that can be quietly revised is worth nothing. And the honest finding underneath it is better than the correction: of those 136 ports, 57 are ocean, 20 are on the Great Lakes and 59 are river or inland ports that reach no foreign market at all. Forty-three per cent of the ports in this game cannot export anywhere, which is why having a port and being able to sell abroad are two different questions." },
     { when: "2026-09-15", decision: "Checked whether the rule you wanted removed had ever been decided, before removing it.",
       outcome: "You said you did not want the one-action-per-turn game and asked whose question it was. Rather than answer that, I went looking for the moment it was chosen. It is not in any of your two hundred and sixteen decisions — every single mention of it in the record is a complaint about it or a deferral of it. It arrived in the code when you gave a programmer a free hand, and then seven rounds of design wrote their objections underneath it as though it were a rule somebody had thought about. That changed the answer to your question: what had been handed forward as a technical matter turned out to be an accident nobody owned, and it came back to the design table." },
     { when: "2026-09-15", decision: "Told you a recommendation of mine was too strict, an hour after making it.",
