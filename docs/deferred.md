@@ -273,3 +273,40 @@ viability test, and whether the nation is labelled what it is. *The full side-by
 **⚠ Not filed as a straight fix.** *One of the four — release being recognised by its parent on day one
 — is **deliberate and well argued** (*"letting go is recognition"*). **So the question is which
 differences are design and which are drift, and that is Aaron's.** `nation-design.md` open question 1.*
+
+## 37 — ⚠ `aid.recognitionBoost` is a dead tunable, and its doc string promises the game's only escape hatch
+
+**Defined in the tuning file at 0.25. Read by no code.** *Verified by grep across `js/` and `tests/`
+this session: the only occurrence is its own definition.*
+
+**Its own doc string says what it is for:**
+
+> *"Added to the recipient's per-turn chance of recognising the donor, scaled by patron weight. **Aid is
+> how an unrecognised state buys its way onto the map, which is the one route out of the recognition
+> trap that does not involve winning a war.**"*
+
+**The recognition chance has five terms — standing, kinship, endurance, weight, and whether the parent
+has let go — and aid is not one of them.**
+
+**It half-works by accident.** *A gift writes an `aided` memory at +0.30, which feeds Standing, which
+**is** a term at weight 0.45.* **So the route exists sideways, through a path nobody documented, at a
+fraction of the advertised strength.**
+
+> **⚠ This is the most dangerous class of gap in the project, because a tunable with a doc string looks
+> implemented.** *Aaron can move the slider and watch nothing happen.*
+
+**Either wire it or delete it.** *The standing rule is that every number the model uses is a named
+tunable; the converse — that every named tunable is a number the model uses — is the half nobody wrote
+down, and this is the case that proves it is needed.*
+
+## 38 — ⚠ One relations memory kind has no label, so the raw key reaches the player
+
+**Fifteen kinds; fourteen labels.** *`revoked` — somebody closed a corridor your economy runs through —
+is in the kinds table and missing from the labels table. `labelOf` falls through to the key itself.*
+
+**So the sentence the player reads is:** *"Cold: **revoked**, 3 turns ago."*
+
+**Every other kind reads as English** — *"took our ground", "swallowed a nation whole", "tore up a pact
+they had signed with us".* **Verified by reading both tables this session.**
+
+*One line. It is filed rather than fixed because a design session writes documents only.*
