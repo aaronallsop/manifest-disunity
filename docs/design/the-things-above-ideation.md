@@ -389,7 +389,7 @@ it.*
 | **A** | ⚠ **"One action per turn" is not a rule with a flag — it is the turn structure.** A turn is a round: sixty-one nations act in sequence and the world advances once at the end. **So A1 is a change to how the game is stepped, not a cap to adjust** | **OPEN, and it reframes the round's central item** | **This round**, then the architect |
 | **B** | **Three exceptions to the action rule already exist and they share one principle nobody had stated: a decision is free when you did not choose to be asked.** Recognise, a movement's demands, and now an event | **OPEN** | **This round.** W13 |
 | **C** | **The entire game has one piece of hidden information** — the pressure map's three bands for other people's ground — **and its stated reason is not plausibility but that a screen must not become a targeting computer.** That is a better test than the one the in-tray items imply | **OPEN** | **This round.** W21 |
-| **D** | **Nobody has said how long a game is.** Sixty turns is fifteen years; every tuning decision quietly assumes an answer and none is written down | **OPEN** | **Aaron**, then the architect |
+| **D** | **Nobody has said how long a game is.** Sixty turns is fifteen years; every tuning decision quietly assumes an answer and none is written down | **HANDED ON by ruling 4**, with the evidence and neither side chosen | **The technical design director, with Aaron** |
 
 ---
 
@@ -532,6 +532,42 @@ what a government would plausibly know:** *not realism — whether a screen beco
 computer.* **That is answerable about a specific screen by looking at it**, which "what would they
 know?" never is. **Finding C, and it is what stage 2 should apply ruling 3 with.**
 
+### Ruling 4 — Time is not the designer's either. Durations and game length go forward with the evidence
+
+**RULED 14 September 2026.** *"This is another thing that the technical designer and I will figure
+out."* — answering in-tray item **3** and **finding D** the same way ruling 1 answered A1.
+
+**So this round does not set the duration cap and does not say how long a game is.** *The four options
+put to him — a five-year cap with a sixty-turn game, generational agreements with longer games, the
+cap alone, and long terms that cost something to sign — are recorded in the bank and none is taken.*
+
+### What round 7 owes on time — the evidence, not the answer
+
+1. **As built:** four turns to a year, opening **1 March 2036**, durations of **2 / 4 / 8 / 20 turns**
+   — six months to five years — ruled in **D163**. Memory decays per turn; a new nation's honeymoon is
+   four turns.
+2. **The story wants eighty turns.** The New England–Rochester free-trade deal is **twenty years**,
+   four times the longest term the game allows — **and round 5's ruling 11 put that deal on the
+   opening board.** *Round 5 took the reversible default and used the longest existing term instead;
+   that default is now explicitly this decision's to confirm or overturn.*
+3. **⚠ It is moot on today's board and will not stay moot.** Neither New England nor
+   Rochester-and-Buffalo exists in the game — round 5's finding M. *So nothing is blocked today, and
+   everything is blocked the moment the story's board is built.*
+4. **The design argument on each side, stated once so it need not be re-derived.** *For the cap:
+   nothing should be settled for a generation, because a player who signs an eighty-turn deal has
+   removed a decision from the rest of the game (**W42**). Against it: the story thinks in decades and
+   a five-year ceiling makes every commitment provisional (**W41**).*
+5. **Game length is unwritten and every tuning decision assumes an answer.** **Finding D.** Sixty turns
+   is fifteen years. *Nobody has finished a game, so there is no measurement to offer — which is
+   itself the useful thing to say.*
+6. **One question inside this one is a measurement, not a judgement.** In-tray item 1: should the
+   opening memories be **dated across the two years** or all stamped *"two years ago"*? **W43** says
+   date them — the list is already dated and decays per turn, so it costs nothing and makes the
+   opening board a history rather than a snapshot. **W44** says two years is only **eight turns of
+   decay**, so the difference may be invisible. *⚠ Measure it before building it: the question is
+   whether eight turns of decay separates the oldest grudge from the newest by enough for a player to
+   notice.*
+
 ### What ruling 2 leaves open, and it is a design question rather than a number
 
 **Is it the same three conditions told two ways, or genuinely different conditions?** *The cheap
@@ -544,4 +580,68 @@ the design document is written.**
 
 ## 8. The handover
 
-*Written when the round closes. This is the last round of stage 1, so its handover is to stage 2.*
+**The round is NOT closed — Aaron closes rounds.** Four rulings, fifty ideas, four findings, twelve
+in-tray items, **all twelve answered or handed on. This is the last round of stage 1.**
+
+### 8a. What this round decided, and what it deliberately did not
+
+**⚠ Two of its four rulings are refusals to decide, and that is the shape of the round rather than a
+failure of it.** Aaron drew the line twice in one session: *"You are currently the game designer
+working towards a game design document. The actions/turn will be handled by the technical design
+director in the next step,"* and then *"This is another thing that the technical designer and I will
+figure out."*
+
+| | | Whose |
+|---|---|---|
+| **1** | **The action budget goes forward as a requirement, not a choice** | **The technical design director's** |
+| **2** | **Playing the federal remnant is a different game** — restore, where everyone else replaces | **Design. Ruled** |
+| **3** | **What you may know depends on the relationship** — an ally's panel is open, a hostile nation's is guesswork | **Design. Ruled** |
+| **4** | **Durations and game length go forward with the evidence** | **The technical design director's, with Aaron** |
+
+**So round 7 owns less than it was written to own, and the two things it does own are the two that
+were genuinely about what the game IS rather than how it is stepped.** *That is the right cut and it
+was not the one this document opened with.*
+
+### 8b. The requirement handed to the technical design director
+
+**Everything five rounds deposited, in one place, so it is not reassembled from six documents.**
+
+| | |
+|---|---|
+| **The turn is not a cap** | A turn is a **round**: sixty-one nations act in sequence, each nation's turn *is* its action, the world advances once when the pointer wraps, and **there is no "has acted" flag because there need not be one.** Finding A |
+| **The scale of the problem** | **Roughly thirty things want doing and one can be.** Eleven moves exist; the economy wants ten verbs; diplomacy added four; politics has nine answers to a movement. W48 |
+| **The principle already in the game** | **Three exceptions exist and share one rule nobody had stated: a decision is free when you did not choose to be asked.** Recognise (free since before these rounds), a movement's demands (free *and mandatory*, politics ruling 12), and an event (round 6). Finding B, W13 |
+| **The risk in that principle** | **If every component gets ruling 12's channel, a player answers six cards before doing anything.** W16, and it is why ruling 12 recorded itself as an exception |
+| **The argument to answer** | Six components competing for one slot; any idea assuming a decision every turn has taken that turn from the other five |
+| **Eight items that unblock on it** | Politics ruling 14 (martial law), diplomacy ruling 9 (the overture's price), diplomacy's mediation, round 6's free-decision claim, round 4's ten verbs, in-tray item 6 (standing arrangements), and both halves of W18/W19 |
+| **A measured cost** | An AI round is **735 plans and 153 ms**, quoted from the code. Two passes is roughly double — **affordable, and not the reason to hesitate** |
+| **The honest caveat** | **The rule has never been played with all six components running**, because they do not all exist. W50 |
+| **Time** | Durations **2 / 4 / 8 / 20**; the story wants **80**; round 5 put that deal on the opening board and took the longest existing term as a reversible default. **Game length is unwritten.** Ruling 4 |
+| **⚠ And the cost of ruling 3** | **The AI must play under the same restricted view, or the player is playing against a cheat.** That is harder to write and harder to watch, and it is the real price of gating sight on the relationship |
+
+### 8c. What stage 2 inherits from this round
+
+- **Ruling 2's open half:** is the remnant's victory *the same three conditions told two ways*, or its
+  own condition set? *The cheap version needs no new machinery — the remnant is simply much closer to
+  the seats and much further from the people and the economy, so identical targets produce a different
+  game by arithmetic alone.*
+- **Ruling 3's form:** the ruling says what **gates** the view; it does not say what a restricted view
+  **looks like**. **W31** (bands instead of figures) and **W30** (information that goes stale) are both
+  still available and neither is excluded.
+- **⚠ The test to apply it with, and it is better than the question that prompted it.** The one piece
+  of fog already in the game was built *not for realism but so that a screen does not become a
+  targeting computer.* **That is answerable about a specific screen by looking at it**, which *"what
+  would a government plausibly know"* never is. **Finding C.**
+- **A measurement before a build:** whether **eight turns of decay** separates the oldest opening grudge
+  from the newest by enough for a player to notice. In-tray item 1.
+
+### 8d. Two things that are NOT built and that rulings here depend on
+
+**Recorded under programmer rule 17, deliberately this time.**
+
+1. **The federal remnant is D.C. alone** — 702,250 people, $184B — **not the rump federal state of the
+   story**, which had the martial-law ring, the rest of Virginia and Baltimore with it.
+2. **"Recognises nobody" is not built.** Recognition is unconditional for every opening nation, so the
+   remnant today recognises everybody. **This is round 5's in-tray item 4**, recovered by that round's
+   review and deferred past the alpha by its ruling 8. **Ruling 2 now depends on it, so the two travel
+   together.**
