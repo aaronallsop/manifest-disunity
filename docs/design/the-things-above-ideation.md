@@ -91,6 +91,27 @@ designed as the place the other six put anything about the frame.
 |---|---|---|
 | **12** | **An event is the strongest candidate for a free decision there is**, because the player did not choose to be asked — and it is **the one component whose claim does not compete with the others**, since it arrives unbidden. **F14** — a turn arriving as news — now has its format, because ruling 4 built the front page | **OPEN** |
 
+### 2f. Where the in-tray stands at the end of 14 September
+
+**Twelve rows in. All twelve answered or handed on.** *The State columns above are as the items
+arrived; this is the scoreboard.*
+
+| | | |
+|---|---|---|
+| **4** | what the opening newspaper says | ✅ **round 6's ruling 4** — a front page, dated |
+| **2** | what Reunification means; is Washington's game different | ✅ **ruling 2** — yes: restore, where everyone else replaces |
+| **5** | what a nation knows of a tier-3 zone, a vassal, a bloc | ✅ **ruling 3** — gated on the relationship. *Stateless ground answers itself: round 5's ruling 16 gave it no government and so no secrets* |
+| **11** | is an offer visible; what a player may see of another nation | ✅ **ruling 3** — the *"one answer between them"* Aaron asked for on 11 September |
+| **A1** | the one-action rule needs changing | ➜ **ruling 1** — the technical design director's; the requirement is written |
+| **7** | ruling 12's free-and-mandatory channel, now asked for by three components | ➜ **ruling 1**, and finding B names the principle they share |
+| **8** | does martial law cost the action | ➜ **ruling 1** — it is priced in the unit being redefined |
+| **9** | ten verbs against a budget of one | ➜ **ruling 1** — carried as the scale of the problem |
+| **10** | six of eleven moves are diplomatic, plus four more | ➜ **ruling 1** |
+| **12** | an event is the strongest candidate for a free decision | ➜ **ruling 1**, and it is the one claim that does not compete |
+| **6** | do standing arrangements cost the action | ➜ **ruling 1**. *W18's answer — maintaining is free, changing costs — is in the bank as a candidate, not a ruling* |
+| **3** | twenty-year agreements on a quarterly clock | ➜ **ruling 4** — the technical design director's, with the evidence |
+| **1** | are the opening memories dated across the two years | ➜ **ruling 4**, *and it is a measurement rather than a judgement* |
+
 ---
 
 ## 3. What is actually built today — verified 14 September 2026

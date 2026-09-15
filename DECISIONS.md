@@ -4537,3 +4537,85 @@ Confederate states plus California to Texas alone — **and the new figure is no
 **Recorded and not fixed:** rounds 1–4 all send numbers to *"the mechanics stage"*, which is not a
 stage name in the designer brief. Aaron's own word is **architecture**, which is stage 3. *Same
 destination, two names; renaming four closed rounds is not a diplomacy job.*
+
+---
+
+### D215 — Rounds 6 and 7 open and run: stage 1 reaches its end, and Aaron draws the designer's line twice, 14 September 2026
+
+**Three ideation rounds ran in one day.** Round 5 (diplomacy) in the morning and afternoon; **round 6
+(events) and round 7 (the things above) in the evening.** With rounds 1–4 already closed, **all seven
+rounds of stage 1 now exist as documents.** *None of 5, 6 or 7 is closed — Aaron closes rounds, and
+three cards are on the Control Board.*
+
+**The totals, counted from the documents rather than carried forward:** round 6 has **74 ideas
+(X1–X74), 7 rulings, 6 findings**, nine in-tray items all answered. Round 7 has **50 ideas (W1–W50),
+4 rulings, 4 findings**, twelve in-tray items all answered or handed on.
+
+### The scope correction, and it is the reason this entry exists
+
+**Aaron drew the designer's line twice in one session, and both times mid-round.**
+
+> *"You are currently the game designer working towards a game design document. The actions/turn will
+> be handled by the technical design director in the next step."*
+
+> *"This is another thing that the technical designer and I will figure out."*
+
+**So two of round 7's four rulings are refusals to decide**, and the round hands forward a
+**requirement** instead of an answer — on the action budget (ruling 1) and on durations and game
+length (ruling 4). **§0a of that document had called the action budget "the round's central item" and
+promised to answer it; the claim is corrected in place in all three places it appeared, rather than
+edited away.**
+
+**He also drew the line on cutting, earlier the same day:** *"Remember — you are not deciding what to
+cut,"* which reshaped round 5's handover from a ranked cut list with a recommendation into evidence
+handed forward.
+
+### What round 6 decided
+
+**The most restrained round of the seven.** A shock **has a blast radius on the map** — it is
+addressed to ground, not to a nation, **so no world object is needed** and the round's central gap
+closed without building a layer above the nations. A nation feels it **in proportion to the share of
+its ground inside it**, which respects round 4's single national pot and needs no new effects.
+**No chains run in play** — the nine links of the break-up are the backstory's job, and that one
+restraint deleted the entire remaining half of the round. **The opening becomes a front page dated
+1 March 2036.** The effect vocabulary **stays closed**, because the blast radius removed the reason to
+open it. Shocks get **their own budget**.
+
+**Two costs of the blast radius, both found by checking rather than assuming.** **The model has no
+coordinates anywhere** — counties carry a name, a state, population, output and votes — so a radius is
+walked through **adjacency**, which is complete and already built. And **an event fires for exactly one
+nation today**, at most three across the roster per turn, so ruling 1 requires the delivery mechanism
+to learn to address a set.
+
+### What round 7 decided
+
+**Playing the federal remnant is a different game** — for Washington, reunification means *restoring*
+what it already claims to be; for everyone else it means *replacing* it. **The first time this design
+treats one nation's victory differently from another's.** *Rejected: the remnant's signature as a final
+condition, which would have made the weakest nation on the board gatekeeper of the biggest prize.*
+
+**What a nation may know is gated on the relationship.** An ally's panel is open; a hostile nation's is
+bands and guesswork. **This answers three rounds' questions at once**, including the *"one answer
+between them"* Aaron asked for on 11 September, **and it gives an alliance its first benefit that is
+not military.** *Its stated cost: the AI must play under the same restriction or the player is playing
+against a cheat.*
+
+### The three structural facts these rounds found, none of which was written down anywhere
+
+1. **"One action per turn" is not a rule with a flag. It is the turn structure.** A turn is a **round**
+   — sixty-one nations act in sequence, each nation's turn *is* its action, the world advances once
+   when the pointer wraps. **So changing it is a change to how the game is stepped**, which every
+   estimate of its cost has to start from.
+2. **Three exceptions to that rule already exist and share one principle nobody had stated: a decision
+   is free when you did not choose to be asked.** Recognise, a movement's demands, and now an event.
+3. **The entire game has one piece of hidden information** — the unrest map's three bands for other
+   people's ground — **and its reason is not realism but that a screen must not become a targeting
+   computer.** That is a better test than *"what would a government plausibly know"*, because it can be
+   applied to a specific screen and answered.
+
+### And the rule that now runs at the top of every round
+
+**Programmer rule 17, earned in round 5's review and applied deliberately in 6 and 7:** *verify the
+roster, not only the code.* **Round 6 restated the twelve-nation board before writing about shocks;
+round 7 checked that the federal remnant is D.C. alone — 702,250 people — and not the rump federal
+state of the story, and that its "recognises nobody" is not built either.**
