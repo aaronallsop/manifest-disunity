@@ -4638,3 +4638,32 @@ would be gated.
 
 **The checks were run tonight rather than quoted: 956 passed, 51 files, 212.71 seconds, all green**,
 in the browser, which is the only runner that actually executes them (rule 16).
+
+---
+
+### D216 — Stage 1 closes: all seven ideation rounds, 15 September 2026
+
+**Aaron closed rounds 5, 6 and 7 on the Control Board at 02:53 on 15 September**, with the same click
+confirming the **eight defaults** round 5 had taken in his place. **Stage 1 of five is finished.**
+
+**Seven documents, 536 ideas, 178 rulings**, counted from the files rather than carried forward.
+Rounds 1–4 closed between 7 and 14 September; 5, 6 and 7 were written on the 14th and closed in the
+early hours of the 15th.
+
+**What that changes, and it is a status change rather than a decision.** The seven ideation documents
+are now **records**. A later change to one is a *correction with a reason*, not a fresh ruling — the
+status rounds 1–4 have had since they closed. **`CLAUDE.md`'s definition of done now names stage 2,
+design, as the current phase, and says plainly that none of it exists.**
+
+**The one card still open on the board is round 4's**, and it has been there since the 14th: whether a
+shortage should stop things being *made* or only lose them on the road. *It is not a stage-1 item and
+closing stage 1 did not answer it.*
+
+**Stage 2's backlog is written into `CLAUDE.md` rather than left in seven documents** — the logistics
+spiral's brake, the federation's toll against the built corridor system, a diplomacy screen, what a
+shock looks like on screen, whether infrastructure damage lasts, two of F21's questions, politics
+finding H, and round 7's two open halves.
+
+**And a rule about estimating it, recorded because the temptation is obvious:** nobody has written one
+of these design documents in this project, so **any figure for stage 2 would be invented.** Write one,
+measure it, then estimate seven.

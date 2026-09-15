@@ -603,7 +603,8 @@ the design document is written.**
 
 ## 8. The handover
 
-**The round is NOT closed — Aaron closes rounds.** Four rulings, fifty ideas, four findings, twelve
+**CLOSED by Aaron on the Control Board, 15 September 2026 at 02:53 — and stage 1 closed with it.**
+Four rulings, fifty ideas, six findings, twelve
 in-tray items, **all twelve answered or handed on. This is the last round of stage 1.**
 
 ### 8a. What this round decided, and what it deliberately did not

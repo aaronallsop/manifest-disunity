@@ -1600,7 +1600,8 @@ recognition climb, and buy your existence one quarter at a time.
 
 ## 8. The handover
 
-**The round is not closed — Aaron closes rounds.** This is what it hands on.
+**CLOSED by Aaron on the Control Board, 15 September 2026 at 02:53**, with the same click confirming
+the eight defaults this round took in his place. **This is what it hands on.**
 
 ### 8a. Aaron's steer, recorded because it shapes everything below
 

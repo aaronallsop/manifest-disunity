@@ -304,30 +304,48 @@ tr:last-child td{border-bottom:0}
 const BOARD = {
   project: "Manifest Disunity",
   livery: "tower",                      // tower | mars | violet | deep | slate
-  updated: "2026-09-15 01:40",          // when you last republished, local time
+  updated: "2026-09-15 03:20",          // when you last republished, local time
 
   // Three or four measured figures. value: number|string, or null = "not yet measured".
   figures: [
-    { label: "Design rounds",           value: "all 7 written — 3 waiting on you to close" },
+    { label: "Stage 1 of 5 — every design round, closed by you",  value: "7 of 7" },
+    { label: "Stage 2, the design documents — none started",      value: "0 of 7" },
     { label: "Decisions you made today", value: "28 — diplomacy, shocks, and the frame" },
     { label: "Rulings written down and indexed", value: 178 },
     { label: "Ideas on file across all seven rounds — counted tonight", value: 536 },
-    { label: "Faults I found in my own work tonight", value: "5 — four fixed, one you settled" },
-    { label: "Tests — last run last night, nothing they cover was touched today", value: "956 green" },
+    { label: "Tests — all green, re-run tonight in 212.7 seconds", value: 956 },
     { label: "Current version",         value: "v0.6" },
   ],
 
   // The single most important true thing right now. tone: "bad" | "warn" | "ok" | "neutral".
   headline: {
     tone: "ok",
-    text: "ALL SEVEN DESIGN ROUNDS ARE WRITTEN. Three of them ran today — diplomacy this afternoon, "
-        + "then shocks, then the frame above everything. Twenty-eight decisions from you. Three cards "
-        + "are below and they are the last of stage one.\n\n"
-        + "YOU DREW A LINE TWICE TONIGHT AND BOTH TIMES IT WAS THE RIGHT ONE. The turn budget and the "
-        + "clock are not the designer's to settle — they go to the technical designer with the "
-        + "evidence rather than with an answer. So two of the last round's four decisions are refusals "
-        + "to decide, and it hands over a requirement instead. I had written that document claiming "
-        + "the opposite, and the claim is corrected in place rather than quietly edited away.\n\n"
+    text: "STAGE ONE IS FINISHED. You closed the last three rounds at ten to three this morning, and "
+        + "that is every design round done — seven documents, 536 ideas, 178 of your rulings. The "
+        + "thinking about what this game IS has an end, and it is behind us.\n\n"
+        + "WHAT IS ACTUALLY NEXT, AND IT IS NOT THE ARCHITECT. Your own plan puts a design stage "
+        + "between the ideas and the numbers: one document per system saying what the thing DOES, "
+        + "what it is measured in, what a player sees, and what happens at each level. NONE OF IT "
+        + "EXISTS — not one page. That is the current phase, and the seven rounds left it a named "
+        + "backlog rather than a blank sheet: the hauling trap still has no brake picked, the "
+        + "federation's toll has to be reconciled with the corridor system already built, there is no "
+        + "diplomacy screen though six of the eleven moves are diplomatic, and nobody has decided "
+        + "whether a wrecked rail hub is a raid or a demolition.\n\n"
+        + "I WILL NOT GIVE YOU A TIME FOR IT. Nobody has written one of these documents in this "
+        + "project, so any number would be invented — which is the thing this project has a rule "
+        + "against. Write one, measure it, then I can tell you what seven cost.\n\n"
+        + "ONE CARD IS STILL YOURS AND IT HAS BEEN FOR A DAY: whether a shortage should stop things "
+        + "being MADE or only lose them on the road. Three design rounds went past it without "
+        + "touching it.\n\n"
+        + "THE THREE ROUNDS THEMSELVES, IN SHORT. Diplomacy: twenty-two decisions, and the worst "
+        + "thing in it is that a brand-new country nobody recognises has no move available at all — "
+        + "Deseret is on your opening board and the game's answer to it is wait and hope. Shocks: a "
+        + "shock now happens somewhere on the map and reaches everything near it, which needed no "
+        + "world layer above the countries, and ruling out chains of events deleted half the round "
+        + "with nothing lost. The frame: two of its four decisions are you drawing a line — the turn "
+        + "budget and the clock are the technical designer's — and what you did rule is that playing "
+        + "the federal remnant is a different game, and that what a country may know depends on how "
+        + "they stand with each other.\n\n"
         + "THE THREE THINGS THESE ROUNDS FOUND THAT WERE WRITTEN DOWN NOWHERE. One action per turn is "
         + "not a rule with a limit you can raise — it IS the turn: sixty-one countries act in "
         + "sequence and the world moves once at the end, so changing it is a change to how the game "
@@ -337,14 +355,8 @@ const BOARD = {
         + "map, whose written reason is not realism but that a screen must not become a targeting "
         + "computer. That is a better test than asking what a government would plausibly know, "
         + "because you can apply it to a screen by looking at it.\n\n"
-        + "THE WORST THING STILL STANDS FROM THIS AFTERNOON. A brand-new country nobody recognises "
-        + "has no move available to it at all, and Deseret is on your opening board. The cure — the "
-        + "thaw you asked for in the conquest round — now exists on paper and is not built.\n\n"
-        + "AND THE LAST TWO ROUNDS GOT SMALLER, WHICH NEITHER OF US EXPECTED. Ruling out chains of "
-        + "events deleted the entire second half of the shocks round and nothing that matters was "
-        + "lost. A shock now happens somewhere on the map and reaches everything near it, which "
-        + "needed no world layer above the countries at all. Two things turned up by checking rather "
-        + "than assuming: the map has no coordinates anywhere, so a blast radius is walked county by "
+        + "TWO THINGS TURNED UP BY CHECKING RATHER THAN ASSUMING, and both cost the shocks round "
+        + "something: the map has no coordinates anywhere, so a blast radius is walked county by "
         + "county rather than measured in miles; and an event today reaches exactly one country, so "
         + "the delivery has to learn to address a group.\n\n"
         + "One thing about my own work tonight, because it is the third time: I damaged this page "
@@ -352,9 +364,8 @@ const BOARD = {
         + "rules have forbidden since the fifth. Caught by the check that reads the page back before "
         + "publishing, reverted, and redone by hand. Nothing reached you broken.\n\n"
         + "Everything is committed and backed up. No game code, game data or game rules were touched "
-        + "today — three design rounds, and design rounds write documents only. The 956 checks were "
-        + "not re-run tonight because nothing they cover changed; the last run was yesterday, in 215 "
-        + "seconds, all green.",
+        + "today — three design rounds, and design rounds write documents only. All 956 checks were "
+        + "re-run at sign-off anyway rather than quoted: green, across 51 files, in 212.7 seconds.",
   },
 
   _oldHeadline1: {
@@ -543,6 +554,30 @@ const BOARD = {
 
   // Only decisions that are genuinely the owner's. Ids are permanent.
   decisions: [
+    { id: "shortage-stops-production",
+      title: "Should a shortage stop things being MADE, or only lose them on the road?",
+      evidence: "Four of the arrows you drew on the 14th say the same thing: ore needs trucks, goods "
+              + "need trucks, food needs trucks, and trucks need gas. Today a hauling shortage loses a "
+              + "fifth of what is in transit and raises tolls — it never stops a single thing being "
+              + "produced. So a country can lose its entire ability to move goods and its factories "
+              + "carry on making them anyway, piling up where nobody can reach them.\n\n"
+              + "This is exactly the same shape as the fertiliser rule you made that morning: a thing "
+              + "you cannot get stops you running at full tilt. It would just be pointed at two more "
+              + "pairs. You parked the other eight groups of your arrows as future ideas and this one "
+              + "was never answered either way — it was not in that pile, it was the one I had "
+              + "recommended doing for the alpha.\n\n"
+              + "It has now been the only thing waiting on you for a day, through three design rounds "
+              + "that did not touch it.",
+      cost: "Almost nothing. It is the same machinery as a rule that already exists, pointed somewhere "
+          + "new — no new system, no new screen, and the only genuinely new thing is a number, which "
+          + "belongs to the number-setting stage anyway. Saying no costs nothing either, and leaves "
+          + "the oddity that the one sector everything depends on cannot actually stop anything.",
+      recommendation: "Do it. It is still the cheapest item on any list I have put in front of you. "
+                    + "If you would rather not add anything at all before the alpha runs, that is a "
+                    + "defensible no and I will file it with the other eight." },
+  ],
+
+  _answered: [
     { id: "close-rounds-6-and-7",
       title: "Shocks and the frame above everything are both written. Do you call them closed?",
       evidence: "Both ran tonight, after diplomacy. SHOCKS: seventy-four ideas, seven decisions, six "
@@ -640,29 +675,6 @@ const BOARD = {
                     + "it is the only one where I drew a line you had not drawn somewhere else first, "
                     + "and where I put that line decides whether lending money is a friendly act or a "
                     + "slow conquest." },
-    { id: "shortage-stops-production",
-      title: "Should a shortage stop things being MADE, or only lose them on the road?",
-      evidence: "Four of the arrows you drew tonight say the same thing: ore needs trucks, goods need "
-              + "trucks, food needs trucks, and trucks need gas. Today a hauling shortage loses a "
-              + "fifth of what is in transit and raises tolls — it never stops a single thing being "
-              + "produced. So a country can lose its entire ability to move goods and its factories "
-              + "carry on making them anyway, piling up where nobody can reach them.\n\n"
-              + "This is exactly the same shape as the fertiliser rule you already made this morning: "
-              + "a thing you cannot get stops you running at full tilt. It would just be pointed at "
-              + "two more pairs. You parked the other eight groups of your arrows as future ideas and "
-              + "this one was never answered either way — it was not in that pile, it was the one I "
-              + "had recommended doing for the alpha.",
-      cost: "Almost nothing. It is the same machinery as a rule that already exists, pointed somewhere "
-          + "new — no new system, no new screen, and the only genuinely new thing is a number, which "
-          + "belongs to the number-setting stage anyway. Saying no costs nothing either, and leaves "
-          + "the oddity that the one sector everything depends on cannot actually stop anything.",
-      recommendation: "Do it. It is the cheapest item on any list I have put in front of you today, "
-                    + "and it closes the last thing in the sector map that reads as obviously wrong. "
-                    + "If you would rather not add anything at all before the alpha runs, that is a "
-                    + "defensible no and I will file it with the other eight." },
-  ],
-
-  _answered: [
     { id: "close-round-4",
       title: "The economy round is finished. Do you call it closed?",
       evidence: "Nine decisions, ninety-six ideas on file, and the one story this whole seven-round "
@@ -1173,7 +1185,32 @@ const BOARD = {
             + "and nothing that matters was lost. And the game will open on a newspaper front page "
             + "dated 1 March 2036 — prose with no engine work behind it, and the first thing a new "
             + "player meets." },
-    { name: "Design round 7 — The frame above everything", status: "current",
+    { name: "Stage 2 — The design documents", status: "current",
+      brief: "One document per system: what the thing actually does, what it is measured in, what the "
+           + "player sees, and what happens at each level. Your plan puts this between the ideas and "
+           + "the numbers.",
+      actual: "NOT STARTED. Not one page of it exists. Stage one closed at ten to three this morning "
+            + "when you shut the last three rounds, and this is what follows it.\n\n"
+            + "It is not inventing anything — it is converting. Five hundred and thirty-six ideas and "
+            + "a hundred and seventy-eight of your rulings already exist and have been judged. Seven "
+            + "piles of decisions become seven specifications.\n\n"
+            + "THE BACKLOG THE ROUNDS LEFT IT, so it does not start from a blank sheet. The hauling "
+            + "trap still has no brake chosen, and it is the most serious thing the economy round "
+            + "found. The federation's flat toll has to be reconciled with the corridor system already "
+            + "built — and the bloc decision made that worse rather than better, because there are now "
+            + "two arrangements to reconcile instead of one. There is no diplomacy screen, though six "
+            + "of the game's eleven moves are diplomatic and every one is reached by clicking the map. "
+            + "Nobody has decided what a shock looks like on screen, which is new — your blast radius "
+            + "makes the first event that is about a region rather than a country. Nobody decided on "
+            + "purpose that a wrecked rail hub lasts one turn, which makes it a raid and not a "
+            + "demolition. Two leftover questions about buying a referendum. The movement roster "
+            + "taking up half the political board. And two from last night: whether the remnant's "
+            + "victory is the same conditions told twice or its own set, and what a restricted view of "
+            + "another country actually LOOKS like — you ruled what gates it, not what you see.\n\n"
+            + "NO ESTIMATE, DELIBERATELY. Nobody has written one of these documents in this project, "
+            + "so any figure would be invented, and that is the thing this project has a rule against. "
+            + "Write one, measure it, then I can tell you what seven cost." },
+    { name: "Design round 7 — The frame above everything", status: "done",
       brief: "What winning means, how the turn is spent, what a country is allowed to know, and time. "
            + "Collected as a running list through the six rounds before it, and resolved last.",
       actual: "RAN TONIGHT. Fifty ideas, four decisions, four findings, and the largest in-tray of any "

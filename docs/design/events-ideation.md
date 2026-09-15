@@ -762,7 +762,7 @@ anything happens.** *Recorded so nobody spends an afternoon adjusting cooldowns.
 
 ## 9. The handover
 
-**The round is NOT closed — Aaron closes rounds.** Seven rulings, seventy-four ideas, six findings,
+**CLOSED by Aaron on the Control Board, 15 September 2026 at 02:53.** Seven rulings, seventy-four ideas, six findings,
 scenario 6 traced, and the in-tray empty: **nine items in, nine answered.**
 
 ### 9a. What this round decided, in one table

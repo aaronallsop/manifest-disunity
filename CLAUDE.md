@@ -98,14 +98,19 @@ that playtesters open — an output, not a place work happens. Do not delete it.
 
 ## Definition of done for the current phase
 
-**STAGE 1, IDEATION, IS WRITTEN. All seven rounds exist** — `docs/design/IDEATION-PLAN.md` still says
-which is which, and it is still the first thing to read before opening anything in `docs/design/`.
-Rounds 1–4 are closed. **Rounds 5 (diplomacy), 6 (events) and 7 (the things above) ran on
-14 September and are written but NOT closed — three cards are on the Control Board and Aaron closes
-rounds.** *Stage 2 does not honestly start until he has.*
+**STAGE 1, IDEATION, IS CLOSED. All seven rounds.** `docs/design/IDEATION-PLAN.md` is now a record
+rather than a plan, and it is still the first thing to read before opening anything in
+`docs/design/`. Rounds 1–4 closed between 7 and 14 September. **Rounds 5 (diplomacy), 6 (events) and
+7 (the things above) ran on 14 September and Aaron closed all three on the Control Board at 02:53 on
+15 September, with the same click confirming the eight defaults round 5 had taken in his place.**
+
+**⚠ So the seven ideation documents are records now.** A later change to one is a *correction with a
+reason*, not a fresh ruling — the same status rounds 1–4 have had since they closed.
 
 **Totals, counted on 14 September rather than carried forward: 536 ideas and 178 rulings across the
 seven documents.**
+
+**The current phase is now STAGE 2, DESIGN**, described below. **Nothing of it exists.**
 
 A round is done when a session can read its document end to end and the only new entries are
 recombinations of ones already there; when **every one of its scenarios has been traced** — tracing has
@@ -128,7 +133,7 @@ about this, on a Tuesday, with one action**; and when Aaron says so.
    thing depends on and whether the alpha's stated purpose needs it. It does not rank, recommend, or
    cut.
 
-### What comes next: STAGE 2, DESIGN — and none of it exists yet
+### THE CURRENT PHASE: STAGE 2, DESIGN — and none of it exists yet
 
 **Per the designer brief: one `docs/design/<system>-design.md` per system — what the thing actually
 does, what it is measured in, what the player sees, and what happens at each level.** *Stage 2 is not
