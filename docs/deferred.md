@@ -376,3 +376,34 @@ either dial moves one system and not the other.
 > legacy one-off sale · the spec's compounding per-mode multipliers · the federation's flat toll · the
 > bloc's free movement.* **`blocs-design.md` and `trade-design.md` both name the job and neither knew
 > there were two systems inside the build.**
+
+## 42 — ⚠ `mil.suppressLiberty` is a dead key, and a design document cited it as live
+
+**Defined and documented in the tuning file as *"THE PRICE OF HOLDING PEOPLE DOWN, and the reason
+suppression is a trade rather than a free answer to secession."* Read by no code.** *Verified by grep
+across `js/` and `tests/` this session.*
+
+**The liberty cost of a garrison is carried entirely by `liberty.wGarrison` at −0.35.** *One term, not
+two.*
+
+**`docs/design/governing-design.md` cited it twice as live** — once in a table describing a two-term
+mechanism — **and has been corrected in the same commit that filed this.**
+
+**Same class as defect 37**: a tunable with a doc string looks implemented, so Aaron can move the
+slider and watch nothing happen.
+
+## 43 — ⚠ The AI's five army-allocation weights are literals in code
+
+**`0.15, 0.55, 0.15, 0.45, 0.1`**, deciding how every AI nation splits its force between garrison,
+border and field.
+
+**Against the project's standing rule:** *"Every number the model uses is a named tunable in the tuning
+file, never a literal in code. **Aaron must be able to change a value, reload, and see the effect
+without a rebuild and without you.**"*
+
+**⚠ And the code's own comment claims otherwise** — it says *"none of them is a new tunable"*, which is
+true of the **inputs** it reads and false of the **five weights** it multiplies them by.
+
+**Consequence: AI posture is the one part of the model Aaron cannot tune.** *He can change what a
+garrison is worth, what it costs and how fast it arrives — and not how readily sixty nations reach for
+one.*
