@@ -492,14 +492,150 @@ the union for is held by people who will never join it.**
 
 ---
 
-## 6. The Texas tree
+# 6. The Texas tree — one tree, five claimants
 
-**Drafted by Aaron, reviewed against the build, not yet written up here.** Structure as §2: **Standing**
-is a recognition ladder of three, **Ground** is a set of five cities then a fan of five capstones,
-**Building** is free, and the **pivot** is Washington D.C.
+**Dallas, Houston, San Antonio, Austin or El Paso. You play one; the tree is the same.** It is the only
+one of the three whose players are **rivals for the tree itself** — five nations claiming one prize,
+none of whom can ever thaw with the others and none of whom may ever join a union or federation with
+them.
 
-**Unblocked:** conquest ruling 19 was brought forward on 15 September (D222), so the four Texan rebels
-open unrecognised and the Standing branch has something to do. **Its review findings are in D221.**
+## 6.1 The situation, measured
+
+**Verified against `DESIGN.md` §2.1, `data/county_trade.json` and `data/game-data.json`,
+15 September 2026.**
+
+| | Areas | Pop | GDP | Governs | Seat |
+|---|---:|---:|---:|---|---|
+| **Houston** | 32 | 10.07M | $904B | red | Harris Co |
+| **Dallas** | 22 | 9.34M | $868B | red | Dallas Co |
+| **San Antonio** | 21 | 5.40M | $347B | red | Bexar Co |
+| **El Paso** | 16 | 2.79M | $308B | red | El Paso Co |
+| **Austin** | **13** | 3.69M | $344B | **blue** | Travis Co |
+
+### ⚠ The five cities are not five of the same thing, and the data is emphatic
+
+| Seat | What the map says it is |
+|---|---|
+| **Harris County (Houston)** | **`has_port: true`, `coastal: true`, `choke_point: true`** — an ocean port **and** the Houston Ship Channel gate |
+| **El Paso County** | **`border_crossing: true`** — one of Texas's **seven** crossings into Mexico |
+| **Dallas · Travis · Bexar** | **No trade geography at all.** Inland |
+
+> **Two of the five cities are the only reasons Texas can reach the world. Three are politics.**
+
+**And it makes El Paso's bonus exact rather than evocative:** *The Pass* is about a county that **is a
+pass.**
+
+**Texas is 254 counties with seven Mexican crossings** — Cameron, El Paso, Hidalgo, Maverick, Presidio,
+Val Verde and Webb.
+
+### The board this tree sits on
+
+**Conquest ruling 19 came forward on 15 September (D222).** Austin is the legitimate Texas; **Dallas,
+Houston, San Antonio and El Paso open unrecognised**, and Austin holds the signature each of them
+needs. **Diplomacy ruling 18**: whoever takes Austin inherits the claim — *"Austin's asset stops being
+a thing worth protecting and becomes a thing worth fighting over."*
+
+**Austin is the crown, ruled and deliberate** (D222). Its defence is the **auction** — four nations
+each needing their own copy of one signature — and **outward alliances**, since it is hostile with four
+Texans and with nobody else, making it the only one of the five that can build a coalition.
+
+## 6.2 Branch one — STANDING: become accepted on the world stage
+
+**A ladder of three.** *Aaron's names to come; these are his conditions.*
+
+| | Condition | ⚠ |
+|---|---|---|
+| **S1** | **One nation larger than you** recognises your sovereignty | *Reward: a small trade bonus* |
+| **S2** | **Over half the continent** recognises you | ⚠ **By weight, not head count.** `legitimacy` is *"the share of the continent, **by weight**, that recognises B"*, and 0.50 is the top band of the recognition ramp — above it, full market access |
+| **S3** | **Everybody except the other Texans** recognises you | *Deliberately excludes the four who never will. The contest floor is permanent* |
+
+### ⚠ Austin opens with this branch already finished
+
+**Every nation the game opens with recognises every other**, and ruling 19 makes only the four rebels
+unrecognised. **Austin is recognised by all of them, so S1, S2 and S3 are green on turn 1.**
+
+**That is correct and it should be visible.** Austin's whole identity is that it is already the
+legitimate Texas — **the tree simply says so out loud on the opening screen, and the other four can see
+the branch they must spend a game earning sitting finished on the nation they all want to eat.**
+
+## 6.3 Branch two — GROUND: claim authority over the five cities
+
+### The set — any order, all five required
+
+| | Mission | Reward |
+|---|---|---|
+| **G1** | **Spirit of Sam Houston** — Houston | Improves the ability to govern — **Authority** |
+| **G2** | **Remember the Alamo** — San Antonio | Your provinces are harder to capture — a modifier on **Border** strength, which is what an attacker's Field is weighed against |
+| **G3** | **The Pass** — El Paso | ⚠ **Converted: your goods cross Mexico free.** Aaron wrote *"able to trade with Mexico"*; **Mexico is geography, not a nation** (D168), so there is nobody to trade with. Today the corridor is a flat 10% that is a cost and nobody collects — **dropping it to nothing is the same reward without a new actor** |
+| **G4** | **Well, That's Dallas** — Dallas | Increased recognition from nations **west of the Mississippi**. ⚠ **A geographic modifier on recognition, and nothing in the game has one.** Recognition is earned from standing, kinship, duration and size. Small, but a new kind of term |
+| **G5** | **Father of Texas** — Austin | Conquered Texan ground carries **less unrest and settles faster**, and you are **likelier to take ground from the other Texans.** Both are existing terms — Area hostility, ruling 26's digestion speed, and the fight |
+
+**⚠ G5 is the strongest reward in the tree and it belongs to whoever takes Austin, not to Austin.**
+Compounded with ruling 18's inherited veto, **it makes Austin the first target on the board.** *That is
+the ruling, not an oversight — Austin is the crown and the prize for taking it should be the biggest
+thing here.*
+
+### The fan — all four open when the five cities are held
+
+| | Mission | Condition | ⚠ |
+|---|---|---|---|
+| **G6** | **Texas United** | Every county in Texas | **254 counties.** Reward: lower civil unrest |
+| **G7** | **Former Glory** | Every county that was part of the **Republic of Texas** | ⚠ **Needs the Republic's claimed boundary painted as a region.** The map editor does exactly this. **Its extent was not verified and must not be written from memory** |
+| **G8** | **Choke the Farmers** | The **southern Mississippi gate** and the lower river counties | ✓ **New Orleans and the Mouth** — Orleans and Plaquemines Parishes, both ports, both ocean-coastal, both chokepoints. The lower corridor is Louisiana 17, Mississippi 11, Arkansas 6, Tennessee 5, Kentucky 3 |
+| **G9** | **Dominate the Gulf** | At least half the Gulf ports | ⚠ **Two problems.** The reward — *charge 10% more and still be accepted* — **may be redundant**, because `AlternativesMult` rises to ×1.5 as a buyer's supplier count falls and already pays you for cornering a coast. **And the Gulf is not a distinguishable set in the data**: the basin model says *"the Gulf counts as Atlantic"*, and there are **25 coastal ports across Texas 7, Louisiana 7, Mississippi 2, Alabama 1 and Florida 8** — with nothing separating Florida's Gulf ports from its Atlantic ones. **A Gulf list has to be authored** |
+
+### ⚠ And here is where all three trees meet
+
+**Choke the Farmers wants New Orleans and the Mouth. So does the Great Lakes tree's *Southern
+Hospitality* — for the opposite reason.**
+
+| Tree | Wants the Mouth because |
+|---|---|
+| **Texas** | It is how you **strangle the Midwest** |
+| **Great Lakes** | It is **the only ocean the river reaches** |
+| **Deseret** | Wants **Cairo and Nauvoo** on the same river — *East of Eden* |
+
+> **All three live trees converge on the Mississippi, and none of them was written with the others in
+> front of it.** *That is the strongest argument in this document that three trees is the right number.*
+
+## 6.4 The pivot — **We Never Wanted to Be Part of Your Country Anyways**
+
+> **Condition: conquer Washington D.C.** — one county, 11001, and a real nation on the board: **702,250
+> people and $184B**, the smallest thing on the map that is not a city-state.
+>
+> **Reward: the victory re-aims. You unite the continent as the United States *of Texas*.**
+
+**This is the only pivot in the three trees that changes the *name* of the prize**, and it answers
+something round 7 left open. That round ruled the federal remnant plays a different game — **restore**,
+where everyone else **replaces** — and left open whether the remnant has its own condition set.
+**Aaron's mission gives a third answer neither candidate anticipated: the remnant's story can be
+seized.**
+
+**⚠ What it depends on and does not have.** Aaron's own note was that it *"would make you fight against
+Philadelphia and NYC."* **Neither is on the board.** The capital contest's three claimants are D.C.,
+Philadelphia and New York City (secession ruling 20), **and two of the three are a design that is not
+built.** *So today the pivot is one county and a rename; when the story's board exists it becomes a
+three-way war for the capital.*
+
+## 6.5 Branch three — COUNTRY DEVELOPMENT
+
+**Free, and deliberately short.** *Aaron: "and I don't know maybe other ones for the other things?"* —
+which is the correct length. Development is *very small and limited* by ruling.
+
+| | Mission | Condition | State |
+|---|---|---|---|
+| **B1** | **Texas BBQ** | **110% of food needs for two years** | ✓ Exactly the spec's **Surplus** band (1.11–1.50) held for **eight turns**. ⚠ **Needs the resource model** |
+| **B2** | **Texas Oil** | A **Resource Extraction** surplus | ⚠ **There is no oil.** Energy lives inside Resource Extraction alongside ore and fertiliser — round 4's finding D calls it the model's single upstream chokepoint. ⚠ **Needs the resource model** |
+| **B3** | *[yours]* | **Build capacity** — Houston's port, or the Mexican crossings | ✓ **The one buildable thing. The only mission in this branch that works in the alpha** |
+
+## 6.6 What this tree would be tested for
+
+1. **Does Austin survive long enough for the auction to happen?** D222's watch item. *If it dies on
+   turn six in every game, the most interesting corner of the map is a two-quarter story.*
+2. **Is a branch that opens finished a gift or a dead space?** Austin starts with Standing complete.
+3. **Does the race compress?** Four nations, one crown, and the biggest reward in the tree sitting on
+   it. **Ruling 25 removed the last hard refusal**, so nothing but price stops a turn-two attack.
+4. **Do three trees fighting over the Mississippi produce a war or a stalemate?** §6.3.
 
 # 7. The Deseret tree
 
@@ -685,7 +821,9 @@ closing the tree.** Deseret is the worked example.
 | **2** | **Nothing specifies how a tree is shown.** *Belongs to `presentation-design.md`; named here because momentum is a presentation property before it is a mechanical one* |
 | **3** | **Nothing says what happens when two nations sharing a tree complete the same mission.** Both live trees are shared |
 | **4** | **`Former Glory` needs the Republic of Texas's claimed boundary painted as a region.** The map editor does exactly this. **Its extent was not verified and must not be written from memory** |
-| **5** | **Chicago and Detroit are not on the board.** G5's condition is computable today and means much less than it will when the story's city-states exist |
+| **5** | **Chicago and Detroit are not on the board.** The Great Lakes G5 is computable today and means much less than it will when the story's city-states exist. **Philadelphia and New York City are not on the board either**, which is what the Texas pivot is missing |
+| **6** | **The Gulf is not a distinguishable set.** The basin model says *"the Gulf counts as Atlantic"*, and the county data flags `coastal` without saying which water. **25 coastal ports sit across Texas 7, Louisiana 7, Mississippi 2, Alabama 1 and Florida 8**, with nothing separating Florida's Gulf ports from its Atlantic ones. *Dominate the Gulf* needs an authored list |
+| **7** | **Nothing says what a mission's reward does when the ground that earned it is lost.** §1.1 rules the *mission* permanent; whether a modifier tied to holding a place survives losing the place is a different question and is unasked |
 
 ---
 
