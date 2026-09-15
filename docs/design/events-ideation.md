@@ -484,7 +484,9 @@ than asking you.*
 
 | | | State | Owner |
 |---|---|---|---|
-| **B** | ⚠ **A world shock is not expressible.** Every one of the fourteen facts a trigger may read is about the nation the event fires for; there is no world state of any kind. **In-tray item 3 — the oil stoppage that hit everyone at once — has nothing to be true of.** §3b | **OPEN. The central gap of the round** | **This round**, then the architect |
+| **E** | ⚠ **Ruling 1 needs the delivery mechanism changed.** An event fires for exactly one nation and at most three fire across the roster per turn; a blast radius addresses many at once. **At today's cap one winter would take three turns to deliver.** Shocks need to address a set of nations and to have a budget separate from the crisis deck's. §8 ruling 1 | **OPEN, and it is what ruling 1 costs** | **The architect** |
+| **F** | **The model has no coordinates anywhere** — counties carry name, state, population, output and votes, and nothing in the data has a latitude, longitude or centroid. **So ruling 1's radius is measured in adjacency hops, not miles.** *The same absence the transit work hit, where nothing has a length* | **OPEN.** A route is named and it is cheap; buying real coordinates instead is a choice | **The architect** |
+| **B** | ⚠ **A world shock is not expressible.** Every one of the fourteen facts a trigger may read is about the nation the event fires for; there is no world state of any kind. §3b | **CLOSED by ruling 1** — a shock is true of a PLACE, not of a world, so no world object is needed. *What it costs instead is findings E and F* | — |
 | **A** | ⚠ **Round 4's handover says a bad winter "needs nothing new to land." Read carefully, it needs two things.** The *bands* it refers to belong to the designed economy, which has never run; and **the built effect vocabulary has no sector or resource term at all** — eight effects, all national stocks. §3c | **OPEN.** Not a contradiction, a scope correction | **The architect.** The vocabulary gains a term or the shock lands elsewhere |
 | **C** | **A player meets the crisis deck about three times in a sixty-turn game**, from a deck of twelve — arithmetic from the tuning file. Three quarters of the authored content never reaches a given player, and **the per-turn cap, not the cooldowns, is the binding constraint.** §3d | **OPEN** | **This round** for whether it matters; the architect for the number |
 | **D** | **The deck knows about none of the six objects rounds 4 and 5 created** — sectors, deals, corridors, blocs, vassals and recognition claims. Four of them did not exist when the effect vocabulary was written. X29–X38 | **OPEN** | **This round**, then the architect |
@@ -528,7 +530,7 @@ round does not own.*
 
 ### The interesting version, and the cheapest route to it
 
-**X6 is the route.** *There is no such thing as a shock; there is only somebody else's crisis reaching
+**The route is X6:** *there is no such thing as a shock; there is only somebody else's crisis reaching
 you.* A bad winter in the farm belt is one nation's harvest failing — which the deck already does —
 **and the continent feels it because that nation stops selling grain.** No world state, no multi-nation
 delivery, no new trigger vocabulary: **the shock travels along the trade network that round 4 and the
@@ -560,7 +562,69 @@ the player did not choose to be asked.
 
 ## 8. Rulings
 
-*Empty. The round is open and nothing has been put to Aaron yet.*
+### Ruling 1 — A shock has a blast radius on the map. It hits the ground, and the ground tells the nations
+
+**RULED 14 September 2026.** *"A shock has a blast radius on the map."* — answering spine question 1
+and in-tray item 3, and closing **finding B**.
+
+**A shock happens somewhere and reaches everything near it.** A hurricane on the Gulf, a drought
+across the plains, a freeze in the north. **It is not addressed to a nation at all** — it is addressed
+to ground, and whichever nations hold that ground find out.
+
+**This is the answer that needs no world.** Finding B said a world shock has nothing to be true *of*;
+ruling 1 replies that it is true of **a place**, and the game is built on a real county map. *No world
+object, no continental facts, no new layer above the nations — the thing that already exists is the
+thing the shock is true of.*
+
+**Rejected, and all three were put to him.** Somebody else's crisis reaching you down the trade
+network (X6), which was the cheapest and makes arrangements decide who suffers. A world with facts of
+its own (X21), the most faithful to the story and the most to build. And a shock that hits everyone
+sharing a property — a port, a bloc, a supplier (X5). **Aaron took the most physical of the four**,
+and it is the only one where the map itself decides.
+
+### ⚠ Two things it costs, both found by checking rather than assuming
+
+**1. The model has no coordinates. A radius must be measured in adjacency, not in miles.** Verified
+this session: counties carry a name, a state, population, output and votes, and **nothing in the
+model data has a latitude, a longitude or a centroid anywhere.** *The same absence the transit work
+already ran into — it recorded that nothing has a LENGTH, so a 16-mile sea crossing costs what a
+2,578-mile one costs.*
+
+**What exists instead is adjacency**, county by county, and it is complete. **So a blast radius is
+"within N counties of where it started"**, walked outward through neighbours. *That is cheap, it is
+already built, and it is honest: it follows the shape of the land rather than a circle drawn on a
+projection — a drought that spreads along the plains rather than into the mountains is arguably the
+better model anyway.* **Recorded as the route rather than ruled: whether to buy real coordinates
+instead is the architect's, and it is not free.**
+
+**2. An event today fires for exactly one nation, and a blast radius addresses many.** §3b and §3d: a
+crisis is drawn for a single nation, at most three across the whole roster in a turn. **A shock that
+hits the plains hits eight nations at once, which the delivery mechanism forbids** — at three a turn
+it would take three turns to tell everybody about one winter. **So ruling 1 requires the event system
+to learn to address a set of nations rather than one**, and to have a budget separate from the crisis
+deck's. *That is X65, and it is finding E.*
+
+### Ruling 2 — The effect scales with how much of your ground is inside it. Default taken
+
+*Answering the obvious next question — a shock lands on ground, but every effect the game has is a
+national stock.*
+
+**A nation feels a shock in proportion to the share of its ground the shock covers.** A nation with
+three of its forty Areas in the drought feels a fraction of it; a nation whose whole territory is
+inside it feels all of it.
+
+**Why this is the default and not a product judgement.** It **respects round 4's ruling 2** — one
+national pot, no regional stocks — which this round may not overturn. It needs **no new effect
+vocabulary**: the eight existing effects are simply multiplied by a share. And it delivers the thing
+the scenario asked for **without a regional model**: the same winter is a catastrophe for a small
+farm state and an inconvenience for a large diversified one, *because of where their ground is.*
+
+**⚠ What it does NOT deliver, stated plainly.** Scenario 6's other half — *"it lands differently on a
+nation that feeds itself than on one that buys"* — **is still not answered by ruling 1 or 2.** A shock
+that covers your whole territory hits you fully whether you farm or import. **That half belongs to the
+economy**: the winter reduces what the plains produce, and the importer feels it through price. *Which
+means the scenario needs round 4's designed model built before it can be told, and that was already
+true before today.*
 
 ---
 
