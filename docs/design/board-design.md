@@ -441,6 +441,8 @@ has to be able to show.*
 | **3** | **Can a smuggler's rate reach the world market for a nation with no port?** The market is *"a haircut rather than a lock"* because *"refusing external trade outright would make an unrecognised landlocked state unplayable"* — **which is a description of Deseret** — but the market is reached *"only through an ocean port, or through somebody else's."* **Nobody has asked whether the two rules agree.** *Carried from `missions-design.md` open question 8* | The Technical Designer |
 | **4** | **Does lasting infrastructure damage exist at all?** Today a wrecked rail hub lasts **one turn**, *so it is a raid and not a demolition, and nobody decided that on purpose.* **Filed to stage 2 by the economy round and it lands here**, because a rail hub is a board object: 76 of them exist and the entry cost through one is 0.34 against 1.00 for open country | **Aaron** |
 | **5** | **Is a shock's blast radius walked in adjacency hops the right shape?** Round 6 ruled it because **the map has no coordinates**, and recorded that it is *arguably truer* — a drought spreads along the plains rather than into the mountains. **It has never run.** *Shared with `events-design.md`, which owns the event; this document owns the walk* | The alpha |
+| **6** | **⚠ Does D227's recognition exception cover RIVERSIDE?** D227 opens Deseret recognised by its neighbours and not by Utah, **so that a pariah needing a corridor can be granted one** — and it was verified against the legitimacy threshold but **never against the map.** §14.1 traces it: **Deseret's only Californian border is one Area wide, and the nation on the other side of it is Riverside**, a three-Area landlocked successor that holds the Mexican crossing at Imperial. **The ruling's own purpose turns on a nation nobody has thought about.** *Found by tracing, 15 September 2026* | **Aaron**, in `diplomacy-design.md` |
+| **7** | **⚠ Is it acceptable that about one game in five opens with Deseret touching no Californian ground at all?** Its single Californian border Area is Mohave County, in the **Zion** leaf, which cedes at **0.82**. **A good roll and a bad roll are materially different games for Deseret's trade**, and the mission document already says that about its ground | **Aaron** |
 
 ---
 
@@ -456,9 +458,204 @@ and simply are not written down anywhere.*
 | **3** | **Nothing states what happens to a chokepoint's Area when its owner ceases to exist.** Gates are held by whoever owns the ground and the ground always has an owner — **except that round 3 created ungoverned ground.** *Nothing says whether an ungoverned gate is open, shut, or free* |
 | **4** | **Nothing specifies whether a corridor survives its grantor being annexed.** Diplomacy ruling 18 makes a *claim* inherit with the ground; transit grants are keyed `grantor → grantee : mode` and the grantor may stop existing |
 | **5** | **`county_neighbors.json` is a pre-2015 Census vintage** with roughly 100 FIPS that no longer exist. `DESIGN.md` §12 says *"it feeds the display-only Neighbors row; the simulation reads `adjacency.json`, which is current."* **⚠ That is not the whole truth: `build_trade.py` also reads it to generate `bank_pairs`, which is baked into `county_trade.json` — a file the simulation does read.** *Harmless only because nothing reads `bank_pairs` (gap 8). Two gaps that are each other's safety net is not a safe arrangement* |
-| **8** | **⚠ `bank_pairs` — 213 facing-bank county pairs — is baked and read by nothing.** *Verified by search across `js/` and `tests/`, 15 September 2026.* **Dead baked data**, in the same class as the dead `enteredBy` field already in `docs/deferred.md` 10. **What it is FOR is written down nowhere** — the obvious reading is that two counties facing each other across a river should be trade-neighbours despite the water, but that is a mechanic nobody has specified and it is not invented here |
 | **6** | **The border is defined in two files and nothing keeps them in step.** Routing reads `transport.json`'s `external` lists (18 Canada + 14 Mexico); the panel chip reads `county_trade.json`'s `border_crossing` flag (32 counties, all named). **Verified: they are the same 32 counties today.** *Two independent bakes of one fact, agreeing by luck rather than by construction — and `build/validate.py` is the check that is supposed to catch exactly this class of drift* |
 | **7** | **Nothing says what a border crossing IS, mechanically.** Thirty-two are named and the only thing holding one does is put Canada or Mexico within reach. **Nothing says whether a crossing has a capacity, whether it can be closed the way a corridor can, or whether losing one hurts differently from losing an ordinary Area** — which matters because a mission tree already asks a player to take one |
+| **8** | **⚠ `bank_pairs` — 213 facing-bank county pairs — is baked and read by nothing.** *Verified by search across `js/` and `tests/`, 15 September 2026.* **Dead baked data**, in the same class as the dead `enteredBy` field already in `docs/deferred.md` 10. **What it is FOR is written down nowhere** — the obvious reading is that two counties facing each other across a river should be trade-neighbours despite the water, but that is a mechanic nobody has specified and it is not invented here |
+| **9** | **⚠ The scenario file contradicts itself about Imperial County, and it is the county this whole question turns on.** SoCal's note says it receives *"San Diego, Orange, Ventura, Santa Barbara, San Luis Obispo and Imperial."* **Riverside's `areas` array explicitly claims Imperial (06025), and the explicit claim wins** — so the note is wrong. **Imperial is a Mexican border crossing and §14.1 shows it is Deseret's shortest route to any market at all.** *Authored content, not code. Found by tracing, 15 September 2026* |
+
+---
+
+---
+
+## 14. The scenarios this document must be able to tell
+
+**Reinstated by Aaron on 15 September 2026 (D232).** *Worked examples are the test suite: a design is
+not finished because it is elegant, it is finished when it can narrate concrete situations. Tracing
+has found contradictions in every closed round that the rulings alone did not.*
+
+**Five traced below. Three narrate, one narrates and exposes something nobody had looked at, and one
+is refused — which is the correct outcome and is the point of tracing it.**
+
+---
+
+### 14.1 ⚠ Deseret tries to sell something — and this is the one that found things
+
+**The situation.** Turn 1. Deseret is half-born out of the Mormon Corridor, holds roughly 31 of 57
+Areas, and wants to export. *Everything below is verified against the data on 15 September 2026, not
+carried forward.*
+
+**Step 1 — what Deseret physically has.** Across all **57** corridor Areas: **no port, no coastal
+county, no Great Lakes county, no border-crossing county, no county on a named navigable river, and no
+chokepoint.** One rail hub. **It is the only sealed nation on the board.**
+
+**Step 2 — so every route must cross somebody.** The world market is reachable *"only through an ocean
+port, or through somebody else's."* Deseret has neither, so it needs a **transit grant**, which is
+directed, per-mode, and requires **mutual recognition.**
+
+**Step 3 — who does it actually touch?** The corridor borders **eight** states' ground: Arizona,
+California, Colorado, Idaho, Montana, Nevada, Utah and Wyoming. **Of those, only three can reach
+anything external at all** — California (5 ocean ports, 2 crossings), Arizona (3 Mexican crossings),
+and Idaho and Montana (1 Canadian crossing each). **Colorado, Nevada, Utah and Wyoming are dead ends.**
+
+**Step 4 — and the California border is ONE Area wide.** Exactly one corridor Area touches California:
+**Mohave County, Arizona**, which borders **San Bernardino County**. *Nothing else in the corridor
+touches a Californian county, and **no corridor Area touches a border-crossing county anywhere.***
+
+**Step 5 — who holds San Bernardino? Not who you would guess.** San Bernardino sits in the **SoCal**
+cultural leaf, **but the scenario gives it to Riverside**, whose three Areas are Riverside, Imperial
+and San Bernardino. **And Riverside is landlocked** — the scenario says so in its own note: *"The
+Inland Empire and the desert. Landlocked, and the only near-even Californian successor."*
+
+**Step 6 — so the lifeline is not the one it looks like.** **Riverside holds Imperial County, which is
+a Mexican border crossing.** So:
+
+| Route | Hops | Reaches |
+|---|---|---|
+| **Deseret → Riverside → Mexico** | **one intermediary** | Mexico, at Riverside's toll **plus the flat 10% that credits nobody** |
+| **Deseret → Riverside → SoCal → world market** | **two intermediaries** | The ocean, through San Diego |
+| Deseret → Arizona → Mexico | one intermediary | Mexico — *Arizona proper, since no corridor Area touches a crossing* |
+| Deseret → Idaho or Montana → Canada | one intermediary | Canada |
+| Deseret → Nevada → anything | — | ❌ **Dead end.** Nevada has no port and no crossing |
+
+> **It narrates. Deseret is not sealed off — it is one grant away from Mexico and two from the world.
+> But the route runs through a specific small landlocked neighbour nobody has ever thought about.**
+
+#### What this trace found, and none of it was written down anywhere
+
+1. **⚠ D227's recognition exception has to cover RIVERSIDE, and nobody checked who "its neighbours"
+   are.** D227 opens Deseret recognised by its neighbours and not by Utah, *verified at the time
+   against the legitimacy threshold.* **It was never checked against the map.** The neighbour that
+   matters most for the ruling's own stated purpose — *"a pariah that needs a corridor to do anything
+   at all cannot be granted one"* — is **Riverside**, a three-Area Californian successor. *Open
+   question 6.*
+2. **⚠ In roughly one game in five, the Californian border does not exist.** Mohave County is in the
+   **Zion** leaf, which cedes at **0.82**. **So about 18% of games open with Deseret touching no
+   Californian ground at all**, and its shortest route to a market becomes Arizona or the Canadian
+   border instead. **A good roll and a bad roll are materially different games** — which the mission
+   document already says about Deseret's ground and nobody had said about its trade.
+3. **⚠ The scenario file contradicts itself about Imperial County.** SoCal's note says it receives
+   *"San Diego, Orange, Ventura, Santa Barbara, San Luis Obispo and Imperial."* **Riverside's `areas`
+   array explicitly claims Imperial (06025).** The claim wins and the note is wrong — **and Imperial is
+   the border crossing this whole trace turns on.** *Gap 9.*
+4. **The pariah's lifeline runs through a nation with every reason to refuse.** Riverside is small,
+   landlocked, and its one asset is the crossing Deseret needs. **That is a good story and nobody
+   designed it.**
+
+---
+
+### 14.2 Louisiana gives notice on the Mouth of the Mississippi
+
+**The situation.** Illinois ships to the world down the Mississippi through Louisiana. Louisiana wants
+it to stop.
+
+**Step 1.** Louisiana holds **both New Orleans and the Mouth of the Mississippi** — two of the fifteen
+gates, on one river, in sequence.
+
+**Step 2.** A river is a **line**, cut at its gates into ordered stretches. Illinois is upstream of
+Cairo and St. Louis; to reach the sea it must pass every gate below it **in order**, and Louisiana
+holds the last two.
+
+**Step 3.** Louisiana gives notice. **The grant still carries goods for exactly its notice period —
+four turns.** *It does not stop the deal; it starts a clock on it.*
+
+**Step 4.** When the notice expires, Illinois's deal **pays nothing while its term keeps running
+down.** A long contract can be burned to nothing by a nation that never touched it.
+
+**Step 5 — and it is not a monopoly.** Illinois reroutes **through the state of Mississippi**, which
+reaches the Gulf without passing New Orleans. **The Mouth is a gate, not a lock.**
+
+**Step 6 — Louisiana pays for it.** Closing a corridor counts against standing, weighted **against how
+many corridors you hold**, over the twenty-turn window — so a nation that holds many gates pays more
+per closure than one that holds a single one.
+
+> **Narrates cleanly, end to end, and it is the clearest demonstration in the game of why the rivers
+> were worth building.**
+
+---
+
+### 14.3 A long thin empire tries to push at its far end
+
+**The situation.** A nation has conquered a corridor of ground stretching from its capital across a
+third of the continent, and wants to take one more Area at the far end.
+
+**Step 1.** Reach is a bounded search from **one** core — the seat of government if still held,
+otherwise the largest Area. **Not from every capital it has captured.**
+
+**Step 2.** Cost accumulates per Area entered — 1.00 open country, 0.72 interstate, 0.58 rail, 0.34
+through a rail hub — and reach is `decay^cost`, **so it falls smoothly with no ring on the map.**
+
+**Step 3.** At the far end, reach has decayed below `proj.minReach` (**0.18**). **The move is refused**,
+and the panel explains the refusal **with the same number that priced the attempt**, because pricing,
+army strength and refusal all read one record.
+
+**Step 4 — measured, so the shape is known.** A 517-Area empire's worst frontier sits at **0.13** and a
+660-Area one's at **0.10**; the opening board's worst of 944 targets is **0.31**. **So the opening board
+is untouched, the far corners start being refused past a quarter of the continent, and a
+single-capital empire stalls around a third of it.**
+
+**Step 5 — and the alternative was tried and failed.** Making every captured seat a source *made the
+brake a no-op*: an empire of 852 Areas had twenty-four seats and no limit at all. **Reach has to decay
+from a core or it does not decay.**
+
+> **Narrates. And it is the only anti-snowball device in the game that refuses rather than prices —
+> which is exactly the tension §5 of the master document names against Aaron's taste for absurd runs.**
+
+---
+
+### 14.4 ❌ Seattle tries to reach Boston by sea — and is refused
+
+**The situation.** A Pacific nation wants to ship to an Atlantic one without crossing anybody's land.
+
+**Step 1.** Two basins, not one ocean. **The Panama Canal is shut to the former American states.**
+Membership is by the **ground held**, not the name, so this is a question about which coasts Seattle
+holds.
+
+**Step 2.** Seattle is Pacific. Boston is Atlantic. **There is no direct basin edge between them.**
+
+**Step 3 — the first way round, already closed.** Ship to Canada, Canada ships to the Atlantic.
+**Refused: Canada was given an Atlantic coast only, deliberately — a deliberate lie about geography**,
+because with a Pacific coast this exact route works.
+
+**Step 4 — the second way round, and it WORKED for a while.** Ship to Mexico, which has both coasts,
+and on to Florida. **This defeated the rule for a flat ten per cent while four tests that guard it
+stayed green** — because all four read the map's connections rather than running a journey.
+
+**Step 5 — what holds now.** **Water in and water out, across two different oceans, is refused.**
+Arriving overland and shipping onward is still allowed, *because that is what those goods would really
+do.*
+
+> **Correctly refused — and the reason this scenario is in the document is step 4. The rule was
+> defeated twice, by geography rather than by code, and neither breach was caught by a test that read
+> the graph. A rule about journeys has to be tested by running a journey.**
+
+---
+
+### 14.5 A nation with a port discovers it cannot export
+
+**The situation.** A player holds a county with a port, sees the port on their panel, and cannot sell
+abroad.
+
+**Step 1.** **136 counties have a port.** *Verified.*
+
+**Step 2 — and they are three different things.** **57 ocean**, **20 Great Lakes**, **59 river or
+inland.** *Disjoint sets, so this is a classification and not a heuristic.*
+
+**Step 3.** An **ocean** port reaches the world market directly. A **Great Lakes** port reaches it
+**only through the Canada corridor** — the lakes leave by the St. Lawrence, which is New York's. A
+**river** port reaches its river stretch **and no external sink at all.**
+
+**Step 4.** **So 59 of 136 ports — forty-three per cent — cannot export anywhere.** The capacity is
+real; the destination is not.
+
+**Step 5 — and the trap underneath.** The port count feeds `tradeCapacity.total`, **the volume limit on
+every standing trade deal in the game.** *Widening what counts as a port quietly changes what every
+deal on the board pays, every turn, and it does not look like a mistake.*
+
+> **Narrates — but only just, and what it exposes is a PRESENTATION problem rather than a model one.**
+> **The model is right and the screen does not say so**: nothing distinguishes the three kinds of port
+> to a player, so *"I have a port and I cannot sell"* currently has no answer on screen. **Filed to
+> `presentation-design.md`, and it is a direct instance of the master document's requirement that the
+> game be playable before it is understood** — a player must be able to find this out, not deduce it.
 
 ---
 
