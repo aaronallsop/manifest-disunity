@@ -98,28 +98,65 @@ that playtesters open — an output, not a place work happens. Do not delete it.
 
 ## Definition of done for the current phase
 
-**IDEATION — the seven design rounds in `docs/design/IDEATION-PLAN.md`. Read that plan before opening
-anything in `docs/design/`; it says which round is live.** Rounds 1 (secession), 2 (conquest), 3
-(politics) and 4 (economy) are closed. **Round 5 is diplomacy.**
+**STAGE 1, IDEATION, IS WRITTEN. All seven rounds exist** — `docs/design/IDEATION-PLAN.md` still says
+which is which, and it is still the first thing to read before opening anything in `docs/design/`.
+Rounds 1–4 are closed. **Rounds 5 (diplomacy), 6 (events) and 7 (the things above) ran on
+14 September and are written but NOT closed — three cards are on the Control Board and Aaron closes
+rounds.** *Stage 2 does not honestly start until he has.*
 
-**Round 4 closed 14 September 2026** — nine rulings, seven findings, 96 entries, scenario 4 traced.
-**The hollow spot is closed at both ends**: nothing bad happening to a nation that does not trade, and
-a self-sufficient nation being able to opt out. Two findings stay open on purpose — extraction as a
-single point of failure, which only the alpha can judge, and the logistics spiral, which the design
-stage must put a brake on before anyone builds it.
-
-**Round 5 opens shorter than the others.** Round 3's thirteen federation rulings on 11 September
-already settled what an alliance is, what a bloc costs, and how you join and leave one. **One
-inherited item is blocking:** the diplomatic act that speeds a thaw, without which the 33 pairs that
-open Hostile have no move available at all.
+**Totals, counted on 14 September rather than carried forward: 536 ideas and 178 rulings across the
+seven documents.**
 
 A round is done when a session can read its document end to end and the only new entries are
 recombinations of ones already there; when **every one of its scenarios has been traced** — tracing has
-found contradictions in all three closed rounds that the rulings alone did not; when it has answered
-**what the player actually does about this, on a Tuesday, with one action**; and when Aaron says so.
+found contradictions in every closed round that the rulings alone did not, and round 6 proved it is
+better done **before** the rulings than after; when it has answered **what the player actually does
+about this, on a Tuesday, with one action**; and when Aaron says so.
 
 **A design round writes documents only.** No code, no data, no `DESIGN.md`. Changes a round decides are
 *specified* for the build, not made — round 3's ruling 41 is the worked example.
+
+### ⚠ Two lines Aaron drew on 14 September that bind every session after it
+
+1. **"You are currently the game designer working towards a game design document. The actions/turn
+   will be handled by the technical design director in the next step."** — **so the turn budget and
+   the clock are not the designer's.** Round 7 hands them forward as a *requirement*, not an answer,
+   and two of its four rulings are refusals to decide. **Whether a thing can work, and how, is the
+   architect's.**
+2. **"Remember — you are not deciding what to cut."** — **the build order and what gets moved
+   post-alpha are Aaron's and the planning stage's.** A design document supplies evidence: what a
+   thing depends on and whether the alpha's stated purpose needs it. It does not rank, recommend, or
+   cut.
+
+### What comes next: STAGE 2, DESIGN — and none of it exists yet
+
+**Per the designer brief: one `docs/design/<system>-design.md` per system — what the thing actually
+does, what it is measured in, what the player sees, and what happens at each level.** *Stage 2 is not
+inventing; it is converting seven judged idea banks into seven specifications.*
+
+**What the rounds explicitly filed to it**, so the backlog is not reassembled from seven documents:
+
+- **The logistics spiral's brake** (economy finding E) — *the most serious thing round 4 found.* Three
+  candidate brakes exist and **none is chosen**.
+- **The federation's flat toll against the built corridor system** — and **diplomacy's ruling 4 made
+  this worse, not better**: there are now two internal-trade regimes to reconcile with the one that is
+  built.
+- **A diplomacy screen** — six of the game's eleven moves are diplomatic and all are reached by
+  clicking the map.
+- **What a shock looks like on screen** — round 6's ruling 1 makes the first event that is about a
+  *region*, and the map is what the player reads.
+- **Whether lasting infrastructure damage exists at all** — today a wrecked rail hub lasts one turn,
+  so it is a raid and not a demolition, and nobody decided that on purpose.
+- **Two of F21's questions** — whether referendum spending moves the vote or only the turnout, and
+  whether the movement may spend too.
+- **Politics finding H** — the movement roster occupying half the board.
+- **From round 7:** whether the remnant's victory is the same conditions told two ways or its own set;
+  and **what a restricted view actually looks like** — ruling 3 settled what *gates* sight, not what
+  you see. Bands and staleness are both still available.
+
+**Do not size stage 2 from a guess.** Nobody has written one of these documents in this project, so
+any figure would be invented — which is the thing this project has a rule against. **Write one,
+measure it, then estimate seven.**
 
 ### The phase this supersedes, kept because it is still the state of the build
 

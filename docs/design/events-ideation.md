@@ -110,10 +110,13 @@ is currently worst at.
 
 ### 3b. ⚠ Every trigger reads THIS nation's own condition. There is no world state
 
-Fourteen facts are available to a trigger: the turn, quality of life, liberties, authority,
-influence, war weariness, strain, coalition pressure, how many Areas it holds, what share is
-occupied, how many turns of upkeep the treasury covers, how much force is deployed, and whether a
-neighbour ceased to exist recently.
+**Thirteen distinct facts** are available to a trigger — fourteen keys, of which two are the same
+number under different names: the turn, quality of life, liberties, authority, influence, war
+weariness, strain, coalition pressure, how many Areas it holds, what share is occupied, how many
+turns of upkeep the treasury covers, how much force is deployed, and whether a neighbour ceased to
+exist recently. *(The fourteenth key is the turn again, spelled `minTurn` for readability in the
+content file. Corrected by the sign-off review, which counted keys and listed facts and got two
+different numbers.)*
 
 **Every one of them is about the nation the event is firing for.** *`neighbourDied` is the only one
 that looks outward at all, and it reads the ledger rather than a stock.*

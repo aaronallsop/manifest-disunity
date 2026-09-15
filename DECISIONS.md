@@ -4619,3 +4619,22 @@ against a cheat.*
 roster, not only the code.* **Round 6 restated the twelve-nation board before writing about shocks;
 round 7 checked that the federal remnant is D.C. alone — 702,250 people — and not the rump federal
 state of the story, and that its "recognises nobody" is not built either.**
+
+**⚠ Amended at sign-off the same night, after the adversarial review of rounds 6 and 7.** Two
+corrections and two new findings, none of which changes a ruling.
+
+**Corrected:** round 6 said *"fourteen facts are available to a trigger"* and then listed thirteen.
+**There are fourteen keys and thirteen distinct facts** — the fourteenth is the turn again, spelled
+`minTurn` for readability in the content file. *Caught by counting the keys and the list separately
+and getting two numbers.*
+
+**Found, and both are interactions nobody checked because the two rounds were written an hour
+apart.** **Round 7's ruling 3 compounds with round 5's rulings 1–3**: sight is gated on the
+relationship, and 23 pairs are locked Hostile for the whole game, **so the five Texans, the five
+Californians and the three capitals can never see each other's figures, ever.** That is either the
+right reading or two rulings that should not multiply, and stage 2 owns it. And **an event is
+information** — round 6 asks whether the newspaper reports other nations' crises, which under ruling 3
+would be gated.
+
+**The checks were run tonight rather than quoted: 956 passed, 51 files, 212.71 seconds, all green**,
+in the browser, which is the only runner that actually executes them (rule 16).

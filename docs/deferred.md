@@ -157,3 +157,30 @@ come out as `â€"`.
 Not fixed because the fix is not available inside the file. If local viewing ever matters, the answer
 is a charset header from `server.py`, not an edit to the page. Found 14 September while taking the
 look at the rendered page that should have happened before the first publish.
+
+## 33 — Three opening-board facts are specified by rulings and not built, and two rulings now depend on them
+
+**Found and scheduled 14 September 2026 across rounds 5 and 7.** All three are changes to the
+scenario's authored content, not to code, and **Aaron scheduled them for after the alpha test**
+(round 5 ruling 8). Recorded here so a build session finds them without reading three design
+documents.
+
+1. **Conquest ruling 19 — Austin is the legitimate Texas and the other four open unrecognised.**
+   Today every nation the game opens with recognises every other unconditionally, so **Austin's veto,
+   the four rebels' pariah status and the four-way auction for Austin's signature do not exist.**
+   Conquest recorded this as a deliberate departure from the scenario's "the board starts quiet"
+   principle and the change was never made.
+2. **The federal remnant recognises nobody.** Same mechanism, same absence — D.C. is an opening nation
+   and therefore recognises everybody. *This is round 5's in-tray item 4, which that round's
+   adversarial review recovered after it had been dropped from the scoreboard.*
+3. **The remnant is D.C. alone.** The story has it as Washington plus its martial-law ring, plus the
+   rest of Virginia, plus the Baltimore region. **On the board it is one small nation of 702,250
+   people.**
+
+⚠ **Round 7's ruling 2 — that playing the remnant is a different game — depends on (2) and (3).** So
+these are no longer only colour; a ruling rests on them.
+
+**And the wider point, which is programmer rule 17:** the story's board has **twenty-nine** new
+nations and the game's has **twelve** — Texas's five, California's six and Deseret. The Deep South,
+Appalachia, the Gulf nation, the city-states and all stateless ground are a design and are not built.
+Four closed rounds had been quoting them as though they were the game.
