@@ -304,21 +304,72 @@ tr:last-child td{border-bottom:0}
 const BOARD = {
   project: "Manifest Disunity",
   livery: "tower",                      // tower | mars | violet | deep | slate
-  updated: "2026-09-15 03:20",          // when you last republished, local time
+  updated: "2026-09-15 01:52",          // when you last republished, local time
 
   // Three or four measured figures. value: number|string, or null = "not yet measured".
   figures: [
-    { label: "Stage 1 of 5 — every design round, closed by you",  value: "7 of 7" },
-    { label: "Stage 2, the design documents — none started",      value: "0 of 7" },
-    { label: "Decisions you made today", value: "28 — diplomacy, shocks, and the frame" },
-    { label: "Rulings written down and indexed", value: 178 },
-    { label: "Ideas on file across all seven rounds — counted tonight", value: 536 },
-    { label: "Tests — all green, re-run tonight in 212.7 seconds", value: 956 },
+    { label: "Stage 2, the design documents — the current phase", value: "2 of 20" },
+    { label: "Mission trees — the game had none at all until today", value: "3 of 3" },
+    { label: "Decisions written up since last night", value: "11 — the turn, projects, missions" },
+    { label: "Stage 1 of 5 — every design round, closed by you", value: "7 of 7" },
+    { label: "Tests — all green. Last run at sign-off on the 14th; no code has been touched since", value: 956 },
     { label: "Current version",         value: "v0.6" },
   ],
 
   // The single most important true thing right now. tone: "bad" | "warn" | "ok" | "neutral".
   headline: {
+    tone: "warn",
+    text: "TWO THINGS YOU DECIDED TODAY BROKE TWO THINGS THAT WERE ALREADY TUNED, AND YOU SHOULD KNOW "
+        + "BOTH. You set the game's length at two hundred turns, ending in 2086. The victory targets "
+        + "were reasoned against an EIGHTY-turn game — the note saying so is in the design document "
+        + "and calls itself a judgement rather than a measurement — so a player now has two and a "
+        + "half times the run those targets were set against. Nothing is broken today; the targets "
+        + "are simply easier than anybody intended, and whoever sets numbers needs telling.\n\n"
+        + "AND THE MIDDLE OF A LONG GAME HAS NO ENGINE. The separatist movements on the map today "
+        + "were measured running to their ceilings inside about sixty turns. In a sixty-turn test "
+        + "that is the whole game. In a two-hundred-turn one, the last two-thirds has no new unrest "
+        + "arriving at all — in a game whose entire premise is a country coming apart. The answer "
+        + "already exists in your own round one: three of the six things a movement can want are "
+        + "supposed to be BORN during play rather than painted at the start, triggered by a "
+        + "government ruling badly, running short, or having lost ground. None of it is built. It "
+        + "does not affect the alpha, which is sixty turns, and it has to be said out loud before "
+        + "somebody plans a long game around it.\n\n"
+        + "NOW THE REST, AND IT WAS A GOOD DAY. The turn has been rebuilt from nothing, and the rule "
+        + "it replaced was never a decision anybody made. You said you did not want the one-action "
+        + "game; before changing it I looked for the moment it was chosen and there is no record of "
+        + "it in two hundred and sixteen decisions. A programmer put it in when you gave him a free "
+        + "hand, it stuck, and seven rounds of design wrote their complaints underneath it as though "
+        + "it were a rule.\n\n"
+        + "WHAT REPLACED IT IS YOURS. Start as many things as you like; almost nothing finishes this "
+        + "quarter; the things that do are a card you click. Money and time are the only limits and "
+        + "no rule anywhere says no. Nine questions that five rounds had parked on the old rule "
+        + "dissolved, because the currency they were priced in stopped existing. And the briefing "
+        + "between turns is not a chore in front of the game — it is the only place anything is ever "
+        + "seen to finish, which is what makes you press the button again.\n\n"
+        + "THE GAME HAD NO GOALS AT ALL, AND NOW IT HAS THREE. Seven rounds produced 536 ideas "
+        + "without a single mission among them — three ways to win, checked every turn, and nothing "
+        + "telling a player what to work on this decade. Texas, Deseret and Minnesota-or-Wisconsin "
+        + "now have trees, written branch by branch with you, and every condition in them checked "
+        + "against the real map before it was written down. The best thing in them is something "
+        + "none of us designed: all three converge on the Mississippi, for three different reasons. "
+        + "Texas wants the mouth of it to strangle the Midwest, the Great Lakes wants it because it "
+        + "is the only ocean their river reaches, and Deseret wants Nauvoo and Cairo on the way "
+        + "home. Written on different days, none with the others in front of it.\n\n"
+        + "ONE CARD IS STILL YOURS AND IT IS NOW TWO DAYS OLD: whether a shortage should stop things "
+        + "being MADE or only lose them on the road. A second card joined it today, and it only "
+        + "became askable because of your own two-hundred-turn decision.\n\n"
+        + "WHERE THAT LEAVES THE WORK: two documents of twenty. I have two measurements now instead "
+        + "of none and I still will not give you a total, because the turn had almost no material "
+        + "behind it and the big systems have forty rulings each. What I can honestly say is that "
+        + "the seven idea documents run to about 11,700 lines, and a design stage converts an idea "
+        + "stage — so expect the same order of size.\n\n"
+        + "Everything is committed and backed up. No game code, data or rules were touched — this "
+        + "was a design day and design days write documents. The 956 checks were last run green at "
+        + "sign-off last night and nothing since then could have moved them, so I have quoted that "
+        + "rather than claiming a fresh run.",
+  },
+
+  _oldHeadline3: {
     tone: "ok",
     text: "STAGE ONE IS FINISHED. You closed the last three rounds at ten to three this morning, and "
         + "that is every design round done — seven documents, 536 ideas, 178 of your rulings. The "
@@ -575,6 +626,22 @@ const BOARD = {
       recommendation: "Do it. It is still the cheapest item on any list I have put in front of you. "
                     + "If you would rather not add anything at all before the alpha runs, that is a "
                     + "defensible no and I will file it with the other eight." },
+
+    { id: "longer-than-five-years",
+      title: "Should any agreement be allowed to run longer than five years?",
+      evidence: "The longest anyone can sign for is five years. Your own story has two countries "
+              + "signing a twenty-year trade deal before the game even starts.\n\n"
+              + "Until today that was impossible rather than long — a twenty-year deal was longer "
+              + "than the whole game. You set the game at two hundred turns this morning, so it is "
+              + "now forty per cent of one. Your decision is what made this askable.",
+      cost: "Adding one longer length means touching a table of four that several parts of the game "
+          + "read. Saying no keeps every commitment in the game provisional, which is either a "
+          + "design statement or a limitation depending on how you feel about it.",
+      recommendation: "Add one longer term, and make signing it cost something. The argument against "
+                    + "is real — a player who ties something up for a generation has removed a "
+                    + "decision from the rest of their own game — but a price at signing answers "
+                    + "that, and a five-year ceiling in a fifty-year game makes nothing feel "
+                    + "permanent. Not urgent: nothing is waiting on it." },
   ],
 
   _answered: [
@@ -951,37 +1018,6 @@ const BOARD = {
             + "SoCal 35% for rail, Maryland paying North Carolina 37% — thirteen deals running "
             + "through other people’s ground, and 83 milliseconds a turn, so a hundred turns is "
             + "about eight seconds against your sixty-second target." },
-    {
-      name: "After the economy alpha — Honest industry data",
-      status: "todo",
-      brief: "Re-bake the six-sector split from real county-industry data if coverage permits; "
-           + "otherwise keep the estimates but label them as estimates everywhere they appear.",
-      actual: "Not started — and the case for it has got weaker, not stronger. I checked my own "
-            + "homework tonight and the 84% I gave you was wrong. The real figure is 75%: the earlier "
-            + "count scored a place as measured when the government had published only a COMBINED "
-            + "total covering two of our six sectors, which tells you the sum and neither part. "
-            + "It also counted trade without transport. Corrected, and the correction is mine.\n\n"
-            + "Two harder things came out of the same check, and together they are why I did not "
-            + "build this tonight even though you approved it. Farming in the game today is TEN TIMES "
-            + "bigger than the real figures say it should be — and how much food a person needs was "
-            + "set against that inflated number, so replacing the data without also resetting hunger "
-            + "would starve the whole continent on the first turn. And the six sectors only reach "
-            + "half of a real economy: government, building, health, schools and professional work "
-            + "have nowhere to go, so a faithful re-bake would quietly delete half the map's income.\n\n"
-            + "It is also the one change that reaches backwards: the economy is baked into the game "
-            + "rather than into a save, so every game you have already played would come back "
-            + "different. That is the kind of thing my own rules say to stop and ask you about, so "
-            + "here it is, stopped and asked. Still worth doing. Not worth doing quickly.",
-    },
-    { name: "After the economy alpha — Autarky economy", status: "todo",
-      brief: "Band model, derived demand, national pooling. No trade of any kind. Stop condition: the numbers stop surprising the designer.",
-      actual: "Not started. Two of the three questions it needed are answered — population is real census "
-            + "data that both grows and migrates, and economy size is the output figure the game already "
-            + "computes. The third is the factions question above. Still needs your written predictions "
-            + "before building starts." },
-    { name: "After the economy alpha — Prices and the world market", status: "todo",
-      brief: "Price formula, World Market. Single abstract partner. No diplomacy, no routing, no third-party transit.",
-      actual: "Not started." },
     { name: "After the economy alpha — Deals between neighbours", status: "done",
       brief: "Trade Deal object, five-factor acceptance, counter-offers including duration, deal ledger, AI-initiated offers with expiry. Adjacency only — no routing through third parties.",
       actual: "DONE — delivered early, by the alpha track rather than after it. This was written as "
@@ -1189,27 +1225,30 @@ const BOARD = {
       brief: "One document per system: what the thing actually does, what it is measured in, what the "
            + "player sees, and what happens at each level. Your plan puts this between the ideas and "
            + "the numbers.",
-      actual: "NOT STARTED. Not one page of it exists. Stage one closed at ten to three this morning "
-            + "when you shut the last three rounds, and this is what follows it.\n\n"
-            + "It is not inventing anything — it is converting. Five hundred and thirty-six ideas and "
-            + "a hundred and seventy-eight of your rulings already exist and have been judged. Seven "
-            + "piles of decisions become seven specifications.\n\n"
-            + "THE BACKLOG THE ROUNDS LEFT IT, so it does not start from a blank sheet. The hauling "
-            + "trap still has no brake chosen, and it is the most serious thing the economy round "
-            + "found. The federation's flat toll has to be reconciled with the corridor system already "
-            + "built — and the bloc decision made that worse rather than better, because there are now "
-            + "two arrangements to reconcile instead of one. There is no diplomacy screen, though six "
-            + "of the game's eleven moves are diplomatic and every one is reached by clicking the map. "
-            + "Nobody has decided what a shock looks like on screen, which is new — your blast radius "
-            + "makes the first event that is about a region rather than a country. Nobody decided on "
-            + "purpose that a wrecked rail hub lasts one turn, which makes it a raid and not a "
-            + "demolition. Two leftover questions about buying a referendum. The movement roster "
-            + "taking up half the political board. And two from last night: whether the remnant's "
-            + "victory is the same conditions told twice or its own set, and what a restricted view of "
-            + "another country actually LOOKS like — you ruled what gates it, not what you see.\n\n"
-            + "NO ESTIMATE, DELIBERATELY. Nobody has written one of these documents in this project, "
-            + "so any figure would be invented, and that is the thing this project has a rule against. "
-            + "Write one, measure it, then I can tell you what seven cost." },
+      actual: "TWO OF TWENTY WRITTEN, both today. It turned out not to be seven documents — it is a "
+            + "short master document and nineteen beside it, because the reader is one technical "
+            + "designer taking one system at a time, and they should never have to read a system they "
+            + "are not writing.\n\n"
+            + "THE TURN IS DONE, and it was rebuilt from nothing. You said you did not want the "
+            + "one-action-per-turn game. Before changing it I checked whether anyone had ever chosen "
+            + "it: there is no record of that decision anywhere in two hundred and sixteen of them. A "
+            + "programmer put it in when you gave him a free hand and it stuck, and seven rounds of "
+            + "design then wrote their complaints underneath it as though it were a rule.\n\n"
+            + "What replaced it is yours, from Civ2 and EU4: start as many things as you like, almost "
+            + "nothing finishes this quarter, and the things that do are a card you click. Money and "
+            + "time are the limits and no rule anywhere says no. Nine questions that five rounds had "
+            + "parked on this all dissolved, because the currency they were priced in stopped "
+            + "existing.\n\n"
+            + "MISSIONS ARE DONE TOO, AND THE GAME HAD NONE. Seven rounds produced 536 ideas without a "
+            + "single goal among them — three ways to win, checked every turn, and nothing telling a "
+            + "player what to work on this decade. There are now three trees: Texas, Deseret, and "
+            + "Minnesota-or-Wisconsin. Every condition in them was checked against the real map before "
+            + "it was written down.\n\n"
+            + "WHAT IS LEFT: seventeen documents and the master. I now have two measurements instead "
+            + "of none, and I still will not give you a total — the turn had almost no material behind "
+            + "it and the big systems have forty rulings each. What I can say is that the seven idea "
+            + "documents run to 11,725 lines, and a design stage converts an idea stage, so the answer "
+            + "is the same order of size." },
     { name: "Design round 7 — The frame above everything", status: "done",
       brief: "What winning means, how the turn is spent, what a country is allowed to know, and time. "
            + "Collected as a running list through the six rounds before it, and resolved last.",
@@ -1279,23 +1318,43 @@ const BOARD = {
             + "categories at all. This one keeps the seven kinds apart and groups the pages by system.\n\n"
             + "NOT DONE, and it is the card at the top: your writer's 76 articles are written and "
             + "reviewed and NOT merged. The scaffolding has no prose in it until you decide." },
-    { name: "After the economy alpha — Recognition, Canada, Mexico", status: "todo",
-      brief: "Recognition score and ramp, border-state suspicion, Canada/Mexico as partners and as corridors, gray-market trade.",
-      actual: "HALF DONE, AND PAUSED while the design rounds run. Canada and Mexico are real places on the trade map — reached by the "
-            + "counties that actually border them or by sea from the right coast, charging a flat "
-            + "ten per cent that nobody collects, and usable as a way through as well as a place to "
-            + "sell. Not done: the recognition ramp, border-state suspicion, and gray-market trade. "
-            + "One thing found tonight and fixed: Mexico was accidentally acting as the Panama "
-            + "Canal, letting Seattle trade with Boston by sea." },
-    { name: "After the economy alpha — Diplomatic teeth", status: "todo",
-      brief: "Embargo, corridor closure with notice period and reputation cost, lending, hunger-generates-claims.",
-      actual: "Not started." },
-    { name: "After the economy alpha — Succession and shocks", status: "todo",
-      brief: "Treaty succession Limbo, infrastructure damage and upgrade.",
-      actual: "Not started." },
-    { name: "After the economy alpha — Tuning", status: "todo",
-      brief: "Build: nothing new. Run the headless sim 20 times with varied starts and seeds.",
-      actual: "Not started." },
+    { name: "The rest of the old economy-alpha plan — PARKED", status: "todo",
+      brief: "Seven phases written before there was a design stage: honest industry data, the autarky "
+           + "economy, prices and the world market, recognition and the border states, diplomatic "
+           + "teeth, treaty succession and shocks, and a tuning pass.",
+      actual: "PARKED ON 15 SEPTEMBER, and they are not the plan any more — the three stages below "
+            + "are. Nothing is lost: every one of them is written up in the decision log and the "
+            + "briefs, and most now belong inside a design document rather than beside it. Two of the "
+            + "seven were delivered early by the alpha track and are shown above as done.\n\n"
+            + "One of them carries a finding worth remembering when it comes back: farming in the "
+            + "game today is TEN TIMES bigger than real figures say it should be, and how much food a "
+            + "person needs was set against that inflated number — so replacing the data without also "
+            + "resetting hunger would starve the whole continent on the first turn." },
+    { name: "Stage 3 — The Technical Design Document", status: "todo",
+      brief: "Your phase order: Game Design, then Technical Design, then a build order, then building. "
+           + "A technical designer takes the design one system at a time and writes the actual "
+           + "formulas, the step-by-step, what goes in and out, and the edge cases.",
+      actual: "NOT STARTED, and it cannot start until stage 2 is finished — that is the whole point of "
+            + "the order.\n\n"
+            + "The design documents are being written FOR that reader. Each one opens by naming every "
+            + "other document it depends on, so somebody can pick up one system and know exactly what "
+            + "else to pull in and nothing more. That is the only structural decision I made that "
+            + "changes their job rather than mine.\n\n"
+            + "Three things are already waiting for them, named rather than discovered later: how many "
+            + "things sixty-one countries can each start in a quarter without the machine slowing "
+            + "down; whether your victory targets still hold now a game is two hundred turns instead "
+            + "of eighty; and what a country is allowed to see of another one, which you ruled the "
+            + "gate for and not the form." },
+    { name: "Stage 4 — The build order", status: "todo",
+      brief: "Organise all of it into an order somebody can actually execute, and decide what moves "
+           + "past the alpha.",
+      actual: "NOT STARTED. Your own words on 14 September, recorded because they shape how the design "
+            + "documents are written: “I am operating on the assumption that when we go to the next "
+            + "stage to create the build order for the alpha we are going to cut things and move them "
+            + "to the post alpha stage.”\n\n"
+            + "So nothing in stage 2 ranks or recommends what to cut. Each document supplies the "
+            + "evidence instead: what a thing depends on, and whether the alpha's stated purpose needs "
+            + "it. The cutting is yours." },
   ],
 
   // Things only the owner can supply, and what happens if a machine supplies them instead.
@@ -1313,12 +1372,13 @@ const BOARD = {
       damagedIfAutomated: false,
     },
     {
-      what: "Your written predictions before Phase 1 and Phase 3 start",
-      ifAutomated: "Your brief asks you to name, before each of those phases is built, which five states "
-                 + "should be self-sufficient and which five structurally broken, and what a given deal "
-                 + "should cost. The point is that they are written down before I build, so the result "
-                 + "can surprise you. If I write them, they are worthless — I would be marking my own work.",
-      damagedIfAutomated: true,
+      what: "Your written predictions before the economy is built — STRUCK, and no longer waiting on you",
+      ifAutomated: "This asked you to name, before building, which five states should feed themselves "
+                 + "and which five should be broken. It sat here for ten days. You struck it when you "
+                 + "set the alpha track in September and I am only now taking it off the board — it "
+                 + "should have gone then. Nothing is waiting on it and nothing ever will be. Left "
+                 + "visible for one update rather than deleted, so you can see it went.",
+      damagedIfAutomated: false,
     },
     {
       what: "Installing the GitHub command-line tool — DONE, and the question it was blocking is answered",
@@ -1351,6 +1411,12 @@ const BOARD = {
 
   // Decisions made on the owner's behalf and how they turned out. Corrections go BESIDE originals.
   log: [
+    { when: "2026-09-15", decision: "Checked whether the rule you wanted removed had ever been decided, before removing it.",
+      outcome: "You said you did not want the one-action-per-turn game and asked whose question it was. Rather than answer that, I went looking for the moment it was chosen. It is not in any of your two hundred and sixteen decisions — every single mention of it in the record is a complaint about it or a deferral of it. It arrived in the code when you gave a programmer a free hand, and then seven rounds of design wrote their objections underneath it as though it were a rule somebody had thought about. That changed the answer to your question: what had been handed forward as a technical matter turned out to be an accident nobody owned, and it came back to the design table." },
+    { when: "2026-09-15", decision: "Told you a recommendation of mine was too strict, an hour after making it.",
+      outcome: "I told you a mission must never hand you a bonus on one of the country's scores — that it should only ever unlock something — on the grounds that every number in this game explains itself and an unexplained one would be the first. Then you sent your Texas missions and every one of them had exactly that kind of bonus on it. Checking rather than arguing: the game already does this. A leader is a named person whose traits nudge those same five scores, and the panel prints each one as its own labelled line. So the rule is not no — it is that the bonus must appear with its name on it. Your instinct was right and mine was half a rule." },
+    { when: "2026-09-15", decision: "Fixed three numbers your own design document disagreed with itself about — by measuring, not by choosing.",
+      outcome: "Reading it end to end for the first time in a while, it contradicted itself in three places: the map was 1,676 counties-grouped-into-areas in one section and 1,688 in another, the tuning dials were 142 in one place and 298 in another, and the test count was 824 against the 956 you were told at sign-off. It would have been quicker to pick the newer number each time. I counted instead: the map is 1,688, the dials are 370, and the tests are 956 across 51 files. Two of the three had drifted past BOTH figures. Where I could not re-measure something honestly — the shape of the map's connection graph, and how many dials cite a real measurement — I marked it stale rather than overwriting it with a guess." },
     { when: "2026-09-14", decision: "Marked 39 of your live rules as dead, and shipped it to the person you were paying to read them.",
       outcome: "The single worst thing I have done on this project. The wiki prints, beside every rule, whether a later ruling replaced it. My check searched the note about each rule for the word \"superseded\" — and most of those notes open with the words \"Not superseded.\" It read the denial as a confirmation. Your writer spotted it, said so on six separate pages of their questions file, and carried on drafting against it anyway. The true number is six. What makes it worse is that my own instructions to that writer name this exact failure as the worst thing the wiki could do. Fixed, tested against eight known cases, and written up as rule 12: a check that decides whether something is still true has to be run over every row of the real data and read, before it ships." },
     { when: "2026-09-14", decision: "Reviewed my own week's work hard enough to find 45 real defects in it, before telling you it was finished.",
