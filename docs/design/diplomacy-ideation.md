@@ -1482,6 +1482,69 @@ recognition climb, and buy your existence one quarter at a time.
 
 ---
 
-## 8. The close
+## 8. The handover
 
-*Written when Aaron closes the round: what it leaves rounds 6 and 7, and the findings with owners.*
+**The round is not closed — Aaron closes rounds.** This is what it hands on.
+
+### 8a. Aaron's steer, recorded because it shapes everything below
+
+**14 September 2026:** *"I am operating on the assumption that when we go to the next stage to create
+the build order for the alpha we are going to cut things and move them to the post alpha stage."*
+
+**So this handover is written as a ranked cut list rather than a flat pile.** §8b says what the alpha
+would actually gain from each thing this round produced, cheapest and most valuable first, **and it
+names the fallback for the one ruling that got expensive.** *A stage that is going to cut needs to
+know what it is cutting into, not just what exists.*
+
+### 8b. What the alpha needs from this round, and what can wait
+
+**Start from what the alpha is for.** The definition of done says an alpha tester who did not write
+the game must be able to negotiate a trade deal with real terms and see it expire, grant or revoke
+transit and feel the consequence, read the trade network map and understand why a route broke, and
+watch AI nations trade with each other unprompted.
+
+**⚠ None of that is diplomacy.** *The honest headline is that the alpha needs almost nothing from
+this round — and that is a good result, not a disappointing one. It means twenty-one rulings can be
+banked and built in the order that suits the game rather than the order that suits a deadline.*
+
+| | What | Cost | Does the alpha gain? |
+|---|---|---|---|
+| **1** | **The New England ↔ Rochester trade deal, authored on the opening board** | **Nearly nothing** — the deal object exists; only the twenty-year term needs the T71 call | **Yes, directly.** A tester sees a live deal with a term on it before being asked to make one. **This is the fallback if ruling 11 is cut** |
+| **2** | **The overture** (ruling 9) | One action, one existing memory kind. **Its price is stage 3's** | **Yes, but narrowly.** Without it **Deseret has no move at all** (§7), and Deseret is on the opening board. *The one nation in the alpha that cannot play* |
+| **3** | **The bloc** (rulings 4, 10) | A new standing multilateral object | **Only through ruling 11.** Nothing the alpha tests needs a bloc |
+| **4** | **The alliance** (ruling 20) and **vassalage** (ruling 5) | Two new objects | **Only through ruling 11** |
+| **5** | **The opening agreements in full** (ruling 11) | **Items 3 and 4 first, then content** | Yes, and **this is the expensive one.** Ruling 11 stands with Aaron's confirmation; **row 1 is what it cuts to** |
+| **6** | **The petition line** (ruling 6) | A tunable, plus round 3's demand phase | **No.** It changes the middle of a long game, and the alpha is not long |
+| **7** | **Sponsorship and the offer object** (rulings 7, 19) | Real work | **No** |
+| **8** | **Stateless ground** (ruling 16) | Small — it reuses the Canada corridor | **No**, but it is the cheapest large thing in the round and it should not be forgotten for being cheap |
+| **9** | **Claim inheritance** (ruling 18), **creditor demands** (14), **guarantees** (15), **inherited-quarrel decay** (13), **union unasked** (17) | Each depends on something above it | **No.** All post-alpha |
+| **—** | **Recognition's own rules** (ruling 12) | **Zero** | **Already built.** Ruling 12 found that the machinery already did what was wanted |
+
+**The single sentence for the build-order stage:** *build row 1, decide row 2, and let rulings 11 and
+everything under it be the first thing you cut if the alpha is slipping.*
+
+### 8c. What round 5 leaves the rounds after it
+
+| To | What |
+|---|---|
+| **Round 6 — events** | **Three new things a shock can break, none of which existed when round 6 was planned.** A bloc can lose a member to a crisis; a vassal's overlord can be the thing that fails it; and **a recognition claim now changes hands when ground does** (ruling 18), so a war somewhere else can silently make you a pariah's parent. **And the sharpest one: rulings 1–3 mean 23 pairs can never de-escalate** — an event that makes two nations need each other has no way to let them cooperate, and round 6 should not write one that assumes they can |
+| **Round 7 — the things above** | **The action budget, and this round is the second-worst offender after the economy.** Six of the game's eleven existing moves are already diplomatic (§3a) and this round adds the overture, the offer, sponsorship and the bloc vote on top. **Ruling 9 is a direct deposit into round 7's account** — Aaron deferred the overture's price *because the turn is being redefined*, and **mediation (T6) went to the same place**: it is the only idea in the round where one action moves three nations, which is either the answer to the budget or a reason to reject it. **Information, too**: T26 asks whether an offer is visible to everyone, and the board's whole atmosphere rests on it |
+| **The design stage** | **(k) the federation's flat 10% against the built corridor system** — negotiated, per-mode, per-direction, compounding, with a notice period. **Ruling 4 made this worse, not better**: there are now two internal-trade regimes to reconcile with the built one. **(q) what a player can see of another nation**, with C130 and politics ruling 17, still wanting one answer between them. **And a diplomacy screen** — T80: six diplomatic moves exist today and they are reached through the map |
+| **Stage 3 — architecture** *(called "the mechanics stage" in rounds 1–4; see ruling 9)* | **The overture's price**, with the four options recorded and none chosen — **and §7 argues for *only the weaker party may go first* on its merits.** **Mediation.** **The petition gap**, which must be read beside ruling 15's X% and `secession.countyThreshold` as a **set of three**, not one at a time (ruling 6). **The vassal's tithe and the cost of the overlord's veto.** **T31**, the better version of inherited quarrels, revisited once alliances exist |
+| **The data stage** | **Count the movements that fall between the petition line and 0.40** — finding H, the movement that can ask forever and never leave. **And measure the thirty-three hostile pairs**, which were asserted from claimant lists and never checked against the board the scenario actually builds (finding C, T73) |
+| **The alpha** | **Three watch items, none answerable on paper.** Whether the **south runs away with the continent** (finding G), now that it is the only large region where nations can freely combine. Whether the **Confederacy gets assembled by agreement** (finding F) — 537 Areas, and round 1 said it could not be done without Texas. And whether **Deseret can do anything at all** (finding I) before the overture is built |
+| **After the alpha** | **Conquest ruling 19** — Austin's rebel board, scheduled by ruling 8 and carded |
+
+### 8d. The two rules this round would give the next one
+
+**Neither is about diplomacy. Both cost time today.**
+
+1. **Read the code before writing the round, not after.** Three of this round's twelve findings —
+   patronage already existing, there being no stance machine, and conquest ruling 19 being unbuilt —
+   **came from an hour spent reading the build**, and every one of them changed a question the round
+   was about to ask. *The stub's "*Built:*" notes were written on 6 September and four of them were
+   wrong by the 14th.*
+2. **Trace the scenario before you think you are finished, not to confirm that you are.** §7 was
+   written after eight rulings and **found three things those rulings had missed**, one of which —
+   the pariah having no move at all — is the worst thing in the round. **That is now three rounds out
+   of three where tracing found what the rulings did not.**
