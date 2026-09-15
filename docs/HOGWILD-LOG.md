@@ -133,6 +133,92 @@ authored (a tunable), or unset. **No figure is published that was not measured t
 not carried forward with its original date attached.**
 
 
+---
+
+## WIND-DOWN REPORT — Run 2, the design stage
+
+**Ended 15 September 2026 on exit condition 1: the plan finished.** *Fourteen of the fifteen planned
+documents are written; the fifteenth was parked by name before the run started and is still parked.*
+
+### 1. Where it got to
+
+**NINETEEN of the twenty design documents exist.** *Four were written before this run; **this run wrote
+fourteen**, plus the corrections.*
+
+- **9,436 lines across the eighteen satellites**, against 11,725 for the seven ideation documents. *So a
+  design stage converts an idea stage at about four fifths its size — **the first honest figure the
+  project has had for that**, and it replaces "measure more before quoting a total."*
+- **20 commits, all pushed. 15 `stage/*-design` tags, all on the remote**, so any one document can be
+  rolled back by somebody who is not me.
+- **One decision taken in your place: D234, the logistics brake.** Logged in full above, with the
+  command that reverses it.
+- **⚠ TEN LIVE CODE DEFECTS FOUND AND FILED**, `docs/deferred.md` 34–43. **Every one was verified by
+  reading the source before it was written down**, not taken from a research agent.
+- **Nine wrong claims corrected** — five in documents I wrote this run, four in `DESIGN.md`.
+
+### 2. What is next, and what of it needs you
+
+| | | |
+|---|---|---|
+| **⛔ `presentation-design.md`** | **The twentieth document.** Parked on `docs/design/TONE.md`, which does not exist | **YOURS.** *Paste `prompts/tone-interview.md` into a Claude chat and it writes TONE.md from your answers* |
+| **❌ The fall-apart pays the aggressor** | *`deferred.md` 34.* **The worst defect in the project**: a failed offensive charges the victims and pays the attacker, at the full score, and tells the player the opposite | A programming session. **Not mine to fix in a design stage** |
+| **❌ Ten nations hold a port that reaches nothing** | *`deferred.md` 39, 40.* Four of them by a data fault | **YOURS** — *fixing the port flags moves a number every trade deal reads, so it is a decision, not a repair* |
+| **⚠ Two transit toll systems are live at once** | *`deferred.md` 41.* They price the modes in opposite directions | **YOURS**, then the architect |
+| **⚠ The AI plays under a rule you removed this morning** | *D218 took the action budget away; the AI still takes one action a seat* | The architect, and **it needs a measurement nobody has taken** |
+| **⚠ Is the allocation three slices or four?** | *A session took the fourth as a default; it is not in the seven you confirmed, and a traced scenario already narrates it* | **YOURS** |
+| **⚠ Should a hundred-turn deal be on the menu?** | *Half the game, and free to sign* | **YOURS** — *D233 handed it to you and this run did not take it back* |
+
+### 3. WHERE I WENT MOST HOG WILD
+
+**Ranked by how much I made up. Worst first, each with what to check.**
+
+**1. THE LOGISTICS BRAKE — D234.** *The only thing in this run I decided that was genuinely yours.* I
+chose **rate-limit the fall of the logistics ratio** over the round's three candidates, on the grounds
+that one of them demonstrably does not bind on the failure case, one reopens a frozen ruling, and the
+third is your own project's existing answer to a runaway of the same shape. **What I made up is that
+this is the RIGHT KIND of answer; what I did not make up is any number.**
+*Check first:* **whether delaying the pain is enough.** My answer gives a player a few turns to notice
+and stop rather than removing the trap. If you wanted the trap removed, I chose wrong.
+
+**2. DECIDING THAT `wiring-triage` §B AND THE BRAKE ARE ONE QUESTION.** *Nothing in the repository
+connects them.* I asserted it, chose a brake that survives §B landing, and told you I had — **because
+choosing a brake that fits my own guess about your unanswered question is exactly the kind of thing you
+should be able to discount.**
+*Check first:* whether you actually want production gated on hauling. If not, brake 2 unsharpened would
+have been cheaper.
+
+**3. WRITING FIVE DOCUMENTS FROM RESEARCH BRIEFS BEFORE I COULD VERIFY THEM.** *I wrote economy,
+events, nation, diplomacy and the rest from agent briefs, then went back and checked the load-bearing
+claims myself.* **Four of my own published claims were wrong and I caught them** — the occupation
+formula, the war dice, a dead tunable I cited as live, and a port count that was measuring a different
+thing. **All four were caught by me rather than by you, which is the system working. It is still four.**
+*Check first:* nothing specific — but **treat any number in these documents that is NOT marked as
+measured this session as a carry-forward**, because that is what it is.
+
+**4. CORRECTING `DESIGN.md`'s OPENING-BOARD TABLE.** *I changed two Area counts and three populations in
+the document that is the source of truth for what the game does.* I re-derived them by resolving every
+claim exactly as the scenario code does and verified both partitions are exact — **and the old table
+described a partition the game would have refused to build**, so it could not have been right. **But it
+is your source of truth and I edited it while you were away.**
+*Check first:* the table at `DESIGN.md` §2.1. Dallas 23, El Paso 17, Texas summing to 106.
+
+**5. THE TONE OF THE FINDINGS.** *I have written "❌ JAMS" across a lot of traced scenarios.* Every one is
+a real contradiction and every one is sourced — but **a document that shouts at you on every third page
+is harder to read than one that does not**, and I chose the loud register deliberately and without
+asking.
+*Check first:* open `war-design.md` and `nation-design.md` and tell me if the emphasis is helping or
+tiring. **It is one pass to tone down and I would rather do it than have you skim them.**
+
+### 4. The counts
+
+- **Documents written: 14.** *Plus the master and three satellites corrected.*
+- **Commits: 20, all pushed. Stage tags: 15, all on the remote.**
+- **Research agents: 5 in this stretch** — nation/events, diplomacy/blocs, force/war, power/ai/opening-board, and trade. *Earlier agents in the run are not separately measured.*
+- **Tokens: about 786,000 from this session's own counter** (14,995,073 at activation to 14,208,477 at
+  the report) **and about 1,363,000 across the five agents whose figures I can see.**
+- **Live code defects found and filed: 10** (`docs/deferred.md` 34–43).
+- **Wrong claims corrected: 9** — *five of them mine from this run.*
+
 ## Entries
 
 ### I chose the brake on the runaway that can destroy a nation for trying to fix a shortage — *stage/economy-design, 15 September 2026*

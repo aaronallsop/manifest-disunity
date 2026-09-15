@@ -5780,3 +5780,84 @@ change on the page, recommended for the alpha, and the one group he never answer
 record connects the two and they are one question.** *`economy-design.md` §7.3, open question 1.*
 
 **Logged in full in `docs/HOGWILD-LOG.md` with the command that reverses it.**
+
+---
+
+### D235 — Four Control Board cards answered while the Hog Wild run was in flight, 15 September 2026
+
+**Answered at 19:58–19:59 UTC, in the middle of the run.** *Recorded here because two of them are
+rulings that change documents this run had already written, and one supersedes a recommendation I
+made.*
+
+| Card | |
+|---|---|
+| **Deseret's recognition exception and Riverside** | ✅ **APPROVED as recommended.** *The exception extends explicitly to whoever holds San Bernardino, which today is Riverside **[BUILT]**. `board-design.md` open question 9 and `diplomacy-design.md` close* |
+| **A mission tree against a board that rolls** | ✅ **APPROVED as recommended.** *Accept the variance, do not balance it away, **and say so out loud in the game** — Deseret's opening tells the player what it got* |
+| **Shared mission trees — a race or a checklist?** | ⚠ **NEITHER. He dissolved the question — see below** |
+| **What the first turn offers a newcomer** | ⚠ **MY RECOMMENDATION IS SUPERSEDED — see D237** |
+
+**Still unanswered, and it is the one I said I was least confident about:** *whether a mission REWARD
+lapses with the ground that earned it.*
+
+---
+
+### D236 — ⚠ For the alpha, a mission tree belongs to the PLAYER alone, 15 September 2026
+
+**Aaron, on the Control Board:**
+
+> *"Lets have it be something for the alpha where **the mission tree only applies to the player if they
+> pick that nation**. The logic is **testing states with the same mission tree but different starting
+> paths**."*
+
+**This does not answer race-versus-checklist. It removes the question.** *If only the player has a
+tree, two nations can never meet the same condition, so there is nothing to race for and nothing to
+tick.*
+
+**And it answers a question filed to Aaron and the architect — `missions-design.md` open question 5,
+"does the AI read its tree?"** *For the alpha: **there is no AI tree to read.*** **So the answer to
+*"is the player racing an opponent that does not know the race is on?"* is: **there is no opponent in
+the race at all**, and that is deliberate.*
+
+**⚠ What it costs, stated:** *the three shared trees were designed **because the nations are rivals for
+one prize** — five claimants to Texas, two candidates to lead a Great Lakes union.* **Under this ruling
+the rivalry is not simulated; it is the player's alone, and the other claimants pursue nothing.** *That
+is a real reduction in what the trees express and it is the right trade for an alpha, because **what he
+is testing is the same tree played from different starting positions** — which needs one tree and
+several starts, not several trees.*
+
+**Scope: ALPHA ONLY, in his own words.** *Whether AI nations get trees afterwards remains open, and
+remains his and the build order's.*
+
+---
+
+### D237 — ⚠ The first turn must TEACH, and my recommendation is superseded, 15 September 2026
+
+**I recommended giving the opening turn something already in motion — a project a predecessor started,
+or a mission rung one action away — on the grounds that it costs no new machinery and makes turn 1 look
+like turn 40.**
+
+**Aaron:**
+
+> *"It needs to **talk them through how to play the game** like how hbmomber guy talks about it in
+> [a YouTube link]."*
+
+**So the requirement is not *give turn 1 some material*. It is *turn 1 explains the game*.** **That is a
+larger thing than I proposed and it is a different KIND of thing** — *my answer was a content seed; his
+is a taught opening.*
+
+**What survives of mine:** *the diagnosis. The first turn genuinely has nothing to triage, and the loop
+is triage.* **What does not survive:** *my conclusion that a running project is enough.* **It is not
+what he asked for.**
+
+> **⚠ AND I CANNOT WATCH THE VIDEO.** *I have no way to see what that explanation actually does — its
+> pacing, whether it teaches by narration or by making you act, how much it front-loads.* **So the
+> direction is ruled and the SHAPE is not, and I am not going to invent the shape from the name of a
+> channel.**
+
+**What is needed from Aaron, and it is one short answer:** *what about that explanation he wants —
+**is it the voice, the order things are introduced in, or the fact that you are doing things while it
+talks?*** **Those are three different designs and the cheapest of them is a tenth of the dearest.**
+
+*Recorded against `turn-design.md` and `presentation-design.md`. **The tutorial he previously had never
+asked for is now, in substance, asked for** — and that is a scope change the build order should see
+rather than discover.*

@@ -609,6 +609,19 @@ central loop has no material.**
 > a player who has never seen this before.*
 
 **What it is NOT.** This is not an argument for restoring the action budget, and it is not a
+**✅ ANSWERED 15 September 2026 — D237, and it is BIGGER than this document proposed.** *Aaron:* **"It
+needs to talk them through how to play the game"**, *naming a particular explainer as the model.*
+
+> **So the requirement is not "give turn 1 some material." It is "turn 1 explains the game."** *The
+> diagnosis below stands; the fix this document leaned toward — something already in motion — **is not
+> what he asked for.*** **In substance this is a tutorial, which he had never previously asked for, and
+> the build order should see that as a scope change rather than discover it.**
+
+**⚠ AND THE SHAPE IS NOT RULED, only the direction.** *The model he named is a video, and I cannot watch
+it.* **One short answer from him settles it: is it the VOICE, the ORDER things are introduced in, or the
+fact that you are DOING things while it talks?** *Those are three different designs and the cheapest is
+a tenth of the dearest.* **No shape is invented here.**
+
 presentation problem to be handed away. **Something has to make turn 1 a turn rather than an empty
 room**, and whether that is an opening project already running, a first card, a mission tree's first
 rung, or something else **is a design decision nobody has made.** *Open question 7.*
