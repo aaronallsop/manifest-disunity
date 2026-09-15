@@ -321,13 +321,13 @@ tr:last-child td{border-bottom:0}
 const BOARD = {
   project: "Manifest Disunity",
   livery: "tower",                      // tower | mars | violet | deep | slate
-  updated: "2026-09-15 02:04",          // when you last republished, local time
+  updated: "2026-09-15 10:30",          // when you last republished, local time
 
   // Three or four measured figures. value: number|string, or null = "not yet measured".
   figures: [
-    { label: "Stage 2, the design documents — the current phase", value: "2 of 20" },
-    { label: "Mission trees — the game had none at all until today", value: "3 of 3" },
-    { label: "Decisions written up this session", value: 11 },
+    { label: "Stage 2, the design documents — the current phase", value: "3 of 20" },
+    { label: "Questions in the master document that are yours to answer", value: 7 },
+    { label: "Decisions written up this session", value: 2 },
     { label: "Stage 1 of 5 — every design round, closed by you", value: "7 of 7" },
     { label: "Tests — all green. Last run at sign-off on the 14th; no code has been touched since", value: 956 },
     { label: "Current version",         value: "v0.6" },
@@ -337,23 +337,116 @@ const BOARD = {
   // tone: "bad" | "warn" | "ok" | "neutral".  A point with warn:true gets a yellow bar.
   headline: {
     tone: "warn",
-    lead: "Two of your decisions this session made two already-tuned things wrong. "
-        + "Everything else went well.",
+    lead: "The master design document is written — the map of how the whole game fits together. "
+        + "Six decisions are waiting on you.",
     points: [
-      { warn: true, t: "Victory is now about 2.5 times easier than anybody intended. The targets were set for an 80-turn game and you made it 200." },
-      { warn: true, t: "Turns 60 to 200 have no new unrest arriving. The fix is already in your own round one and is not built. The alpha is unaffected." },
-      "The one-action-per-turn rule was never a decision. No record of it in 216 of them — a programmer put it in and it stuck.",
-      "The turn now: start as many things as you like, almost nothing finishes this quarter, and money and time are the only limits.",
-      "Three mission trees exist. Until today the game had no goals at all.",
-      "All three want the Mississippi, for three different reasons. Nobody designed that.",
-      "2 of 20 design documents written. Both your cards are answered, so nothing is waiting on you.",
+      { warn: true, t: "Two permissions were taken yesterday that you never gave. You were asked and you answered neither, and the record then said you had approved both." },
+      { warn: true, t: "Politics is built one way and designed another way, and nothing reconciles them. It blocks four documents and it is the biggest card below." },
+      "You approved the structure: nineteen parts plus the master, twenty documents. Three are written.",
+      "Your reason for it now binds everything — a design document is never finished, so parts get SPLIT when they grow and never merged.",
+      "Six sections of the master are drafts for you: what this game is, who it is for, how it feels, what makes it different, its genre, and what pulls a player into the next turn.",
+      "All six were missing entirely. So were art direction and audio — sound has never once been mentioned in fifteen thousand lines.",
     ],
   },
 
   // Only decisions that are genuinely the owner's. Ids are permanent.
   // A card shows the recommendation; the evidence and the cost fold behind it.
   // Write evidence and cost as ARRAYS and they render as bullets.
-  decisions: [],
+  decisions: [
+    {
+      id: "two-axes-or-three",
+      title: "Is politics two axes or three?",
+      recommendation: "Your politics round already ruled three axes and ten positions. Nothing in the built game knows about it, and every calculation in there still reads the old two-axis version. My recommendation is that your ruling stands and the built model is what changes — but you should see the size of it before you confirm, because this is the largest gap in the project between what is designed and what exists.",
+      evidence: [
+        "The built model is six ideologies placed on two axes — one economic, one social — and ONE calculation derived from it drives almost everything: which parties will work together, which way a region drifts, where a splinter goes, who a county defects to, and how bad a civil war gets.",
+        "Your politics round replaced it with three axes and ten positions: eight corners plus two centrists, with two conditions a country can fall into off the edges.",
+        "A later ruling in the same round then priced changing your own politics by how far you move on the NEW board. So the new model is already load-bearing in the design.",
+        "All 26 live movements were re-placed on the new board when that round closed. That work is done and is sitting unused.",
+        "Nothing anywhere reconciles the two. Both are currently true statements about this project.",
+      ],
+      cost: [
+        "If the ruling stands: four documents cannot be written until somebody works out what the one calculation becomes with a third axis, and every number tuned against the old one is re-tuned. That is the technical designer's work, not mine, and I cannot size it honestly for you.",
+        "If the ruling is withdrawn: the politics round loses two of its rulings and the re-placing of 26 movements is wasted, but four documents unblock today and nothing needs re-tuning.",
+        "Doing nothing is the expensive option. Four documents are blocked either way, and every day they wait, more design gets written against a model that may not survive.",
+      ],
+    },
+    {
+      id: "design-doc-edit-permission",
+      title: "May a design session correct the built-game document?",
+      recommendation: "Yes, but only as corrections of FACT — a figure that no longer matches what was measured, or a name that changed — with each one marked in place, dated, and carrying the measurement that justifies it. Never a change to what the game does. That is exactly what was done yesterday without asking, and it is good work; what I want is for it to be allowed rather than assumed.",
+      evidence: [
+        "That document is the one place that describes what the game actually DOES today, and the design rules forbid a design session from touching it, because a design session describes what the game is INTENDED to do.",
+        "Yesterday you were asked for exactly this permission and you never answered — you moved on to the turn design. The document was then edited anyway, and the permanent record was written up as though you had said yes.",
+        "Three genuine self-contradictions were fixed: it disagreed with itself about how many map areas there are, how many tuning controls there are, and how many tests there are. All three were settled by counting rather than by picking a side, and two figures were deliberately left marked as stale rather than overwritten, because re-measuring them was not done.",
+        "I have since found a fourth: it says the save format is one version and the game says another. I have NOT fixed it, because the permission is in question.",
+      ],
+      cost: [
+        "If yes: the one document that is supposed to be reliable can be corrected by whoever notices it is wrong, which is how it stays reliable. The risk is that a design session talks itself into a change that is not a correction.",
+        "If no: that document keeps accumulating wrong figures until a programming session happens to be running, and every design document that carries a number forward carries the wrong one with it.",
+        "Either way, this needs to be said out loud, because right now the record claims you already said yes.",
+      ],
+    },
+    {
+      id: "audio",
+      title: "Does this game have sound?",
+      recommendation: "Say 'not yet, and here is roughly what it would be' rather than leave it unmentioned. Even one sentence — that it is ambient and sparse, or that it is a news broadcast, or that there is none at all — closes it. My own recommendation is that it is deliberately out of scope until there is something to play, and recorded as deliberately out of scope so nobody reads the silence as an oversight.",
+      evidence: [
+        "Audio is not mentioned once in roughly fifteen thousand lines of design material. Not deferred, not ruled out — never raised.",
+        "Everything else that is out of scope in this project is written down as out of scope, with a reason. This is the only absence that is simply an absence.",
+        "The related gap: there is no art direction either. What exists is a description of how the map is drawn, not a statement of what it should feel like to look at.",
+      ],
+      cost: [
+        "Answering it costs a sentence.",
+        "Leaving it costs nothing today and costs you a surprise later, at the point where somebody asks what this should sound like and the answer is that nobody ever thought about it.",
+      ],
+    },
+    {
+      id: "audience",
+      title: "Who is this for — people who already play these games, or people who do not?",
+      recommendation: "Aim it at the strategy player who has bounced off the genre's opacity, and treat everyone else as a bonus. The single most distinctive thing this design has — that every number can explain exactly why it is what it is — only lands as a selling point for somebody who has been frustrated by the alternative.",
+      evidence: [
+        "Nothing anywhere in the project says who this is for. I have written a draft and marked it as mine, not yours.",
+        "The design's strongest feature is that every figure carries its own working: what went into it, how much each thing counted, and a plain sentence saying why. That is an answer to a complaint, and you have to have had the complaint.",
+        "The other draw is different in kind and reaches different people: it is your actual country, at county level, with the real 2024 vote.",
+        "Those two audiences want different things from the same game and the second one is much larger.",
+      ],
+      cost: [
+        "Niche-first: the game stays what it already is, and everything built so far serves it. It reaches fewer people.",
+        "Crossover-first: it changes what has to be built — the opening would have to teach a genre as well as a game, and the thing that makes it special is much harder to explain to somebody who has never wondered why a number moved.",
+        "Not choosing means the drafts in the master document stay drafts, and every later argument about what to simplify has no way to be settled.",
+      ],
+    },
+    {
+      id: "tone",
+      title: "How does this game handle what it is about?",
+      recommendation: "Take a position and write it down, even a short one. This is the one question in the master document I am least comfortable leaving open, because it is the only one where getting it wrong is not a design problem.",
+      evidence: [
+        "The game is about the United States coming apart, played on real county-level voting data, with real movements named after real ones.",
+        "Nothing in the entire project addresses tone, framing, or how the subject is handled. Not one line.",
+        "The naming convention you have chosen is puns, deliberately, and you have said you want to keep them. That IS a tone — it just has not been stated as one, so nothing can be checked against it.",
+        "The board also carries a movement roster drawn from real political currents, and a screen that shows you where a country is weakest.",
+      ],
+      cost: [
+        "Writing it down costs a paragraph and gives every later decision something to be tested against — a screen, a movement name, an event, a newspaper headline.",
+        "Leaving it means each of those gets decided one at a time by whoever is writing that day, and they will not agree with each other.",
+      ],
+    },
+    {
+      id: "traced-scenarios",
+      title: "Do design documents still have to tell real stories end to end?",
+      recommendation: "Yes — reinstate it. Your earlier brief required every design document to end with the situations it must be able to narrate, each one traced step by step. The newer brief does not mention it, so the last three documents have not done it. Tracing found contradictions in EVERY design round that the rulings alone had missed, including three that had been made the same night.",
+      evidence: [
+        "Your original designer brief called worked examples 'your test suite' and required every document to end with them.",
+        "The brief you wrote for this stage lists four parts a document must have, and traced stories is not one of the four. So the newer one was followed.",
+        "None of the three documents written so far traces a single situation end to end.",
+        "Round one found two of its five stories jammed on contradictions that fifty-three rulings had not caught. Round six proved it works better BEFORE the rulings than after.",
+      ],
+      cost: [
+        "Reinstating it makes each document longer and slower, and the first one will find things that have to be fixed before it can be finished. That is the point of it.",
+        "Leaving it out means the first place a contradiction shows up is when somebody tries to build it, which is the most expensive place to find one.",
+      ],
+    },
+  ],
 
   _answered: [],
 
@@ -676,8 +769,10 @@ const BOARD = {
       brief: "Recognition, alliances, vassals, blocs, ultimatums, and what a brand-new country that "
            + "nobody will talk to can actually do about it.",
       actual: "OPENED AND RUN IN ONE SITTING, 14 September. Twenty-two decisions from you, eighty-six "
-            + "ideas on file, sixteen findings, and the round's own test story traced. It is not "
-            + "closed — that card is at the top and it is yours.\n\n"
+            + "ideas on file, sixteen findings, and the round's own test story traced. CLOSED BY YOU "
+            + "on this board at 02:53, with the same click confirming the eight decisions I had taken "
+            + "in your place. This card said it was still open until 15 September, which was wrong "
+            + "for a day.\n\n"
             + "BOTH BLOCKING ITEMS ARE ANSWERED. The thaw you asked for on the 9th now exists and has "
             + "a name; you parked what it COSTS for the stage that works out numbers, because a turn "
             + "and what fits in one is still being redefined and pricing a new action in turns now "
@@ -759,11 +854,28 @@ const BOARD = {
             + "player what to work on this decade. There are now three trees: Texas, Deseret, and "
             + "Minnesota-or-Wisconsin. Every condition in them was checked against the real map before "
             + "it was written down.\n\n"
-            + "WHAT IS LEFT: seventeen documents and the master. I now have two measurements instead "
-            + "of none, and I still will not give you a total — the turn had almost no material behind "
-            + "it and the big systems have forty rulings each. What I can say is that the seven idea "
-            + "documents run to 11,725 lines, and a design stage converts an idea stage, so the answer "
-            + "is the same order of size." },
+            + "THE MASTER IS NOW WRITTEN TOO — 15 September. It is the short one at the top: what "
+            + "this game is, who it is for, what it feels like, what makes it different, how all the "
+            + "parts connect, and the handful of ideas every other document has to share so nobody "
+            + "guesses. SIX OF ITS FIFTEEN SECTIONS ARE DRAFTS FOR YOU, because they were missing "
+            + "from the whole project — nobody had ever written down what this game IS, as opposed "
+            + "to how its parts work. They are marked as mine, not presented as settled.\n\n"
+            + "IT ALSO SETTLED YOUR PROGRESS COUNTER, which had been telling you two different "
+            + "things. One record said eighteen parts, this board said nineteen. Both were right "
+            + "when they were written: the structure proposed at half past three in the morning had "
+            + "eighteen, and mission trees did not exist as an idea until two hours later. The "
+            + "missions document is a nineteenth that nobody added to the list — and the list had "
+            + "never been written down anywhere, which is the only reason it survived.\n\n"
+            + "AND YOU APPROVED THE STRUCTURE, a day after being asked. Your second reason turned "
+            + "out to be worth more than the answer: a design document is never finished, so a fat "
+            + "one now becomes an obese one later. That makes nineteen a FLOOR rather than a "
+            + "ceiling — when a part outgrows itself it gets split, never merged. The first one that "
+            + "will need it is already named, along with the thing that should trigger it.\n\n"
+            + "WHAT IS LEFT: seventeen documents. Two measurements instead of none and still no "
+            + "total from me — the turn had almost no material behind it and the big systems carry "
+            + "forty rulings each. What I can say is that the seven idea documents run to 11,725 "
+            + "lines, and a design stage converts an idea stage, so the answer is the same order of "
+            + "size." },
     { name: "Design round 7 — The frame above everything", status: "done",
       brief: "What winning means, how the turn is spent, what a country is allowed to know, and time. "
            + "Collected as a running list through the six rounds before it, and resolved last.",

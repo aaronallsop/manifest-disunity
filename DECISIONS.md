@@ -5443,3 +5443,53 @@ practice that found contradictions in every closed ideation round that the rulin
 **And `DESIGNER-BRIEF.md` is itself stale** — it names ideation as the live stage, round 4 as the
 live round, and forbids editing `DESIGN.md`. **It is the file a new design session is told to paste**,
 so a session started from it begins by contradicting the current phase. *`GDD.md` gap 10.*
+
+---
+
+### D230 — The split is approved at nineteen, and the reason makes it a floor rather than a ceiling, 15 September 2026
+
+**Aaron approved the nineteen-satellite split**, first proposed at 03:35 on 15 September and left
+unanswered for a day while three documents were written against it. **Two reasons, in his words, and
+the second is the load-bearing one:**
+
+> **"Smaller GDD sub docs make it easier to work with"** — the convenience argument.
+>
+> **"In my research one thing I saw being said over and over is that a GDD is a living document and
+> it is never 'finished' so I don't want fat ones now that become mega obese later"** — the
+> structural argument.
+
+**What the second reason changes, and it is more than a ratification.** The question put to him was
+framed as a trade — nineteen thin documents against, say, ten fat ones, with the merges named. **He
+did not pick a point on that line; he rejected the line.** A document is not sized against how long
+it is today but against **what it will look like after a playtest files findings into it**, and on
+that test every merge on the table was a document built to grow obese.
+
+> **Ruled: the split is a FLOOR, not a ceiling. When a satellite outgrows its seam, it splits again.**
+
+**This is why the satellite template already has an Open questions section**, and the reason is now
+explicit rather than incidental: that section exists *"so that playtest findings have a home to be
+filed into directly later, without a second pass through every document."* **The template was already
+built for a living document; nobody had said so.**
+
+### The first case, named now so it is not discovered late
+
+**`missions-design.md` is 836 lines — the largest document in the folder — and holds two different
+kinds of content**: the mission system (§§1–4) and three authored trees (§§5–7). **Its own open
+question 4 asks whether the other fifty-four nations get trees.** If that is ever yes, one document
+holds a system plus up to sixty-one instances of it.
+
+**Recommended and deliberately NOT done: split at that seam when the fourth tree arrives** — the
+system stays, the trees move out. **Not now.** Three trees is not a problem, and splitting a working
+document costs a round of cross-references for no present gain. **The trigger is the fourth tree**,
+and it is written into `GDD.md` §13.1 so the session that adds one finds it.
+
+### What this closes and what it leaves
+
+**Closes:** `GDD.md` open question 1. **The structure is now ratified**, which unblocks every
+remaining satellite.
+
+**Leaves open, and it was asked in the same breath a day ago and is still unanswered:** whether a
+design session may edit `DESIGN.md`. *`GDD.md` open question 7.* **That question is not made easier
+by this one being settled** — three documents were written under an unratified structure and the
+structure turned out to be fine, which is a good outcome from a bad process and should not be read as
+evidence the process was fine.

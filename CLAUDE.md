@@ -172,9 +172,13 @@ was not among them**, because mission trees did not exist as an idea until later
 answer is a master plus NINETEEN satellites — twenty documents.** Two satellites plus the master are
 written; **seventeen to go.**
 
-**⚠ And the split is still only PROPOSED.** It was put to Aaron at 03:35 on 15 September and he
-redirected to turn design before answering, so three documents now exist against a structure nobody
-approved. **Do not treat it as ratified.**
+**✅ AND THE SPLIT IS APPROVED — D230, 15 September 2026.** Aaron ratified nineteen, and **his reason
+binds every document after it**: *a GDD is a living document and is never finished, so a fat document
+now becomes an obese one later.* **So the split is a FLOOR, not a ceiling — when a satellite outgrows
+its seam it splits again**, and a document is sized against what it will look like after a playtest
+files findings into it, not against how long it is today. `GDD.md` §13.1 names the first document that
+will have to split (`missions-design.md`, at the system/trees seam) and the trigger for doing it (the
+fourth tree). **Do not do it early and do not merge anything.**
 
 **A design session may now edit `DESIGN.md`** — D217 lifted the designer brief's bar for this work.
 The precedence rule is unchanged: `DESIGN.md` still describes what the game *does*.

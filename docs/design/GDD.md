@@ -6,6 +6,11 @@ if a section here starts restating one, it is too long and should be cut back to
 
 **Depends on:** nothing. Every satellite depends on this.
 
+**⚠ This document is never finished, and that is a ruling rather than an excuse (D230).** A GDD is a
+living document; it is expected to grow, and **when a part of it outgrows its seam the answer is to
+split it, never to let it thicken.** Findings from play are filed into the **Open questions** section
+of whichever satellite owns them, which is what that section is for.
+
 **Downstream reader: a Technical Designer**, who takes one system at a time and writes formulas,
 pseudocode, inputs and outputs, and edge cases. Every structural choice in this document and in the
 split below is made to serve that pass.
@@ -423,9 +428,16 @@ remnant's story can be seized**, and you unite the continent as the United State
 
 ## 13. Game systems — the map, and the index into the satellites
 
-**⚠ THIS SPLIT IS PROPOSED AND HAS NOT BEEN APPROVED.** It was put to Aaron on 15 September at 03:35
-and he redirected to turn design before answering. **Two satellites have since been written against
-it.** *Open question 1, and it is the first thing on the list.*
+**✅ APPROVED BY AARON, 15 September 2026 — D230.** First proposed at 03:35 that morning and left
+unanswered for a day; ratified with two reasons, and **the second one binds everything below**:
+
+> **A GDD is a living document and is never finished, so a fat document now becomes an obese one
+> later.** *Smaller parts are also simply easier to work with — but that is the convenience argument,
+> and the growth argument is the structural one.*
+
+**So the split is a floor, not a ceiling.** When a satellite outgrows its seam it is **split again**,
+and the question asked of a document is not *is this too long to read* but *what will this look like
+after a playtest files findings into it.* §13.1 carries the first case.
 
 **⚠ The record carried this count twice, differently, and the reason is now established.** D217 says
 *eighteen satellites*; the Control Board says *nineteen* and prints the denominator as **20**.
@@ -494,13 +506,34 @@ written down. `missions-design.md` is marked as the addition.*
    plausibility: **does this screen become a targeting computer?** That is answerable about a screen
    by looking at it. The test and the screens belong on the same page.
 
-**The reservation, stated when the split was proposed and still true — and now one document worse:
-nineteen is a lot of documents.** The case for it is that the Technical Designer takes one system at
+**The reservation stated when the split was proposed — that nineteen is a lot of documents — is
+answered and dismissed by D230, and dismissed in the direction of MORE documents rather than fewer.**
+It is kept here because the merges it named are the ones NOT to make. The case for the split is that
+the Technical Designer takes one system at
 a time and should
-never have to read a system they are not writing. **If fewer, fatter documents are preferred, the
-merges to make first are `identity` into `population`, `force` into `war`, and `blocs` into
-`diplomacy`** — in that order, each costing the reader something described above. *This is evidence,
-not a recommendation to cut; the call is Aaron's.*
+never have to read a system they are not writing. **The merges that were on the table and are now off — `identity` into `population`, `force` into
+`war`, `blocs` into `diplomacy`** — each cost the reader something described above, and under D230
+each would also be a document built to grow obese.
+
+### 13.1 The first document that will have to split again, and it is already the largest
+
+**`missions-design.md`, at 836 lines, is the biggest thing in this folder and holds two different
+kinds of content**: the mission *system* — what a mission is, the three branches, the four elements,
+the pivot, what a reward may be, the name register — and then **three authored trees**, which are
+content rather than system.
+
+**Its own open question 4 is whether the other fifty-four nations get trees.** If the answer is ever
+yes, this document holds a system plus up to sixty-one trees. **Under D230 that is the definition of
+the thing to avoid**, and the seam is already visible: §§1–4 are the system and §§5–7 are three
+instances of it.
+
+> **Recommendation, for when it is needed and not before: split at that seam —
+> `missions-design.md` keeps the system, and the trees move to their own document or one per tree.**
+> **Do not do it now.** Three trees is not a problem, and splitting a document that is working costs
+> a round of cross-references for no present gain. **The trigger is the fourth tree.**
+
+*Recorded here rather than acted on, because `missions-design.md` is written and correct and this is
+a prediction about it rather than a defect in it.*
 
 ---
 
@@ -701,7 +734,7 @@ than of `power.floor`: **a nation at peace is not eight per cent exhausted.**
 
 | | | Blocks |
 |---|---|---|
-| **1** | **Is the split approved, and is it nineteen satellites?** Proposed 15 September 03:35 as **eighteen**, never answered — he redirected to turn design. **Two satellites have been written against it since**, one of which (`missions-design.md`) was never in the proposal, which is why the record carries two different counts. §13 has the full list and the resolution. The alternative on the table is fewer, fatter documents; §13 names the first three merges and their costs | **Everything after this document** |
+| ~~**1**~~ | ~~**Is the split approved, and is it nineteen satellites?**~~ ✅ **ANSWERED 15 September 2026, D230 — yes, nineteen, and the reasoning pushes toward more documents rather than fewer.** *A GDD is a living document and is never finished, so a fat document now becomes an obese one later.* **The split is a floor, not a ceiling** (§13), and §13.1 names the first document that will have to split again and the trigger for doing it | — |
 | **2** | **Audio: is there any?** Absent entirely from the source material — never raised, not deferred. A scope and budget question before it is a design one | `presentation-design.md` |
 | **3** | **Three of the eight staggered clocks are invisible or half-visible**, and two of them drive other nations' behaviour toward the player. Fog worth keeping, or an interface gap? | `presentation-design.md` |
 | **4** | **Target audience, and the commercial question under it** — a niche title for people who already like this genre, or a crossover built on the subject matter? §3 is a draft | The pitch layer |
