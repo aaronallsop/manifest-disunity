@@ -321,13 +321,13 @@ tr:last-child td{border-bottom:0}
 const BOARD = {
   project: "Manifest Disunity",
   livery: "tower",                      // tower | mars | violet | deep | slate
-  updated: "2026-09-15 11:20",          // when you last republished, local time
+  updated: "2026-09-15 12:10",          // when you last republished, local time
 
   // Three or four measured figures. value: number|string, or null = "not yet measured".
   figures: [
     { label: "Stage 2, the design documents — the current phase", value: "4 of 20" },
-    { label: "Questions in the master document still yours to answer", value: 5 },
-    { label: "Decisions written up this session", value: 3 },
+    { label: "Situations traced through the four documents written so far", value: 19 },
+    { label: "Decisions written up this session", value: 4 },
     { label: "Stage 1 of 5 — every design round, closed by you", value: "7 of 7" },
     { label: "Tests — all green. Last run at sign-off on the 14th; no code has been touched since", value: 956 },
     { label: "Current version",         value: "v0.6" },
@@ -337,16 +337,15 @@ const BOARD = {
   // tone: "bad" | "warn" | "ok" | "neutral".  A point with warn:true gets a yellow bar.
   headline: {
     tone: "warn",
-    lead: "The master design document is written, and your three-axis politics is now the design "
-        + "rather than a contradiction. Five decisions are still waiting on you.",
+    lead: "Everything you answered is in, and the four documents written so far have each been "
+        + "walked through real situations step by step. That found five new things, all yours.",
     points: [
-      { warn: true, t: "Two permissions were taken yesterday that you never gave. You answered neither, and the record then said you had approved both." },
-      "Three axes and ten positions: the game's politics is what changes. The biggest gap in the project, open since 9 September.",
-      "One piece of that is already done and unused for four days — all 26 movements were placed on the new board when your politics round closed.",
-      { warn: true, t: "And one job may have vanished. Your two centrists ARE Republicans and Democrats, so the election data may land straight on them. Flagged, not assumed." },
-      "Structure approved: nineteen parts plus the master. Four written — the board and geography one landed today.",
-      "Six sections of the master are drafts for you, starting with what this game IS and who it is for. All six were missing entirely.",
-      { warn: true, t: "And I owed you a correction: I told you on the 5th there were 986 ports. There are 136, and 59 of those cannot export anywhere. It is beside the original in the log below." },
+      "Walking the documents through real situations is the practice you reinstated, and it paid on the first try.",
+      { warn: true, t: "Deseret's only route to any market runs through Riverside - a small landlocked neighbour nobody had ever mentioned. Your recognition exception may not cover it." },
+      { warn: true, t: "The first turn of the game has nothing in it. The loop we built is triage, and on turn 1 there is nothing to triage." },
+      { warn: true, t: "You ruled missions permanent. That did not rule the REWARDS permanent, and the two are different questions." },
+      "Your three-axis politics is now the design rather than a contradiction, and audio is out of scope rather than an oversight.",
+      "Four of twenty documents written. Sixteen to go, and fifteen of those I can write without you.",
     ],
   },
 
@@ -355,82 +354,88 @@ const BOARD = {
   // Write evidence and cost as ARRAYS and they render as bullets.
   decisions: [
     {
-      id: "design-doc-edit-permission",
-      title: "May a design session correct the built-game document?",
-      recommendation: "Yes, but only as corrections of FACT — a figure that no longer matches what was measured, or a name that changed — with each one marked in place, dated, and carrying the measurement that justifies it. Never a change to what the game does. That is exactly what was done yesterday without asking, and it is good work; what I want is for it to be allowed rather than assumed.",
+      id: "mission-reward-permanence",
+      title: "You finish a mission, then lose the ground that earned it. Does the bonus go?",
+      recommendation: "The bonus should lapse with the ground, and the completed mission should stay green. My reasoning is that you ruled missions permanent for MOMENTUM - so a player can plan against a tree that does not flicker - and momentum is about the tree, not about the arithmetic. But this is a fork you should look at, because the other side has a real argument and I am not confident.",
       evidence: [
-        "That document is the one place that describes what the game actually DOES today, and the design rules forbid a design session from touching it, because a design session describes what the game is INTENDED to do.",
-        "Yesterday you were asked for exactly this permission and you never answered — you moved on to the turn design. The document was then edited anyway, and the permanent record was written up as though you had said yes.",
-        "Three genuine self-contradictions were fixed: it disagreed with itself about how many map areas there are, how many tuning controls there are, and how many tests there are. All three were settled by counting rather than by picking a side, and two figures were deliberately left marked as stale rather than overwritten, because re-measuring them was not done.",
-        "I have since found a fourth: it says the save format is one version and the game says another. I have NOT fixed it, because the permission is in question.",
+        "You ruled that a completed mission stays completed, even if the ground changes hands. That was for momentum: a tree whose rungs switch on and off cannot be planned against.",
+        "But that ruled the MISSION permanent. It did not rule the REWARD permanent, and tracing found they are different questions.",
+        "A reward is a named line on your country's scorecard, like a leader's trait. Some of them will be tied to holding a specific place - the Houston Ship Channel, a set of Great Lakes ports.",
+        "So a bonus that says 'because you hold the Ship Channel' has to decide what it means when you no longer hold it.",
       ],
       cost: [
-        "If yes: the one document that is supposed to be reliable can be corrected by whoever notices it is wrong, which is how it stays reliable. The risk is that a design session talks itself into a change that is not a correction.",
-        "If no: that document keeps accumulating wrong figures until a programming session happens to be running, and every design document that carries a number forward carries the wrong one with it.",
-        "Either way, this needs to be said out loud, because right now the record claims you already said yes.",
+        "If the bonus survives: a country collects permanent advantages from ground it lost. That is exactly the runaway-leader problem the rest of the game spends its time preventing - and a player who works this out will take a city, bank the bonus, and hand the city back.",
+        "If the bonus lapses: the tree stops flickering and the bonuses still do, so your momentum argument is only half delivered. A player watching a bonus wink out has the experience you ruled against.",
+        "There is a third way I did not recommend because it is more machinery: bonuses that are about a PLACE lapse, bonuses that are about an ACHIEVEMENT do not. It is probably right and it is definitely more to build.",
       ],
     },
     {
-      id: "audio",
-      title: "Does this game have sound?",
-      recommendation: "Say 'not yet, and here is roughly what it would be' rather than leave it unmentioned. Even one sentence — that it is ambient and sparse, or that it is a news broadcast, or that there is none at all — closes it. My own recommendation is that it is deliberately out of scope until there is something to play, and recorded as deliberately out of scope so nobody reads the silence as an oversight.",
+      id: "shared-tree-race-or-checklist",
+      title: "Two countries share a mission tree and both hit the same target. Do both get it?",
+      recommendation: "Make it a race - first only. You designed shared trees precisely because the countries are rivals for one prize, and a race is what makes one tree into two games. A checklist would let Minnesota and Wisconsin both tick the same box while pretending to compete.",
       evidence: [
-        "Audio is not mentioned once in roughly fifteen thousand lines of design material. Not deferred, not ruled out — never raised.",
-        "Everything else that is out of scope in this project is written down as out of scope, with a reason. This is the only absence that is simply an absence.",
-        "The related gap: there is no art direction either. What exists is a description of how the map is drawn, not a statement of what it should feel like to look at.",
+        "The five Texan successors share one tree because they are five claimants to one prize. Minnesota and Wisconsin share one because they are two candidates to lead the same union.",
+        "Your own words for why that works: the tree is the same and the situation is not, which is what makes one tree two games.",
+        "The game checks mission conditions over EVERY country every turn, not just yours. So two rivals meeting the same condition is the normal case, not a freak collision.",
+        "It is especially likely for the Great Lakes pair, because a condition can be met through a federation they both belong to - so they could satisfy it on the same turn by the same act.",
       ],
       cost: [
-        "Answering it costs a sentence.",
-        "Leaving it costs nothing today and costs you a surprise later, at the point where somebody asks what this should sound like and the answer is that nobody ever thought about it.",
+        "A race: the loser watches a rung they were working toward go permanently dark on somebody else's country. That is sharp and it is the point - but it means a tree can become unfinishable through no mistake of yours.",
+        "A checklist: nobody is ever locked out, and the rivalry you designed the shared tree to express quietly stops existing.",
+        "Either way something has to be said about what the loser sees, and nothing currently specifies whether you can even see a rival's tree.",
       ],
     },
     {
-      id: "audience",
-      title: "Who is this for — people who already play these games, or people who do not?",
-      recommendation: "Aim it at the strategy player who has bounced off the genre's opacity, and treat everyone else as a bonus. The single most distinctive thing this design has — that every number can explain exactly why it is what it is — only lands as a selling point for somebody who has been frustrated by the alternative.",
+      id: "turn-one",
+      title: "What does the very first turn offer somebody who has never played this?",
+      recommendation: "Give the opening turn something already in motion - a project your predecessor started, or the first rung of a mission tree sitting one action away. My reasoning is that it costs no new machinery and it makes turn 1 look like turn 40, which is the turn the whole design is written for.",
       evidence: [
-        "Nothing anywhere in the project says who this is for. I have written a draft and marked it as mine, not yours.",
-        "The design's strongest feature is that every figure carries its own working: what went into it, how much each thing counted, and a plain sentence saying why. That is an answer to a complaint, and you have to have had the complaint.",
-        "The other draw is different in kind and reaches different people: it is your actual country, at county level, with the real 2024 vote.",
-        "Those two audiences want different things from the same game and the second one is much larger.",
+        "The old one-action rule was bad, but it told a newcomer two things free: what a turn was for, and when they had finished one. Removing it removed both.",
+        "The loop you and I built is triage - things arrive, you rank them, you deal with what matters. On turn 1 there is nothing to triage. No project running, nobody has answered an offer, no movement has demanded anything.",
+        "So the first turn is the one turn where the game's central experience has no material in it.",
+        "This is not an argument for putting the action budget back, and it is not something the screens can fix on their own.",
       ],
       cost: [
-        "Niche-first: the game stays what it already is, and everything built so far serves it. It reaches fewer people.",
-        "Crossover-first: it changes what has to be built — the opening would have to teach a genre as well as a game, and the thing that makes it special is much harder to explain to somebody who has never wondered why a number moved.",
-        "Not choosing means the drafts in the master document stay drafts, and every later argument about what to simplify has no way to be settled.",
+        "Doing nothing: a new player opens the game, reads a newspaper, and is handed a map with no indication of what a turn is for. That is the moment most people decide whether to play a second one.",
+        "A running project: costs nothing to build, and makes the first thing a player sees a bar filling - which is the payoff loop working on turn 1 instead of turn 5.",
+        "The alternative I rejected: a tutorial. You have never asked for one, it is a lot of work, and the game you are modelling this on does not have a good one either.",
       ],
     },
     {
-      id: "tone",
-      title: "How does this game handle what it is about?",
-      recommendation: "Take a position and write it down, even a short one. This is the one question in the master document I am least comfortable leaving open, because it is the only one where getting it wrong is not a design problem.",
+      id: "deseret-recognition-riverside",
+      title: "Your Deseret exception may not cover the country it needs to",
+      recommendation: "Extend it explicitly to whoever holds San Bernardino - which today is Riverside. You made the exception so a country that needs a trade corridor could actually be granted one; tracing the map shows the only country that can grant Deseret a useful one is the one nobody has mentioned.",
       evidence: [
-        "The game is about the United States coming apart, played on real county-level voting data, with real movements named after real ones.",
-        "Nothing in the entire project addresses tone, framing, or how the subject is handled. Not one line.",
-        "The naming convention you have chosen is puns, deliberately, and you have said you want to keep them. That IS a tone — it just has not been stated as one, so nothing can be checked against it.",
-        "The board also carries a movement roster drawn from real political currents, and a screen that shows you where a country is weakest.",
+        "You ruled Deseret opens recognised by its neighbours and not by Utah, so a pariah needing passage could be given it. That was checked against the numbers and never against the map.",
+        "Deseret is the only completely sealed country on the board: no port, no coast, no border crossing, no navigable river, in any of its fifty-seven areas.",
+        "It touches California through exactly ONE area - Mohave County - looking across at San Bernardino.",
+        "San Bernardino belongs to Riverside, not to the San Diego country as its own description implies. Riverside is landlocked but holds Imperial County, which is a Mexican border crossing.",
+        "So Deseret's shortest route to any market on earth is through Riverside, and the ocean is one step further.",
       ],
       cost: [
-        "Writing it down costs a paragraph and gives every later decision something to be tested against — a screen, a movement name, an event, a newspaper headline.",
-        "Leaving it means each of those gets decided one at a time by whoever is writing that day, and they will not agree with each other.",
+        "If Riverside is covered: the exception does what you wrote it to do, and Deseret has a hard but real path out.",
+        "If it is not: Deseret is recognised by a ring of landlocked neighbours who cannot help it, which is the dead end your ruling was written to remove - just one country further out than anyone looked.",
+        "Worth knowing either way: in about one game in five Mohave County does not join Deseret at all, and that route does not exist. A good roll and a bad roll are different games.",
       ],
     },
     {
-      id: "traced-scenarios",
-      title: "Do design documents still have to tell real stories end to end?",
-      recommendation: "Yes — reinstate it. Your earlier brief required every design document to end with the situations it must be able to narrate, each one traced step by step. The newer brief does not mention it, so the last three documents have not done it. Tracing found contradictions in EVERY design round that the rulings alone had missed, including three that had been made the same night.",
+      id: "tree-vs-random-board",
+      title: "Should a mission tree be balanced against a board that changes with the roll?",
+      recommendation: "Accept the variance and do not balance against it - but say so out loud in the game. A tree that is harder on a bad roll is a story; a tree the player cannot tell is harder is a grievance. My recommendation is that Deseret's opening tells the player what it got.",
       evidence: [
-        "Your original designer brief called worked examples 'your test suite' and required every document to end with them.",
-        "The brief you wrote for this stage lists four parts a document must have, and traced stories is not one of the four. So the newer one was followed.",
-        "None of the three documents written so far traces a single situation end to end.",
-        "Round one found two of its five stories jammed on contradictions that fifty-three rulings had not caught. Round six proved it works better BEFORE the rulings than after.",
+        "Deseret's size already rolls: between nineteen and forty-five areas depending on the seed, mean thirty-one.",
+        "Tracing found the roll also decides its TRADE, not just its size - the single area that touches California only joins about four times in five.",
+        "And Deseret's tree contains the largest permission any tree grants, which is what makes its hardest mission affordable.",
+        "So the same tree is being played on materially different boards without the player being told which one they got.",
       ],
       cost: [
-        "Reinstating it makes each document longer and slower, and the first one will find things that have to be fixed before it can be finished. That is the point of it.",
-        "Leaving it out means the first place a contradiction shows up is when somebody tries to build it, which is the most expensive place to find one.",
+        "Balancing it away: you would have to pin the roll or compensate for it, and the half-born opening is one of the best things on the board precisely because it varies.",
+        "Accepting it silently: a player who got the bad roll experiences the tree as badly tuned rather than as a hard start.",
+        "Accepting it loudly: costs a sentence on the opening screen and turns the variance into part of the story, which is what it already is for the size.",
       ],
     },
   ],
+
 
   _answered: [],
 
@@ -868,6 +873,13 @@ const BOARD = {
             + "and Mexico is written down in two separate files that happen to agree. And a wrecked "
             + "rail hub still lasts one turn, which makes it a raid rather than a demolition — "
             + "nobody chose that, and it is now a question with your name on it.\n\n"
+            + "AND ALL FOUR HAVE NOW BEEN WALKED THROUGH REAL SITUATIONS, step by step, which is "
+            + "the practice you reinstated today. Nineteen situations. It found eight things the "
+            + "rulings alone had not, and five of those are cards above waiting for you. The one "
+            + "that justifies the whole practice: Deseret is the only completely sealed country on "
+            + "the board - no port, no coast, no border crossing, no river - and its single route "
+            + "to any market on earth runs through one area of Arizona into a small landlocked "
+            + "neighbour called Riverside that nobody in this project had ever mentioned.\n\n"
             + "WHAT IS LEFT: sixteen documents. Two measurements instead of none and still no "
             + "total from me — the turn had almost no material behind it and the big systems carry "
             + "forty rulings each. What I can say is that the seven idea documents run to 11,725 "
