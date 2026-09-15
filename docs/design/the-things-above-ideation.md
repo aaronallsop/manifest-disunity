@@ -435,6 +435,111 @@ express, hand over everything five rounds have deposited, and stop there.**
 **What this round DOES still own:** what winning means, what a nation may know, and time. *Those are
 design questions and they continue below.*
 
+### Ruling 2 — Playing the remnant is a different game. Same victory, opposite stories
+
+**RULED 14 September 2026.** *"Playing as Washington should be a different game."* — answering in-tray
+item 2, and it is **the first time this design treats one nation's victory differently from
+another's.**
+
+**For the federal remnant, reunification means RESTORING what it already claims to be.** For everyone
+else it means **REPLACING it** — building the country around yourself until the thing in Washington
+still calling itself the United States is irrelevant.
+
+**Rejected, and the near miss is worth recording.** *The remnant's signature as the last condition* —
+you hold the seats, the people and the economy and have still not reunified until Washington
+acknowledges you. **That would have made the weakest nation on the board the gatekeeper of the biggest
+prize, which is exactly the shape round 2 gave Austin in Texas.** *Aaron took the version where the
+difference is whose story it is rather than whose permission it needs.*
+
+### What it rests on, verified rather than assumed
+
+**D.C. is a nation on the board: 702,250 people and $184B of output** — by population the smallest
+thing on the map that is not a city-state. *So "the remnant" is a real, playable, very small nation
+and the asymmetry ruling 2 asks for has somewhere to live.*
+
+**And the machinery is friendlier to this than expected.** *Seats of government* counts **the state
+capitals**, and it counts them as `held`, `own` and **`aligned`** — **seats held by nations that share
+your politics count toward you.** The engine's own note: *"a beloved hegemon reunifies through nations
+it never invaded."* **So reunification is already partly a story about persuasion**, which is exactly
+the register the remnant's version needs.
+
+### ⚠ Two things in the story that are NOT built, and ruling 2 depends on both
+
+**Programmer rule 17, applied deliberately this time rather than learned again.**
+
+1. **The remnant as the story describes it does not exist.** Secession §8 has it as Washington **plus
+   its martial-law ring, plus the rest of Virginia, plus the Baltimore region.** On the board there is
+   **D.C. alone**; Virginia and Maryland are ordinary separate states. *The remnant is one small
+   nation, not a rump federal state.*
+2. **"Recognises nobody" is not built.** Recognition returns true unconditionally for every nation the
+   game opened with, and D.C. is one of them — **so today the remnant recognises everybody.** *This is
+   the same class of gap as conquest ruling 19's unbuilt Texas, and it is **round 5's in-tray item
+   4**, which the review recovered from having been dropped and which ruling 8 deferred past the
+   alpha. **Ruling 2 now depends on it**, so the two travel together.*
+
+**Neither is this round's to build**, and neither changes the ruling. *What changes is that the
+ruling is a design for a board the game does not yet have — said plainly, in the document, rather
+than discovered by somebody later.*
+
+### Ruling 3 — What you may know depends on the relationship. Knowing things becomes a reason to make friends
+
+**RULED 14 September 2026.** *"What you see depends on the relationship."* — answering in-tray items
+**5** and **11**, round 5's **T26**, and **C130 with politics ruling 17**, which Aaron deferred on
+11 September wanting *"one answer between them."* **This is that answer.**
+
+**An ally's panel is open. A hostile nation's is bands and guesswork.** What a nation may read about
+another is gated on how they stand with each other — **and round 5 built the vocabulary this reads**
+without knowing it would be used for this.
+
+**⚠ And it gives alliances something nobody had priced.** Round 5's ruling 20 made an alliance a
+standing agreement with no term that can only be broken; conquest ruling 27 made it thin on purpose —
+inherited quarrels, a lever for lending soldiers, and permission to join a war. **Ruling 3 adds the
+first benefit of an alliance that is not military: you can see.** *That is a reason to make friends
+with a nation you will never fight beside, which the design did not previously have.*
+
+**Rejected, and two of the three are worth keeping in the bank.** *Keeping one piece of fog and no
+more* — cheap, consistent, and it leaves three rounds' questions unanswered. **Bands instead of
+figures** (W31) and **information going stale** (W30) — *both remain available as the FORM ruling 3
+takes, and neither is excluded by it. The ruling says what gates the view; it does not say what a
+restricted view looks like.*
+
+### Four defaults taken, because ruling 3 needs them to mean anything
+
+*Each is reversible and none is a product judgement.*
+
+1. **The ladder is the relationship score that already exists** — Close, Warm, Indifferent, Cold,
+   Hostile — **not a new scale.** *The game already computes it for every pair, it already explains
+   itself, and a second scale that could disagree with the first is the thing the memory list was
+   built to prevent.*
+2. **What is physically visible stays visible to everyone.** Ground, borders, population, who is next
+   to whom. **You can always see that a nation is large.** *A fog that hides the map is a different
+   genre, and W22's objection is right about that much.*
+3. **The AI plays under the same restriction.** By the precedent of W12 — the AI gets the same budget
+   as the player, whatever it is. *⚠ And this is the expensive half of ruling 3, said plainly: an AI
+   that must act on a restricted view is a harder AI to write and a worse one to watch. If it is
+   given sight the player does not have, the player is playing against a cheat. **Flagged for the
+   technical design director as the real cost of this ruling.***
+4. **The unrest map's existing fog is NOT relationship-gated. It stays universal.** *Its reason was
+   never trust — it was that the screen must not become an omniscient targeting overlay for the annex
+   button. **An ally who turns on you is exactly the danger that reason describes**, so opening it to
+   friends would defeat it. Six bands for your own ground and three for everybody else's, whoever
+   they are.*
+
+### ⚠ The test this round would rather hand forward than the ruling itself
+
+**The reason written into the one piece of fog that already exists is better than any principle about
+what a government would plausibly know:** *not realism — whether a screen becomes a targeting
+computer.* **That is answerable about a specific screen by looking at it**, which "what would they
+know?" never is. **Finding C, and it is what stage 2 should apply ruling 3 with.**
+
+### What ruling 2 leaves open, and it is a design question rather than a number
+
+**Is it the same three conditions told two ways, or genuinely different conditions?** *The cheap
+version is one path with two narrations — the remnant is simply much closer to the seats and much
+further from the people and the economy, so the same targets produce a different game by arithmetic
+alone. The expensive version gives the remnant its own condition set.* **Recorded for stage 2, where
+the design document is written.**
+
 ---
 
 ## 8. The handover
