@@ -172,6 +172,11 @@ not made) and **Gaps** (something referenced and never specified) kept separate.
   in one turn, and the things that do are a card you click. **D218, D219, D220, D224, D225.**
 - **`missions-design.md`** — 836 lines. Three trees (Great Lakes, Deseret, Texas), three branches, four
   elements, one pivot each. The game had no goals before this. **D221, D222, D226, D227.**
+- **`board-design.md`** — 478 lines, written 15 September. **Substrate: seven other satellites read it.**
+  The Area, adjacency, the transport network's entry costs, reach and why it decays from one core, the
+  four rivers and their fifteen gates, the two basins, the edges of the map, transit, and the route
+  search. **Almost all of it is built**, so it carries a working system across exactly. *Its §7.1 is the
+  one to read first: a port is three different things and 59 of the 136 reach no foreign market at all.*
 
 **✅ RESOLVED 15 September 2026, and the list now exists — `GDD.md` §13.** D217 said *eighteen
 satellites*; the Control Board said *nineteen* and printed the denominator as **20**. **Both were true
