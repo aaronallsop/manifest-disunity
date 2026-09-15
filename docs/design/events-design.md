@@ -141,6 +141,28 @@ turns in sixty-one — about once every twenty turns.**
 *So the three crises a turn go to whichever nations come first in the map, every turn, forever.* **No
 document records this as a decision. Gap 2.**
 
+### 2.8 Every number this system has
+
+*Read from `js/tunables.js` this session. **Five keys, and that is the whole system.***
+
+| Key | | |
+|---|---:|---|
+| `events.maxPerTurn` | **3** | *"Across the whole roster. Three is enough that the newspaper has something in it most turns and few enough that a crisis is still an event rather than the weather."* |
+| `events.cooldownTurns` | **8** | *"A country that has a crisis every turn is not having crises."* |
+| `events.repeatTurns` | **30** | *"Longer than the general cooldown, so a nation cycles through its problems rather than reliving one."* |
+| `events.memoryTurns` | **4** | *"A neighbour ceasing to exist is news for a few turns and history after that."* |
+| `events.comfortableRunway` | **12** | *AI only. "A nation with a year of reserves values cash at nothing, one with two turns of it values cash above everything."* |
+
+**Two more are read from elsewhere** — the positive and negative standing magnitudes, because the
+`standing` effect scales against them — **and the calendar's opening year, 2036, which ruling 4's
+front page is dated to.**
+
+> **⚠ AND THE ARITHMETIC IS WORTH DOING ONCE, HERE.** *Three a turn across 61 nations is **3T/61 per
+> nation over T turns**. At 60 turns that is **2.95 — the "about three" figure**. At 200 turns it is
+> **9.8.*** **Neither cooldown binds at either length** — *8 turns allows 25 crises in 200, and 30
+> turns only limits repeats of the same row* — **which is the proof that the per-turn cap is the only
+> lever.** *Derived from the five values above; not a measured run.*
+
 ---
 
 ## 3. The seven rulings
