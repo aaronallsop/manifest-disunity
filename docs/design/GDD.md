@@ -523,7 +523,9 @@ updated. *Reconstructed from the session transcript of 15 September and verified
 proposal's own list.*
 
 > **Master plus NINETEEN satellites — twenty documents in total.**
-> **TEN satellites are written and this master makes ELEVEN documents of twenty. Nine to go.**
+> **EIGHTEEN satellites are written and this master makes NINETEEN documents of twenty.**
+> **⛔ ONE TO GO, and it is PARKED BY NAME: `presentation-design.md` waits on `docs/design/TONE.md`.**
+> *Writing it without that means inventing the game's position on its own subject matter.*
 > *Counted and line-measured 15 September 2026 rather than carried forward — and **two figures in
 > the table below were already stale**, because traced scenarios were added to both documents
 > after D232 and nobody updated the count.*
@@ -543,7 +545,7 @@ written down. `missions-design.md` is marked as the addition.*
 
 | File | What it owns | Depends on |
 |---|---|---|
-| `power-design.md` | The five stocks, the rate-limit discipline, and the Why record | GDD, identity, economy, force, governing, diplomacy — *the long list is the point: power is the aggregator* |
+| ✅ `power-design.md` | **Written, 365 lines.** The five stocks, the rate-limit discipline, and the Why record | GDD, identity, economy, force, governing, diplomacy — *the long list is the point: power is the aggregator* |
 | ✅ `turn-design.md` | **Written, 748 lines.** *(Was 572 when this table was filled in; traced scenarios were added after D232.)* One round of sixty-one slots and one world step; the ordered phases and why each sits where it does; the phase contract; projects; what a decision costs and the three things that are free; plan / resolve | GDD, and it names every system whose phase it orders |
 
 ### The systems
@@ -553,11 +555,11 @@ written down. `missions-design.md` is marked as the addition.*
 | ✅ `movements-design.md` | **Written, 496 lines.** What a movement is (verb, adjective, ideology), the sentiment formula, the two tiers of secession, the three thresholds read as a set, growth on ungoverned ground, demands and the free-and-mandatory answer phase | GDD, identity, board, population, power, force, governing |
 | ✅ `governing-design.md` | **Written, 551 lines.** The government, its leader, its elections, and the price of every answer it can give — release, autonomy, change course, become them, referendum, martial law, stealing a result | GDD, identity, power, movements, economy, force |
 | ✅ `economy-design.md` | **Written, 444 lines.** What is produced, what is needed, what things cost: six sectors, capacity × utilisation, bands, derived demand, per-sector effects, price formation, treasury, the occupation surcharge, the sector network and its five loops, **and the logistics spiral with its three unchosen brakes** | GDD, board, population, power, trade |
-| `trade-design.md` | Deals with terms, transit grants, tolls on what arrives, friction by mode, the route-finder, capacity, the markets abroad, blockade — **and the three unreconciled internal-trade regimes** | GDD, board, economy, diplomacy, blocs |
-| `force-design.md` | **⚠ One derived number and THREE places to point it — garrison, border, field.** *A fourth, Ally, is an unconfirmed default and is not built.* Readiness as a commitment; readiness as a commitment; upkeep; the militia split; bases | GDD, population, economy, power, governing |
-| `war-design.md` | Declaring, the fight, the three occupation flags and the digestion ladder, the peace treaty's four levers and the blind double-tabling, the war-cost ledger, what breaking a treaty does | GDD, board, force, diplomacy, power, economy, nation |
-| `diplomacy-design.md` | What two nations **are** to each other: the relations list, the eight-state spine and its transitions, recognition, coalitions, the contests and their floors, the one offer object with five faces, alliances, guarantees, vassalage, sponsorship, the overture, creditor demands | GDD, identity, power, trade |
-| `blocs-design.md` | The two multilateral objects — the light bloc and the heavy federation, with its leader, treasury, turn, toll and collective defence | GDD, diplomacy, trade, power, governing, war |
+| ✅ `trade-design.md` | **Written, 417 lines.** Deals with terms, transit grants, tolls on what arrives, friction by mode, the route-finder, capacity, the markets abroad, blockade — **and the three unreconciled internal-trade regimes** | GDD, board, economy, diplomacy, blocs |
+| ✅ `force-design.md` | **Written, 322 lines.** **⚠ One derived number and THREE places to point it — garrison, border, field.** *A fourth, Ally, is an unconfirmed default and is not built.* Readiness as a commitment; readiness as a commitment; upkeep; the militia split; bases | GDD, population, economy, power, governing |
+| ✅ `war-design.md` | **Written, 535 lines.** Declaring, the fight, the three occupation flags and the digestion ladder, the peace treaty's four levers and the blind double-tabling, the war-cost ledger, what breaking a treaty does | GDD, board, force, diplomacy, power, economy, nation |
+| ✅ `diplomacy-design.md` | **Written, 458 lines.** What two nations **are** to each other: the relations list, the eight-state spine and its transitions, recognition, coalitions, the contests and their floors, the one offer object with five faces, alliances, guarantees, vassalage, sponsorship, the overture, creditor demands | GDD, identity, power, trade |
+| ✅ `blocs-design.md` | **Written, 436 lines.** The two multilateral objects — the light bloc and the heavy federation, with its leader, treasury, turn, toll and collective defence | GDD, diplomacy, trade, power, governing, war |
 | ✅ `events-design.md` | **Written, 475 lines.** The crisis and the shock; blast radius in adjacency hops; proportional share; two budgets; no chains; the opening front page | GDD, board, power, movements, presentation |
 
 ### The frame
@@ -565,9 +567,9 @@ written down. `missions-design.md` is marked as the addition.*
 | File | What it owns | Depends on |
 |---|---|---|
 | ✅ `nation-design.md` | **Written, 605 lines.** **How a country is born, what it holds, how it ends, and how it wins.** One machine for nation-making: declaration, defection, civil-war fragmentation, unite's fracture, envelopment, stranding, release; the minimums; the honeymoon and the fervour; home ground; extinction; the three victory paths and the remnant's asymmetry | GDD, board, identity, power, movements, war, diplomacy |
-| `opening-board-design.md` | **The opening position on 1 March 2036** — who exists, what they remember, what is already signed, **and a line down the middle of every page separating built from designed** | GDD, nation, diplomacy, movements |
+| ✅ `opening-board-design.md` | **Written, 390 lines.** **The opening position on 1 March 2036** — who exists, what they remember, what is already signed, **and a line down the middle of every page separating built from designed** | GDD, nation, diplomacy, movements |
 | ✅ `missions-design.md` | **Written, 1003 lines** — *was 836 before its traced scenarios landed.* **⚠ NOT IN THE ORIGINAL PROPOSAL — this is the nineteenth, added on the night of 15 September** when Aaron introduced mission trees. Three trees, three branches, four elements, one pivot each; what a mission may reward; the name register | GDD, nation, board, trade, diplomacy, movements |
-| `ai-design.md` | The other sixty nations: one scoring model over the same Previews the player sees, posture from strain, softmax, the Closing term, and the cost of making it play under a restricted view | GDD, turn, and every system supplying a Preview |
+| ✅ `ai-design.md` | **Written, 366 lines.** The other sixty nations: one scoring model over the same Previews the player sees, posture from strain, softmax, the Closing term, and the cost of making it play under a restricted view | GDD, turn, and every system supplying a Preview |
 | `presentation-design.md` | What the player sees — the map and its modes, the Why-record panel, the one card shape the game asks questions with, the newspaper, the timeline — **and what a nation may know**, because the only fog in the game exists for a screen reason and not a realism one | GDD, movements, diplomacy, economy, events |
 
 ### Three seams deliberately moved away from `DESIGN.md`'s own section breaks
