@@ -4667,3 +4667,345 @@ finding H, and round 7's two open halves.
 **And a rule about estimating it, recorded because the temptation is obvious:** nobody has written one
 of these design documents in this project, so **any figure for stage 2 would be invented.** Write one,
 measure it, then estimate seven.
+
+---
+
+### D217 — The GDD: the name, the phase order, and eighteen documents, 15 September 2026
+
+**Stage 2 opens as a Game Design Document rather than seven system documents**, with a named
+downstream reader: a **Technical Designer** who takes one system at a time and writes formulas,
+pseudocode, inputs and edge cases. Every structural choice below is made to serve that pass.
+
+**The name is Manifest Disunity.** *Nation States* was a working title and was phased out over a
+clash with another game of the same name. **`DESIGN.md` and `README.md` both still carry the old
+title and are wrong.**
+
+**The phase order is now: Game Design → Technical Design → build order → implementation.** The
+Control Board is to be rewritten for it and its economy-alpha scaffolding removed.
+
+**A design session may now edit `DESIGN.md`.** The designer brief forbade it — *"that document
+describes what is built; only the programming session updates it"* — and Aaron has lifted the bar for
+this work. The precedence rule is unchanged: `DESIGN.md` still describes what the game *does*.
+
+**The shape: a master plus eighteen satellites.** The master is short — pitch layer, system map, and
+the concepts several systems share. Each satellite opens with a **Depends on** line naming every
+other document whose state or formulas it needs, and closes with **Open questions** (a decision Aaron
+has not made) and **Gaps** (something referenced and never specified) kept separate.
+
+**Three seams were moved away from `DESIGN.md`'s own section breaks, deliberately:**
+
+1. **The eight-state pair spine goes to diplomacy, not war.** It describes what two nations are to
+   each other; war is one of its states. Somebody writing the fight should not have to own
+   hostility's cooling clock.
+2. **All nation-making goes into one document.** Round 1 demanded it — *"conquest's civil wars and
+   secession's declarations must produce the same kind of country"* — and no document owned it.
+   Triggers stay with the system that fires them; everything downstream of *a country now exists*
+   lives in one place.
+3. **Information merges with presentation.** Round 7 ruled what *gates* sight and said plainly it did
+   not rule what a restricted view *looks like*, and it handed this stage a better test than
+   plausibility: **does this screen become a targeting computer?** That is answerable about a screen
+   by looking at it. The test and the screens belong on the same page.
+
+**What the orientation found absent, recorded because several are pitch-layer and will be drafted
+rather than assembled:** target audience, unique selling points, genre, core loops and interactivity
+are **absent entirely**; audio style is **not mentioned once** in roughly fifteen thousand lines; game
+length is unwritten, which round 7's finding D already said.
+
+**And `DESIGN.md` contradicts itself on three counts, found while reading it end to end.** Section 3
+says **1,676 Areas** and section 12 records the re-bake to **1,688**. Section 7.7 says **142 sliders**
+and section 12 says **298**. Section 11 says **824 tests** and the 14 September sign-off measured
+**956**. *None of these was re-measured this session; what is recorded is that the precision document
+has stale numbers in it, which matters because the GDD is under instruction to carry its figures
+forward exactly.*
+
+---
+
+### D218 — The one-action rule was never a decision, and the turn is rebuilt, 15 September 2026
+
+**Checked before it was asserted: there is no entry in 216 decisions establishing "one action per
+nation per turn."** Every mention of it in `DECISIONS.md` is a complaint about it or a deferral of it
+— D195, D199, D201, D215. Aaron: it was implemented by a programmer who had been given free rein and
+it stuck around. **The rule that `IDEATION-PLAN.md` wrote at the head of all seven rounds, and that
+five rounds deposited complaints under, was never chosen.**
+
+**So round 7's ruling 1 was deferring an accident rather than a design**, and that changes its status.
+
+**The budget comes back to the designer, and the line is politics ruling 10's**, which Aaron already
+ratified: *what should happen* is ideation's, *what is measured and what the effects are at each
+level* is design's, **the values are the architect's.** The reason round 7 gave for deferring was
+architectural, and the measurement contradicts it — an AI round is **735 plans and 153 ms**, so a
+second pass is affordable. What the budget actually is, is **pricing**, and this design prices things
+everywhere.
+
+**The references are Civ2 and EU4**, and what Aaron takes from them is one rule:
+
+> **A turn holds multiple things you can do, none of them finishes in one turn, and the things that
+> do finish in one turn are a pop-up you click.**
+
+**That dissolves the action budget rather than solving it.** The question stops being *how many
+things may I do this quarter* and becomes *how many may I have going at once.*
+
+**The finding that decides whether it can work: this game is full of clocks and has nothing being
+built.** A deal runs out; a transit notice runs out; a honeymoon decays; a cooldown expires; a
+pressure clock counts down to something bad; claim pressure accrues to a war nobody asked for.
+**Every one is a consequence ticking down, and not one is a thing a player started that will arrive.**
+The single exception is **military readiness**, which follows an allocation slowly — one project, in
+the entire game.
+
+**Aaron's taxonomy of what a player does, taken as the frame:**
+
+| | |
+|---|---|
+| **Reactive** | Something happens and you must answer, with ignoring as an option that costs. **This is round 7's finding B already** — *a decision is free when you did not choose to be asked* |
+| **Proactive** | Something you do to advance your goals |
+| **Development** | Something that makes your country stronger. **This category was empty** — see D219 |
+
+**THE TURN, as ruled.** **There is no action budget at all.** You may start as many things as you
+like; you end the turn; the world answers you. **The limit is money, time and geography** — every
+running project bills you each quarter, nothing you want arrives quickly, and what you can even start
+is bounded by the map. **No rule anywhere says no**, which is the same move conquest made when it
+deleted all three of its hard refusals and kept only prices.
+
+**Nine parked items close, and none needed its own answer** — martial law's price, the overture's
+price, mediation, an event's freeness, the economy's ten verbs, standing arrangements, both halves of
+W18/W19, and politics ruling 19, which said outright that it changed when this changed. **W20 is
+ruled by consequence: an arrangement's upkeep is money, not an action.**
+
+**Ending a turn produces a briefing in three sections**, and the first two are divided by a rule
+already made:
+
+1. **The continent** — what anybody could see. Round 6's front page, per turn.
+2. **Your own government reporting to you** — what came back from the offers you sent, how your
+   projects are going, what your ministries are worried about. **Round 7's ruling 3 is the fold:** an
+   ally's panel is open, a hostile nation's is guesswork.
+3. **World affairs** — smaller, outside the continent, and the place to build the world out
+   diegetically. **It needs no new object: the world market already exists** as a price-taker with
+   slow prices and a shipping cap, which is X22. A dispatch is a third kind of event beside the crisis
+   and the shock — **it asks you nothing and is simply true** (X26). Round 6's ruling 2 points
+   outward for free: **you feel a world event in proportion to how much of your trade goes out through
+   it.**
+
+**And the world market reacts to the continent's own behaviour — small.** X27, ruled. *It is the only
+shared consequence in the game: everything else is a pressure on one nation.*
+
+**This delivers F14** — *a turn should arrive as news, not as a number* — which has been on file since
+5 September with nothing to attach it to. **And the Panama Canal finally has somewhere to be said:**
+X60 recorded that the closed canal is in the game's arithmetic *"with nowhere to say so."*
+
+---
+
+### D219 — Development enters the alpha, and a project is a bar with a throttle, 15 September 2026
+
+**Development is in the alpha, very small and limited.** Aaron's words. It reverses nothing — round
+4 banked capital, labour and technology as **beta** work on his own statement, *"for the alpha build
+this is enough… I want to build it out more for the beta"* — but his turn design has three legs and
+the alpha would otherwise stand on two.
+
+| | |
+|---|---|
+| **In** | One buildable thing: costs money, takes several quarters, makes the country measurably better |
+| **Out** | The technology multiplier — his eight arrows, the most of any source on the wiring page |
+| **Out** | People as an input to production — his three arrows |
+| **Out** | Building **sector** capacity, which would reopen economy ruling 1's frozen industry mix |
+| **Out** | Anything military, and any list of buildings |
+
+**The one buildable thing is capacity to move goods — ports, rail hubs and border crossings.** It is
+already the thing that makes trade a real decision, and it is measured: without capacity the world
+market absorbed a nation's whole surplus in one click and beat the best bilateral deal by **1.7x to
+50x for 41 of 51 nations.** **Fourteen of sixty-one nations have no port and no border crossing at
+all**, so port-only would exclude exactly the nations that most need a project. It is **F7** coming
+forward rather than a new idea, it gives a Great Lakes mission tree its spine, and it touches nothing
+that is ruled — not reach, not the army, not the industry mix.
+
+*Noted and not acted on: round 4's finding E named "logistics capacity that rises with the volume
+being moved" as one of three candidate brakes on the logistics spiral, **none chosen.** A player who
+can build capacity has a hand on that brake. **This does not choose it** — finding E is stage 2's and
+is still open.*
+
+*And taken on purpose: a port you built is an Area somebody can take. Development becomes a war aim.*
+
+**NO NEW CURRENCY. Money is the cost, billed every quarter while a project runs; time is the limit.**
+The precedent is already ruled: **secession ruling 21**, 7 September, made sponsorship *"a standing
+commitment rather than a move… pay a share of your treasury every quarter."* **The design already
+contained exactly one project and never generalised it.** That ruling's own open question — *"whether
+it is the turn's one action every turn or a standing payment that runs by itself"* — is answered by
+D218: the second.
+
+*What is lost, said plainly: EU4's three point pools cannot be converted into each other and money
+can buy anything. What carries non-fungibility here is **force** — a soldier can be in one of four
+places and moving takes turns — and **the stocks**, where Authority earned is not Influence earned and
+no act converts one to the other. That is a real difference from the reference game and it is chosen
+rather than unnoticed.*
+
+**A PROJECT IS A BAR.** Aaron's: a total cost spread across a duration, visible progress, and a
+throttle — **pay more to go faster, and haste costs something.** *"With every action there is also an
+opposite reaction."* **The shape of that cost is the motif this design has now produced five times:**
+the garrison buys quiet and sells the next decade; appeasement buys a region and pays at the next
+election; *"tell them to wait"* borrows patience at interest; the honeymoon ends worse than neutral.
+**Buy now, pay later.** So haste is not a surcharge at the till — it lands later.
+
+**CHAMPION AND ARM ARE TWO ACTS, NOT ONE.** Secession ruling 21 says *"you declare yourself its
+champion… everyone can see you doing it."* Aaron's new example is *arming* a movement, with a chance
+the other country finds out. **Both stand.**
+
+| | **Champion** *(ruling 21, unchanged)* | **Arm** *(new)* |
+|---|---|---|
+| Who knows | everyone, from the first quarter | nobody, until discovery |
+| What it draws | a coalition, and a memory worse than recognising them | nothing — until discovery, then all of it at once |
+| The throttle | — | pay more, go faster, be found out sooner |
+
+**Discovery is what writes the memory**, so both of round 5's brakes survive as a gamble rather than
+an announcement. **And it is the fourth instance of a shape round 3 named twice** — martial law
+against a stolen election, propaganda against rigging, and now this: *a decent government's options
+are expensive and public; a rotten one's are cheap and quiet.*
+
+---
+
+### D220 — A concession is instant; anything you gain takes time, 15 September 2026
+
+**The rule, and it makes the whole turn legible in one sentence:** *you can always give something away
+this quarter; everything you want takes several.*
+
+**The reason it is not tidiness: a release valve with a two-year delay is not a valve.** Round 3's
+table is *"four prices for the same relief,"* and relief you wait eight quarters for cannot answer a
+crisis. **Change course belongs on the instant side by the same argument** — it is conceding your own
+identity, and a government cornered by its own people must be able to reach for it now.
+
+| | |
+|---|---|
+| **Instant and free** | recognise · answer a demand · answer an event |
+| **Instant and costly** | release · autonomy · change course · declare war |
+| **A short bar** | propose a trade or a treaty — one turn to an answer |
+| **A long bar** | champion or arm a movement · build capacity · a war · patronage · a courtship answered *"let's think about it"* |
+
+**Applied to the eleven built moves, four turn out to have been projects nobody drew:** **aid**, where
+a patron's ideology bleeds into the client's and decays every turn they stop paying; **transit and
+revoke**, where closing a corridor takes four turns' notice; **trade**, where a deal runs its term; and
+**war**, a standing state that bills both sides every quarter.
+
+**And the best bar in the game was hiding in that last row.** Round 2 ruled what a war is *for* —
+*"the war is the leverage; the treaty is the game. What a war is for is making the other side's
+position bad enough that they sign."* **So a war's progress bar is: how close are they to signing.**
+That also answers the cost round 2 accepted when it refused a moving front — *"a war with no visible
+front risks becoming an abstract bill arriving every quarter."*
+
+**What it costs, recorded rather than buried: it reverses the effect of conquest ruling 24.** That
+ruling removed the three-per-turn cap and the four-turn cooldown so that *"if a nation has the money
+and manpower they can attack and organize as big of an attack as they want"*, and it was measured to
+make sustained conquest **67% faster** — 0.6 Areas a turn became 1.0. A campaign bar slows it again.
+**But it respects the ruling's reason rather than contradicting it:** what Aaron objected to was a
+rule that *refuses* you, and a duration is a commitment, not a refusal.
+
+**REACTING TO AN INVASION IS A FREE CARD; THE ARMY IS A BAR.** Both of Aaron's examples — *send troops
+to the border*, *counter-assault their southern counties* — are bars: the first is a reallocation and
+readiness is already rate-limited at **under 60% of a standing posture after a one-turn switch**, the
+second is an acquisition. **So the measured rate limit survives untouched**, and the card's real
+question becomes *what are you prepared to lose while the army gets there* — answered by concessions,
+which are instant precisely so they are available when you are cornered. *Nothing new prices a
+flip-flop: a player who re-points every quarter is never ready anywhere, which is the rate limit doing
+it by physics rather than by a rule.*
+
+*And it produces X73 for nothing — an invasion of your ally raises a card for them, since ruling 27
+permits an ally who borders the enemy to join and never compels it. Round 6 called that "the first
+genuinely two-sided object in the game."*
+
+---
+
+### D221 — Missions: three trees in the alpha, and what a bonus may be, 15 September 2026
+
+**The game has no goals**, and seven ideation rounds produced 536 ideas without one mission among
+them. What exists is three victory conditions checked every turn, which is an *ending* rather than
+something to work on. **Aaron: EU4's mission trees give direction, challenge, story, and bonuses that
+keep momentum up.**
+
+**THREE TREES IN THE ALPHA:** a **Texas** nation — one tree shared by all five — **Deseret**, and a
+**Great Lakes** nation for the Farmers Union and the federation. *Seven of sixty-one nations covered
+by three trees.*
+
+**A MISSION IS THE VICTORY TABLE AT A SMALLER SCALE.** The three paths are already *"a table of rows
+rather than code paths"* — data, with per-condition targets, evaluated every world turn, which is why
+*"what am I short of"* is answerable. A mission adds a **prerequisite** and a **reward**. **It costs
+nothing**: it is not a thing you do, it is a state the game watches for. **So missions do not compete
+with anything in the turn.** *Missions are the middle game; victory is the end.*
+
+**A BONUS IS A NAMED ROW IN THE WHY RECORD, exactly as a leader's trait already is.** A leader is
+*"a thumb on the scale, deliberately small… a signed modifier on each of the five stocks plus a small
+pull on the war roll."* **So a mission may move a stock, provided it appears in the panel with its own
+label.** What is forbidden is a hidden adjustment: *"Spirit of Sam Houston: +0.04 Authority"* is a row
+that tells a story; an unexplained number is the one kind of row this game has never had.
+
+***Correction recorded rather than edited away:*** *the first recommendation put to Aaron was
+"permission, not power" — that a mission may only unlock or cheapen something. **It was too strict**,
+and the leader modifier is what shows it.*
+
+**Aaron's Texas draft was reviewed against the build. What it found:**
+
+- **Branches 1 and 2 pull against each other, and it was not deliberate.** Recognition reads
+  standing; Influence **falls** with conquest scaled by how much you had — measured, California going
+  58 to 118 Areas ran **Influence 0.666 to 0.148**. **So every city you take makes the recognition
+  branch harder, and the panel says so.** That is the exact EU4 property Aaron described wanting.
+- **The five cities are the seats of government**, which the Reunification path already counts.
+- **Choke the Farmers points the Texas tree at the Great Lakes tree**, since Cairo is one of the
+  three gates the Farmers Union holds. **The trees collide on purpose.**
+- **Mexico is geography, not a nation** (D168) — *The Pass* restates as *your goods cross Mexico
+  free*, which is the only thing on the board that pays El Paso for where it sits.
+- **There is no oil.** Energy lives inside Resource Extraction, which round 4's finding D calls the
+  model's single upstream chokepoint.
+- **Dominate the Gulf may be redundant**: `AlternativesMult` already rises to 1.5x as a buyer's
+  supplier count falls, so holding the Gulf already lets you charge more by arithmetic.
+- **Well, that's Dallas** wants a *geographic* modifier on recognition, and nothing in the game has
+  one. Small, but a new kind of term.
+- **Conquer D.C. is not a bonus — it is a victory path changing hands**, and it answers round 7
+  ruling 2's open half in a way neither candidate anticipated: **the remnant's story can be seized.**
+  It depends on **Philadelphia and New York City, which are not on the board.**
+- **Former Glory** needs the Republic's claimed boundary painted as a region. *Its extent was not
+  verified this session and must not be written from memory.*
+- **Texas BBQ** is exactly the spec's **Surplus band** (1.11 to 1.50) held for eight turns, and needs
+  the resource model built.
+
+---
+
+### D222 — Conquest ruling 19 comes forward into the alpha, superseding diplomacy ruling 8, 15 September 2026
+
+**Diplomacy ruling 8 scheduled Austin's rebel board for after the alpha test**, on the reasoning that
+changing the Texas opening while testers are looking at trade *"would move a corner of the board while
+people are testing something else — and if the corner played badly, nobody could say whether the
+problem was Texas or the economy."*
+
+**That reasoning was sound when the alpha was an economy test. It no longer holds.** The alpha now
+carries mission trees, and **Texas is one of the three.** Ruling 8 is superseded rather than amended.
+
+**What comes forward:** Austin is the legitimate Texas; **Dallas, Houston, San Antonio and El Paso
+open unrecognised**; Austin holds the signature each of them needs, and the four-way auction for it
+becomes live. **It is a change to authored scenario content, not to code.** `docs/deferred.md` item
+**33.1** closes with it.
+
+**AND IT CLOSES DIPLOMACY FINDING I FOR FREE, which nobody expected.** That finding was the pariah's
+dead end: *"Recognition is the only unilateral act in the game, and Deseret cannot perform it… there
+is nobody left for Deseret to recognise. The gift it has to give has no recipient… the game's answer
+to scenario 5 today is: wait, and hope."* **Four unrecognised Texans put four recipients on the
+board.** Deseret can recognise them from turn 1, and recognition's first term is standing — so two
+pariahs buy each other's existence. **Scenario 5 narrates, and it needed a scheduling change rather
+than the overture.**
+
+**AUSTIN IS THE CROWN, deliberately.** 13 Areas and 3.69M people against Houston's 32, Dallas's 22,
+San Antonio's 21 and El Paso's 16; no thaw with any of them ever; no union or federation with any of
+them ever; and since conquest ruling 25 removed the four-times-your-size shield, nothing refuses an
+attack on it. **Under ruling 18 whoever takes Austin inherits the claim and the veto over the other
+three**, so the strongest reward in the Texas tree is the prize for taking Austin rather than for
+being it.
+
+**Its defence is two things already designed and neither built:** the **auction** — T12, *"recognition
+can be sold, and Austin's game is the auction"*, with T13's conditional version, *I sign when you drop
+your claim* — and **outward alliances**, since Austin is hostile with four Texans and with nobody
+else, which makes it the only Texan that can build a coalition. **And the first mover pays:** attacking
+Austin means war, prohibited trade, shut corridors and climbing weariness, while three rested rivals
+watch.
+
+**Alpha watch item, and nobody can judge it on paper:** whether Austin survives long enough for the
+auction to happen at all. *If it dies on turn six in every game, the most interesting corner of the map
+is a two-quarter story.*
+
+**Scope note, not decided here:** this is the Texas **recognition** change. The **contest hostility
+floors** (conquest ruling 17d, diplomacy rulings 1–3) are a separate mechanism, and the Californian ten
+do not depend on recognition at all. Whether they are seeded at the same time is still open.
