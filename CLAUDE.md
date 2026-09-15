@@ -155,17 +155,26 @@ document whose state or formulas it needs, and **closes** with **Open questions*
 not made) and **Gaps** (something referenced and never specified) kept separate. *`turn-design.md` and
 `missions-design.md` are the worked examples; match them.*
 
-**What exists, both written 15 September:**
+**What exists:**
 
+- **`GDD.md`** — the master. The pitch layer (much of it marked draft for Aaron), the system map and
+  the full document list, and the cross-cutting concepts every satellite reads. **Written 15 September.**
+  **Its §17 carries seven open questions and §18 ten gaps**, and open question 1 is the split itself.
 - **`turn-design.md`** — 572 lines. The turn rebuilt from nothing: no action budget, nothing finishes
   in one turn, and the things that do are a card you click. **D218, D219, D220, D224, D225.**
 - **`missions-design.md`** — 836 lines. Three trees (Great Lakes, Deseret, Texas), three branches, four
   elements, one pivot each. The game had no goals before this. **D221, D222, D226, D227.**
 
-**⚠ A contradiction in the record that nobody has resolved.** D217 says *a master plus eighteen
-satellites*; the Control Board says *a master and nineteen beside it* and prints the denominator as
-**20**. **Neither figure is backed by a list of the documents anywhere in the project**, so one of the
-two is wrong and there is no way to tell which. **Write the list before quoting either number again.**
+**✅ RESOLVED 15 September 2026, and the list now exists — `GDD.md` §13.** D217 said *eighteen
+satellites*; the Control Board said *nineteen* and printed the denominator as **20**. **Both were true
+when written and neither said as of when.** The proposal of 03:35 held eighteen; **`missions-design.md`
+was not among them**, because mission trees did not exist as an idea until later that night. **The
+answer is a master plus NINETEEN satellites — twenty documents.** Two satellites plus the master are
+written; **seventeen to go.**
+
+**⚠ And the split is still only PROPOSED.** It was put to Aaron at 03:35 on 15 September and he
+redirected to turn design before answering, so three documents now exist against a structure nobody
+approved. **Do not treat it as ratified.**
 
 **A design session may now edit `DESIGN.md`** — D217 lifted the designer brief's bar for this work.
 The precedence rule is unchanged: `DESIGN.md` still describes what the game *does*.

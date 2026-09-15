@@ -118,16 +118,20 @@ order of size.
 
 ---
 
-## 5. ⚠ A contradiction in the record that is still open
+## 5. ✅ A contradiction in the record, raised and then resolved the same day
 
-**D217 says "a master plus eighteen satellites." The Control Board says "a short master document and
-nineteen beside it" and prints the denominator as 20.**
+**D217 said "a master plus eighteen satellites." The Control Board said "a short master document and
+nineteen beside it" and printed the denominator as 20.**
 
-**Neither figure is backed by a list of the documents anywhere in the project**, so one of the two is
-wrong and there is no way to tell which from what is written down. **The list has never been written.**
+**Resolved 15 September while writing `GDD.md`: both were true when written and neither said as of
+when.** The split proposed at 03:35 held **eighteen**. **`missions-design.md` was not among them** —
+mission trees did not exist as an idea until later that night, the document was written, and the list
+was never updated. **The answer is a master plus nineteen satellites: twenty documents**, which is
+what the board's denominator already says.
 
-*This is Aaron's progress denominator on the front page, so it is visible to him. Write the list
-before quoting either number again.*
+**⚠ What did NOT get resolved, and it is the bigger half.** The split was **proposed and never
+approved** — Aaron redirected to turn design before answering. **Three documents now exist against a
+structure nobody ratified.** It is open question 1 in `GDD.md` §17.
 
 ---
 
