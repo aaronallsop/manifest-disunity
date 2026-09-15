@@ -206,3 +206,22 @@ Add one with `/rule` whenever a mistake earns it. Number them; never delete one.
     **The tell:** a ruling that names a nation no test fixture and no measurement in the project has
     ever mentioned. Round 4 measured everything it touched; round 5 named Appalachia eleven times
     without once asking whether the file that builds the board had ever heard of it.
+
+18. **The Control Board is edited with the file editor. A script that writes its text will damage it,
+    and this is the THIRD time.**
+    The rule already existed in two places — the project's own `CLAUDE.md` and the board skill — and
+    the log records it being broken on 4 and 5 September. **It was broken again tonight**, adding two
+    phase entries through a Python script: `\n\n` inside the generated JavaScript strings arrived as
+    **real line breaks**, which is a syntax error in a string literal, and the page's data object
+    stopped evaluating.
+    **Nothing reached Aaron**, because the check that reads the object back under `node` ran before
+    publishing and refused it. The file was reverted and the same content re-entered with the editor
+    in four calls.
+    **What generalises, and it is wider than the board:** the failure is not Python or bash or a
+    heredoc — it is **any pipeline where prose with escapes in it passes through a second language on
+    its way to a file.** Every layer gets an opinion about a backslash. Rule 15 said this about commit
+    messages, rule 13 about heredocs; this is the same disease a third time, so the rule is now the
+    general one: **text with quotes, apostrophes or escape sequences in it is written by the file
+    editor, never generated.** Scripts may still *read* and *check* — that is what caught this.
+    **The tell:** a file that was valid before your edit and will not parse after it, where the diff
+    looks correct to the eye. Look for a string literal spanning two lines.

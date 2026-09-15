@@ -304,14 +304,14 @@ tr:last-child td{border-bottom:0}
 const BOARD = {
   project: "Manifest Disunity",
   livery: "tower",                      // tower | mars | violet | deep | slate
-  updated: "2026-09-14 23:55",          // when you last republished, local time
+  updated: "2026-09-15 01:40",          // when you last republished, local time
 
   // Three or four measured figures. value: number|string, or null = "not yet measured".
   figures: [
-    { label: "Design rounds done",      value: "4 of 7 — diplomacy is written and waiting on you" },
-    { label: "Decisions you made today", value: "22 — all of them on diplomacy" },
-    { label: "Rulings written down and indexed", value: 167 },
-    { label: "Ideas on file for diplomacy", value: 86 },
+    { label: "Design rounds",           value: "all 7 written — 3 waiting on you to close" },
+    { label: "Decisions you made today", value: "28 — diplomacy, shocks, and the frame" },
+    { label: "Rulings written down and indexed", value: 178 },
+    { label: "Ideas on file across all seven rounds — counted tonight", value: 536 },
     { label: "Faults I found in my own work tonight", value: "5 — four fixed, one you settled" },
     { label: "Tests — last run last night, nothing they cover was touched today", value: "956 green" },
     { label: "Current version",         value: "v0.6" },
@@ -319,6 +319,45 @@ const BOARD = {
 
   // The single most important true thing right now. tone: "bad" | "warn" | "ok" | "neutral".
   headline: {
+    tone: "ok",
+    text: "ALL SEVEN DESIGN ROUNDS ARE WRITTEN. Three of them ran today — diplomacy this afternoon, "
+        + "then shocks, then the frame above everything. Twenty-eight decisions from you. Three cards "
+        + "are below and they are the last of stage one.\n\n"
+        + "YOU DREW A LINE TWICE TONIGHT AND BOTH TIMES IT WAS THE RIGHT ONE. The turn budget and the "
+        + "clock are not the designer's to settle — they go to the technical designer with the "
+        + "evidence rather than with an answer. So two of the last round's four decisions are refusals "
+        + "to decide, and it hands over a requirement instead. I had written that document claiming "
+        + "the opposite, and the claim is corrected in place rather than quietly edited away.\n\n"
+        + "THE THREE THINGS THESE ROUNDS FOUND THAT WERE WRITTEN DOWN NOWHERE. One action per turn is "
+        + "not a rule with a limit you can raise — it IS the turn: sixty-one countries act in "
+        + "sequence and the world moves once at the end, so changing it is a change to how the game "
+        + "is stepped and any estimate of the cost has to start there. Three exceptions to it already "
+        + "exist and share a principle nobody had stated — a decision is free when you did not choose "
+        + "to be asked. And the entire game has exactly ONE piece of hidden information, the unrest "
+        + "map, whose written reason is not realism but that a screen must not become a targeting "
+        + "computer. That is a better test than asking what a government would plausibly know, "
+        + "because you can apply it to a screen by looking at it.\n\n"
+        + "THE WORST THING STILL STANDS FROM THIS AFTERNOON. A brand-new country nobody recognises "
+        + "has no move available to it at all, and Deseret is on your opening board. The cure — the "
+        + "thaw you asked for in the conquest round — now exists on paper and is not built.\n\n"
+        + "AND THE LAST TWO ROUNDS GOT SMALLER, WHICH NEITHER OF US EXPECTED. Ruling out chains of "
+        + "events deleted the entire second half of the shocks round and nothing that matters was "
+        + "lost. A shock now happens somewhere on the map and reaches everything near it, which "
+        + "needed no world layer above the countries at all. Two things turned up by checking rather "
+        + "than assuming: the map has no coordinates anywhere, so a blast radius is walked county by "
+        + "county rather than measured in miles; and an event today reaches exactly one country, so "
+        + "the delivery has to learn to address a group.\n\n"
+        + "One thing about my own work tonight, because it is the third time: I damaged this page "
+        + "again by generating text through a script instead of editing it directly, which my own "
+        + "rules have forbidden since the fifth. Caught by the check that reads the page back before "
+        + "publishing, reverted, and redone by hand. Nothing reached you broken.\n\n"
+        + "Everything is committed and backed up. No game code, game data or game rules were touched "
+        + "today — three design rounds, and design rounds write documents only. The 956 checks were "
+        + "not re-run tonight because nothing they cover changed; the last run was yesterday, in 215 "
+        + "seconds, all green.",
+  },
+
+  _oldHeadline1: {
     tone: "warn",
     text: "DIPLOMACY OPENED AND RAN IN ONE SITTING, AND IT IS WAITING ON YOU. Twenty-two decisions "
         + "from you today, eighty-six ideas on file, and the in-tray emptied on day one — thirty-three "
@@ -504,6 +543,35 @@ const BOARD = {
 
   // Only decisions that are genuinely the owner's. Ids are permanent.
   decisions: [
+    { id: "close-rounds-6-and-7",
+      title: "Shocks and the frame above everything are both written. Do you call them closed?",
+      evidence: "Both ran tonight, after diplomacy. SHOCKS: seventy-four ideas, seven decisions, six "
+              + "findings — and its test story, a bad winter, was traced BEFORE any decision rather "
+              + "than after. That is the first time a round has worked in that order and it was plainly "
+              + "better: the trace found the problem, and then you ruled against a known problem "
+              + "instead of in the abstract.\n\n"
+              + "THE FRAME: fifty ideas, four decisions, four findings, and the largest in-tray of any "
+              + "round — twelve things the other six had been posting to it for nine days, all now "
+              + "answered or handed on. Two of its four decisions are you drawing a line rather than "
+              + "making a call, and what you did rule is the two things that were genuinely about what "
+              + "the game IS: that playing the federal remnant is a different game, and that what a "
+              + "country may know about another depends on how they stand with each other.\n\n"
+              + "Your own test for a finished round is met by both. Nothing new came up at the end that "
+              + "was not a recombination of something already on file. Both test stories are traced. "
+              + "And both answer what a player actually does about it — though the shocks round answers "
+              + "it in an unusual way, which is that an event is the one thing in this game that can "
+              + "hand you a decision without spending your turn, because you did not choose to be "
+              + "asked.",
+      cost: "Closing them means those two documents stop being where decisions are made and become "
+          + "records. What stays open on purpose: whether the remnant's victory is the same conditions "
+          + "told two ways or its own set, which is the design stage's; and the real price of gating "
+          + "what you can see on friendship, which is that the computer players must play under the "
+          + "same restriction or you are playing against a cheat.\n\n"
+          + "Leaving them open costs nothing except that stage one does not finish and the design "
+          + "stage cannot start.",
+      recommendation: "Close both. With diplomacy that is all seven rounds — every idea we have about "
+                    + "this game, in seven documents, judged and ruled on by you. The next stage turns "
+                    + "them into a specification, which is a different job and a different document." },
     { id: "close-round-5",
       title: "Diplomacy is finished. Do you call it closed?",
       evidence: "Twenty-two decisions from you, eighty-six ideas on file, sixteen findings, and the "
@@ -1041,7 +1109,7 @@ const BOARD = {
             + "each have an owner.\n\n"
             + "CLOSED BY YOU on 12 September at 02:41, on this board. Forty-one rulings plus one "
             + "half-ruling, ten findings, every one with an owner." },
-    { name: "Design round 5 — Diplomacy", status: "current",
+    { name: "Design round 5 — Diplomacy", status: "done",
       brief: "Recognition, alliances, vassals, blocs, ultimatums, and what a brand-new country that "
            + "nobody will talk to can actually do about it.",
       actual: "OPENED AND RUN IN ONE SITTING, 14 September. Twenty-two decisions from you, eighty-six "
@@ -1079,6 +1147,57 @@ const BOARD = {
             + "and one line in the handover called a thing cheap that has nobody on the board to sign "
             + "it. All corrected, and the real roster is now written into the document so the next "
             + "session cannot repeat it." },
+    { name: "Design round 6 — Shocks nobody chose", status: "done",
+      brief: "Things that happen that nobody chose. It went last on purpose: you cannot design a shock "
+           + "before you know what it is shocking.",
+      actual: "RAN TONIGHT, and it is the most restrained round of the seven. Seventy-four ideas, "
+            + "seven decisions, six findings — and its test story was traced BEFORE any decision was "
+            + "made rather than after, which is the first time a round has worked in that order.\n\n"
+            + "WHAT WAS WRONG AT THE START. The twelve crises the game already has are every one "
+            + "triggered by a country's OWN condition, so there was no way to make anything true for "
+            + "more than one country at a time — which means the oil stoppage from your story, the one "
+            + "that hit everybody at once, had nothing to be true of.\n\n"
+            + "You answered it with a place rather than a world: a shock happens somewhere on the map "
+            + "and reaches everything near it, and a country feels it in proportion to the ground it "
+            + "holds inside it. That needed no new layer above the countries at all, which the other "
+            + "three answers on the card would have.\n\n"
+            + "Two costs, both found by checking rather than assuming. The map has NO COORDINATES "
+            + "anywhere — counties carry a name, a state, population, output and votes — so a blast "
+            + "radius is walked county by county rather than measured in miles. That is cheap, it is "
+            + "already built, and it is arguably truer: a drought spreads along the plains rather than "
+            + "into the mountains. And an event today reaches exactly one country, three a turn across "
+            + "the whole board, so one winter would take three turns to deliver — the delivery has to "
+            + "learn to address a group.\n\n"
+            + "You also ruled that no CHAIN of events runs in play: the nine links of the break-up are "
+            + "the backstory's job. That one restraint deleted the entire remaining half of the round "
+            + "and nothing that matters was lost. And the game will open on a newspaper front page "
+            + "dated 1 March 2036 — prose with no engine work behind it, and the first thing a new "
+            + "player meets." },
+    { name: "Design round 7 — The frame above everything", status: "current",
+      brief: "What winning means, how the turn is spent, what a country is allowed to know, and time. "
+           + "Collected as a running list through the six rounds before it, and resolved last.",
+      actual: "RAN TONIGHT. Fifty ideas, four decisions, four findings, and the largest in-tray of any "
+            + "round — twelve items, all answered or handed on.\n\n"
+            + "TWO OF ITS FOUR DECISIONS ARE YOU DRAWING A LINE. The turn budget and the clock belong "
+            + "to the technical designer, so the round hands over a requirement rather than an answer. "
+            + "I had written the document claiming it would settle the turn budget; that is corrected "
+            + "in place, in all three places it appeared.\n\n"
+            + "WHAT YOU DID RULE, and both are about what the game IS rather than how it is stepped. "
+            + "Playing the federal remnant is a DIFFERENT GAME: for Washington, putting the country "
+            + "back together means restoring what it already claims to be, and for everyone else it "
+            + "means replacing it. That is the first time this design treats one country's victory "
+            + "differently from another's. And what a country may KNOW about another depends on how "
+            + "they stand with each other — an ally's books are open, an enemy's are guesswork. That "
+            + "answers three rounds' questions at once, including the one you deferred on the 11th "
+            + "asking for a single answer between two of them, and it gives an alliance its first "
+            + "benefit that is not military: you can see.\n\n"
+            + "Its stated cost, so it is not a surprise later: the computer players have to play under "
+            + "the same restriction, or you are playing against a cheat — and that is harder to write "
+            + "and harder to watch.\n\n"
+            + "THE FACT THAT REFRAMED THE WHOLE ROUND. One action per turn is not a rule with a limit. "
+            + "It IS the turn. Sixty-one countries act in sequence, each country's turn is its action, "
+            + "and the world moves once when the last one has gone. There is no has-acted flag "
+            + "anywhere, because there does not need to be one." },
     { name: "Design round 4 — The economy", status: "done",
       brief: "Finish the economy against everything rounds 1, 2 and 3 have demanded of it, rather than "
            + "starting it from nothing. It has been collecting work from every other round all week.",
