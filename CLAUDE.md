@@ -87,7 +87,10 @@ that playtesters open — an output, not a place work happens. Do not delete it.
 
 - The code lives in `js/`, `css/` and at the root rather than in `src/`. It is loaded directly by
   the browser as plain script files; moving it would break every path in the page for no gain.
-- There is no `prompts/` folder because nothing here talks to a language model.
+- **`prompts/` now exists, from 15 September 2026.** It was absent because nothing here talked to a
+  language model. It does now: `prompts/tone-interview.md` is a prompt Aaron pastes into a Claude chat,
+  which interviews him about tone and returns `docs/design/TONE.md` (D232). **The standing rule applies
+  as written — any prompt text sent to a model lives in that folder as a file, never in code.**
 - `build/` holds the offline Python scripts that bake the map and economy data, and serves the role
   `scripts/` does elsewhere.
 
@@ -157,11 +160,22 @@ It is **not** one document per system. It is **a short master, `docs/design/GDD.
 per system** — because the downstream reader is one **Technical Designer** taking one system at a
 time, who should never have to read a system they are not writing. **The master does not exist yet.**
 
-**Every satellite has the same four parts:** what the thing does, what it is measured in, what the
-player sees, and what happens at each level. It **opens** with a `Depends on:` line naming every other
-document whose state or formulas it needs, and **closes** with **Open questions** (a decision Aaron has
-not made) and **Gaps** (something referenced and never specified) kept separate. *`turn-design.md` and
-`missions-design.md` are the worked examples; match them.*
+**Every satellite has the same FIVE parts** — four from the GDD brief plus one Aaron reinstated on
+15 September. It **opens** with a `Depends on:` line naming every other document whose state or
+formulas it needs; then **what the thing does, what it is measured in, what the player sees, and what
+happens at each level**; and it **closes** with **Open questions** (a decision Aaron has not made) and
+**Gaps** (something referenced and never specified) kept separate.
+
+**⚠ AND IT ENDS WITH TRACED SCENARIOS — reinstated by Aaron, D232, 15 September 2026.** The two briefs
+had disagreed and the newer one had won by default; he has ruled for the older. **Every design document
+ends with the situations it must be able to narrate, each one traced step by step.** *Worked examples
+are the test suite: tracing found contradictions in every closed ideation round that the rulings alone
+did not, round 1 found two of five stories jammed on contradictions fifty-three rulings had missed, and
+round 6 proved it works better BEFORE the rulings than after.* **A trace that narrates smoothly first
+time has probably not been pushed hard enough.**
+
+**⚠ Four documents predate the ruling and all four owe a traced-scenarios section** — `GDD.md`,
+`turn-design.md`, `missions-design.md` and `board-design.md`.
 
 **What exists:**
 

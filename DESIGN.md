@@ -1618,7 +1618,10 @@ restore and the rollback around a failed load. That split is not tidiness — wh
 tangled, the suite could not run the real load path and instead ran a hand-written *copy* of it,
 which passes just as happily when the original is broken.
 
-Format **version 2**. Every module holding mutable state serializes, and `STATEFUL_MODULES`
+Format **version 3** — *corrected 15 September 2026, verified against `js/statedoc.js` where
+`export const VERSION = 3`. This line said version 2, which was the format before the M9.6 Area
+re-bake; §12 already recorded the move to 3, so the document disagreed with itself.* Every module
+holding mutable state serializes, and `STATEFUL_MODULES`
 enumerates them so none can be forgotten: the model, turn order, world turn, market, colours, the
 movement roster, the ledger, the military, relations, recognition, crises, leaders, the timeline,
 the RNG, the tunable overrides and the UI mode. A test walks that list and fails if a name in it

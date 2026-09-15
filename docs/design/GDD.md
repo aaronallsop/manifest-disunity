@@ -65,22 +65,45 @@ drawn from.
 
 ## 3. Target audience
 
-**⚠ DRAFT FOR REVIEW — this was absent entirely from the source material.** Nothing anywhere in the
-project states who the game is for. What follows is drawn from what the design actually is, not from
-a decision anybody has made.
+> **✅ ANSWERED BY AARON, 15 September 2026 — D232. This section is no longer a draft.**
+>
+> **"I have created this game for someone who like me — and the inspiration draws heavily on EU4. Not
+> so much the mechanics but rather the things I like about it that make it really fun."**
 
-**The primary audience is the grand-strategy player who has bounced off the genre's opacity.**
-Someone with hundreds of hours in Paradox titles or Civilization who has, at least once, watched a
-number move and been unable to find out why. The design's single most distinctive commitment — the
-Why record, which makes every stock able to state its own working — is aimed squarely at that person.
+**The audience is the Europa Universalis player, and specifically the one who plays it for the three
+things below.** Not the wargamer, not the optimiser, and — see the correction in §3.1 — **not the
+player who wants the machine explained to them up front.**
 
-**Secondary: the politically literate reader who does not normally play strategy games** but would
-play this one because the map is their actual country, drawn from real county data, and the question
-it asks is a live one.
+### The three things he plays EU4 for, in his own words
 
-**"Everyone" is not an answer and neither is this until Aaron rules on it.** The commercial question
-underneath — whether this is a niche title for people who already like this genre, or a crossover
-built on the subject matter — is **not a designer's call** and is filed as open question 1.
+| | |
+|---|---|
+| **1. It teaches real history sideways** | *"Although fictitious it is a history game where I have been able to learn a lot about 15–19th century world history and things about it I would never have learned any other way."* |
+| **2. You can play it long before you understand it** | *"It is an in depth complex game that looks complicated on the surface but you are still able to play the game and learn something new about how things work and interact with next time. I went a long time before I understood trade properly and I was still able to play and have fun. I didn't even know about estates until 1000 hours into the game and I had fun still."* |
+| **3. Ridiculous outcomes, and the writing around them** | *"The world record for fastest world conquer is by someone who playing as Oirat became the Mongolian empire, converted to Catholicism, became the Holy Roman Emperor, and conquered the world. My favorite game play has been Provence becoming Jerusalem. The one I am trying to do but is tricky is as the Aztecs beating back the colonists and taking the fight to their shore."* |
+
+### 3.1 ⚠ This corrects a draft that had it backwards, and the correction matters
+
+**The earlier draft of this section said the audience was "the grand-strategy player who has bounced
+off the genre's opacity" — someone who watched a number move and could not find out why.** Aaron's
+answer says the opposite about himself: **he played for a thousand hours without knowing a whole
+system existed, and had fun the entire time.**
+
+**The correction is not that explanation is worthless. It is that explanation is not the HOOK.**
+
+> **Requirement, and it is testable: the game must be playable, and fun, by somebody who does not
+> understand the economy, or transit, or the political board. Understanding a layer is a REWARD for
+> coming back, not a toll on the way in.**
+
+**That reframes what the Why record is for, and improves it.** It is not a fix for frustration at the
+door; it is **the thing that makes the next layer learnable at the moment a player goes looking for
+it.** A player who has just noticed that their standing abroad keeps falling can find out why, on the
+turn they get curious — **which is exactly the "learn something new about how things work" loop
+Aaron named, made reliable instead of left to forums.**
+
+**⚠ And it puts a real constraint on every satellite after this one:** a system may be deep, and it
+may not be a prerequisite. *If a document specifies something a player MUST understand before they can
+act at all, that is a finding against the document.*
 
 ---
 
@@ -134,10 +157,43 @@ game.*
 
 ## 5. Unique selling points
 
-**⚠ DRAFT FOR REVIEW — absent as a list from the source material.** The material was unmistakable
-once assembled; nobody had written it down.
+> **✅ REWRITTEN 15 September 2026 against D232, and the order changed.** The first draft led with the
+> Why record. **Aaron's answer says that is not what pulls him in**, so the three things he actually
+> plays for lead, and the Why record follows as what serves the second of them. *The draft's version
+> is not deleted — it is demoted, and §3.1 says why.*
 
-**1. Every number can explain itself.** Every power stock returns a **Why record**: its value, its
+### 5.0 The three that answer "why this instead of Paradox", because they are why HE plays Paradox
+
+**1. It teaches you your own country, sideways.** This is the EU4 effect pointed at America. **The
+board is real**: 3,143 counties with real 2024 population, BEA output and presidential vote; borders
+cut along cultural regions somebody actually painted; **fifteen chokepoints that are all real places**
+— the Soo Locks, Cairo, the Chicago canal, the Mouth of the Mississippi. A player who finishes a game
+knows **why Louisiana matters, what the Mackinac Straits are, and which states cannot reach the sea
+without asking** — and none of that was taught, it was played. *Aaron on EU4: "things about it I would
+never have learned any other way."*
+
+**2. You can play it long before you understand it, and understanding is the reason to come back.**
+See §3.1 — this is a **requirement**, not a boast, and every satellite is answerable to it.
+
+**3. Stories worth telling afterwards.** The design already produces these and they were designed
+before Aaron said this, which is the good kind of confirmation: **the Texas mission tree's pivot ends
+with you reuniting the continent as the United States *of Texas*** — the only pivot in the game that
+changes the *name of the prize* — and **Deseret's ends with the trail complete and frontier-free
+defection**, a landlocked pariah walking its migration backwards to Ohio. *Aaron's own EU4 examples are
+exactly this shape: Provence becomes Jerusalem; Oirat becomes the Mongol Empire, converts to
+Catholicism, becomes Holy Roman Emperor, and conquers the world.*
+
+> **⚠ A tension worth naming rather than smoothing, because two good things pull against each other.**
+> USP 3 wants **absurd outcomes to be reachable**. The project's whole anti-snowball philosophy exists
+> to stop runaway outcomes — reach that refuses you, a coalition that forms against you, an Influence
+> floor a conqueror cannot clear. **These are not the same thing** — the brakes punish *dominance*,
+> and a Provence-to-Jerusalem run is *improbable* rather than dominant — **but nothing in the design
+> currently says so on purpose, and a brake tuned carelessly would flatten exactly the runs that make
+> the best stories.** *Open question 4.*
+
+### 5.1 And the one that is genuinely unlike anything else in the genre
+
+**Every number can explain itself.** Every power stock returns a **Why record**: its value, its
 target, and the full list of inputs with each one's raw figure, its normalised figure, its weight,
 its contribution, the tunable key that moves it, and a sentence saying what it is. Nothing
 downstream recomputes anything — the panel, the leaderboard and the summary all read the same
@@ -148,26 +204,23 @@ record, **so they cannot disagree with each other.** The AI scores moves in the 
 verified.** It is the load-bearing claim under this USP and somebody should check it against actual
 titles before it goes in front of a player.*
 
-**2. It is your actual country, at county resolution.** 3,143 real counties with real 2024
-population, BEA GDP and presidential vote, merged to **1,688 Areas**. Where a figure is not published
-separately, a grounded estimate is apportioned from a real total so national sums stay correct, and
-it is **flagged in the interface with an `est.` badge**. The borders the game opens on are cut along
-cultural regions somebody actually painted, not along lines drawn to make a nice shape.
+### 5.2 Two more that hold, and are about how it plays rather than why you start
 
-**3. Conquest is a trap, and the game says so with arithmetic.** Measured: California conquering
+**Conquest is a trap, and the game says so with arithmetic.** Measured: California conquering
 from 58 to 118 Areas over twelve turns moved **Authority 0.501 → 0.515** and **Influence 0.666 →
 0.148.** Secure at home, a pariah abroad. The reputational cost scales as `(1 + influence)`, so a
 superpower pays more for the same annexation than an unknown does. **And the victory capstone has an
 Influence floor**, so a conqueror can hold every acre on the continent and still be unable to close.
 
-**4. Buy now, pay later, as a recurring motif.** The design has produced the same shape at least five
+**Buy now, pay later, as a recurring motif.** The design has produced the same shape at least five
 times independently: haste is available everywhere and the reaction lands later rather than at the
 till. Pay above a project's quarterly draw to finish sooner and the chance of being found out rises.
 **Triage is the game** — not resource optimisation.
 
-**⚠ These four have not been tested against the market question they exist to answer**, which is
-*why would someone stop playing Paradox games and play this instead.* That is a claim about players,
-and no player outside this project has ever seen the game.
+**⚠ None of these has been tested against a player who is not Aaron.** The three in §5.0 are grounded
+in one person's account of why he plays the game this one is modelled on, which is a much better
+foundation than the guess they replaced — **and it is still one person.** *No player outside this
+project has ever seen the game.*
 
 ---
 
@@ -208,9 +261,12 @@ turn, and the turn was rebuilt from them (D218).
 no statement of what the game should *feel* like to look at. What exists is a description of the
 rendering architecture. **Gap 1.**
 
-**⚠ Audio: absent entirely. Not one mention in roughly fifteen thousand lines of design material.**
-Not deferred, not ruled out — never raised. **Open question 2**, and it is Aaron's, because it is a
-scope and budget question before it is a design one.
+**Audio: ✅ ANSWERED 15 September 2026 — D232. Aaron: "Not yet."**
+
+**So audio is deliberately out of scope, and it is now recorded as a decision rather than surviving as
+an absence.** *That is the whole point of having asked: this project writes down what it is not doing,
+with a reason, and audio was the one absence that was simply an absence.* **Nothing about it is
+specified and nothing should be invented.** It joins the out-of-scope list in §9.
 
 ---
 
@@ -268,6 +324,9 @@ numbered defects that do not block. The largest standing exclusions:
   Any bordering state may route through them at a flat placeholder toll.
 - **Power stocks per Area.** They are per nation, so grievance terms are uniform across everything a
   nation owns. Named as a change of scope rather than of model.
+- **Audio.** ✅ **Ruled out for now, D232 — Aaron: *"Not yet."*** Nothing is specified and nothing
+  should be invented. *Recorded here because this list is the difference between a decision and an
+  oversight, and audio was the only absence in the project that was merely an absence.*
 - **Distance.** **Nothing in the transit layer has a length.** Measured 5 September 2026 from the
   game's own map: the closest two ports on one sea are **16 miles** apart and the farthest **2,578**,
   priced identically. The raw material exists — the data build computes centroids and throws the
@@ -859,13 +918,13 @@ than of `power.floor`: **a nation at peace is not eight per cent exhausted.**
 | | | Blocks |
 |---|---|---|
 | ~~**1**~~ | ~~**Is the split approved, and is it nineteen satellites?**~~ ✅ **ANSWERED 15 September 2026, D230 — yes, nineteen, and the reasoning pushes toward more documents rather than fewer.** *A GDD is a living document and is never finished, so a fat document now becomes an obese one later.* **The split is a floor, not a ceiling** (§13), and §13.1 names the first document that will have to split again and the trigger for doing it | — |
-| **2** | **Audio: is there any?** Absent entirely from the source material — never raised, not deferred. A scope and budget question before it is a design one | `presentation-design.md` |
+| ~~**2**~~ | ~~**Audio: is there any?**~~ ✅ **ANSWERED 15 September 2026, D232 — "Not yet."** Deliberately out of scope and now recorded as a decision rather than an absence. §7 and the out-of-scope list in §9 | — |
 | **3** | **Three of the eight staggered clocks are invisible or half-visible**, and two of them drive other nations' behaviour toward the player. Fog worth keeping, or an interface gap? | `presentation-design.md` |
-| **4** | **Target audience, and the commercial question under it** — a niche title for people who already like this genre, or a crossover built on the subject matter? §3 is a draft | The pitch layer |
-| **5** | **Tone and framing.** A game about the United States coming apart, on real county-level voting data, makes a claim whether or not it intends to. **Nothing anywhere addresses it** | `presentation-design.md`, and arguably everything |
+| ~~**4**~~ | ~~**Target audience**~~ ✅ **ANSWERED 15 September 2026, D232 — the EU4 player, and specifically the one who plays it for the three things Aaron named.** §3 is his words now, not a draft. **⚠ It corrected the draft rather than confirming it** — §3.1, and the correction produces a testable requirement: *the game must be playable and fun before it is understood* | — |
+| **5** | **Tone and framing.** ✅ **NOT ANSWERED, AND THAT IS THE RIGHT OUTCOME.** Aaron, 15 September: *"take this thought/question and give me a prompt that I can put into claude chat that will ask me questions about this. Then it will take my answers and format it into a document based on what you need."* **So this stops being a card and becomes a piece of work**, delivered as `prompts/tone-interview.md`. *The question is still open and is still his; what changed is how it gets answered* | `presentation-design.md`, and arguably everything |
 | ~~**6**~~ | ~~**Two axes or three?**~~ ✅ **ANSWERED 15 September 2026, D231 — three axes and ten positions.** The politics round's rulings stand and **the built two-axis model is what changes.** §15.1 is the design; §15.1a is what exists and what converting it costs. **What replaces this question is smaller and is the architect's**, not Aaron's: `MAX_DISTANCE` has no authored value on the new board — gap 11 | — |
 | **6a** | **⚠ ONE THING TO CONFIRM, and it is mine rather than a designer's ruling.** Ruling 1 recorded that the largest single job in the change was splitting Republican and Democrat across the eight corners by cultural region, because neither mapped onto a corner. **Ruling 2 then added the two centrists, which ARE Republican and Democrat** — so the 2024 seed appears to land directly on them and drift carries people outward. **If that is right, ruling 1's largest owed job does not exist.** I have not treated it as settled | `identity-design.md` |
-| **7** | **May a design session edit `DESIGN.md`?** Asked at 03:35 on 15 September as part of the same message as (1), never answered — **and it was then edited anyway.** D217 records the permission as granted; no evidence of the grant exists. The edits themselves are three careful, marked corrections **and they are good work**; the question is whether the permission is real | The record, and every future stage-2 session |
+| ~~**7**~~ | ~~**May a design session edit `DESIGN.md`?**~~ ✅ **ANSWERED 15 September 2026, D232 — approved.** **The limit is the one the card asked for and it is binding: corrections of FACT only** — a figure that no longer matches what was measured, or a name that changed — **each marked in place, dated, and carrying the measurement that justifies it. Never a change to what the game DOES.** *The permission is now real, and yesterday's edits are retrospectively covered rather than quietly kept* | — |
 
 ---
 
@@ -877,14 +936,14 @@ and simply are not written down anywhere.*
 | | |
 |---|---|
 | **1** | **There is no art direction.** No palette rationale, no typography, no reference, no statement of what the game should feel like to look at. What exists is a description of the rendering architecture |
-| **2** | **`DESIGN.md` §9 says the save format is version 2. The code says `VERSION = 3`, and §12 says so too.** *Verified against `js/statedoc.js` on 15 September 2026.* **This is a fourth self-contradiction, beyond the three D217 found and the session of 15 September corrected** |
+| ~~**2**~~ | ~~**`DESIGN.md` §9 says the save format is version 2.**~~ ✅ **FIXED 15 September 2026** under the permission D232 granted, and marked in place with its date and the line of code that settles it. *It was the fourth self-contradiction in that document, beyond the three D217 found* |
 | **3** | **`DESIGN.md` §4.1 and §12 both state that treaties and aid do not exist.** Both are built — a non-aggression pact with a cooldown and a minimum standing, aid as a treasury transfer that buys patronage, and three relation kinds for them. *`docs/deferred.md` 13, found 6 September and still open* |
 | **4** | **`DESIGN.md` §6 opens *"One action per nation per turn. Each ends the turn."*** That is a true description of what is **built** and a false description of the design, which D218 replaced. **The two documents now disagree by design** and every reader has to know which they are holding |
 | **5** | **The movement roster's live count is not written down anywhere.** `data/parties.json` holds **32 movements** — *counted 15 September 2026.* `DESIGN.md` §7 says thirty-two spawn. Politics is recorded as having struck six, which would leave **26 live**, and **that figure has not been verified against the data** |
 | **6** | **Nothing specifies the vocabulary of a card.** Two full-screen cards exist — an expiring deal and a transit request — and neither is described as an instance of a general form, though `turn-design.md` requires that they are one. *Belongs to `presentation-design.md`* |
 | **7** | **Nothing says how a nation's opening memories are dated.** Whether they are spread across the two years before turn 0 or all stamped *two years ago* changes nothing visible if eight turns of decay are indistinguishable. **Measure before building** |
 | **8** | **No multiplayer exists anywhere in the design** — not built, not deferred, not ruled out, never mentioned. Recorded because its absence is currently an accident rather than a decision |
-| **9** | **⚠ THE TWO BRIEFS GOVERNING THIS STAGE DISAGREE ABOUT WHAT A DESIGN DOCUMENT ENDS WITH.** `docs/design/DESIGNER-BRIEF.md` says *"End every design document with the scenarios it must be able to tell, each one traced"* and calls worked examples *"your test suite"*. The GDD brief of 15 September specifies a four-part satellite — Depends on, the system, Open questions, Gaps — **and traced scenarios are not one of the four.** **Neither written satellite has a traced-scenarios section, and neither does this master.** The newer, more specific brief was followed. *Recorded rather than resolved: whether tracing is dropped or reinstated is Aaron's, and it is the practice that found contradictions in every closed ideation round that the rulings alone did not* |
+| ~~**9**~~ | ✅ **RESOLVED 15 September 2026, D232 — traced scenarios are REINSTATED**, and four existing documents now owe one. *The disagreement, for the record:* `docs/design/DESIGNER-BRIEF.md` says *"End every design document with the scenarios it must be able to tell, each one traced"* and calls worked examples *"your test suite"*. The GDD brief of 15 September specifies a four-part satellite — Depends on, the system, Open questions, Gaps — **and traced scenarios are not one of the four.** **Neither written satellite has a traced-scenarios section, and neither does this master.** The newer, more specific brief was followed. *Recorded rather than resolved: whether tracing is dropped or reinstated is Aaron's, and it is the practice that found contradictions in every closed ideation round that the rulings alone did not* |
 | **10** | **`docs/design/DESIGNER-BRIEF.md` is itself stale and is the file a new design session is told to paste.** It states the live stage is ideation, names round 4 as the live round, and forbids editing `DESIGN.md` — all three superseded. **A session started from it would begin by contradicting the current phase.** *Found 15 September 2026* |
 | **11** | **⚠ `MAX_DISTANCE` HAS NO AUTHORED VALUE ON THE THREE-AXIS BOARD, and it is the first thing the Technical Designer must settle.** It is the denominator of the one function that drives coalitions, drift, splinters, defection, civil-war severity, trade alignment, liberty satisfaction and AI diplomacy, so **every threshold in the game is measured against it.** On two axes the rule was to use the *actual* widest authored pair (**1.7804**) and explicitly **not** the box diagonal, because the diagonal squashes every real affinity into the top third of the range. **On three axes the widest authored pair IS the diagonal** — opposite corners exist — which is **2√3 ≈ 3.4641**. *That figure is arithmetic from the √2 and 2 distances the ruling states; nobody has authored it, and the two-axis rule does not decide it because its whole point was that the diagonal was unoccupied* |
 

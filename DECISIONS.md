@@ -5581,3 +5581,108 @@ make every tuned threshold mean less than its label says."*
 diagonal was UNOCCUPIED.** On three axes opposite corners exist, so the widest authored pair **is**
 the diagonal, at **2√3 ≈ 3.4641**. *That figure is arithmetic from the √2 and 2 distances ruling 2
 states. Nobody has authored it and it is recorded as a gap rather than adopted.*
+
+---
+
+### D232 — Five cards answered at once, and one of them corrects a draft rather than confirming it, 15 September 2026
+
+**Aaron cleared the whole board between 16:58 and 17:19.** Four answers and one instruction. **None of
+them was a rubber stamp and two of them changed the work.**
+
+### 1. A design session MAY correct `DESIGN.md` — approved
+
+**The permission is now real**, and D217's claim that it had already been granted is retrospectively
+covered rather than quietly kept. **The limit is the one the card asked for and it is binding:**
+
+> **Corrections of FACT only** — a figure that no longer matches what was measured, or a name that
+> changed — **each marked in place, dated, and carrying the measurement that justifies it. Never a
+> change to what the game DOES.**
+
+**So the fourth self-contradiction found on 15 September may now be fixed:** §9 says the save format is
+version 2 and the code says `VERSION = 3`. *`GDD.md` gap 2.*
+
+### 2. Audio — "Not yet"
+
+**Out of scope, and now a decision rather than an absence.** It joins `GDD.md` §9's out-of-scope list.
+**Nothing is specified and nothing is to be invented.** *This is the whole reason it was worth asking:
+this project writes down what it is not doing with a reason, and audio was the only absence in fifteen
+thousand lines that was merely an absence.*
+
+### 3. ⚠ Target audience — and it CORRECTS the draft rather than confirming it
+
+**Aaron: *"I have created this game for someone who like me and the inspiration draws heavily on EU4.
+Not so much the mechanics but rather the things I like about it that make it really fun."*** Three
+things, in his words:
+
+1. ***"Although fictitious it is a history game where I have been able to learn a lot about 15–19th
+   century world history and things about it I would never have learned any other way."***
+2. ***"It is an in depth complex game that looks complicated on the surface but you are still able to
+   play the game and learn something new about how things work and interact with next time. I went a
+   long time before I understood trade properly and I was still able to play and have fun. I didn't
+   even know about estates until 1000 hours into the game and I had fun still."***
+3. ***"The ridiculousness and sometimes hilarious outcomes of the game and writing."*** — with three
+   examples: Oirat becoming the Mongol Empire, converting to Catholicism, becoming Holy Roman Emperor
+   and conquering the world; **Provence becoming Jerusalem, his favourite**; and the Aztecs beating
+   back the colonists.
+
+**⚠ THE DRAFT HAD THIS BACKWARDS AND THE CORRECTION IS THE MOST USEFUL THING ON THIS PAGE.** The
+drafted audience was *"the grand-strategy player who has bounced off the genre's opacity"* — somebody
+who watched a number move and could not find out why — **and the Why record was presented as the
+hook aimed at them.** Aaron's answer says the opposite about himself: **a thousand hours without
+knowing a whole system existed, having fun throughout.**
+
+> **RULED BY CONSEQUENCE, and it is testable: the game must be playable and FUN by somebody who does
+> not understand the economy, or transit, or the political board. Understanding a layer is a REWARD
+> for coming back, not a toll on the way in.**
+
+**And it improves the Why record rather than demoting it.** It is not a fix for frustration at the
+door — it is **what makes the next layer learnable at the moment a player goes looking for it**, which
+is exactly the loop Aaron named, made reliable instead of left to forums. *`GDD.md` §3.1 and §5 are
+rewritten; the USPs are reordered so his three lead and the Why record follows as what serves the
+second of them.*
+
+**One tension named rather than smoothed.** USP 3 wants **absurd outcomes to be reachable**, and this
+project's anti-snowball philosophy exists to stop runaway outcomes. **Those are not the same thing** —
+the brakes punish *dominance* and a Provence-to-Jerusalem run is *improbable* rather than dominant —
+**but nothing in the design says so on purpose, and a brake tuned carelessly would flatten exactly the
+runs that make the best stories.** *`GDD.md` open question 4.*
+
+**And the honest limit: this is one person's account of why he plays the game this one is modelled on.
+That is a far better foundation than the guess it replaced, and it is still one person.**
+
+### 4. Tone — NOT answered, and that is the right outcome
+
+**Aaron: *"take this thought/question and give me a prompt that I can put into claude chat that will
+ask me questions about this. Then it will take my answers and format it into a document based on what
+you need."***
+
+**So the card becomes a piece of work instead of a decision.** Delivered as **`prompts/tone-interview.md`** —
+self-contained, because the chat will not have this repository. It carries the board, the real data,
+the thirty-two real-named movements, the eight real-named parties, the puns he has already written,
+ten grounded question areas, his one-question-at-a-time rule, and the exact output structure. **It
+returns `docs/design/TONE.md`.**
+
+**⚠ This creates a `prompts/` folder, which this project's `CLAUDE.md` had recorded as deliberately
+absent** *because nothing here talked to a language model.* **Something now does.** The standing rule
+applies as written: prompt text lives in that folder as a file, never in code. *The departure note is
+updated rather than left contradicting the tree.*
+
+### 5. ⚠ Traced scenarios are REINSTATED — approved, and this one has a bill attached
+
+**The two briefs governing this stage disagreed** (`GDD.md` gap 9): the original designer brief
+required every design document to end with the situations it must be able to narrate, each traced
+step by step, and called worked examples *"your test suite"*. **The GDD brief's four-part satellite
+does not include them, and the newer brief was followed.**
+
+**Aaron approved reinstating it.** The reason it is worth the cost is measured rather than asserted:
+**tracing found contradictions in every closed ideation round that the rulings alone did not**, round
+1 found two of its five stories jammed on contradictions fifty-three rulings had missed, and round 6
+proved it works better **before** the rulings than after.
+
+> **⚠ THE BILL: four documents already exist without a traced-scenarios section — `GDD.md`,
+> `turn-design.md`, `missions-design.md` and `board-design.md` — and all four now owe one. Every one
+> of the remaining sixteen carries the cost from the start.** *Recorded here rather than discovered
+> when somebody notices the format changed halfway through the folder.*
+
+**And the expected outcome is that tracing finds things**, because it always has. *A trace that
+narrates smoothly on the first attempt has probably not been pushed hard enough.*
