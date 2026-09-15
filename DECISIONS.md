@@ -5739,3 +5739,44 @@ per-deal pricing section is written against a menu that no longer exists.** *Rec
 **Whether a hundred-turn deal should be on the menu at all.** *It is half the game.* D228's own
 reasoning — *nothing should be settled for a generation* — argues against it, and **that argument was
 made about a term the menu already contains.** **Not decided here.** *`trade-design.md` open question 1.*
+
+---
+
+### D234 — ⚠ The logistics spiral's brake: rate-limit the RATIO's fall, not the loss, 15 September 2026
+
+**Taken in Hog Wild mode, in Aaron's place.** *Economy finding E left three candidates and chose none;
+`economy-design.md` could not be written without one, because every consequence in §4 reads it.*
+
+> **The ratio of logistics supply to logistics demand may not fall faster than a set rate per turn.**
+
+**Why, in order of weight.**
+
+1. **It binds on the actual failure case.** *Candidate 3 — the world market's shipping cap — does not.
+   The spiral runs on bilateral neighbour deals; the world-market cap is reachable only through a
+   port; **a landlocked nation importing food from next door never touches it.** That is not a
+   judgement, it is a scope mismatch.*
+2. **It caps every consequence at once.** Losses, route failures and the toll rise all read the band,
+   and the band reads the ratio. *Candidate 2 as written caps only the loss, leaving the spiral
+   running through route failure.*
+3. **The precedent is this project's own and it is exact.** `power.maxFall` exists for a runaway of
+   the same shape: *"clamping the value to a minimum leaves the pressure unbounded, so the moment the
+   clamp relaxes the nation falls off a cliff. **The clamp hides the problem.**"* **Rate-limit the
+   CHANGE, not the value.**
+4. **It survives `wiring-triage` §B**, which would put a second arm on the loop.
+
+**Rejected: candidate 1** — logistics capacity rising with volume. *It attacks the real driver, but
+reopens ruling 1.4(a)'s frozen industry mix — the precedent for all six sectors — and creates a second,
+downward spiral nobody has written.*
+
+**What it costs, stated:** **it delays the pain rather than removing it.** *A nation that keeps
+importing into a deficit still arrives there; it gets a few turns to notice and stop.* **That is the
+difference between a trap and a spiral and it is all that is claimed.**
+
+**NOT decided: the rate.** *The architect's, exactly as `power.maxFall` is. No placeholder invented.*
+
+**⚠ And it is the same decision as `wiring-triage` §B**, which is unruled. *Four of Aaron's arrows ask
+that a shortage upstream throttle PRODUCTION rather than tax the journey — recorded as the cheapest
+change on the page, recommended for the alpha, and the one group he never answered.* **Nothing in the
+record connects the two and they are one question.** *`economy-design.md` §7.3, open question 1.*
+
+**Logged in full in `docs/HOGWILD-LOG.md` with the command that reverses it.**

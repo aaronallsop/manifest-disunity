@@ -135,6 +135,64 @@ not carried forward with its original date attached.**
 
 ## Entries
 
+### I chose the brake on the runaway that can destroy a nation for trying to fix a shortage — *stage/economy-design, 15 September 2026*
+
+**This is the largest thing I have decided in your place in this run.**
+
+**The question.** Your economy round found a loop that feeds itself. A nation goes short of something,
+so it buys it from a neighbour. Buying it raises the amount of stuff it is hauling. Hauling too much
+makes its transport network fail — **routes break and a fifth of everything in transit is lost.** So
+less of what it bought actually arrives. So it buys more. **The cure feeds the disease, and nothing
+stops it.** Your round named three possible brakes and chose none of them. One had to be chosen
+before the economy document could be written, because every other part of it reads the answer.
+
+**Why I could not answer it by measuring.** **The spiral has never actually run.** It is a prediction
+from reading the design, not something anybody has watched happen — so its severity is unknown and
+only the *direction* is certain. There is no measurement that picks a brake.
+
+**What I did.** **The transport ratio is not allowed to fall faster than a set rate per turn.** Not a
+cap on the losses — a limit on how fast the situation is allowed to get worse.
+
+**This is your own game's answer to the same problem, borrowed.** The five national stocks already
+solve a runaway of exactly this shape, and the reason is written into the file: *clamping the value
+leaves the pressure building underneath, so the moment the clamp lets go the nation falls off a
+cliff — the clamp hides the problem.* **They limit how fast a thing can change instead.** I did the
+same here.
+
+**What I turned down, and why each one failed.**
+
+- **"Let the transport network grow as demand grows."** It attacks the real cause, and I nearly took
+  it. But your ruling 1.4(a) froze what industries a place has, and making one of the six able to
+  grow is the precedent for all six. **It also creates a second spiral pointing downward that nobody
+  has written** — capacity that rises with volume also falls with it.
+- **"Cap the losses."** The cheapest — one number in one table. **But it only caps the symptom.** The
+  demand keeps climbing and routes keep breaking; the spiral just runs through a different door.
+- **"The world market's shipping cap already stops it."** ❌ **It does not touch the failure case at
+  all.** The spiral runs on deals with the state next door, and the world-market cap only applies to
+  goods going out through a port. **A landlocked nation buying food from its neighbour never goes near
+  it.** This one is not a judgement call — it simply does not bind.
+
+**What my answer costs, said plainly.** **It delays the pain rather than removing it.** A nation that
+keeps buying into a shortage still gets there — it just gets several turns in which the goods are
+still mostly arriving, which is enough time to notice the problem and stop. **That is the difference
+between a trap and a spiral, and it is all I am claiming for it.**
+
+**What I did NOT decide: the rate.** How fast is "too fast" is a feel number and it is the
+architect's, exactly as the existing stock limits are. **I left it unset rather than inventing one.**
+
+**⚠ And there is a second thing here that is genuinely yours.** On your wiring page you drew four
+arrows saying **a shortage of transport should cut what a place PRODUCES**, not just tax the journey
+— trucks for the ore, trucks for the goods, trucks for the food, fuel for the trucks. It was written
+up as *the cheapest change on the page* and recommended for the alpha. **You answered every other
+group on that page and never answered this one.** It puts a second arm on the same loop and makes the
+spiral worse. **Choosing a brake and answering that are the same decision, and nothing in the project
+connects them.** The brake I chose is the only one of the three that still works if you say yes to
+it — which is part of why I chose it, and I want you to know that so you can discount it if you think
+I bent the choice to fit.
+
+**To undo it.** `git revert --no-commit stage/governing-design..stage/economy-design && git commit`
+
+
 ### D228 was put to you on a stale number, and I corrected half of it without asking — *stage/movements-design, 15 September 2026*
 
 **The question.** Your deal menu lets a trade agreement run for a fixed term. This morning I put a
