@@ -5,12 +5,12 @@ what happens at each level.
 
 **Depends on:** `GDD.md` · `nation-design.md` (victory, and the conditions table a mission is a
 smaller instance of) · `turn-design.md` (a mission costs nothing, which only means something once the
-turn has no budget) · `movements-design.md` · `diplomacy-design.md` · `economy-design.md` ·
-`blocs-design.md`.
+turn has no budget) · `movements-design.md` · `diplomacy-design.md` · `blocs-design.md` ·
+`economy-design.md` · `board-design.md`.
 
-**Status: ruled 15 September 2026**, `DECISIONS.md` **D221**. **This is the only document in the GDD
-that carries authored content rather than mechanics.** The system is §1–§4; the trees are §5 onward,
-and each is content that can be rewritten without touching anything above it.
+**Status: ruled 15 September 2026**, `DECISIONS.md` **D221** and after. **This is the only document in
+the GDD that carries authored content rather than mechanics.** The system is §1–§4; the trees are §5
+onward, and each is content that can be rewritten without touching anything above it.
 
 ---
 
@@ -24,11 +24,10 @@ anywhere tells a player what they should be doing this decade.
 
 > *Almost every idea we have is something that happens **to** a nation, and very few are things a
 > player **does**… **Every round should be made to answer the same question before it closes: what
-> does the player actually do about this, on a Tuesday, with one action?** If a round cannot answer
-> that, it is not finished.*
+> does the player actually do about this, on a Tuesday, with one action?***
 
-**A mission tree is the answer at the scale of a whole game rather than a turn.** Aaron's four
-reasons, and they are the design brief for everything below:
+**A mission tree is that answer at the scale of a whole game.** Aaron's four reasons, and they are the
+brief for everything below:
 
 1. It gives you **direction** to play.
 2. It gives you **challenges**.
@@ -45,7 +44,7 @@ reasons, and they are the design brief for everything below:
 **It is the victory table at a smaller scale, and that is the whole implementation.** The three
 victory paths are already *"a table of rows rather than code paths"* — data with per-condition
 targets, evaluated over every nation once per world turn, which is why *"what am I short of"* is
-already answerable. A mission adds two fields to that row: **what unlocks it** and **what it pays.**
+already answerable. A mission adds two fields: **what unlocks it** and **what it pays.**
 
 **A mission costs nothing.** It is not a thing you do — it is a state the game notices you have
 reached. **So missions never compete with anything in the turn**; they sit above it and say what is
@@ -53,26 +52,70 @@ worth starting.
 
 > **Missions are the middle game. Victory is the end.**
 
-**And that is what they are for.** A game runs **200 turns** and the painted separatist movements
-resolve inside roughly the first third. Victory is unreachable for most of a game and unavailable to
-most of the board. **Without missions the long middle of a 200-turn game has nothing in it that tells
-a player they are getting somewhere.**
+A game runs **200 turns** and the painted separatist movements resolve inside roughly the first third.
+Victory is unreachable for most of a game and unavailable to most of the board. **Without missions the
+long middle of a 200-turn game has nothing in it that tells a player they are getting somewhere.**
 
-### 1.1 A tree belongs to a situation, not to a nation
+### 1.1 A completed mission stays completed
+
+**Ruled 15 September 2026.** Once the condition has been true, the mission and its bonus are
+permanent — even if the ground changes hands, even if you lose the office that qualified you.
+
+**The reason is momentum**, which is Aaron's fourth requirement. A tree whose bonuses switch on and off
+as circumstances move is a tree that flickers, and a player cannot plan against it. *It is the same
+shape as conquest ruling 26 refusing to let occupation expire on a timer: a state you reached is a
+fact about your history, not a reading of the present.*
+
+### 1.2 A tree belongs to a situation, not to a nation
 
 **The five Texan successors share one tree**, because they are five claimants to one prize.
 **Minnesota and Wisconsin share one**, because they are two candidates to lead the same union. You
-pick one of them and play it; the tree is the same and **the situation is not**, which is what makes
-the same tree a different game.
+pick one and play it; **the tree is the same and the situation is not**, which is what makes one tree
+two games.
 
-**Three trees in the alpha covering seven of sixty-one nations.** Everything else plays without one.
+**Three trees in the alpha, covering seven of sixty-one nations.** Everything else plays without one.
+
+### 1.3 The four conditions a mission may test
+
+**Aaron writes *"own and control"* colloquially and it is one phrase doing four jobs.** The build
+already has the distinctions; this is the vocabulary.
+
+| Term | Means |
+|---|---|
+| **Held** | It is yours on the map, whatever flag it carries |
+| **Settled** | Held **and digested** — no longer under an occupation flag. Ruling 26's fourth rung, and it takes time |
+| **In the union** | A federation member holds it **and you lead that federation** |
+| **Reached** | Not yours, but a **working trade route** runs to it |
+
+**⚠ "In the union" is a ruling and it is load-bearing.** *Leading a federation counts as controlling
+its members' ground, for mission purposes.* That makes being elected leader the single most valuable
+rung in any tree that has one — **most of a federation tree's territorial branch can be finished
+without a shot** — and §1.1 is what keeps it from flickering when the presidency changes hands.
+
+**It applies to missions and not to victory.** See §2.4.
+
+### 1.4 The voice — a constraint on whoever writes a tree
+
+> **A mission's name is a regional joke the people who live there would get.**
+
+Read off Aaron's two drafts: *Not Just a Great Lake · The Northern Cheese Mongers · Bearing Down on the
+Lions Out East · The Tiger and the Buffalo Drink Water from the Same Riverbank · Southern Hospitality ·
+The Superior Lakes*; and in Texas, *Spirit of Sam Houston · Remember the Alamo · The Pass · Well,
+That's Dallas · Father of Texas · We Never Wanted to Be Part of Your Country Anyways.*
+
+**Sports teams, state history, local self-deprecation.**
+
+**And the names do design work rather than decoration.** *Bearing Down on the Lions* says the mission
+is about Detroit without naming a mechanic; *the tiger and the buffalo drink from the same riverbank*
+says Cincinnati and Buffalo are on the same water. **That is requirement 3 — the play gets a story —
+delivered in the title instead of a paragraph underneath it.** A tree written in flat descriptive
+language would work mechanically and lose the thing it is for.
 
 ---
 
 ## 2. The structure
 
-**Three branches, four elements, one pivot.** Read out of Aaron's Texas draft and generalised so the
-other two can follow it.
+**Three branches, four elements, one pivot.**
 
 ### 2.1 Three branches
 
@@ -87,31 +130,26 @@ Texas's ground arrives by **conquest**. Deseret's arrives by **defection** — A
 threshold along a frontier, which is built and needs no army. A Great Lakes nation's arrives by
 **agreement**, because what it wants is not to own the gates but to have them inside its union.
 
-**The three branches run in parallel.** None gates another. A player pushes whichever suits their
-situation, and most push all three unevenly.
+**The three branches run in parallel.** None gates another.
 
-### 2.2 ⚠ Standing and Ground pull against each other, and the model does it without being asked
+### 2.2 Standing and Ground pull against each other, and the model does it unprompted
 
 **Recognition's first term is standing.** Influence **falls** with conquest, scaled by how much
 standing you had — measured across twelve turns of expansion, **Influence 0.666 → 0.148** while
 Authority barely moved.
 
-**So wherever ground must be taken by force, every step of the Ground branch makes the Standing branch
-harder — and the nation panel says so, by name, in the Why record.**
-
 | | How its ground arrives | The tension |
 |---|---|---|
 | **Texas** | Conquest | **Severe.** The branches fight |
 | **Deseret** | Defection | **Mild.** Its ground comes to it |
-| **Great Lakes** | Agreement | **Inverted.** Joining a federation *raises* Influence, because membership is flat-rate trade with every member and Influence counts **reach** — *"nations you have live trade relations with"* |
+| **Great Lakes** | Agreement | **Inverted.** Joining *raises* Influence, because membership is flat-rate trade with every member and Influence counts **reach** — *"nations you have live trade relations with"* |
 
-**This is the property Aaron named as the reason EU4 works:** *"you could be so advanced in military
-that you are missing out on trade increases… all the systems work together to both make the other
-more powerful but also work in the opposite way."* **It is already in the model. The trees only had
-to find it.**
+**This is the property Aaron named as the reason EU4 works** — *"all the systems work together to both
+make the other more powerful but also work in the opposite way."* **It is already in the model. The
+trees only had to find it.**
 
-**And Building feeds Standing more than Ground**, because the one buildable thing is trade capacity
-and Influence counts trade reach. So the structure quietly says: **build and trade and be admitted, or
+**And Building feeds Standing more than Ground**, because the one buildable thing is trade capacity and
+Influence counts trade reach. So the structure quietly says: **build and trade and be admitted, or
 conquer and be feared.**
 
 ### 2.3 Four structural elements
@@ -120,25 +158,29 @@ conquer and be feared.**
 |---|---|---|
 | **Ladder** | The same achievement at increasing scale. Each rung unlocks the next | one nation recognises you → half the continent → all of it |
 | **Set** | N missions in any order; **all** are required to open what follows | the five Texan cities |
-| **Fan** | Several independent missions that all become available when a gate opens | the five Texan capstones |
+| **Fan** | Several independent missions that all become available when a gate opens | the Texan capstones |
 | **Free** | No prerequisite and no gate | the development branch |
 
 **Each branch opens with something reachable in the first few years**, so a tree begins paying
-immediately rather than after a decade. That is Aaron's fourth reason — *bonuses to keep the momentum
-up* — expressed as a placement rule.
+immediately rather than after a decade. That is requirement 4 as a placement rule.
 
 ### 2.4 The pivot
 
 **At most one per tree, at the end of the longest branch, and its reward is not a bonus — it is a
-victory re-aimed.**
+victory re-aimed or a licence that changes what you can afford to do.**
 
-Aaron's Texan example: **conquer Washington D.C. and unite the map as the United States of Texas
-instead of the USA.** That is the objective changing hands, and it answers round 7 ruling 2's open
-half in a way neither of its candidates anticipated. That ruling said the federal remnant plays a
-different game — *restore*, where everyone else *replaces* — and left open whether the remnant's
-victory is its own condition set. **A pivot gives a third mode: the remnant's story can be seized.**
+Texas's: **conquer Washington D.C. and unite the map as the United States of Texas** — the objective
+changing hands, and a third answer to round 7 ruling 2's open half. That ruling said the federal
+remnant **restores** where everyone else **replaces**, and left open whether the remnant has its own
+condition set. **A pivot gives a third mode: the remnant's story can be seized.**
 
-*A tree without a pivot is complete and normal. A pivot is what a tree earns by being finished.*
+**⚠ A pivot is where a general permission may be granted that the design refuses by default.** The
+clearest case is *"leading a federation counts as owning"*: it holds for **missions** everywhere and
+for **victory** nowhere, because **victory is re-checked every world turn while a mission is
+permanent** — so a win that arrived on a federation election would evaporate at the next one. *A pivot
+is the right place to grant such a thing, because it is earned rather than handed out.*
+
+*A tree without a pivot is complete and normal.*
 
 ---
 
@@ -148,18 +190,17 @@ victory is its own condition set. **A pivot gives a third mode: the remnant's st
 
 **A mission may move a stock, provided it appears in the panel with its own label.**
 
-The precedent is built and it is the right one. **A leader** is *"a thumb on the scale, deliberately
-small"* — one named person per nation, two traits, and **a signed modifier on each of the five stocks
-plus a small pull on the war roll.** A leader's trait is already a named, permanent, explained term
-that the panel prints as its own row.
+The precedent is built. **A leader** is *"a thumb on the scale, deliberately small"* — one named person
+per nation, two traits, and **a signed modifier on each of the five stocks plus a small pull on the war
+roll.** A leader's trait is already a named, permanent, explained term the panel prints as its own row.
 
 **So *"Spirit of Sam Houston: +0.04 Authority"* is a row that tells a story. What is forbidden is an
 unexplained adjustment** — every number in this game explains itself from named inputs, the summary is
 built from the same rows the panel shows *"so it cannot disagree with the numbers beside it"*, and a
-hidden mission bonus is the one kind of row this game has never had.
+hidden mission bonus would be the one kind of row this game has never had.
 
 ***Recorded rather than edited away:** the first recommendation put to Aaron was "permission, not
-power" — that a mission may only unlock or cheapen something. It was too strict, and the leader
+power" — that a mission may only unlock or cheapen something. **It was too strict**, and the leader
 modifier is what shows it.*
 
 ### 3.2 What a reward may be
@@ -167,85 +208,109 @@ modifier is what shows it.*
 | | |
 |---|---|
 | **A named modifier** | Signed, permanent, labelled, on any of the five stocks or on a term some system already computes |
-| **A permission** | Something you may now do that you could not — *"your goods cross Mexico free"* |
-| **A claim** | The machinery exists: a recognition claim is a property of territory and changes hands with the ground (diplomacy ruling 18) |
+| **A permission** | Something you may now do that you could not |
+| **A claim** | A recognition claim is a property of territory and changes hands with the ground — diplomacy ruling 18 |
 | **A project unlocked or cheapened** | Sits inside `turn-design.md` and adds no new kind of effect |
 | **Money** | Dull, safe, and it converts straight into projects |
 | **A pivot** | §2.4. One per tree at most |
 
-### 3.3 Two traps, both found by checking
+### 3.3 Three traps, all found by checking rather than assuming
 
 **A reward can be redundant.** *Dominate the Gulf* proposed letting you charge 10% more and still be
 accepted. **The economy already pays that automatically:** `AlternativesMult` rises as a buyer's
 supplier count falls, to ×1.5, and the spec calls it *"the most important term… what makes cutting a
-rival's other supplier a strategic act rather than a flavour event. Do not simplify it away."* **Hold
-the Gulf and you can already charge more, by arithmetic.** Check before authoring.
+rival's other supplier a strategic act rather than a flavour event. Do not simplify it away."*
 
-**A reward can need a kind of term the game does not have.** *Increased recognition from nations west
-of the Mississippi* is a **geographic** modifier on recognition, and recognition is earned from
-standing, kinship, duration and size — **nothing in the game modifies it by where the other nation
-is.** Small, but new.
+**A reward can need a kind of term the game does not have.** *Increased recognition from nations west of
+the Mississippi* is a **geographic** modifier on recognition, and recognition is earned from standing,
+kinship, duration and size — **nothing modifies it by where the other nation is.** Small, but new.
+
+**⚠ A reward can make Canada or Mexico an actor, and they are not.** D168 and `CLAUDE.md`: **they are
+geography — not actors, no opinion, no negotiation**, and round 4's ruling 4 refused an appetite for
+them because *"giving them an appetite of their own would make them actors by the back door."*
+
+> **The conversion is always the same: "Canada becomes your friend" → "your goods cross the corridor
+> free."** Same feeling, no new actor. It has come up twice — El Paso's *The Pass* and the Great
+> Lakes' *Superior Lakes* — and it will come up again.
+
+### 3.4 A licence may be scoped to ground
+
+**A reward that lowers the price of conquest points the anti-snowball brake backwards**, because the
+penalty is `conquest × (1 + influence)` — deliberately scaled so *"a superpower annexing a neighbour
+pays more in reputation than an unknown does, because it had more to spend"* — and coalitions form on
+`size_share × (1 − influence)`, so a nation with high standing already draws none.
+
+**So a conquest licence is scoped to named ground rather than granted generally.** The Great Lakes
+pivot (§5.6) is the worked example: the condition is about the Mississippi, so the licence is too.
+**Everywhere else, the full price.** This keeps the brake, keeps the Why record honest — the row reads
+against named ground — and makes the pivot mean what it says.
 
 ---
 
 ## 4. ⚠ What a tree must not do
 
-**A tree must not be finishable in a run that is shorter than the game, and it must not be
-unfinishable either.** A game is **200 turns**. Nobody has played one, so there is no measurement to
-size a tree against — *which is itself the useful thing to say.* **The first tree to be played is the
-measurement.**
+**It must not be finishable in a run much shorter than the game, and it must not be unfinishable.** A
+game is **200 turns** and nobody has played one, so there is no measurement to size a tree against —
+*which is itself the useful thing to say.* **The first tree played is the measurement.**
 
-**A tree must not require a nation the board does not have.** Programmer rule 17, earned on
-14 September when a round wrote eleven rulings about nations that are not in the game. **Every mission
-below names ground or nations verified against the data on 15 September 2026**, and where one depends
-on something unbuilt it says so in the row.
+**It must not require a nation the board does not have.** Programmer rule 17. **Every mission below is
+verified against the data**, and where one depends on something unbuilt the row says so.
 
 ---
 
-# 5. The Great Lakes tree — Minnesota or Wisconsin
+# 5. The Great Lakes tree — Minnesota **or** Wisconsin
 
 **You play one of them. The tree is the same and the situation is not.**
 
 ## 5.1 The situation, measured
 
-**Checked against `data/county_trade.json` and `data/parties.json`, 15 September 2026.**
+**Verified against `data/county_trade.json`, `data/adjacency.json` and `data/parties.json` on
+15 September 2026.**
 
 | | **Minnesota** | **Wisconsin** |
-|---|---:|---:|
-| Counties carrying trade geography | 20 | 28 |
-| Ports | **4** | 2 |
-| Ocean coast | **0** | **0** |
-| Great Lakes counties | 3 | **15** |
-| **International border crossings** | **2** — International Falls, Grand Portage | **0** |
+|---|---|---|
+| **Lake Superior ports** | **2** — St. Louis Co (Duluth), Lake Co | **0** |
+| **Lake Michigan ports** | 0 | **2** — Brown Co (Green Bay), Milwaukee Co |
+| **Mississippi river ports** | **2** — Winona, Ramsey (St. Paul) | **0** |
+| **Land gates to Canada** | **2** — Cook Co (Grand Portage), Koochiching (International Falls) | **0** |
+| Great Lakes corridor counties | 3 | **15** |
+| Mississippi corridor counties | **11** | 7 |
 | **Chokepoints held** | **0** | **0** |
-| Counties on the Mississippi corridor | 11 | 7 |
 
-**Three facts decide this tree and none of them was guessable:**
+> **Minnesota sits on both networks — the lakes and the river — and has two doors to Canada.
+> Wisconsin is on Lake Michigan and nothing else.**
 
-**1. Neither of them holds a single one of the fifteen chokepoints.** The gates are Michigan's four
-(Soo Locks, the Straits of Mackinac, the Detroit River, the St. Clair River), New York's two (Niagara,
-the St. Lawrence outlet), Illinois's two (the Chicago Sanitary & Ship Canal, and Cairo at the
-Ohio–Mississippi confluence), and Missouri's one (the Missouri–Mississippi confluence at St. Louis).
+**Three facts decide this tree and none was guessable:**
 
-**2. They sit at the far western end of both corridors.** The Great Lakes corridor is 81 counties
-ordered west to east and **Duluth is the first county in the list**; by state it runs Michigan 41,
-Wisconsin 15, New York 9, Ohio 7, Minnesota 3, Indiana 3, Illinois 2, Pennsylvania 1. The Mississippi
-corridor is 105 counties and **it begins in Minnesota.**
+**1. Neither holds a single one of the fifteen chokepoints.** They belong to Michigan (4 — the Soo
+Locks, the Straits of Mackinac, the Detroit River, the St. Clair River), New York (2 — Niagara, the
+St. Lawrence outlet), Illinois (2 — the Chicago Sanitary & Ship Canal, and Cairo at the
+Ohio–Mississippi confluence), Louisiana (2 — New Orleans, the Mouth) and Missouri (1 — the
+Missouri–Mississippi confluence at St. Louis).
 
-> **So every water route out of a Great Lakes nation runs past somebody else's gate.** East through
-> the lakes means Michigan then New York. South down the river means Illinois then Missouri then
-> Louisiana. *A gate bridges the stretch above it and the stretch below it and no other pair* — so
-> each one is a separate permission and a separate toll, compounding on what arrives.
+**2. They sit at the western end of both corridors.** The Great Lakes corridor is **81 counties ordered
+west to east and Duluth is the first in the list** — Michigan 41, Wisconsin 15, New York 9, Ohio 7,
+Minnesota 3, Indiana 3, Illinois 2, Pennsylvania 1. The Mississippi corridor is **105 counties and it
+begins in Minnesota.**
 
-**3. Its trade with the world is easy and its trade with its own continent is not.** Great Lakes ports
-reach the world market **only through the Canada corridor** — a flat 10% that is a cost and not a
-transfer, and **Canada is geography, so nobody can close it.** *That is the inverse of most nations
-on the board, and it is the whole strategic character of this one.*
+> **Every water route out runs past somebody else's gate.** *A gate bridges the stretch above it and
+> the stretch below it and no other pair* — so each is a separate permission and a separate toll,
+> compounding on what arrives.
 
-### 5.2 Its politics, and they are unlike anywhere else on the board
+**3. Trade with the world is easy; trade with the continent is not.** Great Lakes ports reach the world
+market **only through the Canada corridor** — a flat 10% that is a cost and not a transfer, and
+**Canada is geography, so nobody can close it.** *That is the inverse of most nations on the board and
+it is the strategic character of this one.*
 
-**Three movements live in Minnesota and Wisconsin. All three are Unify movements, and all three are
-capped below the line at which ground leaves.**
+**⚠ One route question the data does not answer: does a Lake Michigan port reach the Canada corridor
+without passing the Straits of Mackinac?** If it does not, **Wisconsin's entire world trade runs
+through Michigan's gate** and it is the most dependent nation in the tree. **For the Technical
+Designer.**
+
+## 5.2 Its politics, and they are unlike anywhere else on the board
+
+**Three movements live here. All three are Unify movements, and all three are capped below the line at
+which ground leaves.**
 
 | Movement | Counties | in MN | in WI | Cap | Adjective |
 |---|---:|---:|---:|---:|---|
@@ -253,161 +318,187 @@ capped below the line at which ground leaves.**
 | **The Farmers Union** | 983 | 75 | 56 | **0.30** | economic |
 | **Great Lakes Free Trade** | 103 | 3 | 12 | **0.30** | economic |
 
-**`secession.countyThreshold` is 0.40.** None of the three can reach it.
+**`secession.countyThreshold` is 0.40. None of the three can reach it.**
 
 > **This is the one nation on the board that cannot be broken apart by its own people. It can only be
 > nagged into unions.**
 
-**And a Unify movement's demand is not something you can deliver at home.** Politics ruling 15: past a
-share of the population, **the demand is that your government go and propose to its neighbours** — and
-ruling 16 gives the neighbour three answers, of which the middle one is the interesting one:
+**A Unify movement's demand is not something you can deliver at home.** Politics ruling 15: past a
+share of the population **the demand is that your government go and propose to its neighbours** — and
+ruling 16 gives three answers:
 
 | Answer | What happens |
 |---|---|
-| **Yes** | The two nations become **one entity**, everyone a full member, **and none of conquest's five penalties apply** |
+| **Yes** | The two become **one entity**, everyone a full member, **and none of conquest's five penalties apply** |
 | **"Let's think about it"** | **The movement inside THEIR country grows faster** |
 | **No** | Refused — and it can read as a nation consolidating power |
 
-**Ruling 18 then makes the movement clever for free:** asking discharges the demand, and later it
-comes back **pointing at whichever neighbour is now the likeliest yes — which is often the one who
-said "let's think about it", because that answer grew their appetite.**
+**Ruling 18 makes the movement clever for free:** asking discharges the demand, and later it returns
+**pointing at whichever neighbour is now the likeliest yes — often the one who said "let's think about
+it", because that answer grew their appetite.**
 
-> **So the Great Lakes player's own farmers do the persuading. You are the instrument they use.**
+> **So the player's own farmers do the persuading. You are the instrument they use.**
 
 **⚠ And the Farmers Union's heartland is not in the eight governor states.** Its 257 core counties run
 **Ohio 44, Indiana 32, Michigan 26, Wisconsin 25, Oklahoma 24, Missouri 23, Illinois 22, Minnesota
 21.** *Ohio and Michigan are not in the story's bloc of eight, and between them they hold more of the
-movement's core than Minnesota and Wisconsin do.* **To satisfy the movement you have to bring in
-states the bloc does not contain — and Michigan is the one holding four gates.**
+movement's core than Minnesota and Wisconsin do.* **To satisfy the movement you must bring in states
+the bloc does not contain — and Michigan is the one holding four gates.**
 
 ---
 
 ## 5.3 Branch one — STANDING: build the union
 
-**A ladder of four.** Each rung is built machinery: politics ruling 34 sets three as the floor for a
-federation and diplomacy ruling 4 reuses it for a bloc; ruling 25 gives a federation a leader elected
-by its members.
+**A ladder of four.**
 
-| | Mission | Condition | Element |
-|---|---|---|---|
-| **S1** | **Sign the paper** | Be a founding member of a bloc of at least **three** | Ladder, and **reachable in the first years** |
-| **S2** | **The eight governors** | The bloc holds the story's eight — Minnesota, Wisconsin, Illinois, Indiana, Iowa, Nebraska, Missouri, Kansas | Ladder |
-| **S3** | **More than a piece of paper** | The bloc becomes a **federation** — leader, budget, turn, flat internal toll | Ladder |
-| **S4** | **Elected** | Be voted its **leader**, and spend its budget for a full term | Ladder. **The top of the branch** |
+| | Mission | Condition |
+|---|---|---|
+| **S1** | **Sign the paper** | Be a founding member of a **bloc** of at least three. *Reachable in the opening years* |
+| **S2** | **The eight governors** | The bloc holds all eight signatories — **Minnesota, Wisconsin, Illinois, Indiana, Iowa, Nebraska, Missouri, Kansas.** *All eight are on the board* |
+| **S3** | **More than a piece of paper** | The bloc becomes a **federation** — elected leader, budget, turn of its own, flat internal toll |
+| **S4** | **Elected** | Be voted its **leader**, and spend its budget for a full term |
 
-**What S3 costs, and it is the hinge of the whole tree.** Politics ruling 26: **the federation's flat
-10% replaces members' own arrangements with one another.** Inside it there are no negotiated corridors
-— members trade at a rate nobody can refuse or revoke. **That is the sacrifice for the gate-holders
-and the prize for everybody else.** Ruling 27 softens it: the host's 5% goes to the ground actually
-crossed, so **Michigan still earns from every member's cargo on its lakes, at a fixed rate rather than
-whatever it could extract. Joining does not zero a gate-holder's advantage; it caps it.**
+**This is the spine rather than one branch of three.** A federation dissolves every gate at once:
+politics ruling 26, *"the flat 10% replaces members' own arrangements with one another — inside a
+federation there are no negotiated corridors between members: they trade at a rate nobody can refuse or
+revoke."*
 
-**What S4 is worth.** The leader runs **two budgets, its own and the federation's**, and the
-federation's turn is deliberately three things: fund a struggling member, permit a declaration of war,
-and accept or reject trade deals offered from outside **on behalf of everybody.**
+> **This branch is not "make friends". It is the only way a Great Lakes nation stops living at other
+> people's permission.**
 
-*Rewards: each rung should pay in **Influence**, which is what membership already generates — joining
-an eight-member federation hands you seven live trade relations in one act, and Influence counts reach.
-The tree should not need to invent that; it should name it.*
+**S3 is the hinge, and what it costs somebody else is why it is hard.** The gate-holders are *"exactly
+the nations that lose most by joining, because their leverage is the thing membership dissolves."*
+Ruling 27 softens rather than removes it: the host's 5% goes to the ground actually crossed, so
+**Michigan still earns from every member's cargo on its lakes, at a fixed rate instead of whatever it
+could extract. Joining does not zero a gate-holder's advantage; it caps it.**
+
+**S4 is worth real money and it is the key to branch two.** The leader runs **two budgets** and the
+federation's turn is three things: fund a struggling member, permit a declaration of war, and **accept
+or reject trade deals offered from outside on behalf of everybody.** And under §1.3, **leading counts
+as controlling every member's ground.**
+
+*Rewards: this branch should pay in **Influence**, which membership already generates — joining an
+eight-member federation hands you seven live trade relations in one act. The tree names it rather than
+inventing it.*
 
 ---
 
-## 5.4 Branch two — GROUND: the gates
+## 5.4 Branch two — GROUND: the corridors
 
-**Your ambition is not to own the gates. It is to have them inside your union, where they stop being
-threats and become a fixed 5%.** A **set** of three, any order, then a **fan**.
+**A set of three, a fan of three, and a capstone.** Names are Aaron's.
 
-| | Mission | What it means | Verified |
+### The set — any order, all required
+
+| | Mission | Condition | Verified |
 |---|---|---|---|
-| **G1** | **The Soo and the Straits** | **Michigan** is in your bloc or federation | Michigan holds **4 of the 15 gates** and **41 of the 81** Great Lakes corridor counties |
-| **G2** | **The river gate** | **Illinois** is in it | Illinois holds the **Chicago canal** and **Cairo**, and Cairo is the Ohio–Mississippi confluence |
-| **G3** | **The outlet** | **New York** is in it | New York holds **Niagara** and the **St. Lawrence outlet** — the lakes' only way to the ocean |
+| **G4** | **The Northern Cheese Mongers** | Hold the Mississippi counties of Minnesota and Wisconsin | **18 counties — 11 MN, 7 WI.** ⚠ **The easiest mission in the branch and it is a duel:** whichever nation you play, the other half belongs to your tree-rival |
+| **G1** | **Not Just a Great Lake** | Hold every port on Lake Superior | **11 Superior counties and only 3 have ports** — St. Louis Co MN (Duluth), Lake Co MN, **Marquette Co MI.** ⚠ **Minnesota starts with two of three. Wisconsin starts with none** — Bayfield, Douglas and Iron have no port at all |
+| **G2** | **The Soo and the Straits** | Michigan held or in the union | **4 of the 15 gates and 41 of the 81** Great Lakes corridor counties. **The hardest diplomatic ask in the tree** |
 
-**⚠ G3 is the hard one and it should be.** New York is not a Farmers Union state, it is not in the
-Midwest, and it is nine counties of the Great Lakes corridor away at the far end. **A Great Lakes
-federation that reaches New York has crossed the continent by agreement.**
+### The fan — all three open when the set is done
 
-**The fan, unlocked when all three are in:**
+| | Mission | Condition | Verified |
+|---|---|---|---|
+| **G5** | **Bearing Down on the Lions Out East** | Hold every county surrounding Chicago and Detroit | **10 counties.** Chicago (Cook Co IL) has **6** neighbours — DuPage, Kane, Lake IL, McHenry, Will, and Lake Co **Indiana**. Detroit (Wayne Co MI) has **4** — Macomb, Monroe, Oakland, Washtenaw. ⚠ **Thin today and dramatic later:** Chicago and Detroit are city-states in the story and **are not on the board** |
+| **G6** | **The Tiger and the Buffalo Drink Water from the Same Riverbank** | Hold Ohio and Buffalo | Ohio is **88 counties** and the Farmers Union's **largest core state — 44 of 257.** Buffalo is **Erie County NY.** ⚠ **Buffalo is not Niagara** — Erie, Niagara and St. Lawrence are three different counties, so this does not deliver the New York gates |
+| **G3** | **Southern Hospitality** | The mouth of the Mississippi **held or allied**, with **trade route access** to it | **Orleans Parish and Plaquemines Parish** — both ports, both ocean-coastal, both gates. **The only ocean the river reaches.** *The gentlest condition in the tree, and the right one: it uses the transit system rather than conquest* |
 
-| | Mission |
+### The capstone
+
+| | Mission | Condition | Reward |
+|---|---|---|---|
+| **G7** | **The Superior Lakes** | Every chokepoint on the Great Lakes and the Mississippi | **11 of the game's 15** — Michigan 4, New York 2, Illinois 2, Louisiana 2, Missouri 1. ⚠ **Needs Niagara County and St. Lawrence County on top of Buffalo.** **Reward: your goods cross the Canada corridor free** — today a flat 10%, and for a nation whose world trade all runs that way it is the most valuable bonus in the tree |
+
+**The two gates in the middle of the river come free with branch one** — Cairo is Illinois and St. Louis
+is Missouri, both governor states. **So branch one delivers the middle and the ends are the work.**
+
+---
+
+## 5.5 Branch three — BUILDING
+
+**Free missions, no gate — and this is where the two nations stop sharing a game.** *Names are
+placeholders in Aaron's register.*
+
+| | *[placeholder]* | Condition |
+|---|---|---|
+| **B1** | *The Twin Ports* | **Build a Lake Superior port.** Minnesota has two and upgrades them. **Wisconsin has none and must build one at Douglas County — which is Superior, Wisconsin, Duluth's twin across the harbour** |
+| **B2** | *The Boundary Waters* | **Hold and build a land gate to Canada.** Minnesota opens with two. Wisconsin must take or federate for one |
+| **B3** | *[a hotdish joke]* | **Hold a food surplus for eight turns** — the spec's **Surplus** band, a supply-to-need ratio of 1.11–1.50. ⚠ *Needs the resource model built, which is not in the alpha track today* |
+
+**⚠ B1 unblocks G1 for Wisconsin and not for Minnesota.** Build the port at Superior and you have a
+foot on the lake you were locked out of. **So the two nations run the same tree in a different order** —
+Minnesota pushes Ground first because its geography is already done; Wisconsin must build before it can
+reach. *That is the Austin-and-Houston property arriving from federal port data rather than an author's
+hand, and it is the strongest argument that one tree for two nations is right.*
+
+**This branch is thinner than the other two and that is correct.** Development is *"very small and
+limited"* by ruling — one buildable thing, capacity. Texas's third branch came out the same way.
+
+---
+
+## 5.6 The pivot — **both banks of the Mississippi**
+
+**Condition: hold both counties of every facing pair along the Mississippi.**
+
+**`bank_pairs` is exactly this** — 213 pairs of counties facing each other across a river, of which
+**96 are both on the Mississippi corridor.** So *"everything east and west of the Mississippi"* is
+computable as written.
+
+| | States in those 96 pairs |
 |---|---|
-| **G4** | **An inland sea** — every Great Lakes corridor county held by a member |
-| **G5** | **From the headwaters down** — the Mississippi corridor from Minnesota to Cairo held by members |
-| **G6** | **Nobody's toll** — no member pays a negotiated corridor toll to a non-member to reach the world market |
+| **In the Farmers Union eight** | Illinois, Missouri, Iowa, Wisconsin, Minnesota — **five** |
+| **Outside it** | **Mississippi, Arkansas, Louisiana, Tennessee, Kentucky — five** |
 
----
+> **The upper half federates. The lower half is the South.**
 
-## 5.5 Branch three — BUILDING: a way out of your own
+**⚠ So the peaceful tree cannot finish peacefully, and the map is what decided that.** You can federate
+the Midwest — those five are your own governors. **You cannot federate Louisiana, Mississippi and
+Arkansas**, because they are Gulf and Deep South ground with their own reunification contest running,
+and a farming bloc has nothing to offer them.
 
-**Free missions, no gate. And this is where the two nations stop being the same.**
+**The last third of the river has to be taken, and the pivot is the licence to take it.** *Not an
+author deciding the nice tree ends in a war — the map running out of people who will say yes.*
 
-| | Mission | Minnesota | Wisconsin |
-|---|---|---|---|
-| **B1** | **Duluth / the lakeshore** — build capacity at your own Great Lakes ports | 4 ports, 3 lake counties | 2 ports, **15** lake counties |
-| **B2** | **The land gate** — hold and build a border crossing to Canada | **Has two already**: International Falls and Grand Portage | **Has none. Must take or federate for one** |
-| **B3** | **The granary** — hold a food surplus for eight turns | | |
+**Reward: ground on the Mississippi bank pairs costs less in Influence and Authority to take and to
+hold. Everywhere else, the full price.** §3.4 is why it is scoped: unscoped, it points the
+anti-snowball brake backwards, because a federation leader has high Influence, therefore low
+`threat = size_share × (1 − influence)`, therefore no coalition — and a bonus that stops them losing
+Influence means they never become a threat while they take the continent.
 
-**⚠ B2 is the asymmetry, and it is real rather than authored.** Minnesota opens with two international
-crossings and Wisconsin opens with none. **The same mission is a development project for one of them
-and a foreign-policy problem for the other** — which is exactly how Austin and Houston share a tree and
-do not share a game.
-
-*B3 is the spec's **Surplus** band — a food supply-to-need ratio of 1.11 to 1.50 — held for eight turns.
-**It needs the resource model built**, which is not in the alpha track today.*
-
----
-
-## 5.6 The pivot — **the union becomes the Union**
-
-**Condition:** your federation holds the seats, the people and the economy that Reunification measures.
-
-**Reward: the victory re-aims.** You are not restoring the United States and you are not replacing it.
-**You are reassembling it by agreement**, and the federation you built is the thing that did it.
-
-**⚠ And the engine already permits this, which is why it is the right pivot rather than a wish.**
-The Reunification path counts seats of government as **held, own, and aligned** — *"a seat you do not
-own counts toward Reunification if the holder governs as you do and your Influence exceeds theirs by a
-margin."* The design note in the engine says it in one line:
-
-> ***A beloved hegemon reunifies through nations it never invaded.***
-
-**So round 7 ruling 2's two modes become three.** The federal remnant **restores**. Texas **replaces**
-— and Aaron's Texan pivot replaces the name as well. **A Great Lakes federation reassembles**, and it
-is the only one of the three that never needs an army.
+**And it gives the tree an ending it otherwise had not got.** A purely diplomatic tree federates and
+federates. **This one builds a union for a hundred and fifty turns and then finds the thing it built
+the union for is held by people who will never join it.**
 
 ---
 
 ## 5.7 What this tree would be tested for
 
-**Three questions the alpha would answer and paper cannot:**
-
-1. **Will Michigan ever join?** Politics ruling 26 states the problem plainly: *"the nations worth
-   most to a federation are the ones holding the gates — and those are exactly the nations that lose
-   most by joining, because their leverage is the thing membership dissolves. So a federation must pay
-   them, elect them, or do without them — and the map decides which."* **Without Michigan this tree
-   stops at G1.**
+1. **Will Michigan ever join?** Politics ruling 26 states the problem: the gate-holders lose most by
+   joining, *"so a federation must pay them, elect them, or do without them — and the map decides
+   which."* **Without Michigan this branch stops at G4.**
 2. **Does the movement actually push?** The whole Standing branch runs on Unify demands, and ruling
-   15's threshold is unset with a hard constraint on it: **it must sit below 0.30**, or the Farmers
-   Union and Great Lakes Free Trade — caps of 0.30 — **can never make a demand at all.**
+   15's threshold is unset with a hard constraint: **it must sit below 0.30**, or the Farmers Union and
+   Great Lakes Free Trade — both capped at 0.30 — **can never make a demand at all.**
 3. **Is a peaceful tree as interesting to play as a violent one?** *Texas's tree is a race with four
-   rivals. This one is a committee. Nobody knows whether that is a different game or a slower one.*
+   rivals. This one is a committee for most of its length.*
+4. **⚠ Does the Midwest run away with the continent?** Round 5 already flagged that *"the south may run
+   away"* because the Confederate five are the only large group that can freely combine. **This gives
+   the Midwest a second peaceful route to the same prize by a different mechanism.** Watch both.
 
 ---
 
 ## 6. The Texas tree
 
-**Drafted by Aaron, reviewed against the build, not yet written up.** Its structure is the one §2
-generalises: **Standing** is a recognition ladder of three, **Ground** is a set of five cities then a
-fan of five capstones, **Building** is free, and the **pivot** is Washington D.C.
+**Drafted by Aaron, reviewed against the build, not yet written up here.** Structure as §2: **Standing**
+is a recognition ladder of three, **Ground** is a set of five cities then a fan of five capstones,
+**Building** is free, and the **pivot** is Washington D.C.
 
-**It is blocked on nothing** — conquest ruling 19 was brought forward on 15 September (D222), so the
-four Texan rebels open unrecognised and the Standing branch has something to do.
-
-**Its findings are recorded in `DECISIONS.md` D221** and will be written into this document next.
+**Unblocked:** conquest ruling 19 was brought forward on 15 September (D222), so the four Texan rebels
+open unrecognised and the Standing branch has something to do. **Its review findings are in D221.**
 
 ## 7. The Deseret tree
 
-**Not yet drafted.** Its three branches are agreed in theme:
+**Not drafted.** Branch themes agreed:
 
 | Branch | About |
 |---|---|
@@ -423,25 +514,27 @@ four Texan rebels open unrecognised and the Standing branch has something to do.
 |---|---|---|
 | **1** | **How long should a tree take?** A game is 200 turns and nobody has played one. **The first tree played is the measurement** | The alpha |
 | **2** | **Does a tree ever expire, or can it be picked up at turn 180?** | Aaron |
-| **3** | **What happens to a tree when its nation is conquered?** Diplomacy ruling 18 makes a *claim* inherit with the ground. Nothing says whether a tree does | Aaron |
-| **4** | **Do the other fifty-four nations get trees later, or is guided play for a chosen few?** | Aaron, at the build-order stage |
+| **3** | **What happens to a tree when its nation is conquered?** Diplomacy ruling 18 makes a *claim* inherit with the ground; nothing says whether a tree does | Aaron |
+| **4** | **Do the other fifty-four nations get trees later?** | Aaron, at the build-order stage |
 | **5** | **Does the AI read its tree?** If a nation with a tree is AI-played, does it pursue it — and if not, is the player racing an opponent that does not know the race is on? | Aaron, then the architect |
+| **6** | **Does a Lake Michigan port reach the Canada corridor without passing Mackinac?** §5.1 | The Technical Designer |
 
 ## 9. Gaps
 
 | | |
 |---|---|
 | **1** | **A mission's record has no specified shape** beyond §1 — no field list, no home in `STATEFUL_MODULES`, and completed missions are persistent state |
-| **2** | **Nothing specifies how a tree is shown.** *Belongs to `presentation-design.md`; named here because Aaron's fourth reason — momentum — is a presentation property before it is a mechanical one* |
-| **3** | **"Own and control" is undefined.** It could mean held, or held-and-digested — the tenure ladder runs `occupied-war` → `occupied` → ordinary ground. **The second makes a mission take time and is probably right, and nobody has said so** |
-| **4** | **Nothing says what happens when two nations sharing a tree complete the same mission.** Both Texas and the Great Lakes trees are shared |
-| **5** | **`Former Glory` needs the Republic of Texas's claimed boundary painted as a region.** The map editor does exactly this. **Its extent was not verified and must not be written from memory** |
+| **2** | **Nothing specifies how a tree is shown.** *Belongs to `presentation-design.md`; named here because momentum is a presentation property before it is a mechanical one* |
+| **3** | **Nothing says what happens when two nations sharing a tree complete the same mission.** Both live trees are shared |
+| **4** | **`Former Glory` needs the Republic of Texas's claimed boundary painted as a region.** The map editor does exactly this. **Its extent was not verified and must not be written from memory** |
+| **5** | **Chicago and Detroit are not on the board.** G5's condition is computable today and means much less than it will when the story's city-states exist |
 
 ---
 
-*Sources, verified against the files on 15 September 2026: `data/county_trade.json` (chokepoint
-labels, per-county port / Great Lakes / border-crossing / river flags, and the four ordered
-corridors); `data/parties.json` (movement counties, cores, caps and adjectives); `DESIGN.md` §2.1,
-§6.2, §6.5, §6.7, §7.1; `docs/design/politics-ideation.md` rulings 15, 16, 18, 25, 26, 27, 34, 44 and
-finding I; `docs/design/diplomacy-ideation.md` rulings 4, 18; `docs/design/the-things-above-ideation.md`
-ruling 2; `docs/spec/economy-system-spec.md` §3.1, §4.1; `DECISIONS.md` D221, D222.*
+*Sources, verified against the files on 15 September 2026: `data/county_trade.json` (chokepoint labels,
+per-county port / Great Lakes / border-crossing / river flags, the four ordered corridors, and
+`bank_pairs`); `data/adjacency.json` (county neighbours); `data/parties.json` (movement counties,
+cores, caps and adjectives); `data/game-data.json` (county names); `DESIGN.md` §2.1, §4.1, §6.2, §6.5,
+§6.6, §6.7, §7.1; `docs/design/politics-ideation.md` rulings 15, 16, 18, 25, 26, 27, 34, 44 and finding
+I; `docs/design/diplomacy-ideation.md` rulings 4, 18; `docs/design/the-things-above-ideation.md` ruling
+2; `docs/spec/economy-system-spec.md` §3.1, §4.1; `DECISIONS.md` D163, D168, D221, D222.*
