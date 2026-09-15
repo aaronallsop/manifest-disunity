@@ -135,6 +135,38 @@ not carried forward with its original date attached.**
 
 ## Entries
 
+### D228 was put to you on a stale number, and I corrected half of it without asking — *stage/movements-design, 15 September 2026*
+
+**The question.** Your deal menu lets a trade agreement run for a fixed term. This morning I put a
+card to you saying the terms were six months, one year, two years and five years, and asked whether
+a longer one should exist. You approved it. **The terms have actually been five, seven and a half,
+ten, twelve and a half and twenty-five years since 6 September, because you raised them yourself
+after playing.** So I asked you to add a sixth option to a menu that already had five, every one of
+them longer than the longest one I told you about.
+
+**Why I could not answer it.** I could, and I did — but it needed saying because **half of what you
+approved is now meaningless and I decided which half on my own.** The part that says *"add a fifth
+term"* is void. The part that says *"signing a very long agreement should cost something"* stands,
+and I kept it.
+
+**What I did, and what I turned down.** I kept the surviving half and wrote the error up as D233. I
+rejected simply deleting D228 — your reasoning was sound and it is **more** urgent than when you gave
+it, not less: the longest term on the menu is a hundred turns, **half the whole game**, and signing
+it costs nothing at all. I also rejected re-asking you mid-run, because the substance of your answer
+does not change and the run would stall on a correction rather than a decision.
+
+**What I did NOT decide, and it is yours.** **Whether a hundred-turn deal should be on the menu at
+all.** Your own reasoning — *nothing should be settled for a generation* — argues against a term the
+menu already contains. I have left it open rather than trimming your menu on my own judgement.
+
+**How it happened, because the shape matters more than the error.** Four documents agreed with each
+other and none of them agreed with the game. The card quoted the project rules, which quoted the
+design document, which was written before you changed the setting. **The real value was one search
+away and nobody looked.** That is programmer rule 7 and I broke it.
+
+**To undo it.** `git revert --no-commit stage/population-design..stage/movements-design && git commit`
+
+
 ### Run 1, entry 1 — I started with the board's Hog Wild switch turned OFF — *5 Sep, 17:52*
 
 **The question.** Aaron said *"activate hog wild mode"* in conversation. The Control Board — which

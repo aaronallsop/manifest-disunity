@@ -277,7 +277,8 @@ A world turn runs these phases in a fixed order, over the columnar buffer:
 3. **Sentiment and movement growth** — each movement closes a fraction of the gap to its own
    ceiling, against the target §7.2 computes.
 4. **Migration** — people move along the adjacency graph toward Areas that are better for people
-   like them (§7.7). After drift, because somebody migrates as whoever they have just become; before
+   like them (§7.6 — *this said §7.7 until 15 September 2026; §7.7 is instrumentation*). After drift,
+   because somebody migrates as whoever they have just become; before
    growth, so the babies are born where their parents ended up.
 5. **Population growth** — everybody grows, movements included.
 6. **Economic growth** — GDP moves, by sector and by the population change actually realised.
@@ -300,6 +301,12 @@ running it earlier would report the previous turn's world with this turn's label
 run just before them for the mirror-image reason — the four things a government is answerable for
 at the polls are four of the five stocks, and an election held after the recompute would be judging
 the world its own result produced.
+
+**⚠ One phase is missing from the two lists above and was added to this document on 15 September
+2026:** **the ground phase** (M12) runs **after the writeback and before the power stocks**, computing
+quality of life and civil liberties **per Area**. Its position has the same reason as everything else
+here — *"so the national stocks it blends from are last turn's, the same 'read the settled world' rule
+every other phase follows."*
 
 Then the turn counter moves, the **map is recorded** for the timeline (after the increment, so a
 frame is stamped with the turn that produced it), and **victory is checked** over every nation.
@@ -588,8 +595,11 @@ already counted when they were produced.
 
 - **Bilateral** with a neighbour: a standing **deal**, not a click. Surpluses flow to whoever runs
   the matching deficit, valued at market prices, at the **full** rate to both sides — and they keep
-  flowing, every turn, for the term that was signed. A deal carries a duration (2, 4, 8 or 20 turns
-  — six months, a year, two years, five), an optional auto-renew, and a price **fixed at signing**:
+  flowing, every turn, for the term that was signed. A deal carries a duration — *corrected
+  15 September 2026: **20, 30, 40, 50 or 100 turns**, which is five to twenty-five years. Aaron raised
+  them from 2/4/8/20 on 6 September 2026 and this line kept the old menu; **D228 was then put to him
+  on the stale figure, and D233 voids half of that ruling*** — an optional auto-renew, and a price
+  **fixed at signing**:
   the index may drift for five years and the deal does not. Measured 5 September 2026, and it is
   less dramatic than it sounds: over forty turns — ten years — the largest sector price moved 4.7%
   and most moved one to three, so freezing a price is structurally real and financially negligible.
@@ -1440,7 +1450,9 @@ not drain the far coast, and distance is real without a single distance calculat
 
 Four things pull and one pushes:
 
-- **Quality of life** and **civil liberties** — the nation's, so both stocks acquire a demographic
+- **Quality of life** and **civil liberties** — *corrected 15 September 2026: **a blend, 60% the
+  AREA's own and 40% the nation's** (`migration.wLocal` = 0.6, M12). This line said "the nation's"
+  and predates the per-Area columns.* Both stocks acquire a demographic
   price and suppression costs you the people who can leave.
 - **Output per head, here** — which falls as people arrive, and is the brake that stops the
   continent piling into one Area.
@@ -1738,7 +1750,13 @@ account of where this model stops.
   reasoning that a player playing deliberately for eighty turns should substantially outperform a
   deliberately mild AI. That last step is a judgement rather than a measurement, and it is the first
   thing a real play test should revisit.
-- **The power stocks are still per NATION**, so sentiment's grievance terms are uniform across
+- ~~**The power stocks are still per NATION**~~ ⚠ **CORRECTED 15 September 2026: quality of life and
+  civil liberties ARE per Area** — `js/state.js` carries `qol` and `liberties` columns and `phaseGround`
+  computes them after the writeback, *"so the national stocks it blends from are last turn's"*.
+  **This entry listed a BUILT system as deliberately unbuilt, which is the worst kind of stale because
+  it reads as a decision.** *The original text follows, because what it says about the remaining
+  stocks is still true:* the other three stocks are still per nation, so sentiment's grievance terms
+  are uniform across
   everything a nation owns. Quality of life and liberty satisfaction per **Area** would give the
   diffusion term a real gradient to run along, and would give migration a much sharper one; the
   economy bake is already per Area, so it is a change of scope rather than of model. Autonomy and

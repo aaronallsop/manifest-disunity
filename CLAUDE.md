@@ -52,10 +52,12 @@ they lost.
   Phase 0; the brief is wrong on this point and Aaron has ruled so (D162). Do not re-raise it.
 - **One turn is one quarter, and the game opens on 1 March 2036** — the eve of two hundred years
   since Texas declared itself a nation. The month was ruled and then reversed once the cost was
-  priced: every rate in the engine is tuned per quarter and the label buys flavour only (D163). Deal
-  durations are 2 / 4 / 8 / 20 turns, **and D228 added a fifth, longer term with a price paid at
-  signing — how long it is and what it costs are the architect's, and the four-entry table is read in
-  several places.** A future sub-turn design would give both clocks — see `docs/FUTURE-IDEAS.md` F1 —
+  priced: every rate in the engine is tuned per quarter and the label buys flavour only (D163).
+  **⚠ DEAL DURATIONS ARE 20 / 30 / 40 / 50 / 100 TURNS — five, seven and a half, ten, twelve and a half
+  and twenty-five years. Aaron raised them himself on 6 September from 2 / 4 / 8 / 20.** This line said
+  the old four until 15 September and D228 was put to him on that stale premise; **D233 voids half of
+  that ruling.** What survives: **signing a long agreement should cost something, and today it costs
+  nothing** — the menu tops out at half the game and is free. A future sub-turn design would give both clocks — see `docs/FUTURE-IDEAS.md` F1 —
   and today's choice is its outer clock, so nothing is foreclosed.
 - **The game is 200 turns and ends in 2086** (D223) — fifty years. **A turn is a ROUND:** sixty-one
   nation-slots in a shuffled order, then the world advances once when the pointer wraps. **There is no

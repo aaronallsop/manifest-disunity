@@ -5686,3 +5686,56 @@ proved it works better **before** the rulings than after.
 
 **And the expected outcome is that tracing finds things**, because it always has. *A trace that
 narrates smoothly on the first attempt has probably not been pushed hard enough.*
+
+---
+
+### D233 — ⚠ D228 was put to Aaron on a stale premise, and half of it is void, 15 September 2026
+
+**Found during the Hog Wild run, by checking the tunable rather than the document. The error is mine
+and it was made this morning.**
+
+**D228 asked Aaron whether the deal duration table should gain a fifth entry longer than five years,
+and recorded the table as `2 / 4 / 8 / 20` turns.** *`CLAUDE.md` said the same. So did `DESIGN.md`
+§6. So does the economy spec.*
+
+> **⚠ `deal.durations` is `[20, 30, 40, 50, 100]`, and has been since 6 September 2026.** *Aaron
+> raised it himself, after playing, from `[2, 4, 8, 20]` — the tunable's own doc records it:
+> **"renewing a one-year contract every four turns is administration rather than a decision, and a
+> real supply agreement between two countries is signed for decades."***
+
+**So the table already had five entries when he was asked to add a fifth, and every one of them is
+already longer than five years.** *A turn is a quarter, so the menu reads **five, seven and a half,
+ten, twelve and a half and twenty-five years**. Twenty turns — which D228 called the longest — is the
+SHORTEST term on the menu.*
+
+### What survives and what does not
+
+| | |
+|---|---|
+| ❌ **VOID: "the table gains a fifth entry"** | It has five. The question was unanswerable as put |
+| ❌ **VOID: "the four durations are a tuned table read in several places, so adding to it touches more than one deal"** | There are five, and adding is not what is needed |
+| ✅ **STANDS: signing a long agreement should cost something** | **This is the substance and it is untouched by the error.** W42's objection is real: *a player who signs a very long deal has removed a decision from the rest of the game*, and **a price makes it a choice rather than a free lock** |
+| ✅ **STANDS: how much, and how long, are the architect's** | Unchanged |
+
+**And the surviving half is now MORE urgent, not less.** *The menu tops out at **a hundred turns — half
+the game**, and signing one costs nothing at all. `planTrade` returns `cost: 0`.* **The thing W42
+warned about is not a hypothetical fifth entry; it is on the menu today and it is free.**
+
+### The lesson, and it is programmer rule 7 exactly
+
+**A figure on the Control Board is a claim, and claims get re-derived before they are repeated.** *The
+card put to Aaron quoted `2 / 4 / 8 / 20` from `CLAUDE.md`, which had it from `DESIGN.md`, which was
+written before he changed it. **Four documents agreed with each other and none of them agreed with the
+game.*** *The tunable was one grep away.*
+
+**Corrected in place, all three:** `CLAUDE.md`'s clock rule, `DESIGN.md` §6, and D228 now carries a
+pointer to this entry. **`docs/spec/` also says `2 / 4 / 8 / 20` and is NOT corrected** — it may not be
+modified without permission, and its `DurationMult` table is keyed to those four terms, so **the spec's
+per-deal pricing section is written against a menu that no longer exists.** *Recorded as a gap in
+`trade-design.md`.*
+
+### ⚠ One thing this hands back to Aaron rather than resolving
+
+**Whether a hundred-turn deal should be on the menu at all.** *It is half the game.* D228's own
+reasoning — *nothing should be settled for a generation* — argues against it, and **that argument was
+made about a term the menu already contains.** **Not decided here.** *`trade-design.md` open question 1.*
