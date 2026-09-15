@@ -268,7 +268,7 @@ forty-two authored cells.** *Full adjective table in `movements-design.md` §1.2
 | **Release** | `release.costGdpShare` = **0.10** of the **released ground's** output, from the treasury | `release.cooldownTurns` = 8, budget 6 Areas |
 | **Autonomy** | **`autonomy.taxShare` = 0.55 forgone every turn**, plus `power.authority.wAutonomy` = −0.18 | cooldown 6, budget 3 Areas, cap `autonomy.maxShare` = 0.3 |
 | **Change course** | `distance × gov.changeCost` (0.02) of output, **and an Authority hit of `distance × 0.12` applied to the STOCK** | `gov.changeCooldown` = 8, mandate gate `gov.changeMinShare` = 0.12 |
-| **Garrison** | `mil.suppressLiberty` = 0.35 at a full garrison; `liberty.wGarrison` = −0.35 | Suppression halves at **200 troops per Area** |
+| **Garrison** | **⚠ `liberty.wGarrison` = −0.35, and that is the WHOLE mechanism.** *`mil.suppressLiberty` = 0.35 is defined, documented and **read by no code** — verified by grep this session. This row previously described a two-term mechanism where only one term exists* | Suppression halves at **200 troops per Area** |
 | **Become them** | ⚠ **No number. None invented** | — |
 
 **Two of those prices carry a reason worth keeping.**
@@ -546,6 +546,7 @@ not rationed.** *Triage IS the game, and the interface is where it lives or dies
 §7.4; `content/leaders.json` (twelve traits, six titles, the name pools); `content/events.json`
 (twelve crises and the effect vocabulary); `js/elections.js`, `js/leaders.js`, `js/game.js`
 (`changeRulingIdeology`), `js/events.js`; `js/tunables.js` (`election.*`, `leader.*`, `events.*`,
-`autonomy.*`, `release.*`, `gov.*`, `mil.suppressLiberty`, `liberty.wGarrison`). **The election and
+`autonomy.*`, `release.*`, `gov.*`, `liberty.wGarrison` — **but NOT `mil.suppressLiberty`, which is a
+dead key**). **The election and
 Oklahoma measurements carry no date in any source and none is invented here; both are tagged to a
 milestone only.***

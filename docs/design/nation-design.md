@@ -89,11 +89,24 @@ at most a few a turn. **Ordered strongest-share-first with a deterministic tiebr
 than 15% of what you held on population or GDP.**
 
 ```
-magnitude = (lead gap between new and old leading ideologies) × (1 − affinity between them)
+magnitude = (new leader's share − old leader's share AFTER the annexation) × (1 − affinity)
 points    = (0.6 × popRatio + 0.4 × gdpRatio) ^ 0.5
-dice      = 2 + 0.5 × magnitude, capped at 6
-score     = 12 × points × (d1 + d2 + … + dN)
+dice N    = a FLIP war:  clamp(2 + round(0.5 × magnitude), 1, 6)
+            a SIZE war:  exactly ONE die
+scoreMult = (1 + coalition pressure) × the Field-vs-Border ratio × the edge-of-reach penalty
+score     = round( 12 × points × Σ dice × scoreMult )
 ```
+
+> **⚠ THREE THINGS THE SHORT VERSION OF THIS FORMULA HIDES, and two of them change the game.**
+>
+> 1. **A war triggered by SIZE rather than by a flip rolls ONE die, not two.** *The magnitude is zero
+>    when nothing flipped, so the dice count is zero, and a floor of one is applied at the last moment.*
+>    **The famous floor of two applies only to flip wars** — and on this board a large share of all wars
+>    are size wars.
+> 2. **There is a fourth factor and it is the entire military and diplomatic input to the roll.**
+>    *Coalition pressure, the attacker's Field against the defender's Border, and how far past its own
+>    reach the attacker is stretching.* **Omitting it understates the model badly.**
+> 3. **The per-point term is ROUNDED**, so the dice count moves in whole steps.
 
 | Score | Outcome |
 |---|---|

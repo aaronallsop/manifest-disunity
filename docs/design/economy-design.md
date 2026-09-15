@@ -206,10 +206,20 @@ Treasury = output × tax rate − government maintenance − administration − 
 
 > **Occupation is the anti-snowball brake**, and it is superlinear:
 > ```
-> upkeep(a) = base × (1 + hostilityWeight × hostility(a)) × (1 + n^alpha)
+> upkeep(a) = base × (1 + 1.6 × hostility(a)) × (occupied / 25) ^ 1.15
 > ```
+> *Charged on every Area the nation holds that is not in its founding grant.*
 > **25 occupied Areas roughly double their own upkeep; 100 costs about 5×; 400 about 24×. A greedy
 > conqueror's per-turn treasury delta crosses into deficit around 110 occupied Areas.**
+
+> **⚠ AND THAT FORMULA IS NOT THE ONE THE PROJECT'S OWN DOCUMENTS PRINT.** *`DESIGN.md` §7.5 and the
+> tunable's own doc string both write the count term as **`(1 + n^alpha)`**, and the error has been
+> copied forward into a closed ideation round.* **The code divides by a reference of 25 first.**
+>
+> **The published magnitudes belong to the CODE, which is how the error is caught:** *(25/25)^1.15 = 1.0
+> ✓ · (100/25)^1.15 = 4.9 ✓ · (400/25)^1.15 = 24.3 ✓.* **Under the documented version 25 Areas would
+> cost 41× rather than 2×.** *So the numbers are right, three documents are wrong, and this one was
+> too until it was checked. Gap 8.*
 
 **The count term stops conquest paying for itself at scale; the hostility term makes WHICH ground you
 took matter as much as how much.**

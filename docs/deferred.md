@@ -310,3 +310,69 @@ is in the kinds table and missing from the labels table. `labelOf` falls through
 they had signed with us".* **Verified by reading both tables this session.**
 
 *One line. It is filed rather than fixed because a design session writes documents only.*
+
+## 39 — ⚠ Four real ocean ports are flagged as inland, and four nations lose their foreign trade
+
+**`has_port` and `coastal` are baked as separate flags in `data/county_trade.json`, and where a port
+county's polygon does not meet the coastline layer the port is demoted to "reaches no external sink."**
+
+**Four of the 59 "river/inland" ports are real deep-water ocean ports** — *verified individually this
+session:* **Philadelphia County PA** (the Port of Philadelphia), **Berkeley County SC** (Charleston's
+port district), **Chesapeake city VA** (Hampton Roads) and **Providence County RI** (the Port of
+Providence). *All four are `has_port: true, coastal: false`.*
+
+**Consequence: Pennsylvania, South Carolina, Virginia and Rhode Island cannot sell abroad** through
+ports that are among the busiest on the eastern seaboard.
+
+**And it means the project has been quoting a data fault as geography.** *"59 of the 136 ports reach no
+foreign market" is repeated as a fact about the map. **How many of the 59 are genuinely inland and how
+many are misclassified has never been asked.***
+
+**⚠ NOT a quiet repair.** *The port count feeds `tradeCapacity`, the volume limit on every standing
+trade deal in the game, so fixing the flags moves a number every deal reads.* **It is a decision, not
+a bug fix.** *Also in the 59 and worth a second look: Hudson County NJ, Oakland and Richmond CA, and
+the Columbia River ports in Washington and Oregon.*
+
+## 40 — ⚠ Ten nations hold a port they cannot export through, and nobody had counted them
+
+**Measured this session** by reconstructing the 61-nation board and testing every county against
+`data/county_trade.json`:
+
+| | |
+|---|---:|
+| No port **and** no border crossing — *the figure every document quotes, and it is correct* | **14** |
+| No port of any kind | **22** |
+| **⚠ Cannot reach the world market from their own ground** — *never counted before* | **24** |
+
+**The gap between 14 and 24 is ten nations that HOLD A PORT and cannot export through it:** *Arkansas,
+Kentucky, Missouri, Northern California, Oklahoma, Pennsylvania, Rhode Island, South Carolina,
+Tennessee and Virginia.* **Their port is on their panel, its capacity is multiplied into every deal
+they sign, and it reaches no foreign market.**
+
+> **This is the project's own named failure mode, word for word:** *a layer the player has not learned
+> yet must be **INVISIBLE or SELF-EXPLAINING**, never **VISIBLE AND WRONG**.*
+
+**Four of the ten are there because of defect 39 rather than because of geography.**
+
+## 41 — ⚠ TWO transit toll systems are live in the build at once, and they price the modes in opposite directions
+
+**Both are reachable from the same panel, and that part is deliberate** — *"the difference between
+renting a lift this quarter and holding the road open for five years is exactly the thing the player is
+being asked to weigh."* **What is not deliberate is that they disagree about which mode is dear.**
+
+| | **The legacy one-off sale** | **The standing corridor grant** |
+|---|---|---|
+| Mode adjustment | rail −50%, highway −20% → **rail is CHEAPEST** | port ×1.0, river ×0.95, rail ×0.85, road ×0.75 → **road is cheapest, PORT is DEAREST** |
+| Term | none — one click, uses the turn | a menu, a notice period, a renege memory |
+| Slider bounds | **hardcoded in the markup** | reads the tunables |
+
+**`trade.railDiscount` and `trade.highwayDiscount` are read ONLY by the legacy path**, so turning
+either dial moves one system and not the other.
+
+**⚠ Neither `DESIGN.md` §6.7 nor `docs/design/board-design.md` §8 describes the legacy path at all.**
+*Both document only the grant.*
+
+> **So the project's "three unreconciled internal-trade regimes" is FIVE:** *the corridor grant · the
+> legacy one-off sale · the spec's compounding per-mode multipliers · the federation's flat toll · the
+> bloc's free movement.* **`blocs-design.md` and `trade-design.md` both name the job and neither knew
+> there were two systems inside the build.**

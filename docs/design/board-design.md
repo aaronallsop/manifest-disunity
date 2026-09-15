@@ -277,6 +277,36 @@ port count feeds `tradeCapacity.total`, which is **the volume limit on every sta
 the game.** Redefining what counts as a port quietly changes what every deal on the board pays, every
 turn — **and it does not look like a mistake.**
 
+### 7.1a ⚠ FOUR REAL OCEAN PORTS ARE FLAGGED AS INLAND, AND IT COSTS FOUR NATIONS THEIR FOREIGN TRADE
+
+**Found by measurement on 15 September 2026.** *`has_port` and `coastal` are baked as separate flags,
+and a port county whose polygon does not meet the coastline layer is demoted to "reaches no external
+sink."* **Four of the 59 river/inland ports are real deep-water ocean ports:**
+
+| County | What is actually there | `has_port` | `coastal` | What the game says |
+|---|---|:---:|:---:|---|
+| Philadelphia County, PA | **the Port of Philadelphia** | ✅ | ❌ | reaches nothing |
+| Berkeley County, SC | **Charleston's port district** | ✅ | ❌ | reaches nothing |
+| Chesapeake city, VA | **Hampton Roads** | ✅ | ❌ | reaches nothing |
+| Providence County, RI | **the Port of Providence** | ✅ | ❌ | reaches nothing |
+
+**Verified individually against `data/county_trade.json` this session.**
+
+> **So Pennsylvania, South Carolina, Virginia and Rhode Island — all [BUILT] — cannot sell abroad
+> through ports that in the real world are among the busiest on the eastern seaboard.** *They are four
+> of the ten nations in §8's count.*
+
+**⚠ And it changes what the 59 MEANS.** *The document's own headline — "59 of the 136 ports reach no
+foreign market" — currently measures a **data fault** as though it were geography.* **The real
+question is how many of the 59 are genuinely inland and how many are misclassified, and nobody has
+asked it.** *Open question 12.*
+
+**This is not cosmetic: the port count feeds `tradeCapacity`, which is the volume limit on every
+standing trade deal in the game.** *Redefining what counts as a port moves a number every deal reads —
+which is exactly why it must be a decision rather than a repair somebody makes quietly.*
+
+---
+
 ### 7.2 Where the border actually is, and it is in two files
 
 **Canada and Mexico access is decided by `transport.json`'s `external` lists: 18 Canadian-border
@@ -292,9 +322,30 @@ chip on a panel.*
 
 ## 8. Transit — crossing somebody else's ground
 
-**A deal says two nations will trade. It does not say the goods can get there.** *Fourteen of the
-sixty-one nations have no port of any kind, and a border that carries no road and no rail is not a
-border for goods at all.*
+**A deal says two nations will trade. It does not say the goods can get there.**
+
+**⚠ CORRECTED 15 September 2026, by measurement, and the figure that was here was doing two jobs.**
+*This said "fourteen of the sixty-one nations have no port of any kind." **Fourteen is the count of
+nations with no port AND no border crossing** — that figure is right, and it is the one every other
+document means.* **Nations with no port of any kind: TWENTY-TWO.** *Measured this session by
+reconstructing the 61-nation board from `content/scenario-shattered.json` and `content/cultural.json`
+and testing every county against `data/county_trade.json`.*
+
+> **⚠ AND THE NUMBER THAT MATTERS MOST WAS NEVER COUNTED AT ALL: TWENTY-FOUR of the sixty-one nations
+> cannot reach the world market from their own ground.**
+>
+> *The gap between 14 and 24 is **ten nations that HOLD A PORT and cannot export through it** —
+> Arkansas, Kentucky, Missouri, Northern California, Oklahoma, Pennsylvania, Rhode Island, South
+> Carolina, Tennessee and Virginia, **all [BUILT]**.* **Their port is on their panel, its capacity is
+> multiplied into every deal they sign, and it reaches no foreign market.**
+>
+> **That is this project's own named failure mode, word for word:** *a layer the player has not learned
+> yet must be **INVISIBLE or SELF-EXPLAINING**, never **VISIBLE AND WRONG**.* **Nobody had counted how
+> many nations are inside it.**
+
+**And four of those ten are there because of a DATA FAULT, not because of geography** — see §7.1a.
+
+*A border that carries no road and no rail is not a border for goods at all.*
 
 ### 8.1 The grant
 
@@ -486,7 +537,12 @@ carried forward.*
 
 **Step 1 — what Deseret physically has.** Across all **57** corridor Areas: **no port, no coastal
 county, no Great Lakes county, no border-crossing county, no county on a named navigable river, and no
-chokepoint.** One rail hub. **It is the only sealed nation on the board.**
+chokepoint.** One rail hub.
+
+**⚠ CORRECTED: it is NOT the only sealed nation on the board.** *On this paragraph's own six-part test,
+**eight** nations qualify — Austin, Colorado, DC, Dallas, Deseret, Nevada, Utah and Wyoming, all
+**[BUILT]**.* **What is unique about Deseret is not that it is sealed. It is that it is sealed AND a
+pariah**, which is a different and much sharper problem, and it is the one D227 was ruled to solve.
 
 **Step 2 — so every route must cross somebody.** The world market is reachable *"only through an ocean
 port, or through somebody else's."* Deseret has neither, so it needs a **transit grant**, which is

@@ -92,10 +92,10 @@ states — *the moment before the story*. M8 makes the opening position tell it.
 
 | Nation | Areas | Pop | GDP | Governs as | Seat |
 | --- | ---: | ---: | ---: | --- | --- |
-| Dallas | 22 | 9.34M | $868B | red | Dallas Co |
+| Dallas | 23 | 9.21M | $861B | red | Dallas Co |
 | Houston | 32 | 10.07M | $904B | red | Harris Co |
-| El Paso | 16 | 2.79M | $308B | red | El Paso Co |
-| Austin | 13 | 3.69M | $344B | **blue** | Travis Co |
+| El Paso | 17 | 2.89M | $313B | red | El Paso Co |
+| Austin | 13 | 3.72M | $345B | **blue** | Travis Co |
 | San Antonio | 21 | 5.40M | $347B | red | Bexar Co |
 | Los Angeles | 1 | 9.76M | $1,003B | blue | LA Co |
 | Bay Area | 9 | 7.65M | $1,332B | blue | San Francisco |
@@ -104,6 +104,13 @@ states — *the moment before the story*. M8 makes the opening position tell it.
 | Northern California | 30 | 7.56M | $513B | blue | Sacramento Co |
 | Cascadia | 9 | 0.59M | $33B | **green** | Humboldt Co |
 | Deseret | ~31 of 57 | ~3.8M | — | yellow | Salt Lake Co |
+
+**⚠ Two Area counts and three population figures in this table were CORRECTED on 15 September 2026**,
+by resolving every claim against `content/cultural.json` exactly as `js/scenario.js` does and summing
+`data/game-data.json`. *Dallas was 22 and is **23**; El Paso was 16 and is **17**.* **As printed, Texas
+summed to 104 of its 106 Areas — a partition `dissolveState` would have thrown on**, so the old table
+could not have described a board the game can build. *Both partitions verified exact: Texas 106 of 106,
+California 58 of 58, no leftover and no double claim.*
 
 **It is authored content.** `content/scenario-shattered.json` says what the board is;
 `js/scenario.js` applies it and knows nothing about Texas. Every claim is resolved against the
@@ -469,7 +476,9 @@ supports. "A divided people" is a separate term from alignment: uniformly mildly
 evenly-split-into-two-camps are the same alignment and different problems, and only cohesion tells
 them apart.
 
-Turn-0 bands across the 51 nations: **Authority 0.44–0.56, Influence 0.45–0.66, QoL 0.55–0.98,
+Turn-0 bands across the 51 nations — ⚠ **a measurement taken on the PRE-SHATTERING board and never
+re-taken on the 61-nation one**, which now includes a one-Area city state, a three-Area landlocked one
+and an unrecognised pariah, all of which would widen it: **Authority 0.44–0.56, Influence 0.45–0.66, QoL 0.55–0.98,
 Liberties 0.60–0.84.**
 
 ### What is not in them yet
@@ -750,7 +759,9 @@ around by taking the other nation's turn.
 `Game.getPlayer()` is an **id**, and it keeps naming a nation that has died — `playerNation()` is
 the one that returns null. Losing has to be something the game can say out loud.
 
-**Choosing a faction.** All 51 are playable, rated from the opening position by the functions the
+**Choosing a faction.** All **61** are playable — *corrected 15 September 2026; the code never
+restricted the list and the tiers are proportions of the field, so only this sentence was wrong* —
+rated from the opening position by the functions the
 game already uses (size, economy, cohesion, `AI.strain`, and how many neighbours are smaller). The
 tiers are **proportions of the field** rather than fixed thresholds, because the question a new
 player is asking is "which of these is the gentle one". A harder start gets a larger opening
@@ -901,7 +912,10 @@ against a superpower is a sentence rather than a constraint.
 
 **One scalar and one matrix.** `recognises(A, B)` is a directed fact stored only where it is not the
 default, and `legitimacy(B)` is the share of the continent, by weight, that recognises B. The
-fifty-one nations the game opens with are recognised by everybody always and nothing is written down
+⚠ **sixty** nations the game opens with are recognised by everybody always and nothing is written down
+— *corrected 15 September 2026: it said fifty-one, and it is wrong on the second half too, because
+**Deseret is not an origin nation** and the scenario writes exactly one row on turn 0, so the matrix is
+not empty* — and for them nothing is written down
 for them, so the matrix is empty on turn 0 and never grows to n².
 
 Until M7.8 a nation born on turn 14 was, the instant it existed, a peer of the fifty states it broke
@@ -1415,7 +1429,14 @@ on the day it was founded.
 ### 7.5 Occupation costs more where it is resented
 
 ```
-upkeep(a) = base * (1 + w * hostility(a)) * (1 + n_occupied^alpha)
+upkeep(a) = base * (1 + w * hostility(a)) * (n_occupied / occupationRef) ^ alpha
+
+/* CORRECTED 15 September 2026. This read `(1 + n_occupied^alpha)`, which is not what the code
+ * computes: js/game.js divides the count by econ.occupationRef (25) BEFORE raising it to alpha.
+ * The published magnitudes below belong to the code and are what caught it — (25/25)^1.15 = 1.0,
+ * (100/25)^1.15 = 4.9, (400/25)^1.15 = 24.3. Under the old expression 25 Areas would have cost 41x
+ * rather than 2x. The same typo is in the tunable's own doc string and has been copied into a
+ * closed ideation round; both are recorded in docs/deferred.md rather than edited here. */
 ```
 
 Two multipliers doing two jobs. The **count** term is superlinear, so past a point conquest stops
