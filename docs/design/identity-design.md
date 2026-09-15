@@ -146,22 +146,33 @@ diplomacy, and the price of changing your own politics.**
 against every other position.** A shared **economy** axis is trade alignment; a shared **morals** axis
 is moral alignment; **the axes must remain readable separately.**
 
-### 3.1 ⚠ `MAX_DISTANCE` is not authored for this board, and this document will not invent it
+### 3.1 ⚠ The missing thing is COORDINATES, not `MAX_DISTANCE` — corrected 15 September 2026
 
-**It is the denominator, so every tuned threshold in the game is measured against it.**
+**`MAX_DISTANCE` is COMPUTED AT LOAD, not authored.** *Verified in `js/ideology.js`: it takes the
+largest distance among the positions **actually loaded**, with a fallback of 1 if the table is
+degenerate.* **An earlier draft of this document called it authored and that was wrong.**
 
-**On two axes the rule was deliberate and is recorded: use the ACTUAL widest authored pair — 1.7804 —
-and explicitly NOT the box diagonal of 2.8284**, because normalising on the diagonal *"would squash
-every real affinity into the top third of the range and make every tuned threshold mean less than its
-label says."*
+**Its reason is recorded at the site and it survives the change of board:** *using the theoretical
+maximum would compress every real affinity into the top half of the range and make every threshold a
+fiddly decimal. **Normalising on the real spread means affinity 0 is "the two furthest apart positions
+in this game" and 1 is "identical", which is what a threshold should mean.***
 
-> **⚠ THAT RULE DOES NOT DECIDE THE NEW BOARD, and the reason is exact: its whole point was that the
-> diagonal was UNOCCUPIED.** On three axes **opposite corners exist**, so the widest authored pair
-> **is** the diagonal — **2√3 ≈ 3.4641.** *That figure is arithmetic from the √2 and 2 distances
-> ruling 2 states. Nobody has authored it.*
+> **⚠ SO THE GAP IS NOT THE DENOMINATOR. IT IS THAT NO THREE-AXIS COORDINATES EXIST ANYWHERE.**
+> *Searched 15 September 2026: the ten positions are named and laid out on a grid, and **not one of
+> them has an authored (economy, morals, power) triple.*** The √2, 2 and √6 distances the rulings
+> quote are all derived from an **implied** ±1 cube that is written down nowhere.
 
-**It is the architect's and it is gap 1.** *Recorded in `GDD.md` as gap 11 as well, because it blocks
-more than this document.*
+**What follows, and it is better news than the earlier draft's:**
+
+| | |
+|---|---|
+| **Author the ten coordinate triples** | And `MAX_DISTANCE` **falls out by itself**, exactly as it does today |
+| **On an implied ±1 cube it would compute to 2√3 ≈ 3.4641** | *My arithmetic from the stated distances, not an authored figure* |
+| **Every threshold tuned against 1.7804 is still re-tuned** | That part of the cost is unchanged |
+| **⚠ And one question the old rule cannot answer** | Its whole point was that **the box diagonal was UNOCCUPIED**. On three axes opposite corners exist, so the real spread **is** the diagonal — *the rule's reasoning does not bite, and whether that matters is worth one look* |
+
+**It is the architect's and it is gap 1.** *`GDD.md` gap 11 is recorded in the old shape and should be
+read against this section.*
 
 ---
 
@@ -221,7 +232,33 @@ superseded that roster.** *Open question 2; nothing is built on it.*
 **Authored 11 September 2026. Aaron's instruction at the time: "this is authoring, not a decision —
 the table is for Aaron to correct."** *It has not been corrected since, so it stands as authored.*
 
-**Nine rows are marked ? because the third axis is a genuine judgement rather than a translation.**
+**⚠ TWO WARNINGS BEFORE THE TABLE, both found by checking it against the data on 15 September 2026.**
+
+1. **The prose says nine rows are marked ?. The table has EIGHT.** *A Free Texas was plausibly the
+   ninth before Aaron ruled it to Fascism, and the sentence was not re-counted.*
+2. **⚠ THE "WAS" COLUMN DISAGREES WITH `data/parties.json` FOR SEVEN OF THE TWENTY-SIX.** The re-map
+   says it worked from *"the register's leanings"*, and the register had drifted from the baked data.
+   **So the left-hand column is not a reliable record of what the game currently does.**
+
+| Movement | "Was" says | `parties.json` says |
+|---|---|---|
+| California Republic | Democrat | **Democratic Socialist** |
+| Central States Union | Republican | **Distributist** |
+| **Deseret** | Distributist | **Conservative Nationalist** |
+| El Paso United | Republican | **Distributist** |
+| New England Revivalist | Democrat | **Democratic Socialist** |
+| Rio Grande Union | Distributist | **Democratic Socialist** |
+| Sonoran Republic | Republican | **Distributist** |
+
+**Deseret is the sharpest case and it matters beyond the table:** `DESIGN.md` states outright that
+*"Deseret's members are counted in Conservative Nationalist"*, while the re-map's "Was" says
+Distributist. **The re-map's own note on the Farmers Union — *"already orange in the data"* — shows the
+column was MEANT to track the data file.** *Gap 7.*
+
+**The PLACED column is unaffected**: it is an authoring judgement about the new board, not a
+translation of the old one. **Read the right-hand column; distrust the left.**
+
+**Eight rows are marked ? because the third axis is a genuine judgement rather than a translation.**
 
 **The straight translations, where the old name and the new position are the same thing:** old
 *Republican* → Republicans, old *Democrat* → Democrats, old *Democratic Socialist* → Democratic
@@ -302,6 +339,23 @@ never been written down anywhere. Determined by diff on 15 September 2026:*
 
 **All 26 re-map names exist in `parties.json`; the six above are the remainder.** *This closes
 `GDD.md` gap 5, which recorded the 26 as unverified.*
+
+> **⚠ AND THEY ARE STILL IN THE GAME. Secession ruling 45 struck them; `data/parties.json` still
+> carries all six, each with a spawn chance of 0.5.** *Verified 15 September 2026.* **So six movements
+> that the design has removed are still being created on the board every game.**
+
+**That is a live defect rather than a documentation gap**, and it is the sharper half of this
+section: *the design says twenty-six and the build spawns thirty-two.* **Every count that reads the
+roster — finding H's tally, the coalition arithmetic, the movement-per-state volume ruling 12
+measured — is computed against a board six movements larger than the one the design describes.**
+*Gap 5.*
+
+**Two further facts about the roster, both verified today:**
+
+| | |
+|---|---|
+| **No movement anywhere is Socialist (`purple`)** | The 32 baked movements use **five** of the six built ideologies. *So one of the six positions has never had an organised movement on it, before the new board was even proposed* |
+| **Ruling 41 raised three caps and was never applied** | Sagebrush, Acadiana and El Paso United were ruled up from **0.35 to 0.45** so they could cross the 0.40 secession line. **`parties.json` still carries 0.35 for all three.** *0.45 is the modal cap among movements already above the line — seven carry it* |
 
 **⚠ What is NOT recorded anywhere is WHY each was struck.** The round names two of them in passing —
 *"Techno-Autocrat has no home on [the old axes] at all"* and the *"struck Anarcho-Capitalist
@@ -428,7 +482,10 @@ shape.**
 | **3** | **Nothing specifies how a three-axis board is DRAWN.** Two axes are a scatter plot. Three are not, and the nation panel currently shows a position on two |
 | **4** | **Nothing says what happens to a party that would drift OFF the board.** §2.4 names Despotism and Stateless as where you land, and F19 defers the mechanics — **but the boundary itself is unspecified: at what distance past a corner are you through the trapdoor?** |
 | **5** | **The cultural-region minority split is specified for four ideologies and the design has eight corners plus two centrists.** §8.1 names the cost; **nothing says what the twenty rows become** |
-| **6** | **Nothing states whether two nations may hold parties at the same position and what that means to each other.** Ruling 40 says Dallas and Vermont hold **two different** Libertarian parties. *Whether that shared location does anything — for affinity, for coalitions, for drift across a border — is unstated* |
+| **6** | **⚠ SIX MOVEMENTS THE DESIGN STRUCK ARE STILL SPAWNING.** Secession ruling 45 removed them; `data/parties.json` carries all six at a 0.5 spawn chance. *Verified 15 September 2026.* **The design says twenty-six and the build makes thirty-two**, so every count that reads the roster is computed against the wrong board |
+| **7** | **Ruling 41 raised three growth caps from 0.35 to 0.45 and the data still says 0.35.** Sagebrush, Acadiana and El Paso United **cannot cross the 0.40 secession line as built** — they can break a country and never make one. *The ruling itself records that the change was NOT made* |
+| **8** | **⚠ The re-map's "Was" column disagrees with the baked data for SEVEN of twenty-six**, including Deseret — which `DESIGN.md` states outright is counted as Conservative Nationalist while the column says Distributist. **The column was meant to track the data file and drifted from it.** §5 |
+| **9** | **Nothing states whether two nations may hold parties at the same position and what that means to each other.** Ruling 40 says Dallas and Vermont hold **two different** Libertarian parties. *Whether that shared location does anything — for affinity, for coalitions, for drift across a border — is unstated* |
 
 ---
 
