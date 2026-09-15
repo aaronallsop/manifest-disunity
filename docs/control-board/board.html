@@ -321,121 +321,97 @@ tr:last-child td{border-bottom:0}
 const BOARD = {
   project: "Manifest Disunity",
   livery: "tower",                      // tower | mars | violet | deep | slate
-  updated: "2026-09-15 12:10",          // when you last republished, local time
+  updated: "2026-09-15 14:55",          // when you last republished, local time
 
   // Three or four measured figures. value: number|string, or null = "not yet measured".
   figures: [
-    { label: "Stage 2, the design documents — the current phase", value: "4 of 20" },
-    { label: "Situations traced through the four documents written so far", value: 19 },
-    { label: "Decisions written up this session", value: 4 },
+    { label: "Stage 2, the design documents — the current phase", value: "19 of 20" },
+    { label: "Live faults in the game found by writing them, all verified at source", value: 10 },
+    { label: "Situations traced step by step through the finished documents", value: 62 },
+    { label: "Wrong claims corrected, five of them mine from this run", value: 9 },
     { label: "Stage 1 of 5 — every design round, closed by you", value: "7 of 7" },
-    { label: "Tests — all green. Last run at sign-off on the 14th; no code has been touched since", value: 956 },
-    { label: "Current version",         value: "v0.6" },
+    { label: "Current version", value: "v0.6" },
   ],
 
-  // The one true thing. lead = one or two sentences. points = one line each.
-  // tone: "bad" | "warn" | "ok" | "neutral".  A point with warn:true gets a yellow bar.
   headline: {
     tone: "warn",
-    lead: "Everything you answered is in, and the four documents written so far have each been "
-        + "walked through real situations step by step. That found five new things, all yours.",
+    lead: "Hog Wild ran and the design stage is finished: nineteen of twenty documents, and the "
+        + "twentieth is the one waiting on you. Writing them found ten real faults in the game.",
     points: [
-      "Walking the documents through real situations is the practice you reinstated, and it paid on the first try.",
-      { warn: true, t: "Deseret's only route to any market runs through Riverside - a small landlocked neighbour nobody had ever mentioned. Your recognition exception may not cover it." },
-      { warn: true, t: "The first turn of the game has nothing in it. The loop we built is triage, and on turn 1 there is nothing to triage." },
-      { warn: true, t: "You ruled missions permanent. That did not rule the REWARDS permanent, and the two are different questions." },
-      "Your three-axis politics is now the design rather than a contradiction, and audio is out of scope rather than an oversight.",
-      "Four of twenty documents written. Sixteen to go, and fifteen of those I can write without you.",
+      { warn: true, t: "The worst one: when an invasion falls apart, the game charges the DEFENDER and pays the attacker — and tells you the opposite happened. It has shipped that way for months." },
+      { warn: true, t: "Ten countries hold a port they cannot export through. Four of them, including Philadelphia and Charleston, are real ocean ports the map has filed as inland." },
+      { warn: true, t: "Two different toll systems are running at once, and they disagree about which kind of crossing is expensive." },
+      "I made one decision in your place: the brake on the trade spiral that could destroy a country for trying to fix a shortage. It is written up with the command that undoes it.",
+      "Four of your five cards came in mid-run and I acted on all four. Two of them changed documents I had already written.",
+      { warn: true, t: "You asked for the first turn to teach the player, and named a video as the model. I cannot watch it — one short answer from you settles what to build." },
     ],
   },
 
-  // Only decisions that are genuinely the owner's. Ids are permanent.
-  // A card shows the recommendation; the evidence and the cost fold behind it.
-  // Write evidence and cost as ARRAYS and they render as bullets.
   decisions: [
+    {
+      id: "turn-one-teaching-shape",
+      title: "You want turn 1 to teach. Which part of that explanation do you mean?",
+      recommendation: "Tell me whether it is the VOICE, the ORDER things are introduced in, or the fact that you are DOING things while it talks. I am not going to guess, because these are three different things to build and the cheapest is about a tenth of the dearest.",
+      evidence: [
+        "You asked for the opening to talk the player through how to play, and named a particular explainer as the model.",
+        "That supersedes what I recommended. I had suggested giving turn 1 something already in motion, which is a much smaller thing.",
+        "I cannot watch a video, so I have no way to see what that explanation actually does: how fast it goes, whether it narrates or makes you act, how much it says before you touch anything.",
+        "The diagnosis behind it is solid and unchanged: your central loop is dealing with things that arrive, and on turn 1 nothing has arrived yet.",
+      ],
+      cost: [
+        "The voice: a written opening in a particular register. Cheapest. Changes nothing about how the game works.",
+        "The order: a deliberate sequence of what the game reveals and when, over the first several turns. Middling, and it reaches into every screen.",
+        "Doing things while it talks: a guided first turn where the game asks you to act and responds. Dearest, and it is a tutorial, which you have never asked for before, so the build order should see it coming rather than find it.",
+      ],
+    },
     {
       id: "mission-reward-permanence",
       title: "You finish a mission, then lose the ground that earned it. Does the bonus go?",
-      recommendation: "The bonus should lapse with the ground, and the completed mission should stay green. My reasoning is that you ruled missions permanent for MOMENTUM - so a player can plan against a tree that does not flicker - and momentum is about the tree, not about the arithmetic. But this is a fork you should look at, because the other side has a real argument and I am not confident.",
+      recommendation: "The bonus should lapse with the ground, and the completed mission should stay green. My reasoning is that you ruled missions permanent for MOMENTUM, so a player can plan against a tree that does not flicker, and momentum is about the tree rather than about the arithmetic. This is the one card from last time you have not answered, and it is the one I said I was least confident about.",
       evidence: [
         "You ruled that a completed mission stays completed, even if the ground changes hands. That was for momentum: a tree whose rungs switch on and off cannot be planned against.",
         "But that ruled the MISSION permanent. It did not rule the REWARD permanent, and tracing found they are different questions.",
-        "A reward is a named line on your country's scorecard, like a leader's trait. Some of them will be tied to holding a specific place - the Houston Ship Channel, a set of Great Lakes ports.",
-        "So a bonus that says 'because you hold the Ship Channel' has to decide what it means when you no longer hold it.",
+        "Some rewards will be tied to holding a specific place, such as a ship channel or a set of lake ports. A bonus that exists because you hold the channel has to decide what it means when you no longer hold it.",
       ],
       cost: [
-        "If the bonus survives: a country collects permanent advantages from ground it lost. That is exactly the runaway-leader problem the rest of the game spends its time preventing - and a player who works this out will take a city, bank the bonus, and hand the city back.",
-        "If the bonus lapses: the tree stops flickering and the bonuses still do, so your momentum argument is only half delivered. A player watching a bonus wink out has the experience you ruled against.",
-        "There is a third way I did not recommend because it is more machinery: bonuses that are about a PLACE lapse, bonuses that are about an ACHIEVEMENT do not. It is probably right and it is definitely more to build.",
+        "If the bonus survives: a country collects permanent advantages from ground it lost. A player who works this out will take a city, bank the bonus, and hand the city back.",
+        "If the bonus lapses: the tree stops flickering and the bonuses still do, so your momentum argument is only half delivered.",
+        "A third way I did not recommend because it is more machinery: bonuses about a PLACE lapse, bonuses about an ACHIEVEMENT do not. Probably right, definitely more to build.",
       ],
     },
     {
-      id: "shared-tree-race-or-checklist",
-      title: "Two countries share a mission tree and both hit the same target. Do both get it?",
-      recommendation: "Make it a race - first only. You designed shared trees precisely because the countries are rivals for one prize, and a race is what makes one tree into two games. A checklist would let Minnesota and Wisconsin both tick the same box while pretending to compete.",
+      id: "ports-that-reach-nothing",
+      title: "Ten countries hold a port that cannot sell abroad. Four of them are real ocean ports.",
+      recommendation: "Fix the four that are plainly wrong. Philadelphia, Charleston, Hampton Roads and Providence are deep-water ocean ports and the map has them as inland. I am bringing it to you rather than just fixing it because the number of ports a country holds multiplies into every trade deal it signs, so correcting the map changes a figure every deal in the game reads.",
       evidence: [
-        "The five Texan successors share one tree because they are five claimants to one prize. Minnesota and Wisconsin share one because they are two candidates to lead the same union.",
-        "Your own words for why that works: the tree is the same and the situation is not, which is what makes one tree two games.",
-        "The game checks mission conditions over EVERY country every turn, not just yours. So two rivals meeting the same condition is the normal case, not a freak collision.",
-        "It is especially likely for the Great Lakes pair, because a condition can be met through a federation they both belong to - so they could satisfy it on the same turn by the same act.",
+        "Twenty-four of the sixty-one countries cannot reach the world market from their own ground. The figure this project has been quoting is fourteen, and it measures something else.",
+        "The gap is ten countries that HOLD a port and cannot export through it. The port shows on their panel and its capacity counts toward every deal they sign.",
+        "Four of those ten are there because of a data error rather than geography. The others are genuinely river ports.",
+        "This is the failure your own rules name: a layer the player has not learned yet should be invisible or explain itself, and must never be visible and wrong.",
       ],
       cost: [
-        "A race: the loser watches a rung they were working toward go permanently dark on somebody else's country. That is sharp and it is the point - but it means a tree can become unfinishable through no mistake of yours.",
-        "A checklist: nobody is ever locked out, and the rivalry you designed the shared tree to express quietly stops existing.",
-        "Either way something has to be said about what the loser sees, and nothing currently specifies whether you can even see a rival's tree.",
+        "Fixing it: four countries gain foreign trade they should always have had, and every trade deal in the game gets a slightly different volume ceiling. Saved games would read differently.",
+        "Leaving it: four of the busiest ports on the east coast stay landlocked, and a player who knows anything about American geography will notice within an hour.",
+        "Either way somebody should look at the remaining river ports and say which are genuinely inland, because the claim that forty-three per cent of ports reach nothing is currently being quoted as geography and is partly a bug.",
       ],
     },
     {
-      id: "turn-one",
-      title: "What does the very first turn offer somebody who has never played this?",
-      recommendation: "Give the opening turn something already in motion - a project your predecessor started, or the first rung of a mission tree sitting one action away. My reasoning is that it costs no new machinery and it makes turn 1 look like turn 40, which is the turn the whole design is written for.",
+      id: "two-toll-systems",
+      title: "Two toll systems are running at once and they contradict each other",
+      recommendation: "Decide which one the game means, then delete the other. I am not choosing, because this is not a bug and a fix. They are two different designs, both built deliberately, and picking between them is a judgement about what you want renting a crossing to feel like.",
       evidence: [
-        "The old one-action rule was bad, but it told a newcomer two things free: what a turn was for, and when they had finished one. Removing it removed both.",
-        "The loop you and I built is triage - things arrive, you rank them, you deal with what matters. On turn 1 there is nothing to triage. No project running, nobody has answered an offer, no movement has demanded anything.",
-        "So the first turn is the one turn where the game's central experience has no material in it.",
-        "This is not an argument for putting the action budget back, and it is not something the screens can fix on their own.",
+        "Both are reachable from the same panel, and that part is deliberate: renting a crossing for one quarter against holding a road open for five years is a real thing to weigh.",
+        "But one of them makes RAIL the cheapest kind of crossing to grant, and the other makes rail middling and a PORT the most expensive thing on the board.",
+        "So a player learns a pricing instinct from one screen and it is wrong on the other.",
+        "Two of your tuning dials only move one of the two systems. Turning them changes one screen and leaves the other untouched.",
       ],
       cost: [
-        "Doing nothing: a new player opens the game, reads a newspaper, and is handed a map with no indication of what a turn is for. That is the moment most people decide whether to play a second one.",
-        "A running project: costs nothing to build, and makes the first thing a player sees a bar filling - which is the payoff loop working on turn 1 instead of turn 5.",
-        "The alternative I rejected: a tutorial. You have never asked for one, it is a lot of work, and the game you are modelling this on does not have a good one either.",
-      ],
-    },
-    {
-      id: "deseret-recognition-riverside",
-      title: "Your Deseret exception may not cover the country it needs to",
-      recommendation: "Extend it explicitly to whoever holds San Bernardino - which today is Riverside. You made the exception so a country that needs a trade corridor could actually be granted one; tracing the map shows the only country that can grant Deseret a useful one is the one nobody has mentioned.",
-      evidence: [
-        "You ruled Deseret opens recognised by its neighbours and not by Utah, so a pariah needing passage could be given it. That was checked against the numbers and never against the map.",
-        "Deseret is the only completely sealed country on the board: no port, no coast, no border crossing, no navigable river, in any of its fifty-seven areas.",
-        "It touches California through exactly ONE area - Mohave County - looking across at San Bernardino.",
-        "San Bernardino belongs to Riverside, not to the San Diego country as its own description implies. Riverside is landlocked but holds Imperial County, which is a Mexican border crossing.",
-        "So Deseret's shortest route to any market on earth is through Riverside, and the ocean is one step further.",
-      ],
-      cost: [
-        "If Riverside is covered: the exception does what you wrote it to do, and Deseret has a hard but real path out.",
-        "If it is not: Deseret is recognised by a ring of landlocked neighbours who cannot help it, which is the dead end your ruling was written to remove - just one country further out than anyone looked.",
-        "Worth knowing either way: in about one game in five Mohave County does not join Deseret at all, and that route does not exist. A good roll and a bad roll are different games.",
-      ],
-    },
-    {
-      id: "tree-vs-random-board",
-      title: "Should a mission tree be balanced against a board that changes with the roll?",
-      recommendation: "Accept the variance and do not balance against it - but say so out loud in the game. A tree that is harder on a bad roll is a story; a tree the player cannot tell is harder is a grievance. My recommendation is that Deseret's opening tells the player what it got.",
-      evidence: [
-        "Deseret's size already rolls: between nineteen and forty-five areas depending on the seed, mean thirty-one.",
-        "Tracing found the roll also decides its TRADE, not just its size - the single area that touches California only joins about four times in five.",
-        "And Deseret's tree contains the largest permission any tree grants, which is what makes its hardest mission affordable.",
-        "So the same tree is being played on materially different boards without the player being told which one they got.",
-      ],
-      cost: [
-        "Balancing it away: you would have to pin the roll or compensate for it, and the half-born opening is one of the best things on the board precisely because it varies.",
-        "Accepting it silently: a player who got the bad roll experiences the tree as badly tuned rather than as a hard start.",
-        "Accepting it loudly: costs a sentence on the opening screen and turns the variance into part of the story, which is what it already is for the size.",
+        "Neither design document describes the older system at all, so anyone told to reconcile the three trade regimes would reconcile the wrong three. There are five.",
+        "Keeping both: the contradiction stays, and it is the kind a playtester finds and cannot explain.",
+        "Choosing: whichever goes, somebody loses a feature that works. The one-off sale is the only way to move goods without a standing commitment.",
       ],
     },
   ],
-
 
   _answered: [],
 
@@ -996,6 +972,28 @@ const BOARD = {
   // Things only the owner can supply, and what happens if a machine supplies them instead.
   blocked: [
     {
+      what: "The interview that unlocks the last design document — it is a copy and paste and it is yours",
+      ifAutomated: "Nineteen of the twenty design documents are written. The twentieth is the one about "
+                 + "what the player actually sees and hears, and it cannot be written until the game has "
+                 + "a settled position on its own tone — how it talks about a country coming apart, how "
+                 + "funny it is allowed to be, whose side it is on. That is a matter of taste and it is "
+                 + "yours, and it is the clearest case in the whole mode where I stop and wait rather "
+                 + "than guess. So I built you the way round it: there is a prompt sitting in the "
+                 + "project that you paste into a Claude chat. It interviews you about tone and hands "
+                 + "back a finished document. Drop that document into the design folder and the last "
+                 + "satellite unblocks immediately.",
+      damagedIfAutomated: false,
+    },
+    {
+      what: "One short answer about what the first turn should teach",
+      ifAutomated: "You asked for the opening to talk the player through how to play, and named a "
+                 + "particular explainer as the model. I cannot watch a video, so I have the direction "
+                 + "and not the shape. There is a card above asking which of three things you mean, and "
+                 + "they are an order of magnitude apart in cost. Until then the turn document records "
+                 + "the ruling and deliberately invents nothing.",
+      damagedIfAutomated: false,
+    },
+    {
       what: "The playtest link on GitHub is a very old build, and only you can replace it",
       ifAutomated: "Found on the night of 5 September, and it matters only because you have sent it to "
                  + "nobody. The playable copy on GitHub is a single snapshot taken 132 steps ago — "
@@ -1008,24 +1006,6 @@ const BOARD = {
       damagedIfAutomated: false,
     },
     {
-      what: "Your written predictions before the economy is built — STRUCK, and no longer waiting on you",
-      ifAutomated: "This asked you to name, before building, which five states should feed themselves "
-                 + "and which five should be broken. It sat here for ten days. You struck it when you "
-                 + "set the alpha track in September and I am only now taking it off the board — it "
-                 + "should have gone then. Nothing is waiting on it and nothing ever will be. Left "
-                 + "visible for one update rather than deleted, so you can see it went.",
-      damagedIfAutomated: false,
-    },
-    {
-      what: "Installing the GitHub command-line tool — DONE, and the question it was blocking is answered",
-      ifAutomated: "It is installed, so on 8 September I could finally check rather than assume. Your "
-                 + "backup is complete and up to date, and the repository is PUBLIC — which is correct, "
-                 + "because you were asked on 7 September and said to leave it public. It is the only "
-                 + "one of your projects that is, and that is written down in your projects list so no "
-                 + "future session raises it as an alarm. Nothing here needs you any more.",
-      damagedIfAutomated: false,
-    },
-    {
       what: "Saying when playtesters get a new build — answered for now: after the economy alpha",
       ifAutomated: "Publishing to your playtest link changes what other people receive, so I will not do "
                  + "it without you saying so, and the permission for it stays off. You have said nobody "
@@ -1035,7 +1015,6 @@ const BOARD = {
       damagedIfAutomated: false,
     },
   ],
-
   // Success metrics. value null = "not yet measured". Never an estimate.
   numbers: [
     { label: "100 turns run without the screen, target under 60 seconds", value: "48.8s — meets it" },
@@ -1047,6 +1026,14 @@ const BOARD = {
 
   // Decisions made on the owner's behalf and how they turned out. Corrections go BESIDE originals.
   log: [
+    { when: "2026-09-15", decision: "Chose the brake on the trade spiral in your place, and told you loudly which part of it I made up.",
+      outcome: "Your economy round found a loop that feeds itself: you go short of something, you buy it from a neighbour, hauling it raises the load on your transport network, the network starts failing and loses a fifth of everything in transit — so less of what you bought arrives, so you buy more. The cure feeds the disease. Your round named three possible brakes and chose none. I chose, because the economy document could not be written without one. What I picked is your own game's existing answer to a runaway of the same shape: the five national scores do not clamp the VALUE, they clamp how fast it can CHANGE, and the reason is written into the file — clamping the value leaves the pressure building underneath, so the moment the clamp lets go the country falls off a cliff. I did the same to the transport ratio. One of the three candidates I rejected on evidence rather than taste: it only applies to goods going out through a port, and the spiral runs on deals with the state next door, so it never binds on the case that breaks. What I did NOT decide is how fast is too fast — that number is the architect's and I left it unset rather than inventing one." },
+    { when: "2026-09-15", decision: "Found that when an invasion falls apart, the game pays the attacker.",
+      outcome: "The worst thing writing these documents has turned up. When an offensive collapses, the code is supposed to charge the aggressor — there is a branch that says so, with a comment explaining that charging the victims instead was a bug fixed months ago. That branch tests for an outcome the war code has never once produced. So it has never run, the old behaviour is what ships, and the defenders lose up to two fifths of their population and hand up to a fifth of their economy to the country whose invasion just disintegrated. At the full severity, not the halved one. And the message on screen says the opposite: your own people paid for it. They paid nothing. No test covers it. It reverses the sign of the sharpest brake the game has on a runaway conqueror, turning it into a consolation prize." },
+    { when: "2026-09-15", decision: "Counted the countries that hold a port they cannot sell through, because nobody ever had.",
+      outcome: "The project has quoted fourteen landlocked countries for weeks. That figure is right about something else — fourteen have neither a port nor a border crossing. What nobody had counted is how many cannot reach the world market at all: twenty-four. The gap is ten countries that HOLD a port, see it on their panel, have its capacity multiplied into every deal they sign, and cannot export through it. Four of those are a data error rather than geography: Philadelphia, Charleston, Hampton Roads and Providence are deep-water ocean ports filed as inland. That is your own rule being broken word for word — a layer the player has not learned yet should be invisible or explain itself, and must never be visible and wrong. I have not fixed it, because the port count multiplies into every trade deal in the game, so correcting the map is a decision rather than a repair." },
+    { when: "2026-09-15", decision: "Went back and checked my own work, and four of my own published claims were wrong.",
+      outcome: "I wrote five documents from research before I could verify them, then went back over the load-bearing numbers myself. Four were wrong and I caught all four: I printed the occupation cost formula the way three of your own documents print it, and all three are wrong — the code divides by a reference figure first, and under the printed version holding 25 areas would cost 41 times upkeep rather than twice. I gave the war dice as always rolling at least two, when a war triggered by SIZE rather than by a political flip rolls exactly one. I cited a tuning dial as live that is read by no code at all. And I said fourteen countries have no port, which turned out to be measuring a different question. Every one was caught by me rather than by you, which is the checking working. It is still four, and the lesson is the same one as last week: a figure in a document is a claim, and claims get re-derived before they are repeated." },
     { when: "2026-09-15", decision: "CORRECTION, beside the entry of 5 September below: I told you there were 986 ports. There are 136.",
       outcome: "Found while writing the geography document, by counting rather than by repeating the figure. On 5 September I wrongly said the county data had no ports, then corrected myself to 986 — and that correction was also wrong. 986 is how many COUNTIES carry any trade geography at all; the ones with a port are 136, and the real Principal Ports dataset holds 150 port facilities. Nothing was built on the wrong number, because the game counts the ports themselves rather than reading my figure. Left beside the original rather than over it, because a log that can be quietly revised is worth nothing. And the honest finding underneath it is better than the correction: of those 136 ports, 57 are ocean, 20 are on the Great Lakes and 59 are river or inland ports that reach no foreign market at all. Forty-three per cent of the ports in this game cannot export anywhere, which is why having a port and being able to sell abroad are two different questions." },
     { when: "2026-09-15", decision: "Checked whether the rule you wanted removed had ever been decided, before removing it.",
