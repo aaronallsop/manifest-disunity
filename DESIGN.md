@@ -1,4 +1,7 @@
-# Nation States — Design
+# Manifest Disunity — Design
+
+*Titled **Nation States** until 15 September 2026. That was a working title and it was dropped over a
+clash with another game of the same name (D217).*
 
 *The single source of truth for what this game is and how it works, **as it actually is today**.
 Last rewritten at the end of **M8** (`docs/SHATTER-PLAN.md`). If this document and the code
@@ -149,8 +152,10 @@ newspaper prints those entries once as the opening edition — *The year the Uni
 - **The Area is the atomic unit.** `build_areas.py` merges small counties into an adjacent
   same-state neighbour until each Area clears a 50k population threshold — east of the
   MT/WY/CO/NM line only; western states and AK/HI are left alone apart from authored merges (San
-  Juan WA, the Aleutians, Dukes + Nantucket → Barnstable). 3,143 counties collapse to **1,676
-  Areas**. Member counties are preserved on the record, so no data is lost, and a **County lines**
+  Juan WA, the Aleutians, Dukes + Nantucket → Barnstable). 3,143 counties collapse to **1,688
+  Areas** — *counted from `data/areas.json` on 15 September 2026: 507 merge groups absorbing 1,455
+  counties. This line said 1,676 until then, which was the figure before the M9.6 re-bake §12
+  records.* Member counties are preserved on the record, so no data is lost, and a **County lines**
   toggle reveals them.
 - **Politics is six symmetric ideologies on two axes.** Each Area holds six exact population
   counts. See §3.1 — it is the centre of the model, not a detail of it.
@@ -172,7 +177,8 @@ newspaper prints those entries once as the opening edition — *The year the Uni
   mutation.
 - **The adjacency graph is built once**, as compressed sparse row: `start[n+1]`, `list[m]`, and the
   same node numbering the columns use. 1,676 nodes, 9,454 directed edges, 43.5 KB of flat
-  `Int32Array`. Neighbour rows are sorted by index, so neighbour order is a property of the graph
+  `Int32Array` — *measured before the M9.6 re-bake, which took the Area count to 1,688; the graph
+  was not re-measured and the edge count and size are therefore stale by a little.* Neighbour rows are sorted by index, so neighbour order is a property of the graph
   rather than of the key order of the file that described it — which used to decide `argmax` ties
   and component traversal, and so used to make a re-bake a silent replay divergence.
 - **Nations carry**: a name, a colour, a treasury, a **government** (`{type, rulingIdeology,
@@ -1504,7 +1510,7 @@ the session and a slider is always measured against the tuning that ships.
 
 ### The dashboard (`dev.html`)
 
-A **renderer, not a second model**. All 142 sliders are generated from the TUNE
+A **renderer, not a second model**. All 370 sliders are generated from the TUNE
 schema — label, range, step and doc from the same declaration the engine reads —
 so a tunable added in `js/tunables.js` appears with no work and one renamed
 cannot leave a stale control behind. That is the return on putting every constant
@@ -1667,7 +1673,9 @@ server, and the flash says which of the two happened.
 
 ## 11. Testing
 
-`tests/run.html` runs every suite in the browser; **824 tests, all green, in about four minutes** —
+`tests/run.html` runs every suite in the browser; **956 tests across 51 files, all green, in 212.71
+seconds** — *measured at sign-off on 14 September 2026; this said 824 and about four minutes until
+15 September* —
 the suites play tens of thousands of world turns between them, which is the cost of testing a model
 whose interesting behaviour takes forty turns to appear. `?only=` filters to a comma-separated list
 of suites while working on one, and **a file that fails to load is a failure**, not a silently
@@ -1718,7 +1726,10 @@ account of where this model stops.
   board, the recognition rate against a played game, the election swing against the world's actual
   spread of Quality of Life, and the projection limit against four empire sizes. Counting honestly —
   a `doc` that says "measured" and then gives the number — that is 21 of 298 sliders, and another
-  handful cite a figure without the word. The rest are defensible, documented, and untested against
+  handful cite a figure without the word. *⚠ The denominator is stale: **the schema holds 370
+  entries**, counted 15 September 2026. The 21 was counted against 298 under that stricter test and
+  has **not** been recounted — a looser count of docs merely containing the word "measured" returns
+  **24 of 370** today, which is an upper bound on the same claim rather than a replacement for it.* The rest are defensible, documented, and untested against
   play.
 - **The victory targets are set at two to five times what an AI-only world produces**, on the
   reasoning that a player playing deliberately for eighty turns should substantially outperform a

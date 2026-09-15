@@ -1,4 +1,7 @@
-# Nation States
+# Manifest Disunity
+
+*Called **Nation States** until 15 September 2026 — a working title, dropped over a clash with another
+game of the same name (D217).*
 
 A browser strategy game about the fragmentation and re-formation of the United States. The board
 opens on a country that has already come apart: **sixty-one nations** on a real-data county map,

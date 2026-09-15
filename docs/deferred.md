@@ -165,17 +165,32 @@ scenario's authored content, not to code, and **Aaron scheduled them for after t
 (round 5 ruling 8). Recorded here so a build session finds them without reading three design
 documents.
 
-1. **Conquest ruling 19 — Austin is the legitimate Texas and the other four open unrecognised.**
-   Today every nation the game opens with recognises every other unconditionally, so **Austin's veto,
-   the four rebels' pariah status and the four-way auction for Austin's signature do not exist.**
-   Conquest recorded this as a deliberate departure from the scenario's "the board starts quiet"
-   principle and the change was never made.
+⚠ **UPDATED 15 September 2026: item 1 is no longer deferred, and a fourth has joined the list.**
+Diplomacy ruling 8 was **superseded by D222** — it scheduled Austin's rebel board for after the alpha
+on the reasoning that changing Texas while people test the economy makes a bad result unattributable,
+and **the alpha now carries mission trees with Texas as one of the three.** Items 2 and 3 stand.
+
+1. ~~**Conquest ruling 19 — Austin is the legitimate Texas and the other four open unrecognised.**~~
+   ✅ **BROUGHT FORWARD INTO THE ALPHA, D222, 15 September 2026.** Austin holds the signature each of
+   the four rebels needs and the four-way auction becomes live. **It also closed diplomacy finding I
+   for free** — Deseret gains four nations it can recognise, so the one pariah on the board stops
+   having no diplomatic move at all. *Still a scenario content change and still unbuilt; what changed
+   is when.*
 2. **The federal remnant recognises nobody.** Same mechanism, same absence — D.C. is an opening nation
    and therefore recognises everybody. *This is round 5's in-tray item 4, which that round's
    adversarial review recovered after it had been dropped from the scoreboard.*
 3. **The remnant is D.C. alone.** The story has it as Washington plus its martial-law ring, plus the
    rest of Virginia, plus the Baltimore region. **On the board it is one small nation of 702,250
    people.**
+
+4. **⚠ NEW, 15 September 2026 — Deseret opens recognised by its neighbours and not by Utah.** Ruled in
+   **D227** because transit requires mutual recognition and **Deseret has no port, no ocean coast and
+   no border crossing in any of its 57 corridor Areas** — so a pariah that needs a corridor to do
+   anything at all cannot be granted one. Verified before ruling: its neighbours are small enough that
+   even all six signing leaves `legitimacy` **under 0.15**, the smuggler's-rate band, **so the pariah
+   story survives and only the dead end goes.** Utah is excluded deliberately — the parent's signature
+   moves the continent's per-turn chance from **0.070 to 0.181** and is the most measured piece of
+   drama in the game. *Same file, same class of change as item 1.*
 
 ⚠ **Round 7's ruling 2 — that playing the remnant is a different game — depends on (2) and (3).** So
 these are no longer only colour; a ruling rests on them.

@@ -5009,3 +5009,317 @@ is a two-quarter story.*
 **Scope note, not decided here:** this is the Texas **recognition** change. The **contest hostility
 floors** (conquest ruling 17d, diplomacy rulings 1–3) are a separate mechanism, and the Californian ten
 do not depend on recognition at all. Whether they are seeded at the same time is still open.
+
+---
+
+### D223 — The game ends in 2086, and the middle of it runs on movements nobody painted, 15 September 2026
+
+**A game is 200 turns.** One turn stays one quarter — D163's reason holds, *"every rate in the engine
+is tuned per quarter and the label buys flavour only"* — so 200 quarters is **fifty years, 1 March 2036
+to 2086.** Round 7's finding D is closed: *"nobody has said how long a game is, and every tuning
+decision quietly assumes an answer."*
+
+**A game having an end does two things.** It makes **surviving a result** without inventing a fourth
+victory path — **W36**: *"sixty-one nations and three ways to win means fifty-eight ways to lose; a
+small nation that is still there has done something, and the game says nothing about it."* And it gives
+a mission tree a horizon, which is the only way to know whether a tree is too long.
+
+**⚠ And a distinction nobody had drawn: "sixty turns" is the length of a PLAYTEST, not of a game.** It
+comes from the definition of done — *"a playtester who has never seen it can open a link, play sixty
+turns, and tell you afterwards why they lost."*
+
+### What 200 turns confirms, measured
+
+**The board is still politically alive at the end.** Within-nation spread of the leading ideology's
+share, on the real map: **13.3 at turn 0 → 7.5 (t50) → 5.5 (t100) → 4.8 (t200) → 4.8 (t300).** It
+**stabilises rather than decaying**, which is the property the drift anchor and the neighbourhood term
+were added to produce. *Aaron's end date sits inside a range somebody already measured.*
+
+**And the opening paces well.** `sent.maxRise` is tuned to **0.014**, measured across four seeds to put
+the first secession at **t22–t29** — 11 to 15% of the way through.
+
+### ⚠ What 200 turns breaks, and both were found by checking
+
+**1. The victory targets were reasoned against an eighty-turn game.** `DESIGN.md` §12: the targets are
+set at two to five times what an AI-only world produces, *"on the reasoning that a player playing
+deliberately for **eighty turns** should substantially outperform a deliberately mild AI. That last
+step is a judgement rather than a measurement, and it is the first thing a real play test should
+revisit."* **A 200-turn game gives two and a half times that horizon.** *The architect's, named rather
+than discovered.*
+
+**2. The middle game needs an engine, and the design already has one.** The sentiment model was
+**measured over sixty turns** — Deseret 0.197 → its 0.600 cap, A Free Texas 11 → 117 Areas, Cascadia
+9 → 50. **If the painted movements reach their ceilings inside the first third, the remaining two
+thirds has no new separatist pressure arriving at all** — and the premise of this game is a country
+coming apart and being put back together.
+
+**RULED: the opening act runs on painted movements, and everything after roughly turn sixty runs on
+movements born in play.** Round 1's **ruling 42** already specifies them: **Rejoin** fires when the
+state holding the ground governs it badly (Authority, quality of life, war weariness, occupation — all
+built), **Expand** when the nation is short of something, **Reconquer** when it has lost ground (the
+`lost` memory — built). **None of it is built.**
+
+**Not an alpha change.** The alpha is a sixty-turn test, which is exactly the window the painted
+movements cover.
+
+**A measurement owed to the data stage:** the 60-turn figures may predate M5.3's reduction of
+`sent.maxRise` from 0.035 to 0.014. **Re-measure the sentiment model over 200 turns at the shipped
+rate.**
+
+**And one thing 200 turns un-blocks:** round 7 carried the story's twenty-year New England–Rochester
+free-trade deal as an unresolved collision — *"eighty turns, and the game's durations are 2, 4, 8 and
+20."* **Against a sixty-turn game an eighty-turn deal was longer than the game. Against 200 it is 40%
+of one.** W42's objection survives as an argument rather than an impossibility. *Reopenable, not
+reopened.*
+
+---
+
+### D224 — The briefing is the seam between turns, and silence is the expensive answer, 15 September 2026
+
+**Aaron pushed back on a framing and he was right.** The draft called a mandatory answer phase *"a wall
+in front of every turn"*. His reply: *"if the play system is built around starting something in one
+turn but not completing it that is the way it has to be… you just got everything done and instead of
+just starting over from scratch there is a break and you get to see results of actions you took,
+results of trade deals and diplomatic actions you sent out, and new spontaneous things that either
+make your life easier or harder."*
+
+**The sharper version of his own argument, and it is stronger than the objection.** With **no action
+budget, nothing else makes a turn discrete** — there is no *you have used your action* moment, so the
+End Turn button is the only boundary there is. And with **nothing completing in one turn, the briefing
+is the only place completion is ever felt.** If a player never sees a bar fill, the projects are
+invisible.
+
+> **The briefing is not homework standing in front of the turn. It is the payoff loop** — which is the
+> mechanism under *"one more turn"*: you end the turn to find out what finished.
+
+**THE TURN IS THREE BEATS:** the **briefing** (free, and you answer what it asks) → the **turn** (start
+as many things as you like) → **end turn** (the world resolves).
+
+**And it saves politics ruling 12 rather than weakening it.** The draft proposed softening *"answered
+before the turn can move"*; **Aaron's reading keeps it exactly**, because the answering happens in the
+briefing and *then* the turn moves. The ruling was right and the beat was in the wrong place.
+
+### W16 is answered by editing, not by capping
+
+Round 7 named the real risk: *"if every component gets ruling 12's channel, a player answers six cards
+before doing anything."* **W17 proposed a cap of three a quarter. That is the wrong tool.**
+
+**The briefing is ranked and edited, not rationed** — which the game already does in two places. The
+turn-summary newspaper draws *"three to six headlines per round from the ledger, **ranked by kind and
+magnitude**"*, and `disclosure.js` folds the nation panel *"so a newcomer meets six lines instead of
+sixteen blocks — it hides nothing; everything is one click away."*
+
+**That is W49 arriving from the interface:** *"Triage IS the game, and the interface is where it lives
+or dies. If a player must read six screens to find their one move, the budget is not the problem."*
+
+### Silence is choosing, and it is the expensive answer
+
+**Every card carries a default and the default is the worst option available.** A player who never
+opens the reactive section **loses slowly and legibly rather than being stopped and made to look.**
+
+**The default for a movement's demand is already ruled**, which is how the shape is known to be right.
+Round 2's ruling 30: *implement* and you pay what the act costs; *decline* and **it grows faster**;
+*wait and never deliver* and **its verb changes toward Separate.**
+
+**Silence is not "decline". Silence is "wait"** — you did not say no, you simply did not answer. And
+*wait* is the expensive one: politics ruling 22 counts **broken promises** rather than turns, the verb
+moves **one step, always to Separate, never back**, and it fires **once, as an event the player is told
+about.**
+
+> **A card you never open is a promise you never kept.**
+
+*Which gives the briefing a second job nobody assigned it: telling you what you let happen last
+quarter.*
+
+---
+
+### D225 — A project stalls rather than fails, and haste is paid where the project sits, 15 September 2026
+
+**Two rulings completing `turn-design.md`'s project mechanic.**
+
+**1. A project you cannot pay for STALLS and keeps its progress. The bill stops with it.** No forfeit,
+no penalty — the bar simply stops filling. **The price of being poor is that nothing you want arrives.**
+
+*Confiscating spent progress would make a player never start anything, and this design charges prices
+rather than issuing punishments. The precedent is built: **a patron who stops paying stops being one**,
+and the client's political drift **decays** rather than being seized.*
+
+**2. Haste is paid where the project sits, and it lands later rather than at the till.**
+
+| Project | What haste costs |
+|---|---|
+| **Covert** | **Exposure.** A greater chance the target finds out, sooner |
+| **Public** | **The ground it is built on.** `attrs.sentBoost` rises in the Area |
+
+**Aaron's own arrow from the Sector Wiring page, 14 September, previously unused: *"people don't like
+resource extraction in their back yard."***
+
+**`sentBoost` is the right term and it self-limits.** It is *"the only term that is a property of the
+PLACE rather than of the nation holding it"* and the only way the model can say *this ground has a
+reason of its own*; it **rides inside grievance and is therefore multiplied by `base`**, so *"an
+authored grievance cannot radicalise a place into a movement whose ideology it does not share."*
+**Rushing a port only bites where something was already there to catch it.** It shows in the Why panel
+as **Unfinished business**, with no second code path.
+
+**3. Haste has a floor: a project may be sped up and may never finish in the quarter it was started.**
+Otherwise money buys its way straight through the organising rule and *"nothing completes in one turn"*
+acquires a price tag. **The floor's value is the architect's; that there is one is design's.**
+
+**And the shape of the cost is the motif this design has now produced five times** — round 3 counted
+the first four: the garrison buys quiet and sells the next decade; appeasement buys a region and pays
+at the next election; *"tell them to wait"* borrows patience at interest; the honeymoon ends worse than
+neutral. **Buy now, pay later.**
+
+---
+
+### D226 — Missions: the system, and what a tree is made of, 15 September 2026
+
+**Seven ideation rounds produced 536 ideas and not one was a mission.** What the game has is three
+victory conditions checked every world turn — **an ending, not something to work on.**
+
+**Aaron's four reasons, taken as the brief:** a mission tree gives you **direction**, **challenges**, a
+**story**, and **bonuses that keep momentum up.**
+
+**A MISSION IS THE VICTORY TABLE AT A SMALLER SCALE.** The three paths are already *"a table of rows
+rather than code paths"* — data with per-condition targets, evaluated every world turn. A mission adds
+**a prerequisite** and **a reward**. **It costs nothing** — it is a state the game watches for, not a
+thing you do — **so missions never compete with anything in the turn.**
+
+> **Missions are the middle game. Victory is the end.**
+
+**THE STRUCTURE: three branches, four elements, one pivot.**
+
+| Branch | |
+|---|---|
+| **Standing** | How the world sees you |
+| **Ground** | The territorial ambition your story is about |
+| **Building** | What you make of what you hold |
+
+**⚠ Ground is not "the military branch", and getting that wrong would flatten all three trees into
+one.** Texas's ground arrives by **conquest**, Deseret's by **defection**, the Great Lakes' by
+**agreement.**
+
+**Elements: ladder** (rising scale, each rung unlocks the next) · **set** (any order, all required) ·
+**fan** (several open at once when the set is done) · **free** (no gate). **Each branch opens with
+something reachable in the first few years**, so a tree pays immediately.
+
+**The pivot** sits at the end of the longest branch and its reward is **a victory re-aimed or a licence,
+not a bonus.** ⚠ **It may open one more mission rather than closing the tree** — Deseret's does,
+deliberately.
+
+### Four rulings the pass produced
+
+1. **"Own and control" converts to four testable conditions** — **held** (yours on the map, whatever
+   flag) · **settled** (held and digested, ruling 26's fourth rung) · **in the union** (a federation
+   member holds it and you lead) · **reached** (a working trade route runs to it). *Aaron: "that is me
+   colloquially speaking and we will need to convert this to actual language."*
+2. **Leading a federation counts as controlling its members' ground — for MISSIONS, not for victory.**
+   Victory is re-checked every world turn while a mission is permanent, **so a win that arrived on a
+   federation election would evaporate at the next one.** *A pivot is the right place to grant such a
+   thing, because it is earned.*
+3. **A completed mission stays completed**, whatever happens to the ground or the office that earned
+   it. **The reason is momentum** — a tree whose bonuses switch on and off cannot be planned against.
+4. **A bonus is a named row in the Why record, exactly as a leader's trait already is.** A leader is
+   *"a thumb on the scale, deliberately small… a signed modifier on each of the five stocks plus a small
+   pull on the war roll."* **So a mission may move a stock provided the panel prints it with its own
+   label.** What is forbidden is an unexplained adjustment. ***Correction recorded rather than edited
+   away: the first recommendation was "permission, not power" and it was too strict.***
+
+### The voice, recorded as a constraint on the writer
+
+> **A mission's name is a regional joke the people who live there would get.**
+
+*Not Just a Great Lake · The Northern Cheese Mongers · Bearing Down on the Lions Out East · The Tiger
+and the Buffalo Drink Water from the Same Riverbank · Spirit of Sam Houston · Remember the Alamo · The
+Pass · Well, That's Dallas · An Ensign to the Nations · Busy as a Bee · Crossroads of the West.*
+
+**Sports teams, state history, scripture, local self-deprecation** — and **the names do design work.**
+*Bearing Down on the Lions* says the mission is about Detroit without naming a mechanic. **That is
+requirement 3 delivered in the title instead of a paragraph underneath it.**
+
+### ⚠ The recurring conversion, now three instances deep
+
+**Canada and Mexico are geography, not nations** (D168) — *not actors, no opinion, no negotiation.*
+Three missions across two trees asked for a deal, a friendship or a trade agreement with them.
+
+> **The conversion is always the same: "Canada becomes your friend" → "your goods cross the corridor
+> free."** Same reward, no new actor.
+
+---
+
+### D227 — Three mission trees, and all of them converge on the Mississippi, 15 September 2026
+
+**Three trees in the alpha covering seven of sixty-one nations**, each written branch by branch with
+Aaron and each verified against the map before anything was written down.
+
+| | Shape | Pivot |
+|---|---|---|
+| **Texas** — one tree, five claimants | Standing ladder of 3 · Ground set of 5 then fan of 4 · Building free | **Conquer D.C. → the United States *of Texas*.** The only pivot that renames the prize |
+| **Great Lakes** — Minnesota **or** Wisconsin | Standing ladder of 4 · Ground set of 3, fan of 3, capstone · Building free | **Both banks of the Mississippi → a conquest licence SCOPED TO THE RIVER** |
+| **Deseret** | Standing 3 · Ground gate, one free, then a ladder east · Building 4 | **The trail complete → the Gathering: defection no longer needs a frontier.** Sits BEFORE the last mission |
+
+### ⚠ The finding nobody designed
+
+**All three trees want the Mississippi, for three different reasons, and none was written with the
+others in front of it.**
+
+- **Texas** wants New Orleans and the Mouth to **strangle the Midwest** — *Choke the Farmers*.
+- **The Great Lakes** wants the same two parishes because they are **the only ocean the river reaches**
+  — *Southern Hospitality*.
+- **Deseret** wants Illinois's eighteen Mississippi counties — **which include Alexander County,
+  Cairo**, the one gate the Great Lakes tree cannot finish without.
+
+### What the data said that could not have been guessed
+
+**Minnesota and Wisconsin are on different networks entirely.** Minnesota: **two Lake Superior ports,
+two Mississippi river ports, two land gates to Canada.** Wisconsin: **two Lake Michigan ports and
+nothing else** — no river port, no Superior port, no international border. *So one tree is a
+development problem for one of them and a foreign-policy problem for the other.*
+
+**Neither holds a single one of the fifteen chokepoints**, and both sit at the **western end of both
+corridors** — Duluth is the first county in the ordered Great Lakes list, and the Mississippi corridor
+begins in Minnesota.
+
+**All three movements living in them are Unify movements capped below the secession line** — Blue-Collar
+Populist 0.35, the Farmers Union 0.30, Great Lakes Free Trade 0.30, against
+`secession.countyThreshold` 0.40. **It is the one nation on the board that cannot be broken apart by
+its own people. It can only be nagged into unions.**
+
+**Texas's five cities are not five of the same thing.** **Harris County is an ocean port AND the Houston
+Ship Channel gate. El Paso County is a Mexican border crossing.** Dallas, Travis and Bexar carry **no
+trade geography at all.** *Two of the five are the only reasons Texas can reach the world; three are
+politics.*
+
+**Deseret has no port, no coast and no border crossing — none, in any of the 57 corridor Areas** across
+seven states. And **Reach turns its Ground branch into a ladder by physics**: you cannot take Kirtland
+from Salt Lake, so the trail must be walked in order and nobody had to write a rule saying so.
+
+### ⚠ A recognition exception at turn zero, and it is scenario content
+
+**Deseret opens recognised by its neighbours. Not by Utah.**
+
+**Why it was needed:** transit requires **mutual recognition**, and a nation with no port and no
+crossing needs a corridor to do anything at all. Round 5 found the diplomatic half of this dead end and
+called the game's answer *"wait, and hope."* **This is the economic half and it is worse.**
+
+**Why it does not delete the story — checked rather than assumed.** `legitimacy` is *"the share of the
+continent, **by weight**, that recognises you"*, and Deseret's neighbours are small. **Even with all six
+signing it stays under 0.15, the smuggler's-rate band.** So bilateral trade and transit with its
+neighbours unlock; the world market, the coalition seat and the Influence deficit do not change; **and
+Utah's signature is still the key**, measured at **0.070 → 0.181** the moment the parent gives in.
+
+> **Deseret stops being frozen and stays a pariah.**
+
+**And the fiction is the justification rather than the objection.** All six of those states **lost
+ground to Deseret** — Idaho 13 Areas, Colorado 8, Montana 4, Wyoming 3, Arizona and Nevada 2 each.
+*"The states around it" is the same list as "the states it took territory from."* **A state that has
+lost thirteen Areas and cannot get them back has the strongest practical reason on the board to
+regularise the border. You recognise the thing you cannot remove** — and everyone else accepting
+reality is what makes the parent's refusal read as grief rather than policy.
+
+**It is a change to authored scenario content, not to rules** — the same class as bringing conquest
+ruling 19 forward, in the same file, and it does not rot.
+
+**It also unblocked Deseret's opening mission without settling a general question.** Nobody has ever
+ruled whether **an alliance requires mutual recognition**, because alliances are not built. **That stays
+open and goes to the diplomacy document**, rather than being settled sideways to rescue one mission.
