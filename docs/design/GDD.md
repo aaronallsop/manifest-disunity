@@ -105,6 +105,22 @@ Aaron named, made reliable instead of left to forums.**
 may not be a prerequisite. *If a document specifies something a player MUST understand before they can
 act at all, that is a finding against the document.*
 
+#### 3.2 The rule this produces, which a screen can actually be tested against
+
+**Found by tracing §19.1**, because the requirement above is not yet something anyone can check:
+
+> **A layer the player has not learned yet must be either INVISIBLE or SELF-EXPLAINING. It must never
+> be VISIBLE AND WRONG.**
+
+**Three states, and only the third is a defect.** *Invisible* is fine — drift and sentiment run for
+sixty turns whether or not anybody opens the politics screen, and a movement declaring is the system
+acting on you before you act on it. *Self-explaining* is the Why record. **Visible and wrong is the
+port a player can see and cannot use** — `board-design.md` §14.5: **59 of the game's 136 ports reach
+no foreign market at all, and nothing on screen distinguishes them.**
+
+**That is not depth waiting to be discovered. It is an unanswerable question**, and it is the exact
+failure this requirement exists to prevent.
+
 ---
 
 ## 4. Player experience and point of view
@@ -946,6 +962,160 @@ and simply are not written down anywhere.*
 | ~~**9**~~ | ✅ **RESOLVED 15 September 2026, D232 — traced scenarios are REINSTATED**, and four existing documents now owe one. *The disagreement, for the record:* `docs/design/DESIGNER-BRIEF.md` says *"End every design document with the scenarios it must be able to tell, each one traced"* and calls worked examples *"your test suite"*. The GDD brief of 15 September specifies a four-part satellite — Depends on, the system, Open questions, Gaps — **and traced scenarios are not one of the four.** **Neither written satellite has a traced-scenarios section, and neither does this master.** The newer, more specific brief was followed. *Recorded rather than resolved: whether tracing is dropped or reinstated is Aaron's, and it is the practice that found contradictions in every closed ideation round that the rulings alone did not* |
 | **10** | **`docs/design/DESIGNER-BRIEF.md` is itself stale and is the file a new design session is told to paste.** It states the live stage is ideation, names round 4 as the live round, and forbids editing `DESIGN.md` — all three superseded. **A session started from it would begin by contradicting the current phase.** *Found 15 September 2026* |
 | **11** | **⚠ `MAX_DISTANCE` HAS NO AUTHORED VALUE ON THE THREE-AXIS BOARD, and it is the first thing the Technical Designer must settle.** It is the denominator of the one function that drives coalitions, drift, splinters, defection, civil-war severity, trade alignment, liberty satisfaction and AI diplomacy, so **every threshold in the game is measured against it.** On two axes the rule was to use the *actual* widest authored pair (**1.7804**) and explicitly **not** the box diagonal, because the diagonal squashes every real affinity into the top third of the range. **On three axes the widest authored pair IS the diagonal** — opposite corners exist — which is **2√3 ≈ 3.4641**. *That figure is arithmetic from the √2 and 2 distances the ruling states; nobody has authored it, and the two-axis rule does not decide it because its whole point was that the diagonal was unoccupied* |
+
+---
+
+---
+
+## 19. The scenarios this document must be able to tell
+
+**Reinstated by Aaron on 15 September 2026 (D232), after this document was written.** *Worked examples
+are the test suite.*
+
+**A master document's scenarios are the CROSS-CUTTING ones — the situations no single satellite owns
+and every satellite has to agree about.** A scenario that lives inside one system belongs in that
+system's document, not here.
+
+**Four traced. Two narrate. One jams on a document that does not exist yet, which is the correct
+result and tells the next writer what it must cover. And the first is traced against the requirement
+D232 created, which this document predates.**
+
+---
+
+### 19.1 ⚠ Somebody plays sixty turns without understanding the economy
+
+**The requirement, from §3.1:** *the game must be playable, and fun, by somebody who does not
+understand the economy, or transit, or the political board. Understanding a layer is a reward for
+coming back, not a toll on the way in.* **Aaron played a thousand hours of the game this one is
+modelled on without knowing a whole system existed.**
+
+**Step 1 — what they meet on turn 1.** A newspaper front page dated 1 March 2036. **Asks nothing,
+explains the world.** ✅
+
+**Step 2 — what they can act on without understanding anything.** Recognise somebody (free). Answer a
+movement's demand (free, and the options are priced on the card). Answer an event (free). **All three
+are cards that state their own options and costs.** ✅ *The reactive channel is the layer that needs
+no prior knowledge, and it was built that way for a different reason.*
+
+**Step 3 — what happens when they ignore the economy entirely.** The known hollow spot, deliberately
+accepted: **nothing bad happens to a nation that does not trade.** Round 4 closed both halves of it on
+paper — a cure written on 4 September, and farmland needing imported fertiliser so almost nobody is
+self-sufficient — **and neither is built.** *So today a player can ignore the economy for sixty turns
+and not be punished, which satisfies the requirement by accident and for the wrong reason.*
+
+**Step 4 — what happens when they ignore the political board.** Drift, sentiment and movement growth
+run whether or not they are understood. A movement crossing its threshold **declares**, and the player
+is told. **They can lose territory without ever having opened the politics screen** — which is the
+right shape: *the system acts on you before you act on it.* ✅
+
+**Step 5 — where it breaks.** `board-design.md` §14.5: **a player holds a port, sees it on their panel,
+and cannot sell abroad**, because 59 of the game's 136 ports are river or inland ports that reach no
+foreign market. **The model is right and nothing on screen says so.** *That is not depth-to-be-
+discovered; it is an unanswerable question, and it is exactly the failure mode this requirement
+exists to prevent.*
+
+> **⚠ Mostly narrates, and the failure is specific and fixable.** The distinction that matters:
+> **a layer you have not learned yet should be INVISIBLE or SELF-EXPLAINING, never VISIBLE AND
+> WRONG.** *A port you can see and cannot use is the third thing.* **That is a rule this document did
+> not have and now does — §3.1's requirement, stated as something a screen can be tested against.**
+
+---
+
+### 19.2 ⚠ Two countries are born on the same turn, by two different routes
+
+**Round 1's demand, in its own words: *conquest's civil wars and secession's declarations must produce
+the same kind of country.*** **No document owned it, which is why D217 moved all nation-making into
+one satellite.**
+
+**Step 1.** A movement crosses its threshold in nation A and **declares**. A country exists.
+
+**Step 2.** Nation B annexes too much too fast and **fragments in civil war**. A country exists.
+
+**Step 3 — and now every system downstream has to treat them identically.** Both need: a name and a
+flag (derived, not stored); a government with a ruling ideology; power stocks opening **at** their
+targets rather than climbing from the floor; a founding turn; home ground; a place in the relations
+list; a recognition status; and an entry in every other nation's memory.
+
+**Step 4 — do they get the same thing?**
+
+> **⚠ JAMS, and correctly: `nation-design.md` does not exist yet.** **This is the document that seam
+> was created for**, and the trace is here rather than there because **until it is written, nothing in
+> the project guarantees the two routes agree.**
+
+**What the trace hands that document, so it is not rediscovered:**
+
+| | |
+|---|---|
+| **The honeymoon** | A new nation takes an Authority term for being new. **Deseret takes it and does NOT take the transition GDP cut**, because the shattering predates turn 1 — *so there is already one authored exception to whatever the general rule turns out to be* |
+| **Recognition** | A declared nation opens unrecognised; **the opening board's twelve are a scenario exception**, and D227 adds a second for Deseret. **Three cases, one machine** |
+| **Memory** | Every state that lost ground writes a back-dated entry toward the newcomer. **Does a civil-war remnant get the same?** Nothing says |
+| **The minimum** | Nothing states how small a country may be and still exist — *and `DESIGN.md` records the federal remnant as one Area of 702,250 people* |
+
+---
+
+### 19.3 A player asks why their standing abroad keeps falling
+
+**This is USP 5.1 traced end to end, and it crosses four systems.**
+
+**Step 1.** Influence has dropped for six turns. The panel shows **the value and the target** — *"51%,
+heading for 38%"* — because the target is kept beside the rate-limited value so a nation visibly on
+its way somewhere is more useful than an instantaneous number. ✅
+
+**Step 2.** The player opens the stock. **The Why record lists every input**: its raw figure, its
+normalised figure, its weight, its contribution, and a sentence saying what it is.
+
+**Step 3.** The heaviest negative row is **conquest, scaled by `(1 + influence)`** — so the more
+standing they had, the more each annexation cost them. **The row names the tunable that moves it.**
+
+**Step 4 — and nothing downstream disagrees.** The leaderboard's sort reads the **stored** value; the
+one-line summary is built from the **same** inputs array the panel prints. **They cannot contradict
+each other, because there is only one record.** ✅
+
+**Step 5 — and the AI's reasoning is the same shape.** *"Why did Texas attack me"* is answerable from
+the same kind of record, with one deliberate difference: **an AI score may be negative**, because the
+difference between a bad move and a catastrophic one has to survive, and clamping to [0, 1] destroys
+it exactly where it matters. ✅
+
+> **✅ Narrates completely, and it is the strongest thing in the project.** **And §3.1 reframes what it
+> is for:** not a fix for frustration at the door, but **the thing that makes the next layer learnable
+> at the moment a player goes looking for it.** *This trace is that moment, drawn.*
+
+---
+
+### 19.4 The same seed is replayed on a different machine, in a different browser
+
+**Determinism is non-negotiable and it is tested. This traces why it survives contact with reality.**
+
+**Step 1.** The seed is set. **Each system draws from its own named stream** — `spawn`, `combat`,
+`turnorder`, `unite`, `drift`, `scenario` — derived from `hash(seed, name)`. **So adding a die roll to
+combat cannot reshuffle party spawns.**
+
+**Step 2.** The map is baked. **`build_areas.py` produces byte-identical output across runs**, and the
+save carries a **build stamp** and is refused if the map has been rebuilt underneath it.
+
+**Step 3.** The adjacency graph is traversed. **Neighbour rows are sorted by index**, so neighbour
+order is a property of the graph rather than of a file's key order — *which used to decide `argmax`
+ties and made a re-bake a silent replay divergence.*
+
+**Step 4 — the browser changes, and this is where it would break.** The route search **does not use
+logarithms**, the textbook way to turn a chain of multiplications into a sum. **`Math.log` is not
+guaranteed to give bit-identical answers in different browsers**, and *a saved game that replays
+differently because it was opened in a different browser is the worst class of bug this project can
+produce.* **Multiplying fractions is exactly rounded.**
+
+**Step 5.** Ties in the route search break on a **total order** — most surviving, then fewest hops,
+then alphabetically — never on *"whichever the loop found first"*. **Every loop over the graph runs in
+sorted order for the same reason.**
+
+**Step 6.** The world turn runs its phases in a fixed order over the columnar buffer, with **migration
+computed entirely before any of it is applied** — because applying as it goes *"would let the first
+Area's arrivals decide the second Area's departures and the node numbering would decide who moved."*
+
+> **✅ Narrates, and the point of tracing it is the pattern rather than the result.** **Five separate
+> systems each had one place where an implementation detail could have leaked into the model, and all
+> five were closed the same way: make the thing an explicit property of the data rather than an
+> accident of traversal.** *That is a rule the Technical Designer should carry into every system that
+> does not exist yet.*
 
 ---
 

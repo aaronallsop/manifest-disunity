@@ -543,7 +543,8 @@ game* — but it is now an argument rather than an impossibility.
 | **3** | **Do the painted movements actually cap out by turn sixty at the shipped tuning?** The 60-turn spread figures may predate M5.3's reduction of `sent.maxRise` from 0.035 to 0.014. **Re-measure over 200 turns at the shipped rate** | **The data stage** |
 | **4** | **Are the victory targets still right against a 200-turn horizon?** §7.2 | **The architect**, and *"the first thing a real play test should revisit"* |
 | **5** | **Is sixty nations starting several projects each affordable?** §9 | **The architect** |
-| **6** | **Does anything other than the player's own choice end a nation's slot?** With no budget there is no natural terminator | **The Technical Designer** |
+| **6** | **Does anything other than the player's own choice end a nation's slot?** With no budget there is no natural terminator. **§12.4 sharpens it: a war card arrives during somebody ELSE's slot — do you answer it then, or does it wait for yours?** That decides whether the reactive channel is a real interrupt or an inbox | **The Technical Designer** |
+| **7** | **⚠ What does turn 1 offer a player who has never seen this game before?** §12.1 traces it: the old rule told a newcomer what a turn was for and when they had finished one, and removing it removed both. **The design's central loop is triage, and on turn 1 there is nothing to triage** — no project running, no offer returned, no demand made. **The turn is well specified for turn 40 and unspecified for turn 1.** *Not an argument for restoring the budget, and not a presentation problem to hand away* | **Aaron** |
 
 ---
 
@@ -560,6 +561,181 @@ and simply are not written down anywhere.*
 | **4** | **It is not written down whether turn order is re-shuffled each round or drawn once.** The `turnorder` RNG stream exists; the policy is not stated in any document. **With a budget of one this decided little; with unlimited starts it decides more** |
 | **5** | **There is no rule for cancelling a project.** §3.3 covers a project you cannot pay for. Nothing covers one you no longer want |
 | **6** | **"Discovery" has no mechanism.** §3.4 requires that a covert project can be found out and that haste makes it likelier. Nothing in the build has ever hidden anything from anybody except the pressure map's three bands |
+| **7** | **⚠ Nothing says what discovery REVEALS.** A covert project is *"visible only to its owner until discovery"* — so when discovery fires, does the other side see the bar, its progress, and what you have spent? **Two very different games: one where you are caught doing something, and one where they can read exactly how far along you were.** *Found by tracing §12.2, 15 September 2026* |
+
+---
+
+---
+
+## 12. The scenarios this document must be able to tell
+
+**Reinstated by Aaron on 15 September 2026 (D232), after this document was written.** *Worked examples
+are the test suite.*
+
+**Five traced. Two narrate. Two jam on the same missing piece, which is the useful result. And the
+first one is tested against a requirement that did not exist when this document was written.**
+
+---
+
+### 12.1 ⚠ A player opens the game for the first time and ends one turn
+
+**Why this one is first.** D232 produced a requirement this document predates: **the game must be
+playable, and fun, by somebody who does not understand the economy, or transit, or the political
+board.** *Understanding a layer is a reward for coming back, not a toll on the way in.* **This turn
+design is the thing that requirement lands on hardest**, because removing the action budget removed
+the one structure that used to tell a new player when they were finished.
+
+**Step 1 — the briefing opens.** The game's first screen is a newspaper front page dated **1 March
+2036**. It is prose with no engine behind it, and it is the first thing a new player meets. ✅ **This
+is exactly right for the requirement** — it asks nothing and explains the world.
+
+**Step 2 — the player is in their slot and may start as many things as they like.** No budget, no
+points, no cap. **The limits are money, time and geography, and none of them is a rule that refuses
+you.**
+
+**Step 3 — and here is the problem.** The old rule was *one action, and it ends your turn.* **Bad as
+it was, it told a new player two things for free: what a turn was for, and when they had finished
+one.** Both are now gone. **Nothing in this document says what a new player is invited to do first.**
+
+**Step 4 — the design's own answer is triage, and triage needs something to triage.** §4.3 says the
+briefing is *ranked and edited, not rationed*, and *"triage IS the game."* **On turn 1 there is
+nothing to triage** — no project is running, no offer has come back, no movement has made a demand,
+and the reactive section is empty or near it. **The first turn is the one turn where the design's
+central loop has no material.**
+
+> **⚠ JAMS, and it is a genuine finding.** **The turn is well specified for turn 40 and unspecified
+> for turn 1.** Every mechanism here — the payoff of a bar filling, the cost of silence, the ranked
+> briefing, triage — **requires a game already in motion.** *Nothing says what the opening turn offers
+> a player who has never seen this before.*
+
+**What it is NOT.** This is not an argument for restoring the action budget, and it is not a
+presentation problem to be handed away. **Something has to make turn 1 a turn rather than an empty
+room**, and whether that is an opening project already running, a first card, a mission tree's first
+rung, or something else **is a design decision nobody has made.** *Open question 7.*
+
+---
+
+### 12.2 You arm a separatist movement in your neighbour, and pay to rush it
+
+**Aaron's own example, 15 September: *"Spend a lot of money trying to arm a separatist movement in
+another state — well, greater chance the other country finds out."***
+
+**Step 1 — it is a project, not an action.** A total cost in money, a duration in turns, a per-quarter
+draw, visible progress, a throttle, and **covert** rather than public. Starting it does not end your
+slot and does not stop you starting anything else.
+
+**Step 2 — covert means the bar is yours alone.** *Champion* is public from the first quarter and
+draws a coalition and a memory heavier than recognising them. **Arm draws nothing at all — until
+discovery, and then the whole bill at once.**
+
+**Step 3 — you pay above the draw.** The bar fills faster. **The floor holds: it may not finish in the
+quarter it was started**, or money buys straight through *"nothing completes in one turn."*
+
+**Step 4 — and the reaction lands later, not at the till.** Haste raises the chance of being found
+out. **This is the fourth instance of a shape this design has produced independently:** *a decent
+government's options are expensive and public; a rotten one's are cheap and quiet.*
+
+**Step 5 — discovery fires.** The memory is written, the coalition reads it, and the whole reputational
+cost arrives at once rather than in instalments.
+
+> **⚠ JAMS AT STEP 5. "Discovery" has no mechanism and this document says so.** *Nothing in the build
+> has ever hidden anything from anybody except the pressure map's three bands.* **So the covert half of
+> the design — which is what makes the gamble a gamble — rests on a concept that does not exist.**
+> *That is gap 6, already recorded; the trace confirms it is load-bearing rather than decorative.*
+
+**And a second thing the trace surfaces, which was not recorded.** **The bar itself is a disclosure
+risk.** §8 says a covert project is *"visible only to its owner until discovery"* — **so the moment
+discovery fires, does the other side see the bar, its progress, and how much you have spent?** *Two
+very different games: one where you are caught doing something, and one where they can read exactly
+how far along you were.* **Nothing says which.** *Gap 7.*
+
+---
+
+### 12.3 A movement demands something and you never open the card
+
+**Step 1.** The demand arrives in the briefing's second section. **Answering is free** — *a decision is
+free when you did not choose to be asked* — and it is **mandatory** in the sense that it will not go
+away.
+
+**Step 2.** You do not open it. **Not answering is choosing.** Every card carries a default and **the
+default is the worst option available.**
+
+**Step 3 — and the default here is not "decline".** Round 2's ruling 30 gives three answers: implement,
+decline, or *wait and never deliver*. **Silence is *wait*, not *decline*, because you did not say no —
+you simply did not answer.** And *wait* is the expensive one.
+
+**Step 4.** Politics ruling 22 counts **broken promises, not turns.** So the cost accrues per unbroken
+silence, not per quarter.
+
+**Step 5.** Past the threshold the movement's **verb changes one step, always toward *Separate*, and
+never back.** It stops asking you for things and starts wanting out. **It fires once, as an event you
+are told about.**
+
+> **✅ Narrates cleanly, and it is the best-specified thing in the document.** *A card you never open is
+> a promise you never kept.* **A player who ignores the reactive section loses slowly and legibly
+> rather than being stopped and made to look** — which is precisely the "playable before understood"
+> requirement being met, by a mechanism written before the requirement existed.
+
+---
+
+### 12.4 You are invaded during somebody else's slot
+
+**Step 1.** A nation declares war on you. **Declaring is instant, because starting something is
+instant.** The war itself is the longest bar in the game.
+
+**Step 2.** A card reaches you. **It is free**, by the same principle: you did not choose to be asked.
+
+**Step 3 — what you can do now, instantly.** **Concessions.** Release, grant autonomy, change course.
+*They are instant precisely so they are available when you are cornered* — **a release valve with a
+two-year delay is not a valve.**
+
+**Step 4 — what you cannot do now.** *Send troops to the border* is a **reallocation**, and readiness
+follows an allocation rate-limited and **falls faster than it rises**: a one-turn switch to Field
+reaches **under 60%** of a standing posture. *Counter-assault their southern counties* is an
+**acquisition**, so it is a campaign bar measured in quarters.
+
+**Step 5 — so the question the invasion actually asks you is: what are you prepared to lose while the
+army gets there?** And nothing needs to price a flip-flop, because **a player who re-points every
+quarter is never ready anywhere — by physics rather than by a rule.**
+
+**Step 6 — and it produces a second card for free.** An invasion of your ally raises a card for
+**them**, because an ally who borders the enemy **may join and is never compelled to.**
+
+> **✅ Narrates — but it exposes open question 6 in a specific form.** The card arrives **during
+> somebody else's slot**. **Do you answer it then, or does it wait for your slot to come round?** With
+> a budget of one this decided nothing; with unlimited starts it decides whether the reactive channel
+> is a real interrupt or just an inbox. *Nothing says.*
+
+---
+
+### 12.5 The pointer wraps with sixty nations each running several projects
+
+**Step 1.** Every nation's slot has resolved. The pointer wraps and **the world advances once.**
+
+**Step 2.** Seven phases run over the columnar snapshot — mixes, drift, sentiment, migration,
+population, economy, cleanup — **and the order is load-bearing**, with migration deliberately between
+drift and growth.
+
+**Step 3.** Then the live-world batch: secession → governments → readiness → relations → recognition →
+crises → leaders → elections → movement states → treasuries → the market → **the five power stocks
+last**, because every input they read is a result of *this* turn.
+
+**Step 4 — where do the projects resolve?**
+
+> **⚠ JAMS. Nothing says.** **A project is new persistent state**, `STATEFUL_MODULES` has no project
+> module, and **a project has to bill its holder, advance its bar, and possibly complete — somewhere
+> in that order — and no position is specified.** *The document already records this as gap 1 and
+> §6.2; the trace shows it is not a detail: **a project that resolves before treasuries bills against
+> last turn's money, and one that resolves after the power stocks completes into a world that has
+> already been scored.***
+
+**Step 5 — and the cost is unmeasured.** An AI round was **735 plans and 153 ms** when sixty nations
+each chose **one** thing. **Sixty nations each choosing several has never been measured.** *That is
+the one genuine cost of removing the budget, and it is named rather than discovered.*
+
+> **This trace found nothing new and confirmed the two things the document already flagged as its most
+> serious. That is a pass, not a waste: both were listed as gaps and neither had been shown to matter.
+> Now both have.**
 
 ---
 

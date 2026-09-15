@@ -812,6 +812,7 @@ closing the tree.** Deseret is the worked example.
 | **6** | **Does a Lake Michigan port reach the Canada corridor without passing Mackinac?** §5.1 | The Technical Designer |
 | **7** | **Does an alliance require mutual recognition?** Trade, treaty and transit all test it; an alliance is not built, so nobody has ever asked. **§7.1a unblocked Deseret's S1 without settling this**, and it is a general rule that belongs in `diplomacy-design.md`. *Precedent points at no — vassalage is already the pariah's escape hatch precisely because aid is not recognition-gated* | **Aaron**, in the diplomacy document |
 | **8** | **Can a smuggler's rate reach the world market for a nation with no port?** The market is *"a haircut rather than a lock"* because *"refusing external trade outright would make an unrecognised landlocked state unplayable"* — **which is a description of Deseret** — but the market is reached *"only through an ocean port, or through somebody else's."* **Nobody has asked whether the two rules agree** | The Technical Designer |
+| **9** | **⚠ Should a tree be balanced against a board that varies by seed?** §10.5: Deseret's pivot is the largest permission any tree grants, and `board-design.md` §14.1 shows Deseret's only Californian border is one Area that cedes in about four games in five. **So in roughly a fifth of games the hardest branch is run by a nation with materially worse access to everything.** *Found by tracing, 15 September 2026* | **Aaron** |
 
 ## 9. Gaps
 
@@ -824,6 +825,172 @@ closing the tree.** Deseret is the worked example.
 | **5** | **Chicago and Detroit are not on the board.** The Great Lakes G5 is computable today and means much less than it will when the story's city-states exist. **Philadelphia and New York City are not on the board either**, which is what the Texas pivot is missing |
 | **6** | **The Gulf is not a distinguishable set.** The basin model says *"the Gulf counts as Atlantic"*, and the county data flags `coastal` without saying which water. **25 coastal ports sit across Texas 7, Louisiana 7, Mississippi 2, Alabama 1 and Florida 8**, with nothing separating Florida's Gulf ports from its Atlantic ones. *Dominate the Gulf* needs an authored list |
 | **7** | **Nothing says what a mission's reward does when the ground that earned it is lost.** §1.1 rules the *mission* permanent; whether a modifier tied to holding a place survives losing the place is a different question and is unasked |
+| **8** | **⚠ Nothing says whether you can see a RIVAL's tree.** §10.1 shows the shared-tree design's best effect depends on it: the four Texan rebels open looking at a Standing branch already complete on Austin. **Round 7 gated what a nation may know on the relationship, and the four Texans are permanently Hostile** — so the gate applies exactly here. *Found by tracing, 15 September 2026* |
+
+---
+
+---
+
+## 10. The scenarios this document must be able to tell
+
+**Reinstated by Aaron on 15 September 2026 (D232), after this document was written.** *Worked examples
+are the test suite.*
+
+**Five traced. Two narrate and do real work. Two jam on things this document already lists as gaps —
+confirming they matter rather than finding them. And one narrates into a consequence nobody stated.**
+
+---
+
+### 10.1 Austin's tree opens already half won, and the other four can see it
+
+**Step 1.** Every nation the game opens with recognises every other. **Conquest ruling 19, brought
+forward by D222, makes only the four Texan rebels unrecognised.**
+
+**Step 2.** Austin is not a rebel. **It is the legitimate Texas, and it holds the old seat of
+government.** So it is recognised by everybody.
+
+**Step 3.** The Texas Standing branch asks for recognition at increasing scale — one, then many, then
+**everybody except the other Texans**, a ladder whose top rung deliberately excludes the four who
+never will. **All three rungs are true for Austin on turn 1.**
+
+**Step 4 — so Austin opens with an entire branch green**, and that is correct rather than a bug.
+*Austin's whole identity is that it is already the legitimate Texas; the tree says so out loud.*
+
+**Step 5 — and here is the part the trace adds.** The other four **share the same tree**. §1.2: *the
+tree is the same and the situation is not, which is what makes one tree two games.* **So Dallas,
+Houston, El Paso and San Antonio open looking at a branch they must spend a game earning, already
+finished, on the nation they all want to eat.**
+
+> **✅ Narrates, and it is the single best argument in the project for the shared-tree design.** One
+> authored tree produces **two opposite opening experiences with no extra content**: Austin's says
+> *you already are what they want to become*, and the rebels' says *here is exactly how far behind you
+> start.*
+
+**⚠ What it needs and does not have.** **Nothing specifies that a rival's tree is visible to you.**
+The whole effect above depends on the four rebels being able to *see* Austin's branch sitting
+complete. §9's gap 2 says nothing specifies how a tree is shown at all — **the trace sharpens it:
+the question is not only how your own tree is drawn, but whether you can see somebody else's, and
+round 7 ruled that what a nation may know is gated on the relationship.** *A rival's tree is exactly
+the kind of thing that gate applies to, and the four Texans are permanently Hostile.* **Gap 8.**
+
+---
+
+### 10.2 A Great Lakes player takes the whole territorial branch without firing a shot
+
+**Step 1.** The Great Lakes tree's ground arrives by **agreement**, not conquest. What it wants is not
+to own the gates but **to have them inside its union.**
+
+**Step 2.** "In the union" is one of the four conditions a mission may test: **a federation member
+holds it, and you lead that federation.**
+
+**Step 3.** The player is elected federation leader. **Leading counts as controlling its members'
+ground, for mission purposes.** Rungs that ask for the Soo, the Straits, Niagara and the Mississippi
+counties go green **because members hold them.**
+
+**Step 4 — and it does not flicker.** §1.1: a completed mission stays completed, *even if you lose the
+office that qualified you.* **So losing the presidency next term does not un-win the branch.**
+
+**Step 5 — and it emphatically does not win the game.** The permission holds for **missions** and for
+**victory nowhere**, because *victory is re-checked every world turn while a mission is permanent* —
+**a win that arrived on a federation election would evaporate at the next one.**
+
+**Step 6 — and the Standing branch is pulled the same way, not the opposite way.** Joining *raises*
+Influence, because membership is flat-rate trade with every member and Influence counts **reach**.
+**So for this one tree, Standing and Ground are inverted: the thing that gets you ground also gets
+you standing.**
+
+> **✅ Narrates, and it is the clearest instance of the property Aaron named as the reason EU4 works —
+> *"all the systems work together to both make the other more powerful but also work in the opposite
+> way."* Texas's branches fight; Deseret's are mild; the Great Lakes' cooperate. One structure, three
+> different games, and the model produced the difference unprompted.**
+
+**⚠ The obvious exploit, and it is already closed — say so rather than leaving a reader to wonder.**
+*Get elected, bank the whole branch, leave.* **It works, and it is supposed to:** §1.1 is deliberate,
+the reward is momentum rather than a standing bonus, and **the ground never became yours** — a fact
+about your history, not a reading of the present. *A player who does this has been leader of a real
+federation and paid a real election to get there.*
+
+---
+
+### 10.3 ⚠ You complete a mission, then lose the ground that earned it
+
+**Step 1.** A Texan successor takes Harris County and completes the mission that asked for it.
+
+**Step 2.** The mission goes green. **It is permanent** — §1.1, ruled, for momentum.
+
+**Step 3.** The reward pays. §3.1: **a bonus is a named row in the Why record**, with its own label,
+like a leader's trait.
+
+**Step 4.** Ten turns later the player loses Harris County.
+
+**Step 5 — what happens to the bonus?**
+
+> **⚠ JAMS. Nothing says, and this document already records it as gap 7.** §1.1 rules the **mission**
+> permanent. **It does not rule the REWARD permanent, and the two are different questions.**
+
+**And the trace shows why the distinction bites rather than being pedantic.** A reward that is *"+X to
+trade capacity because you hold the Houston Ship Channel"* is a claim about a place. **If the mission
+is permanent and the bonus is tied to holding the place, then either:**
+
+| | |
+|---|---|
+| **The bonus survives** | And a nation collects permanent bonuses from ground it no longer holds — **a snowball the anti-snowball philosophy exists to prevent** |
+| **The bonus lapses** | And §1.1's momentum argument is half-true: the tree stops flickering and **the bonuses still do**, which is the thing the ruling was written to prevent |
+
+**Neither is obviously right and the document picks neither.** *It is Aaron's, it is not the
+architect's, and the trace has turned a one-line gap into a real fork.*
+
+---
+
+### 10.4 ⚠ Minnesota and Wisconsin both complete the same mission on the same turn
+
+**Step 1.** Both share the Great Lakes tree. **Both are live nations; either may be the player.**
+
+**Step 2.** The tree's rungs are conditions the game watches for, evaluated over **every** nation once
+per world turn. **Nothing in §1 restricts evaluation to the player.**
+
+**Step 3.** Both satisfy *own the Mississippi counties of Wisconsin and Minnesota* in the same wrap —
+**which is possible precisely because the condition can be met through a federation both belong to.**
+
+**Step 4 — do both get it?**
+
+> **⚠ JAMS, and it is gap 3 already recorded: *nothing says what happens when two nations sharing a
+> tree complete the same mission.* Both live trees are shared.**
+
+**What the trace adds is that this is not an edge case.** §1.2 says the trees are shared **because the
+nations are rivals for one prize** — five Texan claimants, two candidates to lead one union. **So two
+nations meeting the same condition is the NORMAL case for a shared tree, not an unlucky collision.**
+*If the answer is "both", a shared tree is a checklist. If it is "first only", it is a race — and a
+race is what §1.2's "one tree, two games" is describing.* **Nobody has chosen.**
+
+---
+
+### 10.5 Deseret completes the trail and takes the Gathering before its last mission
+
+**Step 1.** Deseret's Ground branch retraces the migration east — Winter Quarters, Adam-ondi-Ahman,
+Nauvoo, Kirtland. **A ladder by physics rather than by design**, because each step must be reachable
+from the last.
+
+**Step 2.** The trail completes. **The pivot fires: the Gathering — frontier-free defection.**
+
+**Step 3 — and it sits BEFORE the last mission, not after.** The last mission is the Mormon Battalion's
+march on **San Diego**, which is *"going to be tricky"* — Aaron's own word. **The Gathering is what
+makes it affordable, so the licence has to arrive first.**
+
+**Step 4 — which widens the structure.** §2.4: a pivot need not close a tree. Texas's and the Great
+Lakes' sit at the end; **Deseret's sits one from the end, deliberately.**
+
+> **✅ Narrates, and it is a structural finding rather than a flavour one: the pivot is a LICENCE that
+> changes what you can afford to attempt, so its position is a design lever. Put it last and it is a
+> reward; put it second-to-last and it is a key.**
+
+**⚠ And it collides with something §14.1 of `board-design.md` established today.** The Gathering is
+frontier-free defection — **the largest permission granted by any pivot in the three trees** — and
+Deseret's whole problem is that it is the only sealed nation on the board, one Area away from
+California through Mohave County, which cedes in only about four games in five. **So in roughly a
+fifth of games the tree's hardest branch is being run by a nation with materially worse access to
+everything.** *Nobody has asked whether a tree should be balanced against a board that varies by seed.*
+**Open question 9.**
 
 ---
 

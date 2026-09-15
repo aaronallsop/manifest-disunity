@@ -174,8 +174,14 @@ did not, round 1 found two of five stories jammed on contradictions fifty-three 
 round 6 proved it works better BEFORE the rulings than after.* **A trace that narrates smoothly first
 time has probably not been pushed hard enough.**
 
-**⚠ Four documents predate the ruling and all four owe a traced-scenarios section** — `GDD.md`,
-`turn-design.md`, `missions-design.md` and `board-design.md`.
+**✅ The four documents that predate the ruling have all been traced — 15 September 2026.** `GDD.md`
+§19, `turn-design.md` §12, `missions-design.md` §10, `board-design.md` §14. **Nineteen scenarios; the
+practice earned its keep immediately.** It produced **eight new findings** — four open questions and four
+gaps — none of which the rulings alone had surfaced. *Biggest three: Deseret's only route to any market
+runs through Riverside, a nation nobody had considered; the turn is well specified for turn 40 and
+unspecified for turn 1; and a mission is ruled permanent while its REWARD is not, which is a fork nobody
+has taken.* **A master document's scenarios are the cross-cutting ones** — a scenario that lives inside
+one system belongs in that system's document.
 
 **What exists:**
 
