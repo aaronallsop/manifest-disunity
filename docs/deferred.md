@@ -199,3 +199,77 @@ these are no longer only colour; a ruling rests on them.
 nations and the game's has **twelve** — Texas's five, California's six and Deseret. The Deep South,
 Appalachia, the Gulf nation, the city-states and all stateless ground are a design and are not built.
 Four closed rounds had been quoting them as though they were the game.
+
+---
+
+# Found by writing the design documents — 34 to 36
+
+*All three are **live code defects**, not documentation drift. Each was verified at the source this
+session, by grep, before it was written down.*
+
+## 34 — ⚠ The civil war's "the aggressor bleeds" branch is dead, and the victims pay the attacker
+
+**`js/moves.js:1198` tests for an outcome called `collapse`. `js/civilwar.js:164` only ever returns
+`victory`, `partial` or `fall_apart`.** *The string `collapse` is produced nowhere in `js/`, `tests/`
+or `dist/playtest/`.*
+
+**So on a fall-apart the guard is false and execution falls through to `js/moves.js:1207`**, which
+walks the victims and charges each of them, paying the aggressor. **And it charges the FULL score,
+not the halved share**, because the halving is keyed to `partial`.
+
+> **That is the exact bug the dead branch's own comment says was fixed:** *"charging the victims for it
+> — which is what this did until M6.3, because the branch was written once for the winning cases and
+> reused — **paid the loser's bill to the winner and handed the defender a population loss for
+> successfully defending.**"*
+
+**It also contradicts `DESIGN.md` in writing:** *"if none is large enough to stand alone the defender
+holds and **you paid for nothing**."* **You are paid.**
+
+**Present in `dist/playtest/js/moves.js:671` as well**, so the playtest build has it too.
+
+**The fix is one string.** *Whether it is `fall_apart` alone or also the no-viable-fragment case is a
+design question, so it is filed rather than fixed.*
+
+## 35 — ⚠ A nation born in play has no government, and cannot win on ideology
+
+**Only five lines write a ruling ideology** — the save-load pass-through, `refreshGovernments`,
+`changeRulingIdeology` (elections and appeasement), the scenario, and **the tier-2 declaration.**
+*Verified by grep this session.*
+
+**The generic birth path passes a plain string, so the government comes out with a null ruling
+ideology** — and **`refreshGovernments`, which exists for exactly this case, never runs during a
+turn.** *Its call sites are setup, movement spawn, and save-load. Its own header says what is left of
+it is "the founding case", and the founding case is the one the per-turn loop never reaches.*
+
+**Consequence, traced:** a null ideology indexes to −1, the victory term guards on ≥ 0, **so
+Ideological Dominance scores 0 forever** for every nation born by civil war, failed union or release —
+**until the game is saved and reloaded**, at which point the load path backfills it. *So the victory
+condition depends on whether you saved.*
+
+**Second consequence:** the flag's accent is drawn from the ruling ideology and **falls back to grey**,
+so these nations are silently a different visual class.
+
+**The right answer is already computed and thrown away:** the dominant ideology of the founding ground
+is worked out and used only to pick a name template. *Its own comment says what it was for — **"a new
+nation governs as its people do."***
+
+## 36 — ⚠ Only one of the five birth routes gives a nation a birth
+
+**`applyIndependence` — the honeymoon Authority term and the transition GDP cut — is called from
+exactly one place in the game.** *Verified by grep: one call site, one definition, one comment.*
+
+**So a country born out of a civil war, a failed union or a release gets no honeymoon and pays no
+transition cost.** *The honeymoon exists because **a nation founded this turn has no age, no tenure and
+no reserves, so every other Authority term reads zero** — which is equally true on all five routes.*
+
+> **This is the contradiction round 1 wrote one sentence to prevent:** *"a civil war that goes badly
+> and a movement that declares must produce **the same kind of country, with the same birth**, because
+> they already share the machinery and **must not grow apart**."*
+
+**Four more rows of the same table disagree** — recognition at birth, whether a memory is written, the
+viability test, and whether the nation is labelled what it is. *The full side-by-side is
+`docs/design/nation-design.md` §3.*
+
+**⚠ Not filed as a straight fix.** *One of the four — release being recognised by its parent on day one
+— is **deliberate and well argued** (*"letting go is recognition"*). **So the question is which
+differences are design and which are drift, and that is Aaron's.** `nation-design.md` open question 1.*
