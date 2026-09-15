@@ -52,7 +52,23 @@ names for them** — the data file, the spec's prose, and the wiring page Aaron 
 ### 2.1 ⚠ The substrate everything sits on is six hand-authored templates
 
 **Each Area's six-sector split comes from one of six authored percentage templates**, chosen by a
-four-tier ladder. *Measured 15 September 2026: **849 of 1,688 Areas — 50.3% — share template 0.***
+four-tier ladder: **authored county profiles first, then ports and chokepoints, then a per-state rural
+tilt, then a population fallback.** *There is one template per dominant sector, so the template index
+**is** the dominant sector.*
+
+**Measured from `data/economy.json` this session — all 1,688 Areas, and the shape is the finding:**
+
+| Template | Its split (%) | Areas | |
+|---|---|---:|---:|
+| **Agriculture** | **38** / 10 / 14 / 16 / 12 / 10 | **849** | **50.3%** |
+| **Manufacturing** | 6 / 8 / **40** / 18 / 16 / 12 | 387 | 22.9% |
+| **Resource Extraction** | 8 / **40** / 16 / 16 / 12 / 8 | 296 | 17.5% |
+| **Information Technology** | 4 / 4 / 10 / 16 / 22 / **44** | 73 | 4.3% |
+| **Trade & Transportation** | 6 / 6 / 16 / **40** / 20 / 12 | 58 | 3.4% |
+| **Finance** | 4 / 6 / 10 / 20 / **42** / 18 | **25** | **1.5%** |
+
+> **Half the continent is on the farm template, and twenty-five Areas in the whole country are on the
+> finance one.** *Three templates cover 90.7% of the map.*
 
 > **The spec condemns this in its own text:** *"Six hand-authored templates with roughly half the map
 > sharing one is not a grounded estimate; it is a guess wearing the authority of the real GDP figure
@@ -62,6 +78,12 @@ four-tier ladder. *Measured 15 September 2026: **849 of 1,688 Areas — 50.3% �
 the game today is ten times bigger than real figures say it should be**, and how much food a person
 needs was calibrated against that inflated number — so replacing the data without also resetting
 hunger would starve the whole continent on the first turn.*
+
+**⚠ The table above is where that inflation lives, and it is worse than the "ten times" suggests.**
+*The farm template puts **38%** of an Area's output in agriculture, and half the map is on it. Real
+agriculture is on the order of **1%** of US output.* **The multiple is a property of the template, and
+the template is the substrate.** *The "ten times" figure is quoted from the spec and is NOT re-derived
+here; what is measured here is the 38% and the 50.3%.*
 
 ---
 
