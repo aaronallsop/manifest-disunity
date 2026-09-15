@@ -562,10 +562,125 @@ saying, not about how a system works.*
 
 **Everything here is relied on by several systems, so no satellite owns it. All are built.**
 
-### 15.1 Six ideologies on two axes, and the one function
+### 15.1 Three axes and ten positions, and the one function
 
-Politics is not a letter. Six ideologies sit at fixed coordinates on an **economic** axis (collective
-↔ market) and a **social** axis (liberal ↔ traditional), authored in `content/ideologies.json`:
+> **✅ RULED BY AARON, 15 September 2026 — D231. Three axes and ten positions.** The politics round's
+> rulings 1 and 2 stand, and **the built two-axis model is what changes.** The design below is
+> authoritative; §15.1a records what is built today, because it is what every formula currently reads
+> and the Technical Designer has to convert it.
+
+**Politics is not a letter, and it is not a left-right line.** Three axes, each running **−1 to +1**:
+
+| Axis | | |
+|---|---|---|
+| **Economy** | collective | neo-liberal |
+| **Morals** | conservative | progressive |
+| **Power** | authoritarian | libertarian |
+
+**The eight corners of that cube are parties, each named for a real one**, because what a player meets
+on a ballot is a party and not an ideological family. **Laid out as Aaron arranged them — morals run
+across, and within each moral half power runs from authoritarian on the OUTSIDE to libertarian on the
+inside:**
+
+| | cons / **auth** | cons / lib | prog / lib | prog / **auth** |
+|---|---|---|---|---|
+| **Collective** | Fascism | Distributism | Democratic Socialism | Communism |
+| **Middle** | ← *Republicans, across both conservative columns* → | | ← *Democrats, across both progressive columns* → | |
+| **Neo-liberal** | Christian Nationalism | Anarcho-Capitalism | Liberal Anarchy | Digital Technocracy |
+
+**That layout makes the horseshoe visible, and nobody authored it.** Fascism sits at one far edge and
+Communism at the other, and they are **neighbours rather than opposites** — they differ on morals
+alone and agree on both a collective economy and an authoritarian state. *The cube said so by
+arithmetic before the picture did.*
+
+**Plus two centrists, which is what makes it ten.** Republicans and Democrats hold the middle on
+economy and on power and sit at one end of morals. **Only these two stand over solid ground; every
+one of the eight corners has a trapdoor under it.**
+
+**And two things you FALL INTO, which are not positions and cannot be stood for:**
+
+| | |
+|---|---|
+| **Despotism** | Off either authoritarian end. One party or none, full command of the state, and every other nation treating you as what you have become |
+| **Stateless** | Out through the libertarian middle. The government dissolves into ground with people on it and nobody in charge |
+
+**⚠ The falling itself is DEFERRED at Aaron's instruction — `FUTURE-IDEAS.md` F19, after the alpha.**
+What despotism buys, what it costs in standing, and how far *too far* is are **not answered and no
+placeholder was invented for any of them.** The two conditions stay named on the board because the
+shape needs them: *a corner with nothing beyond it is not a corner.*
+
+#### Why ten rather than eight, measured rather than asserted
+
+**A centrist sits √2 from each of the four corners on its own moral side; any two corners are 2
+apart.** So Republicans are closer to fascists, distributists, Christian nationalists and
+anarcho-capitalists than any two of those four are to each other — **the mainstream party is the great
+coalition-builder of its own half, without being bland.** And **Republicans and Democrats are exactly
+2 apart, the same distance as fascism and communism**, which is a true and useful thing to be able to
+say about American politics.
+
+*Recorded against the ruling and not to be re-raised: nine positions were recommended — the eight plus
+a dead centre — and Aaron chose against it twice, knowing the cost. If coalitions later feel flat, the
+centre is three numbers.*
+
+#### The drift partition, and it is the opening move
+
+**Each centrist can reach exactly four corners**: the ones that vary economy and power while keeping
+its morals. **2 × 2 = four each, and 4 + 4 = 8 covers every corner exactly once.** No corner is
+unreachable and no corner is reachable from both. *Verified, and tighter than it was stated.*
+
+> **This is why the board can open on real election data.** The 2024 county seed gives Republican,
+> Democrat and Other — and Republicans and Democrats **are two of the ten positions**, so the seed
+> lands directly on the centrists and drift carries people outward to the corners over the course of a
+> game.
+
+**⚠ AND THAT APPEARS TO DISSOLVE THE LARGEST JOB RULING 1 LEFT OWING, WHICH IS AN OBSERVATION OF MINE
+AND NOT A RULING.** Ruling 1's roster was eight corners with no centrists, so it recorded that
+*"neither major party maps onto a corner, so both must be split across the eight by cultural region —
+authoring, not engineering, and the largest single job in the change."* **Ruling 2 then added the two
+centrists and superseded that roster.** If the seed lands on the centrists, that authoring job is not
+needed at turn 0. *Flagged for confirmation as open question 6; it is not treated as settled.*
+
+#### The one function everything downstream uses
+
+```
+affinity(a, b) = 1 - distance(a, b) / MAX_DISTANCE      // 0..1
+```
+
+**Coalitions, drift attraction, splinter direction, defection targets, civil-war severity, trade
+alignment, liberty satisfaction, AI diplomacy and the price of changing your own politics all derive
+from it.** That is what makes a position cost three numbers rather than a hand-authored compatibility
+table against every other position. **A shared economic axis is trade alignment; a shared moral axis
+is moral alignment**, and the axes are readable separately.
+
+**⚠ `MAX_DISTANCE` IS NOT AUTHORED FOR THE NEW BOARD, AND THIS IS THE FIRST THING THE TECHNICAL
+DESIGNER MUST SETTLE.** *Gap 11.* On two axes it is **1.7804**, the *actual* widest authored pair,
+deliberately not the box diagonal — because normalising on the diagonal would squash every real
+affinity into the top third of the range and make every tuned threshold mean less than its label says.
+**On three axes the widest authored pair IS the box diagonal**, because opposite corners exist: two
+positions differing on all three axes are **2√3 ≈ 3.4641** apart. *That figure is my arithmetic from
+the √2 and 2 distances the ruling states, not a number anybody authored.* **Every threshold tuned
+against 1.7804 is re-tuned against whatever replaces it.**
+
+#### A movement is a slice, not an eleventh position
+
+`area.mov[name]` is a slice of the people already counted under a position — Deseret's members are
+counted in their political position *and* recorded as organised under Deseret. **The whole population
+is always exactly the sum of the positions**, so every phase that moves people ignores movements
+entirely, and a cleanup phase clamps each movement back inside its bloc once a turn. **Deseret is
+therefore not an opinion but an organisation of an opinion**, which is what lets the model tell
+*"Deseret grows"* and *"Conservative Nationalism grows"* apart.
+
+**⚠ Ruling 40 is what makes this sayable and it belongs here: ideology, party and movement are three
+different words for three different things.** The corners are occupied by **parties** and by
+**governments**, not by **movements**. *Full treatment in `identity-design.md`.*
+
+### 15.1a What is BUILT today — six ideologies on two axes
+
+**This is not the design. It is what every formula in the game currently reads**, and it is recorded
+here because converting it is the single largest piece of work D231 creates.
+
+Six ideologies at fixed coordinates on an **economic** axis (collective ↔ market) and a **social**
+axis (liberal ↔ traditional), authored in `content/ideologies.json`:
 
 | id | Ideology | economic | social |
 | --- | --- | ---: | ---: |
@@ -591,19 +706,28 @@ Conservative Nationalist, **not** the 2√2 diagonal of the coordinate box. Norm
 squash every real affinity into the top third of the range and make every tuned threshold mean less
 than its label says.
 
-**A movement is a slice, not a seventh bucket.** `area.mov[name]` is a slice of
-`area.pop[ideologyOf(name)]` — Deseret's members are counted in Conservative Nationalist *and*
-recorded as organised under Deseret. The whole population is always exactly `sum(pop)`, so every
-phase that moves people ignores movements entirely, and a cleanup phase clamps each movement back
-inside its bloc once a turn. **Deseret is therefore not an opinion but an organisation of an
-opinion**, which is what lets the model tell *"Deseret grows"* and *"Conservative Nationalism grows"*
-apart.
+**Where the sixth ideology's people come from, today.** The 2024 result gives three numbers.
+Republican becomes `red`, Democrat becomes `blue`, and **Other is split across the remaining four by
+cultural region** — a third-party voter in Vermont is not the same person as one in Alabama. Weights
+are carried for all 20 regions with a flat default, and the split runs on the merged Area rather than
+per member county. **Other is 1–4% of most counties, so this sets the texture and movements provide
+the shape.**
 
-**⚠ THE LARGEST DESIGN-VERSUS-BUILT GAP IN THE PROJECT.** The six-ideology two-axis model above is
-what every downstream formula reads. **Politics rulings 1–2 replace it with three axes and ten
-positions** — eight corners plus two centrists, with despotism and statelessness as trapdoors off the
-edges — and ruling 40 then prices *change course* by distance on that new board. **Nothing reconciles
-them.** *Open question 6; `identity-design.md` owns it and cannot be written without an answer.*
+**Units are rigid, because mixing them is the easiest bug to write here.** Populations are people
+(exact). Shares are percentages, 0–100. Affinity and cohesion are fractions, 0–1.
+
+#### ⚠ What converting this costs, named rather than discovered
+
+**This is the single largest piece of work in the project and it is the architect's to size, not
+mine.** What is nameable today:
+
+| | |
+|---|---|
+| **Six buckets become ten** | Every Area holds exact per-position counts, and the sum-to-population invariant the whole model rests on has to hold across the new roster |
+| **Every threshold is re-tuned** | Because `MAX_DISTANCE` changes, and affinity feeds coalitions, drift, splinters, defection, civil-war severity, trade alignment, liberty satisfaction and AI diplomacy |
+| **`axisDistance` gains a third axis** | And the two-axis readings that mean *trade alignment* and *moral alignment* need saying again for three |
+| **The seed changes shape** | Republican and Democrat stop being two of six ideologies and become two of ten **positions** — see the drift-partition note above, which may make this *simpler* rather than harder |
+| **The movement roster is re-placed** | ⚠ **Already done.** All 26 live movements were placed on the ten positions when the politics round closed, and that work has been sitting unused since 11 September |
 
 ### 15.2 The Why record
 
@@ -739,7 +863,8 @@ than of `power.floor`: **a nation at peace is not eight per cent exhausted.**
 | **3** | **Three of the eight staggered clocks are invisible or half-visible**, and two of them drive other nations' behaviour toward the player. Fog worth keeping, or an interface gap? | `presentation-design.md` |
 | **4** | **Target audience, and the commercial question under it** — a niche title for people who already like this genre, or a crossover built on the subject matter? §3 is a draft | The pitch layer |
 | **5** | **Tone and framing.** A game about the United States coming apart, on real county-level voting data, makes a claim whether or not it intends to. **Nothing anywhere addresses it** | `presentation-design.md`, and arguably everything |
-| **6** | **Two axes or three?** The built model is six ideologies on two axes and every downstream formula reads it. Politics rulings 1–2 replace it with three axes and ten positions. **Nothing reconciles them, and this is the largest design-versus-built gap in the project** | `identity-design.md`, and through it `population-design.md`, `movements-design.md` and `governing-design.md` |
+| ~~**6**~~ | ~~**Two axes or three?**~~ ✅ **ANSWERED 15 September 2026, D231 — three axes and ten positions.** The politics round's rulings stand and **the built two-axis model is what changes.** §15.1 is the design; §15.1a is what exists and what converting it costs. **What replaces this question is smaller and is the architect's**, not Aaron's: `MAX_DISTANCE` has no authored value on the new board — gap 11 | — |
+| **6a** | **⚠ ONE THING TO CONFIRM, and it is mine rather than a designer's ruling.** Ruling 1 recorded that the largest single job in the change was splitting Republican and Democrat across the eight corners by cultural region, because neither mapped onto a corner. **Ruling 2 then added the two centrists, which ARE Republican and Democrat** — so the 2024 seed appears to land directly on them and drift carries people outward. **If that is right, ruling 1's largest owed job does not exist.** I have not treated it as settled | `identity-design.md` |
 | **7** | **May a design session edit `DESIGN.md`?** Asked at 03:35 on 15 September as part of the same message as (1), never answered — **and it was then edited anyway.** D217 records the permission as granted; no evidence of the grant exists. The edits themselves are three careful, marked corrections **and they are good work**; the question is whether the permission is real | The record, and every future stage-2 session |
 
 ---
@@ -761,6 +886,7 @@ and simply are not written down anywhere.*
 | **8** | **No multiplayer exists anywhere in the design** — not built, not deferred, not ruled out, never mentioned. Recorded because its absence is currently an accident rather than a decision |
 | **9** | **⚠ THE TWO BRIEFS GOVERNING THIS STAGE DISAGREE ABOUT WHAT A DESIGN DOCUMENT ENDS WITH.** `docs/design/DESIGNER-BRIEF.md` says *"End every design document with the scenarios it must be able to tell, each one traced"* and calls worked examples *"your test suite"*. The GDD brief of 15 September specifies a four-part satellite — Depends on, the system, Open questions, Gaps — **and traced scenarios are not one of the four.** **Neither written satellite has a traced-scenarios section, and neither does this master.** The newer, more specific brief was followed. *Recorded rather than resolved: whether tracing is dropped or reinstated is Aaron's, and it is the practice that found contradictions in every closed ideation round that the rulings alone did not* |
 | **10** | **`docs/design/DESIGNER-BRIEF.md` is itself stale and is the file a new design session is told to paste.** It states the live stage is ideation, names round 4 as the live round, and forbids editing `DESIGN.md` — all three superseded. **A session started from it would begin by contradicting the current phase.** *Found 15 September 2026* |
+| **11** | **⚠ `MAX_DISTANCE` HAS NO AUTHORED VALUE ON THE THREE-AXIS BOARD, and it is the first thing the Technical Designer must settle.** It is the denominator of the one function that drives coalitions, drift, splinters, defection, civil-war severity, trade alignment, liberty satisfaction and AI diplomacy, so **every threshold in the game is measured against it.** On two axes the rule was to use the *actual* widest authored pair (**1.7804**) and explicitly **not** the box diagonal, because the diagonal squashes every real affinity into the top third of the range. **On three axes the widest authored pair IS the diagonal** — opposite corners exist — which is **2√3 ≈ 3.4641**. *That figure is arithmetic from the √2 and 2 distances the ruling states; nobody has authored it, and the two-axis rule does not decide it because its whole point was that the diagonal was unoccupied* |
 
 ---
 

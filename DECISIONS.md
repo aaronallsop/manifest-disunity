@@ -5493,3 +5493,91 @@ design session may edit `DESIGN.md`. *`GDD.md` open question 7.* **That question
 by this one being settled** — three documents were written under an unratified structure and the
 structure turned out to be fine, which is a good outcome from a bad process and should not be read as
 evidence the process was fine.
+
+---
+
+### D231 — Three axes and ten positions: the design stands and the BUILT model is what changes, 15 September 2026
+
+**Aaron, asked whether politics is two axes or three: "three axes and ten positions."**
+
+**So politics rulings 1 and 2 stand, ruling 40's pricing of *change course* by distance on the new
+board stands with them, and the six-ideology two-axis model in the game is superseded.** This closes
+`GDD.md` open question 6 and unblocks `identity-design.md`, and through it `population-design.md`,
+`movements-design.md` and `governing-design.md`.
+
+**This was the largest gap in the project between what is designed and what exists**, and it had been
+open since 9 September with both halves true at once.
+
+### The board, recorded here in full because four documents read it
+
+**Three axes, each running −1 to +1: economy** (collective · neo-liberal), **morals** (conservative ·
+progressive), **power** (authoritarian · libertarian).
+
+**Eight corners of that cube are parties, each named for a real one** — Aaron's reason and the correct
+one: *what a player meets on a ballot is a party, not an ideological family.* Laid out as ruling 2
+arranged them, with morals running across and power running from authoritarian on the **outside** to
+libertarian on the inside:
+
+| | cons / auth | cons / lib | prog / lib | prog / auth |
+|---|---|---|---|---|
+| **Collective** | Fascism | Distributism | Democratic Socialism | Communism |
+| **Middle** | *Republicans, across both conservative columns* | | *Democrats, across both progressive columns* | |
+| **Neo-liberal** | Christian Nationalism | Anarcho-Capitalism | Liberal Anarchy | Digital Technocracy |
+
+**Plus two centrists — Republicans and Democrats — which is what makes it ten.** They hold the middle
+on economy and on power and sit at one end of morals. **Only those two stand over solid ground; every
+corner has a trapdoor under it.**
+
+**Plus two conditions that are not positions and cannot be stood for: Despotism** (off either
+authoritarian end) and **Stateless** (out through the libertarian middle). **The falling itself stays
+deferred to F19, after the alpha** — what despotism buys, what it costs, and how far *too far* is are
+not answered and no placeholder was invented. The conditions stay named because *a corner with
+nothing beyond it is not a corner.*
+
+### The three things the geometry gives free, and they were not authored
+
+1. **The horseshoe is real.** Fascism and Communism sit at opposite edges of the picture and are
+   **neighbours, not opposites** — they differ on morals alone and agree on both a collective economy
+   and an authoritarian state. **The cube said so by arithmetic before the layout said it.**
+2. **A centrist is √2 from each of the four corners on its own moral side; any two corners are 2
+   apart.** So the mainstream party is the great coalition-builder of its own half without being
+   bland. **Republicans and Democrats are exactly 2 apart — the same distance as fascism and
+   communism**, which is a true and useful thing to be able to say about American politics.
+3. **The drift is an exact partition.** Each centrist reaches the four corners that vary economy and
+   power while keeping its morals: 2 × 2 = four each, **4 + 4 = 8 covers every corner exactly once.**
+   No corner is unreachable and none is reachable from both.
+
+### ⚠ What this now costs, and one thing it may SAVE
+
+**The conversion is the largest single piece of work in the project and its size is the architect's to
+give, not mine.** Six buckets become ten and the sum-to-population invariant has to hold across the
+new roster; `axisDistance` gains a third axis and the two-axis readings that mean *trade alignment*
+and *moral alignment* need restating; and **every threshold in the game is re-tuned, because the
+denominator of the affinity function changes.**
+
+**One piece of it is already done and has been sitting unused since 11 September:** all 26 live
+movements were placed on the ten positions when the politics round closed.
+
+**And one thing may have quietly dissolved, which is an observation of mine and NOT a ruling.**
+Ruling 1 recorded that the largest single job in the change was splitting Republican and Democrat
+across the eight corners by cultural region, *"because neither major party maps onto a corner."*
+**Ruling 2 then added the two centrists, and they ARE Republican and Democrat.** If the 2024 county
+seed lands directly on the centrists and drift carries people outward over a game — which is exactly
+what Aaron described when he set the drift — **that authoring job does not exist at turn 0.**
+*Recorded as `GDD.md` open question 6a for confirmation. Not treated as settled, and nothing was built
+on it.*
+
+### The one thing nobody has decided, and it is small and the architect's
+
+**`MAX_DISTANCE` has no authored value on the new board.** *`GDD.md` gap 11.*
+
+It is the denominator of the one function everything downstream reads, so **every tuned threshold in
+the game is measured against it.** On two axes the rule was deliberate and is recorded: use the
+**actual widest authored pair — 1.7804** — and explicitly **not** the box diagonal of 2.8284, because
+normalising on the diagonal *"would squash every real affinity into the top third of the range and
+make every tuned threshold mean less than its label says."*
+
+**⚠ That rule does not decide the new board, and the reason is exact: its whole point was that the
+diagonal was UNOCCUPIED.** On three axes opposite corners exist, so the widest authored pair **is**
+the diagonal, at **2√3 ≈ 3.4641**. *That figure is arithmetic from the √2 and 2 distances ruling 2
+states. Nobody has authored it and it is recorded as a gap rather than adopted.*

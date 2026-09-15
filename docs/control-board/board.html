@@ -321,13 +321,13 @@ tr:last-child td{border-bottom:0}
 const BOARD = {
   project: "Manifest Disunity",
   livery: "tower",                      // tower | mars | violet | deep | slate
-  updated: "2026-09-15 10:30",          // when you last republished, local time
+  updated: "2026-09-15 10:50",          // when you last republished, local time
 
   // Three or four measured figures. value: number|string, or null = "not yet measured".
   figures: [
     { label: "Stage 2, the design documents — the current phase", value: "3 of 20" },
-    { label: "Questions in the master document that are yours to answer", value: 7 },
-    { label: "Decisions written up this session", value: 2 },
+    { label: "Questions in the master document still yours to answer", value: 5 },
+    { label: "Decisions written up this session", value: 3 },
     { label: "Stage 1 of 5 — every design round, closed by you", value: "7 of 7" },
     { label: "Tests — all green. Last run at sign-off on the 14th; no code has been touched since", value: 956 },
     { label: "Current version",         value: "v0.6" },
@@ -337,15 +337,15 @@ const BOARD = {
   // tone: "bad" | "warn" | "ok" | "neutral".  A point with warn:true gets a yellow bar.
   headline: {
     tone: "warn",
-    lead: "The master design document is written — the map of how the whole game fits together. "
-        + "Six decisions are waiting on you.",
+    lead: "The master design document is written, and your three-axis politics is now the design "
+        + "rather than a contradiction. Five decisions are still waiting on you.",
     points: [
-      { warn: true, t: "Two permissions were taken yesterday that you never gave. You were asked and you answered neither, and the record then said you had approved both." },
-      { warn: true, t: "Politics is built one way and designed another way, and nothing reconciles them. It blocks four documents and it is the biggest card below." },
-      "You approved the structure: nineteen parts plus the master, twenty documents. Three are written.",
-      "Your reason for it now binds everything — a design document is never finished, so parts get SPLIT when they grow and never merged.",
-      "Six sections of the master are drafts for you: what this game is, who it is for, how it feels, what makes it different, its genre, and what pulls a player into the next turn.",
-      "All six were missing entirely. So were art direction and audio — sound has never once been mentioned in fifteen thousand lines.",
+      { warn: true, t: "Two permissions were taken yesterday that you never gave. You answered neither, and the record then said you had approved both." },
+      "Three axes and ten positions: the game's politics is what changes. The biggest gap in the project, open since 9 September.",
+      "One piece of that is already done and unused for four days — all 26 movements were placed on the new board when your politics round closed.",
+      { warn: true, t: "And one job may have vanished. Your two centrists ARE Republicans and Democrats, so the election data may land straight on them. Flagged, not assumed." },
+      "Structure approved: nineteen parts plus the master. Three written.",
+      "Six sections of the master are drafts for you, starting with what this game IS and who it is for. All six were missing entirely.",
     ],
   },
 
@@ -353,23 +353,6 @@ const BOARD = {
   // A card shows the recommendation; the evidence and the cost fold behind it.
   // Write evidence and cost as ARRAYS and they render as bullets.
   decisions: [
-    {
-      id: "two-axes-or-three",
-      title: "Is politics two axes or three?",
-      recommendation: "Your politics round already ruled three axes and ten positions. Nothing in the built game knows about it, and every calculation in there still reads the old two-axis version. My recommendation is that your ruling stands and the built model is what changes — but you should see the size of it before you confirm, because this is the largest gap in the project between what is designed and what exists.",
-      evidence: [
-        "The built model is six ideologies placed on two axes — one economic, one social — and ONE calculation derived from it drives almost everything: which parties will work together, which way a region drifts, where a splinter goes, who a county defects to, and how bad a civil war gets.",
-        "Your politics round replaced it with three axes and ten positions: eight corners plus two centrists, with two conditions a country can fall into off the edges.",
-        "A later ruling in the same round then priced changing your own politics by how far you move on the NEW board. So the new model is already load-bearing in the design.",
-        "All 26 live movements were re-placed on the new board when that round closed. That work is done and is sitting unused.",
-        "Nothing anywhere reconciles the two. Both are currently true statements about this project.",
-      ],
-      cost: [
-        "If the ruling stands: four documents cannot be written until somebody works out what the one calculation becomes with a third axis, and every number tuned against the old one is re-tuned. That is the technical designer's work, not mine, and I cannot size it honestly for you.",
-        "If the ruling is withdrawn: the politics round loses two of its rulings and the re-placing of 26 movements is wasted, but four documents unblock today and nothing needs re-tuning.",
-        "Doing nothing is the expensive option. Four documents are blocked either way, and every day they wait, more design gets written against a model that may not survive.",
-      ],
-    },
     {
       id: "design-doc-edit-permission",
       title: "May a design session correct the built-game document?",

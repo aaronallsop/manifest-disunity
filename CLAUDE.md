@@ -63,6 +63,14 @@ they lost.
   the things that do are a card you click.
 - **There is one tuning file.** Every model constant the economy needs joins the constants already
   there. Never create a second tuning file (D162).
+- **⚠ POLITICS IS THREE AXES AND TEN POSITIONS (D231, 15 September 2026), and the built two-axis model
+  is superseded.** Economy (collective · neo-liberal), morals (conservative · progressive), power
+  (authoritarian · libertarian), each −1 to +1. **Eight corners are parties named for real ones, plus
+  two centrists — Republicans and Democrats — which is what makes it ten**, plus two conditions you
+  *fall into* rather than stand for, Despotism and Stateless, whose mechanics stay deferred to F19.
+  **`GDD.md` §15.1 is the authority; §15.1a records what is built and what converting it costs.**
+  The game still runs on six ideologies over two axes and **will keep doing so until the build stage
+  reaches this** — so when reading a formula, check which board it is on.
 
 ## Versions
 
