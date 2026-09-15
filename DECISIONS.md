@@ -4450,7 +4450,7 @@ diplomacy, is now live.**
 ### D214 — Round 5 opens: eleven rulings, and three new diplomatic objects move in front of the alpha, 14 September 2026
 
 **Round 5, diplomacy, opened and ran in one session.** Its in-tray was collected as the first act —
-twenty-six items from four closed rounds, none of it carried across in nine days — and the round
+thirty-three rows from four closed rounds, twenty-nine of them questions, none carried across in nine days — and the round
 produced **86 ideas (T1–T85 plus T76a), eleven rulings and twelve findings**, with scenario 5 traced.
 **The round is not closed;** Aaron closes rounds.
 
@@ -4508,6 +4508,31 @@ at a time, outbid-able and decaying, so vassalage inherits working machinery; **
 state machine**, so conquest's seven relationship states are a design and the 33 hostile pairs were
 asserted from claimant lists and never measured; and **conquest ruling 19 is specified and unbuilt**,
 so Austin's veto does not exist in the game today.
+
+**⚠ Amended the same evening by the adversarial review, and by ruling 22.** Five defects were found
+and none dissolved on a second look. **The largest: the round described the story's board as though
+it were the built one.** The game opens with **twelve** new nations — Texas's five, California's six
+and Deseret — and the story's twenty-nine, with the Deep South, Appalachia, the city-states and all
+stateless ground, **are a design in `secession-ideation.md` §8 and are not built.** *No ruling is
+wrong because of this — designing for that board is the round's job — but several were phrased as
+statements about the game, and the handover called a trade deal between two non-existent nations the
+cheapest thing in the round.* **Corrected in place; the roster is now written into the document as
+§3h, and it is rule 17.**
+
+**Also corrected:** the capital contest is **D.C., Philadelphia and New York City** — the United
+States of New England is explicitly not a claimant (secession ruling 22), and Aaron was asked with
+the wrong list; his answer does not depend on which three. The United States of New England is a
+**union**, not a federation. **One in-tray question had been dropped** — item 4, whether the federal
+remnant opens recognising nobody — recovered and deferred alongside ruling 8.
+
+**And ruling 22 closes a collision the review found.** Ruling 2 let the Confederate claimants
+federate and unite; **politics ruling 31 barred all contest claimants from ever doing so.** Aaron:
+*"The old rule was only ever about Texas."* **Ruling 31 narrows to the Texan five**, which is the
+line it had itself left open. *Californians and the capital cities gain a permission they cannot use,
+because the hostility floor bars the instrument anyway; the Confederacy is still the one contest
+winnable by agreement, now resting on a rule that agrees with politics instead of contradicting it.*
+**It also makes politics finding G's 89% figure stale** — contested ground shrinks from the eleven
+Confederate states plus California to Texas alone — **and the new figure is not guessed at here.**
 
 **Recorded and not fixed:** rounds 1–4 all send numbers to *"the mechanics stage"*, which is not a
 stage name in the designer brief. Aaron's own word is **architecture**, which is stage 3. *Same

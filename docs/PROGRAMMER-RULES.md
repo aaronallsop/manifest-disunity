@@ -185,3 +185,24 @@ Add one with `/rule` whenever a mistake earns it. Number them; never delete one.
     ran wrong; it does not prove anything ran.
     **The tell:** the count is suspiciously round, suspiciously small, or exactly one — and the
     duration is far below the known figure. The real run here was **956 tests in 215 seconds**.
+
+17. **Verify the roster, not only the code. A design round can check every function and still design
+    against a board that does not exist.**
+    Round 5 spent an hour reading the engine before writing a single ruling, and the §3 section it
+    produced — what recognition gates, that patronage already exists, that there is no stance
+    machine — was right in every line. **It then wrote eleven rulings about the Deep South,
+    Appalachia, Philadelphia, New York City and six regions of stateless ground, none of which is on
+    the board.** The game opens as the fifty states with Texas and California shattered and Deseret
+    carved out: **twelve new nations, not twenty-nine.** The story's twenty-nine are a design in
+    `secession-ideation.md` §8 with *"five lines still to be drawn"*, and four closed rounds had been
+    quoting them as though they were the game.
+    It reached the handover before it was caught: the cut list named a trade deal between two nations
+    that do not exist as **the cheapest thing in the round and the recommended fallback.**
+    **What generalises:** *what the code does* and *what the board contains* are two different
+    questions and reading the first does not answer the second. Before writing anything that names a
+    nation, a region or a piece of ground, **read `DESIGN.md` §2.1 and the scenario content and list
+    who is actually there.** The design may legitimately be for a board that does not exist yet —
+    that is what a design stage is for — but it must say which board it means.
+    **The tell:** a ruling that names a nation no test fixture and no measurement in the project has
+    ever mentioned. Round 4 measured everything it touched; round 5 named Appalachia eleven times
+    without once asking whether the file that builds the board had ever heard of it.

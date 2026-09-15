@@ -820,10 +820,9 @@ modifier as *"cannot join a union CONTAINING A RIVAL"* rather than *"cannot join
 noting that under that reading the 33 rivalries are still safe and the South keeps its largest
 movement. **Ruling 2 is that narrowing, arrived at from the other direction.**
 
-**But it must be ruled, not assumed.** *Either ruling 31 narrows to the reading finding G already
-proposed, or ruling 2 loses its headline and the Confederacy thaws only as far as alliance.* **Put to
-Aaron; until he answers, ruling 2's alliance half stands and its federate-and-unite half is
-provisional.**
+**RESOLVED the same evening by ruling 22: politics ruling 31 narrows to the Texan five alone**, which
+is the line ruling 31 had itself left open. **Ruling 2 stands in full and no longer contradicts
+anything.**
 
 **And one absorbing another is simply how the contest gets won.** Round 1's S66 already says whoever
 holds most of the core takes the prize; ruling 2 makes *merging* a legitimate route to that, alongside
@@ -1440,6 +1439,41 @@ to join a war without being compelled to. **Uninvited defence is what a coalitio
 **So the story's most dramatic moment needs nothing built** — *which is worth saying, because the
 in-tray has carried it since 6 September as though it were a gap.*
 
+### Ruling 22 — Politics ruling 31 narrows to Texas alone, and finding N is closed
+
+**RULED 14 September 2026.** *"The old rule was only ever about Texas."* — closing **finding N**, the
+collision the adversarial review found between ruling 2 and politics ruling 31.
+
+**The modifier that blocks a nation from ever joining a union or a federation applies to the five
+Texan successors and to nobody else.** Ruling 31 recorded it as covering all four contests while
+noting in its own text that Aaron had said it *"while Texas was under discussion"* and leaving **"one
+line to narrow if he meant Texas alone."** *This is that line.*
+
+**⚠ It sounds more permissive than it is, and the reason is worth setting out — the two bars are
+different bars.**
+
+| Contest | Ruling 31's modifier | The hostility floor (rulings 1–3) | Can they actually combine? |
+|---|---|---|---|
+| **Texas** | **Blocks them** | Permanent | **No — barred twice** |
+| **California** | **Lifted** | **Permanent** | **No.** Conquest ruling 27: *an alliance cannot be formed while hostile* |
+| **The capital** | **Lifted** | **Permanent** | **No**, same reason |
+| **The Confederacy** | **Lifted** | **Thaws freely — ruling 2** | **Yes, and it is the only one** |
+
+**So ruling 22 changes almost nothing on the board and repairs the design underneath it.** *The
+Confederacy remains the one contest winnable by agreement — ruling 2's headline — but it now rests on
+a rule that agrees with politics instead of contradicting it.* **Californians and the capital cities
+gain a permission they cannot use**, because hostility bars the instrument regardless.
+
+**⚠ And it does something round 3 was waiting for: it largely closes politics finding G.** Ruling
+31's second half — *"no movements seeking unions and federations grow in their natural boundaries"* —
+was measured against **contested ground defined as the eleven Confederate states plus California**,
+and found it would delete **89% of the ground and 91% of the people** of Christian Nationalism, the
+largest Unify movement in the game. **Under ruling 22 contested ground shrinks to Texas.**
+
+**The new figure is NOT stated here, because it has not been measured.** *How many of Christian
+Nationalism's 255 counties sit inside Texas is a data question, and this round will not guess at it
+the way it guessed at a roster this morning.* **Handed to the data stage as finding P.**
+
 ---
 
 ## 6. Findings
@@ -1451,7 +1485,8 @@ in-tray has carried it since 6 September as though it were a gap.*
 | **C** | **There is no stance state machine.** Hostile is a band on a decaying score, and the thirty-three hostile pairs were asserted from claimant lists, never measured. §3b | **OPEN, and it prices item (a)** | This round, then the **data stage** to measure the thirty-three |
 | **D** | **F2 asks for a reputation number the build already has.** F2 specifies *"a new per-nation standing that decays toward neutral"*; treaty standing is pacts held minus breaches with the breach weighted heavier. **Two of them would be two different ideas about what breaking a promise costs** — which is what F2's own last paragraph warns against. T75, T76a | **OPEN** | This round |
 | **M** | **The document described the story's board as though it were the built one.** Twelve new nations exist today, not twenty-nine; the Confederate and capital claimants, the city-states and all stateless ground are designed and not built (§3h). **The DESIGN is not affected — the story's board is the design intent and round 1 wrote it.** What was wrong was the *description*: several rulings were phrased as statements about the game rather than about the design, and one table in §8b called a thing cheap that cannot be authored yet | **CORRECTED IN PLACE.** *Every ruling stands* | **Recorded for the architect (stage 3), whose job it is to say what can work and when.** Root cause here: the code was verified and the roster was not |
-| **N** | ⚠ **Ruling 2 collides with politics ruling 31**, which bars *all* contest claimants — Confederates included — from ever joining a union or a federation. **Ruling 2 lets them federate and unite.** Ruling 31 left its breadth explicitly open and politics finding G already proposed the narrowing | **OPEN — Aaron's, and it is the only ruling today left provisional** | **Aaron.** Until then ruling 2's alliance half stands and its federate-and-unite half does not |
+| **N** | ⚠ **Ruling 2 collided with politics ruling 31**, which barred *all* contest claimants from ever joining a union or a federation | **CLOSED by ruling 22** — ruling 31 narrows to the Texan five alone, the line it had itself left open. **Ruling 2 stands in full** | — |
+| **P** | **Politics finding G must be re-measured.** It found ruling 31's suppression would delete **89% of the ground and 91% of the people** of Christian Nationalism — measured against contested ground defined as *the eleven Confederate states plus California*. **Ruling 22 shrinks contested ground to Texas**, so the figure is stale and the new one is unknown | **OPEN, and it may largely close politics finding G** | **The data stage.** Not guessed at here |
 | **O** | **The capital contest was named wrong all session.** It is **D.C., Philadelphia and New York City** (secession ruling 20); **the United States of New England is explicitly not a claimant** (ruling 22). Aaron was asked with the wrong list | **CORRECTED.** *His answer — permanent — does not depend on which three, so ruling 3 stands* | — |
 | **I** | ⚠ **The pariah's one unilateral instrument is empty.** Every opening nation is already recognised by everybody, so Deseret has nobody to recognise — and ruling 8 defers the only fix past the alpha. **For the whole alpha, the one nation that opens as a pariah has no diplomatic move of its own at all.** §7 | **HALF CLOSED by ruling 9** — the overture exists, is named, and raises the chance of being recognised. **What it costs is stage 3's.** Until it is built, the pariah still has no move | **Stage 3 for the price; the alpha to watch whether Deseret can act at all without it** |
 | **J** | ⚠ **Ruling 4 does not say whether an unrecognised nation may join a bloc.** §7 | **CLOSED by ruling 10** — it may, and the vote that admits it *is* the recognition, so D166 holds | — |
