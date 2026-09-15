@@ -628,6 +628,184 @@ true before today.*
 
 ---
 
+### Ruling 3 — No chains in play. The nine links are the backstory's job and nothing like them runs forward
+
+**RULED 14 September 2026.** *"No — chains are the backstory's job only."* — closing the second half
+of in-tray item 1 and rejecting **X39 through X46** except as history.
+
+**The chain that made this world is told once, at the opening, and never runs again.** A crisis
+remains what it is today: **one nation, one turn, and it ends there.**
+
+**Rejected, and the one rejected first is the one worth recording.** The emergent version — *nobody
+writes the chain; each link is an ordinary event whose trigger is the last link's effect* — was the
+version this document argued for, on the grounds that it gets the drama without putting anything on
+rails. **Aaron took the tighter answer**, and the authored nine-step arc was rejected for the reason
+the document gave: it would be the first thing in this game that runs on rails, and the rest of it
+deliberately refuses to.
+
+**Why the restraint is coherent rather than merely cautious.** Every complaint Aaron has made about
+this design for a fortnight has been the same one — there is too much to think about. **Ruling 3 buys
+the round's whole remaining scope back**: with no chains there is no chain memory to build, no
+breakable link to surface, no *"this happened because that happened"* record, and no risk of a
+sequence firing that nobody can stop or explain.
+
+### ⚠ And it settles the taxonomy, which nobody had written down
+
+**Rulings 1 and 3 together give the round exactly two objects, and both are one turn deep.**
+
+| | A **crisis** | A **shock** |
+|---|---|---|
+| Where it comes from | the nation's **own condition** | a **place on the map** |
+| Who it reaches | **one nation** | **everything within the radius** — ruling 1 |
+| How long it lasts | one turn | one turn |
+| Does it cause another? | **No** — ruling 3 | **No** — ruling 3 |
+| Built? | **yes**, twelve rows | **no** |
+
+*A crisis is wide in nothing; a shock is wide in space. Neither is wide in time. That is a small and
+completely describable design, which is the point of it.*
+
+### ⚠ What ruling 3 costs, said plainly rather than buried
+
+**1. The oil stoppage cannot be told as what it was.** In the story it is a *consequence* — Texas's war
+stopped the gas. Under ruling 3 the game can have **a fuel shock at a place**, which looks the same on
+screen and is caused by nothing. *The shape survives; the causation does not.*
+
+**2. Conquest's in-tray item 7 is answered no, and it was somebody else's question.** *"A war that
+starts because somebody else's crisis made it"* is a chain across nations by definition. **Round 2 is
+closed and cannot argue**, so it is recorded here as answered rather than quietly dropped. *A shock
+that makes war more likely by making a nation hungrier is still available; a shock that hands anyone a
+war is not.*
+
+**3. In-tray item 1's FIRST half is untouched and still open** — whether the backstory is told as
+dated events at all. **Ruling 3 says chains do not run in play; it does not say the opening stays
+three sentences.**
+
+### Ruling 4 — The opening is a front page, dated 1 March 2036
+
+**RULED 14 September 2026.** *"A front page, dated 1 March 2036."* — closing the first half of in-tray
+item 1 and all of item 5.
+
+**The game opens as a newspaper.** The bicentenary, the war of succession, the oil, the collapse of
+trust in Washington, martial law, and the states that went their own way — **the player starts knowing
+why the map looks like that**, instead of inferring it from three sentences.
+
+**It is content, not machinery.** A page of prose against the page of story that already exists in
+`secession-ideation.md` §8. *Nothing in the engine changes; the writing is the work.*
+
+**Two things it sets up for free.** **F14** — a turn arriving as news rather than as a number — *this
+is the same idea pointed at turn zero, and doing it here first means the format exists before the
+per-turn version is designed.* And **the bicentenary finally gets said**: the game opens on the eve of
+two hundred years since Texas declared itself a nation, with five governments each claiming to be that
+Texas, and today it says nothing about it.
+
+**Rejected, and the near miss is worth recording.** *A different front page per nation* — the same
+events reported by somebody with an interest, so Austin's page and Dallas's disagree about who the
+traitor is. **Aaron took the single page.** *It is one page of writing rather than sixty-one points of
+view, and the per-nation version stays available later at the cost of prose alone — no mechanism
+stands between here and there.*
+
+### Rulings 5–7 — three defaults, closing the round's remaining items
+
+*Batch treatment, as rounds 3, 4 and 5 all used. Each has a precedent or follows from a ruling
+already made today, none is a product judgement, each is one line to reverse.*
+
+#### Ruling 5 — The effect vocabulary stays closed. It gains only what ruling 1 forces
+
+*Answering **finding D** — the deck knows about none of the six objects rounds 4 and 5 created.*
+
+**The eight effects stand, and an event still may not reach a sector, a deal, a corridor, a bloc, a
+vassal or a recognition claim.** The only addition is whatever ruling 1's blast radius requires, which
+is a way of addressing ground rather than a new thing to move.
+
+**Why the default is *no* and not *yes*.** **Ruling 1 removed the reason to say yes.** The trace's
+interesting version of a bad winter needed an event to reach a trade deal — but that was under X6,
+where the shock travels the trade network. **Under a blast radius the shock reaches the ground
+directly and the economy carries it onward**, so the new effect the trace asked for is not needed.
+*X29 to X38 stay on file as ideas, unbuilt, and the six objects are listed there for whoever extends
+the vocabulary later.*
+
+#### Ruling 6 — Shocks get their own budget; the crisis cap stays where it is
+
+*Answering **finding C** — a player meets the deck about three times in a sixty-turn game — and
+**finding E**, which is what ruling 1 costs.*
+
+**Two budgets, not one.** The crisis deck keeps its cap of three a turn across the roster and its
+cooldowns; **shocks are counted separately**, because a world event rationed to three nations a turn
+is not a world event. *This is X65, and ruling 1 makes it necessary rather than optional.*
+
+**Whether three crises a game is too few is left open on purpose.** It is a number, numbers are the
+architect's, and **the structural half is what this round owes**: the per-turn cap is the binding
+constraint and the cooldowns are not, so **raising the cap is the only lever that changes how often
+anything happens.** *Recorded so nobody spends an afternoon adjusting cooldowns.*
+
+#### Ruling 7 — The three half-built items are closed as already owned elsewhere
+
+*Clearing in-tray items 2, 4 and 6.*
+
+- **Item 2, protests at the capital** — **closed.** Two cousins already exist in the deck, *the
+  veterans march* and *they arrested the wrong person*. *The story's version happens at the capital
+  specifically, and the game has no notion of a capital as a place an event can target; that is a
+  refinement, not a gap.*
+- **Item 4, a neighbour comes apart and the people who arrive carry their politics** — **half closed.**
+  The event exists. **The carrying half is migration's**, which round 1 deliberately placed inside
+  secession, and migration is built and moves people toward people who think as they do. *Nothing here
+  to build; the two systems already meet.*
+- **Item 6, shocks that land on grievance** — **closed, and it was already built.** `sentiment` is one
+  of the eight effects and deliberately moves **movements already present** rather than inventing one.
+  **Ruling 2 now scales it by the share of ground inside the shock**, which is the geographic version
+  secession was asking for.
+
+---
+
 ## 9. The handover
 
-*Written when the round closes.*
+**The round is NOT closed — Aaron closes rounds.** Seven rulings, seventy-four ideas, six findings,
+scenario 6 traced, and the in-tray empty: **nine items in, nine answered.**
+
+### 9a. What this round decided, in one table
+
+| | |
+|---|---|
+| **1** | **A shock has a blast radius on the map.** It is addressed to ground, not to a nation — so no world object is needed, and **finding B is closed** |
+| **2** | **A nation feels it in proportion to the share of its ground inside it.** No regional stocks, no new effects, and round 4's national pot is respected |
+| **3** | **No chains in play.** The nine links are the backstory's job. A crisis stays one nation, one turn, and ends there |
+| **4** | **The opening is a front page, dated 1 March 2036.** Content, not machinery |
+| **5** | **The effect vocabulary stays closed**, because ruling 1 removed the reason to open it |
+| **6** | **Shocks get their own budget**; the crisis cap stays, and the cap — not the cooldowns — is the lever |
+| **7** | **Three half-built items close as already owned** by the deck, by migration, and by `sentiment` |
+
+**The shape of it: this is the most restrained round of the six.** *Two objects, both one turn deep,
+one new addressing mechanism, and a page of prose. Everything else on the table was declined.*
+
+### 9b. What the alpha needs from this round
+
+**Nothing, and it is the second round running where that is the honest answer.** The alpha tests trade
+deals, transit and the route map. **No ruling here touches any of them.**
+
+**The one row worth a sentence:** ruling 4's front page is **prose with no engine work behind it**, so
+it is the cheapest thing in either of the last two rounds and it is the first thing a new player
+meets. *That is an observation for the build-order stage, not a recommendation — the cutting is
+Aaron's and the build order's.*
+
+### 9c. What round 6 leaves the rounds after it
+
+| To | What |
+|---|---|
+| **Round 7 — the things above** | **An event is the strongest candidate for a FREE decision there is**, because the player did not choose to be asked. Politics ruling 12 already opened that door for movement demands and recorded it as a deliberate exception *"precisely because every other component will now want the same channel."* **Round 6 is now formally asking for it** — and it is the one component whose claim does not compete with the others, because it arrives unbidden. **Also: F14**, a turn arriving as news, which ruling 4 has just built the format for |
+| **The architect (stage 3)** | **Finding E — ruling 1's delivery mechanism.** An event fires for one nation today; a blast radius addresses many, and shocks need their own budget (ruling 6). **Finding F — the model has no coordinates**, so the radius walks adjacency; whether to buy real coordinates instead is a choice and it is not free. **Finding A** — the effect vocabulary has no supply term, so round 4's *"a bad winter needs nothing new to land"* is a statement about the designed economy and not the built one |
+| **The design stage** | **What a shock looks like on screen.** Ruling 1 makes the first event in this game that is about a *region of the map*, and the map is the thing the player reads. *A crisis is a card; a shock is a card and a shape* |
+| **The writer** | **Ruling 4's front page**, against the page of story in `secession-ideation.md` §8 — the bicentenary, the succession war, the oil, the collapse of trust, martial law, the states that went their own way |
+| **Conquest, answered rather than asked** | **In-tray item 7 — a war that starts because somebody else's crisis made it — is NO**, by ruling 3. Round 2 is closed and could not argue, so it is recorded rather than dropped |
+
+### 9d. The two things this round would tell the next one
+
+1. **Trace the scenario before the rulings, not after.** §7 was written *before any ruling was made*,
+   on round 5's evidence that tracing finds what rulings miss. **It found both halves of scenario 6
+   failing** — no way to make one thing true for many nations, and no way to make a winter mean
+   something different to a farmer than to an importer — **and ruling 1 was then made against a known
+   problem rather than in the abstract.** *That is the first round to work in that order and it was
+   plainly better.*
+2. **A restraint ruling buys more scope than a clever one.** Ruling 3 declined chains and **deleted
+   the entire remaining second half of the round** — no chain memory, no breakable links, no *"this
+   happened because that happened"* record, no sequence firing that nobody can stop. *The round got
+   smaller and nothing that matters was lost.*
