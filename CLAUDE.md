@@ -185,20 +185,28 @@ unspecified for turn 1; and a mission is ruled permanent while its REWARD is not
 has taken.* **A master document's scenarios are the cross-cutting ones** — a scenario that lives inside
 one system belongs in that system's document.
 
-**What exists:**
+**What exists — ELEVEN of twenty documents, line counts measured 15 September 2026:**
 
-- **`GDD.md`** — the master. The pitch layer (much of it marked draft for Aaron), the system map and
-  the full document list, and the cross-cutting concepts every satellite reads. **Written 15 September.**
-  **Its §17 carries seven open questions and §18 ten gaps**, and open question 1 is the split itself.
-- **`turn-design.md`** — 572 lines. The turn rebuilt from nothing: no action budget, nothing finishes
-  in one turn, and the things that do are a card you click. **D218, D219, D220, D224, D225.**
-- **`missions-design.md`** — 836 lines. Three trees (Great Lakes, Deseret, Texas), three branches, four
-  elements, one pivot each. The game had no goals before this. **D221, D222, D226, D227.**
-- **`board-design.md`** — 478 lines, written 15 September. **Substrate: seven other satellites read it.**
-  The Area, adjacency, the transport network's entry costs, reach and why it decays from one core, the
-  four rivers and their fifteen gates, the two basins, the edges of the map, transit, and the route
-  search. **Almost all of it is built**, so it carries a working system across exactly. *Its §7.1 is the
-  one to read first: a port is three different things and 59 of the 136 reach no foreign market at all.*
+**⚠ The first four were written before the Hog Wild run; the next seven are the run itself.** *Their
+line counts are measured, not carried forward — and two of the original four had already grown past
+the figures recorded for them, because traced scenarios were added after D232.*
+
+| | Lines | |
+|---|---:|---|
+| **`GDD.md`** | **1,129** | **The master.** The pitch layer (much of it marked draft for Aaron), the system map and the full document list, and the cross-cutting concepts every satellite reads. **§17 carries seven open questions and §18 ten gaps** |
+| **`turn-design.md`** | **748** | *Was 572.* The turn rebuilt from nothing: no action budget, nothing finishes in one turn, and the things that do are a card you click. **D218, D219, D220, D224, D225** |
+| **`missions-design.md`** | **1,003** | *Was 836.* **The biggest thing in the folder** — three trees, three branches, four elements, one pivot each. The game had no goals before this. **D221, D222, D226, D227.** *It is also the first document that will have to split again* |
+| **`board-design.md`** | **675** | **Substrate: seven satellites read it.** The Area, adjacency, entry costs, reach, the rivers and their fifteen gates, the two basins, transit, the route search. **Almost all of it is built.** *Read §7.1 first: a port is three different things and **59 of the 136 reach no foreign market at all*** |
+| **`identity-design.md`** | **573** | **The political board.** Three axes, ten positions, the two trapdoors, affinity, ruling 40's three words, the drift partition, all 26 movement placements, and **§5.3 names the six struck movements at last** |
+| **`population-design.md`** | **453** | The six exact counts, drift, growth, migration's five terms, the sum invariants — *and §10.4 traces a conservation failure* |
+| **`movements-design.md`** | **496** | Round 1's 53 rulings. The sentiment formula exactly, six verbs, five adjectives, the two tiers of secession |
+| **`governing-design.md`** | **551** | Round 3's 41 rulings. Government, leader, elections, the five-moves-by-six-verbs table, martial law, the referendum |
+| **`economy-design.md`** | **444** | ⚠ **Carries D234, the logistics brake**, chosen in Aaron's place and logged in `docs/HOGWILD-LOG.md`. Six sectors, derived demand, the five bands, the treasury, the five loops |
+| **`events-design.md`** | **475** | Round 6's seven rulings. The crisis, the shock and the dispatch; **the most restrained round in the project** |
+| **`nation-design.md`** | **605** | ⚠ **Round 1 asked for "one machine for making nations." There are FIVE and they disagree on seven counts.** §3 tables them side by side. **Filed three live code defects — `docs/deferred.md` 34, 35, 36** |
+
+**⛔ `presentation-design.md` is PARKED BY NAME** until `docs/design/TONE.md` exists. *Writing it
+without that means inventing the game's position on its own subject matter.*
 
 **✅ RESOLVED 15 September 2026, and the list now exists — `GDD.md` §13.** D217 said *eighteen
 satellites*; the Control Board said *nineteen* and printed the denominator as **20**. **Both were true
