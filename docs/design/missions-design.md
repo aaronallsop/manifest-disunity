@@ -180,6 +180,11 @@ for **victory** nowhere, because **victory is re-checked every world turn while 
 permanent** — so a win that arrived on a federation election would evaporate at the next one. *A pivot
 is the right place to grant such a thing, because it is earned rather than handed out.*
 
+**⚠ And a pivot need not close the tree. It may open one more mission.** Texas's and the Great Lakes'
+sit at the end; **Deseret's sits before its last one, deliberately** — the Gathering is what makes the
+Mormon Battalion's march on San Diego affordable, so the licence has to arrive first. *Worked example
+in §7.4.*
+
 *A tree without a pivot is complete and normal.*
 
 ---
@@ -496,15 +501,166 @@ is a recognition ladder of three, **Ground** is a set of five cities then a fan 
 **Unblocked:** conquest ruling 19 was brought forward on 15 September (D222), so the four Texan rebels
 open unrecognised and the Standing branch has something to do. **Its review findings are in D221.**
 
-## 7. The Deseret tree
+# 7. The Deseret tree
 
-**Not drafted.** Branch themes agreed:
+**This one is different in kind, and Aaron named why: *"this is a movement, so they need to get
+acceptance but also get the movement united."*** Texas is a state that came apart and wants putting
+back. The Great Lakes is a state that wants to build something new. **Deseret is a movement that
+half-realised**, and its tree is about **completing itself**.
 
-| Branch | About |
+## 7.1 The situation, measured
+
+**Verified against `content/scenario-shattered.json`, `content/cultural.json`,
+`data/county_trade.json` and `data/game-data.json` on 15 September 2026.**
+
+| | |
 |---|---|
-| **Standing** | Stop being nobody. Utah's signature is measured as worth more than everything else combined — the continent's per-turn chance of recognising Deseret runs **0.070 → 0.181** the moment Utah gives in |
-| **Ground** | Finish the corridor — the Areas that did not cede, and the `leftBehind` ones that were cut off |
-| **Building** | Get out. ⚠ **Unverified: whether Deseret holds any port or international border at all.** The branch depends on it and it must be checked against the data |
+| **The Mormon Corridor** | **57 Areas across seven states** — Utah 25, Idaho 13, Colorado 8, Montana 4, Wyoming 3, Arizona 2, Nevada 2 |
+| **What it opens holding** | **Mean 31.1 Areas and 3.75M people, ranging 19–45 across twenty seeds**, always one connected piece. The Wasatch Front always cedes; **Zion rolls at 0.82, Bonneville 0.70, Tetonia 0.60, Uintas 0.55** |
+| **What it doesn't** | **Roughly 26 Areas** — and **about nine of every thirty-one that rolled to join end up cut off from Salt Lake and are remembered as `leftBehind`.** Ground that voted to go and was stranded |
+| **Its grievance** | The corridor that stayed carries a standing authored grudge, **strongest on the ground that voted to go and was cut off**, and its movement grows at **1.5× the ordinary rate** against a cap of **0.60** |
+| **⚠ Its geography** | **No port. No border crossing. No ocean coast. None, in any of the 57 Areas.** Every transaction with the outside world crosses somebody else's ground |
+| **Its seat** | Salt Lake County. It governs **yellow** |
+
+### ⚠ 7.1a The recognition exception — ruled 15 September 2026
+
+**Deseret opens recognised by its neighbours. Not by Utah.**
+
+**Why it was needed.** Transit requires **mutual recognition**, the same test that gates trade and
+treaties. A nation with no port and no border crossing needs a corridor to do anything at all — and a
+pariah cannot be granted one. **Round 5 found the diplomatic half of this dead end and called the
+game's answer *"wait, and hope."* This is the economic half, and it is worse.**
+
+**Why it does not delete the story, which is the part worth checking.** `legitimacy` is *"the share of
+the continent, **by weight**, that recognises you"*, and Deseret's neighbours are small. **Even with all
+six signing it stays under 0.15 — the smuggler's-rate band.**
+
+| Unlocked | Still true |
+|---|---|
+| Bilateral trade with its neighbours — the test is **per pair** | The world market, at a smuggler's rate |
+| **Transit across their ground**, which is the one that matters | No seat in a coalition |
+| S1 becomes possible | A standing Influence deficit |
+| | **Utah's signature is still the key**, and *"the parent giving in is worth more than all of them combined"* |
+
+> **Deseret stops being frozen and stays a pariah.**
+
+**⚠ Utah is excluded deliberately, and the measurement is why.** The continent's per-turn chance of
+recognising Deseret runs **0.070 → 0.181** the moment Utah gives in, and in a played game the State of
+Jefferson went from **14% recognition to 100% in twelve turns** on exactly that. *Put the parent in the
+exception and the most measured piece of drama in the game goes with it.*
+
+**And the fiction is the justification rather than a problem.** Every one of those six states **lost
+ground to Deseret** — Idaho thirteen Areas, Colorado eight, Montana four, Wyoming three, Arizona and
+Nevada two each. *"The states around it" is the same list as "the states it took territory from."*
+**A state that has lost thirteen Areas and cannot get them back has the strongest practical reason on
+the board to regularise the border. You recognise the thing you cannot remove** — and everyone who
+lost ground accepting reality is what makes the parent's refusal read as grief rather than policy.
+
+*It is a change to **authored scenario content**, not to rules — the same class as bringing conquest
+ruling 19 forward, in the same file, and it does not rot.*
+
+## 7.2 Branch one — STANDING
+
+| | Mission | Condition | ⚠ |
+|---|---|---|---|
+| **S1** | **Friends with Benefits** | Hold an alliance with a nation that has a **Canada or Mexico border crossing**, and transit access through it | *This was blocked until §7.1a — nobody has ever ruled whether an alliance requires recognition, because alliances are not built. **The exception unblocks it without settling the general question**, which stays open in §8* |
+| **S2** | **My Brother's Keeper** | **Recognise two other movement-born nations**, and/or **champion two growing movements in other states** | ✓ **Both are things a pariah can do without anyone's permission.** Recognition is the only unilateral act in the game, and since ruling 19 came forward there are **four unrecognised Texans** to give it to. Championing is a standing per-quarter project, and *everyone sees you doing it* |
+| **S3** | **An Ensign to the Nations** | **Reach the world market three ways** — through a Canada corridor, through a Mexico corridor, and through somebody's ocean port | ⚠ **Converted.** Aaron wrote *"trade deals with Canada, Mexico and the World Markets"*; **Canada and Mexico are geography, not nations** (D168), so there is nobody to sign. **Three separate transit arrangements in three directions is the same achievement without a new actor** — and for a landlocked pariah it is a proper capstone |
+
+**S2 is the tree's quiet argument.** The two acts a pariah can perform are *recognise* and *champion* —
+and this mission is made of exactly those two, **pointed at other people in the same position.**
+
+## 7.3 Branch two — GROUND: the trail, walked backwards
+
+**Seven missions that retrace the migration east across the continent, and one that goes west to the
+sea.** *Aaron's names.*
+
+| | Mission | Condition | Verified |
+|---|---|---|---|
+| **G1** | **Building Zion** | Every Area of the Mormon Corridor either **held** or **over 0.40 movement share** | ✓ **0.40 is `secession.countyThreshold`** — the line at which an Area defects to a breakaway along its frontier. Deseret's cap is 0.60 at 1.5× growth, measured spreading from a 6-Area core to its whole homeland. **Aaron's stated purpose is to teach the player to cause uprisings elsewhere, and the mechanic is real** |
+| **G2** | **Juarez to Cardston** | A **contiguous chain of held Areas touching both the Canadian and the Mexican border** | ⚠ **Converted.** Cardston is in Alberta and Colonia Juárez in Chihuahua — **both outside the United States, and the board is US counties only.** A continental strip north to south is what the colonies actually were |
+| **G3** | **Winter Quarters** | Contiguous held ground reaching **Douglas County, Nebraska** | ✓ Omaha. Inland, no port. **Nebraska is a Farmers Union governor state** |
+| **G4** | **Adam-ondi-Ahman** | Conquer **northern Missouri**, including **Daviess County** | ✓ Daviess County exists and carries no trade geography. **Missouri is a governor state and holds the St. Louis gate** |
+| **G5** | **East of Eden** | Hold **Illinois's Mississippi counties** | ✓ **18 counties — and they include both Hancock (Nauvoo, a river port) and Alexander (Cairo).** ⚠ **Cairo is one of the fifteen chokepoints and the single most contested gate in the Great Lakes tree** |
+| **G6** | **The Temple East of East of Eden** | Hold **Lake County, Ohio** | ✓ Kirtland. ⚠ **It is a Great Lakes corridor county**, and Ohio is the Farmers Union's **largest core state — 44 of its 257 core counties** |
+| **G7** | **The Mormon Battalion Part 2** | **San Diego** | ✓ **`has_port: true`, `coastal: true`.** ⚠ **An ocean port — the answer to being landlocked.** And it is **SoCal's seat of government** |
+
+### ⚠ The branch is a ladder by physics, not by design
+
+**You cannot take Kirtland from Salt Lake.** **Reach** is a bounded search out from *one* seat, decaying
+per Area entered, that **refuses the move outright past a limit** — measured, a 517-Area empire's worst
+frontier sits at **0.13** against a limit of **0.18**, and Deseret at roughly 31 Areas is nowhere near
+Ohio.
+
+> **So the trail has to be walked in order, and the engine enforces it. Nobody had to write a rule
+> saying you cross Nebraska before Illinois.**
+
+| | |
+|---|---|
+| **G1** | **The gate.** Home, and it teaches the mechanic the whole tree runs on |
+| **G2** | **Off the ladder** — it runs north–south while everything else runs east. Free once G1 is done |
+| **G3 → G4 → G5 → G6** | **A ladder east, enforced by Reach** |
+| **The pivot** | §7.4 |
+| **G7** | **Unlocked by the pivot** |
+
+### ⚠ Four of the seven are aimed at the Great Lakes tree
+
+**Nebraska, Missouri, Illinois and Ohio.** *Deseret's G5 and the Great Lakes' capstone want the same
+county.* **The two live trees are on a collision course across the entire Midwest**, and that is the
+best structural argument for having more than one.
+
+## 7.4 The pivot — **the trail complete**, and the reward is **the Gathering**
+
+> **Condition: hold a contiguous chain of ground from Kirtland to the Wasatch Front.** The whole
+> migration under one flag. *Contiguity is already a single call in the build.*
+>
+> **Reward: defection no longer needs a frontier.** Today an Area crossing 0.40 defects to a breakaway
+> *"along its frontier."* After the pivot, **any Area on the continent where your movement crosses the
+> line comes to you, wherever it is.**
+
+**Why this and not something else.** Deseret is the only realised *movement* on the board; its ground
+arrives by people changing their minds rather than by an army; and **G1's stated purpose is to teach
+the player to cause uprisings in other states.** The pivot is that lesson paid off — *you stop
+marching and start calling people home.* **It is scoped to your own movement**, exactly as the Great
+Lakes licence is scoped to the river, so it is not a general gift.
+
+### ⚠ And it comes BEFORE the last mission, which the other two trees do not
+
+**Aaron's reason: *"the Mormon Battalion to conquer San Diego is going to be tricky, so getting the
+pivot beforehand makes that better."* The mechanics agree, and they also say how far it gets you.**
+
+**`base` is multiplicative** — *"an authored grievance cannot radicalise a place into a movement whose
+ideology it does not share."* Computed from the authored coordinates: Deseret governs **yellow**, and
+**yellow-to-red affinity is 0.71 while yellow-to-blue is 0.37.**
+
+> **So the Gathering carries you across red inland California and stops at the blue coast. It gathers
+> you as far as the desert; the Battalion still has to take the port.**
+
+**Structural consequence, and §2.4 is widened for it: a pivot may open one more mission rather than
+closing the tree.** Deseret is the worked example.
+
+## 7.5 Branch three — BUILDING
+
+| | Mission | Condition | State |
+|---|---|---|---|
+| **B3** | **Crossroads of the West** | Improve logistics infrastructure | ✓ **This is the one buildable thing** — capacity. Works in the alpha. *And it is Salt Lake City's actual slogan* |
+| **B2** | **A City Beautiful** | Raise quality of life | ✓ A live stock with a measured turn-0 band of **0.55–0.98**. Works in the alpha |
+| **B1** | **Busy as a Bee** | Reach a band in **Manufacturing** | ⚠ **Needs the resource model.** And note **capacity is frozen by geography** — only *utilisation* moves — so this is a band, not growth |
+| **B4** | **In Our Lovely Deseret** | **Surplus in all six sectors** — the 1.11–1.50 band, six times over | ⚠ **Needs the resource model, and it may be near-impossible by design.** Extraction is the model's single upstream chokepoint and **ruling 7 made it gate farming as well**, so a simultaneous surplus everywhere is a very strong claim |
+
+> **⚠ Two of Deseret's four Building missions are unavailable in the alpha**, against one of the Great
+> Lakes' three. *The branch reads fuller than it plays.*
+
+## 7.6 What this tree would be tested for
+
+1. **Can a landlocked pariah actually move goods?** §7.1a unlocks its neighbours. **Whether a
+   smuggler's rate reaches anything without a port is still a route-model question nobody has asked.**
+2. **Does the corridor come back?** G1 rests on defection at 0.40, and the roll leaves **19 to 45**
+   Areas in Deseret's hands depending on the seed. *A bad roll and a good roll are different games.*
+3. **Does Reach actually make the trail a ladder, or does it make it impossible?** The branch assumes
+   you can walk from Utah to Ohio by expanding contiguously. **Nobody has tried.**
+4. **Is the Gathering too strong?** Frontier-free defection is the largest permission granted by any
+   pivot in the three trees.
 
 ---
 
@@ -518,6 +674,8 @@ open unrecognised and the Standing branch has something to do. **Its review find
 | **4** | **Do the other fifty-four nations get trees later?** | Aaron, at the build-order stage |
 | **5** | **Does the AI read its tree?** If a nation with a tree is AI-played, does it pursue it — and if not, is the player racing an opponent that does not know the race is on? | Aaron, then the architect |
 | **6** | **Does a Lake Michigan port reach the Canada corridor without passing Mackinac?** §5.1 | The Technical Designer |
+| **7** | **Does an alliance require mutual recognition?** Trade, treaty and transit all test it; an alliance is not built, so nobody has ever asked. **§7.1a unblocked Deseret's S1 without settling this**, and it is a general rule that belongs in `diplomacy-design.md`. *Precedent points at no — vassalage is already the pariah's escape hatch precisely because aid is not recognition-gated* | **Aaron**, in the diplomacy document |
+| **8** | **Can a smuggler's rate reach the world market for a nation with no port?** The market is *"a haircut rather than a lock"* because *"refusing external trade outright would make an unrecognised landlocked state unplayable"* — **which is a description of Deseret** — but the market is reached *"only through an ocean port, or through somebody else's."* **Nobody has asked whether the two rules agree** | The Technical Designer |
 
 ## 9. Gaps
 
