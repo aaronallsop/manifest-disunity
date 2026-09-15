@@ -21,9 +21,14 @@ answered, and Aaron has already ruled that it must be:**
 > *"It would cost one action — but lets move that to the mechanics stage because **we need to change
 > the whole one action per turn**."* — Aaron, 10 September 2026, politics ruling 14.
 
-**That is an instruction, not an open question.** What this round owes is **what replaces it**, and
-the replacement has to answer the argument the original was making: *six components competing for one
-slot, and any idea that assumes a decision every turn has taken that turn away from the other five.*
+**⚠ But choosing the replacement is NOT this round's, and ruling 1 settles that.** Aaron, the same
+day: *"You are currently the game designer working towards a game design document. The actions/turn
+will be handled by the technical design director in the next step."*
+
+**So round 7's job on the budget is to say what it must be able to express, hand over everything five
+rounds have deposited, and stop.** The requirements are in §7 under ruling 1; the candidates are in
+the idea bank as ideas. *An earlier draft of this section called it "the round's central item" and
+said round 7 would answer it. That was wrong and the correction is recorded rather than edited away.*
 
 **The other two standing rules still apply.** The board and the ideologies are fixed. Every quantity
 says where its number comes from. **And rule 17, earned this afternoon: verify the roster, not only
@@ -63,7 +68,7 @@ designed as the place the other six put anything about the frame.
 
 | | Item | State |
 |---|---|---|
-| **A1** | ⚠ **The one-action rule itself needs changing.** Aaron's instruction, quoted in §0a | ⚠ **THE ROUND'S CENTRAL ITEM** |
+| **A1** | ⚠ **The one-action rule itself needs changing.** Aaron's instruction, quoted in §0a | **HANDED ON by ruling 1.** The choice belongs to the technical design director; this round writes the requirement |
 | **7** | **Ruling 12 already cut a hole in it.** Answering a movement's demands is **free and mandatory** — the first thing in the design to get its own channel, *"recorded as a deliberate exception precisely because every other component will now want the same channel"* | **OPEN.** Three components have now asked |
 | **8** | **Ruling 14 deferred here: does declaring martial law cost the action?** Aaron's answer was *yes, one action* — moved here *"because the unit it is priced in is the thing being redefined"* | **OPEN, and it unblocks on whatever replaces the rule** |
 
@@ -169,7 +174,7 @@ and are not built. **Programmer rule 17.**
 
 ## 4. The spine — the questions, in the order they will be asked
 
-1. **What replaces "one action per nation per turn"?** *(A1 — the round's central item.)*
+1. ~~**What replaces "one action per nation per turn"?**~~ **NOT this round's — ruling 1.** What round 7 owes instead is the **requirement**, written for the technical design director. *(A1.)*
 2. **Which decisions are free, and what makes them free?** *(Items 7, 12 — and Recognise is already
    the precedent.)*
 3. **Do standing arrangements cost the action, or are they maintained outside it?** *(Item 6.)*
@@ -390,7 +395,45 @@ it.*
 
 ## 7. Rulings
 
-*Empty. The round is open.*
+### Ruling 1 — The action budget is NOT the designer's. It goes forward as evidence and a requirement, not as a choice
+
+**RULED 14 September 2026.** *"You are currently the game designer working towards a game design
+document. The actions/turn will be handled by the technical design director in the next step."*
+
+**So this round does not choose what replaces "one action per turn", and W1 through W12 are ideas
+rather than candidates.** *The four options put to him — action points with different costs, two
+actions a quarter, one action per category, and keeping the single action — are recorded in the bank
+and none is taken.*
+
+**⚠ And §0a was wrong, so it is corrected rather than quietly edited.** This document opened by
+calling A1 *"the round's central item"* and saying *"round 7 is where the complaint is answered."*
+**It is not.** Round 7's job on the action budget is to **state what the budget must be able to
+express, hand over everything five rounds have deposited, and stop there.**
+
+### What round 7 therefore owes on the budget — the requirements, not the answer
+
+*This is the designer's half and it is written for the technical design director.*
+
+1. **It is not a cap to raise. It is the turn structure.** Finding A: a turn is a **round** — sixty-one
+   nations act in sequence, each nation's turn *is* its action, the world advances once when the
+   pointer wraps, and **there is no "has acted" flag anywhere because there does not need to be one.**
+2. **Roughly thirty things want to be done and one can be.** Eleven moves exist; the economy wants ten
+   verbs; diplomacy added four this afternoon; politics has nine answers to a movement. **W48.**
+3. **Three exceptions already exist and they share a principle** — *a decision is free when you did not
+   choose to be asked.* Recognise, a movement's demands (politics ruling 12, which is also
+   **mandatory**), and an event (round 6). **Finding B, W13.**
+4. **Whatever replaces it must answer the original argument, not ignore it:** six components competing
+   for one slot, and any idea assuming a decision every turn has taken that turn from the other five.
+5. **Eight deferred items unblock on it**, named so none is lost: politics ruling 14 (martial law),
+   diplomacy ruling 9 (the overture's price) and mediation, round 6's free-decision claim, round 4's
+   ten verbs, item 6 (standing arrangements), and the two halves of W18.
+6. **A measured cost, quoted rather than re-measured:** an AI round is **735 plans and 153 ms**, so a
+   structure with two passes is roughly double. *Affordable, and not the reason to hesitate.*
+7. **The design observation worth carrying:** the rule **has never been played with all six components
+   running**, because they do not all exist. **W50.**
+
+**What this round DOES still own:** what winning means, what a nation may know, and time. *Those are
+design questions and they continue below.*
 
 ---
 
