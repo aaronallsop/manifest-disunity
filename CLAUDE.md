@@ -53,8 +53,14 @@ they lost.
 - **One turn is one quarter, and the game opens on 1 March 2036** — the eve of two hundred years
   since Texas declared itself a nation. The month was ruled and then reversed once the cost was
   priced: every rate in the engine is tuned per quarter and the label buys flavour only (D163). Deal
-  durations are 2 / 4 / 8 / 20 turns. A future sub-turn design would give both clocks — see
-  `docs/FUTURE-IDEAS.md` F1 — and today's choice is its outer clock, so nothing is foreclosed.
+  durations are 2 / 4 / 8 / 20 turns, **and D228 added a fifth, longer term with a price paid at
+  signing — how long it is and what it costs are the architect's, and the four-entry table is read in
+  several places.** A future sub-turn design would give both clocks — see `docs/FUTURE-IDEAS.md` F1 —
+  and today's choice is its outer clock, so nothing is foreclosed.
+- **The game is 200 turns and ends in 2086** (D223) — fifty years. **A turn is a ROUND:** sixty-one
+  nation-slots in a shuffled order, then the world advances once when the pointer wraps. **There is no
+  action budget** (D218) — the limits are money, time and geography, nothing finishes in one turn, and
+  the things that do are a card you click.
 - **There is one tuning file.** Every model constant the economy needs joins the constants already
   there. Never create a second tuning file (D162).
 
@@ -110,7 +116,8 @@ reason*, not a fresh ruling — the same status rounds 1–4 have had since they
 **Totals, counted on 14 September rather than carried forward: 536 ideas and 178 rulings across the
 seven documents.**
 
-**The current phase is now STAGE 2, DESIGN**, described below. **Nothing of it exists.**
+**The current phase is now STAGE 2, DESIGN**, described below. **It has started: two of its
+documents exist**, both written on 15 September.
 
 A round is done when a session can read its document end to end and the only new entries are
 recombinations of ones already there; when **every one of its scenarios has been traced** — tracing has
@@ -118,8 +125,10 @@ found contradictions in every closed round that the rulings alone did not, and r
 better done **before** the rulings than after; when it has answered **what the player actually does
 about this, on a Tuesday, with one action**; and when Aaron says so.
 
-**A design round writes documents only.** No code, no data, no `DESIGN.md`. Changes a round decides are
-*specified* for the build, not made — round 3's ruling 41 is the worked example.
+**A design round writes documents only.** No code, no data. Changes a round decides are *specified* for
+the build, not made — round 3's ruling 41 is the worked example. **⚠ One correction, 15 September:
+`DESIGN.md` is no longer on that forbidden list** — D217 lifted the bar for stage 2 work. It still
+describes what the game *does*, and it still wins any disagreement with another document.
 
 ### ⚠ Two lines Aaron drew on 14 September that bind every session after it
 
@@ -133,13 +142,38 @@ about this, on a Tuesday, with one action**; and when Aaron says so.
    thing depends on and whether the alpha's stated purpose needs it. It does not rank, recommend, or
    cut.
 
-### THE CURRENT PHASE: STAGE 2, DESIGN — and none of it exists yet
+### THE CURRENT PHASE: STAGE 2, DESIGN — two documents written, the rest to go
 
-**Per the designer brief: one `docs/design/<system>-design.md` per system — what the thing actually
-does, what it is measured in, what the player sees, and what happens at each level.** *Stage 2 is not
-inventing; it is converting seven judged idea banks into seven specifications.*
+**⚠ The shape changed on 15 September and this section is the corrected version. D217 is the ruling.**
+It is **not** one document per system. It is **a short master, `docs/design/GDD.md`, plus a satellite
+per system** — because the downstream reader is one **Technical Designer** taking one system at a
+time, who should never have to read a system they are not writing. **The master does not exist yet.**
 
-**What the rounds explicitly filed to it**, so the backlog is not reassembled from seven documents:
+**Every satellite has the same four parts:** what the thing does, what it is measured in, what the
+player sees, and what happens at each level. It **opens** with a `Depends on:` line naming every other
+document whose state or formulas it needs, and **closes** with **Open questions** (a decision Aaron has
+not made) and **Gaps** (something referenced and never specified) kept separate. *`turn-design.md` and
+`missions-design.md` are the worked examples; match them.*
+
+**What exists, both written 15 September:**
+
+- **`turn-design.md`** — 572 lines. The turn rebuilt from nothing: no action budget, nothing finishes
+  in one turn, and the things that do are a card you click. **D218, D219, D220, D224, D225.**
+- **`missions-design.md`** — 836 lines. Three trees (Great Lakes, Deseret, Texas), three branches, four
+  elements, one pivot each. The game had no goals before this. **D221, D222, D226, D227.**
+
+**⚠ A contradiction in the record that nobody has resolved.** D217 says *a master plus eighteen
+satellites*; the Control Board says *a master and nineteen beside it* and prints the denominator as
+**20**. **Neither figure is backed by a list of the documents anywhere in the project**, so one of the
+two is wrong and there is no way to tell which. **Write the list before quoting either number again.**
+
+**A design session may now edit `DESIGN.md`** — D217 lifted the designer brief's bar for this work.
+The precedence rule is unchanged: `DESIGN.md` still describes what the game *does*.
+
+**What the rounds explicitly filed to it**, so the backlog is not reassembled from seven documents.
+**⚠ Checked 15 September: the two documents that exist closed NONE of these.** The turn and missions
+were not on this list — they arrived from Aaron on the day. **So the backlog below is untouched**, and
+one item has moved rather than closed:
 
 - **The logistics spiral's brake** (economy finding E) — *the most serious thing round 4 found.* Three
   candidate brakes exist and **none is chosen**.
@@ -155,13 +189,18 @@ inventing; it is converting seven judged idea banks into seven specifications.*
 - **Two of F21's questions** — whether referendum spending moves the vote or only the turnout, and
   whether the movement may spend too.
 - **Politics finding H** — the movement roster occupying half the board.
-- **From round 7:** whether the remnant's victory is the same conditions told two ways or its own set;
-  and **what a restricted view actually looks like** — ruling 3 settled what *gates* sight, not what
-  you see. Bands and staleness are both still available.
+- **From round 7:** whether the remnant's victory is the same conditions told two ways or its own set
+  — **⚠ MOVED, NOT CLOSED, 15 September.** The Texas tree's pivot supplies a third answer neither
+  candidate anticipated: *the remnant's story can be seized*, and you unite the continent as the United
+  States **of Texas**. It still belongs to `nation-design.md`, and it now has three candidates rather
+  than two. And **what a restricted view actually looks like** — ruling 3 settled what *gates* sight,
+  not what you see. Bands and staleness are both still available.
 
-**Do not size stage 2 from a guess.** Nobody has written one of these documents in this project, so
-any figure would be invented — which is the thing this project has a rule against. **Write one,
-measure it, then estimate seven.**
+**Do not size stage 2 from a guess, and there is still no total.** Two are written and measured —
+**572 and 836 lines** — and that is deliberately not extrapolated: the turn had almost no material
+behind it and the large systems carry forty rulings each. The only honest comparison on record is that
+the seven idea documents run to **11,725 lines** and a design stage converts an idea stage, so the
+answer is the same order of size. **Measure more before quoting a total.**
 
 ### The phase this supersedes, kept because it is still the state of the build
 

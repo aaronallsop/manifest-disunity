@@ -99,6 +99,18 @@ Add one with `/rule` whenever a mistake earns it. Number them; never delete one.
     itself, in bold, telling the next session to write its handoff. The next session that failed had
     that sentence in front of it. **Advice inside the artefact cannot protect the artefact.**
 
+    **⚠ THIRD TIME, 15 September 2026, and this one is the worst of the three.** The session that ran
+    23:42–02:07 made **nine commits** — two design documents, twelve decisions, two board rewrites —
+    and **never wrote a handoff at all.** It did not go stale; it was never written. So `CLAUDE.md`
+    was left telling every session that stage 2 *did not exist* on the night stage 2 started, and the
+    newest handoff on disk was a sealed document from the session before. **The next session spent its
+    opening reading nine commits and four documents before it could say one true sentence.**
+    **What is different about this failure, and it matters:** the two protections added after the
+    second time both worked exactly as designed — the hook counted the nine commits and named them,
+    and `/resume` refused to believe the stale handoff. **They caught it; they cannot write it.**
+    A session that simply stops has defeated both. **The only thing that prevents this is `/signoff`,
+    and the rule is: a session does not end without it, even one that produced nothing but documents.**
+
 11. **A count written at the top of a long document is wrong by the end of the day. Measure it, or
     do not print it.** Rule 10 is about one artefact going stale. This is the same disease everywhere
     else, and the hook that now catches a stale handoff does not catch this. Three cases in four days,
