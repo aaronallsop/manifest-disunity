@@ -5323,3 +5323,42 @@ ruling 19 forward, in the same file, and it does not rot.
 **It also unblocked Deseret's opening mission without settling a general question.** Nobody has ever
 ruled whether **an alliance requires mutual recognition**, because alliances are not built. **That stays
 open and goes to the diplomacy document**, rather than being settled sideways to rescue one mission.
+
+---
+
+### D228 — Both cards answered: shortage stops production, and agreements may run longer than five years, 15 September 2026
+
+**Approved on the Control Board at 02:01, both without a note.** The first had been waiting two days.
+
+**1. A SHORTAGE STOPS THINGS BEING MADE, not only lost on the road.**
+
+Aaron's own four arrows from the Sector Wiring page said it — *ore needs trucks, goods need trucks,
+food needs trucks, trucks need gas* — and today a hauling shortage loses a fifth of what is in
+transit and raises tolls without stopping a single thing being produced.
+
+**It is the same gate as economy ruling 7, pointed at two more pairs:** hauling gated on extraction
+(gas), and production gated on hauling. **No new machinery and no new number beyond the
+coefficients** — `docs/design/wiring-triage.md` §B priced it and recommended it for the alpha.
+
+**This closes the last open item from the 14 September wiring pass.** Twenty-three of his arrows were
+parked as future ideas; this was the one that was never in that pile and never answered either way.
+
+**2. AN AGREEMENT MAY RUN LONGER THAN FIVE YEARS, and signing a long one costs something.**
+
+The duration table is **2 / 4 / 8 / 20 turns** and gains a fifth entry. **The cost at signing is the
+part that answers the objection** — W42: *nothing should be settled for a generation, because a player
+who signs an eighty-turn deal has removed a decision from the rest of the game.* A price makes it a
+choice rather than a free lock.
+
+**⚠ It only became askable because of D223.** Against a sixty-turn game the story's twenty-year New
+England–Rochester free-trade deal was **longer than the whole game**; against 200 turns it is 40% of
+one. Round 7's ruling 4 and diplomacy's T71 both parked it as unanswerable. **They are now answered.**
+
+**What it closes:** `turn-design.md` open question 1; round 7 ruling 4's live half; diplomacy T71 and
+round 5 ruling 11's reversible default, which had used the longest existing term as a placeholder.
+
+**The number itself is the architect's**, per politics ruling 10 — how long the fifth term is, and
+what signing it costs. *What is ruled here is that there is one, and that it is not free.*
+
+**⚠ And one consequence to carry forward:** the four durations are *"a tuned table read in several
+places"*, so adding to it touches more than one deal. Named here rather than discovered later.

@@ -225,3 +225,38 @@ Add one with `/rule` whenever a mistake earns it. Number them; never delete one.
     editor, never generated.** Scripts may still *read* and *check* — that is what caught this.
     **The tell:** a file that was valid before your edit and will not parse after it, where the diff
     looks correct to the eye. Look for a string literal spanning two lines.
+
+19. **The Control Board's front page is a dashboard, not a briefing. One sentence and a fold — never
+    a wall of prose.** Cost: Aaron told me twice, a day apart, and a republish in between.
+
+    **What happened.** On 14 September he said of a decision card: *"the amount of text in that box
+    is too much to read… make it a box with the high level things and if I click it it opens up…
+    and even then I need some formatting to read it better."* I shortened the card and left the
+    **headline** as six hundred words of unbroken prose. On the 15th he said it again: *"it is still
+    way too long of text on the front page. I need easy to read and concise language only."*
+
+    **Why shortening the prose was not the fix.** The headline rendered through `textContent` into a
+    single block — there was no structure available to be concise *with*. Every session had written
+    more prose into the only slot the page had. **The format was the defect and the length was the
+    symptom**, so each session dutifully wrote a slightly shorter essay and the page never improved.
+
+    **What the front page is for.** He reads it in under a minute, standing up, to learn where the
+    project is and what needs him. Anything he cannot act on in that minute belongs behind a fold.
+
+    **The shape, now built into the template's renderer:**
+    - **Headline** = a `lead` of one or two sentences, then `points` — an array of **one-line**
+      statements. A point may carry `warn: true` for bad news.
+    - **A decision card** shows its title and the recommendation; the evidence and the cost fold
+      behind `Why, and what it costs either way`. Write them as **arrays** and they render as
+      bullets.
+    - **A phase** shows its name; the brief and what happened fold behind it.
+    - **Blocked items** show what is blocked; the explanation folds.
+
+    **And the corollary, because this is what let it rot:** an archive nobody renders is not free.
+    The board was carrying five superseded headlines and six answered cards — **526 lines, 31KB, and
+    not one pixel on screen.** Delete them; the record lives in `DECISIONS.md` and the handoffs. The
+    `log` is the exception and is never pruned, because a log that can be quietly revised is worth
+    nothing.
+
+    **The tell:** you are about to write a fourth paragraph into a field the renderer prints as one
+    blob. Stop and ask what the reader does with it in a minute.

@@ -538,7 +538,7 @@ game* — but it is now an argument rather than an impossibility.
 
 | | | Owner |
 |---|---|---|
-| **1** | **Does the duration table gain a fifth entry now that a game is 200 turns?** T71 and round 7's ruling 4 were blocked by an eighty-turn deal being longer than the game. That is no longer true | **Aaron**, with the Technical Designer |
+| ~~**1**~~ | ~~**Does the duration table gain a fifth entry now that a game is 200 turns?**~~ ✅ **ANSWERED 15 September 2026, D228 — yes, and signing a long term costs something.** The price is what answers W42: *a player who signs an eighty-turn deal has removed a decision from the rest of the game.* **How long the fifth term is, and what it costs, are the architect's.** ⚠ *The four durations are a tuned table read in several places, so adding to it touches more than this one deal* | — |
 | **2** | **Are the opening memories dated across the two years, or all stamped "two years ago"?** W43 says date them — the list is already dated and decays per turn. W44 says two years is **eight turns of decay** and the difference may be invisible. ⚠ **Measure before building** | **A measurement**, then Aaron |
 | **3** | **Do the painted movements actually cap out by turn sixty at the shipped tuning?** The 60-turn spread figures may predate M5.3's reduction of `sent.maxRise` from 0.035 to 0.014. **Re-measure over 200 turns at the shipped rate** | **The data stage** |
 | **4** | **Are the victory targets still right against a 200-turn horizon?** §7.2 | **The architect**, and *"the first thing a real play test should revisit"* |
