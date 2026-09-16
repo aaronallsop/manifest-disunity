@@ -321,98 +321,82 @@ tr:last-child td{border-bottom:0}
 const BOARD = {
   project: "Manifest Disunity",
   livery: "tower",                      // tower | mars | violet | deep | slate
-  updated: "2026-09-15 14:55",          // when you last republished, local time
+  updated: "2026-09-15 23:05",          // when you last republished, local time
 
   // Three or four measured figures. value: number|string, or null = "not yet measured".
   figures: [
     { label: "Stage 2, the design documents — the current phase", value: "19 of 20" },
-    { label: "Live faults in the game found by writing them, all verified at source", value: 10 },
-    { label: "Situations traced step by step through the finished documents", value: 62 },
-    { label: "Wrong claims corrected, five of them mine from this run", value: 9 },
-    { label: "Stage 1 of 5 — every design round, closed by you", value: "7 of 7" },
+    { label: "Live faults in the game, every one verified at source", value: 11 },
+    { label: "Rules your tone interview set for the game's own voice", value: 41 },
+    { label: "Things you pushed past the alpha, each with a written way back", value: 7 },
+    { label: "Situations traced step by step through the design", value: 62 },
     { label: "Current version", value: "v0.6" },
   ],
 
   headline: {
     tone: "warn",
-    lead: "Hog Wild ran and the design stage is finished: nineteen of twenty documents, and the "
-        + "twentieth is the one waiting on you. Writing them found ten real faults in the game.",
+    lead: "Your tone interview came back and it is now the game's settled position on its own subject "
+        + "— forty-one rules and eleven worked examples. That unblocks the last of the twenty design "
+        + "documents. It also turned up three faults that nineteen documents had walked straight past.",
     points: [
-      { warn: true, t: "The worst one: when an invasion falls apart, the game charges the DEFENDER and pays the attacker — and tells you the opposite happened. It has shipped that way for months." },
-      { warn: true, t: "Ten countries hold a port they cannot export through. Four of them, including Philadelphia and Charleston, are real ocean ports the map has filed as inland." },
-      { warn: true, t: "Two different toll systems are running at once, and they disagree about which kind of crossing is expensive." },
-      "I made one decision in your place: the brake on the trade spiral that could destroy a country for trying to fix a shortage. It is written up with the command that undoes it.",
-      "Four of your five cards came in mid-run and I acted on all four. Two of them changed documents I had already written.",
-      { warn: true, t: "You asked for the first turn to teach the player, and named a video as the model. I cannot watch it — one short answer from you settles what to build." },
+      { warn: true, t: "Deseret opens the game as a conservative nationalist state. You have now said it should be a Christian distributist one — and those are different places on the political board, so this is not a typo. It is a decision about who that country drifts toward and who it can grow with." },
+      { warn: true, t: "Funding a movement inside somebody else's country assumes money can cross a border. No money ever crosses a border in this game. The move you described does not exist in any form." },
+      { warn: true, t: "When a war removes people, nothing anywhere says whether they died, fled, or changed sides. So no newspaper in this game may ever print a number of dead — which is what your own rule already forbids, and it is now a written gap rather than an accident." },
+      "You pushed three things past the alpha without being asked: the New Confederacy, Christian Nationalism, and the despotic state. Stateless ground stays in, but you cannot play as it. Alpha content is the Texas area, the Great Lakes and the West — which is precisely where the three mission trees already sit, decided separately the day before. Two decisions landing on the same map without being made to.",
+      "All four of your cards are answered and acted on. Your Houston opening is the richest answer you have given me, and it invented a mechanic on its way past: a peace treaty is one nation recognising another AS a nation, so there is nothing to sign with something that is not one.",
+      "One document left in the stage, and nothing is blocking it.",
     ],
   },
 
   decisions: [
     {
-      id: "turn-one-teaching-shape",
-      title: "You want turn 1 to teach. Which part of that explanation do you mean?",
-      recommendation: "Tell me whether it is the VOICE, the ORDER things are introduced in, or the fact that you are DOING things while it talks. I am not going to guess, because these are three different things to build and the cheapest is about a tenth of the dearest.",
-      evidence: [
-        "You asked for the opening to talk the player through how to play, and named a particular explainer as the model.",
-        "That supersedes what I recommended. I had suggested giving turn 1 something already in motion, which is a much smaller thing.",
-        "I cannot watch a video, so I have no way to see what that explanation actually does: how fast it goes, whether it narrates or makes you act, how much it says before you touch anything.",
-        "The diagnosis behind it is solid and unchanged: your central loop is dealing with things that arrive, and on turn 1 nothing has arrived yet.",
-      ],
-      cost: [
-        "The voice: a written opening in a particular register. Cheapest. Changes nothing about how the game works.",
-        "The order: a deliberate sequence of what the game reveals and when, over the first several turns. Middling, and it reaches into every screen.",
-        "Doing things while it talks: a guided first turn where the game asks you to act and responds. Dearest, and it is a tutorial, which you have never asked for before, so the build order should see it coming rather than find it.",
-      ],
-    },
-    {
-      id: "mission-reward-permanence",
-      title: "You finish a mission, then lose the ground that earned it. Does the bonus go?",
-      recommendation: "The bonus should lapse with the ground, and the completed mission should stay green. My reasoning is that you ruled missions permanent for MOMENTUM, so a player can plan against a tree that does not flicker, and momentum is about the tree rather than about the arithmetic. This is the one card from last time you have not answered, and it is the one I said I was least confident about.",
-      evidence: [
-        "You ruled that a completed mission stays completed, even if the ground changes hands. That was for momentum: a tree whose rungs switch on and off cannot be planned against.",
-        "But that ruled the MISSION permanent. It did not rule the REWARD permanent, and tracing found they are different questions.",
-        "Some rewards will be tied to holding a specific place, such as a ship channel or a set of lake ports. A bonus that exists because you hold the channel has to decide what it means when you no longer hold it.",
-      ],
-      cost: [
-        "If the bonus survives: a country collects permanent advantages from ground it lost. A player who works this out will take a city, bank the bonus, and hand the city back.",
-        "If the bonus lapses: the tree stops flickering and the bonuses still do, so your momentum argument is only half delivered.",
-        "A third way I did not recommend because it is more machinery: bonuses about a PLACE lapse, bonuses about an ACHIEVEMENT do not. Probably right, definitely more to build.",
-      ],
-    },
-    {
-      id: "ports-that-reach-nothing",
-      title: "Ten countries hold a port that cannot sell abroad. Four of them are real ocean ports.",
-      recommendation: "Fix the four that are plainly wrong. Philadelphia, Charleston, Hampton Roads and Providence are deep-water ocean ports and the map has them as inland. I am bringing it to you rather than just fixing it because the number of ports a country holds multiplies into every trade deal it signs, so correcting the map changes a figure every deal in the game reads.",
-      evidence: [
-        "Twenty-four of the sixty-one countries cannot reach the world market from their own ground. The figure this project has been quoting is fourteen, and it measures something else.",
-        "The gap is ten countries that HOLD a port and cannot export through it. The port shows on their panel and its capacity counts toward every deal they sign.",
-        "Four of those ten are there because of a data error rather than geography. The others are genuinely river ports.",
-        "This is the failure your own rules name: a layer the player has not learned yet should be invisible or explain itself, and must never be visible and wrong.",
-      ],
-      cost: [
-        "Fixing it: four countries gain foreign trade they should always have had, and every trade deal in the game gets a slightly different volume ceiling. Saved games would read differently.",
-        "Leaving it: four of the busiest ports on the east coast stay landlocked, and a player who knows anything about American geography will notice within an hour.",
-        "Either way somebody should look at the remaining river ports and say which are genuinely inland, because the claim that forty-three per cent of ports reach nothing is currently being quoted as geography and is partly a bug.",
-      ],
-    },
-    {
       id: "two-toll-systems",
-      title: "Two toll systems are running at once and they contradict each other",
-      recommendation: "Decide which one the game means, then delete the other. I am not choosing, because this is not a bug and a fix. They are two different designs, both built deliberately, and picking between them is a judgement about what you want renting a crossing to feel like.",
+      title: "Two toll systems are running at once — and you asked whether this gets fixed now or later",
+      recommendation: "Both halves, and they split cleanly. The CHOICE is now and it is yours. The DELETION is later and it is not a design job at all. Pick which of the two the game means, I write that one into the trade document, and the technical stage then builds one system instead of discovering two. If the choice waits, whoever writes that stage has to decide how renting a crossing should FEEL, by reading code — which is the wrong person making the wrong kind of decision.",
       evidence: [
-        "Both are reachable from the same panel, and that part is deliberate: renting a crossing for one quarter against holding a road open for five years is a real thing to weigh.",
-        "But one of them makes RAIL the cheapest kind of crossing to grant, and the other makes rail middling and a PORT the most expensive thing on the board.",
-        "So a player learns a pricing instinct from one screen and it is wrong on the other.",
-        "Two of your tuning dials only move one of the two systems. Turning them changes one screen and leaves the other untouched.",
+        "Your question, exactly: is this something that we should fix here or in the TDD.",
+        "Why it should not wait: neither design document describes the older of the two systems at all. Anyone told to reconcile them would not know the second one was there — which is how it survived this long.",
+        "One of them makes rail the cheapest kind of crossing to grant. The other makes rail middling and a port the most expensive thing on the board. A player learns a pricing instinct on one screen and it is wrong on the other.",
+        "Two of your tuning dials only move one of the two. Turning them changes one screen and leaves the other exactly as it was.",
       ],
       cost: [
-        "Neither design document describes the older system at all, so anyone told to reconcile the three trade regimes would reconcile the wrong three. There are five.",
-        "Keeping both: the contradiction stays, and it is the kind a playtester finds and cannot explain.",
-        "Choosing: whichever goes, somebody loses a feature that works. The one-off sale is the only way to move goods without a standing commitment.",
+        "Choosing now: one answer from you, one paragraph from me, and the technical stage inherits a single system.",
+        "Choosing later: the contradiction stays live through the alpha, and it is the kind of thing a playtester finds and cannot explain — which wastes their report as well as their time.",
+        "Whichever one goes, something that works goes with it. The one-off sale is the only way in this game to move goods without a standing commitment.",
+      ],
+    },
+    {
+      id: "deseret-politics",
+      title: "You said Deseret is a Christian distributist state. The game has it somewhere else entirely.",
+      recommendation: "Tell me where it sits on the new ten-position board and I will write it down. On the old six-position board this is arithmetic and I would simply do it. On the new one, none of the ten is obviously distributist — so somebody has to place it, and where a country sits decides who it drifts toward, who will ally with it, what splinters off it and how badly a civil war inside it goes. That is a decision about what a country IS, which makes it yours.",
+      evidence: [
+        "Your own words: it should be modelled as a distributist Christian state. The game opens it as conservative nationalist.",
+        "Deseret is not an ordinary country on this map. It is half-born by design — the Wasatch Front always gives in, the corridor that stays behind is the live story, and it grows faster than anything else on the board.",
+        "It is also one of the three countries with a mission tree, which makes it one of the three a tester will actually choose.",
+        "And the line your own tone document uses as its worked example of a movement described WELL is: a Christian distributist state. That is the sentence the game is meant to print about it.",
+      ],
+      cost: [
+        "Placing it: every threshold measured by political distance moves for that country — coalitions, drift, splinters, defection, how bad its civil wars are, who it trades with, and how sixty other countries read it.",
+        "Leaving it: the country with the most authored story in the game plays from the wrong square, and the sentence describing it contradicts where it stands.",
+        "A third way I am not recommending: add distributism as an eleventh position. That reopens a board you closed this morning, and reopening it costs far more than this is worth.",
+      ],
+    },
+    {
+      id: "tone-open-questions",
+      title: "Nine tone questions the interview did not reach — and none of them is urgent",
+      recommendation: "Answer them when you feel like it. Four change what a player actually sees; five only change what a writer may do later. They are on the board rather than buried in the document because the first four are small questions with visible consequences — but nothing here blocks the last document, and if you leave them I will specify it both ways where it matters and say so.",
+      evidence: [
+        "The four that change a screen. Is the player TOLD when their own newspaper turns into state press, or left to notice? May the paper quote invented residents, and only ever as one person's opinion? Which cause does the very first front page tell — Washington failing, or Texas leaving? And how far may a state newspaper's euphemism go before the game is making a dark joke through a government's mouth?",
+        "The five for later. Are movement mottos real quotations where they exist, or always written for the game? For a mission touching indigenous peoples, does no jokes still allow a dignified allusion, or are the names plain? Does the joke is at the cause apply to war and economic collapse as well as famine? Does your cutoff for historical figures mean a public role that ended, or a person who died? And does the deliberately vague decade really run 2025 to 2034?",
+        "One more that is mine rather than yours: whether the document should NAME the thing this game is most likely to be mistaken for. It names the category and stops short of the example.",
+      ],
+      cost: [
+        "Answering: about ten minutes, and the last document gets sharper in four places.",
+        "Not answering: I write it with each choice named and both options costed, which is what a design document is supposed to do anyway.",
+        "The only one that would cost real work to change your mind about later is the state-press signal, because it is a screen and a rule at the same time.",
       ],
     },
   ],
-
   _answered: [],
 
   // Standing permissions. Ids are permanent. risk: "low" | "med" | "high".
@@ -860,7 +844,19 @@ const BOARD = {
             + "total from me — the turn had almost no material behind it and the big systems carry "
             + "forty rulings each. What I can say is that the seven idea documents run to 11,725 "
             + "lines, and a design stage converts an idea stage, so the answer is the same order of "
-            + "size." },
+            + "size.\n\n"
+            + "NINETEEN OF TWENTY \u2014 and the counts above are superseded rather than deleted, "
+            + "because they were true when they were written and the run that changed them happened "
+            + "inside a day. Fourteen more were written on 15 September. The whole stage runs to "
+            + "9,436 lines against the idea stage's 11,725, so a design stage converts an idea stage "
+            + "at about four fifths its size \u2014 which is the first honest figure this project has "
+            + "had for that, and it was a guess until it was measured.\n\n"
+            + "AND THE LAST ONE IS UNBLOCKED, on the night of 15 September, by you. The twentieth is "
+            + "about what the player sees and hears, and it was parked by name because writing it "
+            + "without a settled tone means inventing the game's position on its own subject. You ran "
+            + "the interview and sent the answer back: forty-one rules, eleven worked examples, and "
+            + "nineteen questions it did not reach. It is in the design folder now, and nothing "
+            + "stands in front of the last document." },
     { name: "Design round 7 — The frame above everything", status: "done",
       brief: "What winning means, how the turn is spent, what a country is allowed to know, and time. "
            + "Collected as a running list through the six rounds before it, and resolved last.",
@@ -972,25 +968,14 @@ const BOARD = {
   // Things only the owner can supply, and what happens if a machine supplies them instead.
   blocked: [
     {
-      what: "The interview that unlocks the last design document — it is a copy and paste and it is yours",
-      ifAutomated: "Nineteen of the twenty design documents are written. The twentieth is the one about "
-                 + "what the player actually sees and hears, and it cannot be written until the game has "
-                 + "a settled position on its own tone — how it talks about a country coming apart, how "
-                 + "funny it is allowed to be, whose side it is on. That is a matter of taste and it is "
-                 + "yours, and it is the clearest case in the whole mode where I stop and wait rather "
-                 + "than guess. So I built you the way round it: there is a prompt sitting in the "
-                 + "project that you paste into a Claude chat. It interviews you about tone and hands "
-                 + "back a finished document. Drop that document into the design folder and the last "
-                 + "satellite unblocks immediately.",
-      damagedIfAutomated: false,
-    },
-    {
-      what: "One short answer about what the first turn should teach",
-      ifAutomated: "You asked for the opening to talk the player through how to play, and named a "
-                 + "particular explainer as the model. I cannot watch a video, so I have the direction "
-                 + "and not the shape. There is a card above asking which of three things you mean, and "
-                 + "they are an order of magnitude apart in cost. Until then the turn document records "
-                 + "the ruling and deliberately invents nothing.",
+      what: "Saying what happens next: finish the design stage, or turn round and repair the game",
+      ifAutomated: "The last design document is unblocked and would take one session. The eleven faults "
+                 + "are all written down and none is fixed, and the worst of them — a failed invasion "
+                 + "that charges the DEFENDER and pays the attacker — is in the copy you would hand a "
+                 + "playtester. Those are two different kinds of session and I am not going to choose "
+                 + "between finishing your design and repairing your game without you. If you say "
+                 + "nothing, I will finish the design stage: it is one document from done, and changing "
+                 + "code is a different permission from writing documents.",
       damagedIfAutomated: false,
     },
     {
@@ -1008,10 +993,12 @@ const BOARD = {
     {
       what: "Saying when playtesters get a new build — answered for now: after the economy alpha",
       ifAutomated: "Publishing to your playtest link changes what other people receive, so I will not do "
-                 + "it without you saying so, and the permission for it stays off. You have said nobody "
-                 + "has the link yet and nobody will until the economy alpha is built, so the finished Economy "
-                 + "build waits with the rest. This stays on the list because the timing is permanently "
-                 + "yours, not because anything is stuck.",
+                 + "it without you saying so. You have said nobody has the link yet and nobody will "
+                 + "until the economy alpha is built, so the finished Economy build waits with the rest. "
+                 + "This stays on the list because the timing is permanently yours, not because anything "
+                 + "is stuck. Noted this session: you have now ticked the permission that covers real "
+                 + "data and real people. I have not acted on it, and I will still ask before anything "
+                 + "reaches a person.",
       damagedIfAutomated: false,
     },
   ],
@@ -1026,6 +1013,10 @@ const BOARD = {
 
   // Decisions made on the owner's behalf and how they turned out. Corrections go BESIDE originals.
   log: [
+    { when: "2026-09-15", decision: "Wrote your tone interview into the design folder as the game's position on its own subject — and it found three faults nineteen documents had walked past.",
+      outcome: "You refused to answer the tone card and asked for a prompt instead, so the question became a piece of work. It came back as forty-one rules, eleven worked examples, a list of the edges nobody has resolved, and nineteen open questions. It is the strongest thing on file about what this game is, and the route is why: an interview asks what a card cannot. The three faults it turned up are all in the headline above, and none of them was found by reading code — they were found by asking what the game is allowed to SAY, and discovering it cannot say it. The clearest is the newspaper: your rule says it may never print a casualty figure the model does not hold, and then it turns out the model holds none, because the war removes people without ever saying whether they died, fled or switched sides. That is one subtraction standing in for three different facts." },
+    { when: "2026-09-15", decision: "Recorded what you cut from the alpha — and deliberately did NOT change the design documents to match.",
+      outcome: "You put three things past the alpha without being asked: two movements and the despotic state. The obvious move is to go into the two documents that describe all twenty-six movements and mark two of them out. I did not, and the reason is worth holding on to: a thing cut from the ALPHA is not cut from the GAME, and a design document describes the game. If the satellites start tracking the alpha, then every time you change what the alpha contains, nineteen documents go stale at once. So the scope lives in one place, in the master document, and the satellites keep describing the whole thing. That is a choice rather than a convention — it is the first time the alpha and the game have disagreed about what exists — and it is written down as a choice so the next case can overturn it deliberately rather than by drift. Your cuts also have a written way back: a note saying what returns, and which rules have never been tested against it." },
     { when: "2026-09-15", decision: "Chose the brake on the trade spiral in your place, and told you loudly which part of it I made up.",
       outcome: "Your economy round found a loop that feeds itself: you go short of something, you buy it from a neighbour, hauling it raises the load on your transport network, the network starts failing and loses a fifth of everything in transit — so less of what you bought arrives, so you buy more. The cure feeds the disease. Your round named three possible brakes and chose none. I chose, because the economy document could not be written without one. What I picked is your own game's existing answer to a runaway of the same shape: the five national scores do not clamp the VALUE, they clamp how fast it can CHANGE, and the reason is written into the file — clamping the value leaves the pressure building underneath, so the moment the clamp lets go the country falls off a cliff. I did the same to the transport ratio. One of the three candidates I rejected on evidence rather than taste: it only applies to goods going out through a port, and the spiral runs on deals with the state next door, so it never binds on the case that breaks. What I did NOT decide is how fast is too fast — that number is the architect's and I left it unset rather than inventing one." },
     { when: "2026-09-15", decision: "Found that when an invasion falls apart, the game pays the attacker.",
