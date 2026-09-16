@@ -481,3 +481,51 @@ suite as healthy.** *This session did exactly that before checking, and would ha
 **Most failures have been a check disagreeing with its own instruction**, not the model failing the
 task."*
 
+
+---
+
+## 46 — ⛔ THE GAME CANNOT BE SIMULATED PAST ROUGHLY TURN 80–95, AND IT IS DESIGNED TO BE 200 TURNS
+
+**Found 16 September 2026 by stage 3's step 1, while trying to take a measurement stage 2 handed
+forward.** *Not found by reading code — by running the thing.*
+
+**`Sim.run` hangs part-way through a long run and never returns.** *It stops inside `AI.round`, the
+call that plays all sixty-one seats.*
+
+| Run | Seed | Instrumented | Reached | Outcome |
+|---|---|---|---:|---|
+| 1 | `tdd-t0` | sampling at 5 turns | **80** | hung |
+| 2 | `tdd-t0` | timing every turn | **80** | hung |
+| 3 | `tdd-t0` | **none** | **80** | hung |
+| 4 | `seed-B-19770` | turn counter only | **94** | hung |
+
+**Ruled out by check rather than by argument:**
+
+- **The instrumentation** — run 3 passed no `onTurn` at all and hung identically.
+- **Browser throttling** — tab fronted; turns 1–80 ran at **261–431 ms** with no upward trend.
+- **Slowness** — across a 20-second window and again a 40-second window, **neither the turn counter
+  nor the nation count moved by one.** It is a hang, not a crawl.
+- **A turn cap** — there is none; the loop is `for (let t = 1; t <= turns; t++)`, and the second seed
+  passed 80 and reached 94.
+- **The known non-re-entrancy (deferred 6)** — `Sim.isRunning()` was confirmed false before each run.
+
+**Where it is:** `onTurn` never fires for the turn after the last recorded one, so the loop is stuck
+inside `AI.round`. **The turn it stops on moves with the seed**, so it is a condition some world
+reaches rather than a counter running out.
+
+**Why it is worse than a simulator bug.** *`js/sim.js` says in its own header that it **drives the
+real game** — `AI.round`, and `TurnSystem.advance` over the wrap, "the same clock the Pass button
+drives." **So there is no reason to expect a player pressing End Turn to fare differently**, and that
+half is unverified rather than disproved.*
+
+**What it blocks, immediately:**
+
+1. **The turn-cost measurement** `turn-design.md` §9 handed to stage 3 — *the one genuine cost of
+   removing the action budget.*
+2. **Recalibrating the victory targets for a 200-turn game** (D223) — *`docs/technical/MEASUREMENTS.md`
+   §2. The targets are already stale at eighty.*
+3. **Whether the economy's logistics spiral actually spirals** — *round 4 left it to a long run.*
+
+**Not fixed here on purpose:** *stage 3 step 1 is a measuring session and this is a programming
+session under a different permission.* **It is the strongest candidate for the first repair**, because
+three separate pieces of stage 3 are waiting behind it.
