@@ -5988,3 +5988,120 @@ environment of a situation a tester will actually play.* **Left open, and it is 
 narrowed the field to two candidates. **Undone by editing one section**; nothing downstream depends on
 it yet.*
 
+---
+
+### D241 — STAGE 2, DESIGN, IS CLOSED, 16 September 2026
+
+**Aaron approved `close-stage-2` on the Control Board at 09:01 UTC**, with no note, which under this
+project's convention is *the recommendation as written*.
+
+**What is closed.** *A master and nineteen satellites — **twenty documents, 11,324 lines** — written
+between 15 and 16 September. **Sixty-seven situations traced** step by step through them. Every
+document opens with what it depends on and closes with its open questions and its gaps kept separate.*
+
+**What is NOT closed, and was said on the card before he clicked:** *the documents leave questions,
+and they are all his.* **Closing the stage closes the WRITING, not the deciding.**
+
+> **The rule this satisfies:** *"A round is done when a session can read its document end to end and
+> the only new entries are recombinations of ones already there; when every one of its scenarios has
+> been traced; when it has answered what the player actually does about this, on a Tuesday; **and when
+> Aaron says so.**"*
+
+**⚠ So STAGE 3, TECHNICAL DESIGN, is now the live stage — and nobody has scoped it.** *`GDD.md` §9
+names it: formulas, pseudocode, inputs and outputs, edge cases, **and every number in it is the
+architect's rather than the designer's.*** **It has no brief, no definition of done, and no estimate.**
+*That is the first thing the next session has to put to Aaron rather than assume.*
+
+---
+
+### D242 — The writing goes post-alpha; the newspaper ships with placeholder text, 16 September 2026
+
+**Aaron, answering the tone questions on the Control Board at 05:44, and he answered more than was
+asked.** *Four rulings in one note, and the third is the largest scope decision since D239.*
+
+**1. The newspaper has three sections and the alpha ships two.**
+
+> *"A player gets a **local news** (what is happening in their nation), **national news** (which I know
+> doesn't make conceptually but it is what is happening in the game map around them) and then they get
+> **world news** which will be information from the world. **For the alpha lets only do local and
+> national news.**"*
+
+*These are the same three sections `turn-design.md` §5 already ruled, under better names — his **local**
+is the government reporting to you, his **national** is the continent, his **world** is world affairs.*
+**Cutting the third cuts the DISPATCH from the alpha**, so the Panama Canal — shut in the game's
+arithmetic since the first build and never once mentioned to a player — stays unmentioned for one more
+release. *Carried into `presentation-design.md` §1.*
+
+**2. ⚠ ALL THE WRITING GOES POST-ALPHA, and the newspaper still ships.**
+
+> *"Lets also push all jokes and writing like that post alpha. **I want to make sure the game works
+> before I starting including this in there.** In the mean time lets lean on place holder text because
+> **I still want the newspaper pop up as part of the game.** And lets also push any historical context
+> to be incldued post-alpha as well."*
+
+**So the alpha ships the newspaper as an OBJECT — placed, slanted by ideology, gated by Civil
+Liberties — carrying placeholder text.** *Mottos go with it; historical context goes with it; the whole
+of `TONE.md` §2.4 goes with it.*
+
+> **⚠ This suspends no rule. It defers the CONTENT the rules govern** — *and `TONE.md` rules 1–4 still
+> bind every panel, prompt and tooltip the alpha does ship, because those are the model's voice rather
+> than a writer's.* **The rules were settled before the writing exists, which is the point of having
+> settled them: the writing is checked against them when it is commissioned.**
+
+**And it is the right call on his stated reasoning.** *A tone document written the day before is the
+cheapest thing in the project to hold; a play test that fails because the game does not work teaches
+nothing about whether the voice is right.*
+
+**3. Rule 21 is amended: the test is WHOSE EXPENSE, not what the joke touches.**
+
+> *"Missions for the indegenous nations **can include dignified allusions and jokes if they are not at
+> their expense.** So a mission like, **"We told Custer once before and we'll tell him again"** would be
+> ok."*
+
+*This answers `TONE.md` §5 question 4 in the direction the interview had guessed and goes further — it
+allows jokes, not only dignified allusion.* **His example shows exactly where the line sits: the butt
+is Custer, a defeated commander, and the speaker is the nation that defeated him.** **So rule 21 becomes
+rule 22 applied to a harder case rather than a separate prohibition** — *the joke is at the cause, the
+choice, the irony; **never at the people.***
+
+> **⚠ RACE IS NOT AMENDED.** *He amended missions for indigenous nations and said nothing about racial
+> topics. **That line stays absolute until he says otherwise**, and `TONE.md` says so in place.*
+
+**4. Movement mottos: deferred, not answered.** *`TONE.md` §5 question 2 goes post-alpha with the
+writing it belongs to.*
+
+---
+
+### D243 — The `node --test` route is withdrawn from the README, 16 September 2026
+
+**Observed at sign-off.** *Node is now on this machine, so the README's standing claim — that the test
+files "run under `node --test` unchanged if Node ever appears" — was tried.* **It reports 51 of 51
+suites passing in 0.67 seconds and runs nothing.**
+
+**Why.** *`tests/harness.js` says in its own header that `describe`/`it` map onto `node:test`'s globals
+"via the shim at the bottom of this file". **There is no shim.** The bottom of the file is an export
+and nothing else.* **`describe` and `it` only collect suites into an array, and the browser page is the
+only thing that calls `run()`.** *So node imports each file, the file registers its suites, nothing
+executes, and node counts the FILE as one passing test.*
+
+> **⚠ PROVED RATHER THAN INFERRED.** *A suite whose only check was `ok(false, 'THIS MUST FAIL')` was
+> added and run.* **`node --test` reported `pass 1, fail 0`, exit code 0.** *The canary was removed
+> afterwards.*
+
+**Decided: withdraw the route from the README rather than write the shim.** *A sign-off does not start
+new work, and the shim is a real piece of work — small, but code.* **The README now names the browser
+as the only way to run them and carries the warning at the point of use.** *Filed as
+`docs/deferred.md` 45.*
+
+**Rejected: deleting the harness's own false comment.** *It is code, and a design session does not edit
+code. **It is still wrong**, and the deferred entry says so.*
+
+> **⚠ And the part worth keeping: `docs/PROGRAMMER-RULES.md` rule 16 ALREADY described this exact
+> incident**, from an earlier session, naming the command and both figures. *It did not prevent the
+> repeat, because it lives in a file nobody reads at the moment of the mistake and the README was still
+> recommending the broken route.* **Rule 16 gains a second clause — a lesson belongs at the point of
+> use — and the ten-second canary that settles it for any runner.**
+
+*The real result, measured this session in the browser: **956 passed, 0 failed, 0 skipped, 205 suites,
+282 seconds.***
+

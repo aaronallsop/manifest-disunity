@@ -55,13 +55,35 @@ requirement rather than a style.*
 **✅ Partly built as the turn-summary newspaper. ◻ The three-section briefing is designed and not
 built.**
 
+> ### ⚠ AARON NAMED THESE HIMSELF ON 16 SEPTEMBER, AND CUT ONE FROM THE ALPHA — D242
+>
+> *"A player gets a **local news** (what is happening in their nation), **national news** (which I know
+> doesn't make conceptually but it is what is happening in the game map around them) and then they get
+> **world news** which will be information from the world. **For the alpha lets only do local and
+> national news.**"*
+>
+> **It is the same three sections, and the mapping is exact:** *his **local** is the government
+> reporting to you; his **national** is the continent; his **world** is world affairs.* **His names are
+> better and should be the ones on screen** — *and his own parenthesis is the honest note: "national"
+> is not conceptually right for a continent of sixty-one countries, and it is what a player will
+> call it.*
+>
+> **⚠ THE ALPHA SHIPS TWO OF THE THREE. So the DISPATCH is post-alpha** — which means the Panama Canal
+> stays unmentioned for one more release, and `events-design.md`'s third event object has no surface in
+> the alpha. *Its design stands; its screen waits.*
+>
+> **And `TONE.md`'s scope ruling lands on all three: the newspaper ships as an object carrying
+> PLACEHOLDER TEXT.** *It appears, it is placed, it is slanted by ideology and gated by liberties — and
+> the words in it are not the finished words. **Every rule in §5 below is what the real text is checked
+> against when it is commissioned**, not a description of what the alpha prints.*
+
 **`turn-design.md` §5 ruled three sections:**
 
-| | | Who can see it |
-|---|---|---|
-| **1. The continent** | What happened that anybody could see. The front page, per turn | **Everyone. Public facts** |
-| **2. Your own government, reporting to you** | What came back from the offers you sent; how your projects are going; what your ministries are worried about | **Gated by ruling 3** |
-| **3. World affairs** | Outside the continent. Smaller | Everyone |
+| | | Who can see it | |
+|---|---|---|---|
+| **1. The continent** — *Aaron: **national news*** | What happened that anybody could see. The front page, per turn | **Everyone. Public facts** | ✅ **alpha** |
+| **2. Your own government, reporting to you** — *Aaron: **local news*** | What came back from the offers you sent; how your projects are going; what your ministries are worried about | **Gated by ruling 3** | ✅ **alpha** |
+| **3. World affairs** — *Aaron: **world news*** | Outside the continent. Smaller. **This is the dispatch** | Everyone | ⏸ **post-alpha, D242** |
 
 ### 1.1 It is a scene, not a report
 

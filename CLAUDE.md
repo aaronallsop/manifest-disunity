@@ -129,10 +129,41 @@ reason*, not a fresh ruling — the same status rounds 1–4 have had since they
 **Totals, counted on 14 September rather than carried forward: 536 ideas and 178 rulings across the
 seven documents.**
 
-**The current phase is STAGE 2, DESIGN**, described below. **⚠ ALL TWENTY DOCUMENTS NOW EXIST** — the
-last, `presentation-design.md`, was written on 16 September. **But WRITTEN is not CLOSED: a round is
-done when Aaron says so, and stage 2 has not been put to him.** *Until he closes it, stage 3 has not
-started.*
+## ✅ STAGE 2, DESIGN, IS CLOSED — Aaron, 16 September 2026, 09:01 (D241)
+
+**A master and nineteen satellites. Twenty documents, 11,324 lines, sixty-seven situations traced.**
+*Written between 15 and 16 September; closed on the Control Board with no note, which under this
+project's convention means the recommendation as written.*
+
+> **⚠ Closing the stage closed the WRITING, not the DECIDING.** *The documents leave open questions and
+> every one of them is Aaron's. They are listed at the end of the document that owns them and nowhere
+> else — **do not reassemble that list from memory.***
+
+### ⛔ THE CURRENT PHASE IS STAGE 3, TECHNICAL DESIGN — AND IT HAS NEVER BEEN SCOPED
+
+**`GDD.md` §9 names it and that is all anybody has:** *formulas, pseudocode, inputs and outputs, edge
+cases.* **Every number in this stage is the architect's, not the designer's** — Aaron's line of
+14 September, and it is why round 7 refused to set the turn budget.
+
+**It has no brief, no definition of done, and no estimate. Nobody has said it starts.** *So the first
+job of the next session is to put a SHAPE for stage 3 to Aaron rather than to begin it — and the
+twenty documents were written for exactly this reader, one system at a time, each naming what it
+depends on so that reader never has to open a system they are not writing.*
+
+**⚠ Three things are already waiting for that reader, named rather than discovered:** *how many things
+sixty-one nations can each start in a quarter without the machine slowing down; whether the victory
+targets still hold now a game is two hundred turns rather than eighty; and `MAX_DISTANCE`, which has no
+authored value on the three-axis board and is the denominator every tuned threshold in the game is
+measured against.*
+
+**And the other live option, which is not stage 3 and is Aaron's to call:** *the **eleven faults** in
+`docs/deferred.md` 34–45 are all filed and none is fixed. **That is a programming session under a
+different permission**, and defect 34 — a failed invasion that charges the defender and pays the
+attacker, present in the playtest build — is the one to do first.*
+
+---
+
+## What stage 2 produced, kept below because it is the material stage 3 reads
 
 A round is done when a session can read its document end to end and the only new entries are
 recombinations of ones already there; when **every one of its scenarios has been traced** — tracing has
@@ -157,7 +188,7 @@ describes what the game *does*, and it still wins any disagreement with another 
    thing depends on and whether the alpha's stated purpose needs it. It does not rank, recommend, or
    cut.
 
-### THE CURRENT PHASE: STAGE 2, DESIGN — all twenty written, awaiting Aaron's close
+### STAGE 2 AS IT WAS BUILT — the shape, and why it is twenty documents
 
 **⚠ The shape changed on 15 September and this section is the corrected version. D217 is the ruling.**
 It is **not** one document per system. It is **a short master, `docs/design/GDD.md`, plus a satellite

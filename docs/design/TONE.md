@@ -29,6 +29,22 @@ would break, and why.** They are the test suite for §2 and should be read as su
 
 **Alpha content focuses on the Texas area, the Great Lakes and the West.**
 
+> ### ⚠ AND ON 16 SEPTEMBER AARON PUSHED THE WRITING ITSELF PAST THE ALPHA — D242
+>
+> *"Lets also push all jokes and writing like that post alpha. **I want to make sure the game works
+> before I starting including this in there.** In the mean time lets lean on place holder text because
+> **I still want the newspaper pop up as part of the game.** And lets also push any historical context
+> to be incldued post-alpha as well."*
+>
+> **So §2.4 (Wit), the mottos of §2.3, and every piece of historical flavour are POST-ALPHA.** *The
+> alpha ships **the newspaper as an object** — it appears, it is placed, it is slanted and gated the way
+> §2.2 says — **carrying placeholder text.***
+>
+> **⚠ This does not suspend a single rule below. It defers the CONTENT the rules govern.** *When the
+> writing is commissioned, these rules are what it is checked against — which is the whole reason they
+> were settled before anything was written.* **And two rules bind the alpha directly even with
+> placeholder text: rules 1–4, which govern every panel, prompt and tooltip the alpha does ship.**
+
 > *These are recorded here because **every rule below was written against this scope** — but they
 > belong in `GDD.md` and in the plan as well, and they are there: `GDD.md` §9, D239, and
 > `docs/FUTURE-IDEAS.md` F36–F39.*
@@ -54,6 +70,12 @@ beside it never spin.** What Aaron wants from it is what he wants from Europa Un
 where *"I have been able to learn a lot about … history … I would never have learned any other way,"*
 that *"looks complicated on the surface but you are still able to play,"* and that produces *"the
 ridiculousness and sometimes hilarious outcomes of the game and writing."*
+
+> **⚠ One phrase in that paragraph was overtaken on 16 September.** *"Never at … race, or indigenous
+> peoples" was written on the night of the interview. **Rule 21 has since been amended by Aaron: the
+> test for indigenous subjects is WHOSE EXPENSE, not what the joke touches.*** **Race is unchanged and
+> absolute.** *The paragraph is left as he gave it, with this note beside it, because it is his summary
+> of his own position and a summary edited after the fact stops being a record.*
 
 ---
 
@@ -145,10 +167,31 @@ mission may be witty; a joke about the Willie and Martin companies may not. Aaro
 make a joke about death like that."* *Check: every mission drawing on real history names the event it
 draws on.*
 
-**21 — No wit that touches race, or indigenous nations, peoples or history** — in any mission, event or
-headline, **whichever nation it belongs to.** Aaron: *"where I would draw the line is when the jokes
-touch on racial topics and specifically events and missions dealing with indigenous countries and
-topics."* *Check: what the artefact touches, not which movement owns it.*
+**21 — ⚠ AMENDED BY AARON, 16 September 2026. The line is WHOSE EXPENSE, not what it touches.**
+
+*The rule as first written:* **no wit that touches race, or indigenous nations, peoples or history** —
+in any mission, event or headline, whichever nation it belongs to. Aaron: *"where I would draw the line
+is when the jokes touch on racial topics and specifically events and missions dealing with indigenous
+countries and topics."*
+
+**His amendment, answering §5 question 4:**
+
+> *"Missions for the indegenous nations **can include dignified allusions and jokes if they are not at
+> their expense.** So a mission like, **"We told Custer once before and we'll tell him again"** would
+> be ok."*
+
+**So the test moves from SUBJECT to TARGET, and his example shows exactly where it lands:** *the joke
+is at Custer — a defeated commander — and the speaker is the nation that defeated him.* **It is the
+nation's own voice, about its own history, and the butt of it is the loser of a battle rather than
+anybody's suffering.**
+
+> **⚠ This makes rule 21 the same rule as rule 22, applied to a harder case**, rather than a separate
+> prohibition: *the joke is at the cause, at the choice, at the irony — **never at the people.***
+> **Race is NOT amended and stays as first written:** *he amended missions for indigenous nations, and
+> said nothing about racial topics.* **Treat the racial line as absolute until he says otherwise.**
+
+*Check: **who is the butt of it**, and **who is speaking.** A joke an indigenous nation's own paper
+would print about a rival passes. One printed about that nation by anybody does not.*
 
 **22 — The joke is at the cause, never at the suffering.** Aaron, on famine: *"the joke is at why there
 is a famine."* A headline may mock the policy that emptied the granaries; no voice mocks people being
@@ -427,16 +470,26 @@ residents, names their faith, and states one nation's opinion of them in the nar
 
 ### Tone questions not answered in the interview
 
+**~~0.~~** ✅ **THE PAPER HAS THREE SECTIONS AND THE ALPHA SHIPS TWO — answered 16 September 2026**,
+unasked. *Aaron:* **"local news (what is happening in their nation), national news (which I know
+doesn't make conceptually but it is what is happening in the game map around them) and then they get
+world news which will be information from the world. For the alpha lets only do local and national
+news."** *That is the same three sections `turn-design.md` §5 ruled, under his names — and **it drops
+the world section from the alpha**, which is the dispatch. Carried into `presentation-design.md` §1.*
+
 **1.** Is the player **told** when their paper drifts into state press, or left to notice?
 
-**2.** Are mottos **real quotations** where they exist, or always written for the game?
+**~~2.~~** ⏸ **PUSHED POST-ALPHA, 16 September 2026.** *Aaron: "Movement motts - push post alpha."*
+**The question is not answered; it is deferred with the content it governs.** *Returns with the writing.*
 
 **3.** May the paper **quote invented residents**? If so, only as an individual's view, never as what a
 county thinks?
 
-**4.** For missions touching indigenous peoples, does "no jokes" still allow **a dignified allusion or
-the nation's own words in quotation marks**, or are names plain? *(The interviewer's reading was the
-former; not confirmed.)*
+**~~4.~~** ✅ **ANSWERED 16 September 2026 — the interviewer's reading was right, and he went further.**
+*Dignified allusions **and jokes** are allowed, provided they are **not at their expense**, with "We
+told Custer once before and we'll tell him again" as his worked example.* **Rule 21 is amended in place
+above.** *Moot for the alpha, which ships no wit at all — and it is the rule the writing is checked
+against when it is commissioned.*
 
 **5.** Does "the joke is at the cause" apply to **other disasters** — war, economic collapse, an exodus
 — or only to famine?
