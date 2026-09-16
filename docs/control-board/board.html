@@ -321,7 +321,7 @@ tr:last-child td{border-bottom:0}
 const BOARD = {
   project: "Manifest Disunity",
   livery: "tower",                      // tower | mars | violet | deep | slate
-  updated: "2026-09-16 09:35",          // when you last republished, local time
+  updated: "2026-09-16 10:20",          // when you last republished, local time
 
   // Three or four measured figures. value: number|string, or null = "not yet measured".
   figures: [
@@ -334,85 +334,21 @@ const BOARD = {
   ],
 
   headline: {
-    tone: "warn",
-    lead: "You told me to scope the technical stage and it is written and waiting for you. Two cards "
-        + "below and nothing else needs you. But scoping it meant counting things nobody had counted, "
-        + "and two of those numbers came back much worse than the ones we have both been using.",
+    tone: "ok",
+    lead: "The technical stage is scoped and you approved it — alpha first, and foundations before "
+        + "building rather than twenty documents before anything runs. Nothing is waiting on you. "
+        + "Step 1 is the next piece of work and it is described below.",
     points: [
-      { warn: true, t: "Closing the design stage closed the WRITING, not the deciding. The twenty documents leave 300 unanswered items behind them — 134 questions and 166 things referred to and never specified. 52 of the questions are yours. Nothing is wrong with the documents; an honest document ends with what it does not know. What is wrong is that nobody had added it up, so the technical stage was being sized as write twenty documents when it is settle three hundred things." },
-      { warn: true, t: "THERE ARE 38 LIVE FAULTS IN THE GAME, NOT 12. You were asked this morning to choose between scoping the stage and repairing the twelve faults first. The twelve are only the ones the design stage found. The register also holds thirteen from the design wiki and thirteen older ones, including trade offers that can never be signed and a country that reads its own founding movement as its worst problem. Your choice stands — the number was wrong in the direction that made repairing look cheap." },
-      "The finding that shaped the plan: ELEVEN OF THE NINETEEN SYSTEMS CANNOT BE WRITTEN ONE AT A TIME. The design stage promised that whoever writes the technical documents takes one system at a time and never has to read a system they are not writing. Measured from the documents' own dependency lines: eleven of them read each other in a ring — the economy needs trade and trade needs the economy, and so on through fourteen such pairs. Only three documents in the whole project depend on nothing at all. So working in dependency order gets you three documents in and stops.",
-      "The fix is ordinary and the game already does it in three places: agree what each system HANDS OVER before writing what it does inside. Once trade knows the exact shape of what the economy will give it, either can be finished without the other. Then the rest follow the order a turn actually runs in, which is not circular and was settled long ago.",
-      "Your Deseret note asked whether we are being held back by old versions. No — nothing is. The design describes the new political board; the game that runs still uses the old one because converting it is building work and nobody has built since you ruled. Deseret is a different problem and the card below says it plainly.",
+      "WHAT YOU APPROVED, in plain terms. Alpha first: everything the alpha needs gets written to a standard somebody could build from, and everything else gets only its edges — what it must hand its neighbours — so nothing is designed into a corner. Foundations then slices: two pieces finish on paper because everything depends on them, and after that a system gets specified and built before the next one is specified. Each slice ends with something that runs.",
+      "STEP 1 IS NOT FORMULAS. It is finding out where the game actually stands against the design, and sorting the three hundred loose ends. Nine of the twenty design documents say what is already built; ten do not — so for half the game nobody has written down what exists, and writing formulas against that would be guessing whether we are describing a change or describing what is already there.",
+      "YOUR TOLL ANSWER IS RECORDED AS YOU WROTE IT: the choice gets made when the economy is built out in the technical stage, and it will not be raised again before then. The card is off the board rather than parked where it can nag you.",
+      { warn: true, t: "ONE THING TO FLAG, and it is small. You approved the Deseret card, and that card explained why the new political board has no distributist square — it did not contain a placement to approve. So the reasoning is accepted and Deseret still has no square. I have NOT re-asked it: it is parked to the step that builds the political board, the same way you parked the tolls, and it comes back then. Say so if you would rather answer it now." },
+      "The three counting results from this morning stand and are the figures above: 300 loose ends with 52 of them yours, 38 live faults rather than the 12 everyone has been saying, and eleven of the nineteen systems tangled in one ring so they cannot be written one at a time.",
     ],
   },
 
-  decisions: [
-    {
-      id: "tdd-scope",
-      title: "Does the technical stage cover the whole game, or the alpha first?",
-      recommendation: "ALPHA FIRST, with an eye on the whole game — my recommendation. Everything the alpha needs gets specified to the standard somebody could build from. Everything else gets only its edges written down: what it must hand to its neighbours, so nothing gets designed into a corner and nothing has to be redone. The reason this is not me cutting anything: you already set what the alpha contains yourself yesterday, so following it is following a line you drew, not drawing a new one.",
-      evidence: [
-        "The whole-game version is complete and nothing gets foreclosed. Its cost is the longest possible gap before anything is playable — against a game that is already half built and has 38 standing faults.",
-        "The alpha version reaches something you can put in front of a person much sooner, and four of the design questions can only be answered by watching somebody play.",
-        "Your alpha content decision yesterday already named the ground: the Texas area, the Great Lakes and the West. That is exactly where the three mission trees are.",
-        "Neither option changes what gets BUILT first. That is still yours and it is a later stage.",
-      ],
-      cost: [
-        "Whole game: roughly twenty documents of formulas before a line of code. The design stage was 11,350 lines in two days; this one will not be smaller.",
-        "Alpha first: perhaps half that before building starts, and the other half written later against a game that has been played — which is better information, not worse.",
-        "The risk of alpha-first, stated honestly: a system specified only at its edges can turn out to need something its neighbours cannot give it, and that is found late.",
-      ],
-    },
-    {
-      id: "tdd-sequence",
-      title: "Does all of the technical stage finish on paper before any building, or does it go in slices?",
-      recommendation: "FOUNDATIONS FIRST, THEN SLICES — my recommendation. Two pieces finish on paper because everything depends on them: the list of what the game currently DOES against what you have designed, and the agreement about how systems hand things to each other. After that, specify one system and build it before specifying the next. Each slice ends with something that runs and is tested.",
-      evidence: [
-        "Your stated phase order is design, then technical, then a build order, then building — and this does not break it. It splits the technical stage into a part that must finish first and a part that does not.",
-        "The whole reason there are 300 loose ends is that a great deal was written before anything was checked against what exists. Writing twenty more documents against a game nobody is correcting repeats that exactly.",
-        "This project's most expensive lesson, learned three times: a figure measured before the work is finished is a figure about something else. Twenty technical documents written before a line of code is a twenty-document version of that.",
-        "Against it: all-on-paper means every decision is visible before anything is committed, and slices mean some are made as you go.",
-      ],
-      cost: [
-        "Foundations are cheap — one session for the ledger and the triage, one document for the handover rules.",
-        "Slices mean you see the game change every few sessions rather than in one lump at the end.",
-        "It also means the 38 faults get repaired inside the slice that touches their system, rather than as a separate job that is never quite urgent.",
-      ],
-    },
-    {
-      id: "which-toll-system",
-      title: "You said decide it now. Which of the two toll systems does the game mean?",
-      recommendation: "I need the actual pick, and I am not making it. The old card asked whether to settle this now or leave it to the technical stage; you said now, which was the right call. But approving that did not name a system, so nothing has moved. Tell me which one and I write it into the trade document in a paragraph.",
-      evidence: [
-        "One of them makes RAIL the cheapest kind of crossing to grant. The other makes rail middling and a PORT the most expensive thing on the board.",
-        "So a player learns a pricing instinct on one screen and it is wrong on the other.",
-        "Two of your tuning dials only move one of the two. Turning them changes one screen and leaves the other exactly as it was.",
-        "Neither design document describes the older one at all, which is how it survived this long.",
-      ],
-      cost: [
-        "Rail cheapest: the older, simpler one. It is also the only way in the game to move goods without a standing commitment — a one-off sale.",
-        "Port dearest: the newer one, and the one both design documents actually describe. Renting a crossing becomes a real thing to weigh.",
-        "Whichever goes, something that works goes with it. That is why this is yours.",
-      ],
-    },
-    {
-      id: "deseret-politics",
-      title: "Answering your question first: nothing is held back by an old version",
-      recommendation: "You asked whether we are making changes to the game but being held back by old versions. We are not. The design describes the new political board you approved on Monday; the game that RUNS still uses the old one, because converting it is building work and nobody has built anything since you ruled. That conversion is on the list and it is not what this card is about. What this card is about is smaller: on the old board, Christian distributist had an obvious nearest square and I would simply have moved Deseret to it without asking. On the new board none of the ten positions is distributist. So somebody has to place it by hand — and that is a judgement about what kind of country it is, which is why I am not making it for you.",
-      evidence: [
-        "The game opens Deseret as conservative nationalist. You said it should be a Christian distributist state. Those are not the same place.",
-        "Where a country sits is not decoration. It decides who it drifts toward, who will ally with it, what splinters off it, and how badly a civil war inside it goes.",
-        "Deseret is not an ordinary country here. It is half-born by design, it grows faster than anything else on the board, and it is one of the three countries with a mission tree — so it is one of the three a tester will actually pick.",
-        "The line your own tone document uses as its example of a movement described WELL is: a Christian distributist state. That is the sentence the game is meant to print about it.",
-      ],
-      cost: [
-        "The simplest answer you can give me is a sentence: what does Deseret believe about money, about morals, and about who gets to give orders. I can place it from that and show you where it landed.",
-        "Leaving it: the country with the most authored story in the game plays from the wrong square, and every threshold measured by political distance is wrong for it.",
-        "A third way I am not recommending: add distributism as an eleventh position, which reopens a board you closed on Monday.",
-      ],
-    },
-  ],
+  decisions: [],
+
   _answered: [],
 
   // Standing permissions. Ids are permanent. risk: "low" | "med" | "high".
@@ -962,31 +898,20 @@ const BOARD = {
             + "categories at all. This one keeps the seven kinds apart and groups the pages by system.\n\n"
             + "NOT DONE, and it is the card at the top: your writer's 76 articles are written and "
             + "reviewed and NOT merged. The scaffolding has no prose in it until you decide." },
-    { name: "The rest of the old economy-alpha plan — PARKED", status: "todo",
-      brief: "Seven phases written before there was a design stage: honest industry data, the autarky "
-           + "economy, prices and the world market, recognition and the border states, diplomatic "
-           + "teeth, treaty succession and shocks, and a tuning pass.",
-      actual: "PARKED ON 15 SEPTEMBER, and they are not the plan any more — the three stages below "
-            + "are. Nothing is lost: every one of them is written up in the decision log and the "
-            + "briefs, and most now belong inside a design document rather than beside it. Two of the "
-            + "seven were delivered early by the alpha track and are shown above as done.\n\n"
-            + "One of them carries a finding worth remembering when it comes back: farming in the "
-            + "game today is TEN TIMES bigger than real figures say it should be, and how much food a "
-            + "person needs was set against that inflated number — so replacing the data without also "
-            + "resetting hunger would starve the whole continent on the first turn." },
-    { name: "Stage 3 — The Technical Design Document", status: "current",
+    { name: "Stage 3 — The plan, and what you approved", status: "done",
       brief: "Your phase order: Game Design, then Technical Design, then a build order, then building. "
            + "A technical designer takes the design one system at a time and writes the actual "
            + "formulas, the step-by-step, what goes in and out, and the edge cases.",
-      actual: "SCOPED THIS MORNING, on your instruction, and the plan is waiting for you. Nothing has "
-            + "been started — the two cards above are what it needs before anything can.\n\n"
-            + "SEVEN STEPS, and the first two produce no formulas at all, which is deliberate. Step "
-            + "one is the ledger: what the game currently DOES against what you have designed, system "
-            + "by system. Nine of the twenty documents already carry that comparison and ten do not, "
-            + "so for half the game nobody has written down what already exists. Step two is the "
-            + "agreement about how systems hand things to each other. Then the ground they all stand "
-            + "on, then the turn itself, then the eleven tangled ones, then the five that sit on top, "
-            + "then the evidence for your build order.\n\n"
+      actual: "SCOPED AND APPROVED BY YOU, 16 September. ⚠ This card is the PLAN being finished, not the "
+            + "stage — the stage itself is the seven steps below it, and only the first is under way.\n\n"
+            + "WHAT YOU CHOSE, both approved with no note, which means the recommendation as written. "
+            + "ALPHA FIRST: everything the alpha needs written to a standard somebody could build from, "
+            + "everything else given only its edges. FOUNDATIONS THEN SLICES: the two pieces everything "
+            + "depends on finish on paper, and after that a system is specified and built before the "
+            + "next one is specified.\n\n"
+            + "SEVEN STEPS, each its own card below this one, and the first two produce no formulas at "
+            + "all — which is deliberate, because they are what make the other five writable one at a "
+            + "time.\n\n"
             + "WHY THE ORDER HAD TO CHANGE. The design stage promised that whoever writes these takes "
             + "one system at a time and never has to read a system they are not writing. Measured from "
             + "the documents' own dependency lines, that is not true for eleven of the nineteen: they "
@@ -999,6 +924,86 @@ const BOARD = {
             + "down; whether your victory targets still hold now a game is two hundred turns instead "
             + "of eighty; and one denominator on the new political board that every tuned threshold in "
             + "the game is measured against, which still has no value." },
+    { name: "Step 1 — The ledger and the triage", status: "current",
+      brief: "Before any formulas: find out where the game actually stands against the design, and sort "
+           + "the three hundred loose ends the design stage left behind.",
+      actual: "THE LIVE STEP, unblocked by your two approvals and not yet begun. One session, and it "
+            + "produces no formulas at all — that is the point of it.\n\n"
+            + "THE LEDGER is the valuable half: one table, every system, saying what the game currently "
+            + "DOES, what you have designed, and the difference between them. Nine of the twenty design "
+            + "documents already carry that comparison. Ten do not — so for half the game nobody has "
+            + "written down what already exists, and anybody writing formulas for those systems would be "
+            + "guessing whether they are describing a change or describing what is already there.\n\n"
+            + "THE TRIAGE sorts all three hundred loose ends into four piles: what blocks the work, what "
+            + "gets answered as the work goes, what can only be settled by watching somebody play, and "
+            + "what is yours. Your fifty-two then arrive three or four at a time, at the head of the "
+            + "document that needs them, rather than as fifty-two cards on this board.\n\n"
+            + "AND THREE THINGS GET MEASURED rather than estimated: how many things sixty-one countries "
+            + "can each start in a quarter before the machine slows, whether your victory targets still "
+            + "hold at two hundred turns, and the one denominator on the new political board that has "
+            + "never had a value. The thirty-eight faults get sorted in here too." },
+    { name: "Step 2 — How systems hand things over", status: "todo",
+      brief: "Agree what each system gives its neighbours before writing what any of them does inside. "
+           + "One document, and everything after it waits on this.",
+      actual: "NOT STARTED, and this is the step that makes the rest possible.\n\n"
+            + "Eleven of the nineteen systems read each other in a ring, so none of them can be finished "
+            + "first. The way out is ordinary and your game already does it in three places that have "
+            + "never caused trouble: fix the HANDOVER, not the insides. Once trade knows the exact shape "
+            + "of what the economy will give it, either can be written in full without the other being "
+            + "finished. Fourteen tangled pairs become fourteen agreed edges.\n\n"
+            + "It also settles the housekeeping that every later document depends on: what a preview of "
+            + "an action is allowed to contain, where a long-running project lives in the turn and in "
+            + "the save file — it currently lives nowhere — and how a new tuning dial is named, so the "
+            + "three hundred and seventy you have can become five hundred without becoming a drawer of "
+            + "unlabelled knobs." },
+    { name: "Step 3 — The ground: the map, politics, people", status: "todo",
+      brief: "The three systems everything else stands on, and the only three in the project that "
+           + "depend on nothing.",
+      actual: "NOT STARTED. Three documents: the map as a network with prices on it, the political "
+            + "board, and how people are counted and how they move.\n\n"
+            + "This is also where the missing denominator gets its value — the one number that decides "
+            + "how politically far apart any two countries are, which every threshold in the game is "
+            + "then measured against. It has no value on the new board and it is the first thing the "
+            + "technical stage has to settle, because nothing downstream can be tuned until it does." },
+    { name: "Step 4 — The turn itself", status: "todo",
+      brief: "The engine's spine: nineteen things that happen in a fixed order every time the world "
+           + "moves, and the reason each sits where it does.",
+      actual: "NOT STARTED. One document, and the order is not in dispute — it was settled long ago and "
+            + "the reasons are written down at each step. What this does is turn those reasons into "
+            + "requirements rather than commentary, so nobody moves one later without reading why it is "
+            + "where it is.\n\n"
+            + "One thing genuinely broke when you removed the one-action-per-turn rule and it lands "
+            + "here: a country's turn used to END when it took its action, because its turn WAS its "
+            + "action. Now that it can start as many things as it likes, something else has to say when "
+            + "a country is finished." },
+    { name: "Step 5 — The eleven tangled systems", status: "todo",
+      brief: "The bulk of the stage. Movements, the economy, countries, government, the army, "
+           + "diplomacy, trade, war, blocs, and the five national scores.",
+      actual: "NOT STARTED. Ten documents, each written against the handovers agreed at step 2, and each "
+            + "carrying its own list of differences from what the game does today.\n\n"
+            + "They go in the order their work happens inside a turn, which is the one order in this "
+            + "project that is not circular. The five national scores go last, and two independent "
+            + "reasons agree on it: every number they read is a result of that same turn, and they are "
+            + "the one thing twelve of the nineteen systems read." },
+    { name: "Step 6 — The five on top", status: "todo",
+      brief: "What the world throws at you, the opening position, the three mission trees, the other "
+           + "sixty players, and every screen.",
+      actual: "NOT STARTED. Five documents. Everything here reads the systems underneath it rather than "
+            + "the other way round, which is why it goes late rather than because it matters less.\n\n"
+            + "The screens go last of all, because that document reads nine systems plus your tone "
+            + "document — the longest list of dependencies anything in this project has." },
+    { name: "Step 7 — Evidence for your build order", status: "todo",
+      brief: "What depends on what, what the alpha's stated purpose actually needs, and what each piece "
+           + "costs. Evidence only.",
+      actual: "NOT STARTED, and it deliberately does not answer the question it feeds.\n\n"
+            + "Your line of 14 September binds this stage exactly as it bound the last: the build order "
+            + "and what moves past the alpha are yours. So this produces the evidence and stops — it "
+            + "does not rank anything, recommend anything, or cut anything.\n\n"
+            + "One question gets settled here that nobody has asked yet: by the end of this stage there "
+            + "will be nineteen technical documents describing what the game does, alongside the design "
+            + "document that has been the single source of truth all along. Two sources of truth is a "
+            + "problem this project has already solved twice, and it should be solved on purpose this "
+            + "time rather than by drift." },
     { name: "Stage 4 — The build order", status: "todo",
       brief: "Organise all of it into an order somebody can actually execute, and decide what moves "
            + "past the alpha.",
@@ -1014,14 +1019,17 @@ const BOARD = {
   // Things only the owner can supply, and what happens if a machine supplies them instead.
   blocked: [
     {
-      what: "Approving the shape of the technical stage — the two cards above",
-      ifAutomated: "You asked for it to be scoped and it is. It cannot START until you answer two "
-                 + "things, and both are yours rather than mine: whether it covers the whole game or "
-                 + "the alpha first, and whether all of it finishes on paper before any building or "
-                 + "goes in slices. I have a recommendation on each and said why. Everything else in "
-                 + "the plan is a default I took and wrote down as a default. Answer the two and the "
-                 + "next session starts on the first step, which produces a ledger rather than any "
-                 + "code.",
+      what: "Where Deseret sits on the new political board — parked, not forgotten",
+      ifAutomated: "You approved the Deseret card, and that card explained why the problem exists rather "
+                 + "than offering a placement to approve — so the reasoning is settled and the country "
+                 + "still has no square. I have not put it back in front of you. It is parked to the "
+                 + "step that builds the political board, which is where it first actually matters, and "
+                 + "it comes back then — the same treatment you gave the tolls. I will not place it "
+                 + "myself: where a country sits decides who it drifts toward, who allies with it, what "
+                 + "splinters off it and how badly a civil war inside it goes, and Deseret is one of the "
+                 + "three countries a tester will actually pick. When it comes back, one sentence "
+                 + "answers it — what Deseret believes about money, about morals, and about who gets to "
+                 + "give orders.",
       damagedIfAutomated: false,
     },
     {
@@ -1059,6 +1067,10 @@ const BOARD = {
 
   // Decisions made on the owner's behalf and how they turned out. Corrections go BESIDE originals.
   log: [
+    { when: "2026-09-16", decision: "Took the toll question off this board entirely rather than parking it where it could keep catching your eye.",
+      outcome: "Your answer was an instruction as much as a decision: the choice gets made when the economy is built out in the technical stage, and it is not to be raised again before then. A parked card is still a card — it sits in the queue looking like something you owe. So it is off the board and written into the plan instead, against the two documents that will need it, which are the economy and trade ones in step five. It resurfaces there and nowhere earlier. Worth recording because it is the second time this question has been mishandled: the first version asked whether to decide now or later, you said now, and approving that named no system — which is how it survived another day looking answered." },
+    { when: "2026-09-16", decision: "Did NOT treat your approval of the Deseret card as an answer to it, and parked it instead of asking again.",
+      outcome: "The card explained why the new political board has no distributist square and why placing Deseret is a judgement rather than arithmetic. There was nothing in it to approve except the reasoning — so approving it accepted the reasoning and left the country exactly where it was, in the wrong square. Two bad options: treat the approval as permission to place it myself, which would quietly make a decision that moves every threshold measured by political distance for the country with the most authored story in the game; or put the same card straight back in front of you, which is what made the toll question rot. I did neither. It is parked to the step that builds the political board, which is the first point it genuinely matters, using the rule you set for the tolls one minute earlier. It is on the waiting-on-you list so it cannot be lost." },
     { when: "2026-09-16", decision: "Scoped the technical stage as you asked — and counting it properly found that eleven of the nineteen systems cannot be written one at a time.",
       outcome: "The design stage's central promise, stated twice in the master document and ratified by you on Monday, is that whoever writes the technical documents takes one system at a time and never has to read a system they are not writing. That is why there are nineteen documents instead of one. I checked it rather than assumed it, by reading each document's own statement of what it depends on: eleven of them read each other in a ring, fourteen pairs directly. The economy needs trade and trade needs the economy. Power is read by twelve of the nineteen. Only three documents in the entire project depend on nothing at all — and the five that look independent all read something inside the ring, so they cannot be finished first either. This is not a fault in the documents; a simulation's systems are tangled because the world is. It is a fault in an ORDER that was never written down and was assumed. Working in dependency order gets three documents in and stops, and the stop would have looked like somebody struggling to write rather than a structural problem. The replacement is ordinary and the game already does it in three places that have never caused trouble: agree what each system hands over before writing what it does inside. Then everything else follows the order a turn actually runs in, which is not circular and was settled months ago." },
     { when: "2026-09-16", decision: "Counted the faults in the game, and there are 38 rather than the 12 we have both been saying — including in the card you answered this morning.",

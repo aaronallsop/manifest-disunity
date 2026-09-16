@@ -3,7 +3,9 @@
 **Written 16 September 2026.** *This is a PLAN, not the stage. Nothing in it has been started, and
 nothing in it should be started until Aaron has approved the shape and answered §10.*
 
-**Status: ⏳ AWAITING APPROVAL.** *The Control Board card is `stage-3-plan`.*
+**✅ STATUS: APPROVED — Aaron, 16 September 2026, 15:50 UTC.** *Both cards approved with no note, which
+under this project's convention means the recommendation as written.* **So: ALPHA FIRST, whole-game
+aware (§10 decision 1), and FOUNDATIONS FIRST, THEN SLICES (§10 decision 2).** *T0 may begin.*
 
 > **What this replaces:** nothing. **`GDD.md` §9 names this stage in one line — *"formulas, pseudocode,
 > inputs and outputs, edge cases"* — and that line was the whole of it.** No brief, no definition of
@@ -349,7 +351,20 @@ measurement.**
 
 ## 10. The decisions this plan needs from Aaron
 
-**Two. Everything else in this plan is a default I have taken and said so.**
+**✅ BOTH ANSWERED, 16 September 2026, 15:50 UTC — approved with no note, so the recommendation as
+written in each case.** *Kept below as the record of what was asked and what it cost either way.*
+
+> **Decision 1 → ALPHA FIRST, whole-game aware.** *Full build-standard specification for what the alpha
+> needs; for everything else, only its contract.*
+> **Decision 2 → FOUNDATIONS FIRST, THEN SLICES.** *T0 and T1 complete on paper, then specify-and-build
+> one system at a time.*
+
+**⚠ And two things Aaron parked in the same minute, both recorded here because they change T4 and T2:**
+
+| | |
+|---|---|
+| **The toll system** | **PARKED BY AARON, in his own words:** *"We will make the choice when building out the economy in the TDD. Don't bring this up again until we are working on the economy section."* **So it is no longer an open card — it is a decision scheduled for T4's economy and trade documents, and it must not be re-raised before then.** *§6's claim that it "blocks the trade document" is superseded: it blocks the trade document **at the moment that document is written**, which is when he will be asked* |
+| **Deseret's placement** | **Approved with no note — and approving it accepted the REASONING rather than supplying the placement.** *The card explained why the ten-position board has no distributist square and why the placement is a judgement rather than arithmetic; there is nothing in an approval of that which says where Deseret sits.* **Parked to T2's identity document by the same logic he applied to the tolls**, rather than re-asked immediately. *Recorded as a default taken, not as an answer received* |
 
 ### Decision 1 — Does stage 3 specify the whole game, or the alpha first?
 

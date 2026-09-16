@@ -6206,3 +6206,67 @@ thing it decides gets a better answer — round 6 demonstrated it and round 5 pa
 edited after the count. **The lesson is the one this project keeps paying for** — a figure that does not
 say which day it belongs to is a figure about something else — and the next person to quote 11,324 should
 know it is yesterday's.* **The 97% conversion ratio against stage 1 is unaffected.**
+
+---
+
+### D248 — The stage 3 plan is approved: alpha first, foundations then slices, 16 September 2026
+
+**Aaron, on the board at 15:50 UTC, both cards approved with no note** — *which under this project's
+convention means the recommendation as written.* **Answered within forty minutes of being asked, and
+both went the way the plan recommended.**
+
+| | |
+|---|---|
+| **`tdd-scope` → ALPHA FIRST, whole-game aware** | Full build-standard specification for what the alpha needs; **for everything else, only its contract** — what it must expose to its neighbours, so nothing is foreclosed. *The argument that it is not a cut still holds: D239 set the alpha's content scope himself* |
+| **`tdd-sequence` → FOUNDATIONS FIRST, THEN SLICES** | **T0 and T1 finish on paper**, because everything depends on them. **Then specify one system and build it before specifying the next**, each slice ending in something that runs and is tested |
+
+**What this unblocks: T0.** *The ledger, the triage of the three hundred, the three measurements, the
+architect brief. **It produces no specification at all**, and that is the point of it.*
+
+**`docs/technical/TDD-PLAN.md` carries the approval at its head.** *The board's progress rail now shows
+the seven steps as their own phases — Aaron asked for that in the same session — and Step 1 is marked
+live.*
+
+> **⚠ The stage 3 phase card is marked *done* and says in its first line that this means THE PLAN, not
+> the stage.** *Marking a fifty-thousand-word stage "done" because its plan was written is exactly the
+> kind of false green this project has been bitten by; the card was renamed so the status is true.*
+
+---
+
+### D249 — Two questions are parked rather than asked again, and one of them is my call, 16 September 2026
+
+**Both in the same minute as D248, and they are handled differently on purpose.**
+
+**1. The toll system — parked BY AARON, in his own words.**
+
+> *"We will make the choice when building out the economy in the TDD. Don't bring this up again until we
+> are working on the economy section."*
+
+**Removed from the board entirely rather than left parked on it.** *A parked card still sits in the queue
+looking like something he owes.* **It is written into the plan against the two documents that will need
+it — economy and trade, in T4 — and it resurfaces there and nowhere earlier.** *This supersedes the
+plan's §6 line calling it "blocking for the trade document": it blocks that document **at the moment that
+document is written**, which is when he will be asked.*
+
+> **Worth recording because it is the second time this question has been mishandled.** *The first card
+> asked whether to settle it now or leave it to stage 3; he said now; **approving that named no system**,
+> so it survived another day looking answered. A card that can be approved without answering it is a
+> badly built card.*
+
+**2. Deseret's placement — approved, and the approval answered nothing. Parked by ME.**
+
+**The card explained why the ten-position board has no distributist square and why placing Deseret is a
+judgement rather than arithmetic.** *There was nothing in it to approve except the reasoning.* **So the
+reasoning is accepted and the country is still in the wrong square.**
+
+**Two bad options, both refused.** *Treat the approval as permission to place it myself — which quietly
+makes a decision that moves every threshold measured by political distance, for the country with the most
+authored story in the game and one of three a tester will actually pick. Or put the same card straight
+back up, which is what made the toll question rot.*
+
+**Decided: park it to T2's identity document, by the rule Aaron set for the tolls one minute earlier**,
+and keep it on the board's *waiting on you* list so it cannot be lost. *One sentence answers it when it
+comes back — what Deseret believes about money, about morals, and about who gives orders.*
+
+> **⚠ This is a default taken, not an answer received, and it is recorded as one.** *If he would rather
+> settle it now, saying so overturns it at no cost.*
