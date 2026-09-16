@@ -162,7 +162,7 @@ describes what the game *does*, and it still wins any disagreement with another 
 **⚠ The shape changed on 15 September and this section is the corrected version. D217 is the ruling.**
 It is **not** one document per system. It is **a short master, `docs/design/GDD.md`, plus a satellite
 per system** — because the downstream reader is one **Technical Designer** taking one system at a
-time, who should never have to read a system they are not writing. **The master exists and is 1,132
+time, who should never have to read a system they are not writing. **The master exists and is 1,168
 lines.**
 
 **Every satellite has the same FIVE parts** — four from the GDD brief plus one Aaron reinstated on
@@ -188,7 +188,7 @@ unspecified for turn 1; and a mission is ruled permanent while its REWARD is not
 has taken.* **A master document's scenarios are the cross-cutting ones** — a scenario that lives inside
 one system belongs in that system's document.
 
-**What exists — NINETEEN of twenty documents. Line counts measured 15 September 2026.**
+**What exists — ALL TWENTY. ⚠ Line counts re-measured 16 September 2026; the 15 September set was stale in three rows.**
 
 **✅ `docs/design/TONE.md` EXISTS** (D238), written from Aaron's own interview: 41 rules, 11 worked
 examples, 19 open questions. *It is **not** one of the twenty; it is the input the twentieth could not
@@ -214,9 +214,9 @@ in `GDD.md` §9.**
 
 | | Lines | |
 |---|---:|---|
-| **`GDD.md`** | **1,132** | **The master.** The pitch layer, the system map, the full document list, the cross-cutting concepts |
+| **`GDD.md`** | **1,168** | **The master.** The pitch layer, the system map, the full document list, the cross-cutting concepts |
 | `missions-design.md` | **1,003** | Three trees, three branches, four elements, one pivot each. **The first document that will have to split again** |
-| `turn-design.md` | **748** | No action budget; nothing finishes in one turn |
+| `turn-design.md` | **761** | No action budget; nothing finishes in one turn |
 | `board-design.md` | **731** | **Substrate: seven satellites read it.** ⚠ §7.1a is new — **four real ocean ports are flagged inland** |
 | `nation-design.md` | **618** | ⚠ **Round 1 asked for one machine for making nations. There are FIVE** |
 | `identity-design.md` | **573** | Three axes, ten positions, the six struck movements named |
@@ -246,9 +246,8 @@ figure measured before the work is finished is a figure about something else.*
 satellites*; the Control Board said *nineteen* and printed the denominator as **20**. **Both were true
 when written and neither said as of when.** The proposal of 03:35 held eighteen; **`missions-design.md`
 was not among them**, because mission trees did not exist as an idea until later that night. **The
-answer is a master plus NINETEEN satellites — twenty documents.** **EIGHTEEN satellites plus the
-master are written; ONE to go** — `presentation-design.md`, unparked on the night of 15 September when
-`TONE.md` landed.
+answer is a master plus NINETEEN satellites — twenty documents.** **✅ ALL NINETEEN SATELLITES AND THE
+MASTER ARE WRITTEN — 16 September 2026.**
 
 **✅ AND THE SPLIT IS APPROVED — D230, 15 September 2026.** Aaron ratified nineteen, and **his reason
 binds every document after it**: *a GDD is a living document and is never finished, so a fat document
@@ -290,13 +289,13 @@ open.** *The turn and missions were never on this list; they arrived from Aaron 
   than two. And **what a restricted view actually looks like** — ruling 3 settled what *gates* sight,
   not what you see. Bands and staleness are both still available.
 
-**✅ THE TOTAL IS MEASURED AND THIS NO LONGER NEEDS ESTIMATING — 9,436 lines across the eighteen
-satellites, plus the master, counted 15 September 2026.** *The instruction that stood here — do not
-size stage 2 from a guess, two are written, measure more before quoting a total — did its job: the
-figure below was reached by counting rather than by extrapolating from the two small early documents,
-which would have been badly wrong in both directions.* **Against the idea stage's 11,725 lines, a
-design stage converts an idea stage at about four fifths its size.** *That is the first honest figure
-this project has had for it, and it is a measurement rather than a rule — one stage is not a trend.*
+**⚠ THIS BLOCK IS SUPERSEDED AND IS KEPT ONLY AS A DATED RECORD.** *It read: 9,436 lines across
+eighteen satellites, counted 15 September, and **"a design stage converts an idea stage at about four
+fifths its size."*** **Both figures were measured while the largest missing document was still
+missing.** *The current total is the one above — **11,324 lines across twenty documents, 97% of the
+idea stage** — and the lesson is kept rather than the number: **a figure measured before the work is
+finished is a figure about something else.*** *It was also duplicated in this file for a day, which is
+how a stale total survives: it was corrected in one place and not the other.*
 
 ### The phase this supersedes, kept because it is still the state of the build
 

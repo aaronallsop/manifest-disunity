@@ -46,9 +46,21 @@ python server.py
 
 Then open <http://localhost:8000/tests/run.html>. All green is the bar.
 
-The tests are plain ES modules with no dependencies, written so the same files run under
-`node --test` unchanged if Node ever appears on this machine. `tests/harness.js` is the whole
-framework.
+The browser is **the only way to run them.** `tests/harness.js` is the whole framework — plain ES
+modules, no dependencies.
+
+> ### ⚠ DO NOT RUN `node --test`. IT REPORTS GREEN WITHOUT RUNNING ANYTHING.
+>
+> This section used to say the same files run under `node --test` unchanged once Node appeared on the
+> machine. **Node has appeared, and they do not.** The harness's `describe`/`it` only *collect* suites
+> into an array; the browser page is what calls `run()`. Under `node --test` each file registers its
+> suites, nothing executes them, and node reports **one passing test per file.**
+>
+> **Proved on 16 September 2026** by adding a suite whose only check was `ok(false)`. `node --test`
+> reported it as **passing, exit code 0.**
+>
+> *Recorded as `docs/deferred.md` 45.* **Until that is fixed, a green `node --test` is not evidence of
+> anything, and no session may report the tests as passing on the strength of it.**
 
 ## Layout
 

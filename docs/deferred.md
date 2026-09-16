@@ -438,3 +438,46 @@ example — "a Christian distributist state" — is the line the game is suppose
 
 *Filed, not fixed: a design round writes documents only, and the placement on the new board is a
 decision nobody has taken.* **`TONE.md` §5.14.**
+
+---
+
+## 45 — ⚠ `node --test` REPORTS EVERY SUITE GREEN WITHOUT RUNNING A SINGLE CHECK
+
+**Found at sign-off, 16 September 2026, while trying to verify the suite the honest way.**
+
+**`tests/harness.js` says in its own header comment:**
+
+> *"The same test FILES run two ways with no changes: browser … and node: `node --test tests/*.test.js`
+> once Node exists — **describe/it map onto node:test's own globals via the shim at the bottom of this
+> file.**"*
+
+**⚠ THERE IS NO SHIM.** *The bottom of the file is `export default { describe, it, beforeEach, run,
+reset, assert, ...assert }` and nothing else. `node:test` is named in the comment and imported
+nowhere.*
+
+**What actually happens.** *`describe` and `it` only **collect** suites into a module-level array.
+`run()` walks that array, and **the browser page is the only thing that calls `run()`.*** So under
+`node --test` each file is imported, registers its suites, executes nothing, and exits cleanly —
+**and node reports one passing test per file.**
+
+> **⚠ PROVED, not inferred.** *A suite whose only check was `ok(false, 'THIS MUST FAIL')` was added to
+> `tests/` and run. **`node --test` reported `✔ pass 1, fail 0`, exit code 0.** The canary was removed
+> afterwards.*
+
+**Consequence, and it is the dangerous kind:** *the failure mode is a **false green**, not a crash.*
+**Any session that runs `node --test` gets 51 of 51 passing in under a second and will report the
+suite as healthy.** *This session did exactly that before checking, and would have signed off on it.*
+
+**Two things to fix and they are different sizes:**
+
+1. **The README and the harness comment both promise the node route.** ✅ **README corrected in the
+   same commit that filed this.** *The harness's own header comment is still wrong — it is code, and a
+   design session does not edit code.*
+2. **Either write the shim or delete the promise.** *A shim is small: `run()` already returns
+   `{ passed, failed, skipped, suites }`, so wiring it into `node:test` and failing the process on
+   `failed > 0` is the whole job.* **Not done here — a sign-off does not start new work.**
+
+**The project's own rule, which this is a textbook case of:** *"Suspect the harness before the model.
+**Most failures have been a check disagreeing with its own instruction**, not the model failing the
+task."*
+

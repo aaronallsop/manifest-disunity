@@ -20,6 +20,7 @@ data/state.json.tmp
 content/save-*.json
 # Scratch documents written by tests/content.test.js.
 content/test-*.json
+content/test-*.json.tmp   # the browser test run writes this beside the json; caught at the 16 Sept sign-off
 
 # build output (build/package_playtest.py)
 dist/

@@ -198,6 +198,19 @@ Add one with `/rule` whenever a mistake earns it. Number them; never delete one.
     **The tell:** the count is suspiciously round, suspiciously small, or exactly one — and the
     duration is far below the known figure. The real run here was **956 tests in 215 seconds**.
 
+    **⚠ RECURRED AT THE 16 SEPTEMBER SIGN-OFF, and the recurrence is the more useful half of this
+    rule.** This entry already existed, already named `node --test`, already gave the false figure and
+    the true one — **and the next session ran the command anyway and wrote down "51 of 51 green" before
+    catching it.** The rule was not wrong and it was not vague. **It was in a file nobody reads at the
+    moment of the mistake.** The session looked up how to run the tests in `README.md`, and `README.md`
+    was still recommending the broken route.
+    **So the rule gets a second clause: a lesson belongs at the point of use, not only in this file.**
+    A warning about a command goes next to the command. `README.md` now carries it in the Tests
+    section, and the defect is `docs/deferred.md` 45.
+    **And the cheap proof, which costs ten seconds and settles it for any runner:** add a suite whose
+    only check is `ok(false)`, run it, and confirm the runner goes **red**. A runner that cannot fail
+    cannot pass. *Done this time; it reported `pass 1, fail 0`, exit code 0.*
+
 17. **Verify the roster, not only the code. A design round can check every function and still design
     against a board that does not exist.**
     Round 5 spent an hour reading the engine before writing a single ruling, and the §3 section it

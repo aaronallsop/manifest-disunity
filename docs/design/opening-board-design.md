@@ -240,6 +240,7 @@ not machinery: nothing in the engine changes; the writing is the work.**
 | **No mission trees seeded** | |
 | **No front page** | §5 |
 | **One recognition row** | *Deseret's. The other sixty are origin nations and nothing is written down for them* |
+| **⚠ NOTHING IN FLIGHT** | **Added 16 September 2026.** *No offer sent and unanswered, no proposal awaiting a reply — **no turn −1 of any kind.** The board carries what is signed and what is remembered, and the space between those two is empty.* **Aaron's taught first turn needs it:** *his own worked opening has Miami coming back on turn 1 about a deal Houston sent before the game began, which is the beat that teaches **you send things and things come back** — the whole turn loop.* **Found by tracing `presentation-design.md` §14.2, and it was not on this list because nobody had asked the question** |
 
 **So the opening board is the twelve nations, the seeded shares, the back-dated memories and nothing
 else.** *Everything the rounds ruled about how the board should START is content that has not been
@@ -255,6 +256,7 @@ written.*
 | **The two-phase split is load-bearing in both directions** | §2.1 |
 | **⚠ The recognition pivot is a ONE-SEED, UNDATED measurement** that six documents repeat | §4.5 |
 | **⚠ The board opens with none of the agreements a ruling requires** | §6 |
+| **⚠ And with nothing IN FLIGHT either** — *a taught first turn depends on it* | §6 |
 | **The front page is specified, ticked, and unwritten** | §5 |
 | **⚠ Deseret's homeland and its cession set are different sets** | Gap 1 |
 

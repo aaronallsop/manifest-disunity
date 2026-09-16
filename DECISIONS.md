@@ -5950,3 +5950,41 @@ or overturn it deliberately.*
 **Under the standing rule this is his to make and not a design document's:** *"Remember — you are not
 deciding what to cut."* **He decided. This records it.**
 
+---
+
+### D240 — The form of "what a nation may know" uses BOTH things round 7 rejected, 16 September 2026
+
+**Round 7's ruling 3 settled that what you may read about another nation is gated on how you stand
+with each other — *"an ally's panel is open, a hostile nation's is bands and guesswork"* — and said
+plainly that it did **not** rule the form.** *It rejected three candidates and recorded that two of
+them "remain available as the FORM ruling 3 will need": **bands instead of figures** (W31) and
+**information going stale** (W30).*
+
+**Decided, in `presentation-design.md` §7: use both, for different questions.**
+
+| | |
+|---|---|
+| **Bands** answer **how precise** | *The precedent is already built — the pressure map shows calm / rising / critical on other people's ground* |
+| **Staleness** answers **how current** | *The precedent is also built — the relations line already prints an age: "Hostile: took our ground, 3 turns ago"* |
+
+**Why both rather than either.** *Ruling 3's own stated prize was that it gives an alliance **its first
+benefit that is not military — you can see.*** **A benefit that is only precision is thin**: knowing
+Utah's Authority to two decimals rather than as a band is a small gift. **A benefit that is precision
+AND currency is a real reason to make friends with a nation you will never fight beside**, which is
+the thing the design did not previously have and which that ruling was trying to buy.
+
+**Rejected: bands alone.** *Cheaper — a band needs no new state. **Staleness costs state**, because
+"the figure you last had a reason to know" means something has to remember when that was.* **That cost
+is named in the document's hand-over rather than hidden**, and it is the architect's to price.
+
+**⚠ And it surfaced a consequence nobody asked for, which is NOT decided here.** *Round 5 locks 23
+pairs at Hostile for the entire game. Ruling 3 gates sight on the relationship. **So the five Texas
+claimants, the five Californian ones and the three eastern capitals can never see each other's books,
+ever** — and the Texas claimants are one of the three mission trees, so that is the information
+environment of a situation a tester will actually play.* **Left open, and it is Aaron's**
+(`presentation-design.md` open question 4).
+
+*Taken in his place because the stage's job was to give ruling 3 a form and the round had already
+narrowed the field to two candidates. **Undone by editing one section**; nothing downstream depends on
+it yet.*
+
