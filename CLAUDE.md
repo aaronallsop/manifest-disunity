@@ -129,8 +129,8 @@ reason*, not a fresh ruling — the same status rounds 1–4 have had since they
 **Totals, counted on 14 September rather than carried forward: 536 ideas and 178 rulings across the
 seven documents.**
 
-**The current phase is now STAGE 2, DESIGN**, described below. **It has started: two of its
-documents exist**, both written on 15 September.
+**The current phase is now STAGE 2, DESIGN**, described below. **NINETEEN of its twenty documents
+exist**, all written on 15 September. **One is left and nothing blocks it.**
 
 A round is done when a session can read its document end to end and the only new entries are
 recombinations of ones already there; when **every one of its scenarios has been traced** — tracing has
@@ -155,12 +155,13 @@ describes what the game *does*, and it still wins any disagreement with another 
    thing depends on and whether the alpha's stated purpose needs it. It does not rank, recommend, or
    cut.
 
-### THE CURRENT PHASE: STAGE 2, DESIGN — two documents written, the rest to go
+### THE CURRENT PHASE: STAGE 2, DESIGN — nineteen written, one to go
 
 **⚠ The shape changed on 15 September and this section is the corrected version. D217 is the ruling.**
 It is **not** one document per system. It is **a short master, `docs/design/GDD.md`, plus a satellite
 per system** — because the downstream reader is one **Technical Designer** taking one system at a
-time, who should never have to read a system they are not writing. **The master does not exist yet.**
+time, who should never have to read a system they are not writing. **The master exists and is 1,132
+lines.**
 
 **Every satellite has the same FIVE parts** — four from the GDD brief plus one Aaron reinstated on
 15 September. It **opens** with a `Depends on:` line naming every other document whose state or
@@ -232,8 +233,9 @@ fifths its size, which is the first honest figure the project has had for this.*
 satellites*; the Control Board said *nineteen* and printed the denominator as **20**. **Both were true
 when written and neither said as of when.** The proposal of 03:35 held eighteen; **`missions-design.md`
 was not among them**, because mission trees did not exist as an idea until later that night. **The
-answer is a master plus NINETEEN satellites — twenty documents.** Two satellites plus the master are
-written; **seventeen to go.**
+answer is a master plus NINETEEN satellites — twenty documents.** **EIGHTEEN satellites plus the
+master are written; ONE to go** — `presentation-design.md`, unparked on the night of 15 September when
+`TONE.md` landed.
 
 **✅ AND THE SPLIT IS APPROVED — D230, 15 September 2026.** Aaron ratified nineteen, and **his reason
 binds every document after it**: *a GDD is a living document and is never finished, so a fat document
@@ -247,9 +249,12 @@ fourth tree). **Do not do it early and do not merge anything.**
 The precedence rule is unchanged: `DESIGN.md` still describes what the game *does*.
 
 **What the rounds explicitly filed to it**, so the backlog is not reassembled from seven documents.
-**⚠ Checked 15 September: the two documents that exist closed NONE of these.** The turn and missions
-were not on this list — they arrived from Aaron on the day. **So the backlog below is untouched**, and
-one item has moved rather than closed:
+**⚠ The line that used to stand here — "the two documents that exist closed NONE of these" — was
+written when two existed. NINETEEN exist now and it has NOT been re-checked item by item.** *What is
+known: **the logistics brake is CLOSED**, chosen by D234 during the Hog Wild run and carried in
+`economy-design.md`. One item has MOVED rather than closed, marked below.* **Treat the rest as
+DESCRIBED by the documents that now exist and NOT decided — and verify before quoting any of it as
+open.** *The turn and missions were never on this list; they arrived from Aaron on the day.*
 
 - **The logistics spiral's brake** (economy finding E) — *the most serious thing round 4 found.* Three
   candidate brakes exist and **none is chosen**.
@@ -272,11 +277,13 @@ one item has moved rather than closed:
   than two. And **what a restricted view actually looks like** — ruling 3 settled what *gates* sight,
   not what you see. Bands and staleness are both still available.
 
-**Do not size stage 2 from a guess, and there is still no total.** Two are written and measured —
-**572 and 836 lines** — and that is deliberately not extrapolated: the turn had almost no material
-behind it and the large systems carry forty rulings each. The only honest comparison on record is that
-the seven idea documents run to **11,725 lines** and a design stage converts an idea stage, so the
-answer is the same order of size. **Measure more before quoting a total.**
+**✅ THE TOTAL IS MEASURED AND THIS NO LONGER NEEDS ESTIMATING — 9,436 lines across the eighteen
+satellites, plus the master, counted 15 September 2026.** *The instruction that stood here — do not
+size stage 2 from a guess, two are written, measure more before quoting a total — did its job: the
+figure below was reached by counting rather than by extrapolating from the two small early documents,
+which would have been badly wrong in both directions.* **Against the idea stage's 11,725 lines, a
+design stage converts an idea stage at about four fifths its size.** *That is the first honest figure
+this project has had for it, and it is a measurement rather than a rule — one stage is not a trend.*
 
 ### The phase this supersedes, kept because it is still the state of the build
 
