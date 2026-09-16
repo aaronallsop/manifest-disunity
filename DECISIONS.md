@@ -6270,3 +6270,95 @@ comes back — what Deseret believes about money, about morals, and about who gi
 
 > **⚠ This is a default taken, not an answer received, and it is recorded as one.** *If he would rather
 > settle it now, saying so overturns it at no cost.*
+
+---
+
+### D250 — `MAX_DISTANCE` is 2√3, and the one function turns out to be two, 16 September 2026
+
+**The first thing the Technical Designer had to settle** (`GDD.md` gap 11), computed from the ten
+authored positions rather than asserted.
+
+**Decided: `MAX_DISTANCE` = 2√3 ≈ 3.4641.** *Four pairs sit at that distance and they are genuine
+opposites — Fascism ↔ Liberal Anarchy, Distributism ↔ Digital Technocracy, Democratic Socialism ↔
+Christian Nationalism, Communism ↔ Anarcho-Capitalism.*
+
+> **The two-axis rule SELECTS this rather than being overruled by it.** *That rule was "use the actual
+> widest authored pair, explicitly not the box diagonal", and its reason was that the diagonal was
+> unoccupied. On three axes the widest authored pair IS the diagonal, so adopting 3.4641 follows the
+> existing rule. Worth stating, because it means nothing was overturned to get here.*
+
+**⚠ AND THE MEASUREMENT FOUND WHAT THE QUESTION DID NOT CONTAIN.** *Normalising on 3.4641 does not fix
+the range problem; it splits the function in two.*
+
+| | Range | |
+|---|---|---|
+| **Position against position** | **0.000 – 0.592** | **Five distinct values exist in the entire system.** Nothing is ever more than 59% aligned |
+| **Nation against nation at turn 0** | **0.423 – 1.000** | *Arithmetic: the 2024 seed lands on the two centrists, so every centroid lies on a segment of length 2 inside a cube of diagonal 3.4641* |
+
+**They overlap in a band 0.10 wide.** *So "aligned means affinity above 0.6" can never be true of two
+positions and is true of almost every pair of nations.* **The recommendation is therefore not one
+number: adopt 2√3, AND declare per use which population a threshold is tuned against.**
+
+**Also corrected while checking:** *§15.1's claim that "any two corners are 2 apart" is false — corner
+pairs run 2.0000 to 3.4641. The conclusion it supports survives: a centrist at √2 is nearer than the
+closest corner pair at 2.*
+
+---
+
+### D251 — The victory targets are stale at EIGHTY turns, before the 200-turn question is reached, 16 September 2026
+
+**Three targets state their own calibration, and all three quote an eighty-turn world with nobody
+playing:** *`win.reuniteSeats` 0.55 — "the best AI nation held five seats (9.8%)... five and a half
+times what the map produces on its own"; `win.reunitePop` 0.30 — "three times the 9.2%";
+`win.reuniteGdp` 0.30 — "three times the 10.2%".*
+
+**Measured today at the same eighty turns, seed `tdd-t0`: seats 29.4%, population 16.3%, GDP 18.8%.**
+*So the claimed multiples of 5.5x, 3x and 3x are today 1.9x, 1.8x and 1.6x.*
+
+> **The baselines no longer describe the game at the length they were taken at.** *Between them and now
+> the alpha track added deals with terms, corridors, tolls, rivers and an AI that uses all of it.*
+
+**And the seat term peaks early and falls** — 51% of its target at turn 25, 27% by turn 75. **That is
+the exact shape `js/victory.js` already identified and fixed once**, for the ideology condition:
+*"easiest at the start and got harder, which is exactly backwards for a victory."*
+
+**⚠ NOT A RECALIBRATION, and deliberately not one.** *One seed, and the project's rule is that one run
+is not enough. A real recalibration needs a spread of seeds at the real game length — which cannot be
+produced today, see D252.*
+
+---
+
+### D252 — Filed rather than fixed: the game cannot reach turn 200, 16 September 2026
+
+**`docs/deferred.md` 46.** *`Sim.run` hangs inside `AI.round` — turn 80 on one seed, 94 on another.*
+
+**Ruled out by check rather than argument:** *the instrumentation (a bare run with no callback hangs
+identically), browser throttling (tab fronted; turns 1–80 at 261–431 ms with no upward trend),
+slowness (neither the turn counter nor the nation count moved across a 20-second and then a 40-second
+window), a turn cap (there is none, and the second seed passed 80), and the known non-re-entrancy
+(`Sim.isRunning()` confirmed false before each run).* **Four runs, two seeds.**
+
+**Decided: file it, do not fix it.** *Step 1 is a measuring session; the repair is a programming session
+under a different permission, and Aaron has not given one.* **It is named as the strongest candidate for
+the first repair**, because three separate pieces of stage 3 wait behind it: the turn cost, the victory
+recalibration, and whether the logistics spiral spirals.
+
+> **⚠ The half that is NOT proven: whether a player pressing End Turn hangs the same way.** *`js/sim.js`
+> says in its own header that it drives the real game — "the same clock the Pass button drives" — so
+> there is no reason to expect otherwise. It is inferred, not tested, and it is recorded that way.*
+
+---
+
+### D253 — Every gap in the project is unowned, and it is the template's doing, 16 September 2026
+
+**Found while triaging the 300.** *207 of them have nobody's name against them — and 166 of those are
+every single gap in the project.*
+
+**The cause is structural rather than careless: the satellite template gave open questions a
+three-column table with an OWNER column, and gaps a two-column table without one.** *So no gap has ever
+had an owner, in any document, by construction.*
+
+**Decided: each system's technical document assigns an owner to every gap it inherits, as its first
+act** — *recommended rather than done centrally, because one session assigning owners across nineteen
+systems it has not yet written would be guessing.* **An unassigned question is a question nobody will
+ask, and that is the whole cost of it.**

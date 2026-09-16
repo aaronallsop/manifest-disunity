@@ -89,6 +89,35 @@ exists at all.
 
 ---
 
+## 4a. The state inventory — what a save holds, and what it will have to (T0.5)
+
+**The save is version 3 and its discipline is genuinely good**, so this section is short. *Every module
+holding mutable state exposes `serialize`/`loadState`, and `assemble()` walks one registry —
+`STATEFUL_MODULES`, sixteen entries. **The rule exists because of a real v1 failure: 2 of 8 stateful
+modules were persisted and the rest silently carried over from the previous session**, so a loaded game
+ran on the last game's market prices. That is a caught-and-fixed class of bug, and the registry is what
+keeps it caught.*
+
+**Registered today (16):** *Game · TurnSystem · World · Market · Colors · Movements · Ledger · Military ·
+Relations · Recognition · Events · Leaders · History · Pacts · Deals · Transit.*
+
+**⚠ What the design adds that has nowhere to be written:**
+
+| New persistent state | Owner | Status |
+|---|---|---|
+| **A project** | `turn-design.md` | **Named by its own §6.2 as having no module AND no slot in the turn to resolve in** |
+| **Mission progress** | `missions-design.md` | *Per nation, per tree, permanent once completed — and a completed mission stays completed, so it must survive a save* |
+| **Bloc / federation membership, treasury, leader, toll** | `blocs-design.md` | **An entire object with its own turn** |
+| **Alliances, vassalage, guarantees, sponsorship** | `diplomacy-design.md` | *`Relations` and `Pacts` exist and are the natural homes, but the code says outright that a vassal contract was avoided because **"the save format has nowhere to put"** it* |
+| **A ceasefire, and terms tabled but not yet opened** | `war-design.md` | *The blind double-tabling needs both sides' unopened terms to persist across a turn boundary* |
+
+> **The protection the registry gives is real but conditional: it stops a REGISTERED module being
+> forgotten. It cannot notice a module nobody wrote.** *So every one of the five rows above is a
+> registry entry that has to be added deliberately, and the technical document for each system should
+> say so in its own words rather than leaving it to whoever builds it.*
+
+---
+
 ## 5. What this ledger changes about the plan
 
 **Three things, and the third is the one to carry forward.**
