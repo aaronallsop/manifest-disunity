@@ -6105,3 +6105,104 @@ code. **It is still wrong**, and the deferred entry says so.*
 *The real result, measured this session in the browser: **956 passed, 0 failed, 0 skipped, 205 suites,
 282 seconds.***
 
+
+---
+
+### D244 — Stage 3 is scoped, and dependency order is abandoned before it is tried, 16 September 2026
+
+**Aaron approved scoping the technical stage** (`stage-3-shape`, board, 15:13 UTC) and asked for it in the
+same message. **`docs/technical/TDD-PLAN.md` is the result.** *Seven stages, nineteen satellites and a
+master, and two decisions left to him.*
+
+**Observed, and it is the finding that shapes everything else.** *`GDD.md` §13 states twice — and D230
+ratified — that the Technical Designer takes one system at a time and never has to read a system they are
+not writing. **That is why there are nineteen documents.*** **Measured from the satellites' own
+`Depends on:` lines, read one at a time rather than regexed: it does not hold for eleven of them.**
+
+> **Blocs, diplomacy, economy, force, governing, movements, nation, population, power, trade and war are
+> one strongly connected component. Fourteen mutual pairs. Power is read by twelve of nineteen.**
+> **Only THREE documents depend on nothing — board, identity, turn** — and the five remaining acyclic
+> ones all read systems inside the knot, so none can be finished first either.
+
+**Decided: the ordering principle is CONTRACTS BEFORE INTERNALS, then the turn pipeline.** *Specify what
+a system hands over before what it does inside, which turns each mutual pair into two documents against
+one agreed edge; then take the rest in the order a turn actually runs, which is acyclic and fixed by
+`turn-design.md` §6.* **Not borrowed dogma — the build already does exactly this in three places (the
+Preview object, the field registry, the named RNG streams) and they are the three that have never caused
+trouble.**
+
+**Rejected: attempting dependency order and adapting when it breaks.** *It gets three documents in. The
+stall would present as somebody struggling to write rather than as a structural problem, which is the
+expensive way to find it.*
+
+> **⚠ This is NOT a fault in the design documents and the plan says so.** *A simulation's systems are
+> mutually dependent because the world is. The fault is in an ORDER that was never written down and was
+> assumed from a sentence about reading.*
+
+**Two decisions are Aaron's and are on the board as `tdd-scope` and `tdd-sequence`:** *whole game or
+alpha-first (recommended: alpha-first, because D239 already set the alpha's content scope, so following
+it is not a cut), and all-on-paper or foundations-then-slices (recommended: the latter).* **Everything
+else in the plan is a default taken and labelled as one.**
+
+---
+
+### D245 — There are 38 standing faults, not 12, and a decision was taken against the wrong number, 16 September 2026
+
+**Counted entry by entry while scoping stage 3.** *`docs/deferred.md` holds **thirty numbered sections,
+16 through 45, every one open**, plus **eight unclosed rows in its own top table** — 6, 8, 10, 11, 12,
+13, 14 and 15.* **Thirty-eight.**
+
+**The twelve in circulation are 34–45 — the dozen the DESIGN STAGE found.** *The board card, the handoff
+and this project's conversation have all used it as though it were the register.*
+
+**Why it happened, and it is the same mechanism as the stale line counts.** *The register is written in
+two formats: a table for 1–15 and numbered sections for 16–45. **The twelve were counted from the section
+the design stage had been appending to. Nobody counted the file.***
+
+**What it changes: nothing about Aaron's decision, and something about the plan.** *He chose scoping over
+repair and that choice stands — **but the number was wrong in the direction that made repair look
+cheaper than it is**, which is the direction that matters when it is the thing being weighed against.*
+**T0.3's triage now places thirty-eight faults alongside the three hundred design items**, and deferred
+14 is named as one the technical stage cannot route around: *a nation reading its own founding movement
+as maximum strain moves AI posture, the pressure map and the treasury, and it is Deseret's problem first.*
+
+---
+
+### D246 — The twenty design documents leave 300 live items, and 52 are Aaron's, 16 September 2026
+
+**Measured across all twenty, 16 September.** *`CLAUDE.md` says the list lives at the end of the document
+that owns it and **must not be reassembled from memory** — so all twenty ends were re-read rather than
+recalled.*
+
+| | |
+|---|---|
+| **Open questions, live** | **134** |
+| **Gaps, live** | **166** |
+| **Total** | **300** |
+| **Owned by Aaron** | **52** |
+| **Owned by the architect or stage 3** | **33** |
+| **Unassigned or owner not stated** | **~20** — *and an unassigned question is one nobody will ask* |
+
+**Nothing here is a defect.** *An honest document ends with what it does not know, and three hundred is
+what that costs across 11,350 lines.* **What it changes is the SIZE of the stage:** *it was being
+described as "write twenty documents" and it is "settle three hundred things, in an order that does not
+put fifty-two questions in front of Aaron in one week."*
+
+**Decided, as a default rather than a card: his 52 arrive at the head of the system document that owns
+them, three or four at a time, with that document open in front of him** — *not as fifty-two board
+cards.* **Reason: the standing rule is to keep the decision queue small, and a question asked beside the
+thing it decides gets a better answer — round 6 demonstrated it and round 5 paid for the alternative.**
+*The two live cards fold in as blocking items: `which-toll-system` blocks the trade document, and
+`deseret-politics` blocks the opening board and the Deseret tree.*
+
+---
+
+### D247 — Stage 2's line total is 11,350, not 11,324, 16 September 2026
+
+**Re-measured today while pricing stage 3: the master is 1,170 lines and the nineteen satellites 10,180.**
+*The record published 1,168 and 10,156 yesterday.* **Twenty-six lines of drift in a day — 0.2%.**
+
+**Recorded rather than silently corrected.** *Neither figure was wrong when written; the documents were
+edited after the count. **The lesson is the one this project keeps paying for** — a figure that does not
+say which day it belongs to is a figure about something else — and the next person to quote 11,324 should
+know it is yesterday's.* **The 97% conversion ratio against stage 1 is unaffected.**
