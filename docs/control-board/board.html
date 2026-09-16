@@ -321,34 +321,52 @@ tr:last-child td{border-bottom:0}
 const BOARD = {
   project: "Manifest Disunity",
   livery: "tower",                      // tower | mars | violet | deep | slate
-  updated: "2026-09-16 10:20",          // when you last republished, local time
+  updated: "2026-09-16 11:40",          // when you last republished, local time
 
   // Three or four measured figures. value: number|string, or null = "not yet measured".
   figures: [
-    { label: "Unanswered items the twenty design documents leave behind", value: 300 },
-    { label: "Of those, questions that are yours and nobody else's", value: 52 },
-    { label: "Live faults in the game — counted properly today, was 12", value: 38 },
-    { label: "Systems that cannot be written one at a time", value: "11 of 19" },
-    { label: "Lines of design, re-measured this morning", value: "11,350" },
+    { label: "Turn the game hangs on — it is designed to reach 200", value: "80–95" },
+    { label: "Systems with NO code behind them at all", value: "5 of 19" },
+    { label: "Loose ends, now sorted — and 207 had no owner", value: 300 },
+    { label: "Live faults, after today", value: 39 },
+    { label: "Step 1 of the technical stage", value: "done" },
     { label: "Current version", value: "v0.6" },
   ],
 
   headline: {
-    tone: "ok",
-    lead: "The technical stage is scoped and you approved it — alpha first, and foundations before "
-        + "building rather than twenty documents before anything runs. Nothing is waiting on you. "
-        + "Step 1 is the next piece of work and it is described below.",
+    tone: "bad",
+    lead: "Step 1 is done and it found something bad. The game is designed to run two hundred turns "
+        + "and it cannot currently finish one — it stops dead somewhere around turn eighty to ninety "
+        + "and never starts again. Everything else below is the good work; this is the thing that "
+        + "needs your answer.",
     points: [
-      "WHAT YOU APPROVED, in plain terms. Alpha first: everything the alpha needs gets written to a standard somebody could build from, and everything else gets only its edges — what it must hand its neighbours — so nothing is designed into a corner. Foundations then slices: two pieces finish on paper because everything depends on them, and after that a system gets specified and built before the next one is specified. Each slice ends with something that runs.",
-      "STEP 1 IS NOT FORMULAS. It is finding out where the game actually stands against the design, and sorting the three hundred loose ends. Nine of the twenty design documents say what is already built; ten do not — so for half the game nobody has written down what exists, and writing formulas against that would be guessing whether we are describing a change or describing what is already there.",
-      "YOUR TOLL ANSWER IS RECORDED AS YOU WROTE IT: the choice gets made when the economy is built out in the technical stage, and it will not be raised again before then. The card is off the board rather than parked where it can nag you.",
-      { warn: true, t: "ONE THING TO FLAG, and it is small. You approved the Deseret card, and that card explained why the new political board has no distributist square — it did not contain a placement to approve. So the reasoning is accepted and Deseret still has no square. I have NOT re-asked it: it is parked to the step that builds the political board, the same way you parked the tolls, and it comes back then. Say so if you would rather answer it now." },
-      "The three counting results from this morning stand and are the figures above: 300 loose ends with 52 of them yours, 38 live faults rather than the 12 everyone has been saying, and eleven of the nineteen systems tangled in one ring so they cannot be written one at a time.",
+      { warn: true, t: "THE GAME HANGS. Running it forward with nobody playing, it froze at turn 80. I ran it again — turn 80. Again with all my measuring instruments removed, in case they were the cause — turn 80. Then a different starting world — turn 94. Four runs, two worlds. It is not slow, it is stopped: across a forty-second window neither the turn counter nor the number of countries moved by one. It is not my instruments, not the browser, and not a limit anybody set — there is no turn limit in the game at all." },
+      { warn: true, t: "WHY IT MATTERS MORE THAN IT SOUNDS. Three things this stage was going to settle can only be settled by running a long game: how much the machine can take now that a country can start several things a quarter, whether your victory targets still work at two hundred turns, and whether the trade spiral you found in the economy round actually spirals. All three are stuck behind it. And the thing that hangs is the same clock the End Turn button drives, so there is no reason to think a player would fare better — I have not proved that half." },
+      { warn: true, t: "YOUR VICTORY TARGETS ARE ALREADY WRONG, and not because the game got longer. Three of them are written down as being three to five and a half times what the game produces on its own — measured over eighty turns, with nobody playing. I measured the same thing today, at the same eighty turns: they are now only about one and a half to two times. The world consolidates much faster than it did when those were set, because everything the trade stages added changed it. One world, so not a recalibration — but the numbers are not describing the game any more." },
+      "THE LEDGER IS DONE and it is what you were promised: what the game actually does against what you designed, all nineteen systems, checked in the code rather than taken from a document. Five systems have NOTHING behind them — the clubs and federations, the mission trees, anything that takes more than a turn to finish, alliances and vassals, and the whole business of ENDING a war. The fight is built; signing peace is not.",
+      "Three more things the design leans on turned out to be entirely absent: the referendum, martial law, and the 'wary' state — which your own conquest round made the only way out of a permanent feud in the whole game.",
+      "AND THE SMALL WIN. The one number every political threshold in the game is measured against had never been set. It is set now, and the old rule chose it rather than being overruled — so nothing was overturned to get there. Working it out turned up something nobody had asked: the same measure behaves completely differently depending on whether you point it at two parties or at two countries, so a single setting tuned on one is meaningless on the other.",
     ],
   },
 
-  decisions: [],
-
+  decisions: [
+    {
+      id: "fix-the-hang",
+      title: "The game cannot reach turn 200. Fix it now, or carry on and fix it later?",
+      recommendation: "FIX IT NOW — my recommendation, and it is the first programming work of this stage. Three separate things this stage has to settle are stuck behind it, and all three are measurements rather than opinions, so no amount of paper gets past them. It is also the kind of fault that gets harder to find the more the code changes around it. Against that: it is a repair, and you have not given a permission for one this stage, which is why it is a card rather than something I simply did.",
+      evidence: [
+        "Four runs across two starting worlds. It is stopped, not slow: across a forty-second window neither the turn counter nor the number of countries moved by one.",
+        "It is not my measuring instruments — a run with every instrument removed hangs the same way. It is not the browser, and there is no turn limit anywhere in the game.",
+        "What is stuck behind it: how much the machine can take under the new turn rules, whether your victory targets survive a two-hundred-turn game, and whether the trade spiral the economy round found actually spirals.",
+        "The thing that hangs is the same clock the End Turn button drives. I have NOT proved a player hits it too, but there is no reason to think otherwise.",
+      ],
+      cost: [
+        "Fixing it now: a programming session, and I cannot tell you how long until I find it. It is a hang rather than a wrong answer, which usually means it is findable.",
+        "Carrying on: step 2 is the handover rules and does not need a running game, so the stage is not blocked TODAY. It gets blocked at step 3, which is where the numbers start.",
+        "Either way it is written down as fault 46 and will not be lost.",
+      ],
+    },
+  ],
   _answered: [],
 
   // Standing permissions. Ids are permanent. risk: "low" | "med" | "high".
@@ -924,7 +942,7 @@ const BOARD = {
             + "down; whether your victory targets still hold now a game is two hundred turns instead "
             + "of eighty; and one denominator on the new political board that every tuned threshold in "
             + "the game is measured against, which still has no value." },
-    { name: "Step 1 — The ledger and the triage", status: "current",
+    { name: "Step 1 — The ledger and the triage", status: "done",
       brief: "Before any formulas: find out where the game actually stands against the design, and sort "
            + "the three hundred loose ends the design stage left behind.",
       actual: "THE LIVE STEP, unblocked by your two approvals and not yet begun. One session, and it "
@@ -942,7 +960,7 @@ const BOARD = {
             + "can each start in a quarter before the machine slows, whether your victory targets still "
             + "hold at two hundred turns, and the one denominator on the new political board that has "
             + "never had a value. The thirty-eight faults get sorted in here too." },
-    { name: "Step 2 — How systems hand things over", status: "todo",
+    { name: "Step 2 — How systems hand things over", status: "current",
       brief: "Agree what each system gives its neighbours before writing what any of them does inside. "
            + "One document, and everything after it waits on this.",
       actual: "NOT STARTED, and this is the step that makes the rest possible.\n\n"
