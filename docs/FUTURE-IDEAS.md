@@ -701,6 +701,13 @@ current — `DECISIONS.md` D185 and D186, and `docs/design/politics-ideation.md`
 falling is deferred.** The register at
 `https://claude.ai/code/artifact/bc72d871-db3b-4e2d-8363-6909e491abe7` carries both conditions.
 
+> **⚠ Confirmed a second time, and split, 15 September 2026 — the tone interview (D239).** Aaron put
+> **Despotism** on his own post-alpha list without being asked, which is the same answer arrived at
+> from a different direction six days later. **But he separated the two halves this idea holds
+> together:** *"Stateless ground is in alpha but is not a playable nation."* **So statelessness as
+> GROUND is alpha content and only the falling-into-despotism half is deferred** — and F20, which asks
+> what else makes ground go stateless, is therefore about something the alpha will actually contain.
+
 ---
 
 ## F20 — What else, besides two million people, makes stranded ground go stateless
@@ -1123,3 +1130,148 @@ the defender, which is a diplomacy idea hiding inside a military term.
 **What it would take.** The machinery to know who declared **already exists** — conquest ruling 33
 makes the defender the nation that did not declare, and the peace-treaty round already depends on
 telling them apart. So this is a sign flip on an existing term rather than a new record.
+
+---
+
+## F36 — Area descriptions beyond numbers
+
+**Aaron, 15 September 2026**, in the tone interview. **Deferred to post-alpha by decision**, and it is
+rule 25 of `docs/design/TONE.md`: *alpha Area panels are numbers only.*
+
+**What it is.** Today a county's panel says `Pop 71,400 · GDP $4.1B · 2024 vote: Republican 81.2%,
+Democrat 17.1%` and nothing else. The idea is that it could also say what the place **is** — its
+industry, its history, why it votes the way it does.
+
+**Why it is interesting.** It is the one place the game could teach the history Aaron plays Europa
+Universalis for, at exactly the moment a player is curious: they have clicked the county because they
+want it. **`GDD.md` §3 makes learning real history a stated purpose of the game, and in alpha the Area
+panel contributes nothing to it** — all the teaching has to live in missions, events, mottos and
+headlines instead.
+
+**Why it is deferred.** Writing 1,688 of them is the obvious cost, but it is not the real one. **The
+real one is rule 13:** a description of a real place is a description of real people, and the interview
+produced a worked example of how easily it goes wrong — *"Rural, churchgoing ranching communities wary
+of Austin"* names a faith, characterises residents, and states one nation's opinion of them in the
+narrator's voice. **Three separate rules, in one sentence somebody would write without thinking.**
+
+**What it would touch.** The Area panel. A writing pass over however many Areas get descriptions, and a
+review pass against rules 13, 25 and 26. **Nothing in the model.**
+
+**Before it is worth doing.** After the alpha has said whether players want to know what a place is, and
+after somebody has written ten of them and checked whether the rules survive contact.
+
+---
+
+## F37 — The world noticing an absurd outcome
+
+**Aaron, 15 September 2026**, in the tone interview. **Deferred to post-alpha by decision**, and it is
+rule 36 of `docs/design/TONE.md`: *deadpan everywhere, in alpha.*
+
+**What it is.** When the board does something ridiculous — Alaska, by sea border, holding three Areas
+around Lake Superior — the game currently reports it straight. `Annex · Alaska ← Minnesota · 1 Area ·
+St Louis County`, and Minnesota's paper notes the loss without remarking on the distance. **The idea is
+a second register that notices**: an in-character headline (*"FOREIGN POWER 2,000 MILES AWAY CLAIMS
+DULUTH"*), an achievement, a paper that finds it as funny as the player does.
+
+**Why it is interesting.** It is **the third of the three things Aaron plays EU4 for**, in his own
+words: *"the ridiculousness and sometimes hilarious outcomes of the game and writing."* Provence
+becoming Jerusalem is not a mechanic — it is the game noticing. **Deadpan is the safe choice for an
+alpha and it may be the wrong choice for the finished game.**
+
+**Why it is deferred.** It needs a code path that **detects oddity**, and nobody has said what oddity
+is. Distance is the obvious test and **nothing in the transit layer has a length** (`GDD.md` §9), so
+even "far away" is currently unmeasurable.
+
+**What it would touch.** The headline generator; an achievement list; and whatever gains the ability to
+say two places are far apart, which today is nothing.
+
+**Before it is worth doing.** **The alpha is the measurement.** If deadpan reporting of Alaska holding
+Duluth reads as flat rather than dry, this is the fix, and the alpha will say so.
+
+---
+
+## F38 — The victory screen as a disputed ending
+
+**Aaron, 15 September 2026**, in the tone interview. **Deferred to post-alpha by decision**, alongside
+rules 37 and 38 of `docs/design/TONE.md`.
+
+**What it is.** Victory is the player's own paper's final edition, slanted by its ideology and limited
+by its Civil Liberties, with the blunt totals beneath it — **one front page.** The idea is **several**:
+the rival nations' front pages on the same screen, so the ending is reported by the people who lost it
+as well as the people who won.
+
+**Why it is interesting.** It is the whole tone position, concentrated into one screen. **"Every
+judgement in the game belongs to someone in the world"** is easy to hold for fifty years of play and
+hardest to hold at the end, where a game normally tells you whether you did well. Reunification being a
+happy ending *in the player's paper and nowhere else* is a strong line; showing the other papers is what
+proves it rather than asserting it.
+
+**What it would touch.** The victory screen only. It needs the headline generator to already produce one
+paper per ideology at one Civil Liberties level, **which rules 6 and 7 require anyway** — so this is a
+layout and selection problem sitting on top of machinery that has to exist regardless.
+
+**Before it is worth doing.** After one front page works. **The defeat screen is the cheap half and it
+is in alpha**: rule 38 already gives the ending to the nation that took your last Area.
+
+---
+
+## F39 — Tone rules for the three things that come back post-alpha
+
+**Aaron, 15 September 2026**, in the tone interview. **This is the return ticket for D239's scope cut**,
+and it exists so that the cut is not mistaken for a deletion.
+
+**What it is.** Three things are out of the alpha and will come back: the **New Confederacy** movement,
+the **Christian Nationalism** movement, and the **Despotism** government state (whose mechanics are
+F19's). **Every rule in `docs/design/TONE.md` was written against a scope that excludes them**, and the
+document says so in its first section.
+
+**Why it is interesting, and why it is a real job rather than a formality.** The rules that would have
+to carry them are the ones that were **never tested against them**: rule 13 (a movement is described by
+the state it wants and its real history, never by the faith, race or ethnicity of its supporters), rule
+14 (two voices, and only the motto may name a people), rule 15 (a motto is something a sympathetic
+supporter would say proudly, never a phrase its opponents use to mock it), rules 16 and 17 (a flag
+generator and a name generator that must not produce real hate-group iconography or an echo of a real
+regime), and the refusal list, rule 34. **These are exactly the three subjects where those rules are
+load-bearing rather than decorative** — and the interview's own assessment is that they *should* cover
+most of it, which is not the same as knowing they do.
+
+**What it would touch.** Nothing in the model. **A test pass**: write the movement entries the rules
+demand, and see which rule breaks first.
+
+**Before it is worth doing.** When Aaron brings the three back. **Do it before the content is written,
+not after** — that is the whole reason this is written down.
+
+---
+
+## F40 — Money crossing a border, and funding somebody else's movement
+
+**Aaron, 15 September 2026**, in the tone interview. **Raised as an assumption rather than a request**,
+which is why it is here: he described funding a communist uprising abroad as a thing a player does, and
+it is not a thing the game can do.
+
+> **`DESIGN.md` is explicit:** *"there is no treaty object and no transfer of money between nations."*
+
+**What it is.** Two things stacked, and the lower one is the blocker. **The lower:** money can move from
+one nation's treasury to another's. **The upper:** a nation can spend money on a movement inside
+somebody else's borders, raising its sentiment without sending a soldier.
+
+**Why it is interesting.** Both halves pay for themselves separately.
+
+- **The transfer alone** unlocks subsidies, tribute, bought neutrality, paying a federation's toll on
+  a member's behalf, and buying your way out of a creditor's demand. Several deferred ideas assume it
+  quietly.
+- **The upper half is the only aggressive move in the game that is not a purchase of ground.**
+  `war-design.md` opens with *"there is no war; taking ground is a purchase"* — funding a movement is
+  buying somebody else's ground **from the inside**, and it is the move that makes the movement system
+  matter to a nation that is not the one hosting it. **F18 already lists "a nation funding somebody's
+  rebels" as one of the five causes of hostility** — so the *consequence* is designed and the *act* does
+  not exist.
+
+**What it would touch.** The treasury; a new offer face, or a new move; the movement sentiment formula,
+which would gain a term nobody in the host nation controls; the Why record, which would have to decide
+whether the host can **see** who is paying — and that is a presentation question with teeth, because the
+answer changes whether this is espionage or diplomacy.
+
+**Before it is worth doing.** After the alpha says whether the movement system is interesting to a
+player who is *not* being seceded from. **And somebody has to rule on visibility first**, because
+building it invisible and building it visible are different features.

@@ -407,3 +407,34 @@ true of the **inputs** it reads and false of the **five weights** it multiplies 
 **Consequence: AI posture is the one part of the model Aaron cannot tune.** *He can change what a
 garrison is worth, what it costs and how fast it arrives — and not how readily sixty nations reach for
 one.*
+
+---
+
+## 44 — ⚠ Deseret opens with the wrong politics, and Aaron said so himself
+
+**Found by the tone interview, 15 September 2026** — not by reading code, which is why it had survived.
+
+**`DESIGN.md` line 106 opens Deseret as `yellow` — Conservative Nationalist.** **Aaron:** *it "should
+be modeled as a distributism christian state."*
+
+**Those are not the same place on the board.** *Distributism is a redistributive, property-spreading,
+anti-concentration position; conservative nationalism is not. **On the six-ideology model the fix is
+`orange`** — arithmetic from the two-axis placement, not a judgement.*
+
+**⚠ But the fix is not one character**, and this is why it is filed rather than done:
+
+- **On the three-axis, ten-position board (D231), none of the ten named parties is obviously
+  distributist.** *Somebody has to place it, and that placement is a design decision rather than a
+  correction.*
+- **Where a nation sits decides where it can GROW.** *Affinity drives coalitions, drift, splinters,
+  defection, civil-war severity, trade alignment and AI diplomacy. Moving Deseret moves all of it.*
+- **Deseret is not an ordinary nation on this board.** *It is half-born by design — the Wasatch Front
+  always cedes, the corridor that stays is the live story, and its `growthRate` of 1.5 is the fastest
+  on the map. It is the nation whose politics the opening position leans on hardest.*
+
+**Consequence while it stands:** *the nation with the most authored opening story in the game, and one
+of the three with a mission tree, is playing from the wrong square.* **And `TONE.md` rule 13's worked
+example — "a Christian distributist state" — is the line the game is supposed to print about it.**
+
+*Filed, not fixed: a design round writes documents only, and the placement on the new board is a
+decision nobody has taken.* **`TONE.md` §5.14.**

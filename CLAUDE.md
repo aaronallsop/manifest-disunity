@@ -187,8 +187,20 @@ one system belongs in that system's document.
 
 **What exists — NINETEEN of twenty documents. Line counts measured 15 September 2026.**
 
-**⛔ The twentieth, `presentation-design.md`, is PARKED BY NAME** until `docs/design/TONE.md` exists.
-*Writing it without that means inventing the game's position on its own subject matter.*
+**✅ UNPARKED, 15 September 2026 — `docs/design/TONE.md` EXISTS** (D238), written from Aaron's own
+interview: 41 rules, 11 worked examples, 19 open questions. **So the twentieth, `presentation-design.md`,
+is the ONE document left in stage 2** and nothing blocks it. *It is not one of the twenty; it is the
+input the twentieth could not be written without.* **Read it before writing anything the player reads
+— it is checked against artefacts, not vibes, and rules 1–4 bind every panel, prompt and tooltip in the
+game.**
+
+**⚠ AND THE ALPHA'S CONTENT SCOPE CHANGED WITH IT — D239, Aaron's, unprompted.** *Out of the alpha and
+returning afterwards: **the New Confederacy and Christian Nationalism movements, and the Despotism
+government state**. **Stateless ground IS in the alpha but is not a playable nation.** Alpha content is
+**the Texas area, the Great Lakes and the West** — which is exactly the ground of the three mission
+trees.* **`identity-design.md` and `movements-design.md` still describe all 26 movements and were
+deliberately not corrected**: a movement cut from the ALPHA is not cut from the GAME. **The scope lives
+in `GDD.md` §9.**
 
 | | Lines | |
 |---|---:|---|

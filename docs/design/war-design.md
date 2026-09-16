@@ -432,6 +432,7 @@ and lose… **If that reads as foolish in the alpha, the fix is to make the AI w
 | **8** | **A logged term points at a tunable key that does not exist** — *so a union's odds are the one number a player cannot trace to a lever* |
 | **9** | **⚠ The scenario's own text contradicts its own data:** *it says California dissolved into five successors and ceded the north, while the data holds **six** including Cascadia* |
 | **10** | **Four victory figures say "half" and "three quarters" where the code says 0.30 and 0.55** |
+| **11** | **⚠ THE WAR BLEED DOES NOT SAY WHAT HAPPENS TO THE PEOPLE.** *It removes them, and nothing anywhere says whether they **died**, **fled**, or **changed sides** — three different facts with three different consequences for population, migration and sentiment, currently collapsed into one subtraction.* **Raised by the tone interview, 15 September 2026** (`TONE.md` §5.16), because it decides something outside this document: **rule 10 forbids the newspaper to print a casualty figure until the model produces one, and today the model cannot produce one even in principle.** *Until this is settled, rule 10 stands and no paper in the game may say how many died* |
 
 ---
 

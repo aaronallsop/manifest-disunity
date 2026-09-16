@@ -5861,3 +5861,92 @@ talks?*** **Those are three different designs and the cheapest of them is a tent
 *Recorded against `turn-design.md` and `presentation-design.md`. **The tutorial he previously had never
 asked for is now, in substance, asked for** — and that is a scope change the build order should see
 rather than discover.*
+
+---
+
+### D238 — The game's tone is settled, and it came back as a document rather than an answer, 15 September 2026
+
+**The card asked: what is the game's attitude to its own subject?** *It had been open since the master
+document was written and it blocked the twentieth and last design document, because writing what the
+player sees without it means inventing the game's position on a country coming apart.*
+
+**Aaron did not answer the card. He changed what kind of thing it was:**
+
+> *"What I want you to do is take this thought/question and give me a prompt that I can put into claude
+> chat that will ask me questions about this. Then it will take my answers and format it into a
+> document based on what you need."*
+
+**That produced `prompts/tone-interview.md` (D232), and this decision records its output:
+`docs/design/TONE.md` — 41 rules, 11 worked examples, an edges section and 19 open questions.**
+
+**The position, in one line:** *the game holds no opinion about what the player does; every judgement
+in it belongs to somebody in the world — a nation's paper, a movement's motto, a rival's headline — and
+the game's own voice names mechanics and prints numbers.* **The model is the honesty: the paper may
+spin, but it may never state a false fact, and the numbers beside it never spin.**
+
+**Three lines of his that the rules are built on, quoted rather than paraphrased:**
+
+- *"playing ugly is entirely subjective … the point is that this game is meant to be subjective in that
+  sense."*
+- *"I'm ok with allusions as long as they are more historically based. I like this because of the
+  irony."*
+- *"where I would draw the line is when the jokes touch on racial topics and specifically events and
+  missions dealing with indigenous countries and topics."*
+
+**⚠ And it has two deliberate cracks in its own principle, named in the document rather than hidden:**
+*the famine rule (no voice mocks hunger) and the refusal list (forced expulsion, mass killing and
+nuclear weapons against cities are never a button) are judgements the GAME makes, which no in-world
+voice may override.* **A hostile paper, in character, would gloat over a rival's famine. This game will
+not let it.**
+
+**Why the route matters and not just the answer.** *Turning the question into a prompt produced more
+than any card would have — and it also turned up three faults nobody had found: Deseret opens with the
+wrong politics (`docs/deferred.md` 44), funding a movement abroad assumes money can cross a border and
+no money ever crosses a border (`docs/FUTURE-IDEAS.md` F40), and the war bleed does not say whether
+people died, fled or changed sides, so the newspaper can never print a casualty figure
+(`war-design.md` gap 11).* **An interview found in one sitting what nineteen documents had walked
+past.**
+
+**Nine tone questions remain open inside the document and are his** — `GDD.md` §17 question 5a. **None
+of them blocks the last document.**
+
+*Recorded against `GDD.md` §17 question 5, now closed.* **`presentation-design.md` is unparked.**
+
+---
+
+### D239 — The alpha's content scope: two movements and a government state are out, 15 September 2026
+
+**Aaron, in the tone interview, unprompted.** *Nobody asked him for a scope decision; he opened with
+one, because every tone rule he was about to give had to be written against a known set of content.*
+
+| Out of the alpha | Returns |
+|---|---|
+| **The New Confederacy** movement | Post-alpha — `docs/FUTURE-IDEAS.md` **F39** |
+| **The Christian Nationalism** movement | Post-alpha — **F39** |
+| **The Despotism** government state | Post-alpha — its mechanics are **F19's**, deferred there on 9 September |
+
+**Stateless ground IS in the alpha, but is not a playable nation.** ***This splits F19***, which had
+held despotism and statelessness together as one idea since 9 September. **Only the falling is
+deferred; the ground is alpha content** — which means F20, asking what else makes stranded ground go
+stateless, is about something the alpha will actually contain.
+
+**Alpha content focuses on the Texas area, the Great Lakes and the West.**
+
+> **⚠ Worth noticing rather than passing over: that is exactly the ground of the three mission trees**
+> — the Great Lakes union, the five Texas cities, Deseret's trail — **and of the starting situations
+> D236 makes the player's, ruled the day before from an entirely different question.** *Two decisions
+> taken separately, a day apart, landed on the same map without being made to.*
+
+**⚠ What this costs, stated rather than discovered later.** *`identity-design.md` places all 26
+movements and `movements-design.md` describes what they do. **Neither knows two of them are out.*** The
+satellites were deliberately **not** corrected in place, because **a movement cut from the ALPHA is not
+a movement cut from the GAME, and a design document describes the game.** The scope lives centrally, in
+`GDD.md` §9.
+
+*That choice is recorded as `GDD.md` gap 13, because it is a **choice and not a convention** — it is the
+first time the alpha and the game have disagreed about what exists, and the next case should follow it
+or overturn it deliberately.*
+
+**Under the standing rule this is his to make and not a design document's:** *"Remember — you are not
+deciding what to cut."* **He decided. This records it.**
+

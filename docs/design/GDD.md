@@ -327,6 +327,35 @@ the rivers and their **fifteen chokepoints**, two seas with the Panama Canal shu
 Canada and Mexico as places, a trade network map, and all sixty nations using the system rather than
 only the player. Tagged `v0.6`. **The alpha test has not been run.**
 
+### Alpha content scope — what the alpha does NOT contain
+
+**Aaron, 15 September 2026, in the tone interview (D239).** *He put these on the list himself; nobody
+asked.* **They are scope decisions rather than tone decisions**, and they are recorded here because
+**every rule in `docs/design/TONE.md` was written against them.**
+
+| Out of the alpha | |
+|---|---|
+| **The New Confederacy movement** | Returns post-alpha. `docs/FUTURE-IDEAS.md` **F39 is its return ticket** |
+| **The Christian Nationalism movement** | Returns post-alpha. Same ticket |
+| **The Despotism government state** | Returns post-alpha. Its mechanics are **F19's** and were deferred there on 9 September — **the same answer reached twice, six days apart, from two directions** |
+
+**Stateless ground IS in the alpha — but it is not a playable nation.** *This splits F19, which had
+held despotism and statelessness together as one idea.*
+
+**Alpha content focuses on the Texas area, the Great Lakes and the West.** *That is exactly the ground
+of the three mission trees — the Great Lakes union, the five Texas cities, Deseret's trail — and of the
+starting situations D236 makes the player's.* **Two decisions taken separately, a day apart, landed on
+the same map.**
+
+> **⚠ This lands on documents that are already written.** `identity-design.md` places all 26 movements
+> and `movements-design.md` describes what they do; **neither knows that two of them are out of the
+> alpha.** *Deliberately not corrected in place: a movement cut from the ALPHA is not a movement cut
+> from the GAME, and a design document describes the game.* **The build order is where this is read —
+> and under the standing rule, what moves post-alpha is Aaron's and the planning stage's, not a design
+> document's.**
+
+---
+
 ### Deliberately out of scope
 
 **Unusually well kept, and it is one of this project's real assets.** `DESIGN.md` §12 is an honest
@@ -524,8 +553,10 @@ proposal's own list.*
 
 > **Master plus NINETEEN satellites — twenty documents in total.**
 > **EIGHTEEN satellites are written and this master makes NINETEEN documents of twenty.**
-> **⛔ ONE TO GO, and it is PARKED BY NAME: `presentation-design.md` waits on `docs/design/TONE.md`.**
-> *Writing it without that means inventing the game's position on its own subject matter.*
+> **✅ UNPARKED 15 September 2026 — `docs/design/TONE.md` EXISTS**, written from Aaron's interview,
+> and `presentation-design.md` is the **one document left in the stage.** *It was parked because
+> writing it without a settled tone meant inventing the game's position on its own subject matter;
+> that position is now on file as 41 rules and 11 worked examples.*
 > *Counted and line-measured 15 September 2026 rather than carried forward — and **two figures in
 > the table below were already stale**, because traced scenarios were added to both documents
 > after D232 and nobody updated the count.*
@@ -570,7 +601,7 @@ written down. `missions-design.md` is marked as the addition.*
 | ✅ `opening-board-design.md` | **Written, 390 lines.** **The opening position on 1 March 2036** — who exists, what they remember, what is already signed, **and a line down the middle of every page separating built from designed** | GDD, nation, diplomacy, movements |
 | ✅ `missions-design.md` | **Written, 1003 lines** — *was 836 before its traced scenarios landed.* **⚠ NOT IN THE ORIGINAL PROPOSAL — this is the nineteenth, added on the night of 15 September** when Aaron introduced mission trees. Three trees, three branches, four elements, one pivot each; what a mission may reward; the name register | GDD, nation, board, trade, diplomacy, movements |
 | ✅ `ai-design.md` | **Written, 366 lines.** The other sixty nations: one scoring model over the same Previews the player sees, posture from strain, softmax, the Closing term, and the cost of making it play under a restricted view | GDD, turn, and every system supplying a Preview |
-| `presentation-design.md` | What the player sees — the map and its modes, the Why-record panel, the one card shape the game asks questions with, the newspaper, the timeline — **and what a nation may know**, because the only fog in the game exists for a screen reason and not a realism one | GDD, movements, diplomacy, economy, events |
+| ⏳ `presentation-design.md` | **The last one, and now unblocked.** What the player sees — the map and its modes, the Why-record panel, the one card shape the game asks questions with, the newspaper, the timeline — **and what a nation may know**, because the only fog in the game exists for a screen reason and not a realism one | GDD, **TONE**, movements, diplomacy, economy, events |
 
 ### Three seams deliberately moved away from `DESIGN.md`'s own section breaks
 
@@ -942,7 +973,8 @@ than of `power.floor`: **a nation at peace is not eight per cent exhausted.**
 | ~~**2**~~ | ~~**Audio: is there any?**~~ ✅ **ANSWERED 15 September 2026, D232 — "Not yet."** Deliberately out of scope and now recorded as a decision rather than an absence. §7 and the out-of-scope list in §9 | — |
 | **3** | **Three of the eight staggered clocks are invisible or half-visible**, and two of them drive other nations' behaviour toward the player. Fog worth keeping, or an interface gap? | `presentation-design.md` |
 | ~~**4**~~ | ~~**Target audience**~~ ✅ **ANSWERED 15 September 2026, D232 — the EU4 player, and specifically the one who plays it for the three things Aaron named.** §3 is his words now, not a draft. **⚠ It corrected the draft rather than confirming it** — §3.1, and the correction produces a testable requirement: *the game must be playable and fun before it is understood* | — |
-| **5** | **Tone and framing.** ✅ **NOT ANSWERED, AND THAT IS THE RIGHT OUTCOME.** Aaron, 15 September: *"take this thought/question and give me a prompt that I can put into claude chat that will ask me questions about this. Then it will take my answers and format it into a document based on what you need."* **So this stops being a card and becomes a piece of work**, delivered as `prompts/tone-interview.md`. *The question is still open and is still his; what changed is how it gets answered* | `presentation-design.md`, and arguably everything |
+| ~~**5**~~ | ~~**Tone and framing.**~~ ✅ **ANSWERED 15 September 2026, D238 — `docs/design/TONE.md`: 41 rules and 11 worked examples, from the interview he asked for.** **The position in one line: the game holds no opinion about what the player does, every judgement in it belongs to somebody in the world, and the model is the honesty — the paper may spin but may not lie.** *The route is worth recording: he refused to answer the card and asked for a prompt instead, which turned a question into a piece of work and produced far more than a card would have. **Nine tone questions remain open inside that document and are his**, and it also turned up three faults nobody had found.* **The original card, for the record:** Aaron, 15 September: *"take this thought/question and give me a prompt that I can put into claude chat that will ask me questions about this. Then it will take my answers and format it into a document based on what you need."* **That turned it from a card into a piece of work** — delivered as `prompts/tone-interview.md` and answered as `docs/design/TONE.md` | — |
+| **5a** | **The nine tone questions `TONE.md` §5 leaves open.** *Not one of them blocks `presentation-design.md`* — the heaviest is whether the player is **told** when their own paper becomes state press, which is a screen that document can specify both ways | `presentation-design.md`, at the margins |
 | ~~**6**~~ | ~~**Two axes or three?**~~ ✅ **ANSWERED 15 September 2026, D231 — three axes and ten positions.** The politics round's rulings stand and **the built two-axis model is what changes.** §15.1 is the design; §15.1a is what exists and what converting it costs. **What replaces this question is smaller and is the architect's**, not Aaron's: `MAX_DISTANCE` has no authored value on the new board — gap 11 | — |
 | **6a** | **⚠ ONE THING TO CONFIRM, and it is mine rather than a designer's ruling.** Ruling 1 recorded that the largest single job in the change was splitting Republican and Democrat across the eight corners by cultural region, because neither mapped onto a corner. **Ruling 2 then added the two centrists, which ARE Republican and Democrat** — so the 2024 seed appears to land directly on them and drift carries people outward. **If that is right, ruling 1's largest owed job does not exist.** I have not treated it as settled | `identity-design.md` |
 | ~~**7**~~ | ~~**May a design session edit `DESIGN.md`?**~~ ✅ **ANSWERED 15 September 2026, D232 — approved.** **The limit is the one the card asked for and it is binding: corrections of FACT only** — a figure that no longer matches what was measured, or a name that changed — **each marked in place, dated, and carrying the measurement that justifies it. Never a change to what the game DOES.** *The permission is now real, and yesterday's edits are retrospectively covered rather than quietly kept* | — |
@@ -967,6 +999,8 @@ and simply are not written down anywhere.*
 | ~~**9**~~ | ✅ **RESOLVED 15 September 2026, D232 — traced scenarios are REINSTATED**, and four existing documents now owe one. *The disagreement, for the record:* `docs/design/DESIGNER-BRIEF.md` says *"End every design document with the scenarios it must be able to tell, each one traced"* and calls worked examples *"your test suite"*. The GDD brief of 15 September specifies a four-part satellite — Depends on, the system, Open questions, Gaps — **and traced scenarios are not one of the four.** **Neither written satellite has a traced-scenarios section, and neither does this master.** The newer, more specific brief was followed. *Recorded rather than resolved: whether tracing is dropped or reinstated is Aaron's, and it is the practice that found contradictions in every closed ideation round that the rulings alone did not* |
 | **10** | **`docs/design/DESIGNER-BRIEF.md` is itself stale and is the file a new design session is told to paste.** It states the live stage is ideation, names round 4 as the live round, and forbids editing `DESIGN.md` — all three superseded. **A session started from it would begin by contradicting the current phase.** *Found 15 September 2026* |
 | **11** | **⚠ `MAX_DISTANCE` HAS NO AUTHORED VALUE ON THE THREE-AXIS BOARD, and it is the first thing the Technical Designer must settle.** It is the denominator of the one function that drives coalitions, drift, splinters, defection, civil-war severity, trade alignment, liberty satisfaction and AI diplomacy, so **every threshold in the game is measured against it.** On two axes the rule was to use the *actual* widest authored pair (**1.7804**) and explicitly **not** the box diagonal, because the diagonal squashes every real affinity into the top third of the range. **On three axes the widest authored pair IS the diagonal** — opposite corners exist — which is **2√3 ≈ 3.4641**. *That figure is arithmetic from the √2 and 2 distances the ruling states; nobody has authored it, and the two-axis rule does not decide it because its whole point was that the diagonal was unoccupied* |
+| **12** | **⚠ TWO TONE RULES ARE REQUIREMENTS ON GENERATORS, AND NO GENERATOR KNOWS.** `TONE.md` rule 16 says a generated **flag** may carry no real hate-group iconography, and rule 30 says **leader name pools** are drawn by region and history and **never correlated with ideology**, so the generator cannot make a racial claim nobody wrote. **Both are checked against the generator rather than against a writer** — which makes them the Technical Designer's, and neither generator is specified anywhere. *Rule 17 is the same shape: a generated nation name may not combine with a movement name into an echo of a real regime* |
+| **13** | **Nothing says what a design document does when the ALPHA excludes something the GAME contains.** §9's alpha content scope is the first case — two movements and a government state are out of the alpha and remain in `identity-design.md` and `movements-design.md`. *The choice made here was to record the scope centrally and leave the satellites describing the whole game.* **It is a choice and not a convention**, and the next case should follow it or overturn it deliberately |
 
 ---
 
