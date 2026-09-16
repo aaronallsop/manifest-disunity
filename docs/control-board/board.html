@@ -321,93 +321,80 @@ tr:last-child td{border-bottom:0}
 const BOARD = {
   project: "Manifest Disunity",
   livery: "tower",                      // tower | mars | violet | deep | slate
-  updated: "2026-09-16 07:20",          // when you last republished, local time
+  updated: "2026-09-16 03:35",          // when you last republished, local time
 
   // Three or four measured figures. value: number|string, or null = "not yet measured".
   figures: [
-    { label: "Stage 2, the design documents — all of them written", value: "20 of 20" },
-    { label: "Lines of design, measured with the last one in place", value: "11,324" },
-    { label: "Situations traced step by step — five more today, two of them jammed", value: 67 },
-    { label: "Live faults in the game, every one verified at source", value: 11 },
-    { label: "Stage 1 of 5 — every design round, closed by you", value: "7 of 7" },
+    { label: "Stage 2, design — closed by you this morning", value: "20 of 20" },
+    { label: "Checks, run in the browser tonight — none failed", value: "956 pass" },
+    { label: "Lines of design across the twenty documents", value: "11,324" },
+    { label: "Situations traced step by step through them", value: 67 },
+    { label: "Live faults in the game, every one verified at source", value: 12 },
     { label: "Current version", value: "v0.6" },
   ],
 
   headline: {
-    tone: "ok",
-    lead: "The last design document is written. All twenty exist — but written is not finished, and "
-        + "closing the stage is yours. There is a card below asking for it.",
+    tone: "warn",
+    lead: "You closed the design stage this morning — twenty documents, and the writing is done. "
+        + "Sign-off then found that the thing which tells us the game still works had been telling "
+        + "us nothing at all.",
     points: [
-      "The twentieth is what the player sees: the screen a turn opens on, the map, the panel that explains why a number moved, the newspaper, and the rule about what one country is allowed to know about another. It is the one that could not be written until you had settled the tone.",
-      { warn: true, t: "I walked five situations through it step by step, and TWO of them jammed — both on your own Houston opening. It needs Miami coming back to you about a trade offer you sent before the game began, and the opening position has no such thing in it. And your line about nations only signing peace treaties with nations quietly joins two things the design currently keeps apart." },
-      "Neither of those was findable by reading your note. Only by walking it beat by beat, which is the practice you reinstated on Monday, and it has now earned its keep four times running.",
-      { warn: true, t: "I also corrected a figure I gave you yesterday. I said a design stage comes out about four fifths the size of an idea stage. With all twenty measured it is ninety-seven per cent — very nearly one for one. Yesterday's number was taken while the biggest missing piece was still missing." },
-      "The stage left you six questions, all yours and none of them blocking. The sharpest: does a card that asks you something stop the game until you answer, or wait quietly and take the worst option if you ignore it? Your game does both today, in two different places.",
+      { warn: true, t: "There are two ways to run the game's checks. One of them reports every single check as passing WITHOUT RUNNING ANY OF THEM — 51 files, green, under a second. I ran that one first and had written down that everything passed before I caught it." },
+      { warn: true, t: "I proved it rather than assumed it: I added a check designed to fail and it still reported green. So any session using that route gets a clean bill of health that means nothing. The instructions for running the tests were recommending it." },
+      "The real answer, run the slow way that actually works: 956 checks, none failed, four and a half minutes. The game is fine. The thermometer was broken, not the patient.",
+      { warn: true, t: "Worse: this had already happened once and somebody wrote the rule down. It named the exact command and both numbers. It did not stop me, because it lives in a file nobody reads at the moment of the mistake — and the run-the-tests instructions still pointed at the broken route. Those instructions now carry the warning, which is the actual fix." },
+      "Your four answers all landed and are recorded. Pushing the jokes, the mottos and the historical writing past the alpha is the biggest scope call since Monday, and it is the right one — a tone document is cheap to hold, and a play test that fails because the game does not work teaches nothing about whether the voice is right.",
+      { warn: true, t: "TWO of your cards look answered and are not. The toll one: I asked whether to decide now or later, you said now — but you have not said WHICH of the two. And the Deseret one came back with my own evidence quoted as the note. Both are below, re-asked plainly." },
     ],
   },
 
   decisions: [
     {
-      id: "close-stage-2",
-      title: "All twenty design documents exist. Is the design stage closed?",
-      recommendation: "Close it. Every document is written, every one ends with situations traced through it, and what is still open is named as open rather than missed. Nothing left in the stage needs writing — what is left is deciding, and those are cards, not documents. Your own order says the next stage cannot start until you say this one is done, so nothing moves until you click.",
+      id: "stage-3-shape",
+      title: "The design is finished. What is the next session for?",
+      recommendation: "Two real options and they are different kinds of work. ONE: scope the technical stage — I come back with what it covers, what order, and what it costs, for you to approve before anybody starts it. TWO: repair the twelve faults first. I lean to scoping the technical stage, because it is the stage every one of those twenty documents was written for and because several of the faults live inside code that stage is going to rewrite anyway — but two of the twelve are cheap, isolated, and worth doing whatever you pick.",
       evidence: [
-        "Twenty of twenty. A short master and nineteen beside it, 11,324 lines, written between the 15th and this morning.",
-        "Sixty-seven situations have now been walked through them step by step. That practice has found something the rulings missed every single time it has been run.",
-        "The last document alone found four things nobody had noticed, two of them inside your own Houston opening.",
-        "What is NOT closed, said plainly: the last document leaves six questions and every one is yours. None of them blocks the next stage, and all six are written where the next reader will find them.",
+        "The technical stage has never been scoped. It has no brief, no definition of done and no estimate, and nobody has said it starts. That is why this is a card and not something I simply began.",
+        "The twenty documents were written FOR that stage: one system at a time, each naming what it depends on, so the person writing one never has to read a system they are not writing.",
+        "Three things are already waiting for that reader: how many things sixty-one countries can each start in a quarter before the machine slows; whether your victory targets still hold now a game is two hundred turns instead of eighty; and one denominator on the new political board that every tuned threshold in the game is measured against, which has no value yet.",
+        "The twelve faults are all written down and none is fixed. The worst is still that a failed invasion charges the DEFENDER and pays the attacker, and it is in the copy a playtester would open.",
       ],
       cost: [
-        "Closing it: the next stage is the technical one — somebody takes each system in turn and writes the actual formulas. It has never been scoped and nobody has said what it costs.",
-        "Not closing it: nothing moves. The stage cannot half-close, and the documents are written either way.",
-        "Either way the eleven faults in the game are still there and still unfixed. Closing the design stage does not touch them.",
+        "Scoping the technical stage: one session, and it produces a plan for you rather than any code. Nothing is committed until you approve it.",
+        "Repairing first: four of the twelve need an answer from you before anyone can start, and several sit in code the technical stage will restructure — so some of that work would be done twice.",
+        "The two cheap ones either way: the failed-invasion fix is one word in one place, and a raw word showing on screen where English should be is one line.",
       ],
     },
     {
-      id: "two-toll-systems",
-      title: "Two toll systems are running at once — and you asked whether this gets fixed now or later",
-      recommendation: "Both halves, and they split cleanly. The CHOICE is now and it is yours. The DELETION is later and it is not a design job at all. Pick which of the two the game means, I write that one into the trade document, and the technical stage then builds one system instead of discovering two. If the choice waits, whoever writes that stage has to decide how renting a crossing should FEEL, by reading code — which is the wrong person making the wrong kind of decision.",
+      id: "which-toll-system",
+      title: "You said decide it now. Which of the two toll systems does the game mean?",
+      recommendation: "I need the actual pick, and I am not making it. The old card asked whether to settle this now or leave it to the technical stage; you said now, which was the right call. But approving that did not name a system, so nothing has moved. Tell me which one and I write it into the trade document in a paragraph.",
       evidence: [
-        "Your question, exactly: is this something that we should fix here or in the TDD.",
-        "Why it should not wait: neither design document describes the older of the two systems at all. Anyone told to reconcile them would not know the second one was there — which is how it survived this long.",
-        "One of them makes rail the cheapest kind of crossing to grant. The other makes rail middling and a port the most expensive thing on the board. A player learns a pricing instinct on one screen and it is wrong on the other.",
+        "One of them makes RAIL the cheapest kind of crossing to grant. The other makes rail middling and a PORT the most expensive thing on the board.",
+        "So a player learns a pricing instinct on one screen and it is wrong on the other.",
         "Two of your tuning dials only move one of the two. Turning them changes one screen and leaves the other exactly as it was.",
+        "Neither design document describes the older one at all, which is how it survived this long.",
       ],
       cost: [
-        "Choosing now: one answer from you, one paragraph from me, and the technical stage inherits a single system.",
-        "Choosing later: the contradiction stays live through the alpha, and it is the kind of thing a playtester finds and cannot explain — which wastes their report as well as their time.",
-        "Whichever one goes, something that works goes with it. The one-off sale is the only way in this game to move goods without a standing commitment.",
+        "Rail cheapest: the older, simpler one. It is also the only way in the game to move goods without a standing commitment — a one-off sale.",
+        "Port dearest: the newer one, and the one both design documents actually describe. Renting a crossing becomes a real thing to weigh.",
+        "Whichever goes, something that works goes with it. That is why this is yours.",
       ],
     },
     {
       id: "deseret-politics",
-      title: "You said Deseret is a Christian distributist state. The game has it somewhere else entirely.",
-      recommendation: "Tell me where it sits on the new ten-position board and I will write it down. On the old six-position board this is arithmetic and I would simply do it. On the new one, none of the ten is obviously distributist — so somebody has to place it, and where a country sits decides who it drifts toward, who will ally with it, what splinters off it and how badly a civil war inside it goes. That is a decision about what a country IS, which makes it yours.",
+      title: "Deseret, again — the note that came back was my own evidence quoted at me",
+      recommendation: "Still open. You said Deseret should be a Christian distributist state and the game opens it as conservative nationalist. On the old six-position board the fix is arithmetic and I would just do it. On the new ten-position board, none of the ten is obviously distributist — so somebody has to place it, and where a country sits decides who it drifts toward, who will ally with it, what splinters off it and how badly a civil war inside it goes.",
       evidence: [
-        "Your own words: it should be modelled as a distributist Christian state. The game opens it as conservative nationalist.",
-        "Deseret is not an ordinary country on this map. It is half-born by design — the Wasatch Front always gives in, the corridor that stays behind is the live story, and it grows faster than anything else on the board.",
-        "It is also one of the three countries with a mission tree, which makes it one of the three a tester will actually choose.",
-        "And the line your own tone document uses as its worked example of a movement described WELL is: a Christian distributist state. That is the sentence the game is meant to print about it.",
+        "The card came back marked as commented, with the note reading: your own words: it should be modelled as a distributist Christian state. That is the evidence line off this card, not an answer to it.",
+        "Deseret is not an ordinary country on this map. It is half-born by design, and it grows faster than anything else on the board.",
+        "It is one of the three countries with a mission tree, so it is one of the three a tester will actually choose.",
+        "And the line your own tone document uses as its example of a movement described WELL is: a Christian distributist state. That is the sentence the game is meant to print about it.",
       ],
       cost: [
-        "Placing it: every threshold measured by political distance moves for that country — coalitions, drift, splinters, defection, how bad its civil wars are, who it trades with, and how sixty other countries read it.",
-        "Leaving it: the country with the most authored story in the game plays from the wrong square, and the sentence describing it contradicts where it stands.",
-        "A third way I am not recommending: add distributism as an eleventh position. That reopens a board you closed this morning, and reopening it costs far more than this is worth.",
-      ],
-    },
-    {
-      id: "tone-open-questions",
-      title: "Nine tone questions the interview did not reach — and none of them is urgent",
-      recommendation: "Answer them when you feel like it. Four change what a player actually sees; five only change what a writer may do later. They are on the board rather than buried in the document because the first four are small questions with visible consequences — but nothing here blocks the last document, and if you leave them I will specify it both ways where it matters and say so.",
-      evidence: [
-        "The four that change a screen. Is the player TOLD when their own newspaper turns into state press, or left to notice? May the paper quote invented residents, and only ever as one person's opinion? Which cause does the very first front page tell — Washington failing, or Texas leaving? And how far may a state newspaper's euphemism go before the game is making a dark joke through a government's mouth?",
-        "The five for later. Are movement mottos real quotations where they exist, or always written for the game? For a mission touching indigenous peoples, does no jokes still allow a dignified allusion, or are the names plain? Does the joke is at the cause apply to war and economic collapse as well as famine? Does your cutoff for historical figures mean a public role that ended, or a person who died? And does the deliberately vague decade really run 2025 to 2034?",
-        "One more that is mine rather than yours: whether the document should NAME the thing this game is most likely to be mistaken for. It names the category and stops short of the example.",
-      ],
-      cost: [
-        "Answering: about ten minutes, and the last document gets sharper in four places.",
-        "Not answering: I write it with each choice named and both options costed, which is what a design document is supposed to do anyway.",
-        "The only one that would cost real work to change your mind about later is the state-press signal, because it is a screen and a rule at the same time.",
+        "Placing it: every threshold measured by political distance moves for that country.",
+        "Leaving it: the country with the most authored story in the game plays from the wrong square.",
+        "A third way I am not recommending: add distributism as an eleventh position, which reopens a board you closed on Monday.",
       ],
     },
   ],
@@ -794,7 +781,7 @@ const BOARD = {
             + "and nothing that matters was lost. And the game will open on a newspaper front page "
             + "dated 1 March 2036 — prose with no engine work behind it, and the first thing a new "
             + "player meets." },
-    { name: "Stage 2 — The design documents", status: "current",
+    { name: "Stage 2 — The design documents", status: "done",
       brief: "One document per system: what the thing actually does, what it is measured in, what the "
            + "player sees, and what happens at each level. Your plan puts this between the ideas and "
            + "the numbers.",
@@ -886,7 +873,11 @@ const BOARD = {
             + "AND IT IS NOT CLOSED. Your rule is that a round is done when you say so, and there is a "
             + "card at the top asking. Sixty-seven situations have now been traced through these "
             + "documents, and the practice has found something the rulings missed every time it has "
-            + "been run — four more today." },
+            + "been run \u2014 four more today.\n\n"
+            + "CLOSED BY YOU on 16 September at 09:01. Twenty documents, 11,324 lines, sixty-seven "
+            + "situations traced. What that closed is the WRITING — the questions the documents "
+            + "leave open are all still yours, and each one sits at the end of the document that "
+            + "owns it rather than in a list somebody has to reassemble." },
     { name: "Design round 7 — The frame above everything", status: "done",
       brief: "What winning means, how the turn is spent, what a country is allowed to know, and time. "
            + "Collected as a running list through the six rounds before it, and resolved last.",
@@ -968,7 +959,7 @@ const BOARD = {
             + "game today is TEN TIMES bigger than real figures say it should be, and how much food a "
             + "person needs was set against that inflated number — so replacing the data without also "
             + "resetting hunger would starve the whole continent on the first turn." },
-    { name: "Stage 3 — The Technical Design Document", status: "todo",
+    { name: "Stage 3 — The Technical Design Document", status: "current",
       brief: "Your phase order: Game Design, then Technical Design, then a build order, then building. "
            + "A technical designer takes the design one system at a time and writes the actual "
            + "formulas, the step-by-step, what goes in and out, and the edge cases.",
@@ -998,13 +989,13 @@ const BOARD = {
   // Things only the owner can supply, and what happens if a machine supplies them instead.
   blocked: [
     {
-      what: "Closing the design stage — there is a card above and it is the only thing in the way",
-      ifAutomated: "You answered the what-next question this morning: finish the last document. It is "
-                 + "written. Your own rule is that a round is done when you say so, and your stage order "
-                 + "says the technical stage cannot start until this one is closed — so this is not a "
-                 + "formality, it is the gate. The eleven faults in the game are the other thing waiting "
-                 + "on you, and they are a different kind of session under a different permission. I "
-                 + "have not touched any of them.",
+      what: "Saying what the next session is for — there is a card above",
+      ifAutomated: "You closed the design stage this morning, which was the gate. The next stage is the "
+                 + "technical one and it has never been scoped — no brief, no definition of done, no "
+                 + "estimate. I am not going to begin a stage nobody has described; the card above asks "
+                 + "for a shape, and whichever way you go it comes back to you for approval before any "
+                 + "of it is built. The twelve faults are the other candidate and they are a different "
+                 + "kind of session under a different permission.",
       damagedIfAutomated: false,
     },
     {
@@ -1042,6 +1033,10 @@ const BOARD = {
 
   // Decisions made on the owner's behalf and how they turned out. Corrections go BESIDE originals.
   log: [
+    { when: "2026-09-16", decision: "Found at sign-off that one of the two ways to run the game's checks reports everything green without running anything — and I had already believed it.",
+      outcome: "There are two routes. The browser one works. The command-line one imports each test file, the file registers its checks into a list, nothing ever runs the list, and the runner counts the FILE as one passing test. Fifty-one files, fifty-one passes, under a second. I ran it first because the instructions recommended it, wrote down that everything passed, and only doubted it because the comment promising it would work referred to a piece of wiring that does not exist in the file it claims to be in. I proved it by adding a check written to fail: still green, exit code zero. Then I ran the real one: 956 checks, none failed, four and a half minutes. The game is fine. What was broken is the thing that tells us the game is fine, which is worse, because it fails silently and in the reassuring direction. The instructions no longer recommend that route and now carry the warning next to the command. And the sharpest part: this had happened before and a rule was written naming the exact command and both numbers. It did not stop me, because a rule in a rules file is not where the mistake gets made. That rule now says so." },
+    { when: "2026-09-16", decision: "Recorded four rulings you made while I was working, and flagged two more that look answered and are not.",
+      outcome: "Your tone answers landed at quarter to six and the stage close at nine. All four are written into the documents they change rather than only into the log. The big one is pushing the jokes, the mottos and the historical writing past the alpha while keeping the newspaper itself in the game with placeholder text — which suspends no rule, it defers the content the rules govern, and the rules were settled before the writing exists precisely so the writing can be checked against them later. Your amendment on indigenous missions is now rule 21: the test is whose expense rather than what it touches, with your Custer line as the worked example. Race is untouched and stays absolute, because you amended one and said nothing about the other. What I did NOT do is edit the opening paragraph of your tone document to match, even though one phrase in it is now overtaken — it is your summary of your own position, and a summary quietly edited after the fact stops being a record. There is a note beside it instead." },
     { when: "2026-09-16", decision: "Wrote the last design document, then walked five situations through it — and two jammed on your own Houston opening.",
       outcome: "The twentieth document is what the player sees, and what one country may know about another. Writing it was the easy half; tracing it found four things nobody had noticed. Two are in the opening turn you designed on Wednesday night. It needs Miami coming back to you about a trade offer you sent before the game started, and the opening position carries who exists, what they remember and what is already signed — but nothing in flight, so there is no such thing as the turn before turn one. And your own remark that nations only sign peace treaties with nations turns out to be a mechanic: it makes signing a treaty the same act as recognising somebody, and today those are two separate things in the design. Both are small, both belong to other documents, and neither was findable by reading your note. The other two it found: the rule that an ignored card takes the worst option does not say what the worst option IS when the choice is symmetrical, and a disaster that reshapes four economies for a quarter cannot be re-read afterwards, because the timeline only remembers borders moving." },
     { when: "2026-09-16", decision: "Corrected a figure I gave you yesterday, now that all twenty documents can be measured rather than eighteen.",
