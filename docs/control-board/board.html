@@ -321,7 +321,7 @@ tr:last-child td{border-bottom:0}
 const BOARD = {
   project: "Manifest Disunity",
   livery: "tower",                      // tower | mars | violet | deep | slate
-  updated: "2026-09-16 11:40",          // when you last republished, local time
+  updated: "2026-09-16 12:05",          // when you last republished, local time
 
   // Three or four measured figures. value: number|string, or null = "not yet measured".
   figures: [
@@ -334,39 +334,23 @@ const BOARD = {
   ],
 
   headline: {
-    tone: "bad",
-    lead: "Step 1 is done and it found something bad. The game is designed to run two hundred turns "
-        + "and it cannot currently finish one — it stops dead somewhere around turn eighty to ninety "
-        + "and never starts again. Everything else below is the good work; this is the thing that "
-        + "needs your answer.",
+    tone: "warn",
+    lead: "You corrected my framing and it was the right correction: we are not building the game, we "
+        + "are writing the document that says what to build — so we can change things. My card asked "
+        + "whether to repair a fault now or later. That was the wrong question, and it is off the "
+        + "board. Nothing is waiting on you.",
     points: [
-      { warn: true, t: "THE GAME HANGS. Running it forward with nobody playing, it froze at turn 80. I ran it again — turn 80. Again with all my measuring instruments removed, in case they were the cause — turn 80. Then a different starting world — turn 94. Four runs, two worlds. It is not slow, it is stopped: across a forty-second window neither the turn counter nor the number of countries moved by one. It is not my instruments, not the browser, and not a limit anybody set — there is no turn limit in the game at all." },
-      { warn: true, t: "WHY IT MATTERS MORE THAN IT SOUNDS. Three things this stage was going to settle can only be settled by running a long game: how much the machine can take now that a country can start several things a quarter, whether your victory targets still work at two hundred turns, and whether the trade spiral you found in the economy round actually spirals. All three are stuck behind it. And the thing that hangs is the same clock the End Turn button drives, so there is no reason to think a player would fare better — I have not proved that half." },
-      { warn: true, t: "YOUR VICTORY TARGETS ARE ALREADY WRONG, and not because the game got longer. Three of them are written down as being three to five and a half times what the game produces on its own — measured over eighty turns, with nobody playing. I measured the same thing today, at the same eighty turns: they are now only about one and a half to two times. The world consolidates much faster than it did when those were set, because everything the trade stages added changed it. One world, so not a recalibration — but the numbers are not describing the game any more." },
-      "THE LEDGER IS DONE and it is what you were promised: what the game actually does against what you designed, all nineteen systems, checked in the code rather than taken from a document. Five systems have NOTHING behind them — the clubs and federations, the mission trees, anything that takes more than a turn to finish, alliances and vassals, and the whole business of ENDING a war. The fight is built; signing peace is not.",
-      "Three more things the design leans on turned out to be entirely absent: the referendum, martial law, and the 'wary' state — which your own conquest round made the only way out of a permanent feud in the whole game.",
-      "AND THE SMALL WIN. The one number every political threshold in the game is measured against had never been set. It is set now, and the old rule chose it rather than being overruled — so nothing was overturned to get there. Working it out turned up something nobody had asked: the same measure behaves completely differently depending on whether you point it at two parties or at two countries, so a single setting tuned on one is meaningless on the other.",
+      "WHAT REPLACES IT is your idea: a running list of first-order changes — things that have to land before other work, because anything built on top of them would have to be built twice. It starts with thirteen items and it grows at every step of this stage, written down the moment something is found rather than reconstructed at the end, which is how three hundred loose ends came to exist last time.",
+      "It has ONE test for getting in, and it is strict so the list stays short: would building something else on top of this have to be REDONE. Not important, not broken — redone. Everything that fails that test is an ordinary fault or an ordinary difference and lives where those live. Thirteen items out of nineteen system differences, thirty-nine faults and three hundred open design questions.",
+      { warn: true, t: "THE GAME STILL CANNOT REACH TURN 200 — that finding has not changed, it has just stopped being a question for you. It is now a numbered item with what it blocks written next to it: the cost of a turn, the victory recalibration, and whether the trade spiral spirals. Steps 2 and 3 of this stage can be written without it. It has to be fixed before step 4, which is where the numbers start." },
+      "THE BIGGEST FIRST-ORDER ITEM is not a fault at all — it is the political board. The game runs on six ideologies over two axes; you ruled it should be three axes and ten positions. Every formula in the game reads the old one, so it is the one change that has to happen before anything measured in political distance can be tuned. Nine things depend on it, including coalitions, who splinters off whom, and how badly a civil war goes.",
+      "Three items in the list are faults that other work sits on top of: the failed invasion that pays the attacker, a country reading its own founding movement as its worst internal problem, and five army settings that are buried in the code where you cannot reach them. They are in the list because of what depends on them, not because of how bad they are.",
+      "And three things were considered for the list and deliberately LEFT OUT, with the reasoning written down — including the five systems that have no code at all. They are large, but nothing is built on them yet, so building them late costs no more than building them early. That is a build-order question, and the build order is yours.",
     ],
   },
 
-  decisions: [
-    {
-      id: "fix-the-hang",
-      title: "The game cannot reach turn 200. Fix it now, or carry on and fix it later?",
-      recommendation: "FIX IT NOW — my recommendation, and it is the first programming work of this stage. Three separate things this stage has to settle are stuck behind it, and all three are measurements rather than opinions, so no amount of paper gets past them. It is also the kind of fault that gets harder to find the more the code changes around it. Against that: it is a repair, and you have not given a permission for one this stage, which is why it is a card rather than something I simply did.",
-      evidence: [
-        "Four runs across two starting worlds. It is stopped, not slow: across a forty-second window neither the turn counter nor the number of countries moved by one.",
-        "It is not my measuring instruments — a run with every instrument removed hangs the same way. It is not the browser, and there is no turn limit anywhere in the game.",
-        "What is stuck behind it: how much the machine can take under the new turn rules, whether your victory targets survive a two-hundred-turn game, and whether the trade spiral the economy round found actually spirals.",
-        "The thing that hangs is the same clock the End Turn button drives. I have NOT proved a player hits it too, but there is no reason to think otherwise.",
-      ],
-      cost: [
-        "Fixing it now: a programming session, and I cannot tell you how long until I find it. It is a hang rather than a wrong answer, which usually means it is findable.",
-        "Carrying on: step 2 is the handover rules and does not need a running game, so the stage is not blocked TODAY. It gets blocked at step 3, which is where the numbers start.",
-        "Either way it is written down as fault 46 and will not be lost.",
-      ],
-    },
-  ],
+  decisions: [],
+
   _answered: [],
 
   // Standing permissions. Ids are permanent. risk: "low" | "med" | "high".

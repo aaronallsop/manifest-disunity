@@ -6362,3 +6362,48 @@ had an owner, in any document, by construction.*
 act** — *recommended rather than done centrally, because one session assigning owners across nineteen
 systems it has not yet written would be guessing.* **An unassigned question is a question nobody will
 ask, and that is the whole cost of it.**
+
+---
+
+### D254 — The first-order register, and the framing that corrects a card I put up wrong, 16 September 2026
+
+**Aaron's, unprompted, and it corrects an error of mine from an hour earlier:**
+
+> *"the thing we need to remember in all of this is that we are not building the game right now, we are
+> building the technical design document. **We can change things.**"*
+
+**What I got wrong.** *Step 1 found that the game hangs and cannot reach turn 200, and I put a card to
+him asking whether to repair it now or carry on.* **That treated a fault found while writing a
+specification as an interruption of the specification, when it is an INPUT to it.** *We are not
+building; the document can simply say what must change. The card asked a question that does not exist
+at this stage, and it has been withdrawn rather than left standing.*
+
+**What replaces it, his proposal:** *"create a document as we go along that is something like first
+order build fixes, where they are things that we need to change to implement before we actually
+implement other things."*
+
+**Built as `docs/technical/FIRST-ORDER.md`, and wired into the plan as T0.6 and into the architect
+brief as a standing instruction.** *It grows at every step of the stage, at the moment a finding is
+made — rather than being reconstructed at the end, which is exactly how three hundred loose ends came
+to exist in stage 2.*
+
+**The admission test, which is strict on purpose and is what keeps it short:**
+
+> **An item is first-order only if building something else on top of it would have to be REDONE.**
+> *Not "important". Not "broken". **Redone.*** *Anything failing that is an ordinary defect
+> (`deferred.md`) or an ordinary delta (`LEDGER.md`).*
+
+**Opens with thirteen items**, F1–F13, out of nineteen system deltas, thirty-nine filed faults and
+three hundred open design items. **The largest is not a fault at all** — F1, converting the political
+board from six ideologies on two axes to ten positions on three, which nine downstream mechanics are
+measured against.
+
+> **⚠ And it explicitly records what was CONSIDERED AND LEFT OUT**, with reasons — including the five
+> systems that have no code whatsoever. *They are large, but nothing is built on them yet, so building
+> them late costs no more than building them early.* **That is a build-order question, and the build
+> order is Aaron's and stage 4's.** *A register that quietly absorbed them would have become a build
+> order under another name.*
+
+**One row is marked against itself, and honestly:** *F6, the hang, blocks measurements rather than
+construction. Steps 2 and 3 can be written without it. It is in the register because the numbers start
+at step 4 — and the row says so rather than overstating its own importance.*

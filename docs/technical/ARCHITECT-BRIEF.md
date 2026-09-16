@@ -34,8 +34,16 @@ without a rebuild and without you.*
 3. **`docs/technical/MEASUREMENTS.md`** — the three things stage 2 handed forward. Two answered, one
    blocked by a defect.
 4. **`docs/technical/TRIAGE.md`** §3 — the short list of things that actually block work.
-5. **The design satellite for your system**, and only the ones its `Depends on:` line names.
-6. **`docs/design/TONE.md`** before writing anything a player reads.
+5. **`docs/technical/FIRST-ORDER.md`** — **what must land before anything is built on top of it.**
+   *Check whether your system is blocked by a row, and **add a row the moment you find one.***
+6. **The design satellite for your system**, and only the ones its `Depends on:` line names.
+7. **`docs/design/TONE.md`** before writing anything a player reads.
+
+> **⚠ You are not building the game. You are writing the document that says what to build — so you CAN
+> change things.** *Aaron's framing, 16 September.* **A fault you find while specifying a system is an
+> input to that specification, not an interruption of it**: write what the system should do, and put
+> the prerequisite in `FIRST-ORDER.md` with what it blocks and why anything built first would be redone.
+> *Do not stop and ask for permission to repair something. Do not silently repair it either.*
 
 ## The order, and why it is not dependency order
 

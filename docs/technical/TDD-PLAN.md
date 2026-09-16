@@ -137,6 +137,17 @@ what make the other five writable one at a time.*
 | **T0.3 The triage of the three hundred** | Below, §6 |
 | **T0.4 The three measurements already waiting** | Below, §7. **Measured, not estimated** |
 | **T0.5 The state inventory** | What a save must hold. **A project is new persistent state and there is no project module in the list that exists to stop state being forgotten by the save** — and nothing says where in the turn a project resolves. *`turn-design.md` §6.2* |
+| **T0.6 ⚠ THE FIRST-ORDER REGISTER — added by Aaron, 16 September** | `docs/technical/FIRST-ORDER.md`. **Changes that must land before other work, because anything built on top of them would have to be built twice.** *It is not a step so much as a habit: **it grows at every step of this stage**, at the moment a finding is made rather than reconstructed at the end* |
+
+> **⚠ AND THE FRAMING IT CORRECTS, in Aaron's words, 16 September: *"we are not building the game right
+> now, we are building the technical design document. We can change things."*** *Step 1 put a card to
+> him asking whether to repair a fault now or later. **That was the wrong question** — a fault found
+> while writing a specification is an INPUT to the specification, not an interruption of it. The
+> register is where such a finding goes, and the sequencing it asserts is evidence for stage 4 rather
+> than a request for permission.*
+>
+> **Its admission test is strict and is the whole reason it stays short: an item is first-order only if
+> building something else on top of it would have to be REDONE.** *Not "important", not "broken".*
 
 **Done means:** Aaron can read the ledger and see, per system, how far the game he has designed is from
 the game that runs — and no system document has been started.
