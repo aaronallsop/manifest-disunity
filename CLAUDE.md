@@ -129,8 +129,10 @@ reason*, not a fresh ruling — the same status rounds 1–4 have had since they
 **Totals, counted on 14 September rather than carried forward: 536 ideas and 178 rulings across the
 seven documents.**
 
-**The current phase is now STAGE 2, DESIGN**, described below. **NINETEEN of its twenty documents
-exist**, all written on 15 September. **One is left and nothing blocks it.**
+**The current phase is STAGE 2, DESIGN**, described below. **⚠ ALL TWENTY DOCUMENTS NOW EXIST** — the
+last, `presentation-design.md`, was written on 16 September. **But WRITTEN is not CLOSED: a round is
+done when Aaron says so, and stage 2 has not been put to him.** *Until he closes it, stage 3 has not
+started.*
 
 A round is done when a session can read its document end to end and the only new entries are
 recombinations of ones already there; when **every one of its scenarios has been traced** — tracing has
@@ -155,7 +157,7 @@ describes what the game *does*, and it still wins any disagreement with another 
    thing depends on and whether the alpha's stated purpose needs it. It does not rank, recommend, or
    cut.
 
-### THE CURRENT PHASE: STAGE 2, DESIGN — nineteen written, one to go
+### THE CURRENT PHASE: STAGE 2, DESIGN — all twenty written, awaiting Aaron's close
 
 **⚠ The shape changed on 15 September and this section is the corrected version. D217 is the ruling.**
 It is **not** one document per system. It is **a short master, `docs/design/GDD.md`, plus a satellite
@@ -188,12 +190,19 @@ one system belongs in that system's document.
 
 **What exists — NINETEEN of twenty documents. Line counts measured 15 September 2026.**
 
-**✅ UNPARKED, 15 September 2026 — `docs/design/TONE.md` EXISTS** (D238), written from Aaron's own
-interview: 41 rules, 11 worked examples, 19 open questions. **So the twentieth, `presentation-design.md`,
-is the ONE document left in stage 2** and nothing blocks it. *It is not one of the twenty; it is the
-input the twentieth could not be written without.* **Read it before writing anything the player reads
-— it is checked against artefacts, not vibes, and rules 1–4 bind every panel, prompt and tooltip in the
-game.**
+**✅ `docs/design/TONE.md` EXISTS** (D238), written from Aaron's own interview: 41 rules, 11 worked
+examples, 19 open questions. *It is **not** one of the twenty; it is the input the twentieth could not
+be written without.* **Read it before writing anything the player reads — it is checked against
+artefacts, not vibes, and rules 1–4 bind every panel, prompt and tooltip in the game.**
+
+**✅ AND THE TWENTIETH IS WRITTEN — `presentation-design.md`, 706 lines, 16 September 2026.** *The
+briefing, the card, the map, the panel, the newspaper's form, the timeline, and **the form of round 7's
+ruling 3** — what a nation may know. It closes `GDD.md` gap 6 and takes over its open question 3.*
+**⚠ Two of its five traced scenarios JAM, and both jams are other documents':** *the opening board
+holds **no offers in flight**, which Aaron's taught first turn needs; and his own line — **"nations only
+sign peace treaties with nations"** — couples a peace treaty to recognition, which `diplomacy-design.md`
+currently keeps independent.* **Neither was findable by reading his note; only by walking it beat by
+beat.**
 
 **⚠ AND THE ALPHA'S CONTENT SCOPE CHANGED WITH IT — D239, Aaron's, unprompted.** *Out of the alpha and
 returning afterwards: **the New Confederacy and Christian Nationalism movements, and the Despotism
@@ -220,14 +229,18 @@ in `GDD.md` §9.**
 | `population-design.md` | **453** | The six counts, drift, migration's five terms |
 | `blocs-design.md` | **436** | ⚠ **The reconciliation job — and it is FIVE regimes, not three** |
 | `trade-design.md` | **417** | ⚠ **24 of 61 nations cannot reach the world market. The published figure was 14** |
+| `presentation-design.md` | **706** | ⚠ **The last one.** Two of its five traces jam, and both jams belong to other documents |
 | `opening-board-design.md` | **390** | Authored against derived, down the middle of every page |
 | `ai-design.md` | **366** | ⚠ **Built on a turn rule D218 superseded this morning** |
 | `power-design.md` | **365** | The five stocks, the Why record, the rate limit |
 | `force-design.md` | **322** | ⚠ **Three slices, not four** |
 
-**Total: 9,436 lines across the eighteen satellites, plus the master.** *For comparison, the seven
-ideation documents run to 11,725 lines — so a design stage converts an idea stage at roughly four
-fifths its size, which is the first honest figure the project has had for this.*
+**⚠ TOTAL, RE-MEASURED 16 September 2026 with all twenty in place: 10,156 lines across the NINETEEN
+satellites, plus a 1,168-line master — 11,324 lines.** *Against the ideation stage's 11,725, **a design
+stage converts an idea stage very nearly one for one — 97%.*** **⚠ That corrects the four-fifths figure
+published a day earlier**, which was measured when the largest missing document was still missing and
+was therefore a floor rather than a ratio. *The lesson is the one this project keeps relearning: a
+figure measured before the work is finished is a figure about something else.*
 
 **✅ RESOLVED 15 September 2026, and the list now exists — `GDD.md` §13.** D217 said *eighteen
 satellites*; the Control Board said *nineteen* and printed the denominator as **20**. **Both were true
