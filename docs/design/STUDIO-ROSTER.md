@@ -82,3 +82,8 @@ the MacBook) and are never used for roles.**
 | **Titan** | Record-keeper — looks backward: the decisions log, the master file and the handoff kept true; marks what his newest word replaces | Running it |
 | **Janus** | Repository keeper — saving, backup, keeping both computers' copies in sync, combining parallel work, version tags | Running it |
 | **Pluto** | Scribe — records everything Aaron says in his words, sorts it into wants, open questions and rejections, owns the terminology list; never turns an idea into a decision | Capturing his intent |
+| **Io** | Systems Designer — designs one system at a time and how it connects to the rest; owns the per-system design documents | Defining it |
+| **Sinope** | Balance Designer — the numbers critic; hunts for loopholes, runaway loops and dominant strategies with the simulator; owns the tuning file | Defining it |
+| **Callisto** | Narrative Writer — every word the player reads, in Aaron's voice; owns the tone document and style guide | Defining it |
+| **Elara** | Content & Flavor Designer — what happens in the world: movements, crises, events, mission trees, leader traits, regional texture | Defining it |
+| **Dia** | UX Designer — *named, not yet hired*; its first job is the control sidebar (defect 48) | Defining it |
