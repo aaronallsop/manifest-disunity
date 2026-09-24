@@ -529,3 +529,19 @@ half is unverified rather than disproved.*
 **Not fixed here on purpose:** *stage 3 step 1 is a measuring session and this is a programming
 session under a different permission.* **It is the strongest candidate for the first repair**, because
 three separate pieces of stage 3 are waiting behind it.
+
+## 47 — The control sidebar shows everything at once and takes forever to scroll
+
+**Raised by Aaron, 24 September 2026, in the director's-brief interview (Q13):** *"The sidebar in which
+you control everything takes forever to scroll through. And shows you all this information, which is
+great, but when you don't need it, it's useless."*
+
+**Why it matters more than a layout complaint.** It breaks the principle he set in the same interview
+(Q12): every system should end in *"a very simple thing on the end"* a newcomer reads at a glance —
+his camera's auto mode — with the detail there for anyone who opens it. **The sidebar is permanently in
+manual mode.**
+
+**Not fixed now:** *the alpha's look stands as it is (his words, Q13), and the interface work is later.*
+**It is the first concrete evidence for when the roster's deferred UX Designer role should be hired.**
+`docs/design/presentation-design.md` has no entry for the sidebar's length — not checked beyond a search
+for "sidebar" and "scroll", which found none.
