@@ -101,4 +101,11 @@ than working together.
 | **Larissa** | Gameplay Programmer — builds the game's rules from the technical design, with the tests that come with each change; may run several at once | Making it |
 | **Varda** | Release Engineer — builds the copy players open and protects their saved games through every update | Making it |
 | **Chaos** | Prototyper — quick throwaway builds that test an idea before it is built properly | Making it |
+| **Mars** | QA Lead — heads the team that attacks the work: test plans, the bug list, checking every fix against its report | Checking it |
+| **Phobos** | Test Engineer — writes the automated tests that catch problems | Checking it |
+| **Deimos** | Neutrality Reviewer — makes sure the game never reads as taking a side in real American politics | Checking it |
+| **Eureka** | Fact-checker — checks every real-world claim before it reaches a player; never the one who researched it | Checking it |
 
+*Still unnamed, 24 September:* the Tools Programmer (Making it) and a name for the playtesters as a group
+(Checking it). Later: Playtest Analyst, Art Director, Map & Scenario Designer, Cost-watcher, and the
+marketing production.
