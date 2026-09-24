@@ -33,8 +33,8 @@ the wiki itself stops at round 3** (`docs/deferred.md` 50). On 16 September he h
 card removed from the board **for good**; **do not restore it.** *Both were found only because the other
 sessions were asked what they knew.*
 
-**5. Nothing is unpushed and nothing is unverified**, except one session that could not be confirmed —
-see §1.
+**5. Nothing is unpushed and nothing is unverified.** All sixteen sessions confirmed and were archived at
+Aaron's instruction, about 17:55.
 
 ---
 
@@ -49,11 +49,11 @@ not be read from here.
 **Rather than fifteen sign-offs, one** — *D257 records why.* This session wrote everything; every other
 session was sent a close-out telling it to confirm read-only and stop, and to send anything missing here.
 
-**The close-outs:** **fourteen of the fifteen confirmed and went idle having written nothing** (the tree
-stayed clean throughout). **Four sent findings back**, all verified and recorded below — the stage-3
+**The close-outs:** **all fifteen confirmed and went idle having written nothing** (the tree stayed clean
+throughout), **and all sixteen, URANUS included, were then archived at Aaron's instruction.** **Four sent findings back**, all verified and recorded below — the stage-3
 scoping session, the fourth test-run session, the design-wiki session, and the conquest session.
-**"Military conquest ideation round 2" could not be confirmed**: its message was queued, it may be
-waiting for Aaron to approve it, and its transcript is not readable from here. **URANUS** (colour
+*"Military conquest ideation round 2" confirmed last, once its ID was found: its 7–8 September work
+(D181, D182, sixteen rulings) is all in the record.* **URANUS** (colour
 correction, a separate project) confirmed its 16:21 sign-off stands; the 137 files showing as changed
 there are line endings only, a defect that project already knows about from 23 September.
 
