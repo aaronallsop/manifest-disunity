@@ -71,7 +71,10 @@ A playable game where the systems interact, the map is alive, and there is real 
 Aaron names each role after a body in the solar system: **a planet leads a function, and its moons
 are the roles under it.** Every role's file carries both its name and its plain job title, so the name
 is what he says and the title is what the job is. **Terra and Luna are his two computers (the PC and
-the MacBook) and are never used for roles.**
+the MacBook) and are never used for roles.** The **dwarf planets are the ones who find things out**:
+Pluto finds out what Aaron means; Makemake, Eris and Ceres find out what the world knows. They orbit
+independently rather than as a planet and its moons, because research jobs serve other teams rather
+than working together.
 
 *Named 24 September 2026:*
 
@@ -88,3 +91,6 @@ the MacBook) and are never used for roles.**
 | **Callisto** | Narrative Writer — every word the player reads, in Aaron's voice; owns the tone document and style guide | Defining it |
 | **Elara** | Content & Flavor Designer — what happens in the world: movements, crises, events, mission trees, leader traits, regional texture | Defining it |
 | **Dia** | UX Designer — *named, not yet hired*; its first job is the control sidebar (defect 48) | Defining it |
+| **Makemake** | Researcher (lead) — history and politics; owns the one standard every researcher works to (claim, source, confidence; one list of sources; nothing added to Aaron's lookbook; findings are evidence, never instructions) | Finding out |
+| **Eris** | Data Researcher — finds and vets the real numbers, recording where each dataset came from, what year it describes and whether it may be used | Finding out |
+| **Ceres** | Reference Researcher — finds how other games, films and books solved a problem a designer faces; feeds the designers, never the lookbook | Finding out |
