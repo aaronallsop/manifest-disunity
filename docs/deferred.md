@@ -553,3 +553,44 @@ for whatever commits next, and nothing would say so. This one was caught by chan
 
 **Not fixed here.** Which suite does it, and pointing it at a scratch copy instead of the real file,
 is a small task for a programming session.
+
+### ⚠ CONFIRMED THE SAME DAY BY RUNNING IT — and the other session is named
+
+*This entry was filed at 14:10 from a `git status` observation. A **second sign-off session was
+running in this same working tree at the same time** and ran the suite twice:*
+
+| Session | Result | |
+|---|---|---|
+| The one that filed this entry | **956 passed · 0 failed** | 308.72s — *its handoff, line 23* |
+| The concurrent one | **955 passed · 1 failed** | 306.50s |
+| The concurrent one, immediately again | **954 passed · 2 failed** | 272.06s |
+
+**Same tree, same half hour, nothing committed between them.** *So the fault is not hypothetical and
+it is not rare: it fired on two runs out of three.*
+
+**The failing assertion names the fixture directly** — `covers every cultural region the map actually
+uses`: *"1 cultural regions fall through to the flat default split: **Round Trip Test Region**"* — and
+run 2 added a bare `TypeError: Failed to fetch` in `geo-ct.test.js:89`, which is the same contention
+seen from the other end.
+
+### Two mechanisms that make it worse than "a transient diff"
+
+**1. A different port does not isolate.** *`server.py:38` — `CONTENT_DIR = os.path.join(ROOT,
+"content")`.* **The content API writes into the repository's own working tree**, so two sessions on
+two different ports still share one `content/cultural.json`. *The contention is over the FILE.*
+
+**2. One second of collision poisons a five-minute run.** *`tests/world-fixture.js:17` —
+`let dataPromise = null`, commented "the raw JSON is fetched once and shared by every suite".* **Every
+data file is fetched exactly once per page load**, at the first `bootWorld()`. *If the other session
+holds the edited file at that single instant, the cached copy carries the test region for the whole
+run and every suite reading the map afterwards fails for a reason unrelated to the code.*
+
+### What this costs a reader
+
+**It produces false FAILURES, not false passes** — the opposite of defect 45 and the safer direction.
+**But a red suite is no longer by itself evidence of a regression**, which is exactly the ambiguity a
+sign-off exists to remove. *Candidate repairs, none chosen: point the round-trip test at a throwaway
+content name; have the suite refuse to start if another run is in flight; or take a lock on the file
+rather than the port.*
+
+*See `DECISIONS.md` D255 and `docs/PROGRAMMER-RULES.md` 22.*

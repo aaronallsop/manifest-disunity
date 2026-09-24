@@ -6438,3 +6438,66 @@ rather than the step silently skipped.*
 
 **Also this session, and it is the only measurement in it: 956 tests green, 0 failing, 51 files,
 308.72 seconds**, run in the browser rather than quoted.
+
+### D255 — The suite is reported UNATTRIBUTED, not green and not a regression, 24 September 2026
+
+**Observed at sign-off, with the repository unchanged for eight days** — no commit since 16 September,
+working tree clean, nothing unpushed.
+
+| Run | Result | |
+|---|---|---|
+| 1 | **955 passed · 1 failed** | 306.50s |
+| 2 | **954 passed · 2 failed** | 272.06s |
+
+*The record said **956 · 0**, measured 16 September. **Two runs, two different totals, one unchanged
+tree.***
+
+**The failures.** *Both runs: `covers every cultural region the map actually uses` — "1 cultural
+regions fall through to the flat default split: **Round Trip Test Region**". Run 2 additionally:
+`TypeError: Failed to fetch` in `geo-ct.test.js:89`.*
+
+**What that string is.** *It exists in exactly one place in the project — `tests/content.test.js:114`,
+which **PUTs an edited `content/cultural.json` to the live server** and restores it in a `finally`.
+`server.py:38` writes into the repository's own `content/` directory.* **So the suite mutates the
+working tree while it runs, and a different port would not isolate a second session — the contention
+is over the file.**
+
+**And `tests/world-fixture.js:17` fetches every data file ONCE per page and shares it**, so a
+collision lasting a second poisons a run lasting five minutes.
+
+**Three ways to report this, and why the third was chosen.**
+
+1. ~~Quote 956 · 0 from 16 September.~~ *Forbidden outright: never publish a number not measured this
+   session.*
+2. ~~Report a regression.~~ **It would be false.** *Nothing changed, and the failing assertion names a
+   string the production code cannot produce.*
+3. **Report it unattributed, and name the other writer.** ***No longer inferred — confirmed.*** *A
+   **second sign-off session was running in this same working tree at the same time**, has committed
+   four times today (13:38 to 14:10), filed this same fault as defect 47 from a `git status`
+   observation, and **ran the suite itself: 956 passed, 0 failed, 308.72s.** Three runs, one tree,
+   one half hour, nothing committed between them: **green, then red, then redder.***
+
+**Decided: the suite is NOT certified green, and this sign-off says so at the top.** *It is also not a
+regression. **The next session must re-run it with the working tree to itself before anything is built
+on the assumption that it passes.*** *Filed as `docs/deferred.md` 47 with three candidate repairs and
+none chosen; `docs/PROGRAMMER-RULES.md` 22.*
+
+**Rejected: fixing it here.** *The board's `fix` permission covers changing code so a check passes —
+but the check is failing for a reason outside the code, and "fixing" it would be changing working code
+to suppress a symptom.*
+
+### ⚠ AND THE REAL FINDING IS THE COLLISION ITSELF
+
+**Two sessions ran `/signoff` against one working tree within the same minute.** *Both were given the
+timestamp `2026-09-24_1358`. Between them they produced: **two defect 47s** (merged), **two rule 21s**
+(mine renumbered to 22), racing commits, and **one handoff that the other session had already
+written** before this one reached the step.
+
+*Nothing was lost — the duplicates were caught by reading the files before committing, which is that
+session's own new rule 21 — but nothing prevented any of it either.* **The project has no lock, no
+convention and no warning for two sessions in one tree**, and the sign-off ritual is the worst place
+for that gap because it ends in a commit, a board republish and a handoff that each assume they are
+the only one.
+
+**Not solved here.** *Filed as the first thing the next session should be told, and the reason this
+sign-off did not write a second handoff or republish the board over a concurrent one.*

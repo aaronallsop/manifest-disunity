@@ -317,3 +317,24 @@ Add one with `/rule` whenever a mistake earns it. Number them; never delete one.
     it for the things that must not survive: `PLACEHOLDER`, `TODO`, `TBD`, `XXX`, an empty number.**
     **The tell:** a commit message you wrote from memory of what the file said, rather than from the
     file.
+
+22. **Run the suite with the working tree to yourself, and treat a red run as unattributed until you
+    have.** Cost: two full runs at sign-off on 24 September — 306s and 272s — and a diagnosis that was
+    written, then rewritten, because the first explanation was wrong. **The suite WRITES to the
+    repository while it runs**: `tests/content.test.js` PUTs an edited `content/cultural.json` to the
+    server and restores it in a `finally`, and `server.py` writes into the repo's own `content/`
+    directory. **So a second session is not isolated by using a different port** — the contention is
+    over the file. And `tests/world-fixture.js` fetches every data file **once per page** and shares
+    the result, so a collision lasting one second poisons a run lasting five minutes and every suite
+    that reads the map afterwards fails for a reason that has nothing to do with the code.
+    **The tell:** a failure naming `Round Trip Test Region`, or a bare `TypeError: Failed to fetch`.
+    **Before blaming code for a red suite, check whether another session holds the server** — the
+    preview tool says so by name when it refuses port 8000 — and if one does, say the run is
+    unattributed rather than reporting a regression. **It is not theoretical: on 24 September two
+    sign-off sessions ran the suite in one tree within one half hour and got 956·0, then 955·1, then
+    954·2, with nothing committed between them.** *`docs/deferred.md` 47. Rule 16's canary proves a
+    runner CAN fail; this is the opposite hazard — a runner failing for the wrong reason.*
+    **And this rule was first written as a second rule 21, on top of the existing one — which is
+    rule 21's own lesson, landed within a minute of reading it. Deferred 30 records the same
+    collision at 11. A numbered list appended to by many sessions needs the number CHECKED, not
+    assumed from the last one you remember.**
