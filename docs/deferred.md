@@ -529,3 +529,27 @@ half is unverified rather than disproved.*
 **Not fixed here on purpose:** *stage 3 step 1 is a measuring session and this is a programming
 session under a different permission.* **It is the strongest candidate for the first repair**, because
 three separate pieces of stage 3 are waiting behind it.
+
+---
+
+## 47 — A "round trip" test writes into the real `content/cultural.json`, then reverts it
+
+**Found 24 September 2026, checking the working tree before a sign-off — not by running anything
+directly.** `git status` showed `content/cultural.json` modified: a real nation's Area list replaced
+with one fake entry, `{"id": "n9999", "name": "Round Trip Test Region"}`. Re-checked moments later to
+set it aside, and the change was already gone — file back to matching `HEAD`, nothing to stash.
+
+**The likely cause, given the timing: a concurrent session's test run.** Another chat had this
+project's dev server up on the same machine at the same time (see the 24 September 13:58 handoff),
+and a "round trip" test — almost certainly a save/load test — appears to write its fixture straight
+into the real tracked file rather than a scratch copy, then write the original back when it finishes.
+This is the second time this exact family of test has left a mark on a tracked file: a stray
+`content/test-roundtrip.json.tmp` reached an actual commit on 11 September.
+
+**Why it matters more than a transient diff.** A run interrupted between the write and the revert —
+a killed process, a crash, two things racing for the file at once — leaves corrupted content staged
+for whatever commits next, and nothing would say so. This one was caught by chance, reading
+`git status` for an unrelated reason.
+
+**Not fixed here.** Which suite does it, and pointing it at a scratch copy instead of the real file,
+is a small task for a programming session.
