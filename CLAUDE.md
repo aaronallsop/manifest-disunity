@@ -139,27 +139,71 @@ project's convention means the recommendation as written.*
 > every one of them is Aaron's. They are listed at the end of the document that owns them and nowhere
 > else — **do not reassemble that list from memory.***
 
-### ⛔ THE CURRENT PHASE IS STAGE 3, TECHNICAL DESIGN — AND IT HAS NEVER BEEN SCOPED
+### ⛔ THE CURRENT PHASE IS STAGE 3, TECHNICAL DESIGN — SCOPED, APPROVED, AND STEP 1 OF SEVEN IS DONE
 
-**`GDD.md` §9 names it and that is all anybody has:** *formulas, pseudocode, inputs and outputs, edge
-cases.* **Every number in this stage is the architect's, not the designer's** — Aaron's line of
-14 September, and it is why round 7 refused to set the turn budget.
+**⚠ This section was eight days stale and was corrected on 24 September.** It said stage 3 *"has never
+been scoped"* and *"nobody has said it starts."* **Both stopped being true on 16 September** and
+nothing updated this file, because the seven commits that did the work never touched it. *The handoff
+was stale too and the session-start hook caught that one; nothing catches a stale definition of done,
+which is why this warning is written here rather than only in the record.*
 
-**It has no brief, no definition of done, and no estimate. Nobody has said it starts.** *So the first
-job of the next session is to put a SHAPE for stage 3 to Aaron rather than to begin it — and the
-twenty documents were written for exactly this reader, one system at a time, each naming what it
-depends on so that reader never has to open a system they are not writing.*
+**`GDD.md` §9 names the stage:** *formulas, pseudocode, inputs and outputs, edge cases.* **Every number
+in it is the architect's, not the designer's** — Aaron's line of 14 September, and it is why round 7
+refused to set the turn budget.
 
-**⚠ Three things are already waiting for that reader, named rather than discovered:** *how many things
-sixty-one nations can each start in a quarter without the machine slowing down; whether the victory
-targets still hold now a game is two hundred turns rather than eighty; and `MAX_DISTANCE`, which has no
-authored value on the three-axis board and is the denominator every tuned threshold in the game is
-measured against.*
+**THE PLAN EXISTS AND AARON APPROVED IT — D248, 16 September, both cards with no note.**
+`docs/technical/TDD-PLAN.md` is the authority and carries the approval at its head.
 
-**And the other live option, which is not stage 3 and is Aaron's to call:** *the **eleven faults** in
-`docs/deferred.md` 34–45 are all filed and none is fixed. **That is a programming session under a
-different permission**, and defect 34 — a failed invasion that charges the defender and pays the
-attacker, present in the playtest build — is the one to do first.*
+- **Scope: ALPHA FIRST, whole-game aware.** Full build-standard specification for what the alpha needs;
+  for everything else **only its contract** — what it must expose to its neighbours, so nothing is
+  foreclosed.
+- **Sequence: FOUNDATIONS FIRST, THEN SLICES.** T0 and T1 finish on paper because everything depends on
+  them; then **specify one system and build it before specifying the next**, each slice ending in
+  something that runs and is tested.
+- **Seven steps, T0–T6**, and the board's progress rail shows them as their own phases.
+- **⚠ Dependency order was abandoned before it was tried (D244)** — eleven systems are in one knot, so
+  the plan orders by *contracts before internals* instead.
+
+**✅ STEP 1 (T0, FOUNDATIONS) IS COMPLETE — 16 September.** *It produces no specification, and that is
+the point of it.* It delivered the architect brief, **the reconciliation ledger** (nineteen systems:
+what is built, what is designed, the difference — *ten satellites had never written down what already
+exists*), the triage of the three hundred open items, the three waiting measurements, the state
+inventory, and **the first-order register**.
+
+**⚠ THE FIRST-ORDER REGISTER IS A HABIT, NOT A STEP** — `docs/technical/FIRST-ORDER.md`, added by Aaron
+on 16 September. It holds changes that must land before other work **because anything built on top of
+them would have to be built twice**. *It grows at the moment a finding is made, at every step of this
+stage, rather than being reconstructed at the end.* **Its admission test is strict and that is the whole
+reason it stays short: an item is first-order only if building on it would have to be REDONE** — not
+"important", not "broken".
+
+> **⚠ AND THE FRAMING THAT CORRECTS A CARD PUT UP WRONG, in Aaron's words, 16 September:**
+> ***"we are not building the game right now, we are building the technical design document. We can
+> change things."*** *Step 1 asked him whether to repair a fault now or later. **That was the wrong
+> question.** A fault found while writing a specification is an **input** to the specification, not an
+> interruption of it — it goes in the register, and the sequencing it asserts is evidence for stage 4
+> rather than a request for permission.*
+
+**⛔ THE WORST THING THIS STAGE HAS FOUND — `docs/deferred.md` 46, and it was found by RUNNING the game
+rather than reading it.** **The simulation hangs somewhere around turn 80–95 and never returns**, and
+the game is designed to be **200 turns** (D223). It stops inside the call that plays all sixty-one
+seats. **The turn it stops on moves with the seed**, so it is a condition some world reaches rather than
+a counter running out. *Four runs; instrumentation, browser throttling, mere slowness, a turn cap and
+the known non-re-entrancy were each ruled out by check rather than by argument.*
+
+**Three numbers that did not survive contact, all 16 September:** **`MAX_DISTANCE` is 2√3** and the one
+function turned out to be two (D250); **the victory targets are stale at EIGHTY turns**, before the
+200-turn question is even reached (D251); and there are **38 standing faults, not 12** — a decision had
+been taken against the wrong number (D245).
+
+**The twenty design documents leave 300 live items, and 52 of them are Aaron's** (D246). *The plan's §6
+is how he answers fifty-two questions without receiving fifty-two cards.*
+
+**What the next session does:** read `docs/technical/TDD-PLAN.md` and continue at **T1, the contracts
+pass** — unless Aaron says otherwise. **The other live option, which is not stage 3 and is his to
+call:** the standing faults in `docs/deferred.md` are filed and unfixed, **that is a programming session
+under a different permission**, and defect 34 — a failed invasion that charges the defender and pays the
+attacker, live in the playtest build — is the one to do first.
 
 ---
 

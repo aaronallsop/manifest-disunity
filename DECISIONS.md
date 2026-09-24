@@ -6407,3 +6407,34 @@ measured against.
 **One row is marked against itself, and honestly:** *F6, the hang, blocks measurements rather than
 construction. Steps 2 and 3 can be written without it. It is in the register because the numbers start
 at step 4 — and the row says so rather than overstating its own importance.*
+
+---
+
+### D255 — The record had been wrong for eight days, and nothing was watching the file that matters most, 24 September 2026
+
+**Observed.** A sign-off on 24 September found the project untouched since **16 September** and **two
+documents describing a world that had stopped existing.** The stage 3 work — scoping, Aaron's approval,
+and the completion of step 1 of seven — landed in **seven commits and then stopped**, with no handoff
+written and **no change to `CLAUDE.md`**.
+
+**The handoff's staleness was caught automatically**; the session-start hook counts commits landed
+after the newest handoff and names them. **`CLAUDE.md`'s was not caught by anything**, and it is the
+file a new session treats as binding. It still said stage 3 *"has never been scoped"* and *"nobody has
+said it starts"* — so a session could have read it, believed the stage unstarted, and re-scoped work
+that was already approved and a step in.
+
+**Decided.** Both are corrected in this commit, and the correction is written **into `CLAUDE.md` in its
+own voice** rather than only recorded here — because a reader of that file does not read this one
+first. **And the lesson becomes programmer rule 20: when a session changes what phase the project is
+in, the definition of done changes in the SAME commit.** A phase change is not finished until both
+files say so.
+
+**Rejected: republishing the Control Board.** *Step 5 of the sign-off asks for it, and it was not done —
+deliberately.* The board was read and checked: **it has no open cards, its current phase is correct
+(step 2, the contracts pass), and every one of its six figures is still true**, because no work has
+happened since the 16th. **Republishing would have moved a date stamp to imply activity that did not
+occur**, and this board has been damaged three times by unnecessary writes. *The judgement is recorded
+rather than the step silently skipped.*
+
+**Also this session, and it is the only measurement in it: 956 tests green, 0 failing, 51 files,
+308.72 seconds**, run in the browser rather than quoted.

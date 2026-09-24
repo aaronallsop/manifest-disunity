@@ -285,3 +285,19 @@ Add one with `/rule` whenever a mistake earns it. Number them; never delete one.
 
     **The tell:** you are about to write a fourth paragraph into a field the renderer prints as one
     blob. Stop and ask what the reader does with it in a minute.
+
+20. **A stale `CLAUDE.md` is worse than a stale handoff, because nothing counts commits against it.**
+    On 16 September a session scoped stage 3, got Aaron's approval, completed step 1 of seven, and
+    committed all of it across seven commits. **It never touched `CLAUDE.md`.** The project then sat
+    for **eight days** with its own definition of done saying stage 3 *"has never been scoped"* and
+    *"nobody has said it starts."*
+    **The handoff was stale too, and that one was caught** — the session-start hook counts commits
+    landed after the newest handoff and prints a warning naming them. **There is no equivalent check
+    for `CLAUDE.md`**, and it is the file a new session treats as binding: a session could have read
+    it, believed stage 3 unstarted, and re-scoped a stage that was already approved and a step in.
+    **What generalises:** the rituals protect the *record of what happened* and nothing protects the
+    *statement of where we are*. **So when a session changes what phase the project is in, the
+    definition of done changes in the SAME commit** — not at the next sign-off, and not in the handoff
+    alone. A phase change is not finished until both files say so.
+    **The tell:** the newest handoff and `CLAUDE.md` disagree about what stage is live; or a sign-off
+    updated the handoff and touched nothing else.
