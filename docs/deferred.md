@@ -602,7 +602,7 @@ rather than the port.*
 24 September that rule 22 counts: 956 passed · 0 failed · 51 files · 263.47s.** *`content/cultural.json`
 was unmodified afterwards and no `Round Trip Test Region` remained in it.*
 
-**The afternoon's runs, now that every session's transcript has been read — seven, not three:**
+**The afternoon's runs, now that every session's transcript has been read — nine runs in six sessions (four green, five red), not three:**
 
 | Session | Result | |
 |---|---|---|

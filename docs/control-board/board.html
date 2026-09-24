@@ -321,33 +321,30 @@ tr:last-child td{border-bottom:0}
 const BOARD = {
   project: "Manifest Disunity",
   livery: "tower",                      // tower | mars | violet | deep | slate
-  updated: "2026-09-24 14:20",          // when you last republished, local time
+  updated: "2026-09-24 17:25",          // when you last republished, local time
 
   // Three or four measured figures. value: number|string, or null = "not yet measured".
   figures: [
-    { label: "Checks, run three times today — same code, three answers", value: "956 / 955 / 954" },
+    { label: "Checks passing, run with nobody else in the folder — none failing", value: 956 },
     { label: "Turn the game hangs on — it is designed to reach 200", value: "80–95" },
     { label: "Systems with NO code behind them at all", value: "5 of 19" },
     { label: "Loose ends, now sorted — and 207 had no owner", value: 300 },
-    { label: "Live faults", value: 40 },
+    { label: "Open entries in the fault list", value: 42 },
     { label: "Current version", value: "v0.6" },
   ],
 
   headline: {
     tone: "warn",
-    lead: "Two of me were working on this at the same time this afternoon, in the same folder, and "
-        + "neither knew about the other until one of us went looking. Nothing was lost and nothing "
-        + "is waiting on you — but if you have two of these sessions open, close one. Everything "
-        + "below this still stands from the last update.",
+    lead: "Every session you had open is signed off — through ONE of them, so nothing raced. The "
+        + "checks were finally run with nobody else in the folder, and all 956 pass. Nothing is "
+        + "waiting on you on this board.",
     points: [
-      { warn: true, t: "WHAT HAPPENED: two sessions both ran the end-of-day routine within the same minute. Between them they wrote the same fault down twice, wrote the same numbered lesson twice, and both went to write the day's summary. All of it was caught by reading the files before saving, and it is all merged into one of each. The reason it matters is that the end-of-day routine finishes by saving, by updating this page, and by writing the note the next session reads — and each of those assumes nobody else is doing it at the same moment. There is nothing in the project to stop it happening again." },
-      { warn: true, t: "AND IT SHOWED UP IN THE CHECKS FIRST. The suite was run three times this afternoon on code that has not changed in eight days, and gave three different answers: all 956 passing, then one failure, then two. The cause is now understood and written down. One of the checks edits a real game file while it runs and puts it back afterwards, and a second session reading that file during the gap sees the edit — and because the suite loads that file once and reuses it for the whole run, one second of overlap spoils a five-minute run. Running on a different port does not help, because both sessions share the same folder. UNTIL IT IS RUN ONCE WITH NOBODY ELSE IN THE FOLDER, TREAT THE CHECKS AS UNKNOWN RATHER THAN PASSING — though nothing here suggests the game itself is broken." },
-      "WHAT REPLACES IT is your idea: a running list of first-order changes — things that have to land before other work, because anything built on top of them would have to be built twice. It starts with thirteen items and it grows at every step of this stage, written down the moment something is found rather than reconstructed at the end, which is how three hundred loose ends came to exist last time.",
-      "It has ONE test for getting in, and it is strict so the list stays short: would building something else on top of this have to be REDONE. Not important, not broken — redone. Everything that fails that test is an ordinary fault or an ordinary difference and lives where those live. Thirteen items out of nineteen system differences, thirty-nine faults and three hundred open design questions.",
-      { warn: true, t: "THE GAME STILL CANNOT REACH TURN 200 — that finding has not changed, it has just stopped being a question for you. It is now a numbered item with what it blocks written next to it: the cost of a turn, the victory recalibration, and whether the trade spiral spirals. Steps 2 and 3 of this stage can be written without it. It has to be fixed before step 4, which is where the numbers start." },
-      "THE BIGGEST FIRST-ORDER ITEM is not a fault at all — it is the political board. The game runs on six ideologies over two axes; you ruled it should be three axes and ten positions. Every formula in the game reads the old one, so it is the one change that has to happen before anything measured in political distance can be tuned. Nine things depend on it, including coalitions, who splinters off whom, and how badly a civil war goes.",
-      "Three items in the list are faults that other work sits on top of: the failed invasion that pays the attacker, a country reading its own founding movement as its worst internal problem, and five army settings that are buried in the code where you cannot reach them. They are in the list because of what depends on them, not because of how bad they are.",
-      "And three things were considered for the list and deliberately LEFT OUT, with the reasoning written down — including the five systems that have no code at all. They are large, but nothing is built on them yet, so building them late costs no more than building them early. That is a build-order question, and the build order is yours.",
+      { warn: true, t: "HOW IT WAS DONE, AND WHY. Sixteen other sessions were open, fifteen of them on this project and all sharing one folder. This afternoon several ran the end-of-day routine at once and tripped over each other. So this time one session read every other session's conversation, gathered what had not been written down, did the sign-off once, and told the rest to close without saving, testing or touching this page. Running fifteen sign-offs one after another was rejected: fifteen notes for the next session, each replacing the last, and fifteen five-minute test runs." },
+      "THE CHECKS ARE GREEN, AND NOW IT MEANS SOMETHING. This afternoon the same unchanged code gave nine results across six sessions — four green, five red. Every red run was one session's check editing a real game file while another session's check was reading it. Run alone this evening: 956 passing, none failing, in four and a half minutes, and the game's files untouched afterwards. The game is fine; the checks can still trip over each other, and that fault stays on the list.",
+      { warn: true, t: "A SECOND COPY OF THE PROJECT WAS WORKING TOO. When this session went to save, it found eleven newer saves from somewhere other than this PC: the director's brief and its interview, names for every role on the studio roster, and a draft rewrite of the project's standing rules. All of it was kept exactly as written. It had filed a fault under the same number this session had just used, so this session's took the next one. The draft rules are NOT adopted yet, and they carry one question for you about who approves the technical design." },
+      "ONE MORE COLLISION SCAR WAS FOUND AND FIXED: two different decisions had both been given the same number this afternoon, and nobody had noticed. Renumbered, with a note saying why.",
+      { warn: true, t: "THE GAME STILL CANNOT REACH TURN 200. Unchanged: it stops somewhere around turn 80 to 95. It has to be fixed before the stage reaches its numbers, and it is first on the list of things that must land before other work." },
+      "NEXT: the second step of the technical stage — agreeing what each system hands its neighbours. Or, if you would rather, the standing faults, starting with the failed invasion that pays the attacker.",
     ],
   },
 
@@ -1081,6 +1078,8 @@ const BOARD = {
 
   // Decisions made on the owner's behalf and how they turned out. Corrections go BESIDE originals.
   log: [
+    { when: "2026-09-24", decision: "Signed off sixteen open sessions through one, instead of letting each run its own end-of-day routine.",
+      outcome: "The afternoon showed what happens otherwise: two faults filed under one number, two lessons under one number, two decisions under one number, and nine test results for one unchanged piece of code. Every session's conversation was read first, and every one had already either finished or deliberately stood aside. What had not reached the record was other sessions' test evidence, one proof that the game is fine and the checks are not, and the duplicate decision number. All of it is written down now, the checks were run alone, and the other sessions were told to close without writing anything. Then saving turned up newer work from outside this PC, kept exactly as written. The end-of-day routine itself still has no guard against a second session in the same folder; that lives in your shared rules, not in this project, so it is flagged as its own job." },
     { when: "2026-09-16", decision: "Took the toll question off this board entirely rather than parking it where it could keep catching your eye.",
       outcome: "Your answer was an instruction as much as a decision: the choice gets made when the economy is built out in the technical stage, and it is not to be raised again before then. A parked card is still a card — it sits in the queue looking like something you owe. So it is off the board and written into the plan instead, against the two documents that will need it, which are the economy and trade ones in step five. It resurfaces there and nowhere earlier. Worth recording because it is the second time this question has been mishandled: the first version asked whether to decide now or later, you said now, and approving that named no system — which is how it survived another day looking answered." },
     { when: "2026-09-16", decision: "Did NOT treat your approval of the Deseret card as an answer to it, and parked it instead of asking again.",
