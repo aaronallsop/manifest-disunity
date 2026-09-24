@@ -5,6 +5,12 @@ answers are recorded here in his words, with only filler ("um", "uh") and false 
 here is paraphrase. The brief itself is written from this file, and where the two ever disagree, this
 file is what he actually said.
 
+**Corrected the same day.** A word-by-word check of every answer against Aaron's own messages found two
+places where his words had been changed — Q12 *"viewer"* written as "player", and Q14 *"differently
+and do next turn"* written as "differently next time" — and about a dozen small grammar smoothings.
+**All were put back as he said them.** The only edits left are removed filler ("um", "uh", "like",
+"you know") and false starts.
+
 **Method.** The questions are asked cold first: before he is shown anything he said in earlier weeks.
 A background sweep of the project's records gathers what he said before. Afterwards the two are laid
 side by side: where they agree, that is a pillar; where they differ, today's answer is the rule and the
@@ -24,7 +30,7 @@ older one is marked superseded, once, with his confirmation.
 > was actually something that was real. It is a little bit like Europa Universalis IV, but it's all in a
 > map, which makes it easier to play on any device.
 >
-> And if we're looking at this through the context of the playtester who is playtesting the alpha, I
+> And I think I'd also want them to be like — if we're looking at this through the context of the playtester who is playtesting the alpha, I
 > would like them to be like: it was a lot of fun, but honestly, I could see it growing, and it sounds
 > like a lot of the features they've got is going to make it a really fun game where you can kind of
 > experiment and play with different play styles and nations.
@@ -50,8 +56,8 @@ older one is marked superseded, once, with his confirmation.
 > I think the third thing that I would want people to experience is the feeling of absurdity that is
 > hilarious. I don't know exactly what it would be as an example in my game because I haven't got
 > there yet. But the one example I use a lot that I keep going back to is the world record for fastest
-> world conquest in EU4 — and to be clear, it isn't the fastest that somebody did that in real time,
-> it's the fastest they did it in in-game time — was that they conquered the world as Mongolia, who was
+> world conquer in EU4 — and to be clear, it isn't the fastest that somebody did that in real time,
+> it's the fastest they did it with in-game time — was that they conquered the world as Mongolia, who was
 > the emperor of the HRE. And so it's just this weird, hilarious alternate universe where it's like,
 > okay, yeah, what if Oirat decided to become the Mongolian Empire again and push so far west,
 > converted to Christianity, and became the HRE and took over the world. So I would say those
@@ -81,7 +87,7 @@ older one is marked superseded, once, with his confirmation.
 > welfare programs, the society is also built around something else. Maybe it's got a very large church
 > culture, or religious organizations, and they are so integral to that society's cultural identity that
 > the idea of a social welfare program actually wouldn't make sense — because it's like, well, why would
-> the government do it when the church is not only doing it, but they actually do it. So those are kind
+> the government do it when the church is not only do it, but they actually do it. So those are kind
 > of my thoughts.
 
 ### Q4. Outside games — or in them — what already has the feeling you're after, and what exactly would you steal?
@@ -91,7 +97,7 @@ older one is marked superseded, once, with his confirmation.
 > Europa Universalis, like I was saying — that is a game that I think I draw a lot of inspiration from.
 > And that kind of feeling of like: you've got this challenge, you've got a unique situation, you've got
 > a nation that on one hand has a potential advantage but right now is kind of stuck on all sides. It's
-> that idea of like, you start in EU4, but you've got to deal with France, which is a really powerful
+> that idea of like, you start an EU4, but you've got to deal with France, which is a really powerful
 > nation. Or you're right up against the Ottomans and you're like, how do I handle this?
 >
 > And another game, I think tone-wise, is Fallout 4 and the Fallout universe in general. I do like how
@@ -103,12 +109,12 @@ older one is marked superseded, once, with his confirmation.
 > is. I read his books, Accidental Superpower, and the other one I can't remember the name of. And I
 > just really found it so fascinating: his view on how things that I would have never thought of, like
 > geography, play such a huge importance in our world, which makes sense. And that should actually be
-> in the game notes somewhere. He talks about how waterways are so important and what helped America
+> in the game notes somewhere. He talks about how waterways are so important and what help America
 > grow, and that's kind of where I got this idea of having waterways as a part of the nation. Those are
 > kind of the big three, I think, off the top of my mind right now.
 >
 > Civilization 2, I think, is another kind of big influence — especially their turn design, and how
-> this isn't a real-time game like EU4 is. And I like how Civilization 4 — and I think I've talked about
+> this isn't a real-time game like EU4 is. And I like how Civilization four — and I think I've talked about
 > this with you or another Claude — just the incremental rewards, and how there's always multiple goals
 > that you're working at accomplishing at one time. And so if you accomplish one, there's still other
 > ones that you were working on.
@@ -184,6 +190,7 @@ nation can do things.**
 > pretend that didn't happen, in any way. But I also want to be sensitive, and realize that although
 > this can be a game about history, that helps people learn, it is still a video game.
 >
+> I think like forcing a population out, I guess the main thing — and maybe we can just talk about this.
 > And so with getting people out, and expulsion, the main thing that I was thinking about is making
 > sure that this is still a realistic game set in some reality, but it's still a fantasy for people to
 > escape to. I don't want to have a mechanic where Christian nationalism rises up and it's giving the
@@ -198,7 +205,7 @@ nation can do things.**
 > bring that boat to the other side of where his area was, and had them build a village there. And he
 > talked about how, although this wasn't an intentional outcome of the game, essentially the mechanic
 > that was built into the game was mirroring that of colonialism and transatlantic slavery. And the
-> video was an interesting talk about how video game systems play out in that way.
+> video was an interesting kind of talking about how video game systems play out in that way.
 >
 > And I think the difference here is that with Minecraft, that was a system that was not intentional.
 > But with this game, because the backdrop is America and an alternate history, something like that is
@@ -233,7 +240,7 @@ lookbook entry: **Dan Olson's video about his Minecraft villager mechanic** — 
 > are a unit that you can move and direct and interact with as a separate entity outside of the map. You
 > will have military, and I think in later versions — and I have talked about this — where, oh, Hawaii
 > has Pearl Harbor, so they have a good navy or something. That is something I do want. But it isn't
-> like you are going to say, I need to move my battleships here. And that would be a form of
+> like you were going to say, I need to move my battleships here. And that would be a form of
 > mismarketing and positioning rather than game.
 
 *Note:* **the failure he fears is the implementation one: "it's cool, but there isn't much to do."**
@@ -249,7 +256,7 @@ right side of the Q9 line.
 
 > I think that is more or less the right line. And we would get into more specifics later, right? Where
 > civil liberties would impact people, but it would impact people less if you were the matching
-> movement. So if a Christian nationalist nation had low civil liberties and they conquered another
+> movement. So if a Christian nationalist nation had a low civil liberty thing and they conquered another
 > nation, people who are already Christian nationalists would not be as impacted by that low civil
 > liberty, because either A, those are the rules that they would want in life, or B, they are not the
 > targets of the things that are causing the low civil liberties.
@@ -282,7 +289,7 @@ so low liberties hurt those who do not share the government's politics and barel
 > That's a good one. I think when they clash, there should be two options weighted. One is: can the
 > history be adjusted — or the reality, not just the history — adjusted in a way to create a simulacrum
 > of feasibility. And then another one would be: will focusing on a certain thing lower too much the
-> amount of fun the average player would have.
+> amount of fun the average viewer would have.
 >
 > And at the end of the day, the point of this is to be fun. And to me, keeping it simple and making a
 > better story, those two work together to make it fun. This could potentially be the kind of game that
@@ -294,7 +301,7 @@ so low liberties hurt those who do not share the government's politics and barel
 > a little more complicated — at the end of it, there should be a very simple thing on the end. I think
 > that is what I'm going for.
 >
-> It reminds me of the book 4DX, where he talks about the four disciplines of execution. And one of the
+> It reminds me of the book 4DX by Mr. Cubby, where he talks about the four disciplines of execution. And one of the
 > things he talks about is how you need to have a scoreboard. And a scoreboard for your goals needs to be
 > clear and easy to read, so that you can just look at it and you know whether or not you're winning.
 > How that can apply to this: there's going to be a lot of complex, intricate systems moving back and
@@ -304,12 +311,13 @@ so low liberties hurt those who do not share the government's politics and barel
 >
 > I think about my camera. I have a Fuji X-T3, and this is a pretty common thing among all modern-day
 > mirrorless cameras: they have an auto mode and they have a manual mode. I prefer using the manual mode
-> because that's just how I learned photography, but also with film. So my camera is always in manual
+> because that's just how I learn photography, but also with film. So my camera is always in manual
 > mode. And I have created custom Fuji looks, specifically based on film profiles that I have wanted to
-> emulate. I have controlled all of these things, and it's been a great camera. At the same time,
+> emulate, as well as other things I wanted to do. I have controlled all of these things and I've been able
+> to do it. And it's been a great camera. At the same time,
 > somebody could still put the camera in auto mode, select from one of the many Fuji looks that they
 > have, like Provia, and still really enjoy the camera and take a good picture. And it's not like we're
-> using a different camera or a different system. It's that the systems we are using are at different
+> using a different camera or a different system. It's just that the systems that we are using at different
 > levels: you can work with them on a deeper level, but you can also just play the game.
 
 *Note:* he named the book as "4DX by Mr. Cubby" — *The 4 Disciplines of Execution* (McChesney, Covey
@@ -336,7 +344,7 @@ deferred UX Designer role gets hired.
 ### Q14. A new player's nation is finished by turn 10 because of where it sits. Good story or bug? What should the nation-picker have told them?
 
 > It is only a good story if at the end of it, they have learned something that they can do differently
-> next time. I think one of the things about these games that I like is that when people hear about
+> and do next turn. I think one of the things about these games that I like is that when people hear about
 > that, they don't think, oh, that sounds like a terrible nation to start with. They say, that sounds
 > like a fun challenge. And so I feel like part of that will just be the natural outflow built into it.
 >

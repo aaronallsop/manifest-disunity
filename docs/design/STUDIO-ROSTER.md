@@ -98,5 +98,7 @@ than working together.
 | **Proteus** | AI Programmer — how the other sixty nations think, want, try and judge | Making it |
 | **Logos** | Data Engineer — builds the data Eris has vetted into the game's map and data files | Making it |
 | **Despina** | UI Programmer — builds the screens Dia designs | Making it |
+| **Larissa** | Gameplay Programmer — builds the game's rules from the technical design, with the tests that come with each change; may run several at once | Making it |
+| **Varda** | Release Engineer — builds the copy players open and protects their saved games through every update | Making it |
+| **Chaos** | Prototyper — quick throwaway builds that test an idea before it is built properly | Making it |
 
-*Names Aaron likes and has not yet placed:* **Chaos**, **Varda**, **Larissa**.
