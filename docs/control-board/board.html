@@ -321,25 +321,27 @@ tr:last-child td{border-bottom:0}
 const BOARD = {
   project: "Manifest Disunity",
   livery: "tower",                      // tower | mars | violet | deep | slate
-  updated: "2026-09-16 12:05",          // when you last republished, local time
+  updated: "2026-09-24 14:20",          // when you last republished, local time
 
   // Three or four measured figures. value: number|string, or null = "not yet measured".
   figures: [
+    { label: "Checks, run three times today — same code, three answers", value: "956 / 955 / 954" },
     { label: "Turn the game hangs on — it is designed to reach 200", value: "80–95" },
     { label: "Systems with NO code behind them at all", value: "5 of 19" },
     { label: "Loose ends, now sorted — and 207 had no owner", value: 300 },
-    { label: "Live faults, after today", value: 39 },
-    { label: "Step 1 of the technical stage", value: "done" },
+    { label: "Live faults", value: 40 },
     { label: "Current version", value: "v0.6" },
   ],
 
   headline: {
     tone: "warn",
-    lead: "You corrected my framing and it was the right correction: we are not building the game, we "
-        + "are writing the document that says what to build — so we can change things. My card asked "
-        + "whether to repair a fault now or later. That was the wrong question, and it is off the "
-        + "board. Nothing is waiting on you.",
+    lead: "Two of me were working on this at the same time this afternoon, in the same folder, and "
+        + "neither knew about the other until one of us went looking. Nothing was lost and nothing "
+        + "is waiting on you — but if you have two of these sessions open, close one. Everything "
+        + "below this still stands from the last update.",
     points: [
+      { warn: true, t: "WHAT HAPPENED: two sessions both ran the end-of-day routine within the same minute. Between them they wrote the same fault down twice, wrote the same numbered lesson twice, and both went to write the day's summary. All of it was caught by reading the files before saving, and it is all merged into one of each. The reason it matters is that the end-of-day routine finishes by saving, by updating this page, and by writing the note the next session reads — and each of those assumes nobody else is doing it at the same moment. There is nothing in the project to stop it happening again." },
+      { warn: true, t: "AND IT SHOWED UP IN THE CHECKS FIRST. The suite was run three times this afternoon on code that has not changed in eight days, and gave three different answers: all 956 passing, then one failure, then two. The cause is now understood and written down. One of the checks edits a real game file while it runs and puts it back afterwards, and a second session reading that file during the gap sees the edit — and because the suite loads that file once and reuses it for the whole run, one second of overlap spoils a five-minute run. Running on a different port does not help, because both sessions share the same folder. UNTIL IT IS RUN ONCE WITH NOBODY ELSE IN THE FOLDER, TREAT THE CHECKS AS UNKNOWN RATHER THAN PASSING — though nothing here suggests the game itself is broken." },
       "WHAT REPLACES IT is your idea: a running list of first-order changes — things that have to land before other work, because anything built on top of them would have to be built twice. It starts with thirteen items and it grows at every step of this stage, written down the moment something is found rather than reconstructed at the end, which is how three hundred loose ends came to exist last time.",
       "It has ONE test for getting in, and it is strict so the list stays short: would building something else on top of this have to be REDONE. Not important, not broken — redone. Everything that fails that test is an ordinary fault or an ordinary difference and lives where those live. Thirteen items out of nineteen system differences, thirty-nine faults and three hundred open design questions.",
       { warn: true, t: "THE GAME STILL CANNOT REACH TURN 200 — that finding has not changed, it has just stopped being a question for you. It is now a numbered item with what it blocks written next to it: the cost of a turn, the victory recalibration, and whether the trade spiral spirals. Steps 2 and 3 of this stage can be written without it. It has to be fixed before step 4, which is where the numbers start." },
@@ -929,8 +931,18 @@ const BOARD = {
     { name: "Step 1 — The ledger and the triage", status: "done",
       brief: "Before any formulas: find out where the game actually stands against the design, and sort "
            + "the three hundred loose ends the design stage left behind.",
-      actual: "THE LIVE STEP, unblocked by your two approvals and not yet begun. One session, and it "
-            + "produces no formulas at all — that is the point of it.\n\n"
+      actual: "DONE, 16 September, in one session — and it produced no formulas at all, which was the "
+            + "point of it. Six new documents: the ledger, the triage, the three measurements, a brief "
+            + "for whoever writes the formulas, and the running list of things that have to land first. "
+            + "⚠ THIS CARD SAID “not yet begun” FOR EIGHT DAYS AFTER IT WAS MARKED DONE — the "
+            + "tick was updated and the words underneath it were not. Corrected 24 September.\n\n"
+            + "WHAT IT FOUND THAT NOBODY EXPECTED: the game cannot be played to the end. It stops dead "
+            + "somewhere around turn 80 to 95 and never comes back, and it is designed to run to 200. "
+            + "Four runs on two different seeds, with your instrumentation, without it, and with none "
+            + "at all — it stops in the same place each time, and the place moves with the seed, so it "
+            + "is something a world gets itself into rather than a counter running out. That was found "
+            + "by RUNNING the game rather than reading it, while trying to take one of the three "
+            + "measurements. It blocks all three.\n\n"
             + "THE LEDGER is the valuable half: one table, every system, saying what the game currently "
             + "DOES, what you have designed, and the difference between them. Nine of the twenty design "
             + "documents already carry that comparison. Ten do not — so for half the game nobody has "

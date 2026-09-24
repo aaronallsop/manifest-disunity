@@ -285,3 +285,56 @@ Add one with `/rule` whenever a mistake earns it. Number them; never delete one.
 
     **The tell:** you are about to write a fourth paragraph into a field the renderer prints as one
     blob. Stop and ask what the reader does with it in a minute.
+
+20. **A stale `CLAUDE.md` is worse than a stale handoff, because nothing counts commits against it.**
+    On 16 September a session scoped stage 3, got Aaron's approval, completed step 1 of seven, and
+    committed all of it across seven commits. **It never touched `CLAUDE.md`.** The project then sat
+    for **eight days** with its own definition of done saying stage 3 *"has never been scoped"* and
+    *"nobody has said it starts."*
+    **The handoff was stale too, and that one was caught** — the session-start hook counts commits
+    landed after the newest handoff and prints a warning naming them. **There is no equivalent check
+    for `CLAUDE.md`**, and it is the file a new session treats as binding: a session could have read
+    it, believed stage 3 unstarted, and re-scoped a stage that was already approved and a step in.
+    **What generalises:** the rituals protect the *record of what happened* and nothing protects the
+    *statement of where we are*. **So when a session changes what phase the project is in, the
+    definition of done changes in the SAME commit** — not at the next sign-off, and not in the handoff
+    alone. A phase change is not finished until both files say so.
+    **The tell:** the newest handoff and `CLAUDE.md` disagree about what stage is live; or a sign-off
+    updated the handoff and touched nothing else.
+
+21. **Re-read a file immediately before you commit it — especially one you did not write in the same
+    breath.**
+    This sign-off wrote a handoff, then ran `git add -A && git commit` without looking at the file
+    again. **Between the write and the commit the file had been replaced**, and the version that
+    actually landed carried **an unfilled `TEST_RESULT_PLACEHOLDER`** where the measured test result
+    should have been, plus two factual errors — a transcript dated to the wrong week and a range of
+    fault numbers attributed to commits that did not add them.
+    **The placeholder reached the repository.** It was caught on the next read and corrected in the
+    following commit, so it stood for one commit rather than eight days — but it stood.
+    **What generalises:** `git add -A` stages whatever is on disk, not whatever you meant. Any gap
+    between writing and committing — a tool that rewrote the file, a concurrent session, an edit you
+    forgot — is invisible at commit time and permanent afterwards. **Read the file, or at minimum grep
+    it for the things that must not survive: `PLACEHOLDER`, `TODO`, `TBD`, `XXX`, an empty number.**
+    **The tell:** a commit message you wrote from memory of what the file said, rather than from the
+    file.
+
+22. **Run the suite with the working tree to yourself, and treat a red run as unattributed until you
+    have.** Cost: two full runs at sign-off on 24 September — 306s and 272s — and a diagnosis that was
+    written, then rewritten, because the first explanation was wrong. **The suite WRITES to the
+    repository while it runs**: `tests/content.test.js` PUTs an edited `content/cultural.json` to the
+    server and restores it in a `finally`, and `server.py` writes into the repo's own `content/`
+    directory. **So a second session is not isolated by using a different port** — the contention is
+    over the file. And `tests/world-fixture.js` fetches every data file **once per page** and shares
+    the result, so a collision lasting one second poisons a run lasting five minutes and every suite
+    that reads the map afterwards fails for a reason that has nothing to do with the code.
+    **The tell:** a failure naming `Round Trip Test Region`, or a bare `TypeError: Failed to fetch`.
+    **Before blaming code for a red suite, check whether another session holds the server** — the
+    preview tool says so by name when it refuses port 8000 — and if one does, say the run is
+    unattributed rather than reporting a regression. **It is not theoretical: on 24 September two
+    sign-off sessions ran the suite in one tree within one half hour and got 956·0, then 955·1, then
+    954·2, with nothing committed between them.** *`docs/deferred.md` 47. Rule 16's canary proves a
+    runner CAN fail; this is the opposite hazard — a runner failing for the wrong reason.*
+    **And this rule was first written as a second rule 21, on top of the existing one — which is
+    rule 21's own lesson, landed within a minute of reading it. Deferred 30 records the same
+    collision at 11. A numbered list appended to by many sessions needs the number CHECKED, not
+    assumed from the last one you remember.**
