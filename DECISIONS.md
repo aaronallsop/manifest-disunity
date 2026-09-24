@@ -6654,3 +6654,34 @@ checking, not research*, because the maker never approves its own work; *a Proto
 
 **Not yet decided:** the Tools Programmer's name; a name for the playtesters as a group. **Nothing is
 hired by naming it** — a role's definition file is written when its job arrives.
+
+### D263 — The master file is rewritten: permanent rules only, and the diary moved out, 24 September 2026
+
+**Observed.** *`CLAUDE.md` — the file every session and every role reads before doing anything — had
+grown to 385 lines, most of it dated status, counts and corrections of corrections. It had sat eight days
+stale (D255), and part of it contradicted itself. It is also the file the new studio's roles will be
+briefed from.*
+
+**Decided — Aaron, 24 September: "Yes on the master file."** **The new `CLAUDE.md` holds only what is
+permanent**: what the game is (his paragraph, word for word), where the project stands (lines that change
+only with the stage or step), how the studio runs, where things live, and the hard rules. **Progress and
+counts live in the handoff and on the Control Board; reasons live here.**
+
+**How it was made.** *A morning draft, merged with the PC sessions' afternoon changes, the roster and the
+director's brief; then three separate checks. **The completeness check went through the old file rule by
+rule** and found three standing rules the draft had dropped — how a board approval with no note is read,
+that every role reads the director's brief, and that design sessions write documents only — all restored.
+A plain-English comparison, row by row, went to Aaron.*
+
+**New rules it carries:** *Aaron's most recent word wins; his words are recorded verbatim and checked; the
+start-of-session checks come before `/resume` — nobody else live, then pull; one live session per project,
+one piece of work per session, named after the work and never after a planet; Saturn never writes game code
+or design — it writes an unhired role's file first and hands the job over, except running-it work (board,
+handoff, saving), which it does itself until Rhea, Titan and Janus are hired.*
+
+**⚠ One correction to what Aaron was told today.** *He was told that until a role's file exists, Saturn does
+that role's job. The roster says the Conductor never writes game code or design itself, and it wins:
+**Saturn writes the role's file and hands over.** The running-it exception above is where the earlier answer
+still holds.*
+
+**Kept, not deleted:** *the old file, word for word, at `docs/archive/CLAUDE-until-2026-09-24.md`.*

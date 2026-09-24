@@ -287,6 +287,8 @@ Add one with `/rule` whenever a mistake earns it. Number them; never delete one.
     blob. Stop and ask what the reader does with it in a minute.
 
 20. **A stale `CLAUDE.md` is worse than a stale handoff, because nothing counts commits against it.**
+    *⚠ 24 September 2026 (D263): the "definition of done" this rule names is now the section "Where we
+    are" in the rewritten `CLAUDE.md`. The rule is unchanged.*
     On 16 September a session scoped stage 3, got Aaron's approval, completed step 1 of seven, and
     committed all of it across seven commits. **It never touched `CLAUDE.md`.** The project then sat
     for **eight days** with its own definition of done saying stage 3 *"has never been scoped"* and
