@@ -113,3 +113,56 @@ build — is the one to do first.**
 **Run `/signoff`, and write the handoff.** *The gap this document exists to close was seven commits of
 real work that nobody wrote down, and it went unnoticed for eight days. The session-start hook caught
 it; the sessions that created it did not.*
+
+---
+
+# ⚠ ADDENDUM — written by a SECOND sign-off session, same timestamp, same tree
+
+**Point 4 above was right, and it was about me.** *Two sessions ran `/signoff` against this working
+tree within the same minute and were both given the timestamp `2026-09-24_1358`. This section is the
+second one's; everything above is the first one's and stands, **with one correction.***
+
+## The correction: "all green" was a coin-flip, not a state
+
+**Point 3 reports 956 passed · 0 failed · 308.72s. That run is real.** *So are these two, taken in the
+same half hour, in the same tree, with nothing committed between them:*
+
+| | Result | |
+|---|---|---|
+| First session | **956 · 0** | 308.72s |
+| Second session | **955 · 1** | 306.50s |
+| Second session, again | **954 · 2** | 272.06s |
+
+**Both red runs failed on an assertion naming `Round Trip Test Region`** — a string that exists in
+exactly one place in the project, `tests/content.test.js`, which PUTs an edited `content/cultural.json`
+to the live server and restores it in a `finally`. *The second red run added a bare
+`TypeError: Failed to fetch`.*
+
+**So defect 47 is confirmed rather than observed**, and two mechanisms make it worse than a transient
+diff: **`server.py` writes into the repository's own `content/` directory**, so a different port does
+not isolate anything — the contention is over the *file*; and **`world-fixture.js` fetches every data
+file once per page and shares it**, so a one-second collision poisons a five-minute run.
+
+> **⛔ DO NOT RECORD THIS SUITE AS GREEN UNTIL IT HAS BEEN RUN WITH THE WORKING TREE TO ITSELF.**
+> *It is not a regression either. `DECISIONS.md` D255 sets out why it is reported as unattributed.*
+
+## The other finding is the collision itself
+
+**Two sessions, one tree, produced two defect 47s, two rule 21s, racing commits and a duplicate
+handoff attempt.** *The duplicates were caught by reading the files before committing — which is the
+first session's own new rule 21 — and merged: there is one 47, and the second rule 21 was renumbered
+**22**. **Nothing prevented any of it.***
+
+**The sign-off ritual is the worst place for this gap**, because it ends in a commit, a board
+republish and a handoff that each assume they are alone. *The project has no lock, no convention and
+no warning.* **Whoever reads this next: check `git log` and `git status` before starting, and if
+another session is live, say so and stop rather than racing it.**
+
+## What this session added
+
+`DECISIONS.md` **D255** · `docs/deferred.md` **47**, merged and confirmed · `docs/PROGRAMMER-RULES.md`
+**22** — run the suite with the tree to yourself, and treat a red run as unattributed until you have.
+
+**This session deliberately did NOT republish the Control Board**, because a concurrent session may be
+mid-republish and the board is last-writer-wins. *The board still reads `2026-09-16 12:05`. It needs
+the test finding and the collision warning added by whichever session runs next, alone.*
