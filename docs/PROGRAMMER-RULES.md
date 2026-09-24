@@ -301,3 +301,19 @@ Add one with `/rule` whenever a mistake earns it. Number them; never delete one.
     alone. A phase change is not finished until both files say so.
     **The tell:** the newest handoff and `CLAUDE.md` disagree about what stage is live; or a sign-off
     updated the handoff and touched nothing else.
+
+21. **Re-read a file immediately before you commit it — especially one you did not write in the same
+    breath.**
+    This sign-off wrote a handoff, then ran `git add -A && git commit` without looking at the file
+    again. **Between the write and the commit the file had been replaced**, and the version that
+    actually landed carried **an unfilled `TEST_RESULT_PLACEHOLDER`** where the measured test result
+    should have been, plus two factual errors — a transcript dated to the wrong week and a range of
+    fault numbers attributed to commits that did not add them.
+    **The placeholder reached the repository.** It was caught on the next read and corrected in the
+    following commit, so it stood for one commit rather than eight days — but it stood.
+    **What generalises:** `git add -A` stages whatever is on disk, not whatever you meant. Any gap
+    between writing and committing — a tool that rewrote the file, a concurrent session, an edit you
+    forgot — is invisible at commit time and permanent afterwards. **Read the file, or at minimum grep
+    it for the things that must not survive: `PLACEHOLDER`, `TODO`, `TBD`, `XXX`, an empty number.**
+    **The tell:** a commit message you wrote from memory of what the file said, rather than from the
+    file.

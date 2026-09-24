@@ -14,11 +14,17 @@ entire technical stage — its plan, Aaron's approval of it, all of step 1, and 
 **This document exists to close that gap.**
 
 **2. The session this sign-off closes produced nothing.** Working tree clean, nothing unpushed, last
-commit **16 September**. The conversation that ran into it was a transcript from **9–10 September** —
-round 3, politics ideation — whose rulings had already landed at the time as **D185–D195**. Nothing in
-it was lost and nothing in it is new. **Do not treat any of that conversation as recent.**
+commit **16 September**. The conversation that ran into it was a transcript from **14–15 September** —
+ideation rounds 5, 6 and 7, diplomacy through the frame above everything — whose rulings had already
+landed at the time as **D214, D215 and D216**. Nothing in it was lost and nothing in it is new. **Do not
+treat any of that conversation as recent.** *⚠ An earlier version of this paragraph dated it 9–10
+September and cited D185–D195; both were wrong and are corrected here.*
 
-**3. `TEST_RESULT_PLACEHOLDER`**
+**3. The checks were run at this sign-off rather than quoted: 956 passed, 0 failing, 51 files,
+308.72 seconds — all green**, in the browser, which is the only runner that actually executes them.
+*⚠ An earlier version of this line shipped as an unfilled placeholder and was committed before anybody
+read it back. Corrected in the next commit. The lesson is old and is rule 18's cousin: **re-read a file
+you are about to commit, especially one you did not write in the same breath.***
 
 **4. Another chat has this project's dev server running on port 8000.** If a session is live elsewhere,
 this handoff may already be behind it. **Check `git log` before trusting a word of this.**
@@ -39,7 +45,7 @@ this handoff may already be behind it. **Check `git log` before trusting a word 
 | `docs/technical/ARCHITECT-BRIEF.md` | 123 lines |
 | `docs/technical/FIRST-ORDER.md` | 189 lines. **Aaron's own idea** — a running register of changes that must land *before* other work, because anything built on them would have to be built twice. Strict admission test: *would it have to be REDONE* |
 | `DECISIONS.md` | **D244–D254** |
-| `docs/deferred.md` | faults **34–45** |
+| `docs/deferred.md` | **fault 46** — the hang. *⚠ An earlier version of this row said "faults 34–45"; those predate these commits. Verified: the seven commits added exactly one entry, and it is 46. The file holds **31 entries**, numbered to 46* |
 | `docs/control-board/board.html` | versions **42–45** |
 
 ---
