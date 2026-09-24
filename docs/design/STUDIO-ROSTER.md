@@ -27,6 +27,8 @@ Hire when a job goes unowned — not in advance.
 **Conductor** — the main session. Routes tasks, enforces gates, never writes game code or design itself. Owns the dispatch log.
 
 **Producer** — build order, milestones, docs/handoffs/, the Control Board. Removes friction; does not set direction.
+*⚠ 24 September 2026: the handoffs moved to the **Record-keeper (Titan)**, who looks backward; the Producer
+(Rhea) keeps the plan, the milestones and the Control Board. One owner per file — rule 1 above.*
 
 ### Capturing intent
 
