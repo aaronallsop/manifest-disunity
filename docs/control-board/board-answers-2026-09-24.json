@@ -1,0 +1,200 @@
+{
+ "about": "Every answer Aaron has left on the Control Board, copied from the board's own database on 24 September 2026 so the record does not live only there (D258, D259). Read-only snapshot; the board remains the live copy.",
+ "answers": {
+  "alliance-hops": {
+   "at": "2026-09-09T00:20:00.000Z",
+   "note": "Answered in session, 9 September, recorded here so the card is not asked again. Aaron agreed to one hop: your ally's enemies become yours, their ally's enemies do not. Recorded as ruling 37. He gave a worked example - Utah allied with Nevada, Idaho allied with Wyoming, Utah invades Idaho - and five of its six pairs come out as he has them. Nevada-Idaho does not: it is the same single hop as Utah-Wyoming pointing the other way, so under the rulings Nevada IS hostile with Idaho. Queried with him in session. Also open: C132, whether an inherited quarrel stops the cooling clock and creates a permanent quarrel nobody ruled.",
+   "status": "approved"
+  },
+  "area-split-between-movements": {
+   "at": "2026-09-11T19:05:00.000Z",
+   "note": "Answered in session, 11 September, recorded here so the card is not asked again. Aaron agreed the recommendation - nobody takes the ground, it goes ungoverned - and added the second half: the counties on the EDGE may attach themselves to an adjacent state instead, and what decides it is politics rather than movement alignment, \"because sometimes it is better to be governed by people you don't like rather than worry about being governed by people who hate you\". Recorded as ruling 20 and D202. Measured while pricing it: the map is 1,688 Areas over 3,143 counties and 70% of Areas are a single county, so for seven Areas in ten the edge IS the whole Area - which means small pockets get absorbed and only a large collapse leaves lasting ungoverned ground.",
+   "status": "approved"
+  },
+  "audience": {
+   "at": "2026-09-15T17:14:30.519Z",
+   "note": "I have created this game for someone who like me and the inspiration draws heavily on EU4. Not so much the mechanics but rather the things I like about it that make it really fun.\n\n1. Although fictious it is a history game where I have been able to learn a lot about 15-19th century world history and things about it I would never have learned any other way.\n2. It is an in depth complex game that looks complicated on the surface but you are still able to play the game and learn something new about how things work and interact with next time. I went a long time before I understood trade properly and I was still able to play and have fun. I didn't even know about estates until 1000 hours into the game and I had fun still. \n3. The ridulousness and sometime hillarious outcomes of the game and writing. The world record for fastest world conquer is by someone who playing as Oirat became the mongolian empire, converted to catholicism, becacme the Holy Roman Emporer, and conquered the world. My favorite game play has been Provence becoming Jerusalem. The one I am trying to do but is tricky is as the Aztecs beating back the colonists and taking the fight to hteir shore.",
+   "status": "commented"
+  },
+  "audio": {
+   "at": "2026-09-15T16:59:01.155Z",
+   "note": "Not yet",
+   "status": "commented"
+  },
+  "california-claimants": {
+   "at": "2026-09-09T00:00:00.000Z",
+   "note": "Answered in session, 9 September, recorded here so the card is not asked again. Aaron: \"That is correct - Cascadia is out and it adds a challenge because they will be fighting with potentially a larger problem down the road if Oregon and Washington unites.\" The five claimants are Los Angeles, the Bay Area, Riverside, SoCal and Northern California. The board opens with 33 permanent quarrels. NOTE: the reason printed on this card was wrong - Cascadia does NOT reach into Oregon or Washington, all nine of its Areas are ex-Californian. The ruling stands on three other grounds and is recorded as ruling 32.",
+   "status": "approved"
+  },
+  "close-round-3": {
+   "at": "2026-09-12T02:41:50.786Z",
+   "note": "",
+   "status": "approved"
+  },
+  "close-round-4": {
+   "at": "2026-09-14T21:06:22.054Z",
+   "note": "",
+   "status": "approved"
+  },
+  "close-round-5": {
+   "at": "2026-09-15T02:53:43.155Z",
+   "note": "",
+   "status": "approved"
+  },
+  "close-rounds-6-and-7": {
+   "at": "2026-09-15T02:53:49.989Z",
+   "note": "",
+   "status": "approved"
+  },
+  "close-stage-2": {
+   "at": "2026-09-16T09:01:16.133Z",
+   "note": "",
+   "status": "approved"
+  },
+  "confirm-round-4-defaults": {
+   "at": "2026-09-14T21:06:26.590Z",
+   "note": "",
+   "status": "approved"
+  },
+  "confirm-round-5-defaults": {
+   "at": "2026-09-15T02:53:55.439Z",
+   "note": "",
+   "status": "approved"
+  },
+  "deal-early-exit": {
+   "at": "2026-09-05T16:13:01.847Z",
+   "note": "I agree with your recomdation. For the ideas doc, I think that you should be able to cancel a trade deal half way through but if you do that should damage your reputation with other nations, make other nations hesitant to create trade deals with you (raising the amount they would want from you and that would cool down over time)",
+   "status": "approved"
+  },
+  "deal-income-scale": {
+   "at": "2026-09-05T16:11:12.439Z",
+   "note": "",
+   "status": "approved"
+  },
+  "deseret-politics": {
+   "at": "2026-09-16T15:51:44.972Z",
+   "note": "",
+   "status": "approved"
+  },
+  "deseret-recognition-riverside": {
+   "at": "2026-09-15T19:59:17.822Z",
+   "note": "",
+   "status": "approved"
+  },
+  "design-doc-edit-permission": {
+   "at": "2026-09-15T16:58:49.739Z",
+   "note": "",
+   "status": "approved"
+  },
+  "factions-approval": {
+   "at": "2026-09-05T04:55:12.360Z",
+   "note": "As far as these factions, lets save this as an idea for later after we build out the factions system.",
+   "status": "approved"
+  },
+  "farmers-union": {
+   "at": "2026-09-11T18:40:00.000Z",
+   "note": "Answered in session, 11 September, recorded here so the card is not asked again. Aaron: the Farmers Union is a MOVEMENT whose verb is Unify - \"seeks to unify the entire farmers movement into a solid state entity\" - and it must be hard to achieve because of the trade arteries a united farm state would hold (checked: 3 of the game's 15 chokepoints, including Cairo, plus 164 counties on named rivers). The governors' bloc becomes a separate object for round 5. He also added new machinery that applies to every Unify movement: past a share of the population the demand is that the government GO AND PROPOSE to its neighbours, and the neighbour's answer can be positive (they agree) or negative (they read it as a nation consolidating power). Recorded as ruling 15 and D198. NOTE: the card said second largest in the game - true by ground, but by people it is fourth of the six Unify movements. Four follow-on questions are open and being asked in session.",
+   "status": "approved"
+  },
+  "longer-than-five-years": {
+   "at": "2026-09-15T08:01:33.926Z",
+   "note": "",
+   "status": "approved"
+  },
+  "mission-reward-permanence": {
+   "at": "2026-09-15T22:01:53.365Z",
+   "note": "",
+   "status": "approved"
+  },
+  "ports-that-reach-nothing": {
+   "at": "2026-09-15T22:02:14.438Z",
+   "note": "",
+   "status": "approved"
+  },
+  "sector-coverage": {
+   "at": "2026-09-05T08:17:23.315Z",
+   "note": "",
+   "status": "approved"
+  },
+  "shared-tree-race-or-checklist": {
+   "at": "2026-09-15T19:58:13.715Z",
+   "note": "Lets have it be something for the alpha where the mission tree only applies to the player if they pick that nation. The logic is testing states with the same mission tree but different starting paths",
+   "status": "commented"
+  },
+  "shortage-stops-production": {
+   "at": "2026-09-15T08:01:28.787Z",
+   "note": "",
+   "status": "approved"
+  },
+  "stage-3-shape": {
+   "at": "2026-09-16T15:13:25.065Z",
+   "note": "",
+   "status": "approved"
+  },
+  "tdd-scope": {
+   "at": "2026-09-16T15:50:15.599Z",
+   "note": "",
+   "status": "approved"
+  },
+  "tdd-sequence": {
+   "at": "2026-09-16T15:50:23.602Z",
+   "note": "",
+   "status": "approved"
+  },
+  "tone-open-questions": {
+   "at": "2026-09-16T05:44:22.474Z",
+   "note": "A player gets a newspaper that has local news (what is happening in their nation), national news (which I know doesn't make conceptually but it is what is happening in the game map around them) and then they get world news which will be information from the world. For the alpha lets only do local and national news. \n\nMovement motts - push post alpha\nMissions for the indegenous nations can include dignified allusions and jokes if they are not at their expense. So a mission like, \"We told Custer once before and we'll tell him again\" would be ok. \n\nLets also push all jokes and writing like that post alpha. I want to make sure the game works before I starting including this in there. \n\nIn the mean time lets lean on place holder text because I still want the newspaper pop up as part of the game. \n\nAnd lets also push any historical context to be incldued post-alpha as well.",
+   "status": "approved"
+  },
+  "tone": {
+   "at": "2026-09-15T17:19:05.177Z",
+   "note": "What I want you to do is take this thought/question and give me a prompt that I can put into claude chat that will ask me questions about this. Then it will take my answers and format it into a document based on what you need.",
+   "status": "commented"
+  },
+  "traced-scenarios": {
+   "at": "2026-09-15T17:19:39.482Z",
+   "note": "",
+   "status": "approved"
+  },
+  "treaty-proposer": {
+   "at": "2026-09-09T00:10:00.000Z",
+   "note": "Answered in session, 9 September, recorded here so the card is not asked again. Aaron: \"Lets say that the turn before the cease-fire ends each nation needs to submit a peace treaty to the other nation. Then the defender gets the right of first refusal or acceptance.\" Both sides must table terms the turn before expiry; the defender - the nation that did not declare - accepts or refuses first. This replaces the recommendation on the card, which was one treaty and whoever sends first. Recorded as ruling 33. Three follow-on questions are open and being asked in session.",
+   "status": "approved"
+  },
+  "tree-vs-random-board": {
+   "at": "2026-09-15T19:59:24.323Z",
+   "note": "",
+   "status": "approved"
+  },
+  "turn-one-teaching-shape": {
+   "at": "2026-09-15T22:01:06.534Z",
+   "note": "In my mind it should teach you the order of things. So each of the countries we picked to build missions for/starting nations to choose from (Texas Nations/Deseret/Minnesota or Wisconsin) would have actions that would walk the player though each of the different systems and each of their choices should result in a something that won't be paid off until later on than anything else.\n\nSo for example lets say we pick Houston.\n\nStart with an opening move where the gulf compact (thats the name right?) asks for a peace treaty and you can either: accept it, reject it, send a counter offer. Sending a counter offer has a 1 turn turn around so you won't know what happens until next turn. Then you hear back from Miami that they sent you a counter trade offer from the trade deal you sent in turn -1 (before the player started) teaching the player that you send things and recieve things and can coutner offer. Then there should be a national event - announcing that oklahoma has officialy been recognized as a vassal of texas, whereas it had been unofficial up until now. Then maybe it would be a message from Austin (in game built in not a feature for players) bragging about receiving accepted status or something. Then that would influence you to accept status from another nation. And maybe this comes before the peace treaty because I just thought of something that could be a fun mechanic - nations only sign peace treaties with nations. The United States fought the \"war on terror\" but they would never sign a peace treaty because there is no nation to sign it with. So...signing a peace treaty means that that nation recognizes you as a soverign nation and are dealing with you as a nation. So that comes first - austin bragging - and then the gulf compact asks for a peace treaty which means they accept you as a soverign nation and it introduces your next goal of getting another nation to accept you.",
+   "status": "commented"
+  },
+  "turn-one": {
+   "at": "2026-09-15T19:59:10.690Z",
+   "note": "It needs to talk them through how to play the game like how hbmomber guy talks about it in https://www.youtube.com/watch?v=AC3OuLU5XCw",
+   "status": "commented"
+  },
+  "two-axes-or-three": {
+   "at": "2026-09-15T16:45:00.000Z",
+   "note": "Answered in session, 15 September, recorded here so the card is not asked again. Aaron: \"three axes and ten positions\". So his politics round's rulings stand and the BUILT two-axis model is what changes. Recorded as D231. This closes the largest gap in the project between what is designed and what exists, open since 9 September with both halves true at once, and it unblocks four documents. One piece of the conversion is already done and has been sitting unused since 11 September: all 26 live movements were placed on the ten positions when that round closed. And one thing may have quietly dissolved - ruling 1 said the largest job in the change was splitting Republican and Democrat across the eight corners, because neither mapped onto a corner; ruling 2 then added two centrists which ARE Republican and Democrat, so the 2024 seed may land on them directly. Flagged for his confirmation, not treated as settled. The one thing nobody has decided is small and the architect's: the affinity denominator has no authored value on the new board, and every tuned threshold in the game is measured against it.",
+   "status": "approved"
+  },
+  "two-toll-systems": {
+   "at": "2026-09-16T09:01:25.817Z",
+   "note": "",
+   "status": "approved"
+  },
+  "which-toll-system": {
+   "at": "2026-09-16T15:51:39.545Z",
+   "note": "We will make the choice when building out the economy in the TDD. Don't bring this up again until we are working on the economy section",
+   "status": "commented"
+  },
+  "writer-wiki-merge": {
+   "at": "2026-09-14T21:06:29.221Z",
+   "note": "",
+   "status": "approved"
+  }
+ }
+}
