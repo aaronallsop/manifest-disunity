@@ -134,6 +134,10 @@ complaint the project has recorded. *Built; `DESIGN.md` §6.2.*
 **You are a government, not a person.** You have a leader with a name and a set of modifiers, an
 ideology you govern as, and a population that mostly did not choose you.
 
+> **⚠ REFINED 24 SEPTEMBER 2026 (D260).** *Aaron, in his own words: "you are the nation itself that you are
+> playing." Leaders and governments change underneath, and who is in charge changes how well the nation
+> can do things. `DIRECTOR-BRIEF.md` §3.*
+
 ### The fantasy
 
 **⚠ DRAFT FOR REVIEW — no statement of the fantasy exists anywhere in the source material.**

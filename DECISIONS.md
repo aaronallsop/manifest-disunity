@@ -6578,3 +6578,79 @@ database and a commit is not in the record.**
 **Decided: the approval stands and is now recorded.** *It is NOT started — see `docs/deferred.md` 50 —
 because the work is days long and not the current stage. When to do it is Aaron's.* **The board's wiki
 card now says he decided, rather than that it is waiting on him.**
+
+### D260 — The director's brief is approved, and on questions of taste it outranks the older records, 24 September 2026
+
+**Observed.** *A sweep of 639 places in the records where Aaron's words touch the game's pillars,
+references, refusals and taste found **275 in his own words, 142 in Claude's wording that he approved,
+and 222 unclear**. The master design document's five selling points and every line about who the game
+is "not for" were Claude's.* **The project had been treating a great deal of studio wording as his
+taste.**
+
+**Done.** *A fourteen-question interview, asked cold before he was shown anything older, recorded word
+for word in `docs/design/director-brief-interview.md` — and then checked word for word against his own
+messages, which found two answers where his words had been changed ("viewer" written as "player";
+"differently and do next turn" written as "differently next time"). Both put back.* **The brief,
+`docs/design/DIRECTOR-BRIEF.md`, was drafted by one writer and checked by four others** — attribution,
+completeness, older records, usability — before revision.
+
+**Decided — Aaron, 24 September:** *"Brief approved."* **So:**
+
+1. **Every role reads the brief first.** It holds five pillars, the tie-break for when simple and story
+   pull apart, who the player is, the alpha's checklist, the lookbook, the refusals and the failure most
+   feared.
+2. **On taste, the brief outranks the older records**, including `TONE.md`'s claim to be "the game's
+   settled position on its own voice". *On what the built game does, `DESIGN.md` still rules.* His most
+   recent word outranks the brief.
+3. **Tone rule 34's three refusals stand, with his reasons in place of the old ones** (Q9: "we can take
+   what I say here and override that").
+4. **The player is the nation** (Q8), refining `GDD.md`'s "You are a government, not a person".
+5. **The brief's alpha checklist is approved** as the studio's proposal, replacing the roster's
+   unattributed alpha goal.
+6. **Q14's "next turn" means the next game** — *"I mean the next 60 round game they play."* The same
+   lesson as Q5.
+7. **Studio wording stays flagged, not struck** (brief §8.6): no role quotes it as his.
+
+*Each older line affected carries a dated note beside it rather than being edited away:* `TONE.md` (its
+status line and rule 34), `GDD.md` §4.
+
+**Rejected:** *rewriting `TONE.md` and the GDD to match.* **A record edited after the fact stops being a
+record**, and the notes point to the brief.
+
+### D261 — The alpha gets some real history; D242's history half is superseded, 24 September 2026
+
+**Superseded:** *D242, 16 September — "And lets also push any historical context to be incldued
+post-alpha as well."*
+
+**Aaron, 24 September, in the director's-brief interview (Q7), asked whether his "State of Jefferson"
+moment could happen in an alpha with no history:** *"You are right. And so I think that there is going
+to be some history, but not a lot. I do want to have the history built into it."* **Confirmed the same
+day: "The alpha gets some history."**
+
+**Decided: the alpha carries some real history, not a lot, built into play** rather than explained on a
+panel. *Where it goes — the board, movement lines, mission names, Area panels — is still his (brief §9).*
+**D242's other half stands:** jokes and writing stay out of the alpha, and **the voice arrives in the
+beta** (Q6).
+
+*Consequences named, not acted on:* `TONE.md` rule 25 (alpha Area panels are numbers only) and future
+idea F36 may change. Each carries a note.
+
+### D262 — The studio's roles are named after the solar system, 24 September 2026
+
+**Aaron's scheme:** *a planet leads a function and its moons are the roles under it; the dwarf planets are
+the ones who find things out; **Terra and Luna are his two computers and never roles**; he is the Sun.*
+*Every role's file carries both names — the name is what he says, the title is what the job is.*
+
+**Named on 24 September:** Saturn (Conductor), Rhea (Producer), Titan (Record-keeper), Janus (Repository
+keeper) · Pluto (Scribe) · Jupiter (Lead Game Designer), Io (Systems), Sinope (Balance), Callisto
+(Narrative), Elara (Content & Flavor), Dia (UX, not yet hired) · Makemake (Researcher), Eris (Data
+Researcher), Ceres (Reference Researcher) · Neptune (Tech Lead), Proteus (AI), Logos (Data Engineer),
+Despina (UI), Larissa (Gameplay), Varda (Release), Chaos (Prototyper) · Mars (QA Lead), Phobos (Test
+Engineer), Deimos (Neutrality Reviewer), Eureka (Fact-checker). **The table is `STUDIO-ROSTER.md`.**
+
+**Decided along the way:** *research is a service, not a team* — its roles serve other teams and rarely
+work together, which is why they are dwarf planets rather than moons; *the Fact-checker sits with
+checking, not research*, because the maker never approves its own work; *a Prototyper role is added*.
+
+**Not yet decided:** the Tools Programmer's name; a name for the playtesters as a group. **Nothing is
+hired by naming it** — a role's definition file is written when its job arrives.

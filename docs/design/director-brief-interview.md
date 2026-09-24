@@ -363,3 +363,13 @@ further nations' trees come later as paid additions. Recorded as his current thi
 
 **The interview closed here, 24 September 2026: fourteen questions, one follow-up, one parked to the
 beta (Q11).**
+
+---
+
+## Aaron's answer to the brief, 24 September 2026
+
+> Brief approved. The alpha gets some history and your tone works. I mean the next 60 round game they play
+> in this.
+
+*Recorded as D260 (the brief approved), D261 (the alpha gets some history), and the meaning of Q14's
+"next turn": the next sixty-round game.*

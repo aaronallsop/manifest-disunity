@@ -1,13 +1,12 @@
 # Director's brief
 
-**24 September 2026.** Every role reads this first, and all of it. It holds Aaron's taste in his own words, so work is
+**24 September 2026. ✅ APPROVED by Aaron the same day (D260).** Every role reads this first, and all of it. It holds Aaron's taste in his own words, so work is
 checked against *him*, not the average strategy game. From today's interview and 639 checked places in older records.
 
 **How to read it.** Quoted words with a source are his, word for word ([sic] marks his spelling), unless credited to
 another record. Bold summaries, *Reading* and *Check* are the studio's and always give way to him. A review applies
 every check the work touches, and names any it skips. **Precedence:** his latest word wins, even over this brief. On
-taste, this brief beats older records (pending his approval, section 8); on what the built game does, the behaviour
-document rules. **Words:** "there's a lot of terminology that I end up using while chatting interchangeably, and that
+taste, this brief beats older records (section 8); on what the built game does, the behaviour document rules. **Words:** "there's a lot of terminology that I end up using while chatting interchangeably, and that
 gets really confusing for the programmers, because they think I say one thing but mean something else." (interview)
 Until a terminology list exists, a word of his with two meanings is a question, not a guess.
 
@@ -47,14 +46,15 @@ systems work, only: does geography change the outcome, or is it scenery?
 > "I don't want them to feel cheated or robbed in any way. I think that they need to feel like it happened because of a
 > certain thing that happened." · "I know what I did wrong and I know what I need to do differently next time, when I
 > start this game up." (Q5) · "It is only a good story if at the end of it, they have learned something that they can do
-> differently and do next turn." (Q14)
+> differently and do next turn." (Q14) *He confirmed the same day: "next turn" means **the next sixty-round game they
+> play** — the same lesson as Q5.*
 
 *Reading:* a loss traces to something the player could see: a risk that did not pay off, growth that did not come (Q5).
 Shown chance is fine: "it feels like your generals analysed the data and are giving you a chance to win / succeed"
 (conquest ruling 12, 7 Sep). This covers the player's own fortunes; his Q2 surprise says not all is explained up front.
 *Check:* after a loss, can a tester who did not build it say what went wrong and one thing to do differently? Can a
 player find, in the game, the cause of a change to their own nation (ground lost or gained, a movement rising, a
-government falling)? If he confirms "next turn": can they act on the lesson before the game ends?
+government falling)?
 
 ### Pillar 5: Systems, not stereotypes, and the absurd played straight
 > "I don't want stereotype in the mechanics. I do want there to be satire, a little bit of farce, overt characterization
@@ -90,15 +90,15 @@ we want this to still be a simple game" (economy ruling 2, 14 Sep). Other clashe
 
 ## 4. What the alpha must prove, and what waits for the beta
 
-**Proposed by the studio, not yet approved:** a checklist for the stage-3 alpha (D248; Texas, the Great Lakes and the
+**Proposed by the studio and approved with the brief (D260):** a checklist for the stage-3 alpha (D248; Texas, the Great Lakes and the
 West, D239) to replace the roster's unattributed alpha goal. Until then the project's definition of done stands (section
 8, item 3), and the Economy-mode alpha test (v0.6) is untouched. A new tester plays sixty turns and:
 
 1. can play it at all: "get the alpha up and running and able to be played at least." (Q6)
 2. finds it complicated-looking but easy once going (pillar 1), with something worth doing every turn (section 7).
 3. can say what went wrong and one thing to do differently (pillar 4).
-4. meets some real history in play, if he confirms Q7: "You are right. And so I think that there is going to be some
-   history, but not a lot. I do want to have the history built into it." ("You are right" may mean it waits.)
+4. meets some real history in play: "there is going to be some history, but not a lot. I do want to have the history
+   built into it." (Q7; confirmed 24 Sep: **the alpha gets some history**, D261)
 5. when asked, wants to "experiment and play with different play styles and nations" (Q1).
 
 **The voice waits for the beta:** "the beta version is when I would definitely want that kind of sharp, biting, sardonic
@@ -172,9 +172,9 @@ interface. And it is essentially just a simulation." **The cartoon:** "there isn
 on shallow stereotypes". *Check:* in an hour of play, what did the player decide each turn? A turn whose best move is
 simply to end it is the failure itself. That tests the calculator; pillars 3 and 5 test the cartoon.
 
-## 8. Changes this brief makes to older records (to be logged in DECISIONS.md)
+## 8. Changes this brief makes to older records (logged as D260 and D261; each older line carries a dated note)
 
-1. **History in the alpha, if he confirms Q7:** D242's history half ("push any historical context to be incldued [sic]
+1. **History in the alpha, confirmed:** D242's history half ("push any historical context to be incldued [sic]
    post-alpha", 16 Sep) and the tone document's matching opening line are superseded; rule 25 (number-only Area panels)
    and future idea F36 may follow. D242's writing half stands, now for the beta.
 2. **Tone rule 34:** its three acts and its allowance stand; his Q9 answer replaces its reasons, as he asked: "we can
@@ -182,7 +182,7 @@ simply to end it is the failure itself. That tests the calculator; pillars 3 and
 3. **"tell you afterwards why they lost"** still has no recorded author; its substance is now his (Q5, pillar 4).
 4. **The GDD's "You are a government, not a person"** (author unrecorded) is refined by Q8: the player is the nation.
 5. **Precedence:** this brief outranking older records on taste amends the project rules and the tone document's claim
-   to be "the game's settled position on its own voice". Neither changes until he approves.
+   to be "the game's settled position on its own voice". Approved with the brief.
 6. **Studio wording is not his taste: flagged, not struck; quote none of it as his.** *Approved by him, in the studio's
    words:* the GDD's selling points, concept, fantasy, emotional target and audience line (approved as stage 2 closed
    with no note); tone rules 35 and 40; "the war is the leverage; the treaty is the game"; "accept the variance". *Never
@@ -193,7 +193,6 @@ simply to end it is the failure itself. That tests the calculator; pillars 3 and
 ## 9. Still open: his to answer
 
 **From today** (work that depends on any of these goes to Aaron before it is built; nobody picks a side):
-- **Q14's word:** does "do next turn" add a lesson usable in the same game to Q5's lesson for the next one?
 - **History in the alpha** (section 4, item 4): if some, where? The board, movement lines, mission names, Area panels?
 - **References:** has he played Civilization 2? Zeihan's second book? Which quality of the hbomberguy video (pace,
   voice, structure, humour)? Did he watch the EU4 world-record run?

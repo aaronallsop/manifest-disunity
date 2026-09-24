@@ -6,6 +6,10 @@
 Aaron, 15 September 2026 — the interview prompt is `prompts/tone-interview.md` (D232), and this
 document is its output. It unparks `presentation-design.md`, which could not be written without it.*
 
+> **⚠ AMENDED 24 SEPTEMBER 2026 (D260).** *Aaron approved `DIRECTOR-BRIEF.md`, and on questions of taste
+> it now outranks this document. Where the two disagree, the brief is right and this document is out of
+> date. The rules below stand except where a dated note beside them says otherwise.*
+
 > **Where a rule is Aaron's, it is quoted as his. Where a rule was proposed during the interview and
 > accepted without further comment, it says so.** *Nothing here is a position he did not take; where a
 > section is thin, it says that too.*
@@ -35,6 +39,11 @@ would break, and why.** They are the test suite for §2 and should be read as su
 > before I starting including this in there.** In the mean time lets lean on place holder text because
 > **I still want the newspaper pop up as part of the game.** And lets also push any historical context
 > to be incldued post-alpha as well."*
+> 
+> **⚠ HALF SUPERSEDED, 24 SEPTEMBER 2026 (D261):** *the history half. Aaron: "there is going to be some
+> history, but not a lot. I do want to have the history built into it" — confirmed the same day: **the
+> alpha gets some real history.** The jokes-and-writing half stands, and now has a target: the voice
+> arrives in the beta.*
 >
 > **So §2.4 (Wit), the mottos of §2.3, and every piece of historical flavour are POST-ALPHA.** *The
 > alpha ships **the newspaper as an object** — it appears, it is placed, it is slanted and gated the way
@@ -204,6 +213,7 @@ hungry. *Check: who or what is the butt of the joke.*
 ### 2.5 People
 
 **25 — Alpha Area panels are numbers only.** No description of the place or its residents.
+*⚠ 24 September 2026 (D261): may change now that the alpha carries some history. Not yet revisited.*
 
 **26 — Founding political figures are labelled as 2024**, so they are never read as a claim about who
 lives there in 2036. *Check: the Area panel.*
@@ -250,6 +260,11 @@ one.*
 population**, **mass killing as a mechanic**, and **nuclear weapons against cities**. They may appear as
 history, or as an accusation one paper makes against another government, **but never as a button.**
 *Check: the move list.*
+
+> **⚠ ITS REASONS REPLACED, 24 SEPTEMBER 2026 (D260).** *The three acts and the allowance stand; Aaron
+> confirmed them. **The reasons are now his own**, given in the director's-brief interview (Q9) and quoted
+> in `DIRECTOR-BRIEF.md` §6, which he asked to override this wording: "we can take what I say here and
+> override that."*
 
 **35 — This game is not for a player who wants it to confirm that their side of real American politics
 is right**, or who wants a fantasy of doing to real neighbours what rule 34 refuses. **(proposed,
