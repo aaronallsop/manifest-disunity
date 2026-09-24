@@ -65,3 +65,19 @@ Not hired at all: audio, localization, community, marketing, modding, analytics,
 ## Alpha goal
 
 A playable game where the systems interact, the map is alive, and there is real fun in it. Scope: Texas, the Great Lakes, the West.
+
+## Names
+
+Aaron names each role after a body in the solar system: **a planet leads a function, and its moons
+are the roles under it.** Every role's file carries both its name and its plain job title, so the name
+is what he says and the title is what the job is. **Terra and Luna are his two computers (the PC and
+the MacBook) and are never used for roles.**
+
+*Named 24 September 2026:*
+
+| Name | Role | Function |
+|---|---|---|
+| **Saturn** | Conductor | Running it |
+| **Rhea** | Producer — looks forward: the plan, the schedule, the Control Board | Running it |
+| **Titan** | Record-keeper — looks backward: the decisions log, the master file and the handoff kept true; marks what his newest word replaces | Running it |
+| **Janus** | Repository keeper — saving, backup, keeping both computers' copies in sync, combining parallel work, version tags | Running it |
