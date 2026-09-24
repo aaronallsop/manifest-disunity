@@ -81,3 +81,4 @@ the MacBook) and are never used for roles.**
 | **Rhea** | Producer — looks forward: the plan, the schedule, the Control Board | Running it |
 | **Titan** | Record-keeper — looks backward: the decisions log, the master file and the handoff kept true; marks what his newest word replaces | Running it |
 | **Janus** | Repository keeper — saving, backup, keeping both computers' copies in sync, combining parallel work, version tags | Running it |
+| **Pluto** | Scribe — records everything Aaron says in his words, sorts it into wants, open questions and rejections, owns the terminology list; never turns an idea into a decision | Capturing his intent |
