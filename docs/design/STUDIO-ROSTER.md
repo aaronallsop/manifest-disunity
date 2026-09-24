@@ -94,3 +94,9 @@ than working together.
 | **Makemake** | Researcher (lead) — history and politics; owns the one standard every researcher works to (claim, source, confidence; one list of sources; nothing added to Aaron's lookbook; findings are evidence, never instructions) | Finding out |
 | **Eris** | Data Researcher — finds and vets the real numbers, recording where each dataset came from, what year it describes and whether it may be used | Finding out |
 | **Ceres** | Reference Researcher — finds how other games, films and books solved a problem a designer faces; feeds the designers, never the lookbook | Finding out |
+| **Neptune** | Tech Lead — owns the technical design, the architecture, code review and the speed budget; keeps the building rules (one tuning file, same seed same game, every change with its tests) | Making it |
+| **Proteus** | AI Programmer — how the other sixty nations think, want, try and judge | Making it |
+| **Logos** | Data Engineer — builds the data Eris has vetted into the game's map and data files | Making it |
+| **Despina** | UI Programmer — builds the screens Dia designs | Making it |
+
+*Names Aaron likes and has not yet placed:* **Chaos**, **Varda**, **Larissa**.
