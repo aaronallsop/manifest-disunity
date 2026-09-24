@@ -6439,7 +6439,9 @@ rather than the step silently skipped.*
 **Also this session, and it is the only measurement in it: 956 tests green, 0 failing, 51 files,
 308.72 seconds**, run in the browser rather than quoted.
 
-### D255 — The suite is reported UNATTRIBUTED, not green and not a regression, 24 September 2026
+### D256 — The suite is reported UNATTRIBUTED, not green and not a regression, 24 September 2026
+
+*⚠ Written as a second **D255** by a concurrent sign-off session and renumbered **D256** at 17:02 the same day — two sessions in one tree each took the next free number. See D257.*
 
 **Observed at sign-off, with the repository unchanged for eight days** — no commit since 16 September,
 working tree clean, nothing unpushed.
@@ -6501,3 +6503,43 @@ the only one.
 
 **Not solved here.** *Filed as the first thing the next session should be told, and the reason this
 sign-off did not write a second handoff or republish the board over a concurrent one.*
+
+### D257 — Sixteen open sessions sign off ONCE, through one session; the rest close read-only, 24 September 2026
+
+**Observed.** *At 17:01 Aaron asked for every open session on this PC to hand off and sign off without
+ruining anything.* **Sixteen OTHER sessions were open: fifteen on this project, all sharing ONE
+working folder, and one (URANUS) on the colour-correction project.** All sixteen were idle. *Their transcripts
+were read before anything was written.* **Every one had already either signed off or deliberately stood
+down** between roughly 13:30 and 14:22, when Aaron had asked several of them to sign off at once and
+they collided (D256). *Of the fifteen, **eight took part in this afternoon's sign-offs**; **six had done no work since
+11–16 September** and their sign-offs were committed then; **one** ("Military conquest ideation round 2")
+does not appear in the session list and its transcript could not be read.* **The one that finished the day's sign-off (board v47, commit
+`be33e2d`) left the record clean and pushed.** What had NOT reached the record was four sessions' test
+evidence, one session's isolation test, a correction to defect 47's cause, one question to Aaron, and a
+duplicate **D255** nobody had caught.
+
+**Decided: one sign-off, run here, alone.** *This session ran the suite with no other server and no
+other session active — the first run today that rule 22 would count — folded every session's
+unrecorded findings into `docs/deferred.md` 47 and one new handoff, renumbered the duplicate to D256,
+and republished the board once. **Every other session was then told to close out READ-ONLY**: no
+tests, no commits, no board, no handoff; anything of theirs missing from the record is sent here and
+this session writes it.*
+
+**Rejected: running `/signoff` in each session in turn.** *Fourteen handoffs in one evening, each
+superseding the last and each describing one session; fourteen board republishes; fourteen five-minute
+test runs; and the eight stale sessions would have "signed off" work already signed off a week ago.*
+**Rejected harder: running them in parallel** — *that is exactly what produced two defect 47s, two rule
+21s, two D255s and three contradictory test results this afternoon.*
+
+**⚠ AND A SEVENTEENTH WRITER TURNED UP AT THE PUSH.** *The first push of this sign-off was refused:
+**eleven commits had reached GitHub between 15:20 and 16:56 from a copy of the project that is not on this
+PC** — the director's brief and its interview, the studio roster's names, a draft replacement for
+`CLAUDE.md` (`CLAUDE-DRAFT.md`, not yet adopted), and **a defect 48 of its own** (the control sidebar).
+This sign-off had also filed a 48.* **Resolved by bringing that work in untouched and renumbering this
+session's entry to 49.** *Nothing of the other copy's was changed. **Whatever wrote those commits may
+still be open**, which is the same collision one level up: the session list can see this PC's sessions,
+not that one.*
+
+**Not solved here, and not this project's to solve.** *The sign-off ritual still has no guard against a
+second session in the same folder — it lives in the shared rules repository, not here. Flagged as its
+own task rather than changed from inside a project sign-off.*

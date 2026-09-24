@@ -593,7 +593,39 @@ sign-off exists to remove. *Candidate repairs, none chosen: point the round-trip
 content name; have the suite refuse to start if another run is in flight; or take a lock on the file
 rather than the port.*
 
-*See `DECISIONS.md` D255 and `docs/PROGRAMMER-RULES.md` 22.*
+*See `DECISIONS.md` D256 (first filed as a duplicate D255) and `docs/PROGRAMMER-RULES.md` 22.*
+
+### ✅ AND RUN ALONE THE SAME EVENING: 956 · 0 — and four more sessions' evidence, gathered at 17:02
+
+*Added by the consolidated sign-off (D257), which read every open session's transcript before writing.*
+**At 17:03 the suite ran with no other server and no other session active — the first run on
+24 September that rule 22 counts: 956 passed · 0 failed · 51 files · 263.47s.** *`content/cultural.json`
+was unmodified afterwards and no `Round Trip Test Region` remained in it.*
+
+**The afternoon's runs, now that every session's transcript has been read — seven, not three:**
+
+| Session | Result | |
+|---|---|---|
+| The one that filed this entry | 956 · 0 | 308.72s |
+| The concurrent sign-off | 955 · 1, then 954 · 2 | 306.50s, 272.06s |
+| A third session ("Round 2 conquest ideation") | 955 · 1, then 956 · 0 | 414s for the green one |
+| A fourth ("Designer brief documentation") | 3 failing, then 956 · 0 | 269.17s for the green one |
+| A fifth ("Designer brief outstanding items") | 955 · 1 | 315s |
+| A sixth ("Outstanding git commits") | 956 · 0 | 4 min 39s — *it found the test region left in the file mid-run and restored the committed copy by hand* |
+| **Alone, 17:03** | **956 · 0** | **263.47s** |
+
+**The cause is narrower than the first paragraph of this entry guessed.** *It is not "almost certainly a
+save/load test" and not an unknown third party.* **The writer is `tests/content.test.js`** (the
+content-editor round trip, "opens, edits and re-saves cultural.json without a download"); **the victim is
+`tests/ideology.test.js`**, whose check that every cultural region has a political split reads the file
+while another run holds it edited. *Every concurrent session was one of Aaron's own chats.*
+
+**Proved in isolation by the fifth session: `ideology.test.js` run on its own passes — 20 checks, 1.86
+seconds.** *So the game is fine and the harness is the fault.* **And the third session's framing is the
+one to keep: in a project whose first rule is that the same seed reproduces exactly, a suite whose
+result depends on what else is touching the disk is a determinism fault, not a tidiness one.** *The
+same file's other round-trip test already writes to a scratch document; pointing this one at a scratch
+copy the same way is the smallest of the three repairs above.*
 
 ## 48 — The control sidebar shows everything at once and takes forever to scroll
 
@@ -610,3 +642,17 @@ manual mode.**
 **It is the first concrete evidence for when the roster's deferred UX Designer role should be hired.**
 `docs/design/presentation-design.md` has no entry for the sidebar's length — not checked beyond a search
 for "sidebar" and "scroll", which found none.
+
+## 49 — Two programmer rules are both numbered 11
+
+**Found 24 September 2026, 17:10, by the consolidated sign-off checking every numbered record for the
+duplicates that two sessions in one tree had produced elsewhere (D256).** *`docs/PROGRAMMER-RULES.md`
+holds rule 11 twice — "a count written at the top of a long document is wrong by the end of the day"
+and "when you sum a quantity across sets that overlap, check the total against a bound you know".*
+**This one is older and not a collision: both were written on 11 September.** *Decisions and defects
+were checked the same way and hold no other duplicate.*
+
+**Not fixed, on purpose.** *Renumbering would shift rules 12–22, and "rule 21" and "rule 22" are cited
+by number in today's handoff, decisions and defects. The harmless repair is to relabel the second one
+**11b** and leave every other number alone — a two-minute job for any session that is already editing
+that file.*

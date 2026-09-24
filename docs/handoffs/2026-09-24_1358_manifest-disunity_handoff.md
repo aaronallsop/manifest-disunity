@@ -144,7 +144,7 @@ not isolate anything — the contention is over the *file*; and **`world-fixture
 file once per page and shares it**, so a one-second collision poisons a five-minute run.
 
 > **⛔ DO NOT RECORD THIS SUITE AS GREEN UNTIL IT HAS BEEN RUN WITH THE WORKING TREE TO ITSELF.**
-> *It is not a regression either. `DECISIONS.md` D255 sets out why it is reported as unattributed.*
+> *It is not a regression either. `DECISIONS.md` D256 *(filed as a duplicate D255; renumbered 17:02)* sets out why it is reported as unattributed.*
 
 ## The other finding is the collision itself
 
@@ -160,7 +160,7 @@ another session is live, say so and stop rather than racing it.**
 
 ## What this session added
 
-`DECISIONS.md` **D255** · `docs/deferred.md` **47**, merged and confirmed · `docs/PROGRAMMER-RULES.md`
+`DECISIONS.md` **D256** *(filed as a duplicate D255)* · `docs/deferred.md` **47**, merged and confirmed · `docs/PROGRAMMER-RULES.md`
 **22** — run the suite with the tree to yourself, and treat a red run as unattributed until you have.
 
 **This session deliberately did NOT republish the Control Board**, because a concurrent session may be
