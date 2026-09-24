@@ -136,6 +136,15 @@ loosely chronological. One edit, no broken references.
 
 Found 14 September 2026 while adding rule 14.
 
+**⚠ AND THE EVIDENCE NOW POINTS BOTH WAYS — added 24 September.** *At the consolidated sign-off, the
+session that wrote the FIRST rule 11 (stale counts) reported that it is cited by number in its 11 September
+commit message, and proposed the opposite fix: keep the first as 11 and move the SECOND (overlapping sets)
+to a fresh number.* **This entry says the 11 September handoff cites the second.** *Both can be true — a
+handoff and a commit message are both permanent — so either renumbering breaks one citation.* **The
+fix that breaks nothing is to leave both numbers alone and add a note under each saying which is which,
+e.g. "11 (stale counts)" and "11 (overlapping sets)".** *Not done here: it is a convention call that
+should be made once, deliberately.*
+
 ## 31 — The wiki's economy page now states something false
 
 `docs/wiki/Economy.md` says, in a generated block, *"Nothing here yet. This system has not had its
@@ -627,6 +636,25 @@ result depends on what else is touching the disk is a determinism fault, not a t
 same file's other round-trip test already writes to a scratch document; pointing this one at a scratch
 copy the same way is the smallest of the three repairs above.*
 
+### Two more findings from the fourth session, reported at 17:30 and recorded unverified where marked
+
+**1. A bare `TypeError: Failed to fetch` has TWO causes, and they need opposite responses.** *Rule 22 and
+this entry give it as the tell for file contention.* **In the fourth session's case the other chat's
+server had DIED**: three sequential requests to `/api/content` returned HTTP 000 in about 2.25s each, a
+burst of five returned 000, and nothing was listening on port 8000 — minutes after the same request had
+returned 200. *(Reported by that session; the server is long gone and this could not be re-checked.
+What killed it is unknown.)* **Contention means "call the run unattributed and wait"; a dead server
+means "restart it and re-run".** *The one-command check: request `http://localhost:8000/api/content` —
+200 is contention, 000 is a dead server.* **This is a third mechanism beside the shared file and the
+per-page cache.**
+
+**2. A leftover round-trip document is INVISIBLE to `git status`.** *The same session found
+`content/test-roundtrip.json` left in the working tree by an interrupted run and removed it before its
+clean run.* **Verified here: `.gitignore` line 22 is `content/test-*.json`**, so the leftover never shows
+up and can accumulate unseen — the opposite hazard to the `.tmp` file that reached a commit on 11
+September. *No such file exists at 17:35.* **A fourth candidate repair: whatever else is done, make a
+leftover `content/test-*.json` something a session can see.**
+
 ## 48 — The control sidebar shows everything at once and takes forever to scroll
 
 **Raised by Aaron, 24 September 2026, in the director's-brief interview (Q13):** *"The sidebar in which
@@ -643,16 +671,32 @@ manual mode.**
 `docs/design/presentation-design.md` has no entry for the sidebar's length — not checked beyond a search
 for "sidebar" and "scroll", which found none.
 
-## 49 — Two programmer rules are both numbered 11
+## 49 — ~~Two programmer rules are both numbered 11~~ WITHDRAWN: a duplicate of 30
 
-**Found 24 September 2026, 17:10, by the consolidated sign-off checking every numbered record for the
-duplicates that two sessions in one tree had produced elsewhere (D256).** *`docs/PROGRAMMER-RULES.md`
-holds rule 11 twice — "a count written at the top of a long document is wrong by the end of the day"
-and "when you sum a quantity across sets that overlap, check the total against a bound you know".*
-**This one is older and not a collision: both were written on 11 September.** *Decisions and defects
-were checked the same way and hold no other duplicate.*
+**Filed at 17:10 on 24 September by the consolidated sign-off and withdrawn at 17:20 by the same session.**
+*This is defect 30, filed on 14 September, and this entry's suggested fix (relabel the second rule `11b`)
+contradicts 30's, and a later report shows even 30's is not clean — see the note added to 30.* **Found by reading rule 22, which names defect 30 in
+its last line** — the duplicate check had searched for doubled NUMBERS, not for an existing entry about
+the same thing. *The number is kept, struck, so nothing ever reuses it.*
 
-**Not fixed, on purpose.** *Renumbering would shift rules 12–22, and "rule 21" and "rule 22" are cited
-by number in today's handoff, decisions and defects. The harmless repair is to relabel the second one
-**11b** and leave every other number alone — a two-minute job for any session that is already editing
-that file.*
+## 50 — The design wiki stops at round 3, and Aaron's decision to keep the writer's articles was never carried out
+
+**Found 24 September 2026 by the design-wiki session's read-only close-out, and verified here.**
+
+**1. The wiki is a stage and a half behind.** *`build/wiki_rulings.json` holds **3 rounds and 136
+rulings**; ideation closed at **seven rounds and 178 rulings** on 15 September, and none of stage 2's
+twenty design documents is in it.* **Its own README still opens "For whoever closes round 4".** *Adding a
+round is mechanical and documented in `docs/wiki/README.md`; nobody is assigned it.* **Left alone, the
+wiki becomes a stale fourth place a fact lives — the failure its charter (F24) exists to prevent.**
+
+**2. Aaron APPROVED keeping the writer's 76 articles, on 14 September at 21:06, and nothing happened.**
+*The board card `writer-wiki-merge` recommended "Keep it" — correct the writer's articles rather than
+start again, **five to seven days of work**. The board's database holds his answer: approved, no note.*
+**The card was cleared from the board on 15 September among "six answered cards", and the answer was
+written into no decision.** *So the writer's 86 files still sit unmerged in `docs/wiki_new/` beside the 86
+generated pages in `docs/wiki/`, and the board's own wiki card said, until 24 September, that it was
+waiting on his decision.* **Recorded as D259.**
+
+**Not started here.** *It is five to seven days of work, it is not the current stage, and when to spend
+it is Aaron's.* *`docs/deferred.md` 17–29 are defects in what the wiki says; this entry is about what it
+does not cover at all.*

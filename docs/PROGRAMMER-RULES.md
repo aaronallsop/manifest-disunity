@@ -338,3 +338,14 @@ Add one with `/rule` whenever a mistake earns it. Number them; never delete one.
     rule 21's own lesson, landed within a minute of reading it. Deferred 30 records the same
     collision at 11. A numbered list appended to by many sessions needs the number CHECKED, not
     assumed from the last one you remember.**
+
+23. **Front the browser tab before timing anything or calling something a stall.** Cost: two headless
+    simulator runs on 16 September misread as the turn-80 hang. **A browser tab that is not in front is
+    throttled, and throttling looks exactly like the engine stalling**: the turn counter crawls, then
+    appears to stop. *`docs/deferred.md` 5 already says to time runs with nothing else competing; it does
+    not name this trap.* **The distinguishing test, which is how defect 46 was finally confirmed:** front
+    the tab, then treat **no movement across a long window (20 and 40 seconds were used)** as the only
+    evidence of a stall. *The test suite is not affected in the same way — on 24 September it ran 956
+    checks in 263s in a hidden pane — but the page does not answer while a suite runs, so poll it rather
+    than waiting on one long call. Reported by the stage-3 scoping session at the 24 September
+    consolidated sign-off.*

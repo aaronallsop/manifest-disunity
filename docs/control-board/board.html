@@ -321,7 +321,7 @@ tr:last-child td{border-bottom:0}
 const BOARD = {
   project: "Manifest Disunity",
   livery: "tower",                      // tower | mars | violet | deep | slate
-  updated: "2026-09-24 17:25",          // when you last republished, local time
+  updated: "2026-09-24 17:45",          // when you last republished, local time
 
   // Three or four measured figures. value: number|string, or null = "not yet measured".
   figures: [
@@ -342,6 +342,7 @@ const BOARD = {
       { warn: true, t: "HOW IT WAS DONE, AND WHY. Sixteen other sessions were open, fifteen of them on this project and all sharing one folder. This afternoon several ran the end-of-day routine at once and tripped over each other. So this time one session read every other session's conversation, gathered what had not been written down, did the sign-off once, and told the rest to close without saving, testing or touching this page. Running fifteen sign-offs one after another was rejected: fifteen notes for the next session, each replacing the last, and fifteen five-minute test runs." },
       "THE CHECKS ARE GREEN, AND NOW IT MEANS SOMETHING. This afternoon the same unchanged code gave nine results across six sessions — four green, five red. Every red run was one session's check editing a real game file while another session's check was reading it. Run alone this evening: 956 passing, none failing, in four and a half minutes, and the game's files untouched afterwards. The game is fine; the checks can still trip over each other, and that fault stays on the list.",
       { warn: true, t: "A SECOND COPY OF THE PROJECT WAS WORKING TOO. When this session went to save, it found eleven newer saves from somewhere other than this PC: the director's brief and its interview, names for every role on the studio roster, and a draft rewrite of the project's standing rules. All of it was kept exactly as written. It had filed a fault under the same number this session had just used, so this session's took the next one. The draft rules are NOT adopted yet, and they carry one question for you about who approves the technical design." },
+      { warn: true, t: "TWO OF YOUR ANSWERS HAD FALLEN OUT OF THE RECORD, found because the other sessions were asked what they knew. On 14 September you approved keeping your writer's wiki articles and correcting them — about a week of work. The card was tidied off this page the next day, the answer was written down nowhere, and nothing has been done since. On 16 September you asked for the old economy-alpha card to come off this page for good; that was done, but only a save note said it was on purpose. Both are properly recorded now. The wiki is also a stage and a half out of date. When to spend that week is yours." },
       "ONE MORE COLLISION SCAR WAS FOUND AND FIXED: two different decisions had both been given the same number this afternoon, and nobody had noticed. Renumbered, with a note saying why.",
       { warn: true, t: "THE GAME STILL CANNOT REACH TURN 200. Unchanged: it stops somewhere around turn 80 to 95. It has to be fixed before the stage reaches its numbers, and it is first on the list of things that must land before other work." },
       "NEXT: the second step of the technical stage — agreeing what each system hands its neighbours. Or, if you would rather, the standing faults, starting with the failed invasion that pays the attacker.",
@@ -897,8 +898,11 @@ const BOARD = {
             + "The systems map is the second half, and it exists because the note-taking app could not "
             + "do what you asked: it draws every connection as the same grey line and cannot see your "
             + "categories at all. This one keeps the seven kinds apart and groups the pages by system.\n\n"
-            + "NOT DONE, and it is the card at the top: your writer's 76 articles are written and "
-            + "reviewed and NOT merged. The scaffolding has no prose in it until you decide." },
+            + "YOU DECIDED ON 14 SEPTEMBER — keep the writer's articles and correct them, about five "
+            + "to seven days of work — and that answer was lost from the record for ten days when this "
+            + "board was tidied. It is written down now. NOTHING HAS BEEN DONE ABOUT IT: the articles "
+            + "are still unmerged. And the wiki itself stops at round three — it has never seen rounds "
+            + "four to seven or any of the twenty design documents. When to spend the week is yours." },
     { name: "Stage 3 — The plan, and what you approved", status: "done",
       brief: "Your phase order: Game Design, then Technical Design, then a build order, then building. "
            + "A technical designer takes the design one system at a time and writes the actual "

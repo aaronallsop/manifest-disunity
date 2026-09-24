@@ -6543,3 +6543,38 @@ not that one.*
 **Not solved here, and not this project's to solve.** *The sign-off ritual still has no guard against a
 second session in the same folder — it lives in the shared rules repository, not here. Flagged as its
 own task rather than changed from inside a project sign-off.*
+
+### D258 — The parked economy-alpha card was removed from the Control Board on Aaron's instruction, not lost, 16 September 2026 (recorded 24 September)
+
+**Observed.** *On 16 September Aaron asked, in the session that scoped stage 3: "Can we remove The rest of
+the old economy-alpha plan — PARKED from the control board moving forward and also make sure it has your
+new updates on phases of the TDD plan".* **The card was deleted and the seven technical-design steps
+were put on the board as phases in its place** (commit `24dc41e`, board v43–44). *Before deleting it, its
+one load-bearing finding was confirmed to live elsewhere: farming in the game is about ten times larger
+than real figures, and hunger was tuned against the inflated number, so replacing the data without
+resetting hunger would starve the continent on turn one. It is in `docs/design/economy-design.md`,
+quoted from the spec rather than re-derived.*
+
+**Why this entry exists eight days late.** *The removal was recorded only in a commit message.* **Nothing
+in the record said it was deliberate**, so a session tidying the board or restoring an older version could
+put it back. *Surfaced by that session at the 24 September consolidated sign-off (D257).*
+
+**Decided: the card stays off the board "moving forward", in Aaron's words.** *Do not restore it.*
+
+### D259 — Aaron approved keeping the writer's wiki articles on 14 September; it went unrecorded for ten days, 24 September 2026
+
+**Observed.** *At the consolidated sign-off (D257) the design-wiki session reported that the board card
+`writer-wiki-merge` — "The writer's 76 articles — keep them, or start again?" — had vanished from the board
+with no recorded answer.* **The board's database holds one: approved, 14 September 21:06, no note.** *By
+this project's convention that is the recommendation as written:* **keep the writer's articles and correct
+them** — about a day on the machinery, two to three days checking every claim against the rulings, half a
+day rewriting the four pages built on a misreading; **five to seven days**, keeping the words.
+
+**How it went missing.** *The next session rewrote the board for readability and deleted six answered
+cards (D228 recorded two other approvals from the same evening); this one was among them and its answer
+reached no decision entry.* **The same mechanism as D258: a board answer that lives only in the board's
+database and a commit is not in the record.**
+
+**Decided: the approval stands and is now recorded.** *It is NOT started — see `docs/deferred.md` 50 —
+because the work is days long and not the current stage. When to do it is Aaron's.* **The board's wiki
+card now says he decided, rather than that it is waiting on him.**
