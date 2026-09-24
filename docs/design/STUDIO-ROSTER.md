@@ -83,7 +83,7 @@ than working together.
 | Name | Role | Function |
 |---|---|---|
 | **Saturn** | Conductor | Running it |
-| **Rhea** | Producer — looks forward: the plan, the schedule, the Control Board | Running it |
+| **Rhea** | Producer — looks forward: the plan, the schedule, the Control Board. **First job:** redesign the board to serve Aaron as the studio grows — *"the control board is still something that needs to be fixed in order to best serve me. Especially since as this grows and adapts I think it will need to change."* (Aaron, 24 Sep) | Running it |
 | **Titan** | Record-keeper — looks backward: the decisions log, the master file and the handoff kept true; marks what his newest word replaces | Running it |
 | **Janus** | Repository keeper — saving, backup, keeping both computers' copies in sync, combining parallel work, version tags | Running it |
 | **Pluto** | Scribe — records everything Aaron says in his words, sorts it into wants, open questions and rejections, owns the terminology list; never turns an idea into a decision | Capturing his intent |
