@@ -321,28 +321,29 @@ tr:last-child td{border-bottom:0}
 const BOARD = {
   project: "Manifest Disunity",
   livery: "tower",                      // tower | mars | violet | deep | slate
-  updated: "2026-09-24 18:30",          // when you last republished, local time
+  updated: "2026-09-24 20:10",          // when you last republished, local time
 
   // Three or four measured figures. value: number|string, or null = "not yet measured".
   figures: [
-    { label: "Checks passing, run with nobody else in the folder (this evening) — none failing", value: 956 },
+    { label: "Checks passing — run on the MacBook at sign-off, alone in the folder, none failing", value: 956 },
     { label: "Turn the game freezes on — it is designed to reach 200", value: "80–95" },
-    { label: "Systems with NO code behind them at all", value: "5 of 19" },
+    { label: "Pieces of the design with NO code at all — blocs, missions, projects, alliances, ending a war", value: 5 },
     { label: "Studio roles named — none hired yet", value: "25 · 0" },
-    { label: "Open entries in the fault list", value: 42 },
+    { label: "Mistakes the sign-off review found in today's documents — all put right or filed", value: 90 },
     { label: "Current version", value: "v0.6" },
   ],
 
   headline: {
     tone: "warn",
-    lead: "Today the studio was set up and the road to alpha was adopted — and the game still freezes around turn 80 to 95. Fixing that is now the first build job on the road. Nothing is waiting on you on this board.",
+    lead: "Today the studio was set up and the road to alpha was adopted. Two bad things first: the game still freezes around turn 80 to 95 — fixing it is the first build job on the road — and the review before sign-off found 90 mistakes in the day’s own documents, now put right. No decision is waiting on you today; two are parked to later milestones.",
     points: [
       { warn: true, t: "THE ENGINE STILL FREEZES around turn 80–95 of a 200-turn game. It is now the first job on the road you adopted: one narrow repair session, with five other faults, and a check that every later build must play all fifty years." },
       "YOUR DIRECTOR’S BRIEF IS APPROVED. Five pillars in your own words, your tie-break, who the player is, your lookbook and your refusals. Every role reads it first, and on taste it outranks the older documents. Building it found that much of what the project called your taste was the studio’s wording: of 639 places where the records touch it, 275 are your words and 142 are ours that you approved.",
       "THE ROAD TO ALPHA IS ADOPTED, with your addition. The design documents and the technical design stay the road; the cut moves to the front; strangers first play right after the repairs; Texas is built and screened before the other two regions. History research on Texas, Deseret and the Great Lakes starts at once. The progress rail below is redrawn to it.",
-      "EVERY ROLE IN THE STUDIO HAS A NAME — twenty-five, after the solar system, with you as the Sun and your two computers kept out of it. None is hired yet: a role is hired when its first job arrives.",
-      "THE PROJECT’S STANDING RULES WERE REWRITTEN: permanent rules only, 385 lines down to 233. The check that nothing was lost caught three rules the first draft had dropped, all restored. New among them: your most recent word wins, and a session is renamed at sign-off to show which teams it touched.",
-      { warn: true, t: "I CHANGED YOUR WORDS TWICE, AND IT WAS CAUGHT. Writing up your interview I put “player” where you said “viewer”, and “next time” where you said “next turn”. A word-by-word check against what you actually said found both, and a dozen smaller smoothings; all are back as you said them." },
+      "TWENTY-FIVE ROLES IN THE STUDIO HAVE A NAME, after the solar system, with your two computers kept out of it. Two are still to come: the Tools Programmer, and a name for the playtesters as a group. None is hired yet: a role is hired when its first job arrives.",
+      "THE PROJECT’S STANDING RULES WERE REWRITTEN: permanent rules only, 385 lines to 247. The check that nothing was lost caught three rules the first draft had dropped, all restored. New among them: your most recent word wins, and a session is renamed at sign-off to show which teams it touched.",
+      { warn: true, t: "I CHANGED YOUR WORDS, AND IT TOOK TWO CHECKS TO PUT THEM RIGHT. Writing up your interview I put “player” where you said “viewer” and “next time” where you said “next turn”. The first check caught those and I told you all was back as you said it. It was not: the review before sign-off found your question 9 answer reordered and about ten smaller changes still there. Every answer has now been compared word for word with what you actually said; nothing is added or changed, only the ums and restarts are out. Your own messages from today are saved in the project so it can be checked again." },
+      "THE REVIEW BEFORE SIGN-OFF found 90 mistakes across today’s documents, and all are put right or filed. Of the same kind as the one above: a paragraph credited to you that nobody recorded you writing, the studio’s “you are the Sun” written into your scheme as if it were yours, three of your board answers from 15 September never logged, and a rule quietly widened without asking you. Two things came to light that you should know: the fix to the four ocean ports you approved on 15 September has not been done yet (it lands at milestone 5), and on this MacBook nothing warns that a handoff is out of date, because the MacBook’s copy of your shared rules is older than the PC’s.",
       "NEXT: the first milestone — the word list, saving your own words from the design sessions on the PC, this board’s redesign (Rhea interviews you first), and the history research.",
     ],
   },
@@ -926,7 +927,7 @@ const BOARD = {
             + "many things sixty-one countries can each start in a quarter without the machine slowing "
             + "down; whether your victory targets still hold now a game is two hundred turns instead "
             + "of eighty; and one denominator on the new political board that every tuned threshold in "
-            + "the game is measured against, which still has no value." },
+            + "the game is measured against, which still has no value.\n\n⚠ 24 SEPTEMBER: THE SEVEN STEPS ARE REPLACED by the road to alpha you adopted — milestones 0 to 11, shown below. Step 1 is done; the old step 2, how systems hand things over, is now milestone 3." },
     { name: "Step 1 — The ledger and the triage", status: "done",
       brief: "Before any formulas: find out where the game actually stands against the design, and sort "
            + "the three hundred loose ends the design stage left behind.",
@@ -957,9 +958,9 @@ const BOARD = {
             + "never had a value. The thirty-eight faults get sorted in here too." },
     { name: "The studio: your brief, your roles, your road", status: "done",
       brief: "“I realized that the way that I have this program set up is not the most efficient and optimized way that I could have it.” — and: “the one thing that I want to make sure that I keep is the GDD and working towards the TDD.”",
-      actual: "DONE, 24 September. A fourteen-question interview, asked cold, became your director’s brief, which you approved. Every role on your roster was named. The standing rules were rewritten to hold only what is permanent. And the road to alpha was redrawn and adopted with your addition. The design documents and the technical design are still the road; what changed is the order and the rhythm around them." },
+      actual: "DONE, 24 September. A fourteen-question interview, asked cold, became your director’s brief, which you approved. Twenty-five roles on your roster were named. The standing rules were rewritten to hold only what is permanent. And the road to alpha was redrawn and adopted with your addition. The design documents and the technical design are still the road; what changed is the order and the rhythm around them." },
     { name: "M0 — One road, one set of words", status: "current",
-      brief: "Your word list, this board redrawn to the road, your own words from the design sessions saved from the PC, and the history research begun.",
+      brief: "Your word list, this board redesigned around what you actually use (the road is already drawn on it), your own words from the design sessions saved from the PC, and the history research begun.",
       actual: "NOT STARTED. Pluto builds the word list from the records and brings you every word that has meant two things. Pluto also copies your own messages from the design sessions on the PC into the project, word for word. Rhea interviews you about this board before redesigning it. Makemake starts on the real history behind Texas, Deseret and the Great Lakes, and keeps going alongside everything after. The contracts pass waits for the word list, as you chose." },
     { name: "M1 — Make the engine trustworthy", status: "todo",
       brief: "Six narrow repairs, starting with the freeze, and a check that every later build plays a full game.",
@@ -1011,15 +1012,17 @@ const BOARD = {
   ],
   // Success metrics. value null = "not yet measured". Never an estimate.
   numbers: [
-    { label: "100 turns run without the screen, target under 60 seconds", value: "48.8s — meets it" },
-    { label: "Same seed twice, identical results", value: "yes — identical to the byte" },
+    { label: "100 turns run without the screen, target under 60 seconds", value: "cannot finish — freezes at turn 80–95" },
+    { label: "Same seed twice, identical results — checked by the tests every run", value: "yes — tonight’s run" },
     { label: "States at stable equilibrium after 60 turns with no trade", value: null },
     { label: "Bands that are reachable and visible", value: null },
-    { label: "Five-hop resale chain is unprofitable", value: "yes — keeps 18–43% against 90% selling direct" },
+    { label: "Five-hop resale chain is unprofitable (measured 5 September)", value: "yes — keeps 18–43% against 90% selling direct" },
   ],
 
   // Decisions made on the owner's behalf and how they turned out. Corrections go BESIDE originals.
   log: [
+    { when: "2026-09-24", decision: "Reviewed the whole day’s documents as an adversary before signing off, instead of trusting them because they had already been checked.",
+      outcome: "It found 90 mistakes, and the worst was my own: the record of your interview still changed your words after I had told you, and this page, that every word was back. Fixed properly this time, by comparing every answer word for word with your saved messages. The rest were records not updated when you adopted things today, claims about who decided what that went further than the record, and figures on this page that were stale. Five are filed for later; three are yours, and they are in the handoff." },
     { when: "2026-09-24", decision: "Checked every quote of yours in the interview word for word against what you actually said, instead of trusting my own write-up.",
       outcome: "It found two places where I had changed your words — “viewer” written as “player”, “and do next turn” written as “next time” — and about a dozen smaller smoothings of your grammar. All are back exactly as you said them, and the brief was re-checked against the corrected record. The check is now a standing rule: nothing quoted as yours is relied on until it has been compared with your own messages." },
     { when: "2026-09-24", decision: "Corrected what I told you about roles that are named but not hired.",
