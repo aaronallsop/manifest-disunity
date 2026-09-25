@@ -3,6 +3,11 @@
 **Written 16 September 2026.** *This is a PLAN, not the stage. Nothing in it has been started, and
 nothing in it should be started until Aaron has approved the shape and answered §10.*
 
+> **⚠ ORDER SUPERSEDED IN PART, 24 SEPTEMBER 2026 (D264).** *This plan still defines what each technical
+> document is and what "done" means for one. **The order is now `ROAD-TO-ALPHA.md`**: the contracts pass
+> (its M3) whole and first, the cut moved to the front (M4), and the remaining documents written in the
+> slice that needs them. T6's dossier becomes that cut.*
+
 **✅ STATUS: APPROVED — Aaron, 16 September 2026, 15:50 UTC.** *Both cards approved with no note, which
 under this project's convention means the recommendation as written.* **So: ALPHA FIRST, whole-game
 aware (§10 decision 1), and FOUNDATIONS FIRST, THEN SLICES (§10 decision 2).** *T0 may begin.*

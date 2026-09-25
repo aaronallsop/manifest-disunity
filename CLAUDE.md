@@ -15,17 +15,17 @@ This file holds only what is permanent; progress and counts live in the handoff 
 ## Where we are — changes with the stage or step, or when a line stops being true; details in the handoff
 
 - Stages 1 and 2, ideation and design, are closed (D216, D241): `GDD.md` plus one satellite per system (§13).
-- Stage 3, technical design, runs to `docs/technical/TDD-PLAN.md`, approved (D248). Alpha first: full
-  specification for what the alpha needs, and for the rest only its contract — what it must expose to its
-  neighbours. Foundations, then slices: T0 and T1 on paper, then each system specified and built before
-  the next. Seven steps, T0–T6. **T0 is done. Next is T1, the contracts pass.**
-- Before design work resumes, Aaron wants a terminology list, one word per idea, owned by Pluto, the
-  Scribe. Whether T1 waits for it is his to say: ask him before T1 starts.
-- The road to alpha is being revised (24 September). The GDD stays, and the work still runs through the
-  technical design (Aaron's condition); he approves the milestones and anything cut.
-- The game cannot yet reach turn 200: it hangs around turn 80–95, on a turn that moves with the seed
-  (defect 46). Anything measured over a long run waits on it. The standing faults in `docs/deferred.md`
-  are filed, not fixed; whether a programming session fixes them is Aaron's call.
+- **The road to alpha is `docs/technical/ROAD-TO-ALPHA.md`, adopted (D264): milestones M0–M11.** The GDD
+  stays and the technical design is still the road: nothing new is built before its technical document is
+  written and approved; the documents are written slice by slice, the contracts pass (M3) whole and first.
+  `docs/technical/TDD-PLAN.md` (D248) still defines each technical document; the road sets their order.
+  **T0 is done. Next is M0:** Pluto's terminology list, Rhea's board redesign, and Makemake's history
+  research on Texas, Deseret and the Great Lakes, which runs alongside every milestone. The contracts pass
+  waits for the terminology list.
+- **M1 is a programming session**, permitted with the road: six narrow repairs, starting with the freeze
+  around turn 80–95 (defect 46). The other standing faults in `docs/deferred.md` stay filed. After M1, one
+  yes from Aaron per milestone covers its build and its screening; he approves every specification and
+  plays every build first.
 - The build is `v0.6`, Economy mode (D173). Its test has not been run; the rest of that plan is parked, off
   the board on Aaron's instruction (D258). Here the economy alpha is always called Economy mode, and "the
   alpha" always means the game alpha that stage 3 works towards.

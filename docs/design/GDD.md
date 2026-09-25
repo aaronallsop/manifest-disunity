@@ -317,6 +317,11 @@ commitment.** What it has instead is an ordered phase list.
 
 **The phase order (D217):** Game Design → Technical Design → build order → implementation.
 
+> **⚠ REFINED 24 SEPTEMBER 2026 (D264).** *The order holds for any one piece of the game — designed, then
+> specified, then built. Across the game it now interleaves: the build order and the cut come right after
+> the contracts pass, and technical design and building take turns slice by slice.
+> `docs/technical/ROAD-TO-ALPHA.md`.*
+
 | Stage | |
 |---|---|
 | **1. Ideation** | ✅ **Closed 15 September 2026.** Seven rounds, **536 ideas and 178 rulings**, counted 14 September |

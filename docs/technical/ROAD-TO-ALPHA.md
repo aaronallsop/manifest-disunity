@@ -1,6 +1,6 @@
 # The road to alpha: a proposal
 
-*From Saturn, 24 September 2026. Nothing here is adopted until you say so. Section 8 lists the seven decisions that adopting it takes.*
+*From Saturn, 24 September 2026.* **✅ ADOPTED — Aaron, 24 September 2026 (D264)**, with the recommended answer to all seven questions in section 8 and one addition of his: **history research on the three stories starts at M0** (below).
 
 ## 1. The recommendation
 
@@ -24,7 +24,8 @@ Twelve milestones, M0 to M11. They are done in order, one piece of work at a tim
 **M0 — One road, one set of words** *(paper; already planned)*
 - **Makes:** Pluto's terminology list. Rhea's redesigned Control Board, which draws this road in place of the seven-step rail and marks every milestone, every screening and every place you decide. One numbering, M0–M11, with the old labels mapped across once. Titan records this road as a decision and marks the older lines it replaces as superseded; nothing is deleted.
 - **Done when:** you open the board and see one road from here to strangers playing the alpha: where you are on it, and what is waiting on you. The words you use each mean one thing.
-- **Who:** Pluto (Scribe), Rhea (Producer), Titan (Record-keeper). Jupiter (Lead Game Designer) checks the road against your brief. Mars (QA Lead) checks the board for stale figures and jargon.
+- **Also starts here, and runs alongside every milestone after it — Aaron's addition:** Makemake (Researcher) researches the real history behind the three stories the alpha starts with — **Texas, Deseret, and the Great Lakes (Superior)** — as claim, source and confidence, with Eris on any figures. Nothing reaches a player until Eureka (Fact-checker) has checked it and Deimos (Neutrality Reviewer) has read it. It feeds your choice of where the history goes (M4) and the Texas, Great Lakes and West slices (M7, M9).
+- **Who:** Pluto (Scribe), Rhea (Producer), Titan (Record-keeper), Makemake (Researcher). Jupiter (Lead Game Designer) checks the road against your brief. Mars (QA Lead) checks the board for stale figures and jargon.
 - **You decide:** the seven questions in section 8, and corrections to the word list.
 
 **M1 — Make the engine trustworthy** *(the first programming session)*
@@ -49,7 +50,7 @@ Twelve milestones, M0 to M11. They are done in order, one piece of work at a tim
 
 **M4 — The cut** *(the build order, moved to the front)*
 - **Makes a scope sheet** of evidence only, with no recommendation. It has one row for every system or piece the alpha might need, and each row says which of your five alpha tests needs it, what it depends on, what it costs, and which region slice it would land in.
-- **Alongside the sheet:** Neptune's list of exactly what each mission tree pulls in from other systems, so a cut cannot strand a tree. The first-look findings, attached to the rows they touch. A throwaway, clickable pretend turn set at turn 40 (a briefing, cards, several projects running), built outside the game and thrown away afterwards. And the start of the Texas history research, because it is the slowest job on the road.
+- **Alongside the sheet:** Neptune's list of exactly what each mission tree pulls in from other systems, so a cut cannot strand a tree. The first-look findings, attached to the rows they touch. A throwaway, clickable pretend turn set at turn 40 (a briefing, cards, several projects running), built outside the game and thrown away afterwards. And the history research begun at M0, laid against the rows it touches.
 - **Done when:** you have marked every row "in the alpha, in full", "edges only" or "after the alpha". You have clicked through the pretend turn and said whether it gives you something to do. From here on, nobody writes a full specification for anything you cut.
 - **Who:** Rhea assembles the sheet. Neptune supplies the costs and dependencies. Jupiter maps the rows to your checklist and Io checks that mapping. Titan checks that every figure traces to a measurement. Dia (UX Designer, hired here) designs the pretend turn and Chaos (Prototyper) builds it. Makemake (Researcher) starts the history.
 - **You decide:** the cut, row by row (cut from the alpha is not cut from the game). What a sixty-turn session ends with; the studio proposes an end screen showing your mission-tree progress and standings, with the reasons behind them. Where the history goes: the board, movement lines, mission names or area panels. The shape of the taught first turn: the voice, the order things are introduced, or doing things while it talks. And your reaction to the pretend turn.

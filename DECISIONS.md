@@ -6685,3 +6685,44 @@ that role's job. The roster says the Conductor never writes game code or design 
 still holds.*
 
 **Kept, not deleted:** *the old file, word for word, at `docs/archive/CLAUDE-until-2026-09-24.md`.*
+
+### D264 — The road to alpha is adopted: foundations, the cut up front, and strangers playing from the start, 24 September 2026
+
+**Observed.** *The board drew the road as a waterfall — seven paper steps, then "the build order" — which
+contradicted D248's approved slices; the cut came after the building it should steer; and no one outside
+the studio had ever played any version of the game, while the brief's most feared failure ("there just
+isn't much to do") can only be found by playing. The engine freezes around turn 80–95 of 200 (defect 46).*
+
+**Made how.** *The current road mapped from the files; three independent routes written from different
+angles — playable first, no rework, studio fit; three judges scoring all three; one synthesis. Checked
+against Aaron's condition, given before he saw it: **"the one thing that I want to make sure that I keep
+is the GDD and working towards the TDD."** It keeps both.*
+
+**Aaron asked, before deciding,** whether "TDD before code" was no longer the test, and then what a senior
+lead would choose. *He was told that "whole TDD first" had already been replaced when he approved D248, and
+that the new road's one real exception is M1 — repairs to the existing game before the contracts pass.*
+
+**Decided — Aaron, 24 September:** *"Sounds great, I think the only thing I would want to add to this road
+plan is to get one of the researchers going as well on researching History about the three main stories we
+wanted to start out with, Texas, Deseret, and Superior/Great Lakes."* **So `docs/technical/ROAD-TO-ALPHA.md`
+is adopted with the recommended answer to all seven questions:**
+
+1. **The road, M0–M11,** as written.
+2. **Permissions:** yes to the M1 repair session; after it, one yes per milestone covers its build and its
+   screening. He still approves every specification and plays every build first.
+3. **Strangers before the alpha:** a small first look after the repairs (M2), then the screenings.
+4. **The Economy-mode test's questions** go into the first look; it is never run on its own.
+5. **The contracts pass waits for the terminology list.**
+6. **Tuning before M10:** only a number that stops a tester playing at all, with his OK each time.
+7. **Versions:** v0.6.1 for the repairs, v0.7 politics and the new turn, v0.8 Texas, v0.9 all three
+   regions, v0.10 the alpha candidate.
+
+**His addition:** **Makemake starts history research on Texas, Deseret and the Great Lakes (Superior) at
+M0**, running alongside every milestone; Eureka checks and Deimos reads before anything reaches a player.
+
+**Supersedes, each only where the road says so:** D248's order (its definitions stand); D244's order of the
+tangled systems; D217's stage order across the whole game (it still holds for any one piece); **D171 ruling
+3, "Playtesters wait for the alpha"**; the separate Economy-mode test (D173, D258); the seven-step rail on
+the board. *Each older line carries a dated note — `TDD-PLAN.md`, `GDD.md` §9; the board's rail is redrawn
+at M0.* **Not a reversal:** D245 and D252 — the scoping he chose is done, and D252 named the freeze the first
+repair.
