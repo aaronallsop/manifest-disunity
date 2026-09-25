@@ -19,7 +19,12 @@ Decided: D266 (his yes, 24 Sep) and D273 (25 Sep). The tone-interview chat is a 
 ## The job, for Pluto
 
 **Find every session log on this computer that belongs to this project.** Claude Code keeps one log file
-per session, `*.jsonl`, under the user's `.claude\projects\` folder, one subfolder per working folder.
+per session, `<session id>.jsonl`, directly inside a subfolder of the user's `.claude\projects\` folder, one
+subfolder per working folder. **Read only those top-level files.** Beside each sits a folder of the same
+session id holding helper agents' logs (`subagents\…\*.jsonl`, often hundreds): **never read those for his
+words** — their "user" records are the studio's instructions to its helpers, not Aaron (checked on Luna,
+25 Sep: the first such record reads "You are Rhea, the Producer…"). For the same reason skip any record
+marked `"isSidechain": true`.
 Include any session whose recorded working folder (`cwd`) is this project, **under any name or path the
 project has had** (the dev-server entry is still called "nation-states", which may have been an earlier
 folder name; and the first commit, 29 August, calls itself a "baseline before rebuild", so sessions may
@@ -28,15 +33,21 @@ belong and why; when a folder's match is unclear, report it rather than guessing
 projects' logs beyond checking their `cwd`.
 
 **From each session, copy only Aaron's own messages, word for word, dated, in order.**
-- **His messages are:** `"type": "user"` records whose `message.content` is text he typed or dictated,
-  and `"type": "queue-operation"` / `"operation": "enqueue"` records, which hold messages he sent while
-  Claude was still working. **A message can appear both as a queued record and later as a user record:
-  keep it once**, at the queued time, marked `"note": "sent mid-turn"`.
-- **Not his, never saved:** tool results; `isMeta` records; text wrapped in system tags (`<system-reminder>`,
-  `<command-…>`, `<task-notification>`, `<local-command-…>` and similar); skill instructions loaded into
-  the conversation ("Base directory for this skill…"); "Tool loaded."; sub-agent hand-backs ("Another
-  Claude session sent a message…"); compaction summaries; anything the studio wrote.
-- **Slash commands he typed** (e.g. `/resume`, `/signoff`) are kept, marked `"note": "command"`.
+- **Where his messages are, in two places.** (a) `"type": "queue-operation"`, `"operation": "enqueue"`
+  records: in logs that have them, **every** message he sends is queued here first, plain text, including
+  the ones he sent while Claude was still working, which appear nowhere else as a normal message. (b)
+  `"type": "user"` records whose `message.content` is plain text. Older logs may have no queue records.
+  **Take both and keep each message once** (the same text within a minute or so is one message; keep the
+  earlier time). Do not label a message "mid-turn": a queue record alone does not show that (checked on
+  Luna, 25 Sep: all his messages that day were queued, not just the mid-turn one).
+- **Not his, never saved, in either place:** anything starting with a system tag (`<agent-message`,
+  `<task-notification>`, `<system-reminder>`, `<local-command-…>` and similar; queue records hold these too);
+  tool results; `isMeta` records; skill instructions loaded into the conversation ("Base directory for this
+  skill…"); "Tool loaded."; sub-agent hand-backs ("Another Claude session sent a message…"); compaction
+  summaries; anything the studio wrote.
+- **Slash commands he typed** (e.g. `/resume`, `/signoff`) are kept, marked `"note": "command"`. In a queue
+  record they are plain (`/signoff`). In a user record they are wrapped as `<command-name>/signoff</command-name>`
+  with any `<command-args>`: keep the command and its arguments, not the tags and not the skill text after.
 - **Text he pasted into a message is part of his message**: keep it verbatim, whole.
 - **Change nothing** inside a message: not spelling, not punctuation, not dictation errors. The only
   exception is a secret (role file, rule 6).
@@ -60,7 +71,9 @@ only his words, verbatim.
 - Pick five messages at random across the files and compare each, character for character, with its
   record in the log. Report the five and the result.
 - Search the saved files for text that is plainly not his (tags, "Base directory", "Tool loaded",
-  "Another Claude session", tool output) and report zero, or fix and report what you fixed.
+  "Another Claude session", "[Subagent hand-back]", a helper's brief such as "You are Rhea" or "You are
+  Pluto", tool output) and report zero, or fix and report what you fixed.
+- Confirm no file came from a `subagents` folder.
 - Report the total sessions found, saved and skipped; messages saved; the earliest and latest dates; any
   gap of more than two days with no session; and anything redacted.
 

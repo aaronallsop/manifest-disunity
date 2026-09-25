@@ -364,3 +364,16 @@ Add one with `/rule` whenever a mistake earns it. Number them; never delete one.
     prevent. **Remove only filler and false starts. Then diff the record against his own messages before
     anything quoted as his is relied on** — the diff takes a minute and reads the words, not the meaning.
     *A misheard word stays as he said it; a correction goes in a note beside it.*
+
+25. **When pulling Aaron's words from a session log, read only the session's own top-level log — never
+    the helpers' logs beside it — and take his queued messages too.** Cost: caught in the sign-off review
+    of 25 September, before it ran, in the instructions written for the PC session that saves his words.
+    Each session's `<id>.jsonl` sits beside an `<id>/subagents/` folder of helper logs (173 of them on
+    Luna that day); their `"type": "user"` records are the studio briefing its helpers ("You are Rhea,
+    the Producer…"), and a search for `*.jsonl` would have saved them as his. The same review found two
+    smaller traps in the same place: every message he sends is first a `queue-operation` "enqueue" record
+    (and a message sent while Claude is working appears *only* there), so reading user records alone
+    loses those; and a slash command is plain in the queue but wrapped in `<command-name>` tags in the
+    user record. **What generalises:** a record's `type` says what the harness called it, not who wrote
+    it. **Before extracting anyone's words from a log, test the method on a log whose true answer you
+    already know** — today's session, eleven messages — and check the count and the text.

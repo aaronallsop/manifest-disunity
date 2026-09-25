@@ -321,30 +321,29 @@ tr:last-child td{border-bottom:0}
 const BOARD = {
   project: "Manifest Disunity",
   livery: "tower",                      // tower | mars | violet | deep | slate
-  updated: "2026-09-24 20:10",          // when you last republished, local time
+  updated: "2026-09-25 12:55",          // when you last republished, local time
 
   // Three or four measured figures. value: number|string, or null = "not yet measured".
   figures: [
     { label: "Checks passing — run on the MacBook at sign-off, alone in the folder, none failing", value: 956 },
     { label: "Turn the game freezes on — it is designed to reach 200", value: "80–95" },
+    { label: "Days to your alpha deadline, 31 March 2027 · to the stretch goal, 31 December", value: "187 · 97" },
+    { label: "Studio roles named · hired (Rhea and Pluto, today)", value: "25 · 2" },
     { label: "Pieces of the design with NO code at all — blocs, missions, projects, alliances, ending a war", value: 5 },
-    { label: "Studio roles named — none hired yet", value: "25 · 0" },
-    { label: "Mistakes the sign-off review found in today's documents — all put right or filed", value: 90 },
     { label: "Current version", value: "v0.6" },
   ],
 
   headline: {
     tone: "warn",
-    lead: "Today the studio was set up and the road to alpha was adopted. Two bad things first: the game still freezes around turn 80 to 95 — fixing it is the first build job on the road — and the review before sign-off found 90 mistakes in the day’s own documents, now put right. No decision is waiting on you today; two are parked to later milestones.",
+    lead: "Two things first. Your own words from the early design sessions are only on the PC, and Claude Code deletes session records after 30 days — the first ones reach that age around 28 September, so the PC session to save them should happen in the next two days. And the game still freezes around turn 80 to 95. Today: your alpha deadline is set, the road is broken into tasks for you to read, and Rhea and Pluto are hired.",
     points: [
-      { warn: true, t: "THE ENGINE STILL FREEZES around turn 80–95 of a 200-turn game. It is now the first job on the road you adopted: one narrow repair session, with five other faults, and a check that every later build must play all fifty years." },
-      "YOUR DIRECTOR’S BRIEF IS APPROVED. Five pillars in your own words, your tie-break, who the player is, your lookbook and your refusals. Every role reads it first, and on taste it outranks the older documents. Building it found that much of what the project called your taste was the studio’s wording: of 639 places where the records touch it, 275 are your words and 142 are ours that you approved.",
-      "THE ROAD TO ALPHA IS ADOPTED, with your addition. The design documents and the technical design stay the road; the cut moves to the front; strangers first play right after the repairs; Texas is built and screened before the other two regions. History research on Texas, Deseret and the Great Lakes starts at once. The progress rail below is redrawn to it.",
-      "TWENTY-FIVE ROLES IN THE STUDIO HAVE A NAME, after the solar system, with your two computers kept out of it. Two are still to come: the Tools Programmer, and a name for the playtesters as a group. None is hired yet: a role is hired when its first job arrives.",
-      "THE PROJECT’S STANDING RULES WERE REWRITTEN: permanent rules only, 385 lines to 247. The check that nothing was lost caught three rules the first draft had dropped, all restored. New among them: your most recent word wins, and a session is renamed at sign-off to show which teams it touched.",
-      { warn: true, t: "I CHANGED YOUR WORDS, AND IT TOOK TWO CHECKS TO PUT THEM RIGHT. Writing up your interview I put “player” where you said “viewer” and “next time” where you said “next turn”. The first check caught those and I told you all was back as you said it. It was not: the review before sign-off found your question 9 answer reordered and about ten smaller changes still there. Every answer has now been compared word for word with what you actually said; nothing is added or changed, only the ums and restarts are out. Your own messages from today are saved in the project so it can be checked again." },
-      "THE REVIEW BEFORE SIGN-OFF found 90 mistakes across today’s documents, and all are put right or filed. Of the same kind as the one above: a paragraph credited to you that nobody recorded you writing, the studio’s “you are the Sun” written into your scheme as if it were yours, three of your board answers from 15 September never logged, and a rule quietly widened without asking you. Two things came to light that you should know: the fix to the four ocean ports you approved on 15 September has not been done yet (it lands at milestone 5), and on this MacBook nothing warns that a handoff is out of date, because the MacBook’s copy of your shared rules is older than the PC’s.",
-      "NEXT: the first milestone — the word list, saving your own words from the design sessions on the PC, this board’s redesign (Rhea interviews you first), and the history research.",
+      { warn: true, t: "SAVE YOUR WORDS ON THE PC, SOON. Every record of your design interviews in the project is the studio’s write-up; the conversations themselves exist only on the PC, which keeps them for 30 days. Before opening Claude Code there, copy the folder of session records to your Documents as a backup. Then one line starts the job: Pluto copies only your messages, word for word, and the session saves them and signs off." },
+      { warn: true, t: "THE ENGINE STILL FREEZES around turn 80–95 of a 200-turn game. The repairs no longer wait for this first milestone to close — you ruled today that a task starts as soon as what it waits for is done — so the freeze can be the very next build session." },
+      "YOUR DEADLINE: THE ALPHA READY FOR STRANGERS BY 31 MARCH 2027, WITH A STRETCH GOAL OF 31 DECEMBER. Both are yours. Honestly: 31 March sits between the aggressive and normal guesses and needs about six or seven sessions a week and a firm cut; 31 December needs everything to go right. The first real check against measured pace comes when the repairs close.",
+      "THE ROAD IS BROKEN INTO TASKS, waiting for you to read. Thirty-five tasks for this milestone, the repairs, and a few pulled forward, each marked either something you start or something you do yourself, with what it waits for and what finished looks like. Later milestones are in outline with rough sizes: this milestone and the repairs come to about 21 sessions; the whole road 90 to 185 — estimates, and very wide, because nothing like the later builds has been done here yet.",
+      "RHEA AND PLUTO ARE HIRED — the first two roles with job descriptions. Rhea keeps the plan, the schedule and this board. Pluto keeps your words and will build the word list.",
+      "THE NEW PLUGINS REACHED THE MACBOOK. Design is the useful one here; Engineering and Product Management only in parts; Productivity is kept out of this project because it would compete with this board and the handoffs.",
+      "NEXT: the PC session to save your words. Then read the task list. Then this board gets the cards you asked for at the very top, with a short command to start each task — and after that, the schedule against your dates.",
     ],
   },
 
@@ -961,10 +960,10 @@ const BOARD = {
       actual: "DONE, 24 September. A fourteen-question interview, asked cold, became your director’s brief, which you approved. Twenty-five roles on your roster were named. The standing rules were rewritten to hold only what is permanent. And the road to alpha was redrawn and adopted with your addition. The design documents and the technical design are still the road; what changed is the order and the rhythm around them." },
     { name: "M0 — One road, one set of words", status: "current",
       brief: "Your word list, this board redesigned around what you actually use (the road is already drawn on it), your own words from the design sessions saved from the PC, and the history research begun.",
-      actual: "NOT STARTED. Pluto builds the word list from the records and brings you every word that has meant two things. Pluto also copies your own messages from the design sessions on the PC into the project, word for word. Rhea interviews you about this board before redesigning it. Makemake starts on the real history behind Texas, Deseret and the Great Lakes, and keeps going alongside everything after. The contracts pass waits for the word list, as you chose." },
+      actual: "UNDER WAY, 25 September. Rhea broke the road into tasks (a draft for you to read), you set the deadline, and the instructions for saving your words on the PC are written and backed up. Still to do: Pluto builds the word list from the records and brings you every word that has meant two things. Pluto also copies your own messages from the design sessions on the PC into the project, word for word. Rhea interviews you about this board before redesigning it. Makemake starts on the real history behind Texas, Deseret and the Great Lakes, and keeps going alongside everything after. The contracts pass waits for the word list, as you chose." },
     { name: "M1 — Make the engine trustworthy", status: "todo",
       brief: "Six narrow repairs, starting with the freeze, and a check that every later build plays a full game.",
-      actual: "NOT STARTED. The first programming session, permitted with the road. The freeze first, then a test that writes into the real game files, the test route that reports green without running, a failed invasion that pays the attacker, a nation reading its own founding movement as unrest, and the AI’s army weights. The playtest link is refreshed from today’s build. Tagged v0.6.1." },
+      actual: "NOT STARTED — and free to start now: you ruled on 25 September that it need not wait for the first milestone to close. About eleven sessions, estimated, more if the freeze resists. Permitted with the road. The freeze first, then a test that writes into the real game files, the test route that reports green without running, a failed invasion that pays the attacker, a nation reading its own founding movement as unrest, and the AI’s army weights. The playtest link is refreshed from today’s build. Tagged v0.6.1." },
     { name: "M2 — The first look", status: "todo",
       brief: "Two or three strangers play sixty turns of today’s game.",
       actual: "NOT STARTED. A small rehearsal, not a verdict: the link, a one-page how-to-play sheet, your five alpha questions and the economy questions that were never asked. Who the testers are is yours." },
@@ -1000,20 +999,35 @@ const BOARD = {
   // Things only the owner can supply, and what happens if a machine supplies them instead.
   blocked: [
     {
-      what: "Where Deseret sits on your three-axis board — comes back at milestone 5",
-      ifAutomated: "Parked to the politics milestone, where it first actually matters. I will not place it myself: where a country sits decides who it drifts toward, who allies with it and how badly a civil war inside it goes, and Deseret is one of the three countries a tester will pick. One sentence answers it — what Deseret believes about money, about morals, and about who gives orders.",
+      what: "Save your words from the design sessions — on the PC, before about 28 September",
+      ifAutomated: "Only a session on the PC can reach them, and only you can start one there. After 30 days Claude Code deletes a session’s record, and the project’s first sessions reach that age around 28 September. Nothing is lost yet if it happens in the next two days; each day after that, the earliest go. A plain copy of the folder first protects them either way.",
       damagedIfAutomated: false,
     },
     {
-      what: "Who the first-look testers are — at milestone 2",
-      ifAutomated: "The road puts two or three strangers in front of today’s game right after the repairs. Who they are, and what they are told, is yours; I will not pick people or send anyone a link. The playtest link itself is still a very old build and is refreshed at milestone 1, under the yes that milestone carries.",
+      what: "Read the task list and say what to change",
+      ifAutomated: "It is a draft until you have read it. The board’s new cards are built from it, so anything wrong in it would sit at the top of this page.",
+      damagedIfAutomated: false,
+    },
+    {
+      what: "Export the tone interview from your Claude chat",
+      ifAutomated: "You said it should be saved too. It lives in your Claude account, not on either computer, so only you can export it; then Pluto takes out your messages. After the PC session, as you asked — one at a time.",
+      damagedIfAutomated: false,
+    },
+    {
+      what: "Who the first-look testers are — you can start thinking about this now",
+      ifAutomated: "Two or three people who have never seen the game, each playing one of the three stories. Who they are, and what they are told, is yours; I will not pick people or send anyone a link. It waits for nothing, so it is on your list already.",
+      damagedIfAutomated: false,
+    },
+    {
+      what: "Where Deseret sits on your three-axis board — comes back at milestone 5",
+      ifAutomated: "Parked to the politics milestone, where it first actually matters. I will not place it myself: where a country sits decides who it drifts toward, who allies with it and how badly a civil war inside it goes, and Deseret is one of the three countries a tester will pick. One sentence answers it — what Deseret believes about money, about morals, and about who gives orders.",
       damagedIfAutomated: false,
     },
   ],
   // Success metrics. value null = "not yet measured". Never an estimate.
   numbers: [
     { label: "100 turns run without the screen, target under 60 seconds", value: "cannot finish — freezes at turn 80–95" },
-    { label: "Same seed twice, identical results — checked by the tests every run", value: "yes — tonight’s run" },
+    { label: "Same seed twice, identical results — checked by the tests every run", value: "yes — the 25 September sign-off run" },
     { label: "States at stable equilibrium after 60 turns with no trade", value: null },
     { label: "Bands that are reachable and visible", value: null },
     { label: "Five-hop resale chain is unprofitable (measured 5 September)", value: "yes — keeps 18–43% against 90% selling direct" },
@@ -1021,6 +1035,12 @@ const BOARD = {
 
   // Decisions made on the owner's behalf and how they turned out. Corrections go BESIDE originals.
   log: [
+    { when: "2026-09-25", decision: "Reviewed today’s work as an adversary before signing off — and it found a fault in the instructions for saving your words.",
+      outcome: "The project’s record folder also holds the logs of the studio’s helpers, and in those the “user” messages are the studio briefing its helpers, not you. The instructions did not say so, so the PC session could have saved the studio’s words as yours — the very thing the job exists to prevent. Fixed, and the method was then run on today’s real record: exactly your eleven messages, each once, nothing of the studio’s." },
+    { when: "2026-09-25", decision: "Told you Claude Code deletes old session records when it starts up.",
+      outcome: "Partly wrong. The documentation confirms the 30 days; it does not say when the deleting happens. The advice stands — copy the folder first — but the reason was stated more firmly than I knew." },
+    { when: "2026-09-25", decision: "Chose which of your new plugins this project uses, as a technical call.",
+      outcome: "Design yes; Engineering and Product Management only in parts; Productivity kept out of this project; Adobe waits for marketing. Recorded so it can be reversed." },
     { when: "2026-09-24", decision: "Reviewed the whole day’s documents as an adversary before signing off, instead of trusting them because they had already been checked.",
       outcome: "It found 90 mistakes, and the worst was my own: the record of your interview still changed your words after I had told you, and this page, that every word was back. Fixed properly this time, by comparing every answer word for word with your saved messages. The rest were records not updated when you adopted things today, claims about who decided what that went further than the record, and figures on this page that were stale. Five are filed for later; three are yours, and they are in the handoff." },
     { when: "2026-09-24", decision: "Checked every quote of yours in the interview word for word against what you actually said, instead of trusting my own write-up.",

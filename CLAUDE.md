@@ -19,10 +19,13 @@ This file holds only what is permanent; progress and counts live in the handoff 
   stays and the technical design is still the road: nothing new is built before its technical document is
   written and approved; the documents are written slice by slice, the contracts pass (M3) whole and first.
   `docs/technical/TDD-PLAN.md` (D248) still defines each technical document; the road sets their order.
-  **T0 is done. Next is M0:** Pluto's terminology list and his saving of Aaron's own words from the design
+  **M0 is under way (25 Sep):** Pluto's terminology list and his saving of Aaron's own words from the design
   sessions on Terra (a session on the PC), Rhea's board redesign, and Makemake's history
   research on Texas, Deseret and the Great Lakes, which runs alongside every milestone. The contracts pass
-  waits for the terminology list.
+  waits for the terminology list. **The road, task by task, is `docs/technical/ROAD-TASKS.md`** (Rhea's;
+  draft until Aaron reviews it): a task starts once what it waits for is done, not when its milestone's
+  turn comes (D272). **The alpha's deadline is 31 March 2027, stretch goal 31 December 2026** (D271).
+  Rhea and Pluto are hired; their role files are in `.claude/agents/`.
 - **M1 is a programming session**, permitted with the road: six narrow repairs, starting with the freeze
   around turn 80–95 (defect 46). The other standing faults in `docs/deferred.md` stay filed. After M1, one
   yes from Aaron per milestone covers its build and its screening; he approves every specification and
