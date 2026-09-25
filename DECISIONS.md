@@ -6889,3 +6889,56 @@ to grant, as a new entry.*
 
 **Rejected:** *leaving the fixes to the next session.* **Every new role is briefed from these records,
 and D255 shows what eight days of a wrong record costs.**
+
+### D269 — The board redesign begins with a task list; Rhea is hired, 25 September 2026
+
+**Observed.** *Asked what the Control Board should do for him (M0, Rhea's interview), Aaron said, on
+Luna:* "if at the very top there were little cards that were in very simple and concise language … maybe
+the next things to do because I think the roadmap is great because it's got all those milestones on it but
+I'm assuming that within each milestone there are little other smaller tasks" · "there's two types of tasks
+I assume one is something that I need to initiate and another is something that I need to really do whether
+that's have a conversation with Pluto or or whoever getting my thoughts out" · "I could just type in like
+start this one and it would pull up that specific task" · "I look at it on my computer I don't really look
+at it on my phone" · "if we set a deadline of when we … wanted the alpha to be out by, and how long it would
+take to do each step. And if we are, ahead of or behind schedule" · "we may need to take this like a step at
+a time". *(Verbatim from `docs/design/aaron-words/2026-09-25-luna-session.json`, one repeated
+"the" out; every other cut marked … — checked word for word the same day.)*
+
+**He then asked whether to plan every milestone or only the current one:** "at the end of each milestone,
+kind of before we move on, just wrap up, make sure everything's done. and kind of look forward to the next
+milestone and see if anything that we have done or changed in the previous milestone impacts the next one"
+· "maybe I'm still working on something in milestones Stone [sic] X, but that doesn't mean that we can't have
+any of the game designers working on miles [sic] something in milestone Y or Z."
+
+**Decided — the studio's recommendation, to which he said "Go ahead":** *the current work is planned in full,
+task by task, each marked "you start it" or "you do it"; later milestones in outline, each with a rough size
+so a schedule can be kept; every milestone ends with a close-out task that checks it is done and plans the
+next in detail; and every task records what it waits for, so a later milestone's task shows as soon as it is
+free, not when its milestone arrives.* **This wording is the studio's; quote none of it as his** (brief §8.6).
+*The redesign runs in three steps, one at a time as he asked: (1) the task list, drafted by Rhea for his
+review; (2) the cards and a `/go <task>` command — "go" because the Productivity plugin already has a
+"start"; the command lives in this project, so it reaches both computers; (3) the schedule, where he sets the
+date once he has seen the sizes.* **The board is designed for a computer screen first.**
+
+**Rhea (Producer) is hired**, her role file written as her first job arrived (D262). *Used from the next
+session; pasted into today's job.*
+
+**Rejected:** *detailing all twelve milestones now* — **mostly guessing, and the screenings at M2 and M8 are
+meant to change the later ones;** *detailing only the current milestone* — **it hides work that is already
+free, such as choosing the first-look testers.** *Open, and his: the deadline.*
+
+### D270 — Which of the newly synced plugins this project uses, 25 September 2026
+
+**Observed.** *Aaron added five plugins to his Claude account; all five reached Luna: Design, Engineering,
+Product Management, Productivity, Adobe for creativity. The Mac's own skills are unchanged since
+14 September; anything installed from the PC's terminal stays on the PC.*
+
+**Decided (a technical default, the studio's to take):** *Design* **is used** — critique, interface
+wording, accessibility, research synthesis — for the interface and the screenings. *Engineering* **only for
+its debugging method** (M1). *Product Management* **only for sorting research** (M2 onward). *Productivity*
+**is not used in this project:** its task file, memory folder, dashboard and writing into `CLAUDE.md` would
+each compete with the board, the handoffs and the master rules file. *Adobe* **waits for marketing work.**
+
+**Rejected:** *the architecture-record, roadmap, sprint, spec and stakeholder tools* — **each duplicates the
+decision log, the road, the technical documents or the board in another shape; the brainstorm tool ranks
+and recommends, which a design document may not.**

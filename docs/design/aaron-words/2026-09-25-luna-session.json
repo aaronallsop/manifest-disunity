@@ -1,0 +1,21 @@
+{
+  "about": "Every message Aaron typed or dictated in the 25 September 2026 session on Luna (the MacBook), copied verbatim from the session log. Source for checking anything quoted as his.",
+  "messages": [
+    {
+      "at": "2026-09-25T16:04:44.873Z",
+      "text": "I added skills/plugins from claude code and wanted to check if they synced on this end and if so if they are things that will be helpful for us moving forward. \n\nAfter that I would like to talk about updates to the control board"
+    },
+    {
+      "at": "2026-09-25T18:09:23.920Z",
+      "text": "I think what would be helpful for me on the control board is that if at the very top there were little cards that were in very simple and concise language um, I guess like maybe the next things to do because I think the the roadmap is great because it's got all those milestones on it but I'm assuming that within each milestone there are little other smaller tasks that we need to complete and there are uh within that there's two types of tasks I assume one is something that I need to initiate and another is something that I need to really do whether that's have a conversation with Pluto or or whoever getting my thoughts out um but it would be good if those were up there and I would be able to have some Claude command where I could just type like resume or maybe there's a better way to do it where I could just type in like start this one and it would pull up that specific task that we need to do or start um and I look at it on my computer I don't really look at it on my phone um And I think the other thing that would be helpful in general with the control board is if we set a deadline of when we needed wanted the alpha to be out by, and how long it would take to do each step. And if we are, ahead of or behind schedule or something like that. Um, so that's a lot of information and we may need to take this like a step at a time figuring out these different things and I'm okay with that."
+    },
+    {
+      "at": "2026-09-25T18:14:10.286Z",
+      "text": "Um, question. Um, breaking the road into tasks. Does it make sense to do it for every single milestone? Or does it make more sense to break it up into milestone that we're currently on? And once we get done with this milestone, break down the next ones. What I see here as a possibility is that on one hand, it would be good to, at the end of each milestone, kind of before we move on, just wrap up, make sure everything's done. and kind of look forward to the next milestone and see if anything that we have done or changed in the previous milestone impacts the next one and what we do. However, on the other hand, I could also see that being challenging if it is one of those things where, although the milestones are sequential, it is one of those things where maybe I'm still working on something in milestones Stone X, but that doesn't mean that we can't have any of the game designers working on miles something in milestone Y or Z."
+    },
+    {
+      "at": "2026-09-25T18:15:20.400Z",
+      "text": "Go ahead"
+    }
+  ]
+}
