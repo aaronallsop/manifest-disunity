@@ -19,10 +19,13 @@ This file holds only what is permanent; progress and counts live in the handoff 
   stays and the technical design is still the road: nothing new is built before its technical document is
   written and approved; the documents are written slice by slice, the contracts pass (M3) whole and first.
   `docs/technical/TDD-PLAN.md` (D248) still defines each technical document; the road sets their order.
-  **M0 is under way (25 Sep):** Pluto's terminology list and his saving of Aaron's own words from the design
-  sessions on Terra (a session on the PC), Rhea's board redesign, and Makemake's history
-  research on Texas, Deseret and the Great Lakes, which runs alongside every milestone. The contracts pass
-  waits for the terminology list. **The road, task by task, is `docs/technical/ROAD-TASKS.md`** (Rhea's;
+  **M0 is under way (25 Sep):** **Aaron's own words from Terra are SAVED** — 33 sessions, 584 messages,
+  3 July to 25 September, in `docs/design/aaron-words/` with an index covering both computers (D266, D273).
+  *The project's logs begin 3 July, eight weeks before the first commit; six of those sessions are other
+  projects, kept and labelled by his ruling (D274); the two folders that could not be ruled in or out hold
+  nothing of this game (D275).* **Still open in M0:** the tone-chat export (his to do), Pluto's terminology
+  list, Rhea's board redesign, and Makemake's history research on Texas, Deseret and the Great Lakes, which
+  runs alongside every milestone. The contracts pass waits for the terminology list. **The road, task by task, is `docs/technical/ROAD-TASKS.md`** (Rhea's;
   draft until Aaron reviews it): a task starts once what it waits for is done, not when its milestone's
   turn comes (D272). **The alpha's deadline is 31 March 2027, stretch goal 31 December 2026** (D271).
   Rhea and Pluto are hired; their role files are in `.claude/agents/`.

@@ -377,3 +377,28 @@ Add one with `/rule` whenever a mistake earns it. Number them; never delete one.
     user record. **What generalises:** a record's `type` says what the harness called it, not who wrote
     it. **Before extracting anyone's words from a log, test the method on a log whose true answer you
     already know** — today's session, eleven messages — and check the count and the text.
+
+26. **A message sent with an image has no text in the queued record — its words survive only in the user
+    record, as blocks rather than a plain string.** Cost: caught by Pluto while saving Aaron's words on
+    25 September, one day after rule 25 fixed the two neighbouring traps in the same place. The queued
+    record's `content` is `null` when a screenshot rides along; a method that takes "queue records, plus
+    user records whose content is plain text" therefore drops the message from **both** paths and loses it
+    silently. Six of his messages were affected, including *"This is what happened"* and *"What is the best
+    way to respond to this"* — short messages whose meaning lives entirely in the picture beside them, which
+    is exactly when a person is least likely to notice one missing. Take the text blocks from human-origin
+    list records too, and mark them as sent with a screenshot. **What generalises: rule 25 said a record's
+    `type` says what the harness called it, not who wrote it. This is the next layer — the SHAPE of a
+    record is not stable either, and "plain text only" is a filter that quietly discards the awkward cases.
+    When a filter is about to exclude something, count what it excludes and look at a sample, every time.**
+
+27. **Hand Aaron a command in the shell he is actually standing in, and never chain it with a separator
+    that only one shell understands.** Cost: about ten minutes and a wasted round trip on 25 September, at
+    the worst moment — his own words had been extracted and verified but were not yet backed up, and the
+    push was the only thing between them and a folder that deletes itself. The command was written with
+    POSIX `;` separators; he pasted it into Windows Command Prompt, which does not take `;` as a separator,
+    so it fed the rest of the line to `git add` as arguments and failed on the first step. **The fix that
+    works everywhere: chain with `&&` only — it means the same thing in Command Prompt, PowerShell and
+    bash.** He is not a programmer and will not debug a shell error; he pastes what he is given and reports
+    what it prints. **What generalises: a command handed to someone else is not finished when it is correct
+    on your machine — it is finished when it is correct in the window they will run it in. Ask which window
+    that is, or write it so the question does not arise.**

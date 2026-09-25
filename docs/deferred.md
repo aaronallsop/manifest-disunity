@@ -767,3 +767,49 @@ says to commit its log or stop a preview server, so a resumed run could stop in 
 to answer. **Deferred:** it bites only when an overnight chain runs, and the fix is a line in Aaron's
 standing-permission document: an overnight chain counts as one session; each wind-down commits and pushes
 everything and stops anything on port 8000; the chain signs off and is archived once, after its last run.
+
+## 56 — Saving Aaron's words cannot be pushed by a session; Aaron has to run the push himself
+
+**Hit on 25 September 2026, doing exactly that, and it stopped the work at the worst point.** The 33 files
+of his own words were written and verified, and the commit-and-push was **refused by this machine's safety
+check** with the reason *Sensitive-Source Provenance*: the content came out of session transcripts, and the
+check will not let a session put transcript material onto GitHub. It cannot see that the repository is
+Aaron's own private one and that the words are his own, from his own machine. **The refusal then widened —
+even a read-only `git status` in that folder was refused** — so the session could not tell whether its own
+commit had landed. *Cleared only by Aaron running the command himself; git worked normally again
+afterwards, so the block attaches to the operation that carries the material, not to the folder.*
+
+**What the next session must expect.** *Anything that saves his words — the tone-chat export, a fresh copy
+of a session at sign-off, a second machine's logs — will be written and verified fine and then **fail to
+back itself up**. Plan for it: do the extraction, check it, then hand Aaron **one complete command, chained
+with `&&` only** (programmer rule 27), and treat the work as unfinished until he reports what it printed.
+**Never tell him it is backed up on the strength of having written the files.***
+
+**Deferred:** *the check is the machine's, not this project's, and turning it off is neither the studio's
+call nor obviously wise — it is doing roughly the right thing for the wrong repository. The workaround
+costs one message and works every time. If it becomes frequent, the question for Aaron is whether to add a
+standing permission for this one folder, which is his to weigh, not the studio's.*
+
+## 57 — A decision Aaron makes by PICKING AN OPTION leaves no trace in the word record
+
+**Found on 25 September 2026 while re-copying this session at sign-off, and it is the sharper half of a
+day spent saving his words.** The record in `docs/design/aaron-words/` holds every message he **typed or
+dictated**. When he answers by choosing one of the options a session puts in front of him, **nothing of his
+is written to the log at all** — the choice comes back as a tool result, which is the studio's text, not
+his. *Measured here: this session's file holds **three** entries — one typed command and two pastes — yet he
+settled **three questions** in it, and **D274 and D275 both rest entirely on choices that the word record
+cannot show.*** The rule that studio wording is never quoted as his (D260) is what keeps this honest, and
+both entries say in terms that the wording was the studio's and only the choice was his. **But a later
+session reading only his words would not know he had answered at all.**
+
+**Why it matters more from here, not less.** *The board redesign is deliberately moving him further this
+way — cards at the top of the board and a `/go` command (D269) — so the share of his decisions that are
+clicks rather than sentences is about to rise. **The word record was built to be the place his intent
+survives; it is about to stop being that**, quietly, while still looking complete.*
+
+**Deferred, and it is a question for him, not a defect to fix quietly.** *Three candidates, none chosen:
+write the option he picked into the word record as a studio-attributed entry beside his messages; keep
+clicks out of the word record and rely on `DECISIONS.md` alone, saying so plainly at the top of the index;
+or put the question back in his hands by asking the ones that matter in prose so he answers in his own
+words. **The third is the only one that produces more of his words rather than better bookkeeping about
+their absence**, and it costs him time, which is his to spend.*

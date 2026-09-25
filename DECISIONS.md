@@ -6993,3 +6993,46 @@ Pluto extracts his messages from the export.*
 
 **Taken as the studio's default, stated to him:** *M0 closes only after the Terra session is done, as
 Rhea's draft already has it — the job is short and the road puts it in M0.*
+
+### D274 — The six off-project sessions stay in the word record, labelled, 25 September 2026
+
+**Observed.** *Saving Aaron's words from Terra (D266, D273) found 33 sessions, 3 July to 25 September.
+**Six of them are not this game** — four Resume Engine, one the Premiere/Final Cut logging tool that became
+editing-apps, one After Effects templates — held in this project's working folder while he was working on
+something else. 138 of the 584 messages. He noticed the mix-up himself at the time; his own words on
+24 August: "Nation States was the folder I created for my nation states game. Is there a way we can put it
+in a different folder". Nothing ever moved the logs, so **this project's log folder is the only surviving
+copy of those words on either machine.***
+
+**Decided — Aaron, 25 September, choosing between four options the studio put to him:** *the six stay where
+they are, each labelled in its own file and in the index as not the game.* **The wording of the options was
+the studio's; what is his is the choice.** *Recorded that way under the rule that studio wording is never
+quoted as his.*
+
+**Rejected:** *moving them to the Resume Engine and editing-apps projects — those have no word record yet, so
+it would have started one, which is work he had not asked for; parking them outside the design folder; and
+deleting them, which the studio advised against and would have been unrecoverable once the logs age out.*
+
+**Cost of the choice, stated plainly:** *six files in a folder about the game are not about the game. The
+index says so in its own section and every one of the six says so in its first line, so no reader can be
+misled. **Nothing in those six files is game design and none of it may be quoted as design input.***
+
+### D275 — The two unresolved log folders were checked; none of the seven sessions is this game, 25 September 2026
+
+**Observed.** *Two log folders could not be ruled in or out by the test the task set — include a session
+whose recorded working folder is this project. `C--Users-aaron` (six sessions, 27 August to 6 September) and
+`C--Users-aaron--claude-code-programs` (one, 7 September) record a parent folder instead. Both fall in this
+project's busiest stretch, and **a session opened from the wrong place would look exactly like this**, so the
+rule alone could not settle it. A first attempt to look inside was refused by this machine's safety check.*
+
+**Decided — Aaron, 25 September, choosing between three options the studio put to him:** *check them.* **His
+instruction cleared the refusal.**
+
+**The result, measured rather than argued.** *Four of the six in the home folder are automated daily reports
+with **no message of his at all**. One is him on 27 August pointing a session at the resume program. One is
+him on 3 September asking where session history is stored. The seventh is him on 7 September building the
+project template system that every project's standing rules now come from — real words, but they belong to
+the shared rules repository, not here. **24 messages across the seven, none of them this project's.***
+
+**So the rule the task set was right, and it is now confirmed rather than assumed.** *Nothing was saved from
+either folder. **This closes the question; it does not need asking again** unless a new folder appears.*
