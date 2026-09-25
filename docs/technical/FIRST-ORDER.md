@@ -47,6 +47,18 @@ admission test, answered.*
 | **Carries with it** | **`MAX_DISTANCE` = 2√3 ≈ 3.4641** (D250) — *and the rule that comes with it, below* |
 | **State** | Designed and ruled. **Not built.** `LEDGER.md` §1 marks it the largest single delta in the project |
 
+### F14 · Decide what the thing at a corner of the political board IS, before the contracts name it
+
+| | |
+|---|---|
+| **What** | **Politics ruling 40 and `GDD.md` §15.1 flatly disagree.** Ruling 40 (11 Sep): an **ideology** is a fixed place on the board, a **party** is an organisation that **can move across** it. The GDD (15 Sep): *"The eight corners of that cube are parties"*, and *"The corners are occupied by parties and by governments"*. **A party cannot be both a fixed corner and a thing that moves.** Aaron's own latest word, *"three axes and ten positions"* (D231), uses neither disputed word. `deferred.md` 58 |
+| **Blocks** | **The contracts pass (M3)**, which has to write down what every system hands every other and cannot name this object until it is one thing; **the politics build (M6)**; the re-map of the 26 movements onto the ten positions; and **the price of *change course***, which `identity-design.md` sets by how far a party moves |
+| **Why redone** | **It is an object-model question wearing a vocabulary question's clothes.** A fixed label and a movable per-nation organisation are different shapes with different owners and different lifetimes. Write the contracts against one and rule for the other, and the contracts, the save format and every formula that reads political distance are rewritten, not renamed |
+| **Rides on** | **F1.** F1 converts the board from six ideologies on two axes to ten positions on three; F14 is *what occupies a position* once it has. **F1 cannot be specified without it** |
+| **State** | **Aaron's to answer, and it is question Q3 on the terminology list** — he asked it himself on 9 September and it never came back to him. Not settled by the studio |
+
+---
+
 ### F2 · Declare, per threshold, which population it is tuned against
 
 | | |
@@ -168,7 +180,7 @@ top of them.*
 
 ## 8. What is NOT in here, and why that matters
 
-**The register is short on purpose.** *Thirteen items out of a ledger of nineteen system deltas, thirty
+**The register is short on purpose.** *Fourteen items out of a ledger of nineteen system deltas, thirty
 -nine filed faults and three hundred open design items.* **Everything else failed the admission test:
 it can be built in any order without being redone.**
 

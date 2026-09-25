@@ -813,3 +813,52 @@ clicks out of the word record and rely on `DECISIONS.md` alone, saying so plainl
 or put the question back in his hands by asking the ones that matter in prose so he answers in his own
 words. **The third is the only one that produces more of his words rather than better bookkeeping about
 their absence**, and it costs him time, which is his to spend.*
+
+## 58 — The game design document and politics ruling 40 disagree about what sits at a corner of the political board
+
+**Found 25 September 2026 while building the terminology list, and checked from both sides.** Politics
+ruling 40 (11 September) sets three words apart: an **ideology** is a fixed place on the board, a **party**
+is a political organisation that **can move across** that board, a **movement** is a want carried through a
+position. The wiki page states it as settled — *"The vocabulary is strict."* Four days later `GDD.md` §15.1
+(15 September, written up from D231) says the opposite: *"The eight corners of that cube are parties, each
+named for a real one"*, and again at §15.1, *"The corners are occupied by **parties** and by **governments**,
+not by **movements**."* **A party cannot be both a fixed corner and a thing that moves across the board.**
+
+**This is not only a naming clash, which is why it is also `FIRST-ORDER.md` F14.** Whether the thing at a
+corner is a fixed label or a movable per-nation organisation decides the shape of the object the contracts
+pass must write down (M3) and the politics build must carry (M6). `identity-design.md` prices *change course*
+by how far a party moves — which has no meaning if a party IS a fixed corner.
+
+**Aaron's own latest word is "three axes and ten positions" (D231), which uses neither disputed word for the
+corner.** He also asked this himself on 9 September and it never came back to him: *"we should also nail down
+vocbulary [sic]. Should this be a political party or ideology? I feel like ideology is a term already in use
+but it doesn't make sense that one political part [sic] is now reperesented [sic] in indivual [sic] nations."*
+
+**Deferred to him, not settled by the studio:** it is question Q3 on the terminology list, and the walk
+through that list is the next task. **Do not build on either reading until he has answered.**
+
+## 59 — The studio's six functions have THREE sets of names, not two, and defect 52 undercounts
+
+**Found 25 September 2026 while building the terminology list.** Defect 52 records two sets. There is a
+third, inside `STUDIO-ROSTER.md` itself: its section headings read *Running it · Capturing intent · Design ·
+Research · Building* — **five headings for six functions**, with Checking filed under Building — against its
+own Function column (*Running it · Capturing his intent · Defining it · Finding out · Making it · Checking
+it*) and against `CLAUDE.md`'s *Running · Intent · Design · Research · Build · Checking*. A seventh function,
+Marketing, is named in the roster and appears in none of the three sets (terminology list gap G5).
+
+**Deferred with 52, to the same place:** it is question Q7 on the terminology list. **52 is not wrong, it is
+short — read the two together.**
+
+## 60 — Two different rulings are both called "ruling 40"
+
+**Found 25 September 2026 while building the terminology list.** `politics-ideation.md` cites *"Round 1's
+ruling 40"* for a finding about movement verbs and adjectives (*"Every movement has a verb… and an
+adjective"*), and elsewhere in the same file cites **ruling 40** for the ideology/party/movement vocabulary.
+They are different rulings with the same number, told apart only by the words "Round 1's" when someone
+remembers to write them. Rulings appear to be numbered per round, so this is a collision by design rather
+than a typo, and the design rounds are closed — so the numbers cannot be re-issued.
+
+**Deferred:** low harm today, real harm the first time a technical document cites "ruling 40" without saying
+which. It belongs with the project's other numbering collisions (terminology list Q8, which records that
+three step-numbering systems disagree and one is off by one). **The cheap fix is a citation rule — always
+name the round — not a renumbering.**
