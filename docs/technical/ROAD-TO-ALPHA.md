@@ -20,6 +20,7 @@ Keep the approved plan's foundations: the design documents, the technical design
 ## 3. The road
 
 Twelve milestones, M0 to M11. They are done in order, one piece of work at a time. Two things run alongside: the screenings, because testers play on their own time, and the history research, which starts at M0 and runs through every milestone after it.
+*⚠ 25 September 2026 (D272): superseded in part by Aaron's word. A task from a later milestone may start as soon as everything it waits for is done. Milestones still set the order of results, and each one closes with its close-out. "One piece of work at a time" still stands, one per session.*
 
 **M0 — One road, one set of words** *(paper; already planned)*
 - **Makes:** Pluto's terminology list. Rhea's redesigned Control Board, which draws this road in place of the seven-step rail and marks every milestone, every screening and every place you decide. One numbering, M0–M11, with the old labels mapped across once. *Already done when you adopted it:* the road is recorded as a decision and the older lines it replaces carry dated superseded notes, in the technical plan and the GDD's §9; nothing was deleted (D264).

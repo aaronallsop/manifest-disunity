@@ -1,5 +1,5 @@
 {
-  "about": "Every message Aaron typed or dictated in the 25 September 2026 session on Luna (the MacBook), copied verbatim from the session log. Source for checking anything quoted as his.",
+  "about": "Every message Aaron typed or dictated in the 25 September 2026 session on Luna (the MacBook), copied verbatim from the session log. Messages sent while Claude was working are taken from the log's queue records and marked. Source for checking anything quoted as his.",
   "messages": [
     {
       "at": "2026-09-25T16:04:44.873Z",
@@ -16,6 +16,27 @@
     {
       "at": "2026-09-25T18:15:20.400Z",
       "text": "Go ahead"
+    },
+    {
+      "at": "2026-09-25T18:27:36.852Z",
+      "text": "that sounds great. She is working on the control board. Who would be in charge of scheduling and putting together the smaller tasks for M0 and M1? Is that her you or someone else?"
+    },
+    {
+      "at": "2026-09-25T18:28:12.235Z",
+      "text": "That sounds great. You mentioned something earlier about Pluto and the interviews that I have done previously. What was that?"
+    },
+    {
+      "at": "2026-09-25T18:33:45.647Z",
+      "text": "1. As an expereinced game lead yourself and knowing the capabilities of claude models and the outline - what would you guess would be:\n   1. An aggressive but still realistic deadline for the alpha\n   2. A normal time for an alpha\n   3. A conservative deadline where this is something I am working on a few times a week for a few minutes a day"
+    },
+    {
+      "at": "2026-09-25T18:36:01.340Z",
+      "text": "Let's pick um, March 31st, 2027 as the deadline. But I like your idea of a stretch goal of having December 31st as the stretch goal."
+    },
+    {
+      "at": "2026-09-25T18:37:38.419Z",
+      "text": "Yes, they should both be saved, but you need that for my PC. Is that correct?",
+      "note": "sent mid-turn; taken from the session log's queue record"
     }
   ]
 }

@@ -6801,6 +6801,8 @@ the studio said it "could be exported the same way if you'd like it kept too", a
 does not say whether it covers that part; ask him. **And a snapshot is not a decision entry:** three
 answers in it, from 15 September, had none until D267.*
 
+*⚠ 25 September 2026 (D273): the tone chat is answered — both are saved.*
+
 ### D267 — Three board answers from 15 September that never reached this log, 24 September 2026
 
 **Observed.** *Tonight's snapshot of the Control Board's answers (D266) holds three that Aaron left on
@@ -6942,3 +6944,52 @@ each compete with the board, the handoffs and the master rules file. *Adobe* **w
 **Rejected:** *the architecture-record, roadmap, sprint, spec and stakeholder tools* — **each duplicates the
 decision log, the road, the technical documents or the board in another shape; the brainstorm tool ranks
 and recommends, which a design document may not.**
+
+### D271 — The alpha's deadline: 31 March 2027, with a stretch goal of 31 December 2026, 25 September 2026
+
+**Observed.** *Asked for three guesses, the studio gave, as estimates resting on Rhea's draft sizes (about
+90–185 sessions, `docs/technical/ROAD-TASKS.md` §6): aggressive, end of January 2027; normal, end of April
+2027; conservative, early 2028. It recommended the end of April as the deadline and January as a stretch,
+checked again at M1's close.*
+
+**Decided — Aaron, 25 September:** "Let's pick March 31st, 2027 as the deadline. But I like your idea of a
+stretch goal of having December 31st as the stretch goal." *(Verbatim, "um," out.)* **The dates are his;
+"stretch goal" was the studio's idea, which he took.**
+
+**What the date means — the studio's default, taken and stated to him:** *the alpha candidate is finished
+and ready for strangers — M10 done, the alpha test (M11) starting — by that date.* **Flagged to him once, as
+information:** *31 March sits between the aggressive and normal guesses, and 31 December is a month inside
+the aggressive one; both assume a pace near the top of what has been measured and a firm cut at M4.* **The
+date is checked against measured pace at M1's close** (Rhea's schedule, step 3 of D269).
+
+### D272 — Work goes ahead when it is free, not when its milestone's turn comes; the road's "done in order" superseded, 25 September 2026
+
+**Observed.** *The road (D264, §3) says the milestones "are done in order, one piece of work at a time". On
+25 September Aaron said:* "maybe I'm still working on something in milestones Stone [sic] X, but that
+doesn't mean that we can't have any of the game designers working on miles [sic] something in milestone Y or
+Z." *He then said "Go ahead" to the studio's plan that a task shows as soon as what it waits for is done
+(D269). Rhea's draft found the conflict and asked (her open question 2); the studio flagged it to him once
+and said it would mark the road's line superseded unless he said otherwise. He did not.*
+
+**Decided:** *milestones still set the order of results, and each closes with its close-out; but a task
+from a later milestone may start as soon as everything it waits for is done — for example the M1 repairs
+before M0 closes.* **"One piece of work at a time" stands, per session (one live session, D263).** *The
+road's line keeps its words and gains a dated note.*
+
+**Rejected:** *holding every M1 repair until M0 closes* — **it would leave the freeze waiting on a word list
+it does not need.**
+
+### D273 — The tone interview's chat is saved too, 25 September 2026
+
+**Observed.** *D266 left open whether the tone interview, held in Aaron's Claude chat rather than a Claude
+Code session, is saved with his other words. Asked again on 25 September, alongside whether M0 should wait
+to close for the session on Terra.*
+
+**Decided — Aaron, 25 September:** "Yes, they should both be saved, but you need that for my PC. Is that
+correct?" *Both his design-session messages and the tone interview are saved word for word, his messages
+only.* **Where each runs, as the studio told him:** *the design-session logs exist only on Terra, so that
+part must run there; the tone chat lives in his Claude account, so he exports it from either computer and
+Pluto extracts his messages from the export.*
+
+**Taken as the studio's default, stated to him:** *M0 closes only after the Terra session is done, as
+Rhea's draft already has it — the job is short and the road puts it in M0.*

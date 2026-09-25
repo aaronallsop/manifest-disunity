@@ -5,7 +5,8 @@
 
 **Status: DRAFT for Aaron's review. Not approved.** Written by Rhea (Producer), 25 September 2026. This is
 step 1 of the three-step board redesign. Aaron asked to "take this like a step at a time"; step 2 is the
-cards and the `/go` command, and step 3 is the schedule and the deadline.
+cards and the `/go` command, and step 3 is the schedule and the deadline. *⚠ 25 September 2026 (D271): the
+deadline is set, so step 3 is now the schedule alone.*
 
 **What this file is.** The road says what each milestone makes. This file breaks the road into tasks, each
 small enough for one session. The work now under way (M0 and M1) is planned in full, and M2 to M11 in
@@ -58,8 +59,8 @@ alpha, where you are on it, and what is waiting on you. The words you use each m
 | `task-list` | Write this task list | You start it | Rhea | nothing | You have a draft that breaks M0 and M1 into tasks, outlines the rest and gives rough sizes | 1 session, **running now** |
 | `review-tasks` | Read this list and say what to change | You do it | Aaron; Rhea answers | `task-list` | You have approved the list, with or without changes | One read and a short talk. Your reading time has never been measured |
 | `cards` | Put task cards at the top of the board, and make `/go` work | You start it | Rhea designs; Saturn builds the command and publishes | `review-tasks` | The board opens on cards for the free tasks in plain words, split into "you start it" and "you do it". Typing `/go` and a name opens that task. The road marks every screening and every place you decide, with the old step names mapped across once. It is built for your computer screen first | 1 session, could be 2 [b]. *It starts by asking you what on today's board you use and what you skip. The 24 Sep handoff asked for that interview, and on 25 Sep it was only partly asked* |
-| `deadline` | Set a date for the alpha | You do it | Aaron | `review-tasks` | You have named a date, or said you want more measured sizes first | One answer on the board |
-| `schedule` | Show the schedule: the date, each step's size, ahead or behind | You start it | Rhea; Mars checks the figures | `deadline`, `cards` | The board shows your date, each milestone's expected size and whether the work is ahead or behind, with every figure labelled measured or estimated | 1 session [b] |
+| `deadline` | Set a date for the alpha | You do it | Aaron | `review-tasks` | You have named a date, or said you want more measured sizes first | One answer on the board. **✅ Done 25 September 2026 (D271): 31 March 2027, with a stretch goal of 31 December 2026. The date means the alpha candidate is finished and ready for strangers: M10 done, M11 starting** |
+| `schedule` | Show the schedule: the date, each step's size, ahead or behind | You start it | Rhea; Mars checks the figures | `cards` *(⚠ 25 Sep 2026, D271: it no longer waits on `deadline`, which is done)* | The board shows your date, each milestone's expected size and whether the work is ahead or behind, with every figure labelled measured or estimated | 1 session [b] |
 | `board-check` | Check the new board for stale figures and jargon | You start it | Mars | `cards`, `word-talk` | Every figure on the board traces to a record, and every word on it is the word list's word | Up to 1 session [a] |
 | `road-check` | Check the road against your brief | You start it | Jupiter | nothing | Every place where the road does not fit your brief has reached you as a proposed correction, or Jupiter reports that there are none | 1 session [a] |
 | `road-fixes` ◇ | Answer Jupiter's corrections to the road | You do it | Aaron | `road-check`, only if it finds any | Each correction is accepted or turned down, and recorded as a decision | One board answer per correction |
@@ -74,10 +75,12 @@ alpha, where you are on it, and what is waiting on you. The words you use each m
 *Nothing reaches a player from the history work until Eureka has checked it and Deimos has read it (road,
 M0). That happens at M7 and M9, not here.* *`schedule` and `deadline` do not hold up M0's close, because the
 road's test for M0 does not need them (open question 4). The history tasks do not hold it up either,
-because the road has them running alongside every milestone.*
+because the road has them running alongside every milestone.* *⚠ 25 September 2026 (D271): `deadline` is
+done.*
 
 **M0, total:** 11 studio sessions (1 running now, 10 to go), up to about 13 if two tasks overrun. **Your
 part:** one read, one date, one conversation session, and any answers to corrections. *All estimates.*
+*⚠ 25 September 2026 (D271): the date is given.*
 
 ---
 
@@ -138,8 +141,9 @@ fix takes two. *Estimates. The road's own risk list says the freeze could take "
 2. `terminology`: Pluto builds the word list. *The contracts pass waits for it.*
 3. `my-words`: Pluto saves your words from the design sessions. **Only on Terra, the PC.**
 4. `history-texas`, `history-deseret`, `history-lakes`: Makemake's first passes.
-5. *Free by what they wait for, but the road puts M1 after M0 (open question 2):* `freeze-hunt`,
-   `test-files`, `test-route`, `invasion`, `homeland`, `army-dials`.
+5. `freeze-hunt` first, then `test-files`, `test-route`, `invasion`, `homeland` and `army-dials`: the M1
+   repairs. *⚠ 25 September 2026 (D272): a task starts once everything it waits for is done, so the M1
+   repairs no longer wait for M0 to close. The draft's earlier caveat is gone.*
 
 **You do it**
 1. `review-tasks`: free as soon as this draft reaches you.
@@ -201,6 +205,8 @@ sessions still to run. At 3 to 9 a week that is **about 2½ to 7 weeks** *(estim
 section 8's ranges, comes to **about 90 to 185 sessions, or roughly 10 to 62 weeks**, plus the testers' own
 time at five screenings *(estimate, and too wide to set a date on by itself)*. It narrows at each close-out,
 as measured sessions replace guesses. That is the evidence step 3 and your deadline will start from.
+*⚠ 25 September 2026 (D271): the deadline is set. The schedule step (`schedule`) will compare these sizes with
+31 March 2027 (the deadline) and 31 December 2026 (the stretch goal).*
 
 ---
 
@@ -240,7 +246,8 @@ as measured sessions replace guesses. That is the evidence step 3 and your deadl
    the second proposed rule in open question 6. (c) The road says milestones run in order, with M3 after M1
    and alongside M2. Your 25 September words are that working on one milestone "doesn't mean that we can't
    have any of the game designers working on" a later one. So `contracts` shows as free, listed after the M1
-   repairs, until you rule on open question 2.
+   repairs, until you rule on open question 2. *⚠ 25 September 2026 (D272): ruled. `contracts` goes ahead
+   once it is free.*
 3. If `cards`, `board-check`, `road-check` and `my-words` are also done, `m0-close` becomes free. **If
    `my-words` is not done, M0 cannot close until someone is at the PC** (open question 3).
 4. **New cards:** "you start it": `how-to-play`, `questions`, `board-check`, `contracts` (and `m0-close` if
@@ -311,17 +318,24 @@ plus the testers' time. **Wide because** fresh testers are scarce.
 
 ## 9. Open questions (Aaron's to decide)
 
-*For now: 1 to 3. The rest can wait for the review.*
+*For now: 1 to 3. The rest can wait for the review.* *⚠ 25 September 2026: questions 1 and 2 are answered
+(D271, D272).*
 
 1. **The deadline.** When do you want the alpha out? *Step 3. The sizes above are what it starts from.*
+   **✅ Answered 25 September 2026 (D271):** 31 March 2027, with a stretch goal of 31 December 2026. It means
+   the alpha candidate is finished and ready for strangers (M10 done, M11 starting).
 2. **Can a later milestone's task start before the earlier milestone closes?** The road says milestones are
    "done in order". On 25 September you said being on one milestone "doesn't mean that we can't have any of
    the game designers working on" a later one. *This draft marks the M1 repairs and the contracts pass as
    free but lists them after M0. If you mean tasks to go ahead whenever they are free, this replaces the
    road's "in order", and Saturn marks that line.*
+   **✅ Answered 25 September 2026 (D272):** a task from a later milestone may start as soon as everything it
+   waits for is done. Milestones still set the order of results and each closes with its close-out. "One
+   piece of work at a time" stands, one per session. The road's line has a dated note.
 3. **Does M0 wait for the PC session** (`my-words`)? The road puts it in M0, and it can only run on Terra.
 4. **Do the schedule and the deadline hold up M0's close?** *Draft: no, because the road's test for M0 does
-   not need them.*
+   not need them.* *⚠ 25 September 2026 (D271): the deadline is done, so this now asks about the schedule
+   only.*
 5. **May two small repairs share one session?** The rule is one piece of work per session. Three of M1's
    repairs look well under a session each. *Proposed, not in the road; it would save about two or three
    sessions.*
