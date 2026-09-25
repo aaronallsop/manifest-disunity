@@ -1,0 +1,53 @@
+{
+  "about": "Every message Aaron typed or dictated in this session on Terra (the PC), copied verbatim from its log on 25 September 2026. Only his words. Taken from both places the log keeps them - the queued record of every message he sends and the plain user records - each message kept once at its earliest time. Messages he sent while Claude was still working sit in time order with the rest and are not marked apart, because a queued record alone does not show that. System text, tool output, skill instructions, task notifications, cross-session messages, compaction summaries and anything the studio wrote are excluded, as are the helper agents' logs beside this one. WARNING: this session's working folder was this project's, but its subject is After Effects motion-graphics template expressions, not the game. It is saved here because these are his words and this is the only log folder that holds them.",
+  "session": "3b4190a4-e9b7-4c0f-be2c-2eefb9abe4e1",
+  "title": "Text anchor point positioning",
+  "messages": [
+    {
+      "at": "2026-07-23T16:12:10.413Z",
+      "text": "I am crafting mogrts in after effects and to start out I need the anchor point of the text to always be set to the left bottom corner of the text no matter the length of the text"
+    },
+    {
+      "at": "2026-07-23T16:16:16.232Z",
+      "text": "Going forward know that I understand how expressions work and know how to write expressions so you don't need to explain them to me. I am having you write them for me becuase it is faster than me writing them.\n\nThe next thing is that I am creating a shape layer (rectangle) and I want the shape layer to be the same size of the text layer (thisComp.layer(\"replace this text\")) along with room for padding mapped to (effect(\"Slider Control\")(\"Slider\"))."
+    },
+    {
+      "at": "2026-07-23T16:18:20.686Z",
+      "text": "Lets worry about position later. The next thing we need to do is create the anchor point to also be in the lower left corner"
+    },
+    {
+      "at": "2026-07-23T16:19:55.391Z",
+      "text": "That isn't it. It needs to be mapped to the size of the rectangle"
+    },
+    {
+      "at": "2026-07-23T16:20:53.006Z",
+      "text": "it needs to use this content(\"Rectangle Path 1\").size"
+    },
+    {
+      "at": "2026-07-23T16:21:22.449Z",
+      "text": "This is what happened",
+      "note": "sent with a screenshot"
+    },
+    {
+      "at": "2026-07-23T16:22:46.045Z",
+      "text": "rect = content(\"Rectangle Path 1\");\n[rect.position[0] - rect.size[0]/2, rect.position[1] + rect.size[1]/2]"
+    },
+    {
+      "at": "2026-07-23T16:27:53.954Z",
+      "text": "I figured out the problem. \n\nThis is the size\n\npad = effect(\"Slider Control\")(\"Slider\");\nt = thisComp.layer(\"replace this text\");\nr = t.sourceRectAtTime();\np1 = fromComp(t.toComp([r.left, r.top]));\np2 = fromComp(t.toComp([r.left + r.width, r.top + r.height]));\n[Math.abs(p2[0]-p1[0]) + pad*2, Math.abs(p2[1]-p1[1]) + pad*2]\n\nWhen I did this expression in the anchor point\n\nx = content(\"Rectangle Path 1\").size[0];\ny = content(\"Rectangle Path 1\").size[1];\n[x/-2,y/2]\n\nIt is referecing the size of the rectangle not in the expression. When I mute the expression on the size the anchor point expression works but when I turn the size expression back on it is still referencing the data in the original unexpression data."
+    },
+    {
+      "at": "2026-07-23T16:28:37.034Z",
+      "text": "That still did the same thing"
+    },
+    {
+      "at": "2026-07-23T16:49:55.814Z",
+      "text": "What is happening here. For a few frames the position of the second text and shape layer move down but their bounding boxes are staying where it should be",
+      "note": "sent with a screenshot"
+    },
+    {
+      "at": "2026-07-23T16:56:30.552Z",
+      "text": "I need this expression thisComp.layer(\"Shape Layer 1\").content(\"Rectangle Path 1\").size[1] but with source rect at time for the proper size"
+    }
+  ]
+}

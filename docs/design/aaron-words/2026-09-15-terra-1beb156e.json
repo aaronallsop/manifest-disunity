@@ -1,0 +1,177 @@
+{
+  "about": "Every message Aaron typed or dictated in this session on Terra (the PC), copied verbatim from its log on 25 September 2026. Only his words. Taken from both places the log keeps them - the queued record of every message he sends and the plain user records - each message kept once at its earliest time. Messages he sent while Claude was still working sit in time order with the rest and are not marked apart, because a queued record alone does not show that. System text, tool output, skill instructions, task notifications, cross-session messages, compaction summaries and anything the studio wrote are excluded, as are the helper agents' logs beside this one.",
+  "session": "1beb156e-e45d-4f1e-ae5f-f0c38f13fad0",
+  "title": "Manifest Disunity Game Design Document",
+  "messages": [
+    {
+      "at": "2026-09-15T03:25:43.308Z",
+      "text": "# Role\n\nYou are acting as the Game Designer on Manifest Disunity.\n\nYou are not a programmer and not a technical designer. Your job is\norganization, articulation, and translation — not invention. You take\ndesign work that already exists, much of it scattered or implicit, and\nassemble it into a professional Game Design Document that the next\nperson downstream can actually work from.\n\nTwo rules govern everything you do here:\n\n1. **Do not invent mechanics.** If the design work doesn't specify\n   something, that's a gap. Name it as a gap. Don't fill it with a\n   plausible-sounding answer — a design doc that quietly invents is worse\n   than one with holes in it, because the holes are at least visible.\n2. **Do not resolve open design questions.** Where something is\n   ambiguous, contested, or explicitly undecided, surface it as an open\n   question for me to decide. That call is mine, not yours.\n\n# Context: where this sits in the process\n\nOur phase order is now:\n\n**Game Design (GDD) → Technical Design (TDD) → Production / build order\n→ Implementation.**\n\nThis GDD is the deliverable that closes out the design phase. Its\nspecific downstream reader is a **Technical Designer**, who will take it\none system at a time and write a Technical Design Document: actual\nformulas, pseudocode, inputs/outputs, and edge cases.\n\nThat reader is who you are organizing for. Every structural decision you\nmake — how you split the docs, what order sections go in, what each doc\ndeclares about its dependencies — should be made to serve a TDD pass\nthat works system-by-system without having to re-read everything each\ntime.\n\n# Source material\n\nRead everything in `docs/design/` and the root `DESIGN.md`.\n\n`DESIGN.md` is unusually precise for a design doc — it already contains\nreal formulas, named tunables, and measured numbers. **Preserve that\nprecision.** Where it states something exactly, carry it forward exactly.\nDo not summarize a formula into prose. Do not round a measured number or\ndrop the measurement that justifies it. The precision is the value.\n\nIf you find design decisions referenced but never fully specified\nanywhere in the repo, collect them rather than resolving them (see\n\"Gaps\" below).\n\n# Step 1: Orient before you propose\n\nBefore proposing any structure, read the source material and report back\nto me:\n\n- What systems you found, and which ones are specified deeply versus\n  thinly.\n- Which of the master-doc sections below are **already answered**\n  somewhere in the source material, which are **partially** answered, and\n  which are **absent entirely**. Be honest about the absent ones — I\n  expect several, particularly on the pitch layer.\n- Any place where two documents appear to disagree with each other.\n\n# Step 2: Propose the split, then stop\n\nPropose the full document structure:\n\n- Every file you intend to create (master + each satellite), with its\n  path.\n- A one-line purpose for each.\n- Its \"Depends on\" list.\n\nThen **stop and wait for my approval.** Do not write content into any\nfile until I've said go.\n\nFor the satellite split: use your own judgment as a designer about where\nthe real seams in this design are. `DESIGN.md`'s existing section breaks\nare a starting point, not an answer — if a different split serves a TDD\npass better, propose that instead and tell me why. Systems that are\ntightly coupled may belong together; a section that's doing two jobs may\nbelong apart.\n\n# The master document\n\nShort. This is the tip of the iceberg — high-level orientation plus\npointers to where the depth lives. If it starts restating what's in a\nsatellite, it's too long.\n\nSections (from the pitch template we're working from):\n\n- **Working title**\n- **Concept statement** — the game in one or two sentences.\n- **Target audience** — who this is actually for. \"Everyone\" is not an\n  answer.\n- **Player experience and POV** — who the player is, the setting, the\n  fantasy the game grants, the emotions it's going for, the major phases\n  of a playthrough.\n- **Unique Selling Points** — three or four. What makes this different\n  from every other grand strategy game. This has to answer \"why would\n  someone stop playing Paradox games and play this instead.\"\n- **Genre(s)**\n- **Visual / audio style**\n- **Platform(s) and primary technology**\n- **Schedule and scope** — including what is deliberately out of scope.\n- **Game world fiction** — the world as presented to the player, in\n  player-facing terms.\n- **Core loops** — how the player's actions and the game's systems form\n  loops, and why those loops are engaging. This is the \"one more turn\"\n  question: what pulls a player into the next turn, moment to moment.\n  Note the staggered timers already in the design (election schedules,\n  movement growth toward ceilings, pressure clocks, rate-limited power\n  stocks, cooldowns) and how they do or don't surface to the player.\n- **Objectives and progression** — short-term and long-term goals,\n  explicit and implicit, from first turn to endgame.\n- **Game systems** — the system map: what exists, which are internal\n  simulation and which the player directly interacts with, and how they\n  connect. This is the index into the satellites.\n- **Interactivity** — what kind of engagement each player action asks\n  for (perceptual, short-term cognitive, long-term cognitive, emotional,\n  social, cultural), and what the player is actually doing moment to\n  moment.\n\nAlso in the master document, because multiple satellites depend on them\nand nobody should have to guess which satellite owns a shared concept:\n\n- **Cross-cutting concepts** — the two-axis ideology model and the\n  affinity function, the Why record shape, the columnar state model, the\n  phase-ordering discipline, the plan/resolve contract, and anything else\n  you find that several systems rely on.\n\nSeveral of these sections — particularly concept statement, USPs, target\naudience, genre, player experience, and core loops — are likely **absent\nor only implicit** in the source material, which is systems-deep and\npitch-thin. Draft them from what the design actually is, mark each one\nclearly as a **draft for my review**, and don't present them as settled.\n\n# The satellite documents\n\nOne per system. Each contains:\n\n1. **Depends on** — a line at the top naming every other satellite (or\n   the master doc) whose concepts, state, or formulas this system relies\n   on. This is what lets someone working on one system know exactly what\n   else to pull in, and nothing more than that.\n2. **The system itself** — its mechanics, in whatever order best serves\n   someone about to turn it into formulas and pseudocode. Foundational\n   state and shared math legible first; dependent behavior after.\n   Carry forward every existing formula, tunable name, and measured\n   number for this system.\n3. **Open questions** — seeded with everything already flagged as\n   undecided or untested for this system (`DESIGN.md` §12 is an obvious\n   source, but look everywhere). It is fine if this section is short or\n   empty for some systems. It exists so that playtest findings have a\n   home to be filed into directly later, without a second pass through\n   every document.\n4. **Gaps** — anything referenced but never specified. Separate from\n   open questions: an open question is a decision I haven't made, a gap\n   is something that may already have been decided and simply isn't\n   written down anywhere.\n\n# Style\n\n- Write for a smart reader who hasn't seen this project before, but\n  don't pad. No filler, no restating a section's title as its first\n  sentence.\n- Prefer precision over polish. A formula stated exactly beats a\n  paragraph describing it well.\n- Where the source material gives a reason for a decision, keep the\n  reason. \"Why it is this way\" is the single most useful thing in a\n  design doc and the first thing lost in a rewrite.\n\n# Now begin\n\nStart with Step 1. Report what you found, then propose the split, then\nwait for me."
+    },
+    {
+      "at": "2026-09-15T03:42:06.300Z",
+      "text": "<!-- attach -->\n> Approval of the split — as proposed, or with changes.\n\n1. Approved\n2. Manifest Disunity is the new name, nation states was working title and was phased out due to conflict with another game of the same name.\n3. The control board needs to be updated with a new design phase and getting rid of the parts about the economy alpha. I think now what we need to add in is the next stage which is getting all of the different steps of the GDD done and then after that getting the TDD and then after that a build order done.\n4. You have permission to correct, edit, update, change the design.md doc.\n\n\nMy overall goal is that all of the information I made with the different sessions can be placed in here and then at the end of this we can take it to the TD to make the TDD.\n\nOne other question we need to answer before you start writing is about turn length. \n\nIn the build as it stands now you get like one action per turn. That was something that the programmer implemented when I let him go ham wild (not to be confused with hog wild) and it just kind of stuck around. I don't want the one action per turn model. Would that be something to figure out with the Game Designer or the Tech Designer?",
+      "note": "answer left on the Control Board; the line after the marker, beginning with >, quotes the studio's card and is not his"
+    },
+    {
+      "at": "2026-09-15T03:52:47.954Z",
+      "text": "Can we work on figure out the turn design before you do the rest of this? Like the ideation part and what you need for the GDD"
+    },
+    {
+      "at": "2026-09-15T04:15:19.395Z",
+      "text": "I think we need to ignore everything about how turn design is built in the current game and we need to come up with a brand new idea as if that had never been a thing.\n\nThe two games that I draw a lot of inspiration for this is EU4 and Civ2.\n\n\nCiv2 has great turn design structure so much so that \"just one more turn\" has become a meme. I feel like Civ2 is great because units all have different movement speeds and terrain impacts that, settlers and engineers take different times to do certain actions, and with multiple cities and units there are multiple things going on at one time.\n\nEU4 seems to take that idea and really amplify that. Because there are the mission goals you are working towards, then there are the smaller goals you are working towards working towards those, then when you have peace treaty you can still be doing things to improve your country with diplomacy, drilling armies, etc. \n\nSo I think the thing I learn from them is that a turn needs to have multiple things that you can do, but they should never be something that you can acomplish in one turn (in theory) and the kind of things that can be done in one turn should just be like eu4 where a pop window shows up and you just click on something and it resolves it.\n\nThe other thing to think about is that the choice the user makes is basically three parts:\n\n* reactive - something happens and they have to decide what to do, which should have the option to ignore it which will have a consequence to it. I did have an idea of using the cliche of a newspaper pop up window with some news of things happening and what the effects are and what your options are to fix it.\n* proactive - something that the player does to advance her goals in the game. \n* development of your country - something you can do to make your country stronger which may or may not interact with your goals explicitly. \n\n\nOne thing I like about EU4 that they do in order to balance user actions (which isn't a perfect parallel since it is real time not turn based) is the use of admin/diplo/military points to do actions and these actions are either:\n\n1. Research (which is necessary to progress in the game at all and the main way to use points)\n2. Reactive/fixing problems (boosting stability, losing diplo points for having too many relations, using military points to boost your legitamacy)\n3. Proactive (changing culture, improving cities, etc)\n4. Random events that pop up and make you consider is 50 admin points worth loosing the 300 duccats\n\n\nSo I like that EU4 is a real time game but still constrains you in each of these areas and it is one of those things you could have a really high military research level and crush your opponents and make a lot of money that way but you could also be so adfvanced in military that you are missing out on trade increases. So like all the systems work together to both make the other more powerful but also work in the opposite way. \n\nI feel like with military you should have one reaction and one action phase. Someone invades you need to send troops to the border (reactive) and active (make a counter assalut on their southern counties. \n\nWith trade I feel like there should be an unlimited ammount of trades you can make but they take another turn to be approved? \n\nThen diplomacy and other things I am not sure. \n\nI think the other thing that is missing in general is the actual goals of the game. That is what make EU4 so much fun - is the guided play of the goals that every time you play things are different. When you are playing as France sometimes the HRE is a huge pain in the ass but other times Spain allies England and you've got to fight them off first. \n\nSo I think along with turn design we need to make sure that the GDD has three missions to be built into the alpha that would interact with the different ways of playing the game.\n\nMy thoughts are that we would want one of them to be a texas nation (and they would all have the same mission tree), Deseret (because they are a sepratist movement already realized and because I live in Utah I can write a lot about that from a story perspective), and a great lakes nation like wisconsin or minnesota beacuse that could either be the farmers union/federation mechanic. \n\nThose are all of my thoughts - what do you think and what can we take from these to implement into turn and game mission/goals?"
+    },
+    {
+      "at": "2026-09-15T04:25:26.781Z",
+      "text": "I am going to say yes, but it is going to be very small and limited."
+    },
+    {
+      "at": "2026-09-15T04:27:34.786Z",
+      "text": "yes lets go with that"
+    },
+    {
+      "at": "2026-09-15T04:42:54.824Z",
+      "text": "I agree - I liked what you said about clocks. \n\nOne possible thing that I like is this idea of progress bars or clocks. Like you want to influence the sepratists movement in the state over - well it is going to cost 5 million dollars over 2 years so that cost would be broken up over that time and you can see where things are and the progress of it. \n\nAnd you in theory could spend more money to speed things up but with every action there is also a opposite reaction. \n\nSpend a lot of money trying to arm a sepratist movement in another state - well greater chance the other country finds out."
+    },
+    {
+      "at": "2026-09-15T04:45:05.574Z",
+      "text": "Yes they can do both and both will have positive and negatives"
+    },
+    {
+      "at": "2026-09-15T04:48:57.788Z",
+      "text": "Yes"
+    },
+    {
+      "at": "2026-09-15T04:52:22.977Z",
+      "text": "One thing before I answer that. \n\nI think I figure out how I want the turn system to work.\n\nYou can start as many things as possible you want in your turn, but most things don't resolve in one turn (there will be some exceptions). \n\nSo you pick all the things you want to do and it starts working on them and then you hit end turn and you get a news briefing (either a newspaper article like screen where you click on different things to see the status you want, or it is more like a presidential briefing of the status of everything, what countries said in response to what you asked (trade, diplomatic deals, etc)\n\nAnd agree with that reading"
+    },
+    {
+      "at": "2026-09-15T04:56:56.870Z",
+      "text": "There should be three sections the two you mentioned and a third one, but smaller about world affairs. This will be important because I want this to be where worldwide effects (like panama canal shuts down - trade impact to every nation is x% of something - this is just an example). The world wide section would also be a good area to build out the world diegetically."
+    },
+    {
+      "at": "2026-09-15T05:01:11.875Z",
+      "text": "The world markets will change yes but small."
+    },
+    {
+      "at": "2026-09-15T05:26:37.127Z",
+      "text": "The thing I like about the EU4 mission tree setup is:\n\n1. It gives you direction to play\n2. It gives you challenges to the play\n3. It gives the play a story\n4. It gives you bonuses if you accomplished them in order to keep the momentum up.\n\n\nWith that in mind here are some of the rough ideas for the Texas Missions:\n\n1. Become accepted on the world stage\n   1. Have one nation larger than you accept you as a soverign nation (once completed this gives you a small bonus to your trade)\n   2. Have over 50% of the nation recognize you as a soverign nation (once completed this gives you a bonus to your authority or influence or something - as an example)\n   3. Receive 100% nations (excluding other texas nations) recognize you (and in the game it would mean that if all countries accept you then you would be accepted worldwide so you would get a bonus from world trades)\n2. Claim Authority over the five cities of Texas\n   1. Own and control Houston (gets the spirit of Sam Houston Bonus - something that improves the ability to govern since Sam Houston was the 1st and 3rd president of Texas)\n   2.  Own and control San Antonio (get remember the Alamo Bonus -  increased difficulty in capturing your provences)\n   3. Own and control El Paso (gets the The Pass bonus - able to trade with Mexico despite any other modifiers)\n   4. Own and control Dallas (gets the Well, that's Dallas bonus - increased recognition of soverignty from nations west of the mississippi. \n   5. Own and control Austin (gets the Father of Texas bonus - texas counties you conquer don't have as much civil unrest and it lowers quicker, increased likelyhood of taking over counties from other texas counties, maybe something more - the idea being this would be the most powerful bonus because it gives austin a better fighting chance).\n   6. Those all would be done in any order but once all are conquered\n      1. Own and control every county in texas (get texas united - lowers civil unrest)\n      2. Former Glory, control all of the counties that were apart of the republic of texas (get a bonus of authority maybe?\n      3. Choke the farmers, control the mississippi choke point and all mississippi river counties in the south area (get a bonus on trade or something?)\n      4. Dominate the Gulf, control at least 50% of the ports along the gulf of mexico (get a bonus where you can charge nations 10% more on trade and they will still accept / or the other way around) \n      5. We never wanted to be apart of your country anyways (the name of it maybe), conquer Washington D.C. (gain the ability to unite the entire map as the united states of Texas (instead of the USA). So this would change your objective and make you fight against Philidalphia and NYC. \n3. Country Development\n   1. Texas BBQ - have 110% of food needs for 2 years (some bonus with quality of life for a certain time?)\n   2. Texas Oil - resource goal? \n   3. And I don't know maybe other ones for the other things? \n\n\nThese are just my ideas brainstorming"
+    },
+    {
+      "at": "2026-09-15T05:32:24.702Z",
+      "text": "Ok lets bring 19 forward"
+    },
+    {
+      "at": "2026-09-15T05:36:50.167Z",
+      "text": "Austin is the crown"
+    },
+    {
+      "at": "2026-09-15T05:43:38.657Z",
+      "text": "Lets say that right now it ends in 2086. That would be 200 total turns."
+    },
+    {
+      "at": "2026-09-15T05:53:22.987Z",
+      "text": "Confirm"
+    },
+    {
+      "at": "2026-09-15T06:03:00.949Z",
+      "text": "<!-- attach -->\n> A mandatory answer phase across six systems is a wall in front of every turn. And the whole point of your design is that you open a turn by starting things, not by clearing an inbox.\n\nYes, but I also am going to push back against this. I think that if the play system is built around starting something in one turn but not completing it that is the way it has to be and I think that it would also be a good way to seperate the actual play as a turn, plus build up tension in turn. You just got everything done and you instead of just starting over from scratch there is a break and you get to see:\n\n1. Results of actions you took\n2. Results of trade deals/diplomatic actions you sent out\n3. New spontaneous things that either make your life easier or harder",
+      "note": "answer left on the Control Board; the line after the marker, beginning with >, quotes the studio's card and is not his"
+    },
+    {
+      "at": "2026-09-15T06:04:28.071Z",
+      "text": "Lets do that"
+    },
+    {
+      "at": "2026-09-15T06:05:31.185Z",
+      "text": "Agreed"
+    },
+    {
+      "at": "2026-09-15T06:10:43.833Z",
+      "text": "Lets write mission-design and lets do one for Deseret and Minnesota/Wisconsin. Based on the texas mission tree what should the rough outline be (not actual things but like structure)"
+    },
+    {
+      "at": "2026-09-15T06:16:24.272Z",
+      "text": "Yes that works great - lets start with Minesotta/Wisconsin"
+    },
+    {
+      "at": "2026-09-15T06:17:00.445Z",
+      "text": "What I mean is that you can either be Wisconsin or Minesotta and they have the same mission tree"
+    },
+    {
+      "at": "2026-09-15T06:18:45.490Z",
+      "text": "Lets go one at a time - what is the first part of the tree"
+    },
+    {
+      "at": "2026-09-15T06:25:00.032Z",
+      "text": "Love it"
+    },
+    {
+      "at": "2026-09-15T06:42:37.648Z",
+      "text": "Lets change it a bit:\n\nAnd note that if you are the leader of the federation that counts as you controling and owning an area. Also note I say own and control which is redundant and take that as my coloquially speaking and we will need to convert this to actual language for the game.\n\nG1 - Not just a great lake:  Something where you own all the ports on lake superior \nG2 - The soo and the straits (as your wrote it)\nG3 - Southern Hospitality - Own or be allied with the areas of the mouth of the mississippi and have have trade route access to it\n\nG4 - The Northern Cheese Mongers - Own and control the mississippi counties of Wisconsin and Minnesotta\nG5 - Bearing down on the lions out east - Own and control all counties surrounding the counties of chicago and detroit\nG6 - The tiger and the buffalo drink water from the same riverbank - own ohio and buffalo\nG7 - The Superior Lakes - own all choke points along great lakes and mississippi river (bonus - Canada offers you a trade deal - to be built later)"
+    },
+    {
+      "at": "2026-09-15T06:47:07.664Z",
+      "text": "Ok cool - but I do want to keep the names I came up with because they are the kind of puns I want to keep in the game"
+    },
+    {
+      "at": "2026-09-15T06:48:47.687Z",
+      "text": "A completed mission stay completed"
+    },
+    {
+      "at": "2026-09-15T06:50:41.838Z",
+      "text": "Yes it holds"
+    },
+    {
+      "at": "2026-09-15T06:53:02.128Z",
+      "text": "I think the pivot would be something like everything east and west of the mississippi - and it would let you conquer with less negative buff on your influence and authroity."
+    },
+    {
+      "at": "2026-09-15T06:55:39.865Z",
+      "text": "Lets go with your recomendation"
+    },
+    {
+      "at": "2026-09-15T07:01:17.384Z",
+      "text": "Yes lets start with deseret - remind me the structure rough outline of the first mission objectives"
+    },
+    {
+      "at": "2026-09-15T07:16:54.530Z",
+      "text": "So I think the first thing is that this is different because this is a movement so they need to get acceptance but also get the movement united.\n\nSo for standing:\n\nS1 - Friends with benefits (have allies with border crossings to canada or mexico and gives you transit access)\nS2 - My Brother's Keeper (accept two other new movement based nation's soverinty and/or two other movements in other states that are growning)\nS3 - An Ensign to the nations (have trade deals with Canada, Mexico, and the World Markets)\n\nFor Ground:\nG1 - Building Zion (have all areas in the mormon corridor under your ownership or at least 40% movement rising up levels - would cause a massive uprising - the point of this mission would be to teach people about how to cause uprisings in other states)\nG2 - Juarez to Cardston (Own all the the areas from the colonies in montana that border canada near Cardston and colonia juarez in mexico (recreating the original colonies the mormon settlers made).\nG3 - Winter Quarters (Have a connection of owned land to Winter Quarters Nebraska)\nG4 - A City Beutiful (own and occupy the counties of Illinois along the mississippi)"
+    },
+    {
+      "at": "2026-09-15T07:17:31.741Z",
+      "text": "There is more to this"
+    },
+    {
+      "at": "2026-09-15T07:17:50.999Z",
+      "text": "Actually it should be:\n\nG4 - Adam-ondi-Ahman Conquer"
+    },
+    {
+      "at": "2026-09-15T07:17:51.895Z",
+      "text": "There is more to this\nActually it should be:\n\nG4 - Adam-ondi-Ahman Conquer"
+    },
+    {
+      "at": "2026-09-15T07:23:48.477Z",
+      "text": "And it is to conquer northern missouri (wher Adam-ondi-Ahman is)\n\nG5 - East of Eden (own and occupy the counties of Illinois along the mississippi)\nG6 - The temple east of east of Eden (Own and control the Lake County in Ohio where Kirtland is)\nG7 - The Mormon Battallion Part 2 conquer San Dego\n\nBuilding:\nB1 - Busy as a bee: increase manufacturing\nB2 - A City Beautiful: Something that increases quality of life?\nB3 - Crossroads of the west - improve logistics infastructure?\nB4 - In our lovely Deseret - have a surplus of all six resources?\n\nPivot?"
+    },
+    {
+      "at": "2026-09-15T07:27:19.349Z",
+      "text": "I like that as the pivot because The Mormon Batallion to conquer san diego is going to be tricky so getting the pivot before hand makes that beter"
+    },
+    {
+      "at": "2026-09-15T07:36:51.806Z",
+      "text": "I think we can make an exception in the rules that deseret starts with recognition from states around it"
+    },
+    {
+      "at": "2026-09-15T07:41:03.225Z",
+      "text": "Agreed"
+    },
+    {
+      "at": "2026-09-15T07:44:06.881Z",
+      "text": "Write the Texas tree — finishes the missions document and it's mostly transcription."
+    },
+    {
+      "at": "2026-09-15T08:02:05.035Z",
+      "text": "Updated the control board - also it is still way too long of text on the front page. I need easy to read and concise language only"
+    }
+  ]
+}

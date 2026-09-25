@@ -1,0 +1,79 @@
+{
+  "about": "Every message Aaron typed or dictated in this session on Terra (the PC), copied verbatim from its log on 25 September 2026. Only his words. Taken from both places the log keeps them - the queued record of every message he sends and the plain user records - each message kept once at its earliest time. Messages he sent while Claude was still working sit in time order with the rest and are not marked apart, because a queued record alone does not show that. System text, tool output, skill instructions, task notifications, cross-session messages, compaction summaries and anything the studio wrote are excluded, as are the helper agents' logs beside this one. WARNING: this session's working folder was this project's, but its subject is the Resume Engine project, not the game. It is saved here because these are his words and this is the only log folder that holds them.",
+  "session": "467cff60-3f7c-4664-91df-bab5d258d5ca",
+  "title": "Resume engine employer selection",
+  "messages": [
+    {
+      "at": "2026-08-26T20:27:27.480Z",
+      "text": "Continuing resume-engine work. Saxton Horne audit is done and corrected (5 fixes applied, verified). AP/Chicago number convention confirmed compliant corpus-wide. Next: compile Chase & Co / Partners In Post / Aaron Allsop Films once I paste interview content into corpus/interviews/, then build the bullet priority field + per-role cap in selection.py to fix Llama Nation crowding out other employers."
+    },
+    {
+      "at": "2026-08-26T21:03:39.840Z",
+      "text": "Before we move forward, remind me what are the rungs again?"
+    },
+    {
+      "at": "2026-08-26T21:15:22.875Z",
+      "text": "Can you show me a test of this this program"
+    },
+    {
+      "at": "2026-08-26T21:16:14.117Z",
+      "text": "How do I open this to interact with"
+    },
+    {
+      "at": "2026-08-26T23:44:58.550Z",
+      "text": "One thing I want to make sure is built into this program that is really annoying when applying to jobs is that I will upload my resume and it will fill in all the fields but it isn't accurate and cut off and then I essentially have to go in and redo everyting. How would I go about making sure that doesn't happen and what I upload is always the correct format"
+    },
+    {
+      "at": "2026-08-26T23:46:19.412Z",
+      "text": "Explain to me those two things again"
+    },
+    {
+      "at": "2026-08-26T23:47:25.985Z",
+      "text": "The goal is that because I have claude platform built in it will be able to go through the bullets and pick which ones are the priority based on AI. If we do that would there still be an issue?"
+    },
+    {
+      "at": "2026-08-26T23:50:34.181Z",
+      "text": "Give me three solutions to this and tell me which one you think is best and why"
+    },
+    {
+      "at": "2026-08-26T23:52:09.294Z",
+      "text": "Lets do that one then"
+    },
+    {
+      "at": "2026-08-26T23:55:01.078Z",
+      "text": "I just finished and updated the aaron-allsop-films one"
+    },
+    {
+      "at": "2026-08-26T23:55:37.040Z",
+      "text": "Give me the prompt I need to ask chat for the interview for chase and co"
+    },
+    {
+      "at": "2026-08-26T23:56:36.998Z",
+      "text": "There is some confusion here. I worked full time at Chase & Co from 2021-202. That doc we don't have yet. Is there more information we need for the freelance work?"
+    },
+    {
+      "at": "2026-08-26T23:57:11.998Z",
+      "text": "I need the prompt for my time at chase and co when I was there full time 2021-2022"
+    },
+    {
+      "at": "2026-08-27T03:13:49.045Z",
+      "text": "Explain to me how this program will work when fully implented"
+    },
+    {
+      "at": "2026-08-27T03:15:16.409Z",
+      "text": "In a previous chat I got a claude API key file in there so that it could assist. How will that actually work."
+    },
+    {
+      "at": "2026-08-27T03:16:25.422Z",
+      "text": "Is this currently something that is implemented that if I did a test it would use"
+    },
+    {
+      "at": "2026-08-27T03:18:59.706Z",
+      "text": "Before we do that I updated the partners in post md doc and the chase and co do. There are outstanding things but I want to ignore those for now. In general the majority of my work experience is in there with the exception of Generation Covid the doc, but since that is the latest work I've done I can get to that later. Right now I want to test this out. \n\nWhat else do we need to have done for me to do a test where I can post an actual job posting in there and get a result that has claud go through my entire work history and assemble something for me."
+    },
+    {
+      "at": "2026-08-27T03:34:09.714Z",
+      "text": "Before we do this I want to switch to fable to go through and double check everything is optimized so that I am not wasting tokens on the API side of things as well as go through the code of the entire program in order to check for any bugs and issues. I also want it to make sure that it understands that the goal is to tailor a resume for that specific job posting and so it can combine certain things if that is best or it can take multiple acomplishments and sumarize them if that would be best. I am going to to do this in a new chat to minimize token usage with fable as well. \n\nWrite me a prompt of what fable to do as if fable was the senior developer who approves all code before it gets sent out to beta test. Write it in a way that I can just copy and past it and it will know where the files are located on my pc to review and that it understands the purpose of the program. \n\nAt the end of the code review it should give a summary of what works, what bugs there are if any, and what changes could be done in order to improve the quality of the resume output. It should also be noted that right now we are just focused on getting the resume engine working and haven't started on the cover letter part and that althought there are outstanding gaps in master resume we are ok with that because there is 95% of the work history in there ready to actually test the output."
+    }
+  ]
+}

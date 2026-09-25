@@ -1,0 +1,44 @@
+{
+  "about": "Every message Aaron typed or dictated in this session on Terra (the PC), copied verbatim from its log on 25 September 2026. Only his words. Taken from both places the log keeps them - the queued record of every message he sends and the plain user records - each message kept once at its earliest time. Messages he sent while Claude was still working sit in time order with the rest and are not marked apart, because a queued record alone does not show that. System text, tool output, skill instructions, task notifications, cross-session messages, compaction summaries and anything the studio wrote are excluded, as are the helper agents' logs beside this one.",
+  "session": "0183f4e7-5da9-4c9f-a730-177fb3304f99",
+  "title": "Resume",
+  "messages": [
+    {
+      "at": "2026-09-15T16:04:09.157Z",
+      "text": "/resume",
+      "note": "command"
+    },
+    {
+      "at": "2026-09-15T16:10:20.452Z",
+      "text": "Do this based on the prompt I used to start the previous session (manifest disunity game design document)"
+    },
+    {
+      "at": "2026-09-15T16:26:10.740Z",
+      "text": "Yes for two reasons. The first is that smaller GDD sub docs make it easier to work with but the other thing is that in my research one thing I saw being said over and over is that a GDD is a living document and it is never \"finished\" so I don't want fat ones now that become mega obese later."
+    },
+    {
+      "at": "2026-09-15T16:50:25.124Z",
+      "text": "three axes and ten positions"
+    },
+    {
+      "at": "2026-09-15T17:20:11.692Z",
+      "text": "I updated the control board and approved/left comments for everything outstanding"
+    },
+    {
+      "at": "2026-09-15T17:30:46.408Z",
+      "text": "While I am working on that what are you working on"
+    },
+    {
+      "at": "2026-09-15T18:19:33.466Z",
+      "text": "Sounds great"
+    },
+    {
+      "at": "2026-09-15T19:01:58.376Z",
+      "text": "Do you have enough to go hog wild"
+    },
+    {
+      "at": "2026-09-15T19:59:43.900Z",
+      "text": "Iniate wild hog mode"
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "about": "Every message Aaron typed or dictated in this session on Terra (the PC), copied verbatim from its log on 25 September 2026. Only his words. Taken from both places the log keeps them - the queued record of every message he sends and the plain user records - each message kept once at its earliest time. Messages he sent while Claude was still working sit in time order with the rest and are not marked apart, because a queued record alone does not show that. System text, tool output, skill instructions, task notifications, cross-session messages, compaction summaries and anything the studio wrote are excluded, as are the helper agents' logs beside this one.",
+  "session": "f082feb9-cbaf-4dca-9290-55fd72f3c41c",
+  "title": "Resume",
+  "messages": [
+    {
+      "at": "2026-09-09T20:57:38.308Z",
+      "text": "/resume",
+      "note": "command"
+    },
+    {
+      "at": "2026-09-09T20:58:40.583Z",
+      "text": "Go"
+    },
+    {
+      "at": "2026-09-09T21:07:55.135Z",
+      "text": "I think that we need to rethink the whole political alignment so instead of adding one lets take a step back.\n\nHere is my thought, breaking down political ideologies we have it framed through the lens of moral issues and economic issues. What are all the other broad ideas that would classify a political ideology?"
+    },
+    {
+      "at": "2026-09-09T21:17:02.022Z",
+      "text": "Actually I think I got it figured out, there are going to be three alignments in three axis which is going to be economic, moral, authority/liberty. \n\nIf we broke those down further:\n\n1. Economy\n   1. Collective\n   2. Middle\n   3. Capitalist\n2. Moral\n   1. Conservative\n   2. Middle\n   3. Progressive\n3. Government Power\n   1. Authoritarian\n   2. Middle\n   3. Libertarian\n\n\nIf we were to picture a cube made up of 9 pieces each one would have a different value:\n\n1. E-Co/M-C/G-A\n2. E-Co/M-M/G-M\n3. E-Co/M-P/G-L\n4. E-M/M-C/G-A\n5. E-M/M-M/G-M\n6. E-M/M-P/G-L\n7. E-Ca/M-C/G-A\n8. E-Ca/M-M/G-M\n9. E-Ca/M-P/G-L\n\n\nIs That right?\n\nOne thought about this is that as the politics grows and divides it allows for coalitions to form and it also means that there are disadvantages to being at an extreme because the top corner of a cube only touches/meaning they would find common ground with three other political ideologies. \n\nNext thing - I am using the term political ideology and part interchangble in this message but we should also nail down vocbulary. Should this be a political party or ideology? I feel like ideology is a term already in use but it doesn't make sense that one political part is now reperesented in indivual nations."
+    },
+    {
+      "at": "2026-09-09T21:22:36.422Z",
+      "text": "If we removed the middle party from all of them how many total ideologies would that give us"
+    },
+    {
+      "at": "2026-09-09T21:25:22.791Z",
+      "text": "Lets do this - since these all are meant to be political parties lets list out all 8 possibilities and assign them real life analouges (even if they aren't actual politcal parties but ideaologies)"
+    },
+    {
+      "at": "2026-09-09T21:31:15.848Z",
+      "text": "Lets do this. Create for me a document that lists all of the 27 possiblities with the middle value back in. \n\nAlso lets change capitalist to neo-liberal in the game terminology. \n\nIn this document should be your proposed real life analogue. Do not bring anything from that game into this document, only real life examples. (Note - some of the real life examples are already in the game and those are good to bring in). Do not mention anything about any movement or ideology in the game. \n\nLike I said, we are rebuilding the politics so lets start with this"
+    },
+    {
+      "at": "2026-09-09T21:36:33.070Z",
+      "text": "Can you make that document an artifact I can add and edit changes to"
+    },
+    {
+      "at": "2026-09-09T21:48:01.332Z",
+      "text": "I looked at all of that and I love it. \n\nThe only thing is how do we solve the 27 of these with the political party that shows up.\n\nCan we save this for later and instead go back to the 8 and can you give me another artifact with just those eight and of those 8 lets use actual political party names"
+    },
+    {
+      "at": "2026-09-09T22:05:26.376Z",
+      "text": "Awesome lets change them to:\n\n1. Union Party\n2. Distriburitsit\n3. Democratic Socialiasm\n4. Democrats\n5. Nationalist\n6. Christian Nationalism\n7. Technocracy\n8. Libertarian\n\n\nMan I am finding this to be pretty tricky because christian nationalism is nationalims with an adjective and there also isn't any room for any fasicism which would grow. \n\nLets try something else. I am going to give you all my ideas of the political ideologies that would be in the game and lets see if we can find something. \n\n1. Republicans/Democrats\n2. Communists/Facists\n3. Anarcho-Capitalists/Democratic Socialism\n4. Liberal Anararchy/Christian Nationalism\n5. Distributism/Digital Technocracy\n6. Stateless/despotism\n\n\nCan you organize those 12 things into something coherant for us to work with"
+    },
+    {
+      "at": "2026-09-09T22:14:23.732Z",
+      "text": "That is perfect. I like that layout. One thing I like is that it keeps the republicans and democrats in the middle and takes that out. One thing I would want to change it so authoritarian is on the right side so authoritoraian is on the the end of each side. Then Stateless and despotism would be things you could fall into. So Fascism and christian nationalim would become despots with no parties and one party rule and then same thing with communism and digital technocracy. \n\nThat would add a fun mechanic where if you go too far you get more power (full state control) but also nations don't like you as much and other things we can figure out later"
+    },
+    {
+      "at": "2026-09-09T22:16:08.247Z",
+      "text": "It also works great too because at the start of the game we have republicans and democrats and they could drift into four different categories each."
+    },
+    {
+      "at": "2026-09-09T22:28:31.914Z",
+      "text": "we can work on that later and actually lets save that for future ideas after the alpha build"
+    },
+    {
+      "at": "2026-09-09T22:30:53.890Z",
+      "text": "Lets move stateless societies and despotism to future ideas and not include it in the alpha build"
+    },
+    {
+      "at": "2026-09-09T22:35:04.017Z",
+      "text": "Ok f19 is great that is what I meant. \n\nA stateless society is a group of counties that are running without a government or anything. \n\nFor them they have a special trade mechanic. \n\nThey have a set trading fee of 10%. The logic is that you are going in and trading directly with people. \n\nThey also have a set 5% toll. The logic is that you will run trade through there but you are paying 5% along the way to protect your trade and pay off people you meet along the way."
+    },
+    {
+      "at": "2026-09-09T22:40:18.325Z",
+      "text": "Yes because you aren't dealing with governments you are dealing with people and communities. No tolls, no nothing. \n\nOne other thing about stateless societies. In play testing there would be times where a civil war would happen or trying to unite a nation would cause a nation to break apart and it would have a section of their country cut off from them and surrounded by other states. \n\nI think there should be a rule that if those sections together are more than 2,000,000 citizens and maybe something else (not sure yet we can figure that out later in future ideas) it becomes a stateless society. \n\nAnd of course a movement can rise out of a stateless society."
+    },
+    {
+      "at": "2026-09-09T22:45:49.032Z",
+      "text": "That is a good point. Lets make it 500,000 people instead as the break away"
+    },
+    {
+      "at": "2026-09-09T22:50:31.793Z",
+      "text": "What chunk is needed to breakaway to be its own country but there were times when parts of a country would lose ground to another and parts of its territory would be enveloped by the other nation or the other nation and another nation so that countyr has no way to reach that part of their country. If that happens and it is more than 500,000 peope it is a nation if it is less it is a stateless soceity"
+    },
+    {
+      "at": "2026-09-10T01:05:42.903Z",
+      "text": "Ok lets move forward with #3"
+    },
+    {
+      "at": "2026-09-10T01:17:39.693Z",
+      "text": "I think that movements only work together when they are fighting against the state. So greater idaho and cascadia would fight togther against the state. \n\nIn practical terms though the way I think it would work mechanically is that I am Oregon and now I have 26% of my population for the cascadia movement and 26% for the greater idaho movement and that would cause a problem. \n\nOne other thing once we get to population - the larger the movement size the less people from that movement will join the militart an instead join the movement militia"
+    },
+    {
+      "at": "2026-09-10T01:34:16.836Z",
+      "text": "I think in that instance the countdown to civil war would begin. So it would be if a movement gets more than 40% but if any combine movements are more than 40% combined it starts a timer (I am thinking something like each turn there is an X% chance of civil war starting and the higher the percentage of a movement gets the greater the risk).\n\nThere should also be a mechanic that if a nation has over a certain number of a movement that the government can adjust and join in with the movement.\n\nExample - Oregon has a rising cascadia movement and they say Looks like we are cascadaia now. There would be some penalties, maybe counties with movements larger than their would leave for their movements?"
+    },
+    {
+      "at": "2026-09-10T01:57:05.526Z",
+      "text": "Not sure - is this something we can figure out in the archetecture stage"
+    },
+    {
+      "at": "2026-09-10T01:59:49.728Z",
+      "text": "Lets keep going"
+    },
+    {
+      "at": "2026-09-10T02:03:16.801Z",
+      "text": "That is the general shape - yes"
+    },
+    {
+      "at": "2026-09-10T02:06:22.808Z",
+      "text": "Would it make the game easier if we merged religious and ideological and resouce and economic into the same categories, otherwise looks good"
+    },
+    {
+      "at": "2026-09-10T02:09:09.270Z",
+      "text": "Cool lets go with that"
+    },
+    {
+      "at": "2026-09-10T02:15:00.271Z",
+      "text": "Responding to them is not counted as part of your turn and it is something you have to do before you can move on. So a notification will appear with some text (we will figure that out later)but like MOVEMENT DEMANDS: with the list of their demands."
+    },
+    {
+      "at": "2026-09-10T02:22:33.292Z",
+      "text": "<!-- attach -->\n> The fix is small and I think it's the right one anyway: on ungoverned ground, a movement grows by attraction rather than grievance\n\nCorrect",
+      "note": "answer left on the Control Board; the line after the marker, beginning with >, quotes the studio's card and is not his"
+    },
+    {
+      "at": "2026-09-10T02:26:42.148Z",
+      "text": "How do you think marital law should work based on everything esle in the game"
+    },
+    {
+      "at": "2026-09-10T20:24:11.847Z",
+      "text": "1. It would be over 50% of the nation (which also means that conquering too much could be a bad thing)\n2. It would cost one action - but  lets move that to the mechanics stage because we need to change the whole one action per turn.\n3. Yes the AI can do it but we will want to make sure in the architecture stage of things we create something that doesn't cause it going in either direction too much"
+    },
+    {
+      "at": "2026-09-11T01:26:47.992Z",
+      "text": "Or do we need to push?"
+    },
+    {
+      "at": "2026-09-24T19:58:38.894Z",
+      "text": "/signoff",
+      "note": "command"
+    }
+  ]
+}

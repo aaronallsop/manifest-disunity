@@ -1,0 +1,67 @@
+{
+  "about": "Every message Aaron typed or dictated in this session on Terra (the PC), copied verbatim from its log on 25 September 2026. Only his words. Taken from both places the log keeps them - the queued record of every message he sends and the plain user records - each message kept once at its earliest time. Messages he sent while Claude was still working sit in time order with the rest and are not marked apart, because a queued record alone does not show that. System text, tool output, skill instructions, task notifications, cross-session messages, compaction summaries and anything the studio wrote are excluded, as are the helper agents' logs beside this one. WARNING: this session's working folder was this project's, but its subject is the Resume Engine project, not the game. It is saved here because these are his words and this is the only log folder that holds them.",
+  "session": "77fc1e6e-e7f8-48b8-9f1e-36b85a22eb18",
+  "title": "Resume engine beta code review",
+  "messages": [
+    {
+      "at": "2026-08-27T03:35:30.339Z",
+      "text": "You are acting as the senior developer on a small production codebase, doing the final code review before this program goes to its first beta test with a real user. Nothing ships to beta until you sign off. Be direct about problems — this is a pre-launch gate, not a courtesy pass.\n\nPROJECT LOCATION: C:\\Users\\aaron\\resume-engine\n\nWHAT THIS PROGRAM DOES\nIt generates a tailored, designed resume PDF (plus an ATS-safe .docx) from a pasted job posting. All content originates from one source of truth, corpus/master-resume.yaml — a structured file of every job, bullet, project, and award the user has done, each tagged and carrying an \"ownership rung\" (1-6) that caps how confidently a bullet can ever describe the work. Read corpus/master-resume.yaml directly to understand its shape before reviewing the code that consumes it.\n\nStart by reading README.md and CLAUDE.md in the project root — CLAUDE.md is the standing rules file (truthfulness constraints, scope discipline, output rules) and is binding on how this codebase must behave, not just a style guide. Violating one of those rules in the actual pipeline behavior counts as a bug, not a preference.\n\nTHE PIPELINE (all in scripts/)\n    corpus.py     loads and validates master-resume.yaml\n    matching.py   job posting -> tags (skill tags + domain tags) + evidence\n    selection.py  tags -> filtered content. Bullet-level filtering by tag overlap,\n                  plus a per-role cap (MAX_BULLETS_PER_ROLE, currently 6) that ranks\n                  surviving bullets by tag-overlap count so one heavily-tagged\n                  employer can't crowd out shorter, equally relevant ones.\n    compose.py    OPTIONAL. Sends the already-selected bullets (post-cap) to Claude\n                  (claude-opus-5) to merge, split, reorder, or rephrase them to match\n                  how THIS SPECIFIC posting frames the work. Requires ANTHROPIC_API_KEY\n                  in .env at the project root (already present and working).\n    verify.py     mechanically checks every Claude-composed bullet against the exact\n                  source text it cited — numbers, proper nouns, verb rank — before\n                  it's allowed onto a resume. Anything that fails falls back to the\n                  original deterministic bullet. A role only swaps in composed bullets\n                  if EVERY proposed bullet for that role passes; no partial mixing.\n    build.py      filtered/composed selection -> HTML matching the real design template\n    render.py     HTML -> PDF + PNG page images\n    ats.py        the SAME selection -> plain single-column .docx (built-in Word\n                  styles only) for job-portal auto-fill parsers\n    apply.py      CLI entry point / the function serve.py's web UI also calls\n    serve.py      web UI (localhost:8020)\n\nWHAT YOU'RE REVIEWING FOR\n\n1. TOKEN / COST EFFICIENCY ON THE CLAUDE API SIDE\n   Look specifically at scripts/compose.py: the system prompt, what gets sent per\n   request (is it sending anything redundant or unnecessarily verbose?), the model\n   choice (claude-opus-5) and whether it's justified for this task versus a cheaper\n   model, the thinking config, MAX_TOKENS, and whether the request is scoped tightly\n   to what's actually needed. Confirm composition only ever runs on the post-selection,\n   post-cap bullet set (not the whole corpus) — verify that's actually true in the\n   code, not just intended. Flag anything that burns tokens without improving output.\n\n2. GENERAL CODE REVIEW FOR BUGS\n   Go through every file in scripts/ plus template/ and the web UI. Look for actual\n   defects — logic errors, edge cases that break the pipeline, error handling gaps,\n   places where the code's behavior contradicts its own docstrings or CLAUDE.md's\n   rules (e.g., verify.py failing to catch something it claims to catch, selection.py\n   producing inconsistent results, a role that could still exceed the bullet cap\n   under some path you find). Also flag anything that's a security or correctness risk\n   even if unlikely to trigger today.\n\n3. THE CORE TAILORING PHILOSOPHY — THIS IS IMPORTANT\n   The goal of this program is not to mechanically dump every matching bullet onto a\n   resume. It's to produce the BEST possible resume for one specific job posting. That\n   means Claude, when composing, should feel free to combine multiple bullets into one\n   when that reads better for a given posting, or take several related accomplishments\n   and summarize them into a tighter, higher-impact line, rather than always keeping\n   them as separate granular bullets. Review scripts/compose.py's SYSTEM_PROMPT and\n   confirm it actually encourages this kind of judgment rather than just permitting\n   narrow merges. Also think architecturally: right now selection.py's bullet cap\n   (tag-overlap ranking) runs BEFORE composition ever sees the bullets — consider\n   whether that's the right order, or whether composition would produce a better\n   result if it could see a larger pool of relevant bullets and do the trimming\n   itself via merging/summarizing, rather than a mechanical pre-cut deciding what\n   Claude never even gets to consider. Give me your actual opinion on this, not just\n   a description of how it currently works.\n\nCURRENT PROJECT STATE — CONTEXT YOU NEED\n- We are ONLY focused on getting the resume engine (PDF + ATS docx) working right now.\n  Cover letters are explicitly out of scope and have not been started — do not flag\n  their absence as a gap, it's expected.\n- corpus/master-resume.yaml is intentionally incomplete — roughly 95% of the user's\n  work history is compiled in and verified, with some known gaps (e.g., a recent\n  documentary project not yet interviewed). This is fine and expected for testing.\n  Do not treat corpus content gaps as a bug; only flag it if the CODE mishandles\n  missing/partial data in a way that breaks the pipeline.\n- The immediate next step after your review is running this against a real job\n  posting for the first time, so the priority is: will this work correctly and\n  efficiently when that happens.\n\nWHAT I NEED FROM YOU AT THE END\nA clear summary with three sections:\n1. WHAT WORKS — what you verified is solid and ready.\n2. BUGS — anything you found, ranked by severity. If none, say so plainly, don't\n   manufacture minor nitpicks to seem thorough.\n3. QUALITY IMPROVEMENTS — concrete changes that would make the actual resume OUTPUT\n   better (not just code cleanliness) — especially anything related to token\n   efficiency and the merge/summarize tailoring behavior described above.\n\nDo not make any code changes yourself. This is a review only — report findings back\nso they can be discussed and approved before anything is touched."
+    },
+    {
+      "at": "2026-08-27T03:49:49.942Z",
+      "text": "Take this information and put forward a plan to fix all of these bugs and in what order you would fix them."
+    },
+    {
+      "at": "2026-08-27T03:58:31.272Z",
+      "text": "1. I haven't input the projects that would put me as ownership rung yet but I will so I want to make sure they stay. \n2. I am ok with claude seeing all of the bullets for the roll but the main thing is that I want to make sure that only the bullets that actually fit the job description are put in there. The other thing I want to make sure is that if a job asks for someone to produce who also knows how to edit then I want to make sure that my indiviual producing bullet points are highlighted but because it also asks for editing I want to make sure that my editing bullet points are kept in, however because that isnt the main part of the job I would want claude to sumarize them into one bullet point. \n   1. Maybe one way to work this is that before starting the creation of my resume claude would read through the job description and put together a heiherachy lists of skills/acomplishments the job description is looking for. One way to do that would be the position name would be highest priority (so producer and any derivations of the word) the next would be words that appear in job description and qualifications, next would be qualifications, then finally would be the ones under prefercne/nice top haves in the job description. Then claude can take that information for that specific job descriptions and use that to pull specific bullet points and sumarize others if they are relebant and lower priority.\n3. Lets do your preference but only if you have no follow up to these answers"
+    },
+    {
+      "at": "2026-08-27T04:03:14.173Z",
+      "text": "Lets take this one at a time - if I understand my interviews with aaron allsop films, chase and co, and partners in post carry no ownership tags for what I did?"
+    },
+    {
+      "at": "2026-08-27T04:05:28.552Z",
+      "text": "Can you assemble all 54 of those bullet points and go through and write what rung they should be based on the information in that bullet point. If you feel like anything sits in two rungs ask me which one"
+    },
+    {
+      "at": "2026-08-27T04:12:22.260Z",
+      "text": "They should be rung 4. \n\nCan you implement those changes? One other thing - for affiliations lets remove avrec art house (no longer in existence), move comic frenzy to education (since I took it while in college) and only include it if a position specficies they want someone who knows comedy, and remove byu-i film society. In place incldue that I am a member of the Utah Film Center's Artist Foundry."
+    },
+    {
+      "at": "2026-08-27T04:17:44.043Z",
+      "text": "I misspoke - academy of comedy is the correct naming. In that case lets just remove it since it isn't a current affiliation and something from a long time ago."
+    },
+    {
+      "at": "2026-08-27T04:18:26.776Z",
+      "text": "Start on those"
+    },
+    {
+      "at": "2026-08-27T05:21:01.887Z",
+      "text": "Lets continue"
+    },
+    {
+      "at": "2026-08-27T05:27:48.257Z",
+      "text": "Proceed with those changes for h1+h5, h2, and m1"
+    },
+    {
+      "at": "2026-08-27T05:38:18.820Z",
+      "text": "Lets implement phase 3"
+    },
+    {
+      "at": "2026-08-27T06:40:23.259Z",
+      "text": "Continuing Phase 3 verification: check on the backgrounded live end-to-end test (task b6ewj2asy) that runs apply.generate() with use_claude=True on the vivint posting, exercising the new priority.py call, the widened composition bullet pool, verify.py's ceiling checks, and the post-compose cap. If it finished, inspect applications/_phase3_livetest/selection.json (priority tiers only contain known tags, composition accepted/rejected counts, no role exceeds MAX_BULLETS_PER_ROLE=6) and report results. If still running, check again."
+    },
+    {
+      "at": "2026-08-27T15:17:01.810Z",
+      "text": "Yes please do that"
+    },
+    {
+      "at": "2026-08-27T15:19:21.990Z",
+      "text": "What I need now is a summary of all the changes made, everything outstanding that needs to be done, and any other information that I can use as a prompt for a new chat session"
+    },
+    {
+      "at": "2026-08-27T15:35:39.281Z",
+      "text": "That that last response and put it into a prompt that I can easily copy and paste"
+    }
+  ]
+}
