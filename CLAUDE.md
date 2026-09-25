@@ -115,8 +115,11 @@ These come before `/resume`, in this order:
 ### More than one session, more than one computer
 
 - One live session per project, and one piece of work per session: start with the checks above, end
-  with `/signoff`, then archive it. Name a session after its work ("Manifest — T1 contracts"), never
-  after a planet or moon — those are roles.
+  with `/signoff`, then archive it. Never name a session after a planet or moon — those are roles.
+- **At sign-off, rename the session** so Aaron can see at a glance which teams it touched (D265):
+  `Manifest | <teams> | <the work>` — e.g. `Manifest | Design, Research | Terminology list`. Teams are
+  the functions, in plain words, in order of how much each did: **Running, Intent, Design, Research,
+  Build, Checking** (and **Marketing**, once it exists). Keep the work part short and concrete.
 - **Sign off only if you are the only session in this folder.** If you are not, the one session Aaron
   names signs off for all; the others close read-only (no tests, commits, board or handoff) and send it
   what they know (D257).

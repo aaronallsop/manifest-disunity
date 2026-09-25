@@ -6726,3 +6726,15 @@ tangled systems; D217's stage order across the whole game (it still holds for an
 the board. *Each older line carries a dated note — `TDD-PLAN.md`, `GDD.md` §9; the board's rail is redrawn
 at M0.* **Not a reversal:** D245 and D252 — the scoping he chose is done, and D252 named the freeze the first
 repair.
+
+### D265 — A session is renamed at sign-off to show which teams it touched, 24 September 2026
+
+**Aaron, 24 September:** *"can we add a rule that when I sign off a session you change the name to the best
+name for it? I think it would be helpful if it was structured in a way that I could see what team was
+touched (game design, research, etc) in the title."*
+
+**Decided:** at every sign-off the session is renamed **`Manifest | <teams> | <the work>`** — the teams
+being the studio's functions in plain words (Running, Intent, Design, Research, Build, Checking; Marketing
+once it exists), listed by how much each did. *Plain function names rather than planet names, because the
+title is for seeing at a glance, and planets name roles, not teams.* **In the project's `CLAUDE.md`.**
+*A candidate for Aaron's personal file once proven, with the project name changing per project.*
