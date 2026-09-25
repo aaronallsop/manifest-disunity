@@ -321,31 +321,29 @@ tr:last-child td{border-bottom:0}
 const BOARD = {
   project: "Manifest Disunity",
   livery: "tower",                      // tower | mars | violet | deep | slate
-  updated: "2026-09-24 17:45",          // when you last republished, local time
+  updated: "2026-09-24 18:30",          // when you last republished, local time
 
   // Three or four measured figures. value: number|string, or null = "not yet measured".
   figures: [
-    { label: "Checks passing, run with nobody else in the folder — none failing", value: 956 },
-    { label: "Turn the game hangs on — it is designed to reach 200", value: "80–95" },
+    { label: "Checks passing, run with nobody else in the folder (this evening) — none failing", value: 956 },
+    { label: "Turn the game freezes on — it is designed to reach 200", value: "80–95" },
     { label: "Systems with NO code behind them at all", value: "5 of 19" },
-    { label: "Loose ends, now sorted — and 207 had no owner", value: 300 },
+    { label: "Studio roles named — none hired yet", value: "25 · 0" },
     { label: "Open entries in the fault list", value: 42 },
     { label: "Current version", value: "v0.6" },
   ],
 
   headline: {
     tone: "warn",
-    lead: "Every session you had open is signed off — through ONE of them, so nothing raced. The "
-        + "checks were finally run with nobody else in the folder, and all 956 pass. Nothing is "
-        + "waiting on you on this board.",
+    lead: "Today the studio was set up and the road to alpha was adopted — and the game still freezes around turn 80 to 95. Fixing that is now the first build job on the road. Nothing is waiting on you on this board.",
     points: [
-      { warn: true, t: "HOW IT WAS DONE, AND WHY. Sixteen other sessions were open, fifteen of them on this project and all sharing one folder. This afternoon several ran the end-of-day routine at once and tripped over each other. So this time one session read every other session's conversation, gathered what had not been written down, did the sign-off once, and told the rest to close without saving, testing or touching this page. Running fifteen sign-offs one after another was rejected: fifteen notes for the next session, each replacing the last, and fifteen five-minute test runs." },
-      "THE CHECKS ARE GREEN, AND NOW IT MEANS SOMETHING. This afternoon the same unchanged code gave nine results across six sessions — four green, five red. Every red run was one session's check editing a real game file while another session's check was reading it. Run alone this evening: 956 passing, none failing, in four and a half minutes, and the game's files untouched afterwards. The game is fine; the checks can still trip over each other, and that fault stays on the list.",
-      { warn: true, t: "A SECOND COPY OF THE PROJECT WAS WORKING TOO. When this session went to save, it found eleven newer saves from somewhere other than this PC: the director's brief and its interview, names for every role on the studio roster, and a draft rewrite of the project's standing rules. All of it was kept exactly as written. It had filed a fault under the same number this session had just used, so this session's took the next one. The draft rules are NOT adopted yet, and they carry one question for you about who approves the technical design." },
-      { warn: true, t: "TWO OF YOUR ANSWERS HAD FALLEN OUT OF THE RECORD, found because the other sessions were asked what they knew. On 14 September you approved keeping your writer's wiki articles and correcting them — about a week of work. The card was tidied off this page the next day, the answer was written down nowhere, and nothing has been done since. On 16 September you asked for the old economy-alpha card to come off this page for good; that was done, but only a save note said it was on purpose. Both are properly recorded now. The wiki is also a stage and a half out of date. When to spend that week is yours." },
-      "ONE MORE COLLISION SCAR WAS FOUND AND FIXED: two different decisions had both been given the same number this afternoon, and nobody had noticed. Renumbered, with a note saying why.",
-      { warn: true, t: "THE GAME STILL CANNOT REACH TURN 200. Unchanged: it stops somewhere around turn 80 to 95. It has to be fixed before the stage reaches its numbers, and it is first on the list of things that must land before other work." },
-      "NEXT: the second step of the technical stage — agreeing what each system hands its neighbours. Or, if you would rather, the standing faults, starting with the failed invasion that pays the attacker.",
+      { warn: true, t: "THE ENGINE STILL FREEZES around turn 80–95 of a 200-turn game. It is now the first job on the road you adopted: one narrow repair session, with five other faults, and a check that every later build must play all fifty years." },
+      "YOUR DIRECTOR’S BRIEF IS APPROVED. Five pillars in your own words, your tie-break, who the player is, your lookbook and your refusals. Every role reads it first, and on taste it outranks the older documents. Building it found that much of what the project called your taste was the studio’s wording: of 639 places where the records touch it, 275 are your words and 142 are ours that you approved.",
+      "THE ROAD TO ALPHA IS ADOPTED, with your addition. The design documents and the technical design stay the road; the cut moves to the front; strangers first play right after the repairs; Texas is built and screened before the other two regions. History research on Texas, Deseret and the Great Lakes starts at once. The progress rail below is redrawn to it.",
+      "EVERY ROLE IN THE STUDIO HAS A NAME — twenty-five, after the solar system, with you as the Sun and your two computers kept out of it. None is hired yet: a role is hired when its first job arrives.",
+      "THE PROJECT’S STANDING RULES WERE REWRITTEN: permanent rules only, 385 lines down to 233. The check that nothing was lost caught three rules the first draft had dropped, all restored. New among them: your most recent word wins, and a session is renamed at sign-off to show which teams it touched.",
+      { warn: true, t: "I CHANGED YOUR WORDS TWICE, AND IT WAS CAUGHT. Writing up your interview I put “player” where you said “viewer”, and “next time” where you said “next turn”. A word-by-word check against what you actually said found both, and a dozen smaller smoothings; all are back as you said them." },
+      "NEXT: the first milestone — the word list, saving your own words from the design sessions on the PC, this board’s redesign (Rhea interviews you first), and the history research.",
     ],
   },
 
@@ -957,117 +955,57 @@ const BOARD = {
             + "can each start in a quarter before the machine slows, whether your victory targets still "
             + "hold at two hundred turns, and the one denominator on the new political board that has "
             + "never had a value. The thirty-eight faults get sorted in here too." },
-    { name: "Step 2 — How systems hand things over", status: "current",
-      brief: "Agree what each system gives its neighbours before writing what any of them does inside. "
-           + "One document, and everything after it waits on this.",
-      actual: "NOT STARTED, and this is the step that makes the rest possible.\n\n"
-            + "Eleven of the nineteen systems read each other in a ring, so none of them can be finished "
-            + "first. The way out is ordinary and your game already does it in three places that have "
-            + "never caused trouble: fix the HANDOVER, not the insides. Once trade knows the exact shape "
-            + "of what the economy will give it, either can be written in full without the other being "
-            + "finished. Fourteen tangled pairs become fourteen agreed edges.\n\n"
-            + "It also settles the housekeeping that every later document depends on: what a preview of "
-            + "an action is allowed to contain, where a long-running project lives in the turn and in "
-            + "the save file — it currently lives nowhere — and how a new tuning dial is named, so the "
-            + "three hundred and seventy you have can become five hundred without becoming a drawer of "
-            + "unlabelled knobs." },
-    { name: "Step 3 — The ground: the map, politics, people", status: "todo",
-      brief: "The three systems everything else stands on, and the only three in the project that "
-           + "depend on nothing.",
-      actual: "NOT STARTED. Three documents: the map as a network with prices on it, the political "
-            + "board, and how people are counted and how they move.\n\n"
-            + "This is also where the missing denominator gets its value — the one number that decides "
-            + "how politically far apart any two countries are, which every threshold in the game is "
-            + "then measured against. It has no value on the new board and it is the first thing the "
-            + "technical stage has to settle, because nothing downstream can be tuned until it does." },
-    { name: "Step 4 — The turn itself", status: "todo",
-      brief: "The engine's spine: nineteen things that happen in a fixed order every time the world "
-           + "moves, and the reason each sits where it does.",
-      actual: "NOT STARTED. One document, and the order is not in dispute — it was settled long ago and "
-            + "the reasons are written down at each step. What this does is turn those reasons into "
-            + "requirements rather than commentary, so nobody moves one later without reading why it is "
-            + "where it is.\n\n"
-            + "One thing genuinely broke when you removed the one-action-per-turn rule and it lands "
-            + "here: a country's turn used to END when it took its action, because its turn WAS its "
-            + "action. Now that it can start as many things as it likes, something else has to say when "
-            + "a country is finished." },
-    { name: "Step 5 — The eleven tangled systems", status: "todo",
-      brief: "The bulk of the stage. Movements, the economy, countries, government, the army, "
-           + "diplomacy, trade, war, blocs, and the five national scores.",
-      actual: "NOT STARTED. Ten documents, each written against the handovers agreed at step 2, and each "
-            + "carrying its own list of differences from what the game does today.\n\n"
-            + "They go in the order their work happens inside a turn, which is the one order in this "
-            + "project that is not circular. The five national scores go last, and two independent "
-            + "reasons agree on it: every number they read is a result of that same turn, and they are "
-            + "the one thing twelve of the nineteen systems read." },
-    { name: "Step 6 — The five on top", status: "todo",
-      brief: "What the world throws at you, the opening position, the three mission trees, the other "
-           + "sixty players, and every screen.",
-      actual: "NOT STARTED. Five documents. Everything here reads the systems underneath it rather than "
-            + "the other way round, which is why it goes late rather than because it matters less.\n\n"
-            + "The screens go last of all, because that document reads nine systems plus your tone "
-            + "document — the longest list of dependencies anything in this project has." },
-    { name: "Step 7 — Evidence for your build order", status: "todo",
-      brief: "What depends on what, what the alpha's stated purpose actually needs, and what each piece "
-           + "costs. Evidence only.",
-      actual: "NOT STARTED, and it deliberately does not answer the question it feeds.\n\n"
-            + "Your line of 14 September binds this stage exactly as it bound the last: the build order "
-            + "and what moves past the alpha are yours. So this produces the evidence and stops — it "
-            + "does not rank anything, recommend anything, or cut anything.\n\n"
-            + "One question gets settled here that nobody has asked yet: by the end of this stage there "
-            + "will be nineteen technical documents describing what the game does, alongside the design "
-            + "document that has been the single source of truth all along. Two sources of truth is a "
-            + "problem this project has already solved twice, and it should be solved on purpose this "
-            + "time rather than by drift." },
-    { name: "Stage 4 — The build order", status: "todo",
-      brief: "Organise all of it into an order somebody can actually execute, and decide what moves "
-           + "past the alpha.",
-      actual: "NOT STARTED. Your own words on 14 September, recorded because they shape how the design "
-            + "documents are written: “I am operating on the assumption that when we go to the next "
-            + "stage to create the build order for the alpha we are going to cut things and move them "
-            + "to the post alpha stage.”\n\n"
-            + "So nothing in stage 2 ranks or recommends what to cut. Each document supplies the "
-            + "evidence instead: what a thing depends on, and whether the alpha's stated purpose needs "
-            + "it. The cutting is yours." },
+    { name: "The studio: your brief, your roles, your road", status: "done",
+      brief: "“I realized that the way that I have this program set up is not the most efficient and optimized way that I could have it.” — and: “the one thing that I want to make sure that I keep is the GDD and working towards the TDD.”",
+      actual: "DONE, 24 September. A fourteen-question interview, asked cold, became your director’s brief, which you approved. Every role on your roster was named. The standing rules were rewritten to hold only what is permanent. And the road to alpha was redrawn and adopted with your addition. The design documents and the technical design are still the road; what changed is the order and the rhythm around them." },
+    { name: "M0 — One road, one set of words", status: "current",
+      brief: "Your word list, this board redrawn to the road, your own words from the design sessions saved from the PC, and the history research begun.",
+      actual: "NOT STARTED. Pluto builds the word list from the records and brings you every word that has meant two things. Pluto also copies your own messages from the design sessions on the PC into the project, word for word. Rhea interviews you about this board before redesigning it. Makemake starts on the real history behind Texas, Deseret and the Great Lakes, and keeps going alongside everything after. The contracts pass waits for the word list, as you chose." },
+    { name: "M1 — Make the engine trustworthy", status: "todo",
+      brief: "Six narrow repairs, starting with the freeze, and a check that every later build plays a full game.",
+      actual: "NOT STARTED. The first programming session, permitted with the road. The freeze first, then a test that writes into the real game files, the test route that reports green without running, a failed invasion that pays the attacker, a nation reading its own founding movement as unrest, and the AI’s army weights. The playtest link is refreshed from today’s build. Tagged v0.6.1." },
+    { name: "M2 — The first look", status: "todo",
+      brief: "Two or three strangers play sixty turns of today’s game.",
+      actual: "NOT STARTED. A small rehearsal, not a verdict: the link, a one-page how-to-play sheet, your five alpha questions and the economy questions that were never asked. Who the testers are is yours." },
+    { name: "M3 — The contracts pass", status: "todo",
+      brief: "What each system hands its neighbours, agreed before anyone writes what a system does inside.",
+      actual: "NOT STARTED. The step once called Step 2, unchanged in purpose, with four additions that each prevent a rebuild later. Neptune writes it." },
+    { name: "M4 — The cut", status: "todo",
+      brief: "What goes in the alpha in full, what only at its edges, and what waits — decided before the building it steers.",
+      actual: "NOT STARTED. A scope sheet of evidence, row by row, a clickable pretend turn to test whether there is something to do, and your choices: the cut, what a sixty-turn session ends with, and where the history goes." },
+    { name: "M5 — Politics on your three-axis board", status: "todo",
+      brief: "Every nation, movement and person moved to your ten positions on three axes.",
+      actual: "NOT STARTED. Specified, then built. Deseret’s place comes to you here, in one sentence." },
+    { name: "M6 — The new turn", status: "todo",
+      brief: "No action budget; several things started, bars that fill, a briefing between turns. Then the first testers come back.",
+      actual: "NOT STARTED. Includes the sidebar in two depths. Tagged v0.7." },
+    { name: "M7 — Texas, playable start to finish", status: "todo",
+      brief: "Any of the five Texas cities, taught through its first turn, sixty turns with something to decide, and an ending that says why.",
+      actual: "NOT STARTED. The mission system, the Texas tree and its checked history. Tagged v0.8." },
+    { name: "M8 — The Texas screening", status: "todo",
+      brief: "The dress rehearsal: three to five new people play Texas.",
+      actual: "NOT STARTED. The cut is revisited with real evidence before two more regions are built on top." },
+    { name: "M9 — The Great Lakes, then the West", status: "todo",
+      brief: "Blocs and the federation, the Great Lakes tree, the Deseret tree. The toll choice comes to you here, as you asked.",
+      actual: "NOT STARTED. Tagged v0.9." },
+    { name: "M10 — The alpha candidate", status: "todo",
+      brief: "Everything the cut kept, switched on together, checked for facts and for neutrality, and tuned from what testers did.",
+      actual: "NOT STARTED. You play a full session first. Tagged v0.10." },
+    { name: "M11 — The alpha test", status: "todo",
+      brief: "Fresh testers, held back for this, answer your five alpha questions.",
+      actual: "NOT STARTED. You decide whether it passed." },
   ],
 
   // Things only the owner can supply, and what happens if a machine supplies them instead.
   blocked: [
     {
-      what: "Where Deseret sits on the new political board — parked, not forgotten",
-      ifAutomated: "You approved the Deseret card, and that card explained why the problem exists rather "
-                 + "than offering a placement to approve — so the reasoning is settled and the country "
-                 + "still has no square. I have not put it back in front of you. It is parked to the "
-                 + "step that builds the political board, which is where it first actually matters, and "
-                 + "it comes back then — the same treatment you gave the tolls. I will not place it "
-                 + "myself: where a country sits decides who it drifts toward, who allies with it, what "
-                 + "splinters off it and how badly a civil war inside it goes, and Deseret is one of the "
-                 + "three countries a tester will actually pick. When it comes back, one sentence "
-                 + "answers it — what Deseret believes about money, about morals, and about who gets to "
-                 + "give orders.",
+      what: "Where Deseret sits on your three-axis board — comes back at milestone 5",
+      ifAutomated: "Parked to the politics milestone, where it first actually matters. I will not place it myself: where a country sits decides who it drifts toward, who allies with it and how badly a civil war inside it goes, and Deseret is one of the three countries a tester will pick. One sentence answers it — what Deseret believes about money, about morals, and about who gives orders.",
       damagedIfAutomated: false,
     },
     {
-      what: "The playtest link on GitHub is a very old build, and only you can replace it",
-      ifAutomated: "Found on the night of 5 September, and it matters only because you have sent it to "
-                 + "nobody. The playable copy on GitHub is a single snapshot taken 132 steps ago — "
-                 + "before deals had terms, before anything could cross anybody else's ground, before "
-                 + "the rivers, before the trade map, and with the canal still open. Anyone opening that "
-                 + "link today would be playing a different and much smaller game and telling you "
-                 + "about THAT. I have deliberately not refreshed it: putting a build in front of other "
-                 + "people is yours in every mode, and it is the one thing going hog wild does not "
-                 + "unlock. Say the word and it is a two-minute job.",
-      damagedIfAutomated: false,
-    },
-    {
-      what: "Saying when playtesters get a new build — answered for now: after the economy alpha",
-      ifAutomated: "Publishing to your playtest link changes what other people receive, so I will not do "
-                 + "it without you saying so. You have said nobody has the link yet and nobody will "
-                 + "until the economy alpha is built, so the finished Economy build waits with the rest. "
-                 + "This stays on the list because the timing is permanently yours, not because anything "
-                 + "is stuck. Noted this session: you have now ticked the permission that covers real "
-                 + "data and real people. I have not acted on it, and I will still ask before anything "
-                 + "reaches a person.",
+      what: "Who the first-look testers are — at milestone 2",
+      ifAutomated: "The road puts two or three strangers in front of today’s game right after the repairs. Who they are, and what they are told, is yours; I will not pick people or send anyone a link. The playtest link itself is still a very old build and is refreshed at milestone 1, under the yes that milestone carries.",
       damagedIfAutomated: false,
     },
   ],
@@ -1082,6 +1020,12 @@ const BOARD = {
 
   // Decisions made on the owner's behalf and how they turned out. Corrections go BESIDE originals.
   log: [
+    { when: "2026-09-24", decision: "Checked every quote of yours in the interview word for word against what you actually said, instead of trusting my own write-up.",
+      outcome: "It found two places where I had changed your words — “viewer” written as “player”, “and do next turn” written as “next time” — and about a dozen smaller smoothings of your grammar. All are back exactly as you said them, and the brief was re-checked against the corrected record. The check is now a standing rule: nothing quoted as yours is relied on until it has been compared with your own messages." },
+    { when: "2026-09-24", decision: "Corrected what I told you about roles that are named but not hired.",
+      outcome: "I said the main session would do an unhired role’s job. Your roster says the Conductor never writes game code or design itself, and your roster wins: the main session writes the role’s file first and hands the job over. The exception is running the studio — this board, the handoff, saving — which it does itself until Rhea, Titan and Janus are hired. Recorded as a correction, beside the original." },
+    { when: "2026-09-24", decision: "Gave the handoffs to Titan and this board to Rhea, where your roster had given both to the Producer.",
+      outcome: "One owner per file is your roster’s first rule, and naming Titan the record-keeper had quietly given the handoff two owners. You confirmed it." },
     { when: "2026-09-24", decision: "Signed off sixteen open sessions through one, instead of letting each run its own end-of-day routine.",
       outcome: "The afternoon showed what happens otherwise: two faults filed under one number, two lessons under one number, two decisions under one number, and nine test results for one unchanged piece of code. Every session's conversation was read first, and every one had already either finished or deliberately stood aside. What had not reached the record was other sessions' test evidence, one proof that the game is fine and the checks are not, and the duplicate decision number. All of it is written down now, the checks were run alone, and the other sessions were told to close without writing anything. Then saving turned up newer work from outside this PC, kept exactly as written. The end-of-day routine itself still has no guard against a second session in the same folder; that lives in your shared rules, not in this project, so it is flagged as its own job." },
     { when: "2026-09-16", decision: "Took the toll question off this board entirely rather than parking it where it could keep catching your eye.",
