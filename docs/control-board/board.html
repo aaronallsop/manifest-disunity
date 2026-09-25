@@ -321,29 +321,29 @@ tr:last-child td{border-bottom:0}
 const BOARD = {
   project: "Manifest Disunity",
   livery: "tower",                      // tower | mars | violet | deep | slate
-  updated: "2026-09-25 12:55",          // when you last republished, local time
+  updated: "2026-09-25 13:26",          // when you last republished, local time
 
   // Three or four measured figures. value: number|string, or null = "not yet measured".
   figures: [
-    { label: "Checks passing — run on the MacBook at sign-off, alone in the folder, none failing", value: 956 },
+    { label: "Checks passing — run on the PC at sign-off, alone in the folder, none failing", value: 956 },
     { label: "Turn the game freezes on — it is designed to reach 200", value: "80–95" },
+    { label: "Your own words now saved and backed up, in messages — 3 July to today, both computers", value: 659 },
     { label: "Days to your alpha deadline, 31 March 2027 · to the stretch goal, 31 December", value: "187 · 97" },
-    { label: "Studio roles named · hired (Rhea and Pluto, today)", value: "25 · 2" },
     { label: "Pieces of the design with NO code at all — blocs, missions, projects, alliances, ending a war", value: 5 },
     { label: "Current version", value: "v0.6" },
   ],
 
   headline: {
     tone: "warn",
-    lead: "Two things first. Your own words from the early design sessions are only on the PC, and Claude Code deletes session records after 30 days — the first ones reach that age around 28 September, so the PC session to save them should happen in the next two days. And the game still freezes around turn 80 to 95. Today: your alpha deadline is set, the road is broken into tasks for you to read, and Rhea and Pluto are hired.",
+    lead: "Your words are saved and backed up — all of them, and they go back further than anyone thought. What is left on the bad side: the game still freezes around turn 80 to 95, and today turned up a new worry about how your decisions get recorded from here on.",
     points: [
-      { warn: true, t: "SAVE YOUR WORDS ON THE PC, SOON. Every record of your design interviews in the project is the studio’s write-up; the conversations themselves exist only on the PC, which keeps them for 30 days. Before opening Claude Code there, copy the folder of session records to your Documents as a backup. Then one line starts the job: Pluto copies only your messages, word for word, and the session saves them and signs off." },
-      { warn: true, t: "THE ENGINE STILL FREEZES around turn 80–95 of a 200-turn game. The repairs no longer wait for this first milestone to close — you ruled today that a task starts as soon as what it waits for is done — so the freeze can be the very next build session." },
-      "YOUR DEADLINE: THE ALPHA READY FOR STRANGERS BY 31 MARCH 2027, WITH A STRETCH GOAL OF 31 DECEMBER. Both are yours. Honestly: 31 March sits between the aggressive and normal guesses and needs about six or seven sessions a week and a firm cut; 31 December needs everything to go right. The first real check against measured pace comes when the repairs close.",
-      "THE ROAD IS BROKEN INTO TASKS, waiting for you to read. Thirty-five tasks for this milestone, the repairs, and a few pulled forward, each marked either something you start or something you do yourself, with what it waits for and what finished looks like. Later milestones are in outline with rough sizes: this milestone and the repairs come to about 21 sessions; the whole road 90 to 185 — estimates, and very wide, because nothing like the later builds has been done here yet.",
-      "RHEA AND PLUTO ARE HIRED — the first two roles with job descriptions. Rhea keeps the plan, the schedule and this board. Pluto keeps your words and will build the word list.",
-      "THE NEW PLUGINS REACHED THE MACBOOK. Design is the useful one here; Engineering and Product Management only in parts; Productivity is kept out of this project because it would compete with this board and the handoffs.",
-      "NEXT: the PC session to save your words. Then read the task list. Then this board gets the cards you asked for at the very top, with a short command to start each task — and after that, the schedule against your dates.",
+      "YOUR WORDS ARE SAFE. 659 messages, 33 working sessions on the PC and two on the MacBook, from 3 July to today, copied word for word and backed up. Nothing was tidied or corrected — your spelling and your dictation are exactly as you said them. The deadline that was two days away no longer applies to anything.",
+      "THEY GO BACK TO 3 JULY, not late August. The project's records on the PC start eight weeks before the first piece of the game was saved, under the folder name you were using then. Seventeen sessions nobody had counted. The first line of all is you describing the game from nothing, before it had a name — which means there is no sign that anything earlier was ever lost.",
+      { warn: true, t: "THE ENGINE STILL FREEZES around turn 80–95 of a 200-turn game. Unchanged, and now the oldest thing on this list. It can be the very next build session — it waits on nothing." },
+      { warn: true, t: "A NEW WORRY, AND IT IS ABOUT THIS BOARD. When you answer by picking one of the options I put in front of you, nothing of yours is written down — the record of your words can only hold what you TYPE or DICTATE. You settled three questions today and the record shows three entries, none of them your answers. That has been harmless until now. The redesign you asked for deliberately moves you toward clicking, so it is about to stop being harmless. Three ways out are written down; the only one that produces more of your words rather than better bookkeeping about their absence is for me to ask the questions that matter in prose, so you answer in sentences. That costs you time, which is why it is yours to choose." },
+      "SIX OF THE SAVED SESSIONS ARE NOT THIS GAME — your resume program, an editing tool, some After Effects work, all done from inside the game's folder. You spotted the mix-up yourself back in August and nothing ever moved them, so this is the only surviving copy. You ruled today that they stay where they are, labelled. Nothing in them is game design and none of it will be quoted as such.",
+      "ONE THING I CANNOT DO ALONE, worth knowing because it will recur. Saving your words cannot back itself up: the safety check on this machine refuses to let a session put anything drawn from session records onto GitHub, and it cannot tell that the repository is your own private one. You ran the command yourself today and it went through. Expect the same on the tone interview.",
+      "NEXT, in the order you asked for: export the tone interview from your Claude chat. Then read the task list. Then this board gets the cards you asked for at the very top, with a short command to start each task — and after that, the schedule against your dates.",
     ],
   },
 
@@ -960,7 +960,7 @@ const BOARD = {
       actual: "DONE, 24 September. A fourteen-question interview, asked cold, became your director’s brief, which you approved. Twenty-five roles on your roster were named. The standing rules were rewritten to hold only what is permanent. And the road to alpha was redrawn and adopted with your addition. The design documents and the technical design are still the road; what changed is the order and the rhythm around them." },
     { name: "M0 — One road, one set of words", status: "current",
       brief: "Your word list, this board redesigned around what you actually use (the road is already drawn on it), your own words from the design sessions saved from the PC, and the history research begun.",
-      actual: "UNDER WAY, 25 September. Rhea broke the road into tasks (a draft for you to read), you set the deadline, and the instructions for saving your words on the PC are written and backed up. Still to do: Pluto builds the word list from the records and brings you every word that has meant two things. Pluto also copies your own messages from the design sessions on the PC into the project, word for word. Rhea interviews you about this board before redesigning it. Makemake starts on the real history behind Texas, Deseret and the Great Lakes, and keeps going alongside everything after. The contracts pass waits for the word list, as you chose." },
+      actual: "UNDER WAY, 25 September. Rhea broke the road into tasks (a draft for you to read) and you set the deadline.\n\nYOUR OWN WORDS ARE DONE, this afternoon on the PC — 659 messages across 35 sessions, 3 July to today, copied word for word and backed up. It went further back than the job assumed: the records start eight weeks before the first piece of the game was saved, under the folder name you were using then, and seventeen sessions nobody had counted were in there. Six of the sessions turned out not to be this game at all and you ruled they stay, labelled. Two more folders that could not be ruled in or out were checked on your say-so and hold nothing of this project.\n\nIt also turned up something about this board: when you answer by picking an option rather than typing, nothing of yours is recorded. Three ways to deal with that are written down and the choice is yours — it is on your list above.\n\nStill to do: you export the tone interview from your Claude chat, the last of your words outside the record. Pluto builds the word list and brings you every word that has meant two things. Rhea interviews you about this board before redesigning it. Makemake starts on the real history behind Texas, Deseret and the Great Lakes, and keeps going alongside everything after. The contracts pass waits for the word list, as you chose." },
     { name: "M1 — Make the engine trustworthy", status: "todo",
       brief: "Six narrow repairs, starting with the freeze, and a check that every later build plays a full game.",
       actual: "NOT STARTED — and free to start now: you ruled on 25 September that it need not wait for the first milestone to close. About eleven sessions, estimated, more if the freeze resists. Permitted with the road. The freeze first, then a test that writes into the real game files, the test route that reports green without running, a failed invasion that pays the attacker, a nation reading its own founding movement as unrest, and the AI’s army weights. The playtest link is refreshed from today’s build. Tagged v0.6.1." },
@@ -999,18 +999,18 @@ const BOARD = {
   // Things only the owner can supply, and what happens if a machine supplies them instead.
   blocked: [
     {
-      what: "Save your words from the design sessions — on the PC, before about 28 September",
-      ifAutomated: "Only a session on the PC can reach them, and only you can start one there. After 30 days Claude Code deletes a session’s record, and the project’s first sessions reach that age around 28 September. Nothing is lost yet if it happens in the next two days; each day after that, the earliest go. A plain copy of the folder first protects them either way.",
+      what: "Export the tone interview from your Claude chat — the last of your words still outside the record",
+      ifAutomated: "It lives in your Claude account, not on either computer, so only you can export it; then Pluto takes out your messages the same way he did the rest. This is now the top of your list, because the design sessions are done and this is what is left.",
+      damagedIfAutomated: false,
+    },
+    {
+      what: "How your decisions should be recorded from here — you answer by clicking, and clicking leaves no trace",
+      ifAutomated: "The record of your words holds only what you type or dictate. Three ways out are written down and I will not pick between them for you, because two of them quietly accept that less of your thinking gets kept and the third costs you time. The short version: shall I go back to asking the questions that matter in prose, so you answer in sentences?",
       damagedIfAutomated: false,
     },
     {
       what: "Read the task list and say what to change",
       ifAutomated: "It is a draft until you have read it. The board’s new cards are built from it, so anything wrong in it would sit at the top of this page.",
-      damagedIfAutomated: false,
-    },
-    {
-      what: "Export the tone interview from your Claude chat",
-      ifAutomated: "You said it should be saved too. It lives in your Claude account, not on either computer, so only you can export it; then Pluto takes out your messages. After the PC session, as you asked — one at a time.",
       damagedIfAutomated: false,
     },
     {
@@ -1035,6 +1035,14 @@ const BOARD = {
 
   // Decisions made on the owner's behalf and how they turned out. Corrections go BESIDE originals.
   log: [
+    { when: "2026-09-25", decision: "Kept six sessions that are not this game, rather than dropping or moving them, and brought you the choice instead of making it.",
+      outcome: "Your resume program, an editing tool and some After Effects work, all done from inside the game’s folder. You spotted the mix-up yourself in August and nothing ever moved the records, so this was the only surviving copy — which is why deleting them was not a tidy-up. You ruled they stay, labelled." },
+    { when: "2026-09-25", decision: "Looked inside two folders of records that the rule said to skip, because a session you opened from the wrong place would have looked exactly like them.",
+      outcome: "You allowed it and it came back clean: seven sessions, twenty-four messages, none of them this game. Four were automated reports with nothing of yours in them at all. The rule was right — and now it is confirmed rather than assumed, which is the difference between the two." },
+    { when: "2026-09-25", decision: "Checked the work myself instead of trusting the helper who did it, including the one session it chose to skip.",
+      outcome: "The skip was the risky call — 50 messages would have gone with it — and it was right: every one of them was already in the session it was a copy of. Five messages I picked myself matched character for character; a sweep of 22 patterns for text that was not yours found nothing across all 659; and a pass in the harder direction, looking for anything of yours that was MISSED, came back clean. One thing that looked like a fault — the same long message saved twice, seven times over in the July session — turned out to be you re-pasting a standing instruction hours apart. Real, not a mistake." },
+    { when: "2026-09-25", decision: "Handed you a command that did not work in the window you were standing in.",
+      outcome: "Mine, and it cost a round trip at the worst moment — your words were verified but not yet backed up. I wrote it for one kind of terminal and you were in another, so it failed on the first step. Now a rule: chain with the one separator every terminal understands. Nothing was damaged." },
     { when: "2026-09-25", decision: "Reviewed today’s work as an adversary before signing off — and it found a fault in the instructions for saving your words.",
       outcome: "The project’s record folder also holds the logs of the studio’s helpers, and in those the “user” messages are the studio briefing its helpers, not you. The instructions did not say so, so the PC session could have saved the studio’s words as yours — the very thing the job exists to prevent. Fixed, and the method was then run on today’s real record: exactly your eleven messages, each once, nothing of the studio’s." },
     { when: "2026-09-25", decision: "Told you Claude Code deletes old session records when it starts up.",
