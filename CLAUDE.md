@@ -19,7 +19,8 @@ This file holds only what is permanent; progress and counts live in the handoff 
   stays and the technical design is still the road: nothing new is built before its technical document is
   written and approved; the documents are written slice by slice, the contracts pass (M3) whole and first.
   `docs/technical/TDD-PLAN.md` (D248) still defines each technical document; the road sets their order.
-  **T0 is done. Next is M0:** Pluto's terminology list, Rhea's board redesign, and Makemake's history
+  **T0 is done. Next is M0:** Pluto's terminology list and his saving of Aaron's own words from the design
+  sessions on Terra (a session on the PC), Rhea's board redesign, and Makemake's history
   research on Texas, Deseret and the Great Lakes, which runs alongside every milestone. The contracts pass
   waits for the terminology list.
 - **M1 is a programming session**, permitted with the road: six narrow repairs, starting with the freeze
