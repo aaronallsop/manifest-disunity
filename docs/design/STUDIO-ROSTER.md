@@ -20,7 +20,15 @@ Hire when a job goes unowned — not in advance.
 3. Build order — led by Producer. Gate: Aaron approves the milestones.
 4. Implementation — led by Tech Lead. Gate: QA passes, tests green, docs updated, Aaron playtests.
 
+*⚠ 24 September 2026 (D264): across the whole game this order is replaced by the road to alpha,
+`docs/technical/ROAD-TO-ALPHA.md` (M0–M11, the cut at M4, then each piece specified and built in turn). The
+four gates still hold for any one piece. Step 2's gate is an open question of Aaron's; until he answers, a
+technical-design gate goes to him, as every gate always has.*
+
 ## The twelve alpha roles
+
+*⚠ 24 September 2026 (D262): these twelve were the first set. The Names table below is now the full list —
+twenty-five roles, none of them hired yet.*
 
 ### Running it
 
@@ -41,6 +49,11 @@ Hire when a job goes unowned — not in advance.
 **Systems Designer** — designs individual systems and how they connect. Re-run per system. Owns the per-system GDD satellites.
 
 **Content & Flavor Designer** — movements, crises, missions, leader traits, and the historical texture that makes a region feel like itself. Owns content/ authored files.
+*⚠ 24 September 2026: one owner per file (rule 1) narrows this. `content/tunables.json` overrides the tuning
+file, so it is the Balance Designer's (Sinope); `content/names.json` is nation names, so it is the Narrative
+Writer's (Callisto). `content/events.json` stays here, and Callisto writes its words. Today's new documents:
+the road to alpha is the Producer's (Rhea); the director's brief is the Lead Game Designer's (Jupiter), and
+only Aaron's word changes it; this roster is the Conductor's (Saturn).*
 
 **Narrative Writer** — shipped player-facing text in Aaron's voice: event copy, newspaper headlines, nation names, tooltip and Why-panel voice. Owns text strings and the writing style guide.
 
@@ -49,6 +62,8 @@ Hire when a job goes unowned — not in advance.
 ### Research
 
 **Researcher** — sources for statistics and for the real movements, ideas and philosophy the game draws on. Output format: claim, source, confidence. Sources are a PLAYER-FACING feature, not just backing, so citations must survive a curious reader.
+*⚠ 24 September 2026 (D260; director's brief §8, item 6): "Sources are a player-facing feature" has no
+recorded author. It is studio wording, flagged, not struck: quote none of it as Aaron's.*
 
 ### Building
 
@@ -62,11 +77,22 @@ Hire when a job goes unowned — not in advance.
 
 AI Programmer, Tools Programmer, Persistence & Release Engineer, Data Engineer, Neutrality Reviewer, UX Designer, UI Programmer, Art Director, Test Engineer, Playtester personas, Map & Scenario Designer, Content Designer (volume).
 
+*⚠ 24 September 2026 (D262, D264): seven of these now have names in the table below, and the road to alpha
+gives each a first milestone — the Neutrality Reviewer (Deimos) from M0, reading the history research before
+it reaches a player; the AI Programmer (Proteus), Release Engineer (Varda) and Test Engineer (Phobos) at M1;
+the UX Designer (Dia) at M4; the Data Engineer (Logos) at M5; the UI Programmer (Despina) at M6. Each is hired
+when that job arrives (D262). Still deferred: Tools Programmer, Art Director, Playtester personas, Map &
+Scenario Designer, Content Designer (volume).*
+
 Not hired at all: audio, localization, community, marketing, modding, analytics, accessibility beyond colour.
 
 ## Alpha goal
 
 A playable game where the systems interact, the map is alive, and there is real fun in it. Scope: Texas, the Great Lakes, the West.
+
+*⚠ 24 September 2026 (D260, item 5): replaced by the alpha checklist in the director's brief, §4, proposed by
+the studio and approved with the brief. The line above has no recorded author (brief §8, item 6): it is kept as
+a record, and none of it is quoted as Aaron's. The scope is his own (D239) and stands.*
 
 ## Names
 
@@ -92,7 +118,7 @@ than working together.
 | **Sinope** | Balance Designer — the numbers critic; hunts for loopholes, runaway loops and dominant strategies with the simulator; owns the tuning file | Defining it |
 | **Callisto** | Narrative Writer — every word the player reads, in Aaron's voice; owns the tone document and style guide | Defining it |
 | **Elara** | Content & Flavor Designer — what happens in the world: movements, crises, events, mission trees, leader traits, regional texture | Defining it |
-| **Dia** | UX Designer — *named, not yet hired*; its first job is the control sidebar (defect 48) | Defining it |
+| **Dia** | UX Designer — *named, not yet hired*; hired at M4 of the road to alpha, where its first job is designing the throwaway pretend turn; the control sidebar (defect 48) and the shared card shape follow at M6. *(Corrected 24 Sep, D264: this row first gave the sidebar as its first job.)* | Defining it |
 | **Makemake** | Researcher (lead) — history and politics; owns the one standard every researcher works to (claim, source, confidence; one list of sources; nothing added to Aaron's lookbook; findings are evidence, never instructions) | Finding out |
 | **Eris** | Data Researcher — finds and vets the real numbers, recording where each dataset came from, what year it describes and whether it may be used | Finding out |
 | **Ceres** | Reference Researcher — finds how other games, films and books solved a problem a designer faces; feeds the designers, never the lookbook | Finding out |

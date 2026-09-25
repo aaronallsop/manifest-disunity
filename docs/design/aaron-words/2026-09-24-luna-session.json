@@ -1,0 +1,261 @@
+{
+  "about": "Every message Aaron typed or dictated in the 24 September 2026 session on Luna (the MacBook), copied verbatim from the session log. The mid-turn message \"And yes to pluto\" is added at the end. Source for checking anything quoted as his.",
+  "messages": [
+    {
+      "at": "2026-09-24T19:35:18.388Z",
+      "text": "Yeah, so it was working and talking with Claude chat about that. And I realized that the way that I have this program set up is not the most efficient and optimized way that I could have it. And so I talked about all the different things that we wanted to create for this, where I would have specific agents doing specific things. Um, can you do me a favor? Read through that document. And explain to me what are all the um, roles in the studio roster and what uh, would be the first step in implementing them."
+    },
+    {
+      "at": "2026-09-24T19:37:17.575Z",
+      "text": "I am learning and want to know how to do this. How do commiut"
+    },
+    {
+      "at": "2026-09-24T19:38:36.049Z",
+      "text": "Awesome did it and looks great"
+    },
+    {
+      "at": "2026-09-24T19:39:49.394Z",
+      "text": "Um, we are going to be doing some serious overhauls in how this uh, studio slash project is run. And so I think we are going to have to update it. I am not a programmer. And so this was not optimized or set up in the best way. And so I'm going to need some help in doing this. I've done different agentic systems before. And in the past, there is usually a like agents.md file. which is the master file for everything we have. Is that something we would create next?"
+    },
+    {
+      "at": "2026-09-24T19:41:08.552Z",
+      "text": "That makes sense. To you know, you mentioned that this would overwrite every project on my Mac. Does it make sense to have a personal master file that affect or is it best to have unique individual ones for each program?"
+    },
+    {
+      "at": "2026-09-24T19:41:43.706Z",
+      "text": "Yeah, so let's draft that."
+    },
+    {
+      "at": "2026-09-24T19:45:54.958Z",
+      "text": "Who's the last session that didn't write a handoff? Mm-hmm."
+    },
+    {
+      "at": "2026-09-24T19:47:18.458Z",
+      "text": "Okay, so this is a good learning uh, moment for me because I am on my MacBook Pro and I pulled, committed something and now on my PC, I'm going to have that session commit something and then I'm going to have to pull it or push it from there, right?"
+    },
+    {
+      "at": "2026-09-24T19:48:18.331Z",
+      "text": "So I'm still updating my BIOS on my PC. Is this something we can move forward with and when that session gets pulled and pushed or whatever, like it won't stop us when we can kind of keep doing what you and I are doing?"
+    },
+    {
+      "at": "2026-09-24T19:52:06.549Z",
+      "text": "We have it. actually play tested it but i think 60 turns is the best thing um we do need to update the alphas test done checklist um i think if i'm being honest we're gonna update this completely because we're implementing a new team structure um the economy brief rules they should be good and that might be what the thing pulls And the technical design approval, I, I think we can still hold off on that. What I want to do is focus on the roles. I had chat uh, Claude chat put it together, but one of the things you know that I was talking about them with is like how do I separate um, my game from others? Because there's two things, right? There's one, the actual creative idea that I'm coming up with. And then there's also the creative implementation of that. And the creative idea is my own. I understand that. That's, you know, something that other people you know, can't just generate uh, the same that a human can. However, at the same time, I'm not under the illusion that this idea is a like one in a million idea or that it is this like going to break box office records, right? If there's anything I've learned in filmmaking, is that after you've had a thousand good ideas, you realize how pointless one good idea is. Um, and by that I mean, um, that you know, when you're young, you know, like as a filmmaker, you have this mentality of like, oh, I got this great idea. I don't want to tell anyone about it because someone it's such a great idea. Someone's going to take it, right? But as you get older, you realize that like, everybody has those ideas all the time. And they only become good when you actually implement them. So that's kind of what I'm getting at with that idea, right? That there is no such thing as like like, I don't anyway, where I'm getting with that is, is there's these two stages, right? So anyone can have a good idea. And I don't think that like my idea is so good that that alone is going to separate it. I think you know, I think it's a good idea. I'm excited about it. But where I'm getting at with all of this is the other way that things stand out is the actual execution. And so I just asked Claude Chat to come up with that studio roster after talking with it a, a little bit. But that is something that, like, anybody could do. So my question is, how do I change, update, the studio roster, the Claude.md file, or other things to get it the voice and style of the game that is going to be unique to me and something not everybody could just prompt into existence."
+    },
+    {
+      "at": "2026-09-24T19:53:29.103Z",
+      "text": "Let's do it here, ask me the questions"
+    },
+    {
+      "at": "2026-09-24T19:57:46.986Z",
+      "text": "That is uh, great. One other thing, and this kind of goes along with this question, I feel like in the past, I will make changes to the game that I feel like in my mind are changed, but because the record of them is still on the dock, somewhere, some of the docks I will say something and be like, and, and chat will be like, oh no, that's actually not accurate. We need to do it this way. And it's like, well, no, we're, we're actually changing things. Um, and the reason why I bring it up is um, these are questions I've answered before. And I think it's great that we're asking them again and I think that in this new kind of rollout implementation, I just want to make sure that what we are talking about now remains kind of the master, the source of truth. And I assume that when we are putting this document together, um, we're not going to delete anything, we'll have the documentation showing kind of the status of how it's changed. But the rules will be listen to the most recent version. Is that correct? Yeah."
+    },
+    {
+      "at": "2026-09-24T20:02:09.123Z",
+      "text": "Question one answer. Um, I think what I would like them to say is you know, I found this really cool game It looks really complicated at first, but once you get going, it's easy to understand. And it's a lot of fun. I was able to simulate what would happen if Texas seceded. And it was a lot of fun to play around with this alternate history. It was also really cool because it had a really... Uh, sharp sardonic voice that was really funny and at the same time I also realized that the state of Jefferson is actually a real thing that people have proposed I didn't realize that that was actually something that was real. It is a little bit like Europa Universalis IV, but it's all in a map which makes it easier to play on any device. And I think I'd also want them to be like If we're going looking at this through the context of like the playtester who is playtesting the alpha, I would like them to be like, it was a lot of fun, but honestly, I could see it growing and it sounds like a lot of the features they've got is going to make it a really fun game where you can kind of experiment and play with different um, play styles and nations."
+    },
+    {
+      "at": "2026-09-24T20:07:17.593Z",
+      "text": "I think one moment that I would like every player to have in the game, and, and maybe there's like two of them. Mm. Maybe there's three. And you'll notice that this is just the way that my brain works, that I can't like settle on one. But the thought is like, first, one of them is they're playing the game and they're so focused on their part of the nation that they look over and they're like, wait a second. How did Minnesota take over New York City? Or wait a second. The Confederacy fell apart, but it rose again in the North. How did that happen? And, you know, the idea with that is that it's just these like silly, ridiculous things that are happening that if you're not paying attention, you're like, wait, how did that happen? Um, the second thing that I want people to feel is the feeling of accomplishment when like they've been trying, you know, they've been trying to rate, get a movement to rise up. And it's one of those things where like it finally does and they go from being this super small underdog nation to taking over most of another nation or something like just this idea of like you were the underdog, you worked really hard over small turns to get to something and then you got a big payout that paid off. Um, I think the third thing that I would want people to experience is the like the feeling of absurdity that is hilarious where it's like um, I, you know, I don't know exactly what it would be as an example in my game because I haven't got there yet. But I think the one example I use a lot that I keep going back to is that the world record for fastest world conquer in EU4, and, and to be clear, it isn't the fastest that somebody did that in like real time. It's the fastest they did it with like in-game time. was that they conquered the world as Mongolia, who was the emperor of the HRE. And so it's just this like weird, hilarious alternate universe where it's like, okay, yeah, what if Oirat decided to become the Mongolian Empire again and push so far west, converted to Christianity, and became the HRE and took over the world. So I would say those are kind like those experiences are what people would want."
+    },
+    {
+      "at": "2026-09-24T20:13:06.800Z",
+      "text": "I think if that were to happen, there would be kind of two things. Um, on either end of the spectrum. One would be somebody plays it and they see, and I'm like, or somebody builds it and I play it, I'm like, this is just a calculator with a graphical design interface. And it is essentially just a simulation. And so there isn't like, much fun to it um i think the the other end of the spectrum where somebody implements it is they play it and they're like this is a lot of fun but there isn't a lot of like history to it and it's very like unrealistic in a sense right like um in the sense that It's not really based on history or it, it is it's like very like um blunt with it and like simplistic where it is like oh communism people are hungry because there's no food to eat in communism or oh there are republicans they don't like just like relying on like shallow stereotypes and not allowing for the complexity of these intersecting systems to tell a story that is unique and not just a flattening of that right because I think that just like one thing I see in video games sometimes, which for the games that they're making, maybe that is the right choice. But it, it is very much like the very like stereotypical things gameplay mechanics whereas like with this I don't want stereotype in the mechanics I do want there to be satire a little bit of farce overt characterization in the content but you know it's like one of those things where I don't want it just to be this like super simple like oh if you are a communist country you have less food if you are a libertarian country you have zero welfare support because it is one of those things where like I could see a nation being a hundred percent libertarian and despite not having any social wel welfare programs the society is also built around something else maybe it's got a very large um church culture or it's uh religious organizations and they are so integral to that society's cultural identity that the idea of a social welfare program say it actually wouldn't make sense because it's like well why would the government do it when the church is not only do it, but like they actually do it. So those are kind of my thoughts."
+    },
+    {
+      "at": "2026-09-24T20:16:52.360Z",
+      "text": "Um, I think outside the end of things, um, are as I mentioned, uh, Europa Universe Salus, that is definitely a big one. That is a huge inspiration on me. I think the other thing that is kind of big is Video"
+    },
+    {
+      "at": "2026-09-24T20:34:36.623Z",
+      "text": "I got I did get cut off one of the things I, I do like is your your Europa Universalis for like I was saying that is a game that I think I draw a lot of inspiration from and that kind of feeling of like you've got this challenge you've got a unique situation you've got a a nation that on one hand has a potential advantage but right now is kind of stuck on all sides You know, it's like that idea of like you start an EU four, but you've got to deal with France, which is a really powerful nation. Or you've got you're right up against the Ottomans and you're like, how do I handle this? And another uh game uh I think from like tone wise is Fallout Four and like the Fallout universe in general. I do like how ridiculous it can be while still remaining uh, uh, serious. And what I mean by that is like it is these ridiculous things, but they like treat it in universe as serious. And they're definitely way more silly and dark than I would want to go. But like that handling is something that I do really like. Um... As far as like films, shows, books, podcasts, um, that I draw on, um, one of them is Peter Zion, I think his name is. He, I read his books, Accidental Superpower, and the other one, I can't remember the name of it. And I just really found it so fascinating. His view on how things that I would have never thought of, like geography, play such a huge importance in our world, which makes sense. Um, and it's that should actually be in the game notes somewhere. Um, and it is one of those things that, like, um, um, you know, like he talks about how like waterways are are so important and what help America grow and that's kind of where I got this idea of having waterways as a as a part of the nation um, those are kind of the big three I think off the top of my mind right now um, Civilization 2 I think is another kind of big influence in the especially like their turn design um, and how this isn't a real-time game like EU4 is and I like how Civilization 4 and I think I've talked about this with you or another Claude um, just like the incremental rewards and like how there's always multiple goals that you're working at accomplishing at, at one time and so if you accomplish one you there's still other ones that you were working on"
+    },
+    {
+      "at": "2026-09-24T20:37:07.608Z",
+      "text": "I think the feeling that they should feel at round turn 60 and they just got swallowed up by a neighbor is I know what I need to do next time. I don't want them to feel cheated um, or robbed in any way. I think that they need to feel like it happened because of a certain thing. That happened. Or right, like maybe they took a risk um and it didn't pay off. Or they tried something and they didn't grow their country the way that they did and they, they got swallowed up. But but overall, I want them to end thinking I know what I did wrong and I know what I need to do differently next time. When I start this game up."
+    },
+    {
+      "at": "2026-09-24T20:38:41.958Z",
+      "text": "Um, the, I pushed them past in the alpha because at the time I really just wanted to get to the alpha and it was going really, really slow with the way that I was doing it. And now I'm seeing that that is in part due to the inefficiency of the way that I had Claude Code and the agentic system set up. And so I think if... It is one of those things that dip, mm. I think for the alpha, I still do want to kind of push that back a bit because I really do want to get the alpha up and running and being able to be played at least. Um, I think the beta version Uh, is when I would definitely want the that kind of sharp, biting, sardonic voice to show up."
+    },
+    {
+      "at": "2026-09-24T20:40:59.543Z",
+      "text": "Uh, question seven, you are right. And so I think that there is going to be some history, but not a lot. Um, I do want to like have like the history built into it. And number eight, who is the player? I think the player is very much like EU4 in the sense that it you aren't you are technically the leader of the nation, but it isn't like you are the very specific leader that is currently in charge, right? Like you are as EU4, like the kings or queen or whatever your leader is are constantly changing and that, you know, impacts how well you can do things. And so I like the idea of it being you are the nation itself that you are playing."
+    },
+    {
+      "at": "2026-09-24T20:46:07.189Z",
+      "text": "Um, I think right now, question nine, those do stay. I think there might have been a parsing error. Um, I think like forcing a population out I guess the main thing, and maybe we can kind of read just talk about this and we can take the, what I say here and kind of override that. But the main thing is I want to draw on history and the fact of the matter is that American history is bloody. There's a lot of blood on America's hands. In our history. And I don't want to ignore that. Or pretend that didn't happen. In any way. But I also want to be sensitive. And realize that. Although this can be a game about history. That it helps people learn. It is still a video game. And so I think like with the. Getting people out and expulsion. The, main thing that I was thinking about is like um, using making sure that this is is still a realistic game set in some reality but it's still a fantasy for people to escape to um And I, like, I don't want to have a mechanic where Christian nationalism rises up and it's giving the player a choice to expel their LGBTQ minority because that seems dark and not something I would want to hard code as a possibility And so for like that, I think that's where just the term civil liberties would go down would be a blanket catch-all um it, you know i'm reminded of this youtube video i saw by the youtuber dan olson about how he created uh minecraft server and he was testing out this new mechanic where uh if you had a village it uh would grow with other uh people in minecraft But he didn't want to like always go down to this village. It was like on the other side of the map. And so what he did was he created a system where he would push these villagers onto a boat bring that boat to the other side of where his nation is or his like Minecraft area was and had them build a village there. And he talked about how Although this wasn't an intentional outcome of the game, um, essentially the mechanic that was built into the game was mirroring that of colonialism and transatlantic slavery. And the video was an interesting kind of talking about how video game systems kind of play out in that way. And you know, I think that is like I think the difference here is that like. With Minecraft, that's a like, oh gosh, that is like obviously they weren't in that was a system that was not intentional. Uh, but I think with this game, because the backdrop is America and a, an alternate history, something like that is no longer funny or a like, oh, or like funny in the sense that like, oh gosh, that is ridiculous. I can't believe that is something that you can do. Uh, because it, is no longer in this realm of fantasy, like Minecraft is because it is still based in the contextual history of America. Um, so I do want to, so that's, I think kind of the main thing. Does that make sense?"
+    },
+    {
+      "at": "2026-09-24T20:50:36.378Z",
+      "text": "I think if somebody leaves a one-star review, I think there's like uh, two ways for me to like conceptualize this one-star review. Um, the first is what they would say that would make me be like, oh gosh, like I failed in implementing the game. And the other would be I failed in marketing the game. If I failed in implementing the game, I think the one star review would be like, it's cool, but it's just not fun. Like, after an hour, they're like, yeah, like, it, it's cool and it's kind of funny to see these things, but like, there just isn't much to do. From a gameplay perspective, it's just boring. I think that's the main concern from that point. Um, I think from like a mismarketing side of things, my concern would be somebody leaving the game and being like, uh, I think there's like two things. I think one would be somebody leaving the game and being like, oh, this game is is woke or whatever. And that's just because like video gamers are that way. Or anything that doesn't follow their myopic view of the world. Um, and not all video gamers, obviously. And, and like I wouldn't want that. Um, because I'm not really targeting them. Um, and maybe like another thing would be like somebody leaves a comment or a one-star review and they're like It there's no military function you take over a country by just saying take over um and that is no fun and and that I think is like a bigger thing because I do want to stand firm on like not having military units in the sense that they are a like unit that you can move and direct and interact with as a separate entity outside of the map. Um, military will, like, you will have, like, military, and I think in later versions, like, you will have you know, and I t have talked about this, like, where oh, uh, Hawaii has Pearl Harbor, so they have a good Navy or something. Like, I that is something I do want But it isn't like you were going to say, I need to move my battleships here. Um, and so I, that is, I think, another thing. And that would be a, a form of like mismarketing and positioning rather than game."
+    },
+    {
+      "at": "2026-09-24T20:55:11.080Z",
+      "text": "I think that is more or less the right line. I think um, it's one of those things where and like this would we would get into more specifics later, right? Where um, civil liberties, right, would impact people but it would impact people less if you were the matching um, movement um, right so if a Christian nationalist nation had a low civil liberty thing and they conquered another nation people who are already Christian nationalists would not be as impacted by that low civil liberty because it is either A, um, a civil liberty, like those are the rules that they would want in life, um, or B, they are not the targets of the things that are causing the low civil liberties. Um, and this brings up another thing that we need to kind of rebuild, I think, later on, but before we get too far, and like really get into the game, like um, there's a lot of like terminology that I end up using while chatting interchangeably, and um, that gets really confusing for the programmers because they think I say one thing but mean something else. So I think it would be good later on before we go through anything um, before I like get really going on in the game design to really kind of almost create a terminology list so that I am using the same thing all the time."
+    },
+    {
+      "at": "2026-09-24T21:12:54.387Z",
+      "text": "Mm. Round 12, question 12, that's a good one. I think... When they clash, almost there should be um, two options weighted. One is, can the history be adjusted in a way, or, or the reality, not just the history, but um, adjusted in a way to create a simulacrum of feasibility. And then another one would be is will focusing on a certain thing lower too much, lower the amount of fun the average viewer would have. And, you know, I think um, at the end of the day, the point of this is to be fun. And to me, um, keeping it simple and making a better story, those two work together to make it fun. Because, you know, obviously, right, like, this is good. This could potentially be the kind of game that is way too complex for people, that people won't enjoy it, but this also isn't for them. And so I think that for me, the simplicity of the game needs to be in learning it and quickly understanding how things work, right? Like, if somebody who has never played the game before started as a nation, and they saw low civil liberties, they should, they would intuitively understand what that means. And that would be simple. Even if, like, the exact formula in which to get the civil liberties figured out behind the, uh, under the hood, as well as, like, all the things that influence it is a little more complicated, there should always at least be, um, At the end of it, there should be a very simple thing on the end, I think is what I'm going for. It um, reminds me of the book uh, 4DX by Mr. Cubby, where he talks about the four disciplines of execution. And one of the things he talks about is how you need to have a scoreboard. And a scoreboard for your goals needs to be... clear and easy to read so that you can just look at it and you know whether or not you're winning. So why that, how that can apply to this, there's going to be a lot of complex, intricate systems moving back and forth and all of this. But at the end of the day, um, people need to be able to quickly look at these things, see how they interact, on a basic level and know how they work and so they can have fun without needing to get into the details. It's almost, you know, I think about, um, you know, I think about my camera. I have a Fuji X-T3 and, it, you know, this is a pretty common thing among all modern day mirrorless cameras. Um, but they have an auto mode and they have a manual mode. And it's one of those things where, like, I prefer using the manual mode because that's just how I learn photography, but also, like, with film. Um, and so my, my camera is always in manual mode. And I have created custom Fuji looks specifically based on um, film profiles that I have wanted to emulate as well as other things I wanted to do. I have controlled all of these things and I've been able to do it. And it's been a great camera. At the same time, somebody could still put the camera in auto mode, select from one of the many Fuji looks that they have, like Provia, you know, that stuff, and still really enjoy the camera and take a good picture. Um, and... It's not like we're using a different camera or a different system. It's just that like the systems that we are using at different levels that you can work with them on a deeper level, but you can also just play the game."
+    },
+    {
+      "at": "2026-09-24T21:16:54.072Z",
+      "text": "Um, I think looking at the map screen I would think it looks more like an interactive map you would see on a website for like an article about here's this thing that's happening um, um, I think right now for the alpha how the game is the like overall look is fine I do want to at one time at a future point work on the design and I think the main thing is not so much the art of the design but it's like the user interface and experience because right now this is a huge problem that like we haven't gotten to because it's been on the actual game design But like the sidebar in which you control everything takes forever to scroll through. And shows you all this information, which is great, but when you don't need it, it's useless. So that's kind of my thought."
+    },
+    {
+      "at": "2026-09-24T21:18:58.043Z",
+      "text": "It is only a good story if at the end of it, they have learned something that they can do differently and do next turn. Um, I think that there are also one of the things about these games that I like is that like when people hear about that, they don't think, oh, that sounds like a terrible nation to start with. They say like, That sounds like a fun challenge. Um, and so I feel like part of that will just be the natural outflow built into it. Um, but if I'm looking at this as, as like an actual market game that I could sell, I think I would very much want to approach it via the EU4 model where I would release the alpha and beta with like a few actual missions and then there would be a DLC where it's like oh okay like here is this nation's mission that you could try um,"
+    },
+    {
+      "at": "2026-09-24T21:22:57.674Z",
+      "text": "So we have running it, designing it, researching it, building it. If I was to create uh, this system for the other things that I have, such as um, creating an AI agency for creative ideas, the uh, AI color correction team, or even just like have an idea for an, an app that I need to build. Are these the four basic categories I would use for those as well? Not the roles, but like the team ideas and what they do. \\"
+    },
+    {
+      "at": "2026-09-24T21:24:00.173Z",
+      "text": "Um, as we move past the alpha and into the beta, would there be other teams we would want to add or would those still be the essential ideas of running it, capturing it, defining it, finding out, making it, checking it?"
+    },
+    {
+      "at": "2026-09-24T21:24:53.142Z",
+      "text": "But also at the same time, I want to market this, right? I would then want someone running the marketing, capturing my intent, defining it, finding out, making it, and checking it as well, right?"
+    },
+    {
+      "at": "2026-09-24T21:27:12.281Z",
+      "text": "Okay, so one thought that I am thinking about is that it helps me conceptually if I can give names to each of these roles and reuse that as I'm kind of going my different projects. Um, and the, the theme that I've been using a lot has been the solar system. And, and so my thought is instead of having to be like, type up, Hey, orchestra, orchestrator, conductor, do this. I would rather just want to be like, Hey, Saturn. And I know that Saturn is in charge of running things. Um, but I also like using this analogy because it also means that I would have kind of the main lead would be the planet. And then the other pieces would be their moons. Is this a way that would make sense?"
+    },
+    {
+      "at": "2026-09-24T21:30:19.272Z",
+      "text": "Um, in those other sessions, I was just pulling names that I thought were cool. That were solar system based. So I would want to redo it. Especially because right now um, I refer to like my PC as Terra. And my MacBook Pro as Luna. So I would want to retire those names. Because that would get confusing. Because those are uh, like my computers. So I want the idea uh, of this to go. So let's maybe just start with this game. We need the first one was an orchestrator, right? Someone to run it and a conductor. What are other um, roles that would fall under that category of running things and you know, maybe it's not like yeah, I guess like what, what are the other roles that would be a part of that?\\\\ that were solar system based. So I would want to redo it, especially because right now um, I refer to like my PC as Terra and my MacBook Pro as Luna. So I would want to retire those names because that would get confusing because those are uh, like my computers. So I want the idea uh, of this to go. So let's maybe just start with this game. We need the first one was an orchestrator, right? Someone to run it and a conductor. What are other um, roles that would fall under that category of running things? And, you know, maybe it's not like, yeah, I guess like what, what are the other roles that would be a, a part of that?"
+    },
+    {
+      "at": "2026-09-24T21:31:43.547Z",
+      "text": "Okay, so I, I like your gumption of coming up with a suggestion, but I already have these. So what I want you to do instead is just tell me the roles and what they do. And what I would want to look like, just tell me their name, like their roles, like what are they actually doing?"
+    },
+    {
+      "at": "2026-09-24T21:32:14.271Z",
+      "text": "Uh, who would be would like the person who just takes all my notes listens to them and like kind of compiles them fall under your purview uh,"
+    },
+    {
+      "at": "2026-09-24T21:34:23.338Z",
+      "text": "Okay. Um, Saturn will be the conductor. Uh, Rhea will be the producer in that they look forward, keep the plan and all of that. Titan will be of the record keeper and repository keeper, which one is the biggest in terms of size? That would be Titan. And I think the other one would be Giannis, because I like that name. And it is also um, the god of beginnings, gates, transitions, times, duality, doorways, passages, frames, and endings. So they would be the repository keeper, right? Or something else."
+    },
+    {
+      "at": "2026-09-24T21:37:54.345Z",
+      "text": "Um, for scribe, I'm thinking Pluto, just because it's a dwarf planet. And it's kind of far out there. And if I could potentially see maybe like having another sub-agent where Pluto's in charge of like taking all of my notes and parsing them and maybe I could potentially see, actually no, I can't, let's not worry about that. Let's just focus on what we have to do today. But with that being said, I think I could see that Pluto being just the one small planet out there um, would be a good one."
+    },
+    {
+      "at": "2026-09-24T21:38:18.965Z",
+      "text": "yes, list what each design role does"
+    },
+    {
+      "at": "2026-09-24T21:45:22.286Z",
+      "text": "Um, so I'm looking at Jupiter's moons. And I think I need to remember that I also want this to be easy for me to remember to type. And so Io would be a really good idea for uh, the one that's more the most technically minded just because it's like Io. Um, and here are some others. And what I'd like you to do is pull up uh, information about the Greek myths. They're based on, and maybe that could be helpful to help us fit, pick one out. But others that I like is Ganymede, uh, Europa, Callisto, Alara, Sinop, Arme, Dia, Ursa, Can you look those up for me and, and maybe there's some information there that could be helpful?"
+    },
+    {
+      "at": "2026-09-24T21:48:25.637Z",
+      "text": "I O is systems designer. Sign up for the balance designer. Dia for UX designer. Callisto is the narrative designer. Alara as content and flavor. Because she was hit deep and it's the keeps the information deep in the surface. Um, what game role are we missing?"
+    },
+    {
+      "at": "2026-09-24T21:49:27.853Z",
+      "text": "Oh yeah, the Jupiter is the lead game designer, so that is who we will go with. Um, what are all the roles that uh, are in the researcher?"
+    },
+    {
+      "at": "2026-09-24T21:54:20.704Z",
+      "text": "I think for research, how much of these would actually work together like the other ones? And how much of this is just more like the data research is going to do the research they need for the data and the reference research is going to research what they need for the research."
+    },
+    {
+      "at": "2026-09-24T21:56:12.648Z",
+      "text": "Um, the one thought that I had was that the smaller they we could go with the researchers could be different dwarf planets because Pluto in a sense is a researcher and that they are researching what I am saying. Um, and so what I am thinking is for the researchers, we could have, um, the data researcher be Aries, E-R-I-S, or is that close to someone we already picked? Yeah, Ursa, Aries, I think that's different enough for me. Um, and then we would have... Ceres, D-E-R-E-S, as the reference researcher. And then the researcher lead, we could be Make Make."
+    },
+    {
+      "at": "2026-09-24T21:57:22.105Z",
+      "text": "Yes, let's go to actually making it now. What are all the roles in that?"
+    },
+    {
+      "at": "2026-09-24T22:01:55.942Z",
+      "text": "look up Neptune's moons and their myths So I think for the actual this, um, the um, tech lead would be Neptune. And I think Neptune would be a fun one because we have both moons and we have trans Neptunian objects. And so I think that could make fun for ideas of names. I am looking at names of trans Neptunian objects and things that stand out that I like. Uh, or chaos, mainly because that's an easy one to remember. Name. Um, uni. Logos. Those are two that are easy to remember, and I think could be applied easily. Um, I mean, we wouldn't have to stick to just the plow, their trans Newtonian Neptunian objects. We could also do. Neptune's moons which would be Triton would be a good one SAO Sao Proteus would be great for the prototype Sao maybe not Nesso uh, Despina are there any other trans-Newtonian objects that might have good names"
+    },
+    {
+      "at": "2026-09-24T22:06:30.910Z",
+      "text": "Um, for the AI programmer, let's do Proteus. For the gameplay programmer, I don't know about the gameplay programmer. Uh, the data engineer, let's go with Logos. Uh, the UI programmer, we can go with Despina. That was kind of an easy one to remember. Chaos. Would be we'll be on would be something. I think Varda would be something. Larissa. Well, can you fill in a table of everybody I've picked so far and what roles they are and who, what roles need to be filled still?"
+    },
+    {
+      "at": "2026-09-24T22:52:36.181Z",
+      "text": "Awesome what roles are elft"
+    },
+    {
+      "at": "2026-09-24T22:53:10.360Z",
+      "text": "Yes to those"
+    },
+    {
+      "at": "2026-09-24T22:55:55.710Z",
+      "text": "Works for me"
+    },
+    {
+      "at": "2026-09-24T23:22:09.458Z",
+      "text": "Brief approved. The alpha gets some history and your tone works. I mean the next 60 round game they play in this. \n\nAlso I went and double checked and all pc sessions should be backed up and committed"
+    },
+    {
+      "at": "2026-09-24T23:25:04.802Z",
+      "text": "Go ahead"
+    },
+    {
+      "at": "2026-09-24T23:30:41.651Z",
+      "text": "Do we need to pull anything that the pc committed"
+    },
+    {
+      "at": "2026-09-24T23:31:50.022Z",
+      "text": "So after this what is the next step"
+    },
+    {
+      "at": "2026-09-24T23:33:33.577Z",
+      "text": "Yes on the master file. \n\nControl board - who owns and updates taht"
+    },
+    {
+      "at": "2026-09-24T23:43:35.954Z",
+      "text": "Perfect - the control board is still something that needs to be fixed in order to best serve me. Especially since as this grows and adapts  I think it will need to change. Rhea on control board and titan on that works for me"
+    },
+    {
+      "at": "2026-09-24T23:45:40.080Z",
+      "text": "The other thing I think needs to be done is rethink the road to alpha. I came up with that while I Was learning to understand how to work with claude but now that I am getting started on a better foot do you think we need to update it? I am not the one doing the implementation nor do I know much aout game design pipelines so I will rely on Saturn to make it work the best way possible"
+    },
+    {
+      "at": "2026-09-24T23:50:08.203Z",
+      "text": "Sounds great - I think the one thing that I want to make sure that I keep is the GDD and working towards the TDD. \n\nOne question though, what is the best way to use claude code sessions for this?"
+    },
+    {
+      "at": "2026-09-24T23:53:34.258Z",
+      "text": "So for example - I want to review the GDD with the new game designer I would type\n\n/resume GDD review? or something like that"
+    },
+    {
+      "at": "2026-09-24T23:55:49.369Z",
+      "text": "Cool - what else are you going to get done today?"
+    },
+    {
+      "at": "2026-09-24T23:59:26.438Z",
+      "text": "Do we still have the documentation of the interviews I did for game design document because I'm open for it being updated as long as that informatio nis all there"
+    },
+    {
+      "at": "2026-09-25T00:19:08.317Z",
+      "text": "That looks good to me. Originally the plan was to work towards building a TDD before starting to code/program but it looks like that is no longer the test?"
+    },
+    {
+      "at": "2026-09-25T00:20:00.820Z",
+      "text": "As a senior game lead yourself which would be the best for this"
+    },
+    {
+      "at": "2026-09-25T00:20:40.233Z",
+      "text": "I read once that a GDD should be considered a living document. Is a TDD the same way?"
+    },
+    {
+      "at": "2026-09-25T00:22:05.257Z",
+      "text": "Sounds great, I think the only thing I would want to add to this road plan is to get one of the researchers going as well on researching History about the three main stories we wanted to start out with, Texas, Deseret, and Superior/Great Lakes."
+    },
+    {
+      "at": "2026-09-25T00:24:41.405Z",
+      "text": "One other thing - can we add a rule that when I sign off a session you change the name to the best name for it? I think it would be helpful if it was structured in a way that I could see what team was touched (game design, research, etc) in the title"
+    },
+    {
+      "at": "(mid-turn, 24 Sep evening)",
+      "text": "And yes to pluto"
+    }
+  ]
+}

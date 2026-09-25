@@ -24,3 +24,6 @@ content/test-*.json.tmp   # the browser test run writes this beside the json; ca
 
 # build output (build/package_playtest.py)
 dist/
+
+# macOS Finder metadata (the MacBook, Luna)
+.DS_Store

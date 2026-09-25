@@ -322,6 +322,9 @@ they had signed with us".* **Verified by reading both tables this session.**
 
 ## 39 — ⚠ Four real ocean ports are flagged as inland, and four nations lose their foreign trade
 
+*⚠ 24 September 2026 (D267): Aaron approved fixing the four on the Control Board on 15 September, with no
+note — the recommendation as written. Not yet done; it lands in M5 on the road (D264), before any trade number is tuned.*
+
 **`has_port` and `coastal` are baked as separate flags in `data/county_trade.json`, and where a port
 county's polygon does not meet the coastline layer the port is demoted to "reaches no external sink."**
 
@@ -657,19 +660,25 @@ leftover `content/test-*.json` something a session can see.**
 
 ## 48 — The control sidebar shows everything at once and takes forever to scroll
 
-**Raised by Aaron, 24 September 2026, in the director's-brief interview (Q13):** *"The sidebar in which
-you control everything takes forever to scroll through. And shows you all this information, which is
-great, but when you don't need it, it's useless."*
+**Raised by Aaron, 24 September 2026, in the director's-brief interview (Q13):** *"But the sidebar in
+which you control everything takes forever to scroll through. And shows you all this information, which
+is great, but when you don't need it, it's useless."*
 
 **Why it matters more than a layout complaint.** It breaks the principle he set in the same interview
 (Q12): every system should end in *"a very simple thing on the end"* a newcomer reads at a glance —
 his camera's auto mode — with the detail there for anyone who opens it. **The sidebar is permanently in
 manual mode.**
 
-**Not fixed now:** *the alpha's look stands as it is (his words, Q13), and the interface work is later.*
+**Not fixed now:** *the alpha's look stays — in his words (Q13), "I think right now, for the alpha, how the
+game is — the overall look is fine" — and the interface work is later.*
 **It is the first concrete evidence for when the roster's deferred UX Designer role should be hired.**
 `docs/design/presentation-design.md` has no entry for the sidebar's length — not checked beyond a search
 for "sidebar" and "scroll", which found none.
+
+*⚠ 24 September 2026 (D264): the adopted road to alpha hires the UX Designer (Dia) at M4, where its first
+job is the throwaway pretend turn. The sidebar is its second job, at M6, built in two depths — simple on top,
+the detail a click away. Both quotes above were corrected the same day to his exact words: the first had
+dropped his opening "But", and the second was the studio's summary labelled as his.*
 
 ## 49 — ~~Two programmer rules are both numbered 11~~ WITHDRAWN: a duplicate of 30
 
@@ -700,3 +709,61 @@ waiting on his decision.* **Recorded as D259.**
 **Not started here.** *It is five to seven days of work, it is not the current stage, and when to spend
 it is Aaron's.* *`docs/deferred.md` 17–29 are defects in what the wiki says; this entry is about what it
 does not cover at all.*
+
+## 51 — The evidence file's line numbers into the interview are six lines out
+
+**Noticed 24 September 2026 at the sign-off review, and checked here.** `docs/design/director-brief-evidence.json`
+points into `docs/design/director-brief-interview.md` by line number, and every one is six too low: it cites
+19–20 for *"It looks really complicated at first"*, which sits at line 25, while line 19 is a divider. The
+six-line "Corrected the same day" note was added to the top of the interview after the evidence sweep was
+written, and the file's "about" note does not say so. The brief names the file as a source (§10).
+**Deferred:** the quotes are right and only their addresses are off. The fix is small — add six to each
+interview line number, or one line in the "about" note saying to — for whoever next touches the file.
+
+## 52 — The studio's six functions have two sets of names, and four role names break the naming rule
+
+**Noticed 24 September 2026 at the sign-off review, and checked here.** The roster's Function column says
+*Running it · Capturing his intent · Defining it · Finding out · Making it · Checking it*; `CLAUDE.md`'s
+session-renaming rule (D265) calls the same six *Running · Intent · Design · Research · Build · Checking* —
+against its own "one word per idea". The naming rule says a planet leads a function and its moons are the
+roles under it, but Logos, Varda and Chaos sit under Neptune and are not its moons (they are bodies beyond
+Neptune), and Eureka sits under Mars and is an asteroid that shares Mars's orbit, not a moon. And the roster
+says Pluto "finds out what Aaron means" among the dwarf planets, while its table puts Pluto under *Capturing
+his intent*, not *Finding out*. **Deferred:** the names are Aaron's scheme (D262) and the words belong on
+Pluto's terminology list at M0 — one question to him there (which word for each function, and whether the
+rule widens to "moons or bodies that travel with it" or those four names change), not settled by the studio.
+
+## 53 — Old finished cards on the Control Board point at decision cards that no longer exist
+
+**Noticed 24 September 2026 at the sign-off review, and checked here.** The board has held no decision
+cards since 16 September, yet three finished-stage cards still say *"five of those are cards above waiting
+for you"*, *"there is a card at the top asking"* and *"Four need one small change and are the card at the
+top of this board"*. Two log entries also name internal rule numbers (*"now rule 21"*, *"written up as
+rule 12"*), against the board's rule of no internal numbers. All of it is text from 14–16 September; nothing
+added on 24 September has the fault. **Deferred:** it misleads only mildly, and Rhea's redesign of the board
+at M0 is the place for it — the three sentences into the past tense, the two rule numbers into plain words.
+
+## 54 — On the MacBook (Luna), nothing warns that the newest handoff is out of date
+
+**Noticed 24 September 2026 at the sign-off review, and checked here.** Programmer rule 20 and D10 count
+on the start-up check naming every commit made after the newest handoff. On Luna, the shared rules folder
+(`000-default-prompts`, linked at `~/.claude/default-prompts`) holds an older check that prints only the
+handoff's name and an unpushed count. That folder is on a side branch (`control-tower-prototype`) with **no
+GitHub remote**, so the unpushed warning can never fire and the rules themselves exist only on this machine.
+*Measured here: the newest handoff (1702) has 10 commits after it, its line 17 says the draft rules file is
+"NOT adopted" (D263 has since adopted it), and nothing on this Mac says so.* **Deferred:** it is the shared
+rules repository, not this project, and giving it a remote and bringing the Mac's copy up to the PC's is
+Aaron's call. Until then, a session on Luna counts by hand: `git log <commit that last touched the newest
+handoff>..HEAD`.
+
+## 55 — Hog Wild's overnight chain breaks the one-live-session rule, and nothing says which wins
+
+**Noticed 24 September 2026 at the sign-off review, and checked here by reading, not by running a chain.**
+`docs/HOGWILD.md`'s "Running overnight" chains up to three runs a night — run, limit, wind down, schedule,
+resume — with the app kept open and no sign-off or archive in between. `CLAUDE.md` now says one live session
+per project, each ending in `/signoff` and an archive, and its start check says to stop on any sign of
+another live session (an uncommitted change, port 8000 taken) "in Hog Wild Mode too". The wind-down never
+says to commit its log or stop a preview server, so a resumed run could stop in the night with nobody there
+to answer. **Deferred:** it bites only when an overnight chain runs, and the fix is a line in Aaron's
+standing-permission document: an overnight chain counts as one session; each wind-down commits and pushes
+everything and stops anything on port 8000; the chain signs off and is archived once, after its last run.

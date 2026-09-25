@@ -351,3 +351,16 @@ Add one with `/rule` whenever a mistake earns it. Number them; never delete one.
     checks in 263s in a hidden pane — but the page does not answer while a suite runs, so poll it rather
     than waiting on one long call. Reported by the stage-3 scoping session at the 24 September
     consolidated sign-off.*
+
+24. **When recording Aaron's words, do not correct them — not even the grammar.** Cost: the director's
+    brief was drafted, checked four ways and nearly shipped quoting two answers he never gave. Writing
+    up his voice interview on 24 September, "the average **viewer**" became "the average **player**",
+    and "something they can do differently **and do next turn**" became "differently **next time**" —
+    the second changed what he meant, and a checker only caught it by comparing the draft against his
+    actual message rather than against the write-up. A word-by-word diff then found about a dozen smaller
+    smoothings (tense, "conquer" to "conquest", "liberty thing" to "liberties"). **What generalises:**
+    tidying a transcript feels like removing noise and is actually authoring; each fix is small and
+    reasonable and together they put words in his mouth, which is the exact failure the brief exists to
+    prevent. **Remove only filler and false starts. Then diff the record against his own messages before
+    anything quoted as his is relied on** — the diff takes a minute and reads the words, not the meaning.
+    *A misheard word stays as he said it; a correction goes in a note beside it.*

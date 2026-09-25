@@ -26,6 +26,10 @@ server. Opening `index.html` with `file://` will not work.
 python server.py
 ```
 
+On the MacBook (Luna) the command is `python3 server.py` — the Mac has no `python`. The PC (Terra)
+uses `python`. The preview launchers follow the same split: `nation-states` and `playtest-build` on
+Terra, `nation-states-mac` and `playtest-build-mac` on Luna.
+
 Then open <http://localhost:8000>.
 
 `server.py` is Python standard library only — no `pip install`, no Node. It serves the repo as
@@ -43,6 +47,8 @@ Append `?dev=1` to the URL for the developer controls (currently a manual world-
 ```bash
 python server.py
 ```
+
+On the MacBook (Luna), `python3 server.py` — the same note as above.
 
 Then open <http://localhost:8000/tests/run.html>. All green is the bar.
 

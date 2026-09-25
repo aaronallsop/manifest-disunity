@@ -325,7 +325,7 @@ commitment.** What it has instead is an ordered phase list.
 | Stage | |
 |---|---|
 | **1. Ideation** | ✅ **Closed 15 September 2026.** Seven rounds, **536 ideas and 178 rulings**, counted 14 September |
-| **2. Design** | ◀ **Live.** This document and its satellites |
+| **2. Design** | ◀ **Live.** This document and its satellites. *⚠ 24 September 2026: ✅ closed 16 September 2026 (D241). Where the work stands now: `docs/technical/ROAD-TO-ALPHA.md` (D264).* |
 | **3. Technical Design** | Formulas, pseudocode, inputs and outputs, edge cases. **Every number in this stage is the architect's, not the designer's** |
 | **4. Build order** | **Aaron's and the planning stage's.** A design document supplies evidence about what depends on what; **it does not rank, recommend or cut** |
 | **5. Implementation and verification** | A separate session that writes and tests code |
@@ -335,6 +335,8 @@ and a fixed price, transit across other nations' ground with compounding tolls a
 the rivers and their **fifteen chokepoints**, two seas with the Panama Canal shut between them,
 Canada and Mexico as places, a trade network map, and all sixty nations using the system rather than
 only the player. Tagged `v0.6`. **The alpha test has not been run.**
+*⚠ 24 September 2026 (D264): it will not be run on its own; its questions go into the first look, M2
+(`docs/technical/ROAD-TO-ALPHA.md`).*
 
 ### Alpha content scope — what the alpha does NOT contain
 

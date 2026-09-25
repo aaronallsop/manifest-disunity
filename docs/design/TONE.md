@@ -48,6 +48,8 @@ would break, and why.** They are the test suite for §2 and should be read as su
 > **So §2.4 (Wit), the mottos of §2.3, and every piece of historical flavour are POST-ALPHA.** *The
 > alpha ships **the newspaper as an object** — it appears, it is placed, it is slanted and gated the way
 > §2.2 says — **carrying placeholder text.***
+> *⚠ 24 September 2026 (D261): "every piece of historical flavour" no longer holds. The alpha carries some
+> real history; Wit and the mottos are still post-alpha.*
 >
 > **⚠ This does not suspend a single rule below. It defers the CONTENT the rules govern.** *When the
 > writing is commissioned, these rules are what it is checked against — which is the whole reason they
@@ -261,10 +263,14 @@ population**, **mass killing as a mechanic**, and **nuclear weapons against citi
 history, or as an accusation one paper makes against another government, **but never as a button.**
 *Check: the move list.*
 
-> **⚠ ITS REASONS REPLACED, 24 SEPTEMBER 2026 (D260).** *The three acts and the allowance stand; Aaron
-> confirmed them. **The reasons are now his own**, given in the director's-brief interview (Q9) and quoted
-> in `DIRECTOR-BRIEF.md` §6, which he asked to override this wording: "we can take what I say here and
-> override that."*
+> **⚠ ITS REASONS PARTLY REPLACED, 24 SEPTEMBER 2026 (D260).** *The three acts stand; Aaron confirmed
+> them **for now** ("I think right now, those do stay", Q9). The allowance stands as the studio's
+> reading; he did not speak to it. **On forcing a population out, the reasons are now his own**, given in
+> the director's-brief interview (Q9) and quoted in `DIRECTOR-BRIEF.md` §6. That is the act he tied the
+> override to: "forcing a population out, I guess the main thing ... we can take what I say here and
+> kind of override that." Mass killing and nuclear weapons keep this rule's wording unless he says otherwise.
+> (Corrected the same day: this note first said he confirmed the acts outright and that his reasons
+> replaced the wording for all three.)*
 
 **35 — This game is not for a player who wants it to confirm that their side of real American politics
 is right**, or who wants a fantasy of doing to real neighbours what rule 34 refuses. **(proposed,

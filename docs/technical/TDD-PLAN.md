@@ -410,9 +410,9 @@ about something else.**
 | | | Owner |
 |---|---|---|
 | **1** | **Do the three mission trees get technical documents, or are they content?** `missions-design.md` is already flagged to split at the system/trees seam, and the trigger is a fourth tree. **Three trees may be data rather than specification** | The architect, at T5 |
-| **2** | **Does the alpha test run before stage 3, during it, or after?** *Four design questions are owned by "the alpha" and cannot be answered on paper — and the built alpha has never been played by anyone who did not write it* | **Aaron** |
-| **3** | **What happens to the twelve standing faults?** *Two are cheap and isolated. The rest sit in code this stage restructures* | **Aaron**, and it is half-answered — he chose scoping over repair |
-| **4** | **Does `DESIGN.md` survive stage 3?** It is the source of truth for what the game DOES, and by the end of this stage nineteen technical documents will also describe what it does. **Two sources of truth is the problem this project has solved twice already** | The architect, at T6 |
+| **2** | **Does the alpha test run before stage 3, during it, or after?** *Four design questions are owned by "the alpha" and cannot be answered on paper — and the built alpha has never been played by anyone who did not write it* *⚠ 24 September 2026 (D264, items 3–4): answered. Strangers play a small first look after the M1 repairs (M2), then the screenings; the Economy-mode questions go into that first look (`ROAD-TO-ALPHA.md` M2).* | **Aaron** · *answered, D264* |
+| **3** | **What happens to the twelve standing faults?** *Two are cheap and isolated. The rest sit in code this stage restructures* *⚠ 24 September 2026 (D264, item 2): answered. Six faults are repaired at M1 (`ROAD-TO-ALPHA.md` M1); the rest stay filed in `docs/deferred.md`.* | **Aaron**, and it is half-answered — he chose scoping over repair · *answered, D264* |
+| **4** | **Does `DESIGN.md` survive stage 3?** It is the source of truth for what the game DOES, and by the end of this stage nineteen technical documents will also describe what it does. **Two sources of truth is the problem this project has solved twice already** *⚠ 24 September 2026 (D264): still open; it now sits in the contracts pass (`ROAD-TO-ALPHA.md` M3).* | The architect, at T6 · *now at M3* |
 
 ## 12. Gaps in this plan
 

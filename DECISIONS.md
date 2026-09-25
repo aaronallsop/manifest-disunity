@@ -2611,6 +2611,8 @@ for Aaron's own design for what breaking one should eventually cost.
 **3. Playtesters wait for the alpha.** The `live` permission stays off. Aaron added, mid-session:
 the playtest is live on GitHub but he has sent it to nobody and will not until the alpha is built.
 So there is no audience to disturb and no urgency; the finished Economy build waits with the rest.
+*⚠ 24 September 2026 (D264): superseded. Strangers play from the first look after the repairs (M2),
+not only at the alpha.*
 
 **4. The industry re-bake stays after the alpha.** D169's approval is not a reschedule. Re-baking
 changes what every county is made of and would move every number the alpha exists to measure.
@@ -2678,6 +2680,9 @@ question with the same answer is "find the best routes as if everyone said yes, 
 would have to ask", and that runs in milliseconds.
 
 ### D173 — This is the ECONOMY alpha. The game alpha is a different thing, later
+
+*⚠ 24 September 2026 (D264): its separate Economy-mode test is superseded. That test's questions go
+into the first look (M2), and it is never run on its own.*
 
 *2026-09-05.* Aaron, at the end of the A4 work:
 
@@ -5799,6 +5804,9 @@ made.*
 **Still unanswered, and it is the one I said I was least confident about:** *whether a mission REWARD
 lapses with the ground that earned it.*
 
+*⚠ 24 September 2026 (D267): answered the same day, 15 September at 22:01 UTC, approved with no note;
+the recommendation stands as written. It reached no entry until D267.*
+
 ---
 
 ### D236 — ⚠ For the alpha, a mission tree belongs to the PLAYER alone, 15 September 2026
@@ -5861,6 +5869,9 @@ talks?*** **Those are three different designs and the cheapest of them is a tent
 *Recorded against `turn-design.md` and `presentation-design.md`. **The tutorial he previously had never
 asked for is now, in substance, asked for** — and that is a scope change the build order should see
 rather than discover.*
+
+*⚠ 24 September 2026 (D267): he gave the shape the same day, 15 September at 22:01 UTC — "In my mind it
+should teach you the order of things." His full answer is quoted in D267.*
 
 ---
 
@@ -6026,6 +6037,10 @@ asked.** *Four rulings in one note, and the third is the largest scope decision 
 > **world news** which will be information from the world. **For the alpha lets only do local and
 > national news.**"*
 
+*⚠ 24 September 2026 (D268): the quote above drops three of his words without marking the cut. His
+saved board answer begins "A player gets a newspaper that has local news (what is happening in their
+nation)". The rest of the passage matches.*
+
 *These are the same three sections `turn-design.md` §5 already ruled, under better names — his **local**
 is the government reporting to you, his **national** is the continent, his **world** is world affairs.*
 **Cutting the third cuts the DISPATCH from the alpha**, so the Panama Canal — shut in the game's
@@ -6042,6 +6057,9 @@ release. *Carried into `presentation-design.md` §1.*
 **So the alpha ships the newspaper as an OBJECT — placed, slanted by ideology, gated by Civil
 Liberties — carrying placeholder text.** *Mottos go with it; historical context goes with it; the whole
 of `TONE.md` §2.4 goes with it.*
+
+*⚠ 24 September 2026 (D261): the history half is superseded — the alpha gets some real history, not a
+lot, built into play. The jokes-and-writing half stands.*
 
 > **⚠ This suspends no rule. It defers the CONTENT the rules govern** — *and `TONE.md` rules 1–4 still
 > bind every panel, prompt and tooltip the alpha does ship, because those are the model's voice rather
@@ -6561,6 +6579,9 @@ put it back. *Surfaced by that session at the 24 September consolidated sign-off
 
 **Decided: the card stays off the board "moving forward", in Aaron's words.** *Do not restore it.*
 
+*⚠ 24 September 2026 (D264): D264 names this entry only for the separate Economy-mode test, which is
+never run on its own now. The card's removal stands.*
+
 ### D259 — Aaron approved keeping the writer's wiki articles on 14 September; it went unrecorded for ten days, 24 September 2026
 
 **Observed.** *At the consolidated sign-off (D257) the design-wiki session reported that the board card
@@ -6574,6 +6595,10 @@ day rewriting the four pages built on a misreading; **five to seven days**, keep
 cards (D228 recorded two other approvals from the same evening); this one was among them and its answer
 reached no decision entry.* **The same mechanism as D258: a board answer that lives only in the board's
 database and a commit is not in the record.**
+
+*⚠ 24 September 2026 (D268): wrong entry cited above. The two other approvals from that evening
+(closing round 4 and confirming its defaults, 14 September 21:06) are in D213. D228 holds the two
+approvals of 15 September at 02:01.*
 
 **Decided: the approval stands and is now recorded.** *It is NOT started — see `docs/deferred.md` 50 —
 because the work is days long and not the current stage. When to do it is Aaron's.* **The board's wiki
@@ -6594,6 +6619,9 @@ messages, which found two answers where his words had been changed ("viewer" wri
 `docs/design/DIRECTOR-BRIEF.md`, was drafted by one writer and checked by four others** — attribution,
 completeness, older records, usability — before revision.
 
+*⚠ 24 September 2026 (D268): "both put back" was not the whole of it. The sign-off review found more of
+his words still changed in the record, in Q6 and Q9, and the brief quoting one of them as his. See D268.*
+
 **Decided — Aaron, 24 September:** *"Brief approved."* **So:**
 
 1. **Every role reads the brief first.** It holds five pillars, the tie-break for when simple and story
@@ -6609,6 +6637,8 @@ completeness, older records, usability — before revision.
    unattributed alpha goal.
 6. **Q14's "next turn" means the next game** — *"I mean the next 60 round game they play."* The same
    lesson as Q5.
+   *⚠ 24 September 2026 (D268): that quote cuts him short without marking it. His words were "I mean
+   the next 60 round game they play in this."*
 7. **Studio wording stays flagged, not struck** (brief §8.6): no role quotes it as his.
 
 *Each older line affected carries a dated note beside it rather than being edited away:* `TONE.md` (its
@@ -6640,6 +6670,10 @@ idea F36 may change. Each carries a note.
 **Aaron's scheme:** *a planet leads a function and its moons are the roles under it; the dwarf planets are
 the ones who find things out; **Terra and Luna are his two computers and never roles**; he is the Sun.*
 *Every role's file carries both names — the name is what he says, the title is what the job is.*
+
+*⚠ 24 September 2026 (D268): "he is the Sun" is not his. It was the studio's suggestion (21:28 UTC) and
+sat in the roster table shown to him at 22:06. He has neither confirmed nor objected, and none of his
+messages mentions the Sun. The rest of the scheme is his.*
 
 **Named on 24 September:** Saturn (Conductor), Rhea (Producer), Titan (Record-keeper), Janus (Repository
 keeper) · Pluto (Scribe) · Jupiter (Lead Game Designer), Io (Systems), Sinope (Balance), Callisto
@@ -6685,6 +6719,15 @@ that role's job. The roster says the Conductor never writes game code or design 
 still holds.*
 
 **Kept, not deleted:** *the old file, word for word, at `docs/archive/CLAUDE-until-2026-09-24.md`.*
+
+*⚠ 24 September 2026 (D268), two corrections. **"His paragraph" overstates it:** the opening paragraph
+was kept word for word from the old file, and no author is recorded for it — in particular not for "tell
+you afterwards why they lost" (the brief, §8 item 3). He made that clause's substance his own in Q5, not
+its wording. **And his yes came before the draft was finished:** "Yes on the master file." was at 23:33
+UTC, while the draft was still being checked. The file was adopted at 23:53 on that yes, and the
+comparison went to him afterwards. Added after his yes and not seen by him beforehand: the three restored
+rules above, the session and archiving habits, and the correction that Saturn writes a role's file and
+hands over. His confirmation of the file as adopted is to be asked for; silence is not taken as a yes.*
 
 ### D264 — The road to alpha is adopted: foundations, the cut up front, and strangers playing from the start, 24 September 2026
 
@@ -6738,3 +6781,111 @@ being the studio's functions in plain words (Running, Intent, Design, Research, 
 once it exists), listed by how much each did. *Plain function names rather than planet names, because the
 title is for seeing at a glance, and planets name roles, not teams.* **In the project's `CLAUDE.md`.**
 *A candidate for Aaron's personal file once proven, with the project name changing per project.*
+
+### D266 — Pluto saves Aaron's own words from the PC's design sessions at M0, before the GDD is touched, 24 September 2026
+
+**Observed.** *Every record of the design interviews in the project is the studio's write-up quoting
+Aaron — nearly 500 times across the seven idea documents — not the conversations themselves. The raw
+sessions live only in the session logs on Terra (the PC), which are not in the project and not on GitHub,
+and the tone interview lives in his Claude chat. D260 showed why that matters: in the write-ups, studio
+wording had come to be treated as his.*
+
+**Decided — Aaron, 24 September: "And yes to pluto."** *At M0, a short session on the PC copies **only his
+own messages**, word for word, dated and in order, from every design session's log into the project, and
+backs them up. No summaries, no rewriting. The tone interview's chat can be exported the same way.*
+**Also saved the same evening:** a snapshot of all 39 answers he has left on the Control Board, so none
+lives only in the board's database (D258, D259).
+
+*⚠ 24 September 2026 (D267, D268), two corrections. **The tone chat's export was offered, not decided:**
+the studio said it "could be exported the same way if you'd like it kept too", and "And yes to pluto."
+does not say whether it covers that part; ask him. **And a snapshot is not a decision entry:** three
+answers in it, from 15 September, had none until D267.*
+
+### D267 — Three board answers from 15 September that never reached this log, 24 September 2026
+
+**Observed.** *Tonight's snapshot of the Control Board's answers (D266) holds three that Aaron left on
+15 September between 22:01 and 22:02 UTC, and no entry here records any of them.* **The cards left the
+board that night (version 39, "Your four cards are all answered and off the board") and the answers went
+nowhere else.** *D235 still called one of them unanswered. The same failure as D258 and D259; found by
+the sign-off review (D268).* **The two recommendations below are quoted from the board as it stood when
+he answered (git history, 15 September) — studio wording, not his.**
+
+**1. A mission's reward when the ground is lost** — *"You finish a mission, then lose the ground that
+earned it. Does the bonus go?"* **Approved at 22:01 UTC with no note, so the recommendation as written:**
+
+> *"The bonus should lapse with the ground, and the completed mission should stay green. My reasoning is
+> that you ruled missions permanent for MOMENTUM, so a player can plan against a tree that does not
+> flicker, and momentum is about the tree rather than about the arithmetic."*
+
+*The card's third way — place bonuses lapse, achievement bonuses do not — was not recommended and is not
+approved.* **Answers D235's open line and `missions-design.md` gap 7, which called it "unasked".**
+
+**2. Ports that reach nothing** — *"Ten countries hold a port that cannot sell abroad. Four of them are
+real ocean ports."* **Approved at 22:02 UTC with no note, so the recommendation as written:**
+
+> *"Fix the four that are plainly wrong. Philadelphia, Charleston, Hampton Roads and Providence are
+> deep-water ocean ports and the map has them as inland."*
+
+**Approved, not done.** *Measured tonight: all four are still marked as inland ports in the trade data.
+It is a data change for a programming session, and it moves the volume limit on every trade deal those
+four nations sign. `board-design.md` §7.1a and deferred 39 still read as if it were undecided.*
+
+**3. What turn one teaches** — *the card asked whether he meant the voice, the order things are
+introduced in, or doing things while it talks.* **Aaron, commenting at 22:01 UTC, in full:**
+
+> *"In my mind it should teach you the order of things. So each of the countries we picked to build
+> missions for/starting nations to choose from (Texas Nations/Deseret/Minnesota or Wisconsin) would have
+> actions that would walk the player though each of the different systems and each of their choices
+> should result in a something that won't be paid off until later on than anything else.*
+>
+> *So for example lets say we pick Houston.*
+>
+> *Start with an opening move where the gulf compact (thats the name right?) asks for a peace treaty and
+> you can either: accept it, reject it, send a counter offer. Sending a counter offer has a 1 turn turn
+> around so you won't know what happens until next turn. Then you hear back from Miami that they sent you
+> a counter trade offer from the trade deal you sent in turn -1 (before the player started) teaching the
+> player that you send things and recieve things and can coutner offer. Then there should be a national
+> event - announcing that oklahoma has officialy been recognized as a vassal of texas, whereas it had been
+> unofficial up until now. Then maybe it would be a message from Austin (in game built in not a feature
+> for players) bragging about receiving accepted status or something. Then that would influence you to
+> accept status from another nation. And maybe this comes before the peace treaty because I just thought
+> of something that could be a fun mechanic - nations only sign peace treaties with nations. The United
+> States fought the "war on terror" but they would never sign a peace treaty because there is no nation
+> to sign it with. So...signing a peace treaty means that that nation recognizes you as a soverign nation
+> and are dealing with you as a nation. So that comes first - austin bragging - and then the gulf compact
+> asks for a peace treaty which means they accept you as a soverign nation and it introduces your next
+> goal of getting another nation to accept you."*
+
+**So the shape D237 left open is THE ORDER.** *It was already carried into `presentation-design.md` §10
+on 16 September, which traced it; only the decision entry was missing.*
+
+**Not done here:** *entries do not name card ids, so the other 36 answers in the snapshot have not been
+matched to entries one by one. That check is still owed before D266's "none lives only in the board's
+database" is relied on.*
+
+### D268 — The day's documents were reviewed as an adversary before sign-off, 24 September 2026
+
+**Observed.** *Before sign-off, an adversarial review read everything written today against Aaron's own
+messages, the older records and each other.* **It confirmed 90 defects across fifteen files** — *the
+master file 20, this log 15, the Control Board 14, the road to alpha 10, the roster 10, the interview
+record 6, the brief 5, and ten elsewhere. 82 were the studio's to fix now, 3 are his to decide, 5 are
+deferred.*
+
+**The worst: the interview record still changed his words after D260 said the changes were put back.**
+*Q6 reads "able to be played" where he said "being able to be played", and "past the alpha" where he said
+"past in the alpha"; Q9 repeats one of his phrases and moves a sentence; and the brief quoted the changed
+Q6 line as his.* **Of the same kind:** *D263 credited him with a paragraph nobody recorded him writing,
+D262 put the studio's "Sun" into his scheme, two quotes in this log were cut without marking the cut, and
+three of his board answers had no entry (D267).*
+
+**Done: put right at this sign-off, file by file, each finding reproduced before it was touched.** *In
+this log and the other closed records, by a dated note beside the old line, never by rewriting it.
+Anything not fixed, and the three that are his, go to the handoff.*
+
+**And one unsanctioned change is reverted.** *The new master file (D263) said "A design or technical
+session may correct" `DESIGN.md` for fact.* **D232 granted that to a design session only, and nobody
+asked Aaron to widen it.** *Back to design sessions only. If a technical session needs it, that is his
+to grant, as a new entry.*
+
+**Rejected:** *leaving the fixes to the next session.* **Every new role is briefed from these records,
+and D255 shows what eight days of a wrong record costs.**

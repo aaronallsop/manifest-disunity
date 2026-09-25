@@ -27,9 +27,10 @@ This file holds only what is permanent; progress and counts live in the handoff 
   around turn 80–95 (defect 46). The other standing faults in `docs/deferred.md` stay filed. After M1, one
   yes from Aaron per milestone covers its build and its screening; he approves every specification and
   plays every build first.
-- The build is `v0.6`, Economy mode (D173). Its test has not been run; the rest of that plan is parked, off
-  the board on Aaron's instruction (D258). Here the economy alpha is always called Economy mode, and "the
-  alpha" always means the game alpha that stage 3 works towards.
+- The build is `v0.6`, Economy mode (D173). Its test is never run on its own: its questions go into the
+  first look at M2 (D264). The rest of that plan is parked, off the board on Aaron's instruction (D258).
+  Here the economy alpha is always called Economy mode, and "the alpha" always means the game alpha that
+  stage 3 works towards.
 
 ## How the studio runs
 
@@ -43,10 +44,14 @@ The main session is **Saturn, the Conductor**. It hands out work, collects resul
 a sub-agent cannot start another, so all dispatch goes through Saturn, which never writes game code or
 design itself. **Naming a role does not hire it:** a role is hired when its definition file is written in
 `.claude/agents/`, which happens when its first job arrives (D262); the roster lists the plan, not the
-staff. So for a job whose role has no file, Saturn writes the file, then hands the job over. The exception is
-running-it work — the board, the handoff, saving and syncing: until Rhea, Titan and Janus are hired,
-Saturn does it itself. Every role's
-instructions start with the hard rules below and tell it to read the director's brief first, all of it (D260).
+staff. So for a job whose role has no file, Saturn writes the file, then hands the job over. A role file
+written mid-session is used from the next session; until then Saturn pastes it into the job. Every job
+carries the current hard rules too, because a sub-agent is given this file as it stood when the session
+began. The exception is running-it work, everything in Rhea's, Titan's and Janus's rows of the roster
+(the plan and schedule, the board, the handoff, the decisions log and this file, saving, syncing,
+combining parallel work, version tags): until they are hired Saturn does it itself, and Rhea's first job,
+the board redesign at M0, is the one that hires her. Every role's instructions start with the hard rules
+below and tell it to read this file from disk and the director's brief first, all of it (D260).
 
 > Open, and Aaron's: the roster's technical-design gate is "Lead Game Designer confirms it matches the
 > GDD". Is Jupiter's check a step before Aaron's sign-off, or instead of it? He has said to hold off, so
@@ -54,7 +59,8 @@ instructions start with the hard rules below and tell it to read the director's 
 
 ## At the start of every session, in this project
 
-These come before `/resume`, in this order:
+These come before `/resume` and before any of its own steps, in this order, also when a session opens by
+typing `/resume …`. Where the skill says to read another session's changes and carry on, this project stops.
 
 1. **Check that nobody else is live:** `git fetch`, `git status`, port 8000. An uncommitted change at the
    start (the Mac's `.DS_Store` files aside), a change you did not make later on, or a taken port means
@@ -77,7 +83,8 @@ These come before `/resume`, in this order:
 | What the game does today | `DESIGN.md` |
 | What the game will be | `docs/design/GDD.md` and its satellites; read `docs/design/IDEATION-PLAN.md` before opening them |
 | The game's voice | `docs/design/TONE.md` |
-| Technical design | `docs/technical/`: `TDD-PLAN.md` (the plan), `LEDGER.md`, `TRIAGE.md`, `MEASUREMENTS.md`, `FIRST-ORDER.md`, `ARCHITECT-BRIEF.md` |
+| The road to alpha (order and milestones) | `docs/technical/ROAD-TO-ALPHA.md` (D264) |
+| Technical design | `docs/technical/`: `TDD-PLAN.md` (what each technical document is), `LEDGER.md`, `TRIAGE.md`, `MEASUREMENTS.md`, `FIRST-ORDER.md`, `ARCHITECT-BRIEF.md` |
 | Decisions · lessons learned | `DECISIONS.md` (cited as D-numbers) · `docs/PROGRAMMER-RULES.md` (cited as "programmer rule N") |
 | The economy brief | `docs/spec/` — **may not be modified without Aaron's permission** |
 | Every tuning number | `js/tunables.js`, whose values can be overridden from `content/tunables.json` |
@@ -110,8 +117,8 @@ These come before `/resume`, in this order:
 - Studio wording is never quoted as his, even where he approved it (director's brief §8, item 6).
 - One word per idea. Once Pluto's terminology list exists (`docs/design/TERMINOLOGY.md`), use its word.
   A word of his that is not on it, or has two meanings, is a question, not a guess.
-- His questions that do not block the work reach him three or four at a time, at the head of the document
-  that owns them, not as cards (TDD-PLAN §6.1).
+- His questions that do not block the work reach him three or four at a time, not as cards: the head of the
+  document that owns them points to them, and they stay in its open questions at the end (TDD-PLAN §6.1).
 
 ### More than one session, more than one computer
 
@@ -130,7 +137,8 @@ These come before `/resume`, in this order:
   while it runs, so a red result while another session holds the server is unattributed, not a regression.
 - Take the next number in a list — decision, rule, defect — from the file after pulling, and check it again
   just before committing (programmer rules 21–22; D256, D257). For a decision, read the last `### D`
-  heading; the `/decision` skill's own count reads 0 here.
+  heading and write the entry as `### D<n> — <title>, <date>`, not in the `/decision` skill's `## D` form;
+  the skill's own count reads 0 here.
 
 ### How work is done
 
@@ -141,10 +149,11 @@ These come before `/resume`, in this order:
   Read `docs/HOGWILD.md` first: five things it does not unlock, four cases where you stop anyway.
 - `DESIGN.md` is the source of truth for what the game does. If behaviour changes, it changes in the same
   commit; if it disagrees with any other document, `DESIGN.md` is right and the other is a bug. A design
-  or technical session may correct it for fact only — marked in place, dated, with its measurement (D232).
-- Tests run in the browser only: `python server.py`, then `http://localhost:8000/tests/run.html`. All green
-  is the bar before anything is called finished. **Never use `node --test`: it reports green without
-  running a single check** (D243, defect 45).
+  session may correct it for fact only — marked in place, dated, with its measurement (D232, D268).
+- Tests run in the browser only: `python server.py` on Terra, `python3 server.py` on Luna, which has no
+  `python` (preview entries `nation-states` / `nation-states-mac`), then `http://localhost:8000/tests/run.html`.
+  All green is the bar before anything is called finished. **Never use `node --test`: it reports green
+  without running a single check** (D243, defect 45).
 - Design and technical-design sessions write documents only — no code, no data, no tuning; what they
   decide is specified for the build, not made. A technical document that finds itself redesigning a system
   stops and files a design defect against the design document (TDD-PLAN §9.2). Building a slice after T1,
@@ -203,19 +212,20 @@ These come before `/resume`, in this order:
   and budget in stage 3, the turn's budget and clock included. Nobody on paper picks the value that makes
   the game feel right; each number gets a named tunable, a range and a measured-or-argued label, and the
   alpha chooses (TDD-PLAN §9.3). The tuning file belongs to Sinope, the Balance Designer.
-- What gets built first, and what gets cut, is Aaron's. A document supplies evidence — what a thing
-  depends on and what it costs. It does not rank, recommend or cut.
+- What gets built first, and what gets cut, is Aaron's. A design or technical document, and the M4 scope
+  sheet, supplies evidence — what a thing depends on and what it costs. It does not rank, recommend or cut.
+  A proposal Aaron asks for, like the road (D264), may recommend; he decides.
 - The toll system is parked by Aaron until the economy technical document: *"Don't bring this up again
-  until we are working on the economy section."* Deseret's placement is parked to T2's identity document (D249).
+  until we are working on the economy section."* Deseret's placement was parked by the studio, not by him (D249), and comes back at M5.
 - The design documents split; they never merge (D230). A document is sized for what it will be after
   playtesting. `missions-design.md` splits first, when a fourth mission tree arrives. Not early.
 
 ### Versions
 
 `docs/VERSIONING.md` is binding. Tag on `master`, never the playtest branch, and only a verified state.
-One alpha bump per phase of the economy brief, after Aaron approves it in writing (its rule 3; waived for
-A0–A4); how numbers apply to stage 3's slices is not written down yet, so ask before tagging one. Tags
-are never moved or deleted. The `main` branch is the built copy playtesters open; never delete it.
+On the road the numbers are set (D264, item 7): v0.6.1 the repairs (M1), v0.7 politics and the new turn
+(M6), v0.8 Texas (M7), v0.9 all three regions (M9), v0.10 the alpha candidate (M10). Tags are never moved
+or deleted. The `main` branch is the built copy playtesters open; never delete it.
 
 ### Only when working on Economy mode or `docs/spec/`
 

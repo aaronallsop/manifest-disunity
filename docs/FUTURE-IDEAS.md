@@ -1138,6 +1138,10 @@ telling them apart. So this is a sign flip on an existing term rather than a new
 **Aaron, 15 September 2026**, in the tone interview. **Deferred to post-alpha by decision**, and it is
 rule 25 of `docs/design/TONE.md`: *alpha Area panels are numbers only.*
 
+*⚠ 24 September 2026 (D261): may change now that the alpha carries some real history, built into play
+(`TONE.md` rule 25 carries the same note). Whether Area panels carry it is still his to answer
+(`DIRECTOR-BRIEF.md` §9). Not yet revisited.*
+
 **What it is.** Today a county's panel says `Pop 71,400 · GDP $4.1B · 2024 vote: Republican 81.2%,
 Democrat 17.1%` and nothing else. The idea is that it could also say what the place **is** — its
 industry, its history, why it votes the way it does.

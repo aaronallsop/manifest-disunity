@@ -120,6 +120,8 @@ admission test, answered.*
 
 ### F8 · Fix the port data before anything trade-shaped is tuned
 
+*⚠ 24 September 2026 (D267): the fix is approved — Aaron, on the Control Board, 15 September. It lands in M5 (D264).*
+
 | | |
 |---|---|
 | **What** | **Four real deep-water ocean ports are flagged inland** — Philadelphia, Charleston, Hampton Roads, Providence — and **ten nations hold a port they cannot export through.** *`docs/deferred.md` 39 and 40* |
