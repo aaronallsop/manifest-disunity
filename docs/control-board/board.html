@@ -321,13 +321,13 @@ tr:last-child td{border-bottom:0}
 const BOARD = {
   project: "Manifest Disunity",
   livery: "tower",                      // tower | mars | violet | deep | slate
-  updated: "2026-09-25 13:26",          // when you last republished, local time
+  updated: "2026-09-25 20:46",          // when you last republished, local time
 
   // Three or four measured figures. value: number|string, or null = "not yet measured".
   figures: [
     { label: "Checks passing — run on the PC at sign-off, alone in the folder, none failing", value: 956 },
-    { label: "Turn the game freezes on — it is designed to reach 200", value: "80–95" },
-    { label: "Your own words now saved and backed up, in messages — 3 July to today, both computers", value: 659 },
+    { label: "Round the game freezes on — it is designed to reach 200", value: "80–95" },
+    { label: "Your own words now saved and backed up, in messages — 3 July to today, both computers and the word list walk", value: 735 },
     { label: "Days to your alpha deadline, 31 March 2027 · to the stretch goal, 31 December", value: "187 · 97" },
     { label: "Pieces of the design with NO code at all — blocs, missions, projects, alliances, ending a war", value: 5 },
     { label: "Current version", value: "v0.6" },
@@ -335,15 +335,14 @@ const BOARD = {
 
   headline: {
     tone: "warn",
-    lead: "Your words are saved and backed up — all of them, and they go back further than anyone thought. What is left on the bad side: the game still freezes around turn 80 to 95, and today turned up a new worry about how your decisions get recorded from here on.",
+    lead: "The code audit you asked for is running. So far every reading says the game's code is worth keeping, but the skeptics have not finished, and twenty matching verdicts is exactly what they are there to test.",
     points: [
-      "YOUR WORDS ARE SAFE. 659 messages, 33 working sessions on the PC and two on the MacBook, from 3 July to today, copied word for word and backed up. Nothing was tidied or corrected — your spelling and your dictation are exactly as you said them. The deadline that was two days away no longer applies to anything.",
-      "THEY GO BACK TO 3 JULY, not late August. The project's records on the PC start eight weeks before the first piece of the game was saved, under the folder name you were using then. Seventeen sessions nobody had counted. The first line of all is you describing the game from nothing, before it had a name — which means there is no sign that anything earlier was ever lost.",
-      { warn: true, t: "THE ENGINE STILL FREEZES around turn 80–95 of a 200-turn game. Unchanged, and now the oldest thing on this list. It can be the very next build session — it waits on nothing." },
-      { warn: true, t: "A NEW WORRY, AND IT IS ABOUT THIS BOARD. When you answer by picking one of the options I put in front of you, nothing of yours is written down — the record of your words can only hold what you TYPE or DICTATE. You settled three questions today and the record shows three entries, none of them your answers. That has been harmless until now. The redesign you asked for deliberately moves you toward clicking, so it is about to stop being harmless. Three ways out are written down; the only one that produces more of your words rather than better bookkeeping about their absence is for me to ask the questions that matter in prose, so you answer in sentences. That costs you time, which is why it is yours to choose." },
-      "SIX OF THE SAVED SESSIONS ARE NOT THIS GAME — your resume program, an editing tool, some After Effects work, all done from inside the game's folder. You spotted the mix-up yourself back in August and nothing ever moved them, so this is the only surviving copy. You ruled today that they stay where they are, labelled. Nothing in them is game design and none of it will be quoted as such.",
-      "ONE THING I CANNOT DO ALONE, worth knowing because it will recur. Saving your words cannot back itself up: the safety check on this machine refuses to let a session put anything drawn from session records onto GitHub, and it cannot tell that the repository is your own private one. You ran the command yourself today and it went through. Expect the same on the tone interview.",
-      "NEXT, in the order you asked for: export the tone interview from your Claude chat. Then read the task list. Then this board gets the cards you asked for at the very top, with a short command to start each task — and after that, the schedule against your dates.",
+      { warn: true, t: "THE GAME STILL FREEZES around round 80–95 of 200. Its hunt starts in a fresh session once the audit clears the folder." },
+      { warn: true, t: "12 LABELS IN YOUR TUNING SCREEN NOW READ WRONG. They say “per turn” meaning a quarter, and a turn is now one nation's move. Nothing miscalculates; they wait for you to name the quarter." },
+      "THE AUDIT reads all 58 files of the game's code, attacks every verdict, and needs three skeptics to agree before anything is called a rebuild. The verdicts come to you when it lands.",
+      "THE WORD LIST IS BUILT AND YOU WALKED IT: five words settled, the rest sent to the game designer and the producer. A turn is now one nation's move; a round is all sixty-one.",
+      "YOUR WORDS ARE ALL SAVED: 735 messages from both computers and the walk, checked word for word and backed up.",
+      "NEXT: the audit's verdicts, with four short questions of yours. Then the freeze, in a fresh session.",
     ],
   },
 
@@ -960,7 +959,10 @@ const BOARD = {
       actual: "DONE, 24 September. A fourteen-question interview, asked cold, became your director’s brief, which you approved. Twenty-five roles on your roster were named. The standing rules were rewritten to hold only what is permanent. And the road to alpha was redrawn and adopted with your addition. The design documents and the technical design are still the road; what changed is the order and the rhythm around them." },
     { name: "M0 — One road, one set of words", status: "current",
       brief: "Your word list, this board redesigned around what you actually use (the road is already drawn on it), your own words from the design sessions saved from the PC, and the history research begun.",
-      actual: "UNDER WAY, 25 September. Rhea broke the road into tasks (a draft for you to read) and you set the deadline.\n\nYOUR OWN WORDS ARE DONE, this afternoon on the PC — 659 messages across 35 sessions, 3 July to today, copied word for word and backed up. It went further back than the job assumed: the records start eight weeks before the first piece of the game was saved, under the folder name you were using then, and seventeen sessions nobody had counted were in there. Six of the sessions turned out not to be this game at all and you ruled they stay, labelled. Two more folders that could not be ruled in or out were checked on your say-so and hold nothing of this project.\n\nIt also turned up something about this board: when you answer by picking an option rather than typing, nothing of yours is recorded. Three ways to deal with that are written down and the choice is yours — it is on your list above.\n\nStill to do: you export the tone interview from your Claude chat, the last of your words outside the record. Pluto builds the word list and brings you every word that has meant two things. Rhea interviews you about this board before redesigning it. Makemake starts on the real history behind Texas, Deseret and the Great Lakes, and keeps going alongside everything after. The contracts pass waits for the word list, as you chose." },
+      actual: "UNDER WAY, 25 September. Rhea broke the road into tasks (a draft for you to read) and you set the deadline.\n\nYOUR OWN WORDS ARE DONE — 735 messages across 36 sessions: both computers from 3 July, and the word list walk from your Claude chat. Copied word for word and backed up. The records went back eight weeks further than the job assumed; six sessions turned out not to be this game and you ruled they stay, labelled.\n\nTHE WORD LIST IS BUILT, AND YOU WALKED IT the same evening, talking it out in your Claude chat. You settled five: a turn is one nation's move and a round is all sixty-one; two nations stand in one of four standings, with standing conditions inside them and Armistice replacing the peace treaty; nation-state and former-state; movements with kinds beneath them; and the board is the map. The rest you sent to the game designer and the producer. Your answers made seven new clashes nobody raised with you at the time; they are on the list as questions.\n\nStill to do: the rest of the word list, with the game designer and the producer. Rhea interviews you about this board before redesigning it. Makemake starts on the real history behind Texas, Deseret and the Great Lakes. The tone interview export is yours and optional. The contracts pass waits for the word list, as you chose." },
+    { name: "Keep or rebuild — the audit of the game's code", status: "current",
+      brief: "“Can we have someone go through the source code and determine what is worth keeping for the alpha and what would make sense to build from scratch? I am also ok with doing this later if there are other things we should do first”",
+      actual: "RUNNING, started 25 September, on the strongest model with many agents at once, as you asked. Not on the road: your own request. I had suggested doing it after the repairs, and you chose now. It will also say whether any of those repairs would land in code about to be thrown away.\n\nEvery file of the game's code, 58 files, is read by one of 21 readers. Each asks whether that code is worth building on: whether it is tested, whether it saves properly, whether its numbers sit in the tuning file, whether the same seed plays the same game, and how tangled it is with the two things being replaced, politics on two axes and one action per turn. Then every verdict is attacked. Rebuild has to survive three skeptics; every other verdict faces at least one.\n\nFIRST PASS, BEFORE THE ATTACKS: all 21 readers said keep, twenty of them with surgery and one clean. That is provisional. Twenty matching verdicts is exactly what the attacks are testing.\n\nThe check from 16 September already measured what is built against what is designed. This one asks something it never did: whether what is built is any good." },
     { name: "M1 — Make the engine trustworthy", status: "todo",
       brief: "Six narrow repairs, starting with the freeze, and a check that every later build plays a full game.",
       actual: "NOT STARTED — and free to start now: you ruled on 25 September that it need not wait for the first milestone to close. About eleven sessions, estimated, more if the freeze resists. Permitted with the road. The freeze first, then a test that writes into the real game files, the test route that reports green without running, a failed invasion that pays the attacker, a nation reading its own founding movement as unrest, and the AI’s army weights. The playtest link is refreshed from today’s build. Tagged v0.6.1." },
@@ -999,18 +1001,33 @@ const BOARD = {
   // Things only the owner can supply, and what happens if a machine supplies them instead.
   blocked: [
     {
-      what: "Export the tone interview from your Claude chat — the last of your words still outside the record",
-      ifAutomated: "It lives in your Claude account, not on either computer, so only you can export it; then Pluto takes out your messages the same way he did the rest. This is now the top of your list, because the design sessions are done and this is what is left.",
-      damagedIfAutomated: false,
-    },
-    {
-      what: "How your decisions should be recorded from here — you answer by clicking, and clicking leaves no trace",
-      ifAutomated: "The record of your words holds only what you type or dictate. Three ways out are written down and I will not pick between them for you, because two of them quietly accept that less of your thinking gets kept and the third costs you time. The short version: shall I go back to asking the questions that matter in prose, so you answer in sentences?",
-      damagedIfAutomated: false,
-    },
-    {
       what: "Read the task list and say what to change",
-      ifAutomated: "It is a draft until you have read it. The board’s new cards are built from it, so anything wrong in it would sit at the top of this page.",
+      ifAutomated: "It is a draft until you have read it. The board’s new cards are built from it, so anything wrong in it would sit at the top of this page. It is the only thing in the board redesign that waits on you.",
+      damagedIfAutomated: false,
+    },
+    {
+      what: "Name the quarter of game time — twelve labels in your tuning screen read wrong until you do",
+      ifAutomated: "You made a turn one nation's move and a round all sixty-one. The tuning screen still says “per turn” on twelve labels (and nine notes), meaning a quarter. Nothing miscalculates; only the words are wrong. I will not pick the word, because it is the unit every rate in the game is measured in, and you parked it: “we're going to figure out the quarter of game time later.”",
+      damagedIfAutomated: false,
+    },
+    {
+      what: "How your decisions should be recorded from here — still unanswered",
+      ifAutomated: "It was the last question of the word list walk, and you asked for the document instead, so it is recorded as unanswered rather than parked. The walk found the case that shows why it matters. The one ruling that fixed the words ideology, party and movement rests on “Everything else is great”, and a design document contradicted it four days later without anyone noticing. I recommend splitting the cards: a single click for bookkeeping, and words for anything that decides how the game works.",
+      damagedIfAutomated: false,
+    },
+    {
+      what: "Whether an armistice still means recognition",
+      ifAutomated: "On 15 September, signing a peace treaty meant recognising the other side as a nation. On 25 September you renamed it Armistice, with Korea as your example — and Korea is the standard case of two sides that have never recognised each other. Either can be right. Nobody builds it until you say which.",
+      damagedIfAutomated: false,
+    },
+    {
+      what: "The political board's words — a conversation for you and the game designer",
+      ifAutomated: "You said the problem there is the system, not the vocabulary, and you are right. One record says a party is a fixed corner of the board; another says it is an organisation that moves across it. The politics build and the contracts pass cannot go ahead until you and the game designer settle which, and I will not choose it for you.",
+      damagedIfAutomated: false,
+    },
+    {
+      what: "Optional: export the tone interview and the word list walk from your Claude chat",
+      ifAutomated: "Neither blocks anything. The tone interview's write-up is already in the project; the export would only settle who wrote four of its rules. The walk was saved from the chat's own copy, so an export would let it be checked against the real conversation. Only you can export either.",
       damagedIfAutomated: false,
     },
     {
@@ -1026,7 +1043,7 @@ const BOARD = {
   ],
   // Success metrics. value null = "not yet measured". Never an estimate.
   numbers: [
-    { label: "100 turns run without the screen, target under 60 seconds", value: "cannot finish — freezes at turn 80–95" },
+    { label: "100 rounds run without the screen, target under 60 seconds", value: "cannot finish — freezes at round 80–95" },
     { label: "Same seed twice, identical results — checked by the tests every run", value: "yes — the 25 September sign-off run" },
     { label: "States at stable equilibrium after 60 turns with no trade", value: null },
     { label: "Bands that are reachable and visible", value: null },
@@ -1035,6 +1052,18 @@ const BOARD = {
 
   // Decisions made on the owner's behalf and how they turned out. Corrections go BESIDE originals.
   log: [
+    { when: "2026-09-25", decision: "Ran the code audit with many agents at once, although Hog Wild is off.",
+      outcome: "Your request to run it on the strongest model with many agents is the permission for this one job only. Hog Wild stays off for everything else, and anything the audit turns up that is yours still comes to you first." },
+    { when: "2026-09-25", decision: "Read the code being replaced as well, after telling you the audit would skip it.",
+      outcome: "Scouting showed those files also hold pieces the earlier check said to keep: the order a round runs in, the war's actual fighting, and recognition. Skipping them would have left those unexamined, so they are read for what is worth salvaging." },
+    { when: "2026-09-25", decision: "Quoted your 8 September list of states run together with dots, inside quotation marks, and passed it on to the word list walk.",
+      outcome: "Mine. Caught when checking every one of 169 quotes of yours against your own messages, and it was the only real slip. The words and their order were right; your message was a bulleted list. Corrected wherever it stood as your words. The walk prompt carries a dated note instead, because it is the record of what was sent." },
+    { when: "2026-09-25", decision: "Called the tone interview export the oldest thing on your list, then told you to skip it.",
+      outcome: "I checked what depends on it: nothing in the alpha. Its write-up is already in the project, and the export would only settle who wrote four of its rules. I had made it sound load-bearing, and it is not." },
+    { when: "2026-09-25", decision: "Asked the sixteen word questions in prose rather than as options to click. When you wanted to talk them out, I wrote you a prompt for your Claude chat instead.",
+      outcome: "You settled five, sent eleven to the game designer and the producer, and invented a new layer mid-answer: standing conditions inside a standing. Your answers existed only in your Downloads folder until they were copied into the project and backed up the same evening." },
+    { when: "2026-09-25", decision: "Changed the project's own rule about turns the evening you reversed the words, but left the tuning screen alone.",
+      outcome: "The standing rules said “one turn is one quarter”; they now carry your ruling with a dated note, and every count in them is restated in rounds. The twelve tuning labels were not touched, because the quarter has no name yet and relabelling them would have meant guessing your word." },
     { when: "2026-09-25", decision: "Kept six sessions that are not this game, rather than dropping or moving them, and brought you the choice instead of making it.",
       outcome: "Your resume program, an editing tool and some After Effects work, all done from inside the game’s folder. You spotted the mix-up yourself in August and nothing ever moved the records, so this was the only surviving copy — which is why deleting them was not a tidy-up. You ruled they stay, labelled." },
     { when: "2026-09-25", decision: "Looked inside two folders of records that the rule said to skip, because a session you opened from the wrong place would have looked exactly like them.",
