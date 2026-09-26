@@ -19,16 +19,20 @@ This file holds only what is permanent; progress and counts live in the handoff 
   stays and the technical design is still the road: nothing new is built before its technical document is
   written and approved; the documents are written slice by slice, the contracts pass (M3) whole and first.
   `docs/technical/TDD-PLAN.md` (D248) still defines each technical document; the road sets their order.
-  **M0 is under way (25 Sep):** **Aaron's own words from Terra are SAVED** — 33 sessions, 584 messages,
-  3 July to 25 September, in `docs/design/aaron-words/` with an index covering both computers (D266, D273).
-  *The project's logs begin 3 July, eight weeks before the first commit; six of those sessions are other
-  projects, kept and labelled by his ruling (D274); the two folders that could not be ruled in or out hold
-  nothing of this game (D275).* **Still open in M0:** the tone-chat export (his to do), Pluto's terminology
-  list, Rhea's board redesign, and Makemake's history research on Texas, Deseret and the Great Lakes, which
-  runs alongside every milestone. The contracts pass waits for the terminology list. **The road, task by task, is `docs/technical/ROAD-TASKS.md`** (Rhea's;
+  **M0 is under way (25 Sep):** **Aaron's own words are SAVED** — 36 sessions, 735 messages, 3 July to
+  25 September, in `docs/design/aaron-words/` with one index: 33 sessions on Terra (586 messages), 2 on Luna,
+  and the word list walk from his Claude chat (D266, D273). *The project's logs begin 3 July, eight weeks
+  before the first commit; six of those sessions are other projects, kept and labelled by his ruling (D274);
+  the two folders that could not be ruled in or out hold nothing of this game (D275).* **Pluto's terminology
+  list exists** (`docs/design/TERMINOLOGY.md`, a draft) **and Aaron has walked it once** (D276–D280): five
+  questions answered, the rest sent to the game designer and the producer. **Still open in M0:** the rest of
+  the terminology list, Rhea's board redesign, the tone-chat export (his, optional), and Makemake's history
+  research on Texas, Deseret and the Great Lakes, which runs alongside every milestone. The contracts pass
+  waits for the terminology list. **Neptune's keep-or-rebuild audit of the source code**, asked for by Aaron
+  on 25 September, is under way. **The road, task by task, is `docs/technical/ROAD-TASKS.md`** (Rhea's;
   draft until Aaron reviews it): a task starts once what it waits for is done, not when its milestone's
   turn comes (D272). **The alpha's deadline is 31 March 2027, stretch goal 31 December 2026** (D271).
-  Rhea and Pluto are hired; their role files are in `.claude/agents/`.
+  Rhea, Pluto, Neptune and Mars are hired; their role files are in `.claude/agents/`.
 - **M1 is a programming session**, permitted with the road: six narrow repairs, starting with the freeze
   around round 80–95 (defect 46). The other standing faults in `docs/deferred.md` stay filed. After M1, one
   yes from Aaron per milestone covers its build and its screening; he approves every specification and

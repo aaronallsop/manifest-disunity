@@ -17,3 +17,7 @@ are the chat's and may never be quoted as his (director's brief §8.6).
 **Not yet in the word record's own form.** The rest of this folder holds one JSON file per session, his
 messages only. These two have not been extracted into that form, and the index does not list them yet —
 `docs/deferred.md` 63.
+
+*⚠ 25 September 2026: now extracted, by Pluto. His 74 messages from the walk are in
+`2026-09-25-chat-word-list-walk.json` in the folder above, and the index lists it. These two documents stay as
+the source.*

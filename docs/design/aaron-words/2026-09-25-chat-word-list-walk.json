@@ -1,0 +1,311 @@
+{
+  "about": "Every message of Aaron's in the word list walk, a conversation held in his Claude chat on 25 September 2026 - not a session on Terra or Luna. Only his words. Copied character for character from the full export the chat produced (walk/word-list-walk-answers-2.md in this folder). The chat's own log was not available, so this record is only as complete and as exact as that export, and it could not be checked against a log as the other files here were. The earlier Q1-only export (walk/word-list-walk-answers-1.md) agrees with it on every word of his. The times were not recorded: every message carries the date only, and the order is the conversation's. The date is the export's own, his day; the other files here keep UTC, and in UTC the walk may reach into 26 September - the prompt it ran on was saved at 21:40 UTC on the 25th and the rulings taken from it at 01:31 UTC on the 26th. Each quoted block in the export is kept as its own message, as the walk prompt told the chat to give each of his messages as its own block; consecutive messages with no reply between them may be pieces of one spoken message that the dictation or the chat split, and the export does not show which. A message the export quotes more than once (again under the chat's reasoning, asides or studio sections) is kept once, where it falls in the conversation. Eight messages are quoted only in the chat's list of asides; each is placed where the chat's note says it came up, and carries a note saying so. His answers were spoken by voice dictation; the two marked as typed were typed. One passage was withheld at his request: the chat left out the start of one message, which therefore begins with the chat's ellipsis (…), and it records him saying of that passage \"But don't include that. That's just for you to understand what I'm thinking.\" Those words reach us only inside the chat's own note, not as a quotation of his, so they are not kept as a message. Excluded: the prompt that opened the chat (the studio's text, pasted in) and everything the chat wrote - its lines in italics and square brackets, its tables, and its reasoning, open-question, collision, aside and studio summaries.",
+  "messages": [
+    {
+      "at": "2026-09-25",
+      "text": "I think for this, I would like to do uh, chat back and forth so you can tell me what's going on. So um, can we start from the top, what you were saying? What do I, uh, the Q1?",
+      "note": "the export quotes this only in the chat's list of asides; placed where the chat's own note there says it came up (the start of Q1)"
+    },
+    {
+      "at": "2026-09-25",
+      "text": "Um, I think I understand why it's uh, it's causing the problems. Um, I think there should be uh, a, two things we need to separate, though. Or one thing. Um, with fourth, everything in the game holding at one moment in the same position the entire game state must live in one object. I think we need to make sure that like the word state has you know objectively there, there's like when I say what state are you in"
+    },
+    {
+      "at": "2026-09-25",
+      "text": "that could mean what state are you physically in right now but if I'm asking a programmer or somebody who is working I'm like well what what state are you in they know that I'm not asking them what state they're in they know that I'm asking like what state of production are you in or like Are you in a good mental headspace or whatever, right? So I think, and, and if we need to be clear, that's fine. But like with four, is it, a, like, realistic for me to think that, like, the entire game state must live in one object? Won't be confusing because the word state there is being used as, like, the condition the game is in and not, like, the state the game is its own state in the game"
+    },
+    {
+      "at": "2026-09-25",
+      "text": "Uh, yes and no. I think when I was talking about that, I was using that word and I think in my modern, like in my parlance, that's fine. But I think within the game, that idea of game state, we should come up with a separate thing."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "Um, because I'm building this with a team, I, let's just say that game state, we will, make sure that it is a word that will not conflict with anything else."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "Nope, nope, it, it needs to be a temporary thing for us to go through."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "Yes."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "Okay, so uh, this is where I think it gets tricky. Because in the history of things, a state is like the state of Utah. And so if we're talking about things in the past, state would refer to um, the, the states as we understand them as the 50 United States of America."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "Well, I like the idea of call it like it being nation states. Like it is, you know, the and, and I do want to keep that. Um And I mean, it is like one of those things too, where like, in the code, we could be as specific as we want, but when the, but like the user doesn't have to know that like, we're specifically referring to like nation state dash a they would just see like, whatever. Right. Um, so I think with the first thing is when we're talking about history, it's not that the state is anchored in history, it is that when we are talking about something anchored in history, um, that term state is being used to refer to the 50 US states."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "as they exist. Mm-hmm. Mm-hmm. Mm-hmm. Mm-hmm. Mm-hmm. Mm-hmm. Mm-hmm. Mm-hmm. Mm-hmm. Mm-hmm. Mm-hmm. Mm-hmm."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "Um, I think this is what it's going to be. Um, on the back end, the code end, all of that fun jazz. Um, the when we are referring to the history, the phrase will be former dash state."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "It will be nation dash state."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "I think this would be a good time to look at history and the current uh, things. For research, uh, does the UN have a definition of like what counts as peace and war and ceasefire? And things like that.",
+      "note": "the export quotes this only in the chat's list of asides; placed where the chat's own note there says it came up (Q1, where the chat notes his research question)"
+    },
+    {
+      "at": "2026-09-25",
+      "text": "Um, I think that helps. The main thing is like what you mentioned, like uh, the armistice between North and South Korea."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "So like, what is the armistice exactly? Exactly. In the context of, of this, is it a state that they are in? Is it a relationship that they have? Is it an agreement? Is it something else?"
+    },
+    {
+      "at": "2026-09-25",
+      "text": "It is useful in my understanding of them, but for the game, they all need to be under one category and the idea is that your nation as it relates to another nation can only be in one of these. It can't be in both."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "I think standing would work because um, you know I'm looking at all of the that we need to do can you tell me again what are the different things in this specific phrase of state"
+    },
+    {
+      "at": "2026-09-25",
+      "text": "So if I was a nation, and what is my standing with another nation? My stand, we are currently war. We are currently at ceasefire."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "We have a hostile standing."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "We have a peace treaty standing."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "We have a peace standing."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "Uh, we have a... Where is the other one?"
+    },
+    {
+      "at": "2026-09-25",
+      "text": "Uh, subject or overlord. Or ally."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "Okay, so I think this is what it is. You can be at these standings with another nation. You can be at war."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "You can be hostile."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "You can be peace."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "And you can be allied."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "And within each of those, there are... separate conditional things that are outside of those standings. Uh, one is a ceasefire. So if you sign a ceasefire, you're still technically at war with someone. You just have agreed to stop the fighting."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "If you have a peace treaty, you have agreed to stop the war And you could either be hostile or you could even move towards being at peace. With your current standing. Because if I was a country and they conquered things from me and then we signed a peace treaty, I'd still be hostile towards them. Right? Um, and then allied. Would have the conditioner either overlord or subject. Um, Yeah."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "Uh, we would call it standing condition."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "And the other thing is uh, peace treaty does move you out of a war."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "And it would also be a modifier because during that, or it would be a condition standing condition because I signed a peace treaty. I am not allowed to attack that country."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "Is there another term that we could use besides peace treaty?"
+    },
+    {
+      "at": "2026-09-25",
+      "text": "Yep, let's do that, Armistice."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "Yeah."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "Um, it doesn't need its own standing because that's something we're going to push past the alpha."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "Could you get this document as like question one answers?",
+      "note": "the export quotes this only in the chat's list of asides; placed where the chat's own note there says it came up (after Q1)"
+    },
+    {
+      "at": "2026-09-25",
+      "text": "And will that be saved as like an MD file for me?",
+      "note": "the export quotes this only in the chat's list of asides; placed where the chat's own note there says it came up (after Q1)"
+    },
+    {
+      "at": "2026-09-25",
+      "text": "Is it better if I close down voice and you do it in text?",
+      "note": "the export quotes this only in the chat's list of asides; placed where the chat's own note there says it came up (after Q1)"
+    },
+    {
+      "at": "2026-09-25",
+      "text": "doc",
+      "note": "typed; the export quotes this only in the chat's list of asides; placed where the chat's own note there says it came up (after Q1)"
+    },
+    {
+      "at": "2026-09-25",
+      "text": "Well, let's move on to number two. Uh,"
+    },
+    {
+      "at": "2026-09-25",
+      "text": "Start at the top."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "Okay, this is what we're going to do."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "A turn is the amount of time that a player is interacting until they hit end turn. That is all the actions and steps they do in a turn. So turn is just going to be what the term means to people when they are playing the game and they say, it is your turn. It is all the actions they can do for that turn. A round is going to be when um, a cycle of all nations currently in play having taken one turn."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "So if there are 60 nations and the first one is Arizona, and the last one is California,"
+    },
+    {
+      "at": "2026-09-25",
+      "text": "… At the end of California's turn, that is the end of that round.",
+      "note": "the opening … is the chat's: it left out a passage at the start of this message at his request"
+    },
+    {
+      "at": "2026-09-25",
+      "text": "The look, we're going to figure out the quarter of game time later. What's important now is that a turn is a player's turn. And a round is a player's turn and all of the other nation states' turns. That's what we need to get fi figured out. Does that make sense?"
+    },
+    {
+      "at": "2026-09-25",
+      "text": "Um, question."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "When I say if I am talking to you and I said, okay, after the first round of gameplay, this is what's going to happen. And I said, after the second round of design, this is what we're going to do. What are we talking? What am I talking about?"
+    },
+    {
+      "at": "2026-09-25",
+      "text": "Quickly and concisely, just tell me."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "Okay, but like, how do we, make this in a way that lets me use English language, right? Because if we are talking about that and we round can only mean one thing, and I say, we need to make this so that it feels like the player is being turned around. And it gets read as a round, like, like how do we fix this?"
+    },
+    {
+      "at": "2026-09-25",
+      "text": "Let's move on."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "I think that this is a good question that would be better answered with me and the game designer talking. I think the main thing is we want to make sure that things aren't confusing and intersecting. But here, I don't think that the vocabulary is getting mixed up. I think it's getting this actual system figured out."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "Yes."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "Yep, let's move forward."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "Okay, so I think this is what it needs to be, is it needs to be when we say movement, that needs to be uh, something with uh, tiers to it. A movement is simply a collection of people who want something different."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "Um, and there is a condition that will, will change that. And I feel like we've talked about this where it would be a movement dash separatist and that separatist movement, which in the game code will be movement dash separatist. is a movement that within that state wants to separate and become their own state."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "And a movement dash um, something else, I can't think of it right now. Uh, would be you, you know something like um, like the Neo Confederacy or whatever it is we decided to call it. That would be outside a bunch of different States um, so that's kind of what it is"
+    },
+    {
+      "at": "2026-09-25",
+      "text": "In the game, we I have talked about different classifications of movements, and so if you don't have that information, that is fine. Um, just know what we've got, and let's move on."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "It waits for the designer."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "We're going to keep board for the map. Opening board is going to be a condition of the board. And uh, we'll retire political board and control boarding."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "Save the political thing for the game designer and me. Um, save the put in for uh, the project manager. Is is it really that confusing for me to say the control board and have it not be confused with the map board?"
+    },
+    {
+      "at": "2026-09-25",
+      "text": "Yep, okay, let's move on. What's the next thing?"
+    },
+    {
+      "at": "2026-09-25",
+      "text": "Okay, we can skip all this and save it for the game designer."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "Okay, is this going to be actually confusing or was this in the document to fill out?"
+    },
+    {
+      "at": "2026-09-25",
+      "text": "Okay, we're we're approved. Let's move on."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "Skip, we're going to have the project manager handle this."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "all the new, all the or previous things, the project manager will figure that out."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "Game designer."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "Yep.",
+      "note": "the export quotes this only in the chat's list of asides; placed where the chat's own note there says it came up (after Q9)"
+    },
+    {
+      "at": "2026-09-25",
+      "text": "Quick round trip.",
+      "note": "the export quotes this only in the chat's list of asides; placed where the chat's own note there says it came up (after Q9)"
+    },
+    {
+      "at": "2026-09-25",
+      "text": "Game designer."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "I'm looking at the rest of these, and these are all uh, things for game designer and project manager to figure out."
+    },
+    {
+      "at": "2026-09-25",
+      "text": "Final download",
+      "note": "typed"
+    }
+  ]
+}

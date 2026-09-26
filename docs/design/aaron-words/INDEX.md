@@ -1,6 +1,8 @@
 # Aaron's own words, session by session
 
-**Made on 25 September 2026.** It covers every recorded working session on both computers from 2026-07-03 to 2026-09-25: **35 sessions, 659 messages** (33 sessions on the PC, 2 on the MacBook).
+**Made on 25 September 2026.** It covers every recorded working session on both computers from 2026-07-03 to 2026-09-25, and the word list walk held in his Claude chat: **36 sessions, 735 messages** (33 sessions on the PC, 2 on the MacBook, 1 in the Claude chat).
+
+*⚠ 25 September 2026: this line said 35 sessions and 659 messages. The figure was stale: the 25 September PC session was copied again at its sign-off and grew from 1 message to 3, so the files held 661 before the walk's 74 were added. Re-counted from the files themselves.*
 
 **These files hold only his words, copied exactly as he typed or dictated them** - spelling, punctuation and dictation slips included. Nothing the studio wrote, nothing a tool printed and nothing from a helper's own working notes is in them. Where a message carries a short note, the note is the studio's and the text beside it is his.
 
@@ -42,7 +44,8 @@ Times are in UTC, as the logs record them. A session is listed under the day it 
 | 2026-09-24 | Luna (MacBook) | (none recorded) | 19:35 | 00:24 (09-25) | 64 | `2026-09-24-luna-session.json` | one message has no recorded time |
 | 2026-09-24 | Terra (PC) | Multiple sessions handoff documentation | 23:00 | 23:20 | 3 | `2026-09-24-terra-ae560996.json` |  |
 | 2026-09-25 | Luna (MacBook) | (none recorded) | 16:04 | 18:42 | 11 | `2026-09-25-luna-session.json` |  |
-| 2026-09-25 | Terra (PC) | My words task | 18:53 | 18:53 | 1 | `2026-09-25-terra-3ec0c7eb.json` | still open when copied - copy again at sign-off |
+| 2026-09-25 | Terra (PC) | My words task | 18:53 | 19:22 | 3 | `2026-09-25-terra-3ec0c7eb.json` | copied again at sign-off; first listed with 1 message, last 18:53 |
+| 2026-09-25 | Claude chat (neither computer) | The word list walk (no title recorded) | not recorded | not recorded | 74 | `2026-09-25-chat-word-list-walk.json` | copied from the chat's own export, not a log; dated as the export dates it, in the conversation's order; one passage withheld at his request |
 
 ## What the dates show
 
