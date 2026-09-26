@@ -7,7 +7,7 @@ board opens on sixty-one nations where fifty-one states used to be, drawn on a r
 with real population, output and voting data. Nations trade, annex, unite, secede, hold elections
 and gang up on whoever frightens them. It runs as plain HTML and JavaScript with a small Python
 server — no build step, no framework — and it must still work in six months. "Working" means a
-playtester who has never seen it can open a link, play sixty turns, and tell you afterwards why
+playtester who has never seen it can open a link, play sixty rounds, and tell you afterwards why
 they lost.
 
 This file holds only what is permanent; progress and counts live in the handoff and on the Control Board.
@@ -30,7 +30,7 @@ This file holds only what is permanent; progress and counts live in the handoff 
   turn comes (D272). **The alpha's deadline is 31 March 2027, stretch goal 31 December 2026** (D271).
   Rhea and Pluto are hired; their role files are in `.claude/agents/`.
 - **M1 is a programming session**, permitted with the road: six narrow repairs, starting with the freeze
-  around turn 80–95 (defect 46). The other standing faults in `docs/deferred.md` stay filed. After M1, one
+  around round 80–95 (defect 46). The other standing faults in `docs/deferred.md` stay filed. After M1, one
   yes from Aaron per milestone covers its build and its screening; he approves every specification and
   plays every build first.
 - The build is `v0.6`, Economy mode (D173). Its test is never run on its own: its questions go into the
@@ -185,20 +185,28 @@ typing `/resume …`. Where the skill says to read another session's changes and
 - **Determinism is non-negotiable.** The same seed reproduces a run exactly. It is tested; keep it so.
 - Economy mode is a set of flags, not a fork. The full game stays untouched by work on it.
 - **The Control Board never drives the game.** It is where Aaron reads progress and answers decisions;
-  it cannot reach a running game. Every testing control — step a turn, fast-forward, force a state's
+  it cannot reach a running game. Every testing control — step the game forward, fast-forward, force a nation's
   figures, run the simulation, choose a seed — belongs to the developer dashboard behind the dev flag.
   The economy brief's Phase 0 says otherwise and is wrong (D162). Do not re-raise it.
 
 ### Settled facts that sessions keep getting wrong
 
-- One turn is one quarter, and every rate in the engine is tuned per quarter. The game opens on 1 March
-  2036, the eve of two hundred years since Texas declared itself a nation (D163), and ends in 2086, after
-  200 turns (D223). A playtest is sixty turns, as in the paragraph at the top; both stand.
-- A turn is a round: sixty-one nation-slots in a shuffled order, then the world advances once. There is no
-  action budget (D218); the limits are money, time and geography. Nothing finishes in one turn, and the
-  things that do are a card you click.
-- Deal durations are 20, 30, 40, 50 and 100 turns. Signing a long agreement should cost something; until
-  that is built, it costs nothing (D233).
+- **A turn is one nation's move; a round is all sixty-one of them, then the world advances once (D276).**
+  *⚠ 25 September 2026: this reverses the two lines that stood here until then — "One turn is one quarter"
+  and "A turn is a round" — which are superseded as **vocabulary** by Aaron's ruling in the word list walk.
+  **The arithmetic is untouched: every rate in the engine is still tuned per quarter and nothing is
+  miscalculating.** What is wrong is the label — **21 entries in the tuning file say "per turn"** and now
+  read as per-nation-move. The quarter of game time has no name yet; he parked it ("we're going to figure
+  out the quarter of game time later"), so the labels are filed, not guessed at. Until he names it, say
+  **quarter** when you mean the unit of game time and never "turn".*
+- One round is one quarter of game time. The game opens on 1 March 2036, the eve of two hundred years since
+  Texas declared itself a nation (D163), and ends in 2086, after **200 rounds** (D223). A playtest is
+  **sixty rounds**, as in the paragraph at the top; both stand.
+- A round is sixty-one nation-turns in a shuffled order, then the world advances once. There is no action
+  budget (D218); the limits are money, time and geography. Nothing finishes in one round, and the things
+  that do are a card you click.
+- Deal durations are 20, 30, 40, 50 and 100 rounds (D276 renames the unit; the numbers are unchanged).
+  Signing a long agreement should cost something; until that is built, it costs nothing (D233).
 - Politics is three axes (economy, morals, power, each −1 to +1) and ten positions: eight corner parties
   and two centrists (D231). Despotism and Stateless are conditions fallen into. `GDD.md` §15.1 rules; §15.1a
   records what is built. Until converted, the code runs six ideologies on two axes: check a formula's board.

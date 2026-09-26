@@ -7036,3 +7036,200 @@ the shared rules repository, not here. **24 messages across the seven, none of t
 
 **So the rule the task set was right, and it is now confirmed rather than assumed.** *Nothing was saved from
 either folder. **This closes the question; it does not need asking again** unless a new folder appears.*
+
+### D276 — A turn is a player's turn and a round is the full cycle; the quarter is unnamed, 25 September 2026
+
+**Observed.** *The word list (M0's `terminology` task) found that **turn** and **round** had swapped places
+since July and a third word, **slot**, had appeared. The engine calls one quarter of game time a turn; his
+own July definition made a turn one nation's single move and a round the whole cycle; his two most recent
+mentions, on 24 September, put the words together — "at round turn 60", "the next 60 round game they play".
+**What this collision already cost is on the record:** the one-action-per-turn rule was built from that July
+sentence, he never asked for it, and undoing it is scheduled work (D218).*
+
+**Decided — Aaron, 25 September, in the word list walk, spoken:** *"A turn is the amount of time that a
+player is interacting until they hit end turn. That is all the actions and steps they do in a turn. So turn
+is just going to be what the term means to people when they are playing the game and they say, it is your
+turn. It is all the actions they can do for that turn. A round is going to be when um, a cycle of all
+nations currently in play having taken one turn."* With his own worked example: *"So if there are 60 nations
+and the first one is Arizona, and the last one is California… At the end of California's turn, that is the
+end of that round."*
+
+Pressed on what then happens to the quarter of game time, which the whole engine is tuned in: *"The look,
+we're going to figure out the quarter of game time later. What's important now is that a turn is a player's
+turn. And a round is a player's turn and all of the other nation states' turns. That's what we need to get
+fi figured out."*
+
+**So: `turn` = one nation's move, to the player and in writing. `round` = every nation currently in play
+having moved once.** *This reverses the engine's usage and it is his most recent word, so it stands.*
+
+**⚠ What this supersedes, and it is a permanent rule.** *`CLAUDE.md`'s settled-facts line — "One turn is
+one quarter, and every rate in the engine is tuned per quarter" — is out of date as vocabulary. **The
+arithmetic is untouched: the rates are still per quarter and nothing in the game is miscalculating.** What
+is now wrong is the label: **21 entries in the tuning file say "per turn"** and under his ruling that reads
+as per-nation-move, which is wrong by a factor of sixty-one. The line is marked superseded in place; the
+labels are filed rather than guessed at, because the quarter has no name yet.*
+
+**Left open by him, deliberately:** *the name for one quarter of game time; and what the seven finished
+design rounds are called, since "round" is now taken. The studio proposed that the rule bind written
+specifications only, leaving his ordinary speech free; **he answered "Let's move on", which is not
+agreement and is not recorded as one.** Whether `slot` is retired was not discussed.*
+
+**His own worry about this, in his words, and it applies to the whole word list:** *"Okay, but like, how do
+we, make this in a way that lets me use English language, right? … we need to make this so that it feels
+like the player is being turned around. And it gets read as a round, like, like how do we fix this?"*
+
+### D277 — Standings and standing conditions replace the seven relationship states; Armistice replaces the peace treaty, 25 September 2026
+
+**Observed.** *On 8 September he listed seven conditions between two nations — War · Cease-fire · Hostile ·
+Peace-treaty · Peace · Subject · Allied — calling them "other states", which is one of the five jobs the
+word "state" was doing. The word list asked what word each job takes.*
+
+**Decided — Aaron, 25 September, in the word list walk, spoken.** First the word: *"It is useful in my
+understanding of them, but for the game, they all need to be under one category and the idea is that your
+nation as it relates to another nation can only be in one of these. It can't be in both."* He chose
+**standing** from the candidates offered.
+
+Then, unprompted, **he rebuilt the list into two layers**: *"Okay, so I think this is what it is. You can be
+at these standings with another nation. You can be at war." · "You can be hostile." · "You can be peace." ·
+"And you can be allied." · "And within each of those, there are… separate conditional things that are
+outside of those standings. Uh, one is a ceasefire. So if you sign a ceasefire, you're still technically at
+war with someone. You just have agreed to stop the fighting."*
+
+**He named the second layer himself:** *"Uh, we would call it standing condition."*
+
+| | |
+|---|---|
+| **Four standings** | war · hostile · peace · allied. **One at a time; never two.** |
+| **Standing conditions, so far** | **ceasefire** (inside war) · **Armistice** (leaving war) · **overlord** and **subject** (inside allied) |
+
+**Two mechanics arrived with it, and they are design rather than vocabulary:**
+
+1. ***"peace treaty does move you out of a war"*, and where it leaves you is not fixed:** *"you could either
+   be hostile or you could even move towards being at peace. With your current standing. Because if I was a
+   country and they conquered things from me and then we signed a peace treaty, I'd still be hostile towards
+   them."* **So ground lost to conquest leaves hostility behind it.**
+2. **A standing condition can forbid an act:** *"it would be a condition standing condition because I signed
+   a peace treaty. I am not allowed to attack that country."*
+
+**Armistice, and how it was chosen.** *He asked for a different word — "Is there another term that we could
+use besides peace treaty?" — because the studio had pointed out that "peace treaty" as a condition sits too
+close to "peace" as a standing. The studio offered armistice, accord, settlement and non-aggression pact;
+he chose: "Yep, let's do that, Armistice." **The word is the studio's and the choice is his**, recorded that
+way under the rule that studio wording is never quoted as his (D260).*
+
+**"overlord" is new** — it had not appeared in the project before this conversation: *"Uh, subject or
+overlord. Or ally."*
+
+**Rejected:** *his own seven-item list of 8 September, superseded by this one. Also **"modifier"**, which the
+studio proposed for the second layer; he used it once and corrected himself inside the same sentence —
+"it would also be a modifier because during that, or it would be a condition standing condition" — so
+**modifier is not his term and is not to be recorded as one.***
+
+**Left open:** *which standing an armistice leaves you in; whether hostile and peace carry standing
+conditions of their own ("within each of those, there are… separate conditional things" — only war, leaving
+war, and allied were given examples); and whether an armistice or ceasefire is also one of the signed
+arrangements the word list's question 12 covers, which he has routed away (D280).*
+
+**⚠ This is a design change, not only a naming one.** *The diplomacy design document is built on the seven
+and on an eight-state spine; the reconciliation ledger already records that spine as the gap and that the
+sixth state, `wary`, returns zero matches in the code. **Filed for the diplomacy technical document; no
+design document is edited by this entry.***
+
+### D278 — The thing you play is a nation-state; one of the fifty-one is a former-state; both are back-end words, 25 September 2026
+
+**Observed.** *"state" was doing five jobs at once and is his most-used word in the whole record. In one
+sentence of his, on 8 September, two of them appear together: "I agree that it is a standing state that will
+impact the state's relations with other countries." The built game says **nation** everywhere.*
+
+**Decided — Aaron, 25 September, in the word list walk, spoken:** *"Well, I like the idea of call it like it
+being nation states. Like it is, you know, the and, and I do want to keep that."* Then, for the record:
+**"It will be nation dash state."** And for the fifty-one the board starts from: *"on the back end, the code
+end, all of that fun jazz. Um, the when we are referring to the history, the phrase will be former dash
+state."*
+
+**He drew the line himself between the back end and the player:** *"in the code, we could be as specific as
+we want, but when the, but like the user doesn't have to know that like, we're specifically referring to like
+nation state dash a they would just see like, whatever."* **So `nation-state` and `former-state` bind the
+code and the specifications; what the player is shown is not settled.**
+
+**He also corrected the studio's summary of his own position, and the correction is the useful part.** *The
+studio played his answer back as "state is anchored to the past"; he replied: "it's not that the state is
+anchored in history, it is that when we are talking about something anchored in history, um, that term state
+is being used to refer to the 50 US states." **The studio's phrasing is not his view and is not recorded as
+one.***
+
+**Left open:** *what the player sees; whether `nation-state` may ever be shortened — the studio asked and his
+answer was about `former-state` instead, so the question was not reached. **The saved position is parked with
+a working term:** he said of "game state" that "we should come up with a separate thing" and then "it needs to
+be a temporary thing for us to go through", so it stays in use temporarily and is not settled. **Despotism
+and Stateless are out of the alpha:** "it doesn't need its own standing because that's something we're going
+to push past the alpha."*
+
+### D279 — Movements gain tiers; the map keeps the word "board"; the six team names are settled, 25 September 2026
+
+**Three smaller rulings from the same walk, 25 September, all spoken.**
+
+**1. A movement is a general thing with kinds beneath it.** *"Okay, so I think this is what it needs to be,
+is it needs to be when we say movement, that needs to be uh, something with uh, tiers to it. **A movement is
+simply a collection of people who want something different.**"* And the first kind: *"it would be a movement
+dash separatist and that separatist movement, which in the game code will be movement dash separatist. is a
+movement that within that state wants to separate and become their own state."*
+
+*He raised a **second kind** and could not name it — one that spans several nations, "something like um, like
+the Neo Confederacy or whatever it is we decided to call it. That would be outside a bunch of different
+States". The studio offered three names; **he took none of them** and said: "In the game, we I have talked
+about different classifications of movements, and so if you don't have that information, that is fine. Um,
+just know what we've got, and let's move on." **So the second kind is unnamed and his existing
+classifications are to be found in his own records rather than invented.** The political current a movement
+lines up along: "It waits for the designer."*
+
+**2. The map keeps "board".** *"We're going to keep board for the map. Opening board is going to be a
+condition of the board. And uh, we'll retire political board and control boarding."* *He then questioned his
+own retirement of the second one — "Is is it really that confusing for me to say the control board and have
+it not be confused with the map board?" — and settled on keeping **Control Board**, never shortened to
+"board". **That last part rests on his "Yep, okay, let's move on" to the studio's wording, not on a sentence
+of his own**, and is marked as such. The **political board's** name goes to him and the game designer (D280).
+The **leader board** was not discussed. **"map board" is a new phrase of his.***
+
+*⚠ `CLAUDE.md` contains the instruction "check a formula's board", meaning the political board. Under this
+ruling a bare "board" is the map, so that wording is now wrong. Filed.*
+
+**3. The studio's six team names are settled** as **Running · Intent · Design · Research · Build ·
+Checking** — the set he had already approved for session names (D265). *He asked first whether the question
+was real: "Okay, is this going to be actually confusing or was this in the document to fill out?" Told it was
+the weakest of the sixteen and that only the existence of three competing sets carried any cost, he replied:
+"Okay, we're we're approved."* **This closes the main half of deferred 52 and 59.** *Left open: whether the
+naming rule widens to "the bodies that travel with a planet" or the four role names that break it are
+changed; which team the Scribe belongs to; and Marketing, the seventh function, which appears in none of the
+three sets.*
+
+### D280 — What Aaron routed away from the word list, and to whom, 25 September 2026
+
+**Observed.** *Sixteen doubled words were put to him. He settled five areas (D276–D279) and **sent the rest
+to roles rather than answering them**, which is itself a ruling and is recorded so nobody re-asks him.*
+
+| Question | Where he sent it | His words |
+|---|---|---|
+| **ideology / position / party** — the ten places on the political board | **Him and the Lead Game Designer, together** | *"a good question that would be better answered with me and the game designer talking"* |
+| **area / county / region** | The Lead Game Designer | *"we can skip all this and save it for the game designer"* |
+| **the project's own time words** (stage, phase, milestone, step) | The Producer | *"Skip, we're going to have the project manager handle this"* |
+| **power** · **pressure / grievance / sentiment** | The Lead Game Designer | *"Game designer."* |
+| **action/move · the five words for an agreement · Hostile · mode · playtest** | The Lead Game Designer **and** the Producer, **unsplit** | *"I'm looking at the rest of these, and these are all uh, things for game designer and project manager to figure out"* |
+
+**The most important thing he said, and it reframes the largest of them.** *On the political board's
+vocabulary — the contradiction filed the same day as defect 58 and first-order item F14, where one record
+says a party is a fixed corner and another says it is an organisation that moves: **"I think the main thing
+is we want to make sure that things aren't confusing and intersecting. But here, I don't think that the
+vocabulary is getting mixed up. I think it's getting this actual system figured out."*** **So it is a design
+problem wearing a naming problem's clothes, and naming it will not unblock it.** *He also agreed that the
+11 September ruling behind it should be marked as resting on assent rather than on his words, so nothing
+downstream treats it as decided.*
+
+**Not settled, and not to be treated as settled:** *he did not say which of the last five questions goes to
+which role. And one instruction in the dictation is unreadable even to the session that recorded it — "save
+the put in for uh, the project manager" — which nobody can attribute to an item. **Both stay as questions
+for him.***
+
+**⚠ The question about how his own decisions are recorded (deferred 57) was put to him at the end and he
+did not answer it** — he asked for the document instead. *It is recorded as unanswered rather than parked,
+because he did not park it. **The fault stays open.***
