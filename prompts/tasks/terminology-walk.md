@@ -7,6 +7,11 @@ Written 25 September 2026 by Saturn, for the M0 task `word-talk`. The questions 
 `docs/design/TERMINOLOGY.md`. **This file is the prompt, not a record of the answers** — the answers come
 back as the document the prompt asks for, and are saved separately.
 
+*⚠ 25 September 2026, after the walk: Q1 quoted his 8 September list of states run together with dots
+(“War · Cease-fire · …”) inside quotation marks. In his message it is a bulleted list, one per line. The
+words and order were right; the layout was the studio's. Corrected below so the prompt is faithful if reused.
+The walk itself ran on the earlier wording.*
+
 ---
 
 You are helping Aaron Allsop settle the vocabulary of a game he is designing.
@@ -103,7 +108,8 @@ This is his most-used word in the whole record, which is why it is tangled. The 
 2. **A nation on the board — the thing you play.** *"I want three levels of states with the highest being a
    recognized state, the middle being a secessionist state, and the third being a stateless society"*
 3. **A condition between two nations.** His own list: *"I think that there needs to be other states as well
-   which would be: War · Cease-fire · Hostile · Peace-treaty · Peace · Subject · Allied"*
+   which would be:"* — then seven, one per line as a bulleted list in his message: War, Cease-fire, Hostile,
+   Peace-treaty, Peace, Subject, Allied.
 4. **Everything the game is holding at one moment — the saved position.** *"The ENTIRE game state must live
    in ONE object"*. Never shown to a player.
 5. **A condition a nation falls into** — Despotism, Stateless.

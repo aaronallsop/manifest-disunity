@@ -209,7 +209,9 @@ typing `/resume …`. Where the skill says to read another session's changes and
   Signing a long agreement should cost something; until that is built, it costs nothing (D233).
 - Politics is three axes (economy, morals, power, each −1 to +1) and ten positions: eight corner parties
   and two centrists (D231). Despotism and Stateless are conditions fallen into. `GDD.md` §15.1 rules; §15.1a
-  records what is built. Until converted, the code runs six ideologies on two axes: check a formula's board.
+  records what is built. Until converted, the code runs six ideologies on two axes: check which political
+  board a formula reads. *(⚠ 25 September 2026, D279: a bare "board" is now the map, so this line no longer says
+  "check a formula's board".)*
 - The alpha's content scope is in `GDD.md` §9 (D239): the Texas area, the Great Lakes and the West. The
   New Confederacy and Christian Nationalism movements and the Despotism state wait until after it;
   Stateless ground is in it but is not a playable nation. Cut from the alpha is not cut from the game.

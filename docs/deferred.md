@@ -849,6 +849,11 @@ Marketing, is named in the roster and appears in none of the three sets (termino
 **Deferred with 52, to the same place:** it is question Q7 on the terminology list. **52 is not wrong, it is
 short — read the two together.**
 
+*⚠ 25 September 2026, the same evening (D279): Aaron settled the set — **Running · Intent · Design · Research ·
+Build · Checking**, the one he had already approved. What remains of 52 and 59: the roster's own table and
+headings still carry the other two sets; the naming rule (moons, or "the bodies that travel with it") and the
+four role names that break it; which team the Scribe belongs to; and Marketing, named in no set.*
+
 ## 60 — Two different rulings are both called "ruling 40"
 
 **Found 25 September 2026 while building the terminology list.** `politics-ideation.md` cites *"Round 1's
@@ -862,3 +867,54 @@ than a typo, and the design rounds are closed — so the numbers cannot be re-is
 which. It belongs with the project's other numbering collisions (terminology list Q8, which records that
 three step-numbering systems disagree and one is off by one). **The cheap fix is a citation rule — always
 name the round — not a renumbering.**
+
+## 61 — The tuning file's "per turn" labels now say the wrong thing
+
+**Found 25 September 2026, measured the same evening.** Aaron reversed the words (D276): a **turn** is now one
+nation's move and a **round** is all sixty-one. The engine's rates are still per quarter and nothing
+miscalculates — **but the tuning file says "per turn" on 21 lines, 12 of them the labels he reads in the tuning
+screen, and "per-turn" on 9 more; "per quarter" appears on none.** `content/tunables.json` has none. Under his
+ruling each of those labels now reads as per-nation-move, which is wrong by a factor of sixty-one.
+
+**Deferred, and blocked on him:** the quarter of game time has no name — *"we're going to figure out the quarter
+of game time later"* — so relabelling now would mean guessing his word. It is a programming change once he
+names it. **It must land before anyone tunes by reading those labels, and before the contracts pass writes a
+rate into a contract** (M3 already waits for the word list). Until then `CLAUDE.md` tells every session to say
+"quarter".
+
+## 62 — The diplomacy design is built on the seven states Aaron replaced on 25 September
+
+**Found 25 September 2026 while folding the word list walk into the word list.** `diplomacy-design.md` is built
+on his 8 September list of seven conditions and an eight-state spine. D277 replaces the seven with **four
+standings** (war, hostile, peace, allied) and **standing conditions** inside them (ceasefire, Armistice,
+overlord, subject); "peace treaty" is retired in favour of **Armistice**. **A design defect against the
+diplomacy design document, not only a naming one** — no design document was edited by the walk. Three things
+ride with it:
+
+1. **A rule of his with no owner yet:** ground lost to conquest leaves hostility behind after a war ends — *"if
+   I was a country and they conquered things from me and then we signed a peace treaty, I'd still be hostile
+   towards them."* It belongs in the diplomacy design; nothing carries it today.
+2. **Hostile is now two things:** a standing (D277) and a band on the relations score, which the diplomacy
+   document already records as teaching the player something false. Word list Q14 and Q19.
+3. **An open question for Aaron, and a sharp one:** on 15 September he made signing a peace treaty mean
+   recognition — *"signing a peace treaty means that that nation recognizes you as a soverign [sic] nation"*. On
+   25 September he renamed that act Armistice, with the Korean armistice as his example — *"The main thing is
+   like what you mentioned, like uh, the armistice between North and South Korea."* **Korea's armistice is the
+   standard case of two sides that never recognised each other.** Whether an Armistice still means
+   recognition is his; nobody should build either reading until he says. It belongs at the end of the
+   diplomacy document's open questions, and the director's brief §9 line about peace and recognition names a
+   word he has now retired.
+
+**Deferred to the diplomacy technical document**, which inherits all of it. Nothing is built on the seven, so
+nothing has to be redone — which is why this is not a first-order item.
+
+## 63 — Aaron's word list walk is saved as documents, not yet in the word record
+
+**Found 25 September 2026.** The walk ran in his Claude chat, not a Claude Code session, so none of its
+messages reached the word record in `docs/design/aaron-words/`. Until this evening its two exports existed
+**only in his Downloads folder on the MacBook**; they are now copied byte-identical into
+`docs/design/aaron-words/walk/`, with a note on whose words are whose. **What remains, and it is Pluto's:**
+extract his messages into the record's own one-file-per-session form, and add the walk to the index. **The
+same pass should correct the index's total**, which still says 659 messages where the files on disk hold 661
+(the 25 September Terra session grew at its sign-off re-copy).
+
